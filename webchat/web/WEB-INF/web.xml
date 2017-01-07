@@ -41,6 +41,10 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>servlet.Login</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChatroomLoader</servlet-name>
+        <servlet-class>servlet.ChatroomLoader</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern/>
@@ -52,6 +56,10 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatroomLoader</servlet-name>
+        <url-pattern>/ChatroomLoader</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

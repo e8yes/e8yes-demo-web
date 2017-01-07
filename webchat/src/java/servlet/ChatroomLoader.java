@@ -18,6 +18,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author davis
  */
-public class Login extends HttpServlet {
+public class ChatroomLoader extends HttpServlet {
 
         /**
          * Processes requests for both HTTP <code>GET</code> and
@@ -42,23 +44,20 @@ public class Login extends HttpServlet {
                 throws ServletException, IOException {
                 response.setContentType("text/html;charset=UTF-8");
                 
-                // Redirect to chatroom.
-                Integer user_id;
-                try {
-                        user_id = Integer.parseInt(request.getParameter("user_id"));
-                } catch (NumberFormatException ex) {
-                        request.getRequestDispatcher("401.jsp").forward(request, response);
-                        return;
-                }
-                String password = request.getParameter("user_password");
+                ArrayList<Integer> fd_request_list = new ArrayList<>();
+                fd_request_list.add(100101);
+                fd_request_list.add(100123);
+                fd_request_list.add(100645);
                 
-                if (app.UserOperator.verify(user_id, password)) {
-                        request.setAttribute("is_logged_in", true);
-                        request.setAttribute("user_id", user_id);
-                        request.getRequestDispatcher("/ChatroomLoader").forward(request, response);
-                } else {
-                        request.getRequestDispatcher("401.jsp").forward(request, response);
-                }
+                ArrayList<Integer> fd_list = new ArrayList<>();
+                fd_list.add(100111);
+                fd_list.add(100143);
+                fd_list.add(100694);
+                fd_list.add(100127);
+                
+                request.setAttribute("friend_request_list", fd_request_list);
+                request.setAttribute("friend_list", fd_list);
+                request.getRequestDispatcher("chatroom.jsp").forward(request, response);
         }
 
         // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
