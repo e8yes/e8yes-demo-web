@@ -45,6 +45,22 @@
         <servlet-name>ChatroomLoader</servlet-name>
         <servlet-class>servlet.ChatroomLoader</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChatHistory</servlet-name>
+        <servlet-class>servlet.ChatHistory</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FireChat</servlet-name>
+        <servlet-class>servlet.FireChat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PollChat</servlet-name>
+        <servlet-class>servlet.PollChat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FriendRequest</servlet-name>
+        <servlet-class>servlet.FriendRequest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern/>
@@ -60,6 +76,22 @@
     <servlet-mapping>
         <servlet-name>ChatroomLoader</servlet-name>
         <url-pattern>/ChatroomLoader</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatHistory</servlet-name>
+        <url-pattern>/ChatHistory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FireChat</servlet-name>
+        <url-pattern>/FireChat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PollChat</servlet-name>
+        <url-pattern>/PollChat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FriendRequest</servlet-name>
+        <url-pattern>/FriendRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

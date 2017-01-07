@@ -17,10 +17,10 @@
         <h1>Webchat Chatroom</h1>
         
         <h4>Add contact</h4>
-        <form>
-            <input type="text" name="friend_user_id" />
-            <input type="submit" value="Send request" />
-        </form>
+        <div>
+            <input id="t_friend_request_id" type="text" />
+            <button id="b_send_request">Send request</button>
+        </div>
         
          <h4>Friend requests</h4>
          <%
@@ -106,6 +106,9 @@
             } else {
                 // Remove request.
             }
+        });
+        
+        $("#b_send_request").on("click", function(e) {
         });
         
         $("#b_unfriend").on("click", function(e) {
