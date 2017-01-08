@@ -24,19 +24,22 @@ package backend;
 public class Message {
         private final int       m_user_a;
         private final int       m_user_b;
+        private boolean         m_has_read;
         private final long      m_timestamp;
         private final String    m_content;
         
-        public Message(int sender, int receiver, long timestamp, String content) {
+        public Message(int sender, int receiver, long timestamp, boolean has_read, String content) {
                 m_user_a = sender;
                 m_user_b = receiver;
                 m_content = content;
+                m_has_read = has_read;
                 m_timestamp = timestamp;
         }
                 
         public Message(int sender, int receiver, String content) {
                 m_user_a = sender;
                 m_user_b = receiver;
+                m_has_read = false;
                 m_content = content;
                 m_timestamp = System.currentTimeMillis();
         }
@@ -55,6 +58,14 @@ public class Message {
         
         public long get_timestamp() {
                 return m_timestamp;
+        }
+        
+        public boolean has_read() {
+                return m_has_read;
+        }
+        
+        public void read() {
+                m_has_read = true;
         }
         
         @Override

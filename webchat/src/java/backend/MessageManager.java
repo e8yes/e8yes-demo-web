@@ -41,21 +41,11 @@ public class MessageManager {
                                 + "uid_a integer,"
                                 + "uid_b integer,"
                                 + "t datetime,"
+                                + "has_read boolean,"
                                 + "msg text,"
                                 + "primary key (uid_a, uid_b, t),"
                                 + "foreign key (uid_a, uid_b) references " 
                                         + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
-                                        + " on delete cascade);");
-                        s.executeUpdate("create table if not exists message_counter("
-                                + "uid_a integer,"
-                                + "uid_b integer,"
-                                + "count integer,"
-                                + "primary key (uid_a, uid_b),"
-                                + "foreign key (uid_a) references " 
-                                        + UserManager.get_entity_name() + UserManager.get_key_name() 
-                                        + " on delete cascade,"
-                                + "foreign key (uid_b) references " 
-                                        + UserManager.get_entity_name() + UserManager.get_key_name() 
                                         + " on delete cascade);");
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,28 +61,26 @@ public class MessageManager {
                                               + msg.receiver() + "," 
                                               + t + "," 
                                               + msg.get_content() + ");");
-                        int q = s.executeUpdate("update message_counter set count = count + 1 "
-                                + " where uid_a = " + msg.sender() + " and uid_b = " + msg.receiver());
-                        return r == 1 && q == 1;
+                        return r == 1;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                         return false;
                 }
         }
         
-        public boolean clear_message_count(Integer receiver, Integer sender, Integer n) {
+        public boolean clear_unread_state(int receiver) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        int q = s.executeUpdate("update message_counter set count = 0"
-                                + " where uid_a = " + sender + " and uid_b = " + receiver);
-                        return q == 1;
+                        int q = s.executeUpdate("update message_manager set has_read = true "
+                                + " where has_read = false and uid_b = " + receiver);
+                        return true;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                         return false;
                 }
         }
         
-        public ArrayList<Message> get_messages(Integer uid_a, Integer uid_b, Integer n) {
+        public ArrayList<Message> get_messages(int uid_a, int uid_b, int n) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
                         ResultSet result = s.executeQuery("select * from message_manager "
@@ -105,8 +93,31 @@ public class MessageManager {
                                 int sender = result.getInt("uid_a");
                                 int receiver = result.getInt("uid_b");
                                 long timestamp = result.getTimestamp("t").getTime();
+                                boolean has_read = result.getBoolean("has_read");
                                 String content = result.getString("msg");
-                                msgs.add(new Message(sender, receiver, timestamp, content));
+                                msgs.add(new Message(sender, receiver, timestamp, has_read, content));
+                        }
+                        return msgs;
+                } catch (SQLException ex) {
+                        Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
+                        return null;
+                }
+        }
+        
+        public ArrayList<Message> get_received_unread_messages(int uid_receiver) {
+                try {
+                        Statement s = m_conn.get_connection().createStatement();
+                        ResultSet result = s.executeQuery("select * from message_manager "
+                                + " where has_read = false and uid_b = " + uid_receiver
+                                + " order by t asc;");
+                        ArrayList<Message> msgs = new ArrayList<>();
+                        while (result.next()) {
+                                int sender = result.getInt("uid_a");
+                                int receiver = result.getInt("uid_b");
+                                long timestamp = result.getTimestamp("t").getTime();
+                                boolean has_read = result.getBoolean("has_read");
+                                String content = result.getString("msg");
+                                msgs.add(new Message(sender, receiver, timestamp, has_read, content));
                         }
                         return msgs;
                 } catch (SQLException ex) {

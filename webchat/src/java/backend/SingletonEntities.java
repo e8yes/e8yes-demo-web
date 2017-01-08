@@ -28,6 +28,7 @@ public final class SingletonEntities {
         private static FriendshipManager FRIENDSHIP_MANAGER;
         private static FriendRequestManager FRIEND_REQUEST_MANAGER;
         private static MessageManager MESSAGE_MANAGER;
+        private static CommunicationManager COMMUNICATION_MANAGER;
         
         public static void init() 
         {
@@ -37,6 +38,7 @@ public final class SingletonEntities {
                 FRIENDSHIP_MANAGER = new FriendshipManager(DB_CONNECTOR, USER_MANAGER);
                 FRIEND_REQUEST_MANAGER = new FriendRequestManager(DB_CONNECTOR, USER_MANAGER);
                 MESSAGE_MANAGER = new MessageManager(DB_CONNECTOR, FRIENDSHIP_MANAGER);
+                COMMUNICATION_MANAGER = new CommunicationManager(MESSAGE_MANAGER);
         }
         
         public static UserManager get_user_manager() {
@@ -49,5 +51,13 @@ public final class SingletonEntities {
         
         public static FriendRequestManager get_friend_request_manager() {
                 return FRIEND_REQUEST_MANAGER;
+        }
+        
+        public static MessageManager get_message_manager() {
+                return MESSAGE_MANAGER;
+        }
+        
+        public static CommunicationManager get_communication_manager() {
+                return COMMUNICATION_MANAGER;
         }
 }
