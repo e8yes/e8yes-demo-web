@@ -19,10 +19,13 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -43,16 +46,37 @@ public class ChatHistory extends HttpServlet {
                 throws ServletException, IOException {
                 response.setContentType("text/html;charset=UTF-8");
                 try (PrintWriter out = response.getWriter()) {
-                        /* TODO output your page here. You may use following sample code. */
-                        out.println("<!DOCTYPE html>");
-                        out.println("<html>");
-                        out.println("<head>");
-                        out.println("<title>Servlet ChatHistory</title>");                        
-                        out.println("</head>");
-                        out.println("<body>");
-                        out.println("<h1>Servlet ChatHistory at " + request.getContextPath() + "</h1>");
-                        out.println("</body>");
-                        out.println("</html>");
+                        Integer uid = (Integer) request.getSession().getAttribute("user_id");
+                        String n = (String) request.getParameter("n");
+                        String sender = (String) request.getParameter("sender");
+                        
+                        Integer sender_uid;
+                        Integer msg_count;
+                        try {
+                                if (uid == null || sender == null || n == null) {
+                                        throw new Exception();
+                                }
+                                sender_uid = Integer.parseInt(sender);
+                                msg_count = Integer.parseInt(n);
+                        } catch (Exception ex) {
+                                out.println("Malformed request!");
+                                return;
+                        }
+
+                        ArrayList<backend.Message> msgs = app.MessageOperator.get_chat_history(uid, sender_uid, msg_count);
+                        if (msgs == null) {
+                                out.println("Internal error 500");
+                                return;
+                        }
+                        
+                        JSONArray a = new JSONArray();
+                        msgs.stream().forEach((msg) -> {
+                                JSONObject o = new JSONObject();
+                                o.put("sender", msg.sender());
+                                o.put("content", msg.get_content());
+                        });
+                
+                        out.print(a.toString());
                 }
         }
 

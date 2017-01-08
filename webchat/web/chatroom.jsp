@@ -91,6 +91,23 @@
                 $("#t_chat_history").html("No history.");
             } else {
                 // Request chat history.
+                var chat_history_box = $("#t_chat_history");
+                $.ajax({url: "ChatHistory", data: {sender: current_chat_target,
+                                                    n: 20},
+                    success: function(result) {
+                        chat_history_box.empty();
+                        
+                        try {
+                            var chats = JSON.parse(result);
+                        } catch (ex) {
+                            alert(result);
+                            return ;
+                        }
+                        
+                        for (var i = 0; i < chats.length; i ++) {
+                            chat_history_box.append(chats[i].sender + ": " + chats[i].content + "\n");
+                        }
+                }});
             }
         }
         

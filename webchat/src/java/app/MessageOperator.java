@@ -25,22 +25,22 @@ import java.util.ArrayList;
  */
 public class MessageOperator {
         
-        public boolean send_message(Integer sender, Integer receiver, String message) {
+        public static boolean send_message(Integer sender, Integer receiver, String message) {
                 backend.CommunicationManager cm = backend.SingletonEntities.get_communication_manager();
                 return cm.send_message(new backend.Message(sender, receiver, message));
         }
         
-        public void create_realtime_channel(Integer uid, backend.MessageListener listener) {
+        public static void create_realtime_channel(Integer uid, backend.MessageListener listener) {
                 backend.CommunicationManager cm = backend.SingletonEntities.get_communication_manager();
                 cm.register_channel(uid, listener);
         }
         
-        public void close_realtime_channel(Integer uid) {
+        public static void close_realtime_channel(Integer uid) {
                 backend.CommunicationManager cm = backend.SingletonEntities.get_communication_manager();
                 cm.close_channel(uid);
         }
         
-        public ArrayList<backend.Message> get_chat_history(Integer uid_a, Integer uid_b, Integer n) {
+        public static ArrayList<backend.Message> get_chat_history(Integer uid_a, Integer uid_b, Integer n) {
                 backend.MessageManager mm = backend.SingletonEntities.get_message_manager();
                 return mm.get_messages(uid_a, uid_b, n);
         }
