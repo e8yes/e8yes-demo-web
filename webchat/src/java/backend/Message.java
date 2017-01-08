@@ -22,14 +22,23 @@ package backend;
  * @author davis
  */
 public class Message {
-        private final int     m_user_a;
-        private final int     m_user_b;
-        private final String  m_content;
+        private final int       m_user_a;
+        private final int       m_user_b;
+        private final long      m_timestamp;
+        private final String    m_content;
         
+        public Message(int sender, int receiver, long timestamp, String content) {
+                m_user_a = sender;
+                m_user_b = receiver;
+                m_content = content;
+                m_timestamp = timestamp;
+        }
+                
         public Message(int sender, int receiver, String content) {
                 m_user_a = sender;
                 m_user_b = receiver;
                 m_content = content;
+                m_timestamp = System.currentTimeMillis();
         }
         
         public int sender() {
@@ -42,5 +51,29 @@ public class Message {
         
         public String get_content() {
                 return m_content;
+        }
+        
+        public long get_timestamp() {
+                return m_timestamp;
+        }
+        
+        @Override
+        public boolean equals(Object o) {
+                Message other = (Message) o;
+                return m_user_a == other.m_user_a && m_user_b == other.m_user_b && m_timestamp == other.m_timestamp;
+        }
+
+        @Override
+        public int hashCode() {
+                int hash = 7;
+                hash = 53 * hash + this.m_user_a;
+                hash = 53 * hash + this.m_user_b;
+                hash = 53 * hash + (int) (this.m_timestamp ^ (this.m_timestamp >>> 32));
+                return hash;
+        }
+        
+        @Override
+        public String toString() {
+                return "Message = [" + m_user_a + "," + m_user_b + "," + m_timestamp + "," + m_content + "]";
         }
 }

@@ -46,18 +46,46 @@ public class MessageManager {
                                 + "foreign key (uid_a, uid_b) references " 
                                         + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
                                         + " on delete cascade);");
+                        s.executeUpdate("create table if not exists message_counter("
+                                + "uid_a integer,"
+                                + "uid_b integer,"
+                                + "count integer,"
+                                + "primary key (uid_a, uid_b),"
+                                + "foreign key (uid_a) references " 
+                                        + UserManager.get_entity_name() + UserManager.get_key_name() 
+                                        + " on delete cascade,"
+                                + "foreign key (uid_b) references " 
+                                        + UserManager.get_entity_name() + UserManager.get_key_name() 
+                                        + " on delete cascade);");
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
         }
         
         public boolean new_message(Message msg) {
-                Timestamp t = new Timestamp(System.currentTimeMillis());
+                Timestamp t = new Timestamp(msg.get_timestamp());
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        int r = s.executeUpdate("insert into message_manager (uid_a, uid_b, t, msg) "
-                                + " values (" + msg.sender() + "," + msg.receiver() + "," + t + "," + msg.get_content() + ");");
-                        return r == 1;
+                        int r = s.executeUpdate("insert into message_manager (uid_a, uid_b, t, has_read, msg) "
+                                + " values (" + msg.sender() + "," 
+                                              + msg.receiver() + "," 
+                                              + t + "," 
+                                              + msg.get_content() + ");");
+                        int q = s.executeUpdate("update message_counter set count = count + 1 "
+                                + " where uid_a = " + msg.sender() + " and uid_b = " + msg.receiver());
+                        return r == 1 && q == 1;
+                } catch (SQLException ex) {
+                        Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
+                        return false;
+                }
+        }
+        
+        public boolean clear_message_count(Integer receiver, Integer sender, Integer n) {
+                try {
+                        Statement s = m_conn.get_connection().createStatement();
+                        int q = s.executeUpdate("update message_counter set count = 0"
+                                + " where uid_a = " + sender + " and uid_b = " + receiver);
+                        return q == 1;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                         return false;
@@ -67,7 +95,7 @@ public class MessageManager {
         public ArrayList<Message> get_messages(Integer uid_a, Integer uid_b, Integer n) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select uid_a, uid_b, msg from message_manager "
+                        ResultSet result = s.executeQuery("select * from message_manager "
                                 + "where (uid_a = " + uid_a + " and uid_b = " + uid_b + ") or "
                                       + "(uid_a = " + uid_b + " and uid_b = " + uid_a + ")"
                                 + "order by t asc "
@@ -76,8 +104,9 @@ public class MessageManager {
                         while (result.next()) {
                                 int sender = result.getInt("uid_a");
                                 int receiver = result.getInt("uid_b");
+                                long timestamp = result.getTimestamp("t").getTime();
                                 String content = result.getString("msg");
-                                msgs.add(new Message(sender, receiver, content));
+                                msgs.add(new Message(sender, receiver, timestamp, content));
                         }
                         return msgs;
                 } catch (SQLException ex) {
