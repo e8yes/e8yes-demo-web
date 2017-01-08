@@ -66,6 +66,13 @@ public class UserOperator {
                 return null;
         }
         
-        public static void end_friendship(Integer uid, Integer friend) {
+        public static ArrayList<Integer> pull_friends(Integer uid) {
+                backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
+                return fm.friends_of(uid);
+        }
+        
+        public static boolean end_friendship(Integer uid, Integer friend) {
+                backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
+                return fm.end_friendship(uid, friend);
         }
 }

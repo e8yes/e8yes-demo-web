@@ -32,6 +32,14 @@ public class UserManager {
         private DBConnector m_conn;
         private UserIDCounter m_uid_counter;
         
+        public static String get_entity_name() {
+                return "user_manager";
+        }
+        
+        public static String get_key_reference_name() {
+                return "uid";
+        }
+        
         public UserManager(DBConnector conn, UserIDCounter cnt) {
                 m_conn = conn;
                 m_uid_counter = cnt;
@@ -49,7 +57,7 @@ public class UserManager {
         public boolean has_user(int user_id) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select uid from user_manager where uid = " + user_id + ";");
+                        ResultSet result = s.executeQuery("select 1 from user_manager where uid = " + user_id + ";");
                         return result.next();
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);

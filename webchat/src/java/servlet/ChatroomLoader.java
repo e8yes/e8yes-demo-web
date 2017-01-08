@@ -18,7 +18,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -44,16 +43,14 @@ public class ChatroomLoader extends HttpServlet {
                 throws ServletException, IOException {
                 response.setContentType("text/html;charset=UTF-8");
                 
-                ArrayList<Integer> fd_request_list = new ArrayList<>();
-                fd_request_list.add(100101);
-                fd_request_list.add(100123);
-                fd_request_list.add(100645);
+                Integer uid = (Integer) request.getAttribute("user_id");
+                if (uid == null) {
+                        request.getRequestDispatcher("401.jsp").forward(request, response);
+                        return ;
+                }
                 
-                ArrayList<Integer> fd_list = new ArrayList<>();
-                fd_list.add(100111);
-                fd_list.add(100143);
-                fd_list.add(100694);
-                fd_list.add(100127);
+                ArrayList<Integer> fd_request_list = app.UserOperator.pull_friend_requests(uid);  
+                ArrayList<Integer> fd_list = app.UserOperator.pull_friends(uid);
                 
                 request.setAttribute("friend_request_list", fd_request_list);
                 request.setAttribute("friend_list", fd_list);

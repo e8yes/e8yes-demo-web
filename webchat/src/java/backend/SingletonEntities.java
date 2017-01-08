@@ -32,7 +32,7 @@ public final class SingletonEntities {
                 DB_CONNECTOR = new DBConnector();
                 UID_COUNTER = new UserIDCounter(DB_CONNECTOR);
                 USER_MANAGER = new UserManager(DB_CONNECTOR, UID_COUNTER);
-                FRIENDSHIP_MANAGER = new FriendshipManager(DB_CONNECTOR);
+                FRIENDSHIP_MANAGER = new FriendshipManager(DB_CONNECTOR, USER_MANAGER);
         }
         
         public static UserManager get_user_manager() {
