@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,11 +73,14 @@ public class MessageManager {
                 }
         }
         
-        public boolean clear_unread_state(int receiver) {
+        public boolean clear_unread_state(int receiver, long timestamp) {
+                Timestamp t = new Timestamp(timestamp);
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        int q = s.executeUpdate("update message_manager set has_read = true "
-                                + " where has_read = false and uid_b = " + receiver);
+                        PreparedStatement ps = m_conn.get_connection().prepareStatement(
+                                "update message_manager set has_read = true "
+                                + " where has_read = false and uid_b = " + receiver + " and t <= ?");
+                        ps.setTimestamp(1, t);
+                        int q = ps.executeUpdate();
                         return true;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,7 +94,7 @@ public class MessageManager {
                         ResultSet result = s.executeQuery("select * from message_manager "
                                 + "where (uid_a = " + uid_a + " and uid_b = " + uid_b + ") or "
                                       + "(uid_a = " + uid_b + " and uid_b = " + uid_a + ")"
-                                + "order by t asc "
+                                + "order by t desc "
                                 + "limit " + n + ";");
                         ArrayList<Message> msgs = new ArrayList<>();
                         while (result.next()) {
@@ -101,6 +105,7 @@ public class MessageManager {
                                 String content = result.getString("msg");
                                 msgs.add(new Message(sender, receiver, timestamp, has_read, content));
                         }
+                        Collections.reverse(msgs);
                         return msgs;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);

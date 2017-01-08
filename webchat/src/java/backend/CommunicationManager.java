@@ -40,8 +40,10 @@ public class CommunicationManager {
                 // Check any unread messages.
                 ArrayList<Message> msgs = m_mgr.get_received_unread_messages(user_id);
                 msgs.stream().forEach(listener::on_receive);
+                listener.start();
                 
-                m_mgr.clear_unread_state(user_id);
+                if (msgs.size() >= 1)
+                        m_mgr.clear_unread_state(user_id, msgs.get(msgs.size() - 1).get_timestamp());
         }
         
         public void close_channel(int user_id) {
@@ -51,7 +53,9 @@ public class CommunicationManager {
         public boolean send_message(Message msg) {
                 MessageListener channel = m_channels.get(msg.receiver());
                 if (channel != null) {
-                        channel.on_receive(msg);
+                        if (channel.on_receive(msg)) {
+                                msg.read();
+                        }
                 }
                 return m_mgr.new_message(msg);
         }

@@ -24,8 +24,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  *
@@ -65,19 +63,11 @@ public class ChatHistory extends HttpServlet {
 
                         ArrayList<backend.Message> msgs = app.MessageOperator.get_chat_history(uid, sender_uid, msg_count);
                         if (msgs == null) {
-                                out.println("Internal error 500");
+                                out.println("Internal error 500, " + uid + " - " + sender_uid);
                                 return;
                         }
                         
-                        JSONArray a = new JSONArray();
-                        msgs.stream().forEach((msg) -> {
-                                JSONObject o = new JSONObject();
-                                o.put("sender", msg.sender());
-                                o.put("content", msg.get_content());
-                                a.add(o);
-                        });
-                
-                        out.print(a.toString());
+                        MessageJSONizer.jsonize(msgs, out);
                 }
         }
 
