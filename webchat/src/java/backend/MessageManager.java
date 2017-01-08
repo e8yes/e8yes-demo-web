@@ -40,16 +40,16 @@ public class MessageManager {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
                         s.executeUpdate("create table if not exists message_manager("
-                                + "uid_a integer,"
                                 + "uid_b integer,"
-                                + "t datetime,"
+                                + "uid_a integer,"
+                                + "t timestamp(0) default current_timestamp,"
                                 + "has_read boolean,"
                                 + "msg text,"
-                                + "primary key (uid_a, uid_b, t),"
+                                + "primary key (uid_b, uid_a, t),"
                                 + "foreign key (uid_a, uid_b) references " 
                                         + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
                                         + " on delete cascade) "
-                                + "default character set=utf8;");
+                                + " default character set=utf8;");
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -80,7 +80,7 @@ public class MessageManager {
                 try {
                         PreparedStatement ps = m_conn.get_connection().prepareStatement(
                                 "update message_manager set has_read = true "
-                                + " where has_read = false and uid_b = " + receiver + " and t <= ?");
+                                + " where has_read = false and uid_b = " + receiver + " and t <= ?;");
                         ps.setTimestamp(1, t);
                         int q = ps.executeUpdate();
                         return true;
