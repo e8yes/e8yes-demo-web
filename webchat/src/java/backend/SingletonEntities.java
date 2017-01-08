@@ -23,7 +23,8 @@ package backend;
  */
 public final class SingletonEntities {
         private static DBConnector DB_CONNECTOR;
-        private static UserIDCounter UID_COUNTER;
+        private static UserIDGenerator UID_COUNTER;
+        private static FriendshipIDGenerator FID_COUNTER;
         private static UserManager USER_MANAGER;
         private static FriendshipManager FRIENDSHIP_MANAGER;
         private static FriendRequestManager FRIEND_REQUEST_MANAGER;
@@ -33,9 +34,10 @@ public final class SingletonEntities {
         public static void init() 
         {
                 DB_CONNECTOR = new DBConnector();
-                UID_COUNTER = new UserIDCounter(DB_CONNECTOR);
+                UID_COUNTER = new UserIDGenerator(DB_CONNECTOR);
+                FID_COUNTER = new FriendshipIDGenerator(DB_CONNECTOR);
                 USER_MANAGER = new UserManager(DB_CONNECTOR, UID_COUNTER);
-                FRIENDSHIP_MANAGER = new FriendshipManager(DB_CONNECTOR, USER_MANAGER);
+                FRIENDSHIP_MANAGER = new FriendshipManager(DB_CONNECTOR, USER_MANAGER, FID_COUNTER);
                 FRIEND_REQUEST_MANAGER = new FriendRequestManager(DB_CONNECTOR, USER_MANAGER);
                 MESSAGE_MANAGER = new MessageManager(DB_CONNECTOR, FRIENDSHIP_MANAGER);
                 COMMUNICATION_MANAGER = new CommunicationManager(MESSAGE_MANAGER);

@@ -27,16 +27,20 @@ import java.util.logging.Logger;
  *
  * @author davis
  */
-public class UserIDCounter {
+public class UUIDGenerator {
         
-        private DBConnector m_conn;
+        private final DBConnector     m_conn;
+        private final String          m_entity_name;
+        private final int             m_min;
         
-        public UserIDCounter(DBConnector conn) {
+        public UUIDGenerator(DBConnector conn, String entity_name, int min) {
                 m_conn = conn;
+                m_entity_name = entity_name;
+                m_min = min;
                 try {
                         // Create the counter table.
                         Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("create table if not exists uid_counter("
+                        s.executeUpdate("create table if not exists " + m_entity_name + "("
                                 + "bid integer,"
                                 + "uid integer,"
                                 + "primary key (bid));");
@@ -48,22 +52,22 @@ public class UserIDCounter {
         public Integer get_next() {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        int r = s.executeUpdate("update uid_counter "
-                                + "set uid = uid + 1 "
-                                + "where bid = 0");
+                        int r = s.executeUpdate("update " + m_entity_name
+                                + " set uid = uid + 1 "
+                                + " where bid = 0");
                         if (r == 0) {
                                 // The row for ClickCounter doesn't exist yet.
-                                s.executeUpdate("insert into uid_counter "
-                                        + "(bid, uid) "
-                                        + "values(0, 10000);");
+                                s.executeUpdate("insert into " + m_entity_name
+                                        + " (bid, uid) "
+                                        + " values(0, " + m_min + ");");
                         }
-                        ResultSet result = s.executeQuery("select uid from uid_counter where bid = 0");
+                        ResultSet result = s.executeQuery("select uid from " + m_entity_name + " where bid = 0");
                         if (result.next())
                                 return result.getInt("uid");
                         else
                                 return null;
                 } catch (SQLException ex) {
-                        Logger.getLogger(UserIDCounter.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(UUIDGenerator.class.getName()).log(Level.SEVERE, null, ex);
                         return null;
                 }
         }

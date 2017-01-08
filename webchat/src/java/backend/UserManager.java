@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 public class UserManager {
         
         private DBConnector m_conn;
-        private UserIDCounter m_uid_counter;
+        private UserIDGenerator m_uid_counter;
         
         public static String get_entity_name() {
                 return "user_manager";
@@ -40,7 +40,7 @@ public class UserManager {
                 return "(uid)";
         }
         
-        public UserManager(DBConnector conn, UserIDCounter cnt) {
+        public UserManager(DBConnector conn, UserIDGenerator cnt) {
                 m_conn = conn;
                 m_uid_counter = cnt;
                 try {

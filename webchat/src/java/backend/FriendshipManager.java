@@ -31,7 +31,8 @@ import java.util.logging.Logger;
  */
 public class FriendshipManager {
         
-        private DBConnector m_conn;
+        private DBConnector             m_conn;
+        private FriendshipIDGenerator   m_fid_gen;
         
         public static String get_entity_name() {
                 return "friendship_manager";
@@ -41,13 +42,15 @@ public class FriendshipManager {
                 return "(uid_a,uid_b)";
         }
         
-        public FriendshipManager(DBConnector conn, UserManager user_mgr) {
+        public FriendshipManager(DBConnector conn, UserManager user_mgr, FriendshipIDGenerator fid_gen) {
                 m_conn = conn;
+                m_fid_gen = fid_gen;
                 try {
                         Statement s = m_conn.get_connection().createStatement();
                         s.executeUpdate("create table if not exists friendship_manager("
                                 + "uid_a integer,"
                                 + "uid_b integer,"
+                                + "fid integer,"
                                 + "primary key (uid_a, uid_b),"
                                 + "foreign key (uid_a) references " 
                                         + UserManager.get_entity_name() + UserManager.get_key_name() + " on delete cascade,"
@@ -80,14 +83,15 @@ public class FriendshipManager {
                                 return false;
                         Statement s = m_conn.get_connection().createStatement();
                         // Friendship is symmetric.
+                        int fid = m_fid_gen.get_next();
                         if (!Objects.equals(uid_a, uid_b)) {
                                 int r = s.executeUpdate("insert into friendship_manager "
-                                        + "(uid_a, uid_b) values (" + uid_a + "," + uid_b + "),"
-                                                              + "(" + uid_b + "," + uid_a + ");");
+                                        + "(uid_a, uid_b, fid) values (" + uid_a + "," + uid_b + "," + fid + "),"
+                                                                   + "(" + uid_b + "," + uid_a + "," + fid + ");");
                                 return r == 2;
                         } else {
                                 int r = s.executeUpdate("insert into friendship_manager "
-                                        + "(uid_a, uid_b) values (" + uid_a + "," + uid_b + ");");
+                                        + "(uid_a, uid_b, fid) values (" + uid_a + "," + uid_b + "," + fid + ");");
                                 return r == 1;
                         }
                 } catch (SQLException ex) {
