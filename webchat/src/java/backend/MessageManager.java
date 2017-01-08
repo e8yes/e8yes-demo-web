@@ -93,23 +93,22 @@ public class MessageManager {
                 }
         }
         
-        public ArrayList<Message> get_messages(int uid_a, int uid_b, int n) {
+        public ArrayList<Message> get_messages(int fid, int n) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
                         ResultSet result = s.executeQuery("select * from message_manager "
-                                + "where (uid_a = " + uid_a + " and uid_b = " + uid_b + ") or "
-                                      + "(uid_a = " + uid_b + " and uid_b = " + uid_a + ")"
-                                + "order by t desc "
-                                + "limit " + n + ";");
+                                + "where fid = " + fid
+                                + " order by t desc "
+                                + " limit " + n + ";");
                         ArrayList<Message> msgs = new ArrayList<>();
                         while (result.next()) {
                                 int sender = result.getInt("uid_a");
                                 int receiver = result.getInt("uid_b");
-                                int fid = result.getInt("fid");
+                                int afid = result.getInt("fid");
                                 long timestamp = result.getTimestamp("t").getTime();
                                 boolean has_read = result.getBoolean("has_read");
                                 String content = result.getString("msg");
-                                msgs.add(new Message(sender, receiver, fid, timestamp, has_read, content));
+                                msgs.add(new Message(sender, receiver, afid, timestamp, has_read, content));
                         }
                         Collections.reverse(msgs);
                         return msgs;

@@ -45,23 +45,24 @@ public class ChatHistory extends HttpServlet {
                 response.setContentType("text/html;charset=UTF-8");
                 try (PrintWriter out = response.getWriter()) {
                         Integer uid = (Integer) request.getSession().getAttribute("user_id");
+                        Integer fid = (Integer) request.getSession().getAttribute("fid");
                         String n = (String) request.getParameter("n");
                         String sender = (String) request.getParameter("sender");
                         
                         Integer sender_uid;
                         Integer msg_count;
                         try {
-                                if (uid == null || sender == null || n == null) {
-                                        throw new Exception();
+                                if (uid == null || fid == null || sender == null || n == null) {
+                                        throw new Exception("uid/fid/sender/n is invalid");
                                 }
                                 sender_uid = Integer.parseInt(sender);
                                 msg_count = Integer.parseInt(n);
                         } catch (Exception ex) {
-                                out.println("Malformed request!");
+                                out.println("Malformed request! Cause: " + ex.toString());
                                 return;
                         }
 
-                        ArrayList<backend.Message> msgs = app.MessageOperator.get_chat_history(uid, sender_uid, msg_count);
+                        ArrayList<backend.Message> msgs = app.MessageOperator.get_chat_history(fid, msg_count);
                         if (msgs == null) {
                                 out.println("Internal error 500, " + uid + " - " + sender_uid);
                                 return;

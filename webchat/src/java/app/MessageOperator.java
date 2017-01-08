@@ -34,22 +34,18 @@ public class MessageOperator {
                 return cm.send_message(new backend.Message(sender, receiver, fid, message));
         }
         
-        public static void create_realtime_channel(Integer uid, backend.MessageListener listener) {
+        public static void create_realtime_channel(int uid, backend.MessageListener listener) {
                 backend.CommunicationManager cm = backend.SingletonEntities.get_communication_manager();
                 cm.register_channel(uid, listener);
         }
         
-        public static void close_realtime_channel(Integer uid) {
+        public static void close_realtime_channel(int uid) {
                 backend.CommunicationManager cm = backend.SingletonEntities.get_communication_manager();
                 cm.close_channel(uid);
         }
         
-        public static ArrayList<backend.Message> get_chat_history(Integer uid_a, Integer uid_b, Integer n) {
-                backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
-                if (!fm.has_friendship(uid_a, uid_b)) {
-                        return null;
-                }
+        public static ArrayList<backend.Message> get_chat_history(int fid, Integer n) {
                 backend.MessageManager mm = backend.SingletonEntities.get_message_manager();
-                return mm.get_messages(uid_a, uid_b, n);
+                return mm.get_messages(fid, n);
         }
 }
