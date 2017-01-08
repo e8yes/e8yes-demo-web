@@ -34,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author davis
  */
 public class PollChat extends HttpServlet {
+        
+        private static final int LONG_POLL_CONNECTION_LENGTH = 30;
 
         /**
          * Processes requests for both HTTP <code>GET</code> and
@@ -57,8 +59,8 @@ public class PollChat extends HttpServlet {
                 app.MessageInterruptListener listener = new app.MessageInterruptListener();
                 app.MessageOperator.create_realtime_channel(uid, listener);
                 
-                // Wait roughly 30 seconds unless the listener get interrupted.
-                for (int i = 0; i < 30; i ++) {
+                // Wait roughly LONG_POLL_CONNECTION_LENGTH seconds unless the listener get interrupted.
+                for (int i = 0; i < LONG_POLL_CONNECTION_LENGTH; i ++) {
                         ArrayList<backend.Message> msgs = listener.fetch_messages();
                         if (msgs != null) {
                                 PrintWriter out = response.getWriter();
