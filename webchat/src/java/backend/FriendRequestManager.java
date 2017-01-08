@@ -61,7 +61,7 @@ public class FriendRequestManager {
                         // Friend request is anti-symmetric.
                         int r = s.executeUpdate("insert into friend_request_manager "
                                 + "(uid_a, uid_b) values (" + uid_a + "," + uid_b + ");");
-                        return r != 0;
+                        return r == 1;
                 } catch (SQLException ex) {
                         Logger.getLogger(FriendRequestManager.class.getName()).log(Level.SEVERE, null, ex);
                         return false;

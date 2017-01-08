@@ -64,7 +64,7 @@ public class FriendshipManager {
                         int r = s.executeUpdate("insert into friendship_manager "
                                 + "(uid_a, uid_b) values (" + uid_a + "," + uid_b + "),"
                                                       + "(" + uid_b + "," + uid_a + ");");
-                        return r != 0;
+                        return r == 2;
                 } catch (SQLException ex) {
                         Logger.getLogger(FriendshipManager.class.getName()).log(Level.SEVERE, null, ex);
                         return false;
