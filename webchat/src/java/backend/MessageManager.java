@@ -64,8 +64,9 @@ public class MessageManager {
                                               + msg.receiver() + "," 
                                               + "?," 
                                               + msg.has_read() + ","
-                                              + "\"" + msg.get_content() + "\");");
+                                              + "?);");
                         ps.setTimestamp(1, t);
+                        ps.setString(2, msg.get_content());
                         int r = ps.executeUpdate();
                         return r == 1;
                 } catch (SQLException ex) {
