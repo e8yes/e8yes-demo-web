@@ -17,10 +17,7 @@
  */
 package servlet;
 
-import backend.Message;
-import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -28,66 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-class MessageInterruptListener implements backend.MessageListener {
-        
-        private final HttpServletResponse       m_response;
-        private final ArrayList<Message>        m_messages;
-        private boolean                         m_has_started = false;
-        private final Mutex                     m_mutex;
-        
-        public MessageInterruptListener(HttpServletResponse response) {
-                m_mutex = new Mutex();
-                m_response = response;
-                m_messages = new ArrayList<>();
-        }
-        
-        public boolean shall_return() {
-                try {
-                        boolean ret_val;
-                        m_mutex.acquire();
-                        if (m_has_started && !m_messages.isEmpty()) {
-                                MessageJSONizer.jsonize(m_messages, m_response.getWriter());
-                                ret_val = true;
-                        } else {
-                                ret_val = false;
-                        }
-                        m_mutex.release();
-                        return ret_val;
-                } catch (InterruptedException | IOException ex) {
-                        Logger.getLogger(MessageInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
-                        return true;
-                }
-        }
-        
-        @Override
-        public void start() {
-                try {
-                        m_mutex.acquire();
-                        m_has_started = true;
-                        m_mutex.release();
-                } catch (InterruptedException ex) {
-                        Logger.getLogger(MessageInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
-                }
-        }
 
-        @Override
-        public boolean on_receive(Message msg) {
-                try {
-                        boolean ret_val;
-                        m_mutex.acquire();
-                        ret_val = !m_has_started || m_messages.isEmpty();
-                        if (ret_val) {
-                                m_messages.add(msg);
-                        }
-                        m_mutex.release();
-                        return ret_val;
-                } catch (InterruptedException ex) {
-                        Logger.getLogger(MessageInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
-                        return false;
-                }
-        }
-        
-}
 
 /**
  *
@@ -114,7 +52,7 @@ public class PollChat extends HttpServlet {
                         return;
                 }
                 
-                MessageInterruptListener listener = new MessageInterruptListener(response);
+                app.MessageInterruptListener listener = new app.MessageInterruptListener(response);
                 app.MessageOperator.create_realtime_channel(uid, listener);
                 
                 // Wait roughly 30 seconds unless the listener get interrupted.
@@ -127,6 +65,8 @@ public class PollChat extends HttpServlet {
                                 Logger.getLogger(PollChat.class.getName()).log(Level.SEVERE, null, ex);
                         }
                 }
+                
+                app.MessageOperator.close_realtime_channel(uid);
         }
 
         // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

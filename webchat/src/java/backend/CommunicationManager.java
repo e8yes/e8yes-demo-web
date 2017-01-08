@@ -17,8 +17,11 @@
  */
 package backend;
 
+import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,35 +31,58 @@ public class CommunicationManager {
         
         private final HashMap<Integer, MessageListener>         m_channels;
         private final MessageManager                            m_mgr;
+        private final Mutex                                     m_mutex;
         
         public CommunicationManager(MessageManager mgr) {
                 m_channels = new HashMap<>();
                 m_mgr = mgr;
+                m_mutex = new Mutex();
         }
         
         public void register_channel(int user_id, MessageListener listener) {
-                m_channels.put(user_id, listener);
-                
-                // Check any unread messages.
-                ArrayList<Message> msgs = m_mgr.get_received_unread_messages(user_id);
-                msgs.stream().forEach(listener::on_receive);
-                listener.start();
-                
-                if (msgs.size() >= 1)
-                        m_mgr.clear_unread_state(user_id, msgs.get(msgs.size() - 1).get_timestamp());
+                try {
+                        m_mutex.acquire();
+                        m_channels.put(user_id, listener);
+                        
+                        // Check any unread messages.
+                        ArrayList<Message> msgs = m_mgr.get_received_unread_messages(user_id);
+                        msgs.stream().forEach(listener::on_receive);
+                        listener.start();
+                        
+                        if (msgs.size() >= 1)
+                                m_mgr.clear_unread_state(user_id, msgs.get(msgs.size() - 1).get_timestamp());
+                        m_mutex.release();
+                } catch (InterruptedException ex) {
+                        Logger.getLogger(CommunicationManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
         }
         
         public void close_channel(int user_id) {
-                m_channels.remove(user_id);
+                try {
+                        m_mutex.acquire();
+                        m_channels.remove(user_id);
+                        m_mutex.release();
+                } catch (InterruptedException ex) {
+                        Logger.getLogger(CommunicationManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
         }
         
         public boolean send_message(Message msg) {
-                MessageListener channel = m_channels.get(msg.receiver());
-                if (channel != null) {
-                        if (channel.on_receive(msg)) {
-                                msg.read();
+                try {
+                        m_mutex.acquire();
+                        MessageListener channel = m_channels.get(msg.receiver());
+                        if (channel != null) {
+                                if (channel.on_receive(msg)) {
+                                        msg.read();
+                                }
                         }
+                        boolean ret_val = m_mgr.new_message(msg);
+                        m_mutex.release();
+                        
+                        return ret_val;
+                } catch (InterruptedException ex) {
+                        Logger.getLogger(CommunicationManager.class.getName()).log(Level.SEVERE, null, ex);
+                        return false;
                 }
-                return m_mgr.new_message(msg);
         }
 }
