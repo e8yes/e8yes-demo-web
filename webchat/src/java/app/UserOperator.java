@@ -53,17 +53,31 @@ public class UserOperator {
                 return um.set_user(user);
         }
         
-        public static void send_friend_request(Integer uid, Integer befriend) {
+        public static boolean send_friend_request(Integer uid, Integer target) {
+                backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
+                return frm.create_friend_request(uid, target);
         }
         
-        public static void confirm_friend_request(Integer uid, Integer befriend) {
+        public static boolean confirm_friend_request(Integer uid, Integer target) {
+                backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
+                backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
+                
+                if (frm.remove_request(target, uid)) {
+                        fm.make_friend(uid, target);
+                        return true;
+                } else {
+                        return false;
+                }
         }
         
-        public static void deny_friend_request(Integer uid, Integer befriend) {
+        public static boolean deny_friend_request(Integer me, Integer target) {
+                backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
+                return frm.remove_request(target, me);
         }
         
         public static ArrayList<Integer> pull_friend_requests(Integer uid) {
-                return null;
+                backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
+                return frm.request_to(uid);
         }
         
         public static ArrayList<Integer> pull_friends(Integer uid) {

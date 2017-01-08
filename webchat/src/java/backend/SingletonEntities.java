@@ -26,6 +26,7 @@ public final class SingletonEntities {
         private static UserIDCounter UID_COUNTER;
         private static UserManager USER_MANAGER;
         private static FriendshipManager FRIENDSHIP_MANAGER;
+        private static FriendRequestManager FRIEND_REQUEST_MANAGER;
         
         public static void init() 
         {
@@ -33,6 +34,7 @@ public final class SingletonEntities {
                 UID_COUNTER = new UserIDCounter(DB_CONNECTOR);
                 USER_MANAGER = new UserManager(DB_CONNECTOR, UID_COUNTER);
                 FRIENDSHIP_MANAGER = new FriendshipManager(DB_CONNECTOR, USER_MANAGER);
+                FRIEND_REQUEST_MANAGER = new FriendRequestManager(DB_CONNECTOR);
         }
         
         public static UserManager get_user_manager() {
@@ -41,5 +43,9 @@ public final class SingletonEntities {
         
         public static FriendshipManager get_friendship_manager() {
                 return FRIENDSHIP_MANAGER;
+        }
+        
+        public static FriendRequestManager get_friend_request_manager() {
+                return FRIEND_REQUEST_MANAGER;
         }
 }
