@@ -18,6 +18,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -52,13 +54,18 @@ public class PollChat extends HttpServlet {
                         return;
                 }
                 
-                app.MessageInterruptListener listener = new app.MessageInterruptListener(response);
+                app.MessageInterruptListener listener = new app.MessageInterruptListener();
                 app.MessageOperator.create_realtime_channel(uid, listener);
                 
                 // Wait roughly 30 seconds unless the listener get interrupted.
                 for (int i = 0; i < 30; i ++) {
-                        if (listener.shall_return())
+                        ArrayList<backend.Message> msgs = listener.fetch_messages();
+                        if (msgs != null) {
+                                PrintWriter out = response.getWriter();
+                                MessageJSONizer.jsonize(msgs, out);
                                 break;
+                        }
+                        
                         try {
                                 Thread.sleep(1000);
                         } catch (InterruptedException ex) {
