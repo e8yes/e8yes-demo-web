@@ -36,8 +36,8 @@ public class UserManager {
                 return "user_manager";
         }
         
-        public static String get_key_reference_name() {
-                return "uid";
+        public static String get_key_name() {
+                return "(uid)";
         }
         
         public UserManager(DBConnector conn, UserIDCounter cnt) {
