@@ -14,7 +14,7 @@
         <title>Webchat User: <%=request.getAttribute("user_id").toString() %> </title>
     </head>
     <body>
-        <h1>Webchat Chatroom</h1>
+        <h1>Webchat <%= request.getAttribute("version_string") %></h1>
         
         <h4>Add contact</h4>
         <div>

@@ -52,6 +52,7 @@ public class ChatroomLoader extends HttpServlet {
                 ArrayList<Integer> fd_request_list = app.UserOperator.pull_friend_requests(uid);  
                 ArrayList<Integer> fd_list = app.UserOperator.pull_friends(uid);
                 
+                request.setAttribute("version_string", app.App.get_version_string());
                 request.setAttribute("friend_request_list", fd_request_list);
                 request.setAttribute("friend_list", fd_list);
                 request.getRequestDispatcher("chatroom.jsp").forward(request, response);

@@ -33,6 +33,7 @@ public class MainContext implements ServletContextListener {
         public void contextInitialized(ServletContextEvent e) {
                 System.out.println(e.getServletContext().getContextPath() + " Context Created");
                 app.App.init();
+                e.getServletContext().setAttribute("version_string", app.App.get_version_string());
         }
 
         @Override

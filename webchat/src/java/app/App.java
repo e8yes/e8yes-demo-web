@@ -22,8 +22,13 @@ package app;
  * @author davis
  */
 public class App {
+        
         public static void init() {
                 backend.SingletonEntities.init();
+        }
+        
+        public static String get_version_string() {
+                return "0.1";
         }
         
         public static void destroy() {
