@@ -78,24 +78,42 @@
         function chat_poll() {
         }
         
+        
+        var chat_history_box = $("#t_chat_history");
+        function empty_chat_box() {
+            chat_history_box.empty();
+        }
+        
+        function append_to_chat_box(sender, content) {
+            chat_history_box.append(sender + ": " + content + "\n");
+        }
+        
         function fire_chat(message) {
-            if (current_chat_target === null) {
+            if (current_chat_target === null || message === "") {
                 alert("Cannot send your message to nobody :)");
+                return false;
             } else {
                 // Send chat content.
+                $.ajax({url: "FireChat", data: {receiver: current_chat_target,
+                                                    content: message},
+                    success: function(result) {
+                        append_to_chat_box(<%=request.getSession().getAttribute("user_id") %>, message);
+                        if (result != "GOOD")
+                            alert(result);
+                }});
+                return true;
             }
         }
         
         function update_chat_history() {
             if (current_chat_target === null) {
-                $("#t_chat_history").html("No history.");
+                empty_chat_box();
             } else {
                 // Request chat history.
-                var chat_history_box = $("#t_chat_history");
                 $.ajax({url: "ChatHistory", data: {sender: current_chat_target,
                                                     n: 20},
                     success: function(result) {
-                        chat_history_box.empty();
+                        empty_chat_box();
                         
                         try {
                             var chats = JSON.parse(result);
@@ -105,7 +123,7 @@
                         }
                         
                         for (var i = 0; i < chats.length; i ++) {
-                            chat_history_box.append(chats[i].sender + ": " + chats[i].content + "\n");
+                            append_to_chat_box(chats[i].sender, chats[i].content);
                         }
                 }});
             }
@@ -157,8 +175,10 @@
             }
         });
         
+        var msg_box = $("#t_msg_box");
         $("#b_send").on("click", function(e) {
-            fire_chat(e.target.value);
+            if (fire_chat(msg_box.val()))
+                msg_box.val("");
         });
         
         update_chat_title();

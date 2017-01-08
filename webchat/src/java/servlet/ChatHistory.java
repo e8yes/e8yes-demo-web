@@ -74,6 +74,7 @@ public class ChatHistory extends HttpServlet {
                                 JSONObject o = new JSONObject();
                                 o.put("sender", msg.sender());
                                 o.put("content", msg.get_content());
+                                a.add(o);
                         });
                 
                         out.print(a.toString());

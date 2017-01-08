@@ -17,6 +17,7 @@
  */
 package backend;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,12 +56,15 @@ public class MessageManager {
         public boolean new_message(Message msg) {
                 Timestamp t = new Timestamp(msg.get_timestamp());
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        int r = s.executeUpdate("insert into message_manager (uid_a, uid_b, t, has_read, msg) "
+                        PreparedStatement ps = m_conn.get_connection().prepareStatement(
+                                "insert into message_manager (uid_a, uid_b, t, has_read, msg) "
                                 + " values (" + msg.sender() + "," 
                                               + msg.receiver() + "," 
-                                              + t + "," 
-                                              + msg.get_content() + ");");
+                                              + "?," 
+                                              + msg.has_read() + ","
+                                              + "\"" + msg.get_content() + "\");");
+                        ps.setTimestamp(1, t);
+                        int r = ps.executeUpdate();
                         return r == 1;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);

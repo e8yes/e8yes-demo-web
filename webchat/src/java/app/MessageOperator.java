@@ -26,6 +26,10 @@ import java.util.ArrayList;
 public class MessageOperator {
         
         public static boolean send_message(Integer sender, Integer receiver, String message) {
+                backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
+                if (!fm.has_friendship(sender, receiver)) {
+                        return false;
+                }
                 backend.CommunicationManager cm = backend.SingletonEntities.get_communication_manager();
                 return cm.send_message(new backend.Message(sender, receiver, message));
         }
@@ -41,6 +45,10 @@ public class MessageOperator {
         }
         
         public static ArrayList<backend.Message> get_chat_history(Integer uid_a, Integer uid_b, Integer n) {
+                backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
+                if (!fm.has_friendship(uid_a, uid_b)) {
+                        return null;
+                }
                 backend.MessageManager mm = backend.SingletonEntities.get_message_manager();
                 return mm.get_messages(uid_a, uid_b, n);
         }
