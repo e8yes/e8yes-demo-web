@@ -42,10 +42,12 @@ public class MessageManager {
                         s.executeUpdate("create table if not exists message_manager("
                                 + "uid_b integer,"
                                 + "uid_a integer,"
+                                + "fid integer,"
                                 + "t timestamp(0) default current_timestamp,"
                                 + "has_read boolean,"
                                 + "msg text,"
-                                + "primary key (uid_b, uid_a, t),"
+                                + "unique key (uid_b, uid_a, t),"
+                                + "primary key (fid, t),"
                                 + "foreign key (uid_a, uid_b) references " 
                                         + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
                                         + " on delete cascade) "
@@ -59,9 +61,10 @@ public class MessageManager {
                 Timestamp t = new Timestamp(msg.get_timestamp());
                 try {
                         PreparedStatement ps = m_conn.get_connection().prepareStatement(
-                                "insert into message_manager (uid_a, uid_b, t, has_read, msg) "
+                                "insert into message_manager (uid_a, uid_b, fid, t, has_read, msg) "
                                 + " values (" + msg.sender() + "," 
-                                              + msg.receiver() + "," 
+                                              + msg.receiver() + ","
+                                              + msg.get_fid() + "," 
                                               + "?," 
                                               + msg.has_read() + ","
                                               + "?);");
@@ -102,10 +105,11 @@ public class MessageManager {
                         while (result.next()) {
                                 int sender = result.getInt("uid_a");
                                 int receiver = result.getInt("uid_b");
+                                int fid = result.getInt("fid");
                                 long timestamp = result.getTimestamp("t").getTime();
                                 boolean has_read = result.getBoolean("has_read");
                                 String content = result.getString("msg");
-                                msgs.add(new Message(sender, receiver, timestamp, has_read, content));
+                                msgs.add(new Message(sender, receiver, fid, timestamp, has_read, content));
                         }
                         Collections.reverse(msgs);
                         return msgs;
@@ -125,10 +129,11 @@ public class MessageManager {
                         while (result.next()) {
                                 int sender = result.getInt("uid_a");
                                 int receiver = result.getInt("uid_b");
+                                int fid = result.getInt("fid");
                                 long timestamp = result.getTimestamp("t").getTime();
                                 boolean has_read = result.getBoolean("has_read");
                                 String content = result.getString("msg");
-                                msgs.add(new Message(sender, receiver, timestamp, has_read, content));
+                                msgs.add(new Message(sender, receiver, fid, timestamp, has_read, content));
                         }
                         return msgs;
                 } catch (SQLException ex) {

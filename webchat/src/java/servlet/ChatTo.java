@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author davis
  */
-public class FireChat extends HttpServlet {
+public class ChatTo extends HttpServlet {
 
         /**
          * Processes requests for both HTTP <code>GET</code> and
@@ -44,29 +44,27 @@ public class FireChat extends HttpServlet {
                 response.setContentType("text/html;charset=UTF-8");
                 try (PrintWriter out = response.getWriter()) {
                         Integer uid = (Integer) request.getSession().getAttribute("user_id");
-                        Integer fid = (Integer) request.getSession().getAttribute("fid");
                         Integer receiver_id;
-                        String content;
+                        Integer fid;
                         
-                        try {
+                         try {
                                 String receiver = (String) request.getParameter("receiver");
-                                content = (String) request.getParameter("content");
-
-                                if (uid == null || fid == null || receiver == null || content == null) {
-                                        throw new Exception();
+                                if (uid == null ||  receiver == null) {
+                                        throw new Exception("Invalid uid or receiver");
                                 }
-                                
                                 receiver_id = Integer.parseInt(receiver);
+                                
+                                fid = app.UserOperator.get_friend_id(uid, receiver_id);
+                                if (fid == null) {
+                                        throw new Exception("Invalid friendship");
+                                }
                         } catch (Exception ex) {
-                                out.println("Malformed request!");
+                                out.println("Malformed request! Cause: " + ex.toString());
                                 return ;
                         }
                         
-                        if (app.MessageOperator.send_message(uid, receiver_id, fid, content)) {
-                                out.print("GOOD");
-                        } else {
-                                out.println("Failed to send this message");
-                        }
+                        request.getSession().setAttribute("fid", fid);
+                        out.print("GOOD");
                 }
         }
 

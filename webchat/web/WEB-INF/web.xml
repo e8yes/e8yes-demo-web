@@ -61,6 +61,10 @@
         <servlet-name>FriendRequest</servlet-name>
         <servlet-class>servlet.FriendRequest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChatTo</servlet-name>
+        <servlet-class>servlet.ChatTo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern/>
@@ -92,6 +96,10 @@
     <servlet-mapping>
         <servlet-name>FriendRequest</servlet-name>
         <url-pattern>/FriendRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatTo</servlet-name>
+        <url-pattern>/ChatTo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

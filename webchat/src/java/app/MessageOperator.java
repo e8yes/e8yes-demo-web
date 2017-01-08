@@ -25,13 +25,13 @@ import java.util.ArrayList;
  */
 public class MessageOperator {
         
-        public static boolean send_message(Integer sender, Integer receiver, String message) {
+        public static boolean send_message(int sender, int receiver, int fid, String message) {
                 backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
                 if (!fm.has_friendship(sender, receiver)) {
                         return false;
                 }
                 backend.CommunicationManager cm = backend.SingletonEntities.get_communication_manager();
-                return cm.send_message(new backend.Message(sender, receiver, message));
+                return cm.send_message(new backend.Message(sender, receiver, fid, message));
         }
         
         public static void create_realtime_channel(Integer uid, backend.MessageListener listener) {

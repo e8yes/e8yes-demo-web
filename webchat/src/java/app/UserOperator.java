@@ -32,7 +32,7 @@ public class UserOperator {
                 return um.create_user(password);
         }
         
-        private static backend.User get_verified(Integer uid, String password) {
+        private static backend.User get_verified(int uid, String password) {
                 backend.UserManager um = backend.SingletonEntities.get_user_manager();
                 backend.User user = um.get_user(uid);
                 if (user == null) return null;
@@ -46,7 +46,7 @@ public class UserOperator {
                 return get_verified(uid, password) != null;
         }
         
-        public static boolean change_password(Integer uid, String password, String new_password) {
+        public static boolean change_password(int uid, String password, String new_password) {
                 backend.UserManager um = backend.SingletonEntities.get_user_manager();
                 backend.User user = get_verified(uid, password);
                 if (user == null)
@@ -55,7 +55,7 @@ public class UserOperator {
                 return um.set_user(user);
         }
         
-        public static boolean send_friend_request(Integer uid, Integer target, PrintWriter error) {
+        public static boolean send_friend_request(int uid, int target, PrintWriter error) {
                 if (Objects.equals(uid, target)) {
                         error.println("You wanna befriend yourself :)?");
                 }
@@ -77,7 +77,7 @@ public class UserOperator {
                 return true;
         }
         
-        public static boolean confirm_friend_request(Integer uid, Integer target, PrintWriter error) {
+        public static boolean confirm_friend_request(int uid, int target, PrintWriter error) {
                 backend.UserManager um = backend.SingletonEntities.get_user_manager();
                 if (!um.has_user(target)) {
                         error.println("User ID " + target + " is not a valid Webchat user.");
@@ -96,22 +96,27 @@ public class UserOperator {
                 }
         }
         
-        public static boolean deny_friend_request(Integer me, Integer target) {
+        public static boolean deny_friend_request(int me, int target) {
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
                 return frm.remove_request(target, me);
         }
         
-        public static ArrayList<Integer> pull_friend_requests(Integer uid) {
+        public static ArrayList<Integer> pull_friend_requests(int uid) {
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
                 return frm.request_to(uid);
         }
         
-        public static ArrayList<Integer> pull_friends(Integer uid) {
+        public static ArrayList<Integer> pull_friends(int uid) {
                 backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
                 return fm.friends_of(uid);
         }
         
-        public static boolean end_friendship(Integer uid, Integer friend) {
+        public static Integer get_friend_id(int uid, int friend) {
+                backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
+                return fm.get_friend_id(uid, friend);
+        }
+        
+        public static boolean end_friendship(int uid, int friend) {
                 backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
                 return fm.end_friendship(uid, friend);
         }

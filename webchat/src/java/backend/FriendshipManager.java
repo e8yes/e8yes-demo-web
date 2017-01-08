@@ -129,4 +129,20 @@ public class FriendshipManager {
                         return null;
                 }
         }
+
+        public Integer get_friend_id(int uid, int friend) {
+                try {
+                        Statement s = m_conn.get_connection().createStatement();
+                        ResultSet result = s.executeQuery("select fid from friendship_manager "
+                                + "where uid_a = " + uid + " and uid_b = " + friend + ";");
+                        if (result.next()) {
+                                return result.getInt("fid");
+                        } else {
+                                return null;
+                        }
+                } catch (SQLException ex) {
+                        Logger.getLogger(FriendshipManager.class.getName()).log(Level.SEVERE, null, ex);
+                        return null;
+                }
+        }
 }

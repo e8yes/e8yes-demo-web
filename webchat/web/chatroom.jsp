@@ -98,6 +98,8 @@
         }
         
         var chat_history_box = $("#t_chat_history");
+        var msg_box = $("#t_msg_box");
+        
         function empty_chat_box() {
             chat_history_box.empty();
         }
@@ -116,9 +118,12 @@
                 $.ajax({url: "FireChat", data: {receiver: current_chat_target,
                                                     content: message},
                     success: function(result) {
-                        append_to_chat_box(<%=request.getSession().getAttribute("user_id") %>, message);
-                        if (result !== "GOOD")
+                        if (result !== "GOOD") {
                             alert(result);
+                            msg_box.val(message);
+                        } else {
+                            append_to_chat_box(<%=request.getSession().getAttribute("user_id") %>, message);
+                        }
                 }});
                 return true;
             }
@@ -150,9 +155,17 @@
         
         $("button[name=b_friend]").on("click", function(e) {
             current_chat_target = parseInt(e.target.id);
-            update_chat_title();
-            update_chat_history();
-            chat_poll();
+            $.ajax({url: "ChatTo",
+                    data: {receiver: e.target.id}, 
+                    success: function(result) {
+                        if (result === "GOOD") {
+                            update_chat_title();
+                            update_chat_history();
+                            chat_poll();
+                        } else {
+                            alert(result);
+                        }
+            }});
         });
         
         $("button[name=b_friend_request]").on("click", function(e) {
@@ -195,7 +208,6 @@
             }
         });
         
-        var msg_box = $("#t_msg_box");
         $("#b_send").on("click", function(e) {
             if (fire_chat(msg_box.val()))
                 msg_box.val("");
