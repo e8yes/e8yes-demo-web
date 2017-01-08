@@ -32,18 +32,27 @@ import java.util.logging.Logger;
 public class FriendshipManager {
         
         private DBConnector m_conn;
-        private UserManager m_user_mgr;
+        
+        public static String get_entity_name() {
+                return "friendship_manager";
+        }
+        
+        public static String get_key_name() {
+                return "(uid_a,uid_b)";
+        }
         
         public FriendshipManager(DBConnector conn, UserManager user_mgr) {
                 m_conn = conn;
-                m_user_mgr = user_mgr;
                 try {
                         Statement s = m_conn.get_connection().createStatement();
                         s.executeUpdate("create table if not exists friendship_manager("
                                 + "uid_a integer,"
                                 + "uid_b integer,"
-                                + "primary key (uid_a, uid_b));");
-                        // @todo: add trigger to handle user removal.
+                                + "primary key (uid_a, uid_b),"
+                                + "foreign key (uid_a) references " 
+                                        + UserManager.get_entity_name() + UserManager.get_key_name() + " on delete cascade,"
+                                + "foreign key (uid_b) references "
+                                        + UserManager.get_entity_name() + UserManager.get_key_name() + " on delete cascade);");
                 } catch (SQLException ex) {
                         Logger.getLogger(FriendshipManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
