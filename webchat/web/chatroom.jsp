@@ -129,7 +129,7 @@
             }
         }
         
-        function update_chat_history() {
+        function update_chat_history(on_finished) {
             if (current_chat_target === null) {
                 empty_chat_box();
             } else {
@@ -145,6 +145,8 @@
                             for (var i = 0; i < chats.length; i ++) {
                                 append_to_chat_box(chats[i].sender, chats[i].content);
                             }
+                            
+                            on_finished();
                         } catch (ex) {
                             alert(result);
                             return ;
@@ -160,8 +162,9 @@
                     success: function(result) {
                         if (result === "GOOD") {
                             update_chat_title();
-                            update_chat_history();
-                            chat_poll();
+                            update_chat_history(function() {
+                                chat_poll();
+                            });
                         } else {
                             alert(result);
                         }

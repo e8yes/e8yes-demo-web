@@ -45,12 +45,10 @@ public class CommunicationManager {
                         m_channels.put(user_id, listener);
                         
                         // Check any unread messages.
-                        ArrayList<Message> msgs = m_mgr.get_received_unread_messages(user_id);
+                        ArrayList<Message> msgs = m_mgr.pull_unread_messages(user_id);
                         msgs.stream().forEach(listener::on_receive);
                         listener.start();
                         
-                        if (msgs.size() >= 1)
-                                m_mgr.clear_unread_state(user_id, msgs.get(msgs.size() - 1).get_timestamp());
                         m_mutex.release();
                 } catch (InterruptedException ex) {
                         Logger.getLogger(CommunicationManager.class.getName()).log(Level.SEVERE, null, ex);

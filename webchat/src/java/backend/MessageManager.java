@@ -40,11 +40,10 @@ public class MessageManager {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
                         s.executeUpdate("create table if not exists message_manager("
-                                + "uid_b integer,"
-                                + "uid_a integer,"
                                 + "fid integer,"
                                 + "t timestamp(0) default current_timestamp,"
-                                + "has_read boolean,"
+                                + "uid_b integer,"
+                                + "uid_a integer,"
                                 + "msg text,"
                                 + "unique key (uid_b, uid_a, t),"
                                 + "primary key (fid, t),"
@@ -52,21 +51,21 @@ public class MessageManager {
                                         + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
                                         + " on delete cascade) "
                                 + " default character set=utf8;");
+                        s.executeUpdate("create table if not exists unread_message_manager like message_manager;");
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
         }
         
-        public boolean new_message(Message msg) {
+        private boolean insert_message(Message msg, String entity) {
                 Timestamp t = new Timestamp(msg.get_timestamp());
                 try {
                         PreparedStatement ps = m_conn.get_connection().prepareStatement(
-                                "insert into message_manager (uid_a, uid_b, fid, t, has_read, msg) "
+                                "insert into " + entity + " (uid_a, uid_b, fid, t, msg) "
                                 + " values (" + msg.sender() + "," 
                                               + msg.receiver() + ","
                                               + msg.get_fid() + "," 
                                               + "?," 
-                                              + msg.has_read() + ","
                                               + "?);");
                         ps.setTimestamp(1, t);
                         ps.setString(2, msg.get_content());
@@ -78,12 +77,20 @@ public class MessageManager {
                 }
         }
         
-        public boolean clear_unread_state(int receiver, long timestamp) {
+        public boolean new_message(Message msg) {
+                if (!msg.has_read())
+                        return insert_message(msg, "unread_message_manager") &&
+                               insert_message(msg, "message_manager");
+                else
+                        return insert_message(msg, "message_manager");
+        }
+        
+        private boolean clear_unread_messages(int receiver, long timestamp) {
                 Timestamp t = new Timestamp(timestamp);
                 try {
                         PreparedStatement ps = m_conn.get_connection().prepareStatement(
-                                "update message_manager set has_read = true "
-                                + " where has_read = false and uid_b = " + receiver + " and t <= ?;");
+                                "delete from unread_message_manager "
+                                + " where uid_b = " + receiver + " and t <= ?;");
                         ps.setTimestamp(1, t);
                         int q = ps.executeUpdate();
                         return true;
@@ -93,22 +100,35 @@ public class MessageManager {
                 }
         }
         
-        public ArrayList<Message> get_messages(int fid, int n) {
+        private boolean clear_unread_messages(int uid) {
+                try {
+                        Statement s = m_conn.get_connection().createStatement();
+                        s.executeUpdate("delete from unread_message_manager "
+                                + " where uid_b = " + uid + ";");
+                        return true;
+                } catch (SQLException ex) {
+                        Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
+                        return false;
+                }
+        }
+        
+        public ArrayList<Message> pull_messages(int fid, int uid, int n) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
                         ResultSet result = s.executeQuery("select * from message_manager "
                                 + "where fid = " + fid
                                 + " order by t desc "
                                 + " limit " + n + ";");
+                        if (!clear_unread_messages(uid))
+                                return null;
                         ArrayList<Message> msgs = new ArrayList<>();
                         while (result.next()) {
                                 int sender = result.getInt("uid_a");
                                 int receiver = result.getInt("uid_b");
                                 int afid = result.getInt("fid");
                                 long timestamp = result.getTimestamp("t").getTime();
-                                boolean has_read = result.getBoolean("has_read");
                                 String content = result.getString("msg");
-                                msgs.add(new Message(sender, receiver, afid, timestamp, has_read, content));
+                                msgs.add(new Message(sender, receiver, afid, timestamp, true, content));
                         }
                         Collections.reverse(msgs);
                         return msgs;
@@ -118,11 +138,11 @@ public class MessageManager {
                 }
         }
         
-        public ArrayList<Message> get_received_unread_messages(int uid_receiver) {
+        public ArrayList<Message> pull_unread_messages(int uid_receiver) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select * from message_manager "
-                                + " where has_read = false and uid_b = " + uid_receiver
+                        ResultSet result = s.executeQuery("select * from unread_message_manager "
+                                + " where uid_b = " + uid_receiver
                                 + " order by t asc;");
                         ArrayList<Message> msgs = new ArrayList<>();
                         while (result.next()) {
@@ -130,10 +150,12 @@ public class MessageManager {
                                 int receiver = result.getInt("uid_b");
                                 int fid = result.getInt("fid");
                                 long timestamp = result.getTimestamp("t").getTime();
-                                boolean has_read = result.getBoolean("has_read");
                                 String content = result.getString("msg");
-                                msgs.add(new Message(sender, receiver, fid, timestamp, has_read, content));
+                                msgs.add(new Message(sender, receiver, fid, timestamp, false, content));
                         }
+                        if (!msgs.isEmpty())
+                                if (!clear_unread_messages(uid_receiver, msgs.get(msgs.size() - 1).get_timestamp()))
+                                        return null;
                         return msgs;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);

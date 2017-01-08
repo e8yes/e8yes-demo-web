@@ -62,7 +62,7 @@ public class ChatHistory extends HttpServlet {
                                 return;
                         }
 
-                        ArrayList<backend.Message> msgs = app.MessageOperator.get_chat_history(fid, msg_count);
+                        ArrayList<backend.Message> msgs = app.MessageOperator.get_chat_history(fid, uid, msg_count);
                         if (msgs == null) {
                                 out.println("Internal error 500, " + uid + " - " + sender_uid);
                                 return;

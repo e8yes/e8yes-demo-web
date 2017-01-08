@@ -44,8 +44,8 @@ public class MessageOperator {
                 cm.close_channel(uid);
         }
         
-        public static ArrayList<backend.Message> get_chat_history(int fid, Integer n) {
+        public static ArrayList<backend.Message> get_chat_history(int fid, int uid, int n) {
                 backend.MessageManager mm = backend.SingletonEntities.get_message_manager();
-                return mm.get_messages(fid, n);
+                return mm.pull_messages(fid, uid, n);
         }
 }
