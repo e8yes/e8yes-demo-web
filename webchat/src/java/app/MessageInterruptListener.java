@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 public class  MessageInterruptListener implements backend.MessageListener {
         
         private final ArrayList<backend.Message>        m_messages;
-        private boolean                         m_has_started = false;
-        private final Mutex                     m_mutex;
+        private boolean                                 m_has_started = false;
+        private final Mutex                             m_mutex;
         
         public MessageInterruptListener() {
                 m_mutex = new Mutex();
