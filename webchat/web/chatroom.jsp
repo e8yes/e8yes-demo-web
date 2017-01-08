@@ -103,18 +103,40 @@
         $("button[name=b_friend_request]").on("click", function(e) {
             if (confirm("Adding " + e.target.id + " as your friend?")) {
                 // Confirm request.
+                $.ajax({url: "FriendRequest?action=confirm&target=" + e.target.id, 
+                    success: function(result) {
+                    alert(result);
+                    location.reload();
+                }});
             } else {
                 // Remove request.
+                $.ajax({url: "FriendRequest?action=deny&target=" + e.target.id, 
+                    success: function(result) {
+                    alert(result);
+                    location.reload();
+                }});
             }
         });
         
         $("#b_send_request").on("click", function(e) {
+            // Send friend request.
+            var target_id = $("#t_friend_request_id").val();
+            $.ajax({url: "FriendRequest?action=send&target=" + target_id, 
+                    success: function(result) {
+                    alert(result);
+                    location.reload();
+            }});
         });
         
         $("#b_unfriend").on("click", function(e) {
             var fd_id = prompt("Who would you wanna unfriend with?");
             if (fd_id !== null) {
                 // Unfriend.
+                $.ajax({url: "FriendRequest?action=remove&target=" + fd_id, 
+                    success: function(result) {
+                    alert(result);
+                    location.reload();
+                }});
             }
         });
         

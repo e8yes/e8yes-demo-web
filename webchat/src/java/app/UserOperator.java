@@ -17,7 +17,9 @@
  */
 package app;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
@@ -53,12 +55,35 @@ public class UserOperator {
                 return um.set_user(user);
         }
         
-        public static boolean send_friend_request(Integer uid, Integer target) {
+        public static boolean send_friend_request(Integer uid, Integer target, PrintWriter error) {
+                if (Objects.equals(uid, target)) {
+                        error.println("You wanna befriend yourself :)?");
+                }
+                backend.UserManager um = backend.SingletonEntities.get_user_manager();
+                if (!um.has_user(target)) {
+                        error.println("User ID " + target + " is not a valid Webchat user.");
+                        return false;
+                }
+                backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
+                if (fm.has_friendship(uid, target)) {
+                        error.println("Come on! You guys are friend already!");
+                        return false;
+                }
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
-                return frm.create_friend_request(uid, target);
+                if (!frm.create_friend_request(uid, target)) {
+                        error.println("You have sent the request already.");
+                        return false;
+                }
+                return true;
         }
         
-        public static boolean confirm_friend_request(Integer uid, Integer target) {
+        public static boolean confirm_friend_request(Integer uid, Integer target, PrintWriter error) {
+                backend.UserManager um = backend.SingletonEntities.get_user_manager();
+                if (!um.has_user(target)) {
+                        error.println("User ID " + target + " is not a valid Webchat user.");
+                        return false;
+                }
+                
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
                 backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
                 
@@ -66,6 +91,7 @@ public class UserOperator {
                         fm.make_friend(uid, target);
                         return true;
                 } else {
+                        error.println("Good try.");
                         return false;
                 }
         }

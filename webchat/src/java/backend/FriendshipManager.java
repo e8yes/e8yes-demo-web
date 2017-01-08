@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,23 +49,38 @@ public class FriendshipManager {
                 }
         }
         
-        private boolean has_friendship(Integer uid_a, Integer uid_b) throws SQLException {
+        private boolean _has_friendship(Integer uid_a, Integer uid_b) throws SQLException {
                 Statement s = m_conn.get_connection().createStatement();
                 ResultSet result = s.executeQuery("select 1 from friendship_manager "
                         + "where (uid_a = " + uid_a + ") and (uid_b = " + uid_b + ");");
                 return result.next();
         }
         
+        public boolean has_friendship(Integer uid_a, Integer uid_b) {
+                try {
+                        return _has_friendship(uid_a, uid_b);
+                } catch (SQLException ex) {
+                        Logger.getLogger(FriendshipManager.class.getName()).log(Level.SEVERE, null, ex);
+                        return false;
+                }
+        }
+        
         public boolean make_friend(Integer uid_a, Integer uid_b) {
                 try {
-                        if (has_friendship(uid_a, uid_b))
+                        if (_has_friendship(uid_a, uid_b))
                                 return false;
                         Statement s = m_conn.get_connection().createStatement();
                         // Friendship is symmetric.
-                        int r = s.executeUpdate("insert into friendship_manager "
-                                + "(uid_a, uid_b) values (" + uid_a + "," + uid_b + "),"
-                                                      + "(" + uid_b + "," + uid_a + ");");
-                        return r == 2;
+                        if (!Objects.equals(uid_a, uid_b)) {
+                                int r = s.executeUpdate("insert into friendship_manager "
+                                        + "(uid_a, uid_b) values (" + uid_a + "," + uid_b + "),"
+                                                              + "(" + uid_b + "," + uid_a + ");");
+                                return r == 2;
+                        } else {
+                                int r = s.executeUpdate("insert into friendship_manager "
+                                        + "(uid_a, uid_b) values (" + uid_a + "," + uid_b + ");");
+                                return r == 1;
+                        }
                 } catch (SQLException ex) {
                         Logger.getLogger(FriendshipManager.class.getName()).log(Level.SEVERE, null, ex);
                         return false;

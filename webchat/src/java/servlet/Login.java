@@ -55,6 +55,7 @@ public class Login extends HttpServlet {
                 if (app.UserOperator.verify(user_id, password)) {
                         request.setAttribute("is_logged_in", true);
                         request.setAttribute("user_id", user_id);
+                        request.getSession().setAttribute("user_id", user_id);
                         request.getRequestDispatcher("/ChatroomLoader").forward(request, response);
                 } else {
                         request.getRequestDispatcher("401.jsp").forward(request, response);

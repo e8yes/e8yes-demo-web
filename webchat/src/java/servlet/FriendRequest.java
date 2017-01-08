@@ -18,6 +18,9 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +32,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class FriendRequest extends HttpServlet {
 
+        public static Map<String, String> process_query_string(String query) {
+                String[] params = query.split("&");
+                HashMap<String, String> map = new HashMap<>();
+                for (String param : params) {
+                        String[] s = param.split("=");
+                        if (s.length == 2) {
+                                String name = s[0];
+                                String value = s[1];
+                                map.put(name, value);
+                        }
+                }
+                return map;
+        }
+        
         /**
          * Processes requests for both HTTP <code>GET</code> and
          * <code>POST</code> methods.
@@ -41,7 +58,56 @@ public class FriendRequest extends HttpServlet {
         protected void processRequest(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException {
                 response.setContentType("text/html;charset=UTF-8");
+                PrintWriter out = response.getWriter();
+                
                 String qs = request.getQueryString();
+                Map<String, String> kvs = process_query_string(qs);
+                
+                String action = kvs.get("action");
+                String target = kvs.get("target");
+                Integer uid;
+                Integer target_id;
+                try {
+                        if (action == null || target == null) {
+                                throw new Exception();
+                        }
+                        uid = (Integer) request.getSession().getAttribute("user_id");
+                        target_id = Integer.parseInt(target);
+                } catch (Exception ex) {
+                        out.print("Malformed request: " + qs);
+                        return ;
+                }
+                
+                
+                switch (action) {
+                        case "send":
+                                if (!app.UserOperator.send_friend_request(uid, target_id, out)) {
+                                        return ;
+                                }
+                                break;
+                        case "confirm":
+                                if (!app.UserOperator.confirm_friend_request(uid, target_id, out)) {
+                                        return ;
+                                }
+                                break;
+                        case "deny":
+                                if (!app.UserOperator.deny_friend_request(uid, target_id)) {
+                                        out.println("You haven't made such friend request.");
+                                        return ;
+                                }
+                                break;
+                        case "remove":
+                                if (!app.UserOperator.end_friendship(uid, target_id)) {
+                                        out.println("You were not friend to start with");
+                                        return ;
+                                }
+                                break;
+                        default:
+                                out.println("No such action as " + action);
+                                return;
+                }
+                
+                out.println("GOOD");
         }
 
         // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
