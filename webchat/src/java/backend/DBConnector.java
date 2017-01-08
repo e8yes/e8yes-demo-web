@@ -35,10 +35,13 @@ public class DBConnector {
                         // Check for MySQL driver.
                         Class.forName("com.mysql.jdbc.Driver");
                         
-                        // Connect to MySQL server.
+                        // Connect to MySQL server with utf8-encoded connection.
                         m_db_conn = DriverManager.getConnection(
-                                "jdbc:mysql://localhost:3306/webchat",
+                                "jdbc:mysql://localhost:3306/webchat?characterEncoding=utf-8",
                                 "root", "password");
+                        
+                        // Enforce utf8 encoding.
+                        m_db_conn.createStatement().executeUpdate("alter database webchat character set utf8 collate utf8_general_ci;");
                 } catch (ClassNotFoundException | SQLException ex) {
                         Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex);
                 }

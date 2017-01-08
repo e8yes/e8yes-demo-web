@@ -48,7 +48,8 @@ public class MessageManager {
                                 + "primary key (uid_a, uid_b, t),"
                                 + "foreign key (uid_a, uid_b) references " 
                                         + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
-                                        + " on delete cascade);");
+                                        + " on delete cascade) "
+                                + "default character set=utf8;");
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                 }

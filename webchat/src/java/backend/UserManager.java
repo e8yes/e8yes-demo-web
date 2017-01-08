@@ -48,7 +48,7 @@ public class UserManager {
                         s.executeUpdate("create table if not exists user_manager("
                                 + "uid integer,"
                                 + "pwd varchar(20),"
-                                + "primary key (uid));");
+                                + "primary key (uid)) default character set=utf8;");
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
