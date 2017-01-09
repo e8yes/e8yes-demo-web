@@ -42,8 +42,8 @@ public class MessageManager {
                         s.executeUpdate("create table if not exists message_manager("
                                 + "fid integer,"
                                 + "t timestamp(0) default current_timestamp,"
-                                + "uid_b integer,"
-                                + "uid_a integer,"
+                                + "uid_b integer not null,"
+                                + "uid_a integer not null,"
                                 + "msg text,"
                                 + "unique key (uid_b, uid_a, t),"
                                 + "primary key (fid, t),"
@@ -52,6 +52,7 @@ public class MessageManager {
                                         + " on delete cascade) "
                                 + " default character set=utf8;");
                         s.executeUpdate("create table if not exists unread_message_manager like message_manager;");
+                        s.executeUpdate("alter table unread_message_manager add index (uid_b) using btree;");
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
