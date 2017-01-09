@@ -48,7 +48,7 @@
                             Integer n_unread = unread_count.get(friend);
                             out.println("<button name='b_friend' id='" + friend + "'>" 
                                         + friend + "</button>");
-                            out.println("<div name='" + friend + "'style='display: inline-block'>(" + (n_unread != null ? n_unread : 0) + ")</div>");
+                            out.println("(<div name='" + friend + "'style='display: inline-block'>" + (n_unread != null ? n_unread : 0) + "</div>)");
                     }
                 }
         %>
@@ -70,6 +70,9 @@
     
     <script lang="javascript">
         var current_chat_target = null;
+        var window_focusing = false;
+        var chat_history_box = $("#t_chat_history");
+        var msg_box = $("#t_msg_box");
         
         function update_chat_title() {
             if (current_chat_target === null) {
@@ -80,9 +83,6 @@
         }
         
         function chat_poll() {
-            if (current_chat_target === null)
-                return false;
-            
             // Long polling.
             $.ajax({url: "PollChat",
                     success: function(result) {
@@ -90,8 +90,12 @@
                             var chats = JSON.parse(result);
                             
                             for (var i = 0; i < chats.length; i ++) {
-                                if (chats[i].sender === current_chat_target)
+                                if (current_chat_target !== null && chats[i].sender === current_chat_target) {
                                     append_to_chat_box(chats[i].sender, chats[i].content);
+                                    if (!window_focusing)
+                                        pop_notification(chats[i].sender, chats[i].content);
+                                } else
+                                    pop_notification(chats[i].sender, chats[i].content);
                             }
                         } catch (ex) {
                             if (result !== "")
@@ -101,8 +105,27 @@
             }});
         }
         
-        var chat_history_box = $("#t_chat_history");
-        var msg_box = $("#t_msg_box");
+        function pop_notification(sender, content) {
+            // Update notification tag.
+            var n = parseInt($("div[name='" + sender + "']").html());
+            $("div[name='" + sender + "']").html(n + 1);
+            
+            // Play sound.
+            new Audio("snd/bing.mp3").play();
+            
+            // Pop out notification.
+            if (!("Notification" in window)) {
+                alert(sender + ": " + content);
+            } else if (Notification.permission === "granted") {
+                new Notification(sender + ": " + content);
+            } else if (Notification.permission !== 'denied') {
+              Notification.requestPermission(function (permission) {
+                if (permission === "granted") {
+                    new Notification(sender + ": " + content);
+                }
+              });
+            }
+        }
         
         function empty_chat_box() {
             chat_history_box.empty();
@@ -159,6 +182,14 @@
             }
         }
         
+        $(window).focus(function() {
+            window_focusing = true;
+        });
+
+        $(window).blur(function() {
+            window_focusing = false;
+        });
+
         $("button[name=b_friend]").on("click", function(e) {
             current_chat_target = parseInt(e.target.id);
             $.ajax({url: "ChatTo",
@@ -167,8 +198,7 @@
                         if (result === "GOOD") {
                             update_chat_title();
                             update_chat_history(function() {
-                                $("div[name='" + current_chat_target + "']").html("(0)");
-                                chat_poll();
+                                $("div[name='" + current_chat_target + "']").html("0");
                             });
                         } else {
                             alert(result);
@@ -232,5 +262,6 @@
         
         update_chat_title();
         update_chat_history();
+        chat_poll();
     </script>
 </html>
