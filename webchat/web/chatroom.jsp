@@ -81,6 +81,9 @@
     </body>
     
     <script lang="javascript">
+        var user_id = <%=request.getSession().getAttribute("user_id")%>;
+        var alias = "<%=request.getSession().getAttribute("alias")%>";
+        
         var current_chat_target = null;
         var window_focusing = true;
         var chat_history_box = $("#t_chat_history");
@@ -146,7 +149,14 @@
         }
         
         function append_to_chat_box(sender, content) {
-            chat_history_box.append(sender + ": " + content + "\n");
+            var sender_info;
+            var fd = $("#" + sender);
+            if (fd[0] !== undefined) {
+                sender_info = fd.html();
+            } else {
+                sender_info = alias + "(" + user_id + ")";
+            }
+            chat_history_box.append(sender_info + ": " + content + "\n");
             chat_history_box.scrollTop(chat_history_box[0].scrollHeight);
         }
         
