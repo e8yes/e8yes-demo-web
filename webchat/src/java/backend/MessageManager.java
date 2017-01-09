@@ -41,7 +41,7 @@ public class MessageManager {
                         Statement s = m_conn.get_connection().createStatement();
                         s.executeUpdate("create table if not exists message_manager("
                                 + "fid integer,"
-                                + "t timestamp(0) default current_timestamp,"
+                                + "t timestamp default current_timestamp,"
                                 + "uid_b integer not null,"
                                 + "uid_a integer not null,"
                                 + "msg text,"
