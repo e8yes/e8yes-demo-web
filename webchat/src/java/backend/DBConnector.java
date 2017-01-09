@@ -37,7 +37,7 @@ public class DBConnector {
                         
                         // Connect to MySQL server with utf8-encoded connection.
                         m_db_conn = DriverManager.getConnection(
-                                "jdbc:mysql://localhost:3306/webchat?characterEncoding=utf-8",
+                                "jdbc:mysql://localhost:3306/webchat?autoReconnect=true&characterEncoding=utf-8",
                                 "root", "password");
                         
                         // Enforce utf8 encoding.
