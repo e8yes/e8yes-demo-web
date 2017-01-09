@@ -27,9 +27,9 @@ import java.util.Objects;
  */
 public class UserOperator {
         
-        public static Integer join(String password) {
+        public static Integer join(String user_name, String password) {
                 backend.UserManager um = backend.SingletonEntities.get_user_manager();
-                return um.create_user(password);
+                return um.create_user(user_name, password);
         }
         
         private static backend.User get_verified(int uid, String password) {

@@ -43,11 +43,12 @@ public class Join extends HttpServlet {
                 response.setContentType("text/html;charset=UTF-8");
                 
                 String user_password = request.getParameter("user_password");
-                if (user_password == null || user_password.equals("")) {
+                String user_name = request.getParameter("user_name");
+                if (user_password == null || user_name == null) {
                         request.getRequestDispatcher("404.jsp").forward(request, response);
                         return;
                 }
-                Integer user_id = app.UserOperator.join(user_password);
+                Integer user_id = app.UserOperator.join(user_name, user_password);
                 if (user_id != null) {
                         request.setAttribute("user_id", user_id);
                         request.setAttribute("is_joined", true);

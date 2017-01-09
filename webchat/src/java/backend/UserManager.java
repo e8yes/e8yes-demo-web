@@ -47,6 +47,7 @@ public class UserManager {
                         Statement s = m_conn.get_connection().createStatement();
                         s.executeUpdate("create table if not exists user_manager("
                                 + "uid integer,"
+                                + "alias varchar(20),"
                                 + "pwd varchar(20),"
                                 + "primary key (uid)) default character set=utf8;");
                 } catch (SQLException ex) {
@@ -68,9 +69,9 @@ public class UserManager {
         public User get_user(int user_id) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select uid, pwd from user_manager where uid = " + user_id + ";");
+                        ResultSet result = s.executeQuery("select * from user_manager where uid = " + user_id + ";");
                         if (result.next()) {
-                                return new User(result.getInt("uid"), result.getString("pwd"));
+                                return new User(result.getInt("uid"), result.getString("alias"), result.getString("pwd"));
                         } else {
                                 return null;
                         }
@@ -92,12 +93,13 @@ public class UserManager {
                 }
         }
         
-        public Integer create_user(String password) {
+        public Integer create_user(String user_name, String password) {
                 Integer uid = m_uid_counter.get_next();
                 if (uid == null) return uid;
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("insert into user_manager (uid, pwd) values(" + uid + ",\"" + password + "\");");
+                        s.executeUpdate("insert into user_manager (uid, alias, pwd) "
+                                        + "values (" + uid + ",\"" + user_name + "\",\"" + password + "\");");
                         return uid;
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);

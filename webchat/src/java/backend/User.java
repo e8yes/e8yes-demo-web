@@ -23,10 +23,12 @@ package backend;
  */
 public class User {
         private final int       m_user_id;
+        private final String    m_alias;
         private String          m_password;
         
-        public User(int user_id, String password) {
+        public User(int user_id, String alias, String password) {
                 m_user_id = user_id;
+                m_alias = alias;
                 m_password = password;
         }
         
@@ -36,6 +38,10 @@ public class User {
         
         public void change_password(String password) {
                 m_password = password;
+        }
+        
+        public String get_alias() {
+                return m_alias;
         }
         
         public int get_user_id() {
@@ -61,6 +67,6 @@ public class User {
         
         @Override
         public String toString() {
-                return "User = [" + m_user_id + "," + m_password + "]";
+                return "User = [" + m_user_id + "," + m_alias + "," + m_password + "]";
         }
 }

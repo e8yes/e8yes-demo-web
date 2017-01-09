@@ -16,8 +16,15 @@
         
         <div style="text-align: center; margin-top: 5%;">
             <form action=<%=request.getContextPath() + "/Join"%> method="POST">
-                <div style="display: inline-block">Password</div>
-                <input type="text" name="user_password" />
+                <div>
+                    <div style="display: inline-block;" ><i>Alias</i></div>
+                    <input type="text" name="user_name" value="" />
+                </div>
+                <div>
+                    <div style="display: inline-block">Password</div>
+                    <input type="password" name="user_password" value="" />
+                </div>
+                
                 <input type="submit" value="Join" />
             </form>
         </div>
