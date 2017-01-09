@@ -119,12 +119,14 @@ public class FriendshipManager {
                         Statement s = m_conn.get_connection().createStatement();
                         ResultSet result = s.executeQuery(
                                   " select UM." + UserManager.get_pk_name() + ","
-                                + "        UM." + UserManager.get_alias_name() + " from user_manager UM, "
-                                + " (select FM.uid_b from friendship_manager FM where FM.uid_a = " + uid + ") as FS "
-                                + " where UM." + UserManager.get_pk_name() + " = FS.uid_b;");
+                                + "        UM." + UserManager.get_alias_name() + " from "
+                                + " (select FM.uid_b from friendship_manager FM where FM.uid_a = " + uid + ") as FS, "
+                                + UserManager.get_entity_name() + " UM "
+                                + " where FS.uid_b = UM." + UserManager.get_pk_name() + ";");
                         ArrayList<User> friends = new ArrayList<>();
                         while (result.next()) {
-                                friends.add(new User(result.getInt("uid"), result.getString("alias")));
+                                friends.add(new User(result.getInt(UserManager.get_pk_name()), 
+                                                     result.getString(UserManager.get_alias_name())));
                         }
                         return friends;
                 } catch (SQLException ex) {

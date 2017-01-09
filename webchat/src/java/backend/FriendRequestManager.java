@@ -84,14 +84,18 @@ public class FriendRequestManager {
                 }
         }
         
-        public ArrayList<Integer> request_from(Integer uid) {
+        public ArrayList<User> request_from(Integer uid) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select uid_b from friend_request_manager "
-                                + "where uid_a = " + uid + ";");
-                        ArrayList<Integer> requests = new ArrayList<>();
+                        ResultSet result = s.executeQuery(
+                                  " select UM." + UserManager.get_pk_name() + ", UM." + UserManager.get_alias_name() + " from "
+                                + " (select FRM.uid_b from friend_request_manager FRM where FRM.uid_a = " + uid + ") as FR, "
+                                + UserManager.get_entity_name() + " UM "
+                                + " where FR.uid_b = UM." + UserManager.get_pk_name() + ";");
+                        ArrayList<User> requests = new ArrayList<>();
                         while (result.next()) {
-                                requests.add(result.getInt("uid_b"));
+                                requests.add(new User(result.getInt(UserManager.get_pk_name()), 
+                                                      result.getString(UserManager.get_alias_name())));
                         }
                         return requests;
                 } catch (SQLException ex) {
@@ -100,14 +104,18 @@ public class FriendRequestManager {
                 }
         }
         
-        public ArrayList<Integer> request_to(Integer uid) {
+        public ArrayList<User> request_to(Integer uid) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select uid_a from friend_request_manager "
-                                + "where uid_b = " + uid + ";");
-                        ArrayList<Integer> requests = new ArrayList<>();
+                        ResultSet result = s.executeQuery(
+                                  " select UM." + UserManager.get_pk_name() + ", UM." + UserManager.get_alias_name() + " from "
+                                + " (select FRM.uid_a from friend_request_manager FRM where FRM.uid_b = " + uid + ") as FR, "
+                                + UserManager.get_entity_name() + " UM "
+                                + " where FR.uid_a = UM." + UserManager.get_pk_name() + ";");
+                        ArrayList<User> requests = new ArrayList<>();
                         while (result.next()) {
-                                requests.add(result.getInt("uid_a"));
+                                requests.add(new User(result.getInt(UserManager.get_pk_name()), 
+                                                      result.getString(UserManager.get_alias_name())));
                         }
                         return requests;
                 } catch (SQLException ex) {

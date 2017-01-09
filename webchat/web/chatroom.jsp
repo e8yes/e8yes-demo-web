@@ -12,14 +12,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script lang="javascript" src="js/jquery-3.1.1.js"></script>
-        <title>Webchat@<%=request.getSession().getAttribute("alias").toString() %> </title>
+        <title>Webchat@<%=request.getSession().getAttribute("alias") %> </title>
     </head>
     <body>
         <div>
         <!--<a style = "text-decoration: none; color: black;" href=<%=request.getContextPath()%>>-->
             <h1 style="display: inline-block;">Webchat <%= request.getSession().getAttribute("version_string") %></h1>
             <div style="float: right; margin-right: 2%; margin-top: 1%; font-size: 10pt; ">
-                Page owner: <%=request.getSession().getAttribute("alias").toString() %>
+                Page owner: <%=request.getSession().getAttribute("alias") %> 
+                           (<%=request.getSession().getAttribute("user_id").toString() %>)
             </div>
         <!--</a>-->
         </div>
@@ -33,13 +34,14 @@
 
              <h4>Friend requests</h4>
              <%
-                    ArrayList<Integer> friend_requests = (ArrayList<Integer>) request.getAttribute("friend_request_list");
+                    ArrayList<backend.User> friend_requests = (ArrayList<backend.User>) request.getAttribute("friend_request_list");
                     if (friend_requests == null || friend_requests.isEmpty()) {
                             out.println("<div>You don't have any friend request.</div>");
                     } else {
-                        for (Integer friend_request: friend_requests) {
-                                out.println("<button name='b_friend_request' id='" + friend_request + "'" + ">" 
-                                            + "from " + friend_request + "</button>");
+                        for (backend.User friend_request: friend_requests) {
+                                out.println("<button name='b_friend_request' id='" + friend_request.get_user_id() + "'" + ">" 
+                                            + "from " + friend_request.get_alias() 
+                                            + "(" + friend_request.get_user_id() + ")" + "</button>");
                         }
                     }
             %>

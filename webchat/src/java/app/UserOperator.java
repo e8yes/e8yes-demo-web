@@ -101,7 +101,7 @@ public class UserOperator {
                 return frm.remove_request(target, me);
         }
         
-        public static ArrayList<Integer> pull_friend_requests(int uid) {
+        public static ArrayList<backend.User> pull_friend_requests(int uid) {
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
                 return frm.request_to(uid);
         }

@@ -50,7 +50,7 @@ public class ChatroomLoader extends HttpServlet {
                         return ;
                 }
                 
-                ArrayList<Integer> fd_request_list = app.UserOperator.pull_friend_requests(uid);  
+                ArrayList<backend.User> fd_request_list = app.UserOperator.pull_friend_requests(uid);  
                 ArrayList<backend.User> fd_list = app.UserOperator.pull_friends(uid);
                 HashMap<Integer, Integer> unread_count_map = app.MessageOperator.get_number_unread(uid);
                 
