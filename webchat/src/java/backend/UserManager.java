@@ -17,6 +17,7 @@
  */
 package backend;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -91,10 +92,12 @@ public class UserManager {
         
         public boolean set_user(User user) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        int r = s.executeUpdate("update user_manager set pwd = \"" + user.get_password() + "\" "
-                                                + "where uid = " + user.get_user_id() + ";");
-                        return r == 1;
+                        PreparedStatement ps = m_conn.get_connection().prepareStatement(
+                                "update user_manager set pwd = ?, alias = ? where uid = ?;");
+                        ps.setString(1, user.get_password());
+                        ps.setString(2, user.get_alias());
+                        ps.setInt(3, user.get_user_id());
+                        return ps.executeUpdate() == 1;
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
                         return false;
@@ -105,10 +108,15 @@ public class UserManager {
                 Integer uid = m_uid_counter.get_next();
                 if (uid == null) return uid;
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("insert into user_manager (uid, alias, pwd) "
-                                        + "values (" + uid + ",\"" + user_name + "\",\"" + password + "\");");
-                        return uid;
+                        PreparedStatement ps = m_conn.get_connection().prepareStatement(
+                                "insert into user_manager (uid, alias, pwd) "
+                                        + " values (" + uid + ",?,?);");
+                        ps.setString(1, user_name);
+                        ps.setString(2, password);
+                        if (1 == ps.executeUpdate())
+                                return uid;
+                        else
+                                return null;
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
                         return null;
