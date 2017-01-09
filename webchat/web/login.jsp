@@ -14,6 +14,8 @@
         <title>Welcome to Webchat</title>
     </head>
     <body>
+        <h1>Webchat <%= request.getSession().getAttribute("version_string") %></h1>
+        
         <form action=<%=request.getContextPath() + "/Login"%> method="POST">
             <div>User ID: </div>
             <input type="text" name="user_id" value="" />
@@ -24,5 +26,7 @@
         </form>
             
         <a href=<%=request.getContextPath() + "/join.jsp"%>>Join Webchat Now</a>
+        
+        <p>Copylefted by Chifeng, 2017</p>
     </body>
 </html>

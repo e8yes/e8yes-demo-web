@@ -57,7 +57,7 @@ public class ChatroomLoader extends HttpServlet {
                 if (fd_request_list == null || fd_list == null || unread_count_map == null)
                         request.getRequestDispatcher("404.jsp").forward(request, response);
                 
-                request.setAttribute("version_string", app.App.get_version_string());
+                request.getSession().setAttribute("version_string", app.App.get_version_string());
                 request.setAttribute("friend_request_list", fd_request_list);
                 request.setAttribute("friend_list", fd_list);
                 request.setAttribute("unread_count_map", unread_count_map);

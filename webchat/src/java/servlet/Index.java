@@ -41,6 +41,9 @@ public class Index extends HttpServlet {
         protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
                 throws ServletException, IOException {
                 response.setContentType("text/html;charset=UTF-8");
+                
+                request.getSession().setAttribute("version_string", app.App.get_version_string());
+                
                 request.getRequestDispatcher("login.jsp").forward(request, response);
         }
 

@@ -12,10 +12,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script lang="javascript" src="js/jquery-3.1.1.js"></script>
-        <title>Webchat User: <%=request.getAttribute("user_id").toString() %> </title>
+        <title>Webchat User: <%=request.getSession().getAttribute("user_id").toString() %> </title>
     </head>
     <body>
-        <h1>Webchat <%= request.getAttribute("version_string") %></h1>
+        <h1>Webchat <%= request.getSession().getAttribute("version_string") %></h1>
         
         <h4>Add contact</h4>
         <div>
