@@ -70,7 +70,7 @@
     
     <script lang="javascript">
         var current_chat_target = null;
-        var window_focusing = false;
+        var window_focusing = true;
         var chat_history_box = $("#t_chat_history");
         var msg_box = $("#t_msg_box");
         
