@@ -18,6 +18,7 @@
 package app;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -47,5 +48,10 @@ public class MessageOperator {
         public static ArrayList<backend.Message> get_chat_history(int fid, int uid, int n) {
                 backend.MessageManager mm = backend.SingletonEntities.get_message_manager();
                 return mm.pull_messages(fid, uid, n);
+        }
+        
+        public static HashMap<Integer, Integer> get_number_unread(int uid_receiver) {
+                backend.MessageManager mm = backend.SingletonEntities.get_message_manager();
+                return mm.get_number_unread(uid_receiver);
         }
 }

@@ -24,6 +24,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -158,6 +159,25 @@ public class MessageManager {
                                 if (!clear_unread_messages(uid_receiver, msgs.get(msgs.size() - 1).get_timestamp()))
                                         return null;
                         return msgs;
+                } catch (SQLException ex) {
+                        Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
+                        return null;
+                }
+        }
+
+        public HashMap<Integer, Integer> get_number_unread(int uid_receiver) {
+                try {
+                        Statement s = m_conn.get_connection().createStatement();
+                        ResultSet result = s.executeQuery("select uid_a, count(*) as n from unread_message_manager "
+                                + " where uid_b = " + uid_receiver
+                                + " group by uid_a;");
+                        HashMap<Integer, Integer> num = new HashMap<>();
+                        while (result.next()) {
+                                int sender_id = result.getInt("uid_a");
+                                int n = result.getInt("n");
+                                num.put(sender_id, n);
+                        }
+                        return num;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                         return null;
