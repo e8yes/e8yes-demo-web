@@ -15,57 +15,61 @@
         <title>Webchat User: <%=request.getSession().getAttribute("user_id").toString() %> </title>
     </head>
     <body>
-        <h1>Webchat <%= request.getSession().getAttribute("version_string") %></h1>
+        <!--<a style = "text-decoration: none; color: black;" href=<%=request.getContextPath()%>>-->
+            <h1>Webchat <%= request.getSession().getAttribute("version_string") %></h1>
+        <!--</a>-->
         
-        <h4>Add contact</h4>
-        <div>
-            <input id="t_friend_request_id" type="text" />
-            <button id="b_send_request">Send request</button>
-        </div>
-        
-         <h4>Friend requests</h4>
-         <%
-                ArrayList<Integer> friend_requests = (ArrayList<Integer>) request.getAttribute("friend_request_list");
-                if (friend_requests == null || friend_requests.isEmpty()) {
-                        out.println("<div>You don't have any friend request.</div>");
-                } else {
-                    for (Integer friend_request: friend_requests) {
-                            out.println("<button name='b_friend_request' id='" + friend_request + "'" + ">" 
-                                        + "from " + friend_request + "</button>");
-                    }
-                }
-        %>
-        
-        <h4>My friends</h4>
-        <div>
-        <%
-                ArrayList<Integer> friends = (ArrayList<Integer>) request.getAttribute("friend_list");
-                HashMap<Integer, Integer> unread_count = (HashMap<Integer, Integer>) request.getAttribute("unread_count_map");
-                if (friends == null || friends.isEmpty()) {
-                        out.println("<div>You don't have any Webchat friend yet.</div>");
-                } else {
-                    for (Integer friend: friends) {
-                            Integer n_unread = unread_count.get(friend);
-                            out.println("<button name='b_friend' id='" + friend + "'>" 
-                                        + friend + "</button>");
-                            out.println("(<div name='" + friend + "'style='display: inline-block'>" + (n_unread != null ? n_unread : 0) + "</div>)");
-                    }
-                }
-        %>
-        </div>
+        <div style="text-align: center;">
+            <h4>Add contact</h4>
+            <div>
+                <input id="t_friend_request_id" type="text" />
+                <button id="b_send_request">Send request</button>
+            </div>
 
-        <p>
-            <button id="b_unfriend">Unfriend</button>
-        </p>
-        
-        <h4 id="h_chat_title"></h4>
-        <div>
-            <textarea id="t_chat_history" cols="50" rows="10" readonly></textarea>
+             <h4>Friend requests</h4>
+             <%
+                    ArrayList<Integer> friend_requests = (ArrayList<Integer>) request.getAttribute("friend_request_list");
+                    if (friend_requests == null || friend_requests.isEmpty()) {
+                            out.println("<div>You don't have any friend request.</div>");
+                    } else {
+                        for (Integer friend_request: friend_requests) {
+                                out.println("<button name='b_friend_request' id='" + friend_request + "'" + ">" 
+                                            + "from " + friend_request + "</button>");
+                        }
+                    }
+            %>
+
+            <h4>My friends</h4>
+            <div>
+            <%
+                    ArrayList<Integer> friends = (ArrayList<Integer>) request.getAttribute("friend_list");
+                    HashMap<Integer, Integer> unread_count = (HashMap<Integer, Integer>) request.getAttribute("unread_count_map");
+                    if (friends == null || friends.isEmpty()) {
+                            out.println("<div>You don't have any Webchat friend yet.</div>");
+                    } else {
+                        for (Integer friend: friends) {
+                                Integer n_unread = unread_count.get(friend);
+                                out.println("<button name='b_friend' id='" + friend + "'>" 
+                                            + friend + "</button>");
+                                out.println("(<div name='" + friend + "'style='display: inline-block'>" + (n_unread != null ? n_unread : 0) + "</div>)");
+                        }
+                    }
+            %>
+            </div>
+
+            <p>
+                <button id="b_unfriend">Unfriend</button>
+            </p>
+
+            <h4 id="h_chat_title"></h4>
+            <div>
+                <textarea id="t_chat_history" cols="50" rows="10" readonly></textarea>
+            </div>
+            <div>
+                <textarea id="t_msg_box" cols="50" rows="5"></textarea>
+            </div>
+            <button id="b_send">Send</button>
         </div>
-        <div>
-            <textarea id="t_msg_box" cols="50" rows="5"></textarea>
-        </div>
-        <button id="b_send">Send</button>
     </body>
     
     <script lang="javascript">
@@ -98,8 +102,10 @@
                                     pop_notification(chats[i].sender, chats[i].content);
                             }
                         } catch (ex) {
-                            if (result !== "")
+                            if (result !== "") {
                                 alert(result);
+                                return ;
+                            }
                         }
                         chat_poll();
             }});

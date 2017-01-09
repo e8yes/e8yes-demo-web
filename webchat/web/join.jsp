@@ -12,10 +12,14 @@
         <title>Join Webchat</title>
     </head>
     <body>
-        <form action=<%=request.getContextPath() + "/Join"%> method="POST">
-            <div>Password</div>
-            <input type="text" name="user_password" />
-            <input type="submit" value="Join" />
-        </form>
+        <h1>Webchat <%= request.getSession().getAttribute("version_string") %></h1>
+        
+        <div style="text-align: center; margin-top: 5%;">
+            <form action=<%=request.getContextPath() + "/Join"%> method="POST">
+                <div style="display: inline-block">Password</div>
+                <input type="text" name="user_password" />
+                <input type="submit" value="Join" />
+            </form>
+        </div>
     </body>
 </html>
