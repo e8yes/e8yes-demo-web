@@ -51,7 +51,7 @@ public class ChatroomLoader extends HttpServlet {
                 }
                 
                 ArrayList<Integer> fd_request_list = app.UserOperator.pull_friend_requests(uid);  
-                ArrayList<Integer> fd_list = app.UserOperator.pull_friends(uid);
+                ArrayList<backend.User> fd_list = app.UserOperator.pull_friends(uid);
                 HashMap<Integer, Integer> unread_count_map = app.MessageOperator.get_number_unread(uid);
                 
                 if (fd_request_list == null || fd_list == null || unread_count_map == null)

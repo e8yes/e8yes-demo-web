@@ -114,14 +114,17 @@ public class FriendshipManager {
                 }
         }
         
-        public ArrayList<Integer> friends_of(Integer uid) {
+        public ArrayList<User> friends_of(Integer uid) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select uid_b from friendship_manager "
-                                + "where uid_a = " + uid + ";");
-                        ArrayList<Integer> friends = new ArrayList<>();
+                        ResultSet result = s.executeQuery(
+                                  " select UM." + UserManager.get_pk_name() + ","
+                                + "        UM." + UserManager.get_alias_name() + " from user_manager UM, "
+                                + " (select FM.uid_b from friendship_manager FM where FM.uid_a = " + uid + ") as FS "
+                                + " where UM." + UserManager.get_pk_name() + " = FS.uid_b;");
+                        ArrayList<User> friends = new ArrayList<>();
                         while (result.next()) {
-                                friends.add(result.getInt("uid_b"));
+                                friends.add(new User(result.getInt("uid"), result.getString("alias")));
                         }
                         return friends;
                 } catch (SQLException ex) {

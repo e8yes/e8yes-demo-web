@@ -40,6 +40,14 @@ public class UserManager {
                 return "(uid)";
         }
         
+        public static String get_pk_name() {
+                return "uid";
+        }
+        
+        public static String get_alias_name() {
+                return "alias";
+        }
+        
         public UserManager(DBConnector conn, UserIDGenerator cnt) {
                 m_conn = conn;
                 m_uid_counter = cnt;

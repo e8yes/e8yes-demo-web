@@ -32,6 +32,12 @@ public class User {
                 m_password = password;
         }
         
+        public User(int user_id, String alias) {
+                m_user_id = user_id;
+                m_alias = alias;
+                m_password = null;
+        }
+        
         public boolean verify(String password) {
                 return m_password.equals(password);
         }

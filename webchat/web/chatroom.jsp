@@ -47,16 +47,17 @@
             <h4>My friends</h4>
             <div>
             <%
-                    ArrayList<Integer> friends = (ArrayList<Integer>) request.getAttribute("friend_list");
+                    ArrayList<backend.User> friends = (ArrayList<backend.User>) request.getAttribute("friend_list");
                     HashMap<Integer, Integer> unread_count = (HashMap<Integer, Integer>) request.getAttribute("unread_count_map");
                     if (friends == null || friends.isEmpty()) {
                             out.println("<div>You don't have any Webchat friend yet.</div>");
                     } else {
-                        for (Integer friend: friends) {
-                                Integer n_unread = unread_count.get(friend);
-                                out.println("<button name='b_friend' id='" + friend + "'>" 
-                                            + friend + "</button>");
-                                out.println("(<div name='" + friend + "'style='display: inline-block'>" + (n_unread != null ? n_unread : 0) + "</div>)");
+                        for (backend.User friend: friends) {
+                                Integer n_unread = unread_count.get(friend.get_user_id());
+                                out.println("<button name='b_friend' id='" + friend.get_user_id() + "'>" 
+                                            + friend.get_alias() + "(" + friend.get_user_id() + ")" + "</button>");
+                                out.println("(<div name='" + friend.get_user_id() + "'style='display: inline-block'>" 
+                                            + (n_unread != null ? n_unread : 0) + "</div>)");
                         }
                     }
             %>

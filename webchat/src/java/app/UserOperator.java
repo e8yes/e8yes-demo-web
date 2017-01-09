@@ -106,7 +106,7 @@ public class UserOperator {
                 return frm.request_to(uid);
         }
         
-        public static ArrayList<Integer> pull_friends(int uid) {
+        public static ArrayList<backend.User> pull_friends(int uid) {
                 backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
                 return fm.friends_of(uid);
         }
