@@ -44,7 +44,7 @@ public class ChatroomLoader extends HttpServlet {
                 throws ServletException, IOException {
                 response.setContentType("text/html;charset=UTF-8");
                 
-                Integer uid = (Integer) request.getAttribute("user_id");
+                Integer uid = (Integer) request.getSession().getAttribute("user_id");
                 if (uid == null) {
                         request.getRequestDispatcher("401.jsp").forward(request, response);
                         return ;

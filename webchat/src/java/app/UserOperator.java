@@ -42,8 +42,8 @@ public class UserOperator {
                         return null;
         }
         
-        public static boolean verify(Integer uid, String password) {
-                return get_verified(uid, password) != null;
+        public static backend.User verify(Integer uid, String password) {
+                return get_verified(uid, password);
         }
         
         public static boolean change_password(int uid, String password, String new_password) {

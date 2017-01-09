@@ -12,12 +12,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script lang="javascript" src="js/jquery-3.1.1.js"></script>
-        <title>Webchat User: <%=request.getSession().getAttribute("user_id").toString() %> </title>
+        <title>Webchat@<%=request.getSession().getAttribute("alias").toString() %> </title>
     </head>
     <body>
+        <div>
         <!--<a style = "text-decoration: none; color: black;" href=<%=request.getContextPath()%>>-->
-            <h1>Webchat <%= request.getSession().getAttribute("version_string") %></h1>
+            <h1 style="display: inline-block;">Webchat <%= request.getSession().getAttribute("version_string") %></h1>
+            <div style="float: right; margin-right: 2%; margin-top: 1%; font-size: 10pt; ">
+                Page owner: <%=request.getSession().getAttribute("alias").toString() %>
+            </div>
         <!--</a>-->
+        </div>
         
         <div style="text-align: center;">
             <h4>Add contact</h4>

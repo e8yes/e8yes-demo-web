@@ -62,11 +62,8 @@ public class JoinResult implements Filter {
                         log("JoinResult:doFilter()");
                 }
                 
-                Boolean is_joined = (Boolean) request.getAttribute("is_joined");
-                if (is_joined == null || is_joined != true) {
-                        request.getRequestDispatcher("401.jsp").forward(request, response);
-                        return;
-                }
+                
+                request.getRequestDispatcher("401.jsp").forward(request, response);
                 
                 Throwable problem = null;
                 try {

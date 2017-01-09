@@ -62,11 +62,8 @@ public class Chatroom implements Filter {
                         log("Chatroom:doFilter()");
                 }
                 
-                Boolean is_logged_in = (Boolean) request.getAttribute("is_logged_in");
-                if (is_logged_in == null || is_logged_in != true) {
-                        request.getRequestDispatcher("401.jsp").forward(request, response);
-                        return;
-                }
+                request.getRequestDispatcher("401.jsp").forward(request, response);
+                
                 Throwable problem = null;
                 try {
                         chain.doFilter(request, response);
