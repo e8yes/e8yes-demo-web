@@ -91,7 +91,7 @@
         
         function update_chat_title() {
             if (current_chat_target === null) {
-                $("#h_chat_title").html("Click on one of your friend and start chatting!");
+                $("#h_chat_title").html("Click on one of your friends and start chatting!");
             } else {
                 $("#h_chat_title").html("My chat with " + current_chat_target);
             }
