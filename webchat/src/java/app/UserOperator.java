@@ -55,31 +55,33 @@ public class UserOperator {
                 return um.set_user(user);
         }
         
-        public static boolean send_friend_request(int uid, int target, PrintWriter error) {
-                if (Objects.equals(uid, target)) {
+        public static boolean send_friend_request(backend.User user, int target, PrintWriter error) {
+                if (user.get_user_id() == target) {
                         error.println("You wanna befriend yourself :)?");
                 }
                 backend.UserManager um = backend.SingletonEntities.get_user_manager();
-                if (!um.has_user(target)) {
+                backend.User target_user = um.get_user(target);
+                if (target_user == null) {
                         error.println("User ID " + target + " is not a valid Webchat user.");
                         return false;
                 }
                 backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
-                if (fm.has_friendship(uid, target)) {
+                if (fm.has_friendship(user.get_user_id(), target)) {
                         error.println("Come on! You guys are friend already!");
                         return false;
                 }
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
-                if (!frm.create_friend_request(uid, target)) {
+                if (!frm.create_friend_request(new backend.FriendRequest(user, target_user))) {
                         error.println("You have sent the request already.");
                         return false;
                 }
                 return true;
         }
         
-        public static boolean confirm_friend_request(int uid, int target, PrintWriter error) {
+        public static boolean confirm_friend_request(backend.User user, int target, PrintWriter error) {
                 backend.UserManager um = backend.SingletonEntities.get_user_manager();
-                if (!um.has_user(target)) {
+                backend.User target_user = um.get_user(target);
+                if (target_user == null) {
                         error.println("User ID " + target + " is not a valid Webchat user.");
                         return false;
                 }
@@ -87,8 +89,8 @@ public class UserOperator {
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
                 backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
                 
-                if (frm.remove_request(target, uid)) {
-                        fm.make_friend(uid, target);
+                if (frm.remove_request(new backend.FriendRequest(target_user, user))) {
+                        fm.make_friend(user.get_user_id(), target);
                         return true;
                 } else {
                         error.println("Good try.");
@@ -96,9 +98,15 @@ public class UserOperator {
                 }
         }
         
-        public static boolean deny_friend_request(int me, int target) {
+        public static boolean deny_friend_request(backend.User me, int target) {
+                backend.UserManager um = backend.SingletonEntities.get_user_manager();
+                backend.User target_user = um.get_user(target);
+                if (target_user == null) {
+                        return false;
+                }
+                
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
-                return frm.remove_request(target, me);
+                return frm.remove_request(new backend.FriendRequest(target_user, me));
         }
         
         public static ArrayList<backend.User> pull_friend_requests(int uid) {

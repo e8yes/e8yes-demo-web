@@ -49,21 +49,23 @@ public class FriendRequestManager {
                 }
         }
         
-        private boolean has_request(Integer uid_a, Integer uid_b) throws SQLException {
+        private boolean has_request(int uid_a, int uid_b) throws SQLException {
                 Statement s = m_conn.get_connection().createStatement();
                 ResultSet result = s.executeQuery("select 1 from friend_request_manager "
                         + "where (uid_a = " + uid_a + ") and (uid_b = " + uid_b + ");");
                 return result.next();
         }
         
-        public boolean create_friend_request(Integer uid_a, Integer uid_b) {
+        public boolean create_friend_request(FriendRequest request) {
                 try {
-                        if (has_request(uid_a, uid_b))
+                        if (has_request(request.sender().get_user_id(), 
+                                        request.receiver().get_user_id()))
                                 return false;
                         Statement s = m_conn.get_connection().createStatement();
                         // Friend request is anti-symmetric.
                         int r = s.executeUpdate("insert into friend_request_manager "
-                                + "(uid_a, uid_b) values (" + uid_a + "," + uid_b + ");");
+                                + "(uid_a, uid_b) values (" + request.sender().get_user_id() + "," 
+                                                            + request.receiver().get_user_id() + ");");
                         return r == 1;
                 } catch (SQLException ex) {
                         Logger.getLogger(FriendRequestManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,12 +73,13 @@ public class FriendRequestManager {
                 }
         }
         
-        public boolean remove_request(Integer uid_a, Integer uid_b) {
+        public boolean remove_request(FriendRequest request) {
                 try {
                         Statement s = m_conn.get_connection().createStatement();
                         // Friend request is anti-symmetric.
                         int r = s.executeUpdate("delete from friend_request_manager "
-                                + "where (uid_a = " + uid_a + " and uid_b = " + uid_b + ");");
+                                + "where (uid_a = " + request.sender().get_user_id() 
+                                  + " and uid_b = " + request.receiver().get_user_id() + ");");
                         return r != 0;
                 } catch (SQLException ex) {
                         Logger.getLogger(FriendRequestManager.class.getName()).log(Level.SEVERE, null, ex);

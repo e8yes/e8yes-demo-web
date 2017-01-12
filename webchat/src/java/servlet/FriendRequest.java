@@ -65,12 +65,14 @@ public class FriendRequest extends HttpServlet {
                 
                 String action = kvs.get("action");
                 String target = kvs.get("target");
+                backend.User user;
                 Integer uid;
                 Integer target_id;
                 try {
                         if (action == null || target == null) {
                                 throw new Exception();
                         }
+                        user = (backend.User) request.getSession().getAttribute("user");
                         uid = (Integer) request.getSession().getAttribute("user_id");
                         target_id = Integer.parseInt(target);
                 } catch (Exception ex) {
@@ -81,17 +83,17 @@ public class FriendRequest extends HttpServlet {
                 
                 switch (action) {
                         case "send":
-                                if (!app.UserOperator.send_friend_request(uid, target_id, out)) {
+                                if (!app.UserOperator.send_friend_request(user, target_id, out)) {
                                         return ;
                                 }
                                 break;
                         case "confirm":
-                                if (!app.UserOperator.confirm_friend_request(uid, target_id, out)) {
+                                if (!app.UserOperator.confirm_friend_request(user, target_id, out)) {
                                         return ;
                                 }
                                 break;
                         case "deny":
-                                if (!app.UserOperator.deny_friend_request(uid, target_id)) {
+                                if (!app.UserOperator.deny_friend_request(user, target_id)) {
                                         out.println("You haven't made such friend request.");
                                         return ;
                                 }

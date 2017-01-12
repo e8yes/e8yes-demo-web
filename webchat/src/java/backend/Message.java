@@ -21,7 +21,7 @@ package backend;
  *
  * @author davis
  */
-public class Message {
+public class Message implements Notification {
         private final int       m_user_a;
         private final int       m_user_b;
         private final int       m_fid;
@@ -93,5 +93,15 @@ public class Message {
         @Override
         public String toString() {
                 return "Message = [" + m_user_a + "," + m_user_b + "," + m_timestamp + "," + m_content + "]";
+        }
+
+        @Override
+        public Type get_type() {
+                return Notification.Type.Message;
+        }
+
+        @Override
+        public int get_target_user() {
+                return m_user_b;
         }
 }
