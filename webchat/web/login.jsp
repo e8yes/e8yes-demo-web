@@ -9,14 +9,38 @@
 <!DOCTYPE html>
 <html>
     <head>
-        
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to Webchat</title>
+        <style type="text/css">
+            body {
+                background-image: url("https://www.eventival.eu/files/174/editions/1007/films/251294/accessories/208388.jpg");
+                background-repeat: no-repeat;  
+                background-size: cover;
+                background-attachment: fixed;
+                background-position: center;
+            }
+            .container{
+                width: 300px;
+                height: 200px;
+                text-align: center;
+                background-color: rgba(52, 73, 94, 0.7);
+                margin: 0 auto;
+                margin-top: 2%;
+            }
+            .container img{
+                width: 120px;
+                height: 120px;
+                margin-top: -30px;
+            }
+            
+        </style>
     </head>
     <body>
-        <h1>Webchat <%= request.getSession().getAttribute("version_string") %></h1>
-        
-        <div style="text-align: center; margin-top: 5%;">
+        <h1>Webchat <%= request.getSession().getAttribute("version_string")%></h1>
+
+        <div class="container">
+            <img src="mitsuha.jpg">
             <form action=<%=request.getContextPath() + "/Login"%> method="POST">
                 <div>
                     <div style="display: inline-block;">User ID: </div>
@@ -31,7 +55,7 @@
             </form>
             <a href=<%=request.getContextPath() + "/join.jsp"%>>Join Webchat Now</a>
         </div>
-        
+
         <p style="font-size: 10pt; margin-top: 5%; text-align: right; margin-right: 5%;">Copylefted by Chifeng, 2017</p>
 
         <div>Just as it seems, </div>
@@ -44,9 +68,9 @@
         <p style="font-size: 8pt;">
             You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </p>
-        
+
         <p>You may obtain the entirety of the program over <a href="https://github.com/DaviesX/webchat">here</a></p>
-        
+
         <a href="https://opensource.org/licenses/gpl-2.0.php">GPL2 -- Free of beer; Free of compliance.</a>
     </body>
 </html>
