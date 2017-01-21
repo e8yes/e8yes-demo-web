@@ -77,7 +77,7 @@
             }
         </style>
     </head>
-    <a class="about" href=<%=request.getContextPath() + "/about.jsp"%>>About WebChat</a>
+    <a class="about" href=<%=request.getContextPath() + "/about.jsp"%>><i class="fa fa-question-circle-o" aria-hidden="true"></i> About WebChat</a>
 
     <body>
         <h1><i class="fa fa-comments-o" aria-hidden="true"></i> Webchat <%= request.getSession().getAttribute("version_string")%></h1>
