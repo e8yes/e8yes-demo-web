@@ -42,7 +42,7 @@
                 position: absolute;
                 font-family: "FontAwesome";
                 font-size: 15px;
-                padding-top: 1.7%;
+                padding-top: 1.9%;
                 padding-left: 0.3%;
             }
             .form-input:nth-child(2)::before{
