@@ -17,6 +17,7 @@
  */
 package backend;
 
+import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,14 +30,16 @@ import java.util.logging.Logger;
  */
 public class UUIDGenerator {
         
-        private final DBConnector     m_conn;
-        private final String          m_entity_name;
-        private final int             m_min;
+        private final DBConnector       m_conn;
+        private final String            m_entity_name;
+        private final int               m_min;
+        private final Mutex             m_mutex;
         
         public UUIDGenerator(DBConnector conn, String entity_name, int min) {
                 m_conn = conn;
                 m_entity_name = entity_name;
                 m_min = min;
+                m_mutex = new Mutex();
                 try {
                         // Create the counter table.
                         Statement s = m_conn.get_connection().createStatement();
@@ -51,6 +54,8 @@ public class UUIDGenerator {
         
         public Integer get_next() {
                 try {
+                        m_mutex.acquire();
+                        
                         Statement s = m_conn.get_connection().createStatement();
                         int r = s.executeUpdate("update " + m_entity_name
                                 + " set uid = uid + 1 "
@@ -62,11 +67,18 @@ public class UUIDGenerator {
                                         + " values(0, " + m_min + ");");
                         }
                         ResultSet result = s.executeQuery("select uid from " + m_entity_name + " where bid = 0");
+                        
+                        m_mutex.release();
+                        
                         if (result.next())
                                 return result.getInt("uid");
                         else
                                 return null;
                 } catch (SQLException ex) {
+                        Logger.getLogger(UUIDGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                        m_mutex.release();
+                        return null;
+                } catch (InterruptedException ex) {
                         Logger.getLogger(UUIDGenerator.class.getName()).log(Level.SEVERE, null, ex);
                         return null;
                 }
