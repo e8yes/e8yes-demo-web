@@ -17,8 +17,9 @@
  */
 package backend;
 
+import org.json.simple.JSONObject;
+
 /**
- *
  * @author davis
  */
 public class FriendRequest implements Notification {
@@ -47,5 +48,13 @@ public class FriendRequest implements Notification {
         @Override
         public int get_target_user() {
                 return m_receiver.get_user_id();
+        }
+
+        @Override
+        public JSONObject jsonize() {
+                JSONObject o = new JSONObject();
+                o.put("sender", m_sender);
+                o.put("receiver", m_receiver);
+                return o;
         }
 }

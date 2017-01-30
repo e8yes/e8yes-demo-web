@@ -17,25 +17,20 @@
  */
 package servlet;
 
+import app.NotificationPoller;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
 /**
- *
  * @author davis
  */
 public class PollChat extends HttpServlet {
         
-        private static final int LONG_POLL_CONNECTION_LENGTH = 30;
+        private static final int LONG_POLL_CONNECTION_LENGTH = 30000;
 
         /**
          * Processes requests for both HTTP <code>GET</code> and
@@ -56,26 +51,8 @@ public class PollChat extends HttpServlet {
                         return;
                 }
                 
-                app.MessageInterruptListener listener = new app.MessageInterruptListener();
-                app.MessageOperator.create_realtime_channel(uid, listener);
-                
-                // Wait roughly LONG_POLL_CONNECTION_LENGTH seconds unless the listener get interrupted.
-                for (int i = 0; i < LONG_POLL_CONNECTION_LENGTH; i ++) {
-                        ArrayList<backend.Message> msgs = listener.fetch_messages();
-                        if (msgs != null) {
-                                PrintWriter out = response.getWriter();
-                                MessageJSONizer.jsonize(msgs, out);
-                                break;
-                        }
-                        
-                        try {
-                                Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                                Logger.getLogger(PollChat.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                }
-                
-                app.MessageOperator.close_realtime_channel(uid);
+                NotificationPoller.poll_notification(uid, 100, LONG_POLL_CONNECTION_LENGTH, 
+                                                               response.getWriter());
         }
 
         // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

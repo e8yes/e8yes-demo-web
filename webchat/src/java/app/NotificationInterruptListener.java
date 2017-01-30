@@ -23,33 +23,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author davis
  */
-public class  MessageInterruptListener implements backend.MessageListener {
+public class  NotificationInterruptListener implements backend.NotificationListener {
         
-        private final ArrayList<backend.Message>        m_messages;
+        private final ArrayList<backend.Notification>   m_notifications;
         private boolean                                 m_has_started = false;
         private final Mutex                             m_mutex;
         
-        public MessageInterruptListener() {
+        public NotificationInterruptListener() {
                 m_mutex = new Mutex();
-                m_messages = new ArrayList<>();
+                m_notifications = new ArrayList<>();
         }
         
         private boolean is_hold_condition() {
-                return !m_has_started || m_messages.isEmpty();
+                return !m_has_started || m_notifications.isEmpty();
         }
         
-        public ArrayList<backend.Message> fetch_messages() {
+        public ArrayList<backend.Notification> fetch_notifications() {
                 try {
                         boolean ret_val;
                         m_mutex.acquire();
                         ret_val = !is_hold_condition();
                         m_mutex.release();
-                        return ret_val ? m_messages : null;
+                        return ret_val ? m_notifications : null;
                 } catch (InterruptedException ex) {
-                        Logger.getLogger(MessageInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(NotificationInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
                         return null;
                 }
         }
@@ -61,23 +60,23 @@ public class  MessageInterruptListener implements backend.MessageListener {
                         m_has_started = true;
                         m_mutex.release();
                 } catch (InterruptedException ex) {
-                        Logger.getLogger(MessageInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(NotificationInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
         }
 
         @Override
-        public boolean on_receive(backend.Message msg) {
+        public boolean on_receive(backend.Notification noti) {
                 try {
                         boolean ret_val;
                         m_mutex.acquire();
                         ret_val = is_hold_condition();
                         if (ret_val) {
-                                m_messages.add(msg);
+                                m_notifications.add(noti);
                         }
                         m_mutex.release();
                         return ret_val;
                 } catch (InterruptedException ex) {
-                        Logger.getLogger(MessageInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(NotificationInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
                         return false;
                 }
         }

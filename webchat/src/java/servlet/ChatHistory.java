@@ -17,6 +17,7 @@
  */
 package servlet;
 
+import app.NotificationJSONizer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -62,13 +63,15 @@ public class ChatHistory extends HttpServlet {
                                 return;
                         }
 
-                        ArrayList<backend.Message> msgs = app.MessageOperator.get_chat_history(fid, uid, msg_count);
+                        ArrayList<backend.Notification> msgs = 
+                                (ArrayList<backend.Notification>) app.MessageOperator.get_chat_history(
+                                                                                        fid, uid, msg_count);
                         if (msgs == null) {
                                 out.println("Internal error 500, " + uid + " - " + sender_uid);
                                 return;
                         }
                         
-                        MessageJSONizer.jsonize(msgs, out);
+                        NotificationJSONizer.jsonize(msgs, out);
                 }
         }
 

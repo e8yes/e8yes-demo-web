@@ -17,38 +17,32 @@
  */
 package backend;
 
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author davis
  */
-public class CommunicationManager {
+public class Notifier {
         
-        private final Notifier          m_notifier;
-        private final MessageManager    m_mgr;
+        private final ConcurrentHashMap<Integer, NotificationListener>  m_channels;
         
-        public CommunicationManager(MessageManager mgr, Notifier notifier) {
-                m_notifier = notifier;
-                m_mgr = mgr;
+        public Notifier() {
+                m_channels = new ConcurrentHashMap<>();
         }
         
         public void register_channel(int user_id, NotificationListener listener) {
-                m_notifier.register_channel(user_id, listener);
-
-                // Check any unread messages.
-                ArrayList<Message> msgs = m_mgr.pull_unread_messages(user_id);
-                msgs.stream().forEach(listener::on_receive);
-                listener.start();
+                m_channels.put(user_id, listener);
         }
         
         public void close_channel(int user_id) {
-                m_notifier.close_channel(user_id);
+                m_channels.remove(user_id);
         }
         
-        public boolean send_message(Message msg) {
-                if (m_notifier.send_notification(msg)) {
-                        msg.read();
-                }
-                return m_mgr.new_message(msg);
+        public boolean send_notification(Notification noti) {
+                NotificationListener channel = m_channels.get(noti.get_target_user());
+                if (channel != null) {
+                        return channel.on_receive(noti);
+                } else
+                        return false;
         }
 }

@@ -17,6 +17,8 @@
  */
 package backend;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author davis
@@ -103,5 +105,14 @@ public class Message implements Notification {
         @Override
         public int get_target_user() {
                 return m_user_b;
+        }
+
+        @Override
+        public JSONObject jsonize() {
+                JSONObject o = new JSONObject();
+                o.put("sender", m_user_a);
+                o.put("receiver", m_user_b);
+                o.put("content", m_content);
+                return o;
         }
 }

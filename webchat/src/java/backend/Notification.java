@@ -17,6 +17,8 @@
  */
 package backend;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author davis
@@ -29,6 +31,7 @@ public interface Notification {
                 ApplicationNews
         };
         
-        Type    get_type();
-        int     get_target_user();
+        Type            get_type();
+        int             get_target_user();
+        JSONObject      jsonize();
 }

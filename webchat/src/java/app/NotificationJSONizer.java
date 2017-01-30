@@ -15,14 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package backend;
+package app;
+
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
- *
  * @author davis
  */
-public interface MessageListener {
-        
-        void start();
-        boolean on_receive(Message msg);
+public class NotificationJSONizer {
+
+        public static void jsonize(ArrayList<backend.Notification> notis, PrintWriter out) {
+                JSONArray a = new JSONArray();
+                notis.stream().forEach((noti) -> {
+                        JSONObject o = noti.jsonize();
+                        o.put("type", noti.get_type().toString());
+                        a.add(o);
+                });
+
+                out.print(a.toString());
+        }
 }

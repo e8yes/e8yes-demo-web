@@ -17,11 +17,11 @@
  */
 package app;
 
+import backend.Notification;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
  * @author davis
  */
 public class MessageOperator {
@@ -35,7 +35,7 @@ public class MessageOperator {
                 return cm.send_message(new backend.Message(sender, receiver, fid, message));
         }
         
-        public static void create_realtime_channel(int uid, backend.MessageListener listener) {
+        public static void create_realtime_channel(int uid, backend.NotificationListener listener) {
                 backend.CommunicationManager cm = backend.SingletonEntities.get_communication_manager();
                 cm.register_channel(uid, listener);
         }
@@ -45,7 +45,7 @@ public class MessageOperator {
                 cm.close_channel(uid);
         }
         
-        public static ArrayList<backend.Message> get_chat_history(int fid, int uid, int n) {
+        public static ArrayList<? extends Notification> get_chat_history(int fid, int uid, int n) {
                 backend.MessageManager mm = backend.SingletonEntities.get_message_manager();
                 return mm.pull_messages(fid, uid, n);
         }
