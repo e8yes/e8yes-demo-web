@@ -1,6 +1,6 @@
 # webchat
 
-http://174.77.41.231:8080/webchat/
+http://174.77.41.231/webchat/
 
 ![alt tag](screenshots/login.png)
 
