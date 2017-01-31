@@ -53,8 +53,9 @@ public class UserManager {
                 m_conn = conn;
                 m_uid_counter = cnt;
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("create table if not exists user_manager("
+                        Statement s = m_conn.get_statement();
+                        m_conn.process_update(s,
+				  "create table if not exists user_manager("
                                 + "uid integer,"
                                 + "alias varchar(20),"
                                 + "pwd varchar(20),"
@@ -66,8 +67,9 @@ public class UserManager {
         
         public boolean has_user(int user_id) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select 1 from user_manager where uid = " + user_id + ";");
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s,
+				"select 1 from user_manager where uid = " + user_id + ";");
                         return result.next();
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,8 +79,9 @@ public class UserManager {
         
         public User get_user(int user_id) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select * from user_manager where uid = " + user_id + ";");
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s,
+					"select * from user_manager where uid = " + user_id + ";");
                         if (result.next()) {
                                 return new User(result.getInt("uid"), result.getString("alias"), result.getString("pwd"));
                         } else {
@@ -92,12 +95,12 @@ public class UserManager {
         
         public boolean set_user(User user) {
                 try {
-                        PreparedStatement ps = m_conn.get_connection().prepareStatement(
+                        PreparedStatement ps = m_conn.get_prepared_statement(
                                 "update user_manager set pwd = ?, alias = ? where uid = ?;");
                         ps.setString(1, user.get_password());
                         ps.setString(2, user.get_alias());
                         ps.setInt(3, user.get_user_id());
-                        return ps.executeUpdate() == 1;
+                        return m_conn.process_update(ps) == 1;
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
                         return false;
@@ -108,12 +111,11 @@ public class UserManager {
                 Integer uid = m_uid_counter.get_next();
                 if (uid == null) return uid;
                 try {
-                        PreparedStatement ps = m_conn.get_connection().prepareStatement(
-                                "insert into user_manager (uid, alias, pwd) "
-                                        + " values (" + uid + ",?,?);");
+                        PreparedStatement ps = m_conn.get_prepared_statement(
+                                "insert into user_manager (uid, alias, pwd) values (" + uid + ",?,?);");
                         ps.setString(1, user_name);
                         ps.setString(2, password);
-                        if (1 == ps.executeUpdate())
+                        if (1 == m_conn.process_update(ps))
                                 return uid;
                         else
                                 return null;
@@ -125,8 +127,8 @@ public class UserManager {
         
         public boolean remove_user(int user_id) {
                  try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("delete from user_manager where uid = " + user_id + ";");
+                        Statement s = m_conn.get_statement();
+                        m_conn.process_update(s, "delete from user_manager where uid = " + user_id + ";");
                         return true;
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);

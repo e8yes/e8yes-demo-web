@@ -35,8 +35,9 @@ public class FriendRequestManager {
         public FriendRequestManager(DBConnector conn, UserManager user_mgr) {
                 m_conn = conn;
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("create table if not exists friend_request_manager("
+                        Statement s = m_conn.get_statement();
+                        m_conn.process_update(s, 
+			          "create table if not exists friend_request_manager("
                                 + "uid_a integer,"
                                 + "uid_b integer,"
                                 + "primary key (uid_a, uid_b),"
@@ -50,8 +51,9 @@ public class FriendRequestManager {
         }
         
         private boolean has_request(int uid_a, int uid_b) throws SQLException {
-                Statement s = m_conn.get_connection().createStatement();
-                ResultSet result = s.executeQuery("select 1 from friend_request_manager "
+                Statement s = m_conn.get_statement();
+                ResultSet result = m_conn.process_query(s,
+			  "select 1 from friend_request_manager "
                         + "where (uid_a = " + uid_a + ") and (uid_b = " + uid_b + ");");
                 return result.next();
         }
@@ -61,9 +63,10 @@ public class FriendRequestManager {
                         if (has_request(request.sender().get_user_id(), 
                                         request.receiver().get_user_id()))
                                 return false;
-                        Statement s = m_conn.get_connection().createStatement();
+                        Statement s = m_conn.get_statement();
                         // Friend request is anti-symmetric.
-                        int r = s.executeUpdate("insert into friend_request_manager "
+                        int r = m_conn.process_update(s,
+				  "insert into friend_request_manager "
                                 + "(uid_a, uid_b) values (" + request.sender().get_user_id() + "," 
                                                             + request.receiver().get_user_id() + ");");
                         return r == 1;
@@ -75,9 +78,10 @@ public class FriendRequestManager {
         
         public boolean remove_request(FriendRequest request) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
+                        Statement s = m_conn.get_statement();
                         // Friend request is anti-symmetric.
-                        int r = s.executeUpdate("delete from friend_request_manager "
+                        int r = m_conn.process_update(s,
+				  "delete from friend_request_manager "
                                 + "where (uid_a = " + request.sender().get_user_id() 
                                   + " and uid_b = " + request.receiver().get_user_id() + ");");
                         return r != 0;
@@ -89,8 +93,8 @@ public class FriendRequestManager {
         
         public ArrayList<User> request_from(Integer uid) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery(
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s,
                                   " select UM." + UserManager.get_pk_name() + ", UM." + UserManager.get_alias_name() + " from "
                                 + " (select FRM.uid_b from friend_request_manager FRM where FRM.uid_a = " + uid + ") as FR, "
                                 + UserManager.get_entity_name() + " UM "
@@ -109,8 +113,8 @@ public class FriendRequestManager {
         
         public ArrayList<User> request_to(Integer uid) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery(
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s,
                                   " select UM." + UserManager.get_pk_name() + ", UM." + UserManager.get_alias_name() + " from "
                                 + " (select FRM.uid_a from friend_request_manager FRM where FRM.uid_b = " + uid + ") as FR, "
                                 + UserManager.get_entity_name() + " UM "

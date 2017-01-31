@@ -46,8 +46,9 @@ public class FriendshipManager {
                 m_conn = conn;
                 m_fid_gen = fid_gen;
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("create table if not exists friendship_manager("
+                        Statement s = m_conn.get_statement();
+                        m_conn.process_update(s,
+				"create table if not exists friendship_manager("
                                 + "uid_a integer,"
                                 + "uid_b integer,"
                                 + "fid integer,"
@@ -62,8 +63,9 @@ public class FriendshipManager {
         }
         
         private boolean _has_friendship(Integer uid_a, Integer uid_b) throws SQLException {
-                Statement s = m_conn.get_connection().createStatement();
-                ResultSet result = s.executeQuery("select 1 from friendship_manager "
+                Statement s = m_conn.get_statement();
+                ResultSet result = m_conn.process_query(s, 
+			  "select 1 from friendship_manager "
                         + "where (uid_a = " + uid_a + ") and (uid_b = " + uid_b + ");");
                 return result.next();
         }
@@ -81,16 +83,18 @@ public class FriendshipManager {
                 try {
                         if (_has_friendship(uid_a, uid_b))
                                 return false;
-                        Statement s = m_conn.get_connection().createStatement();
+                        Statement s = m_conn.get_statement();
                         // Friendship is symmetric.
                         int fid = m_fid_gen.get_next();
                         if (!Objects.equals(uid_a, uid_b)) {
-                                int r = s.executeUpdate("insert into friendship_manager "
+                                int r = m_conn.process_update(s, 
+				          "insert into friendship_manager "
                                         + "(uid_a, uid_b, fid) values (" + uid_a + "," + uid_b + "," + fid + "),"
                                                                    + "(" + uid_b + "," + uid_a + "," + fid + ");");
                                 return r == 2;
                         } else {
-                                int r = s.executeUpdate("insert into friendship_manager "
+                                int r = m_conn.process_update(s,
+		                          "insert into friendship_manager "
                                         + "(uid_a, uid_b, fid) values (" + uid_a + "," + uid_b + "," + fid + ");");
                                 return r == 1;
                         }
@@ -102,9 +106,10 @@ public class FriendshipManager {
         
         public boolean end_friendship(Integer uid_a, Integer uid_b) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
+                        Statement s = m_conn.get_statement();
                         // Friendship is symmetric.
-                        int r = s.executeUpdate("delete from friendship_manager "
+                        int r = m_conn.process_update(s,
+				  "delete from friendship_manager "
                                 + "where (uid_a = " + uid_a + " and uid_b = " + uid_b + ") or "
                                       + "(uid_a = " + uid_b + " and uid_b = " + uid_a + ");");
                         return r != 0;
@@ -116,8 +121,8 @@ public class FriendshipManager {
         
         public ArrayList<User> friends_of(Integer uid) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery(
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s,
                                   " select UM." + UserManager.get_pk_name() + ","
                                 + "        UM." + UserManager.get_alias_name() + " from "
                                 + " (select FM.uid_b from friendship_manager FM where FM.uid_a = " + uid + ") as FS, "
@@ -137,8 +142,9 @@ public class FriendshipManager {
 
         public Integer get_friend_id(int uid, int friend) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select fid from friendship_manager "
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s,
+				  "select fid from friendship_manager "
                                 + "where uid_a = " + uid + " and uid_b = " + friend + ";");
                         if (result.next()) {
                                 return result.getInt("fid");

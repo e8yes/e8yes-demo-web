@@ -42,8 +42,9 @@ public class UUIDGenerator {
                 m_mutex = new Mutex();
                 try {
                         // Create the counter table.
-                        Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("create table if not exists " + m_entity_name + "("
+                        Statement s = m_conn.get_statement();
+                        m_conn.process_update(s,
+				  "create table if not exists " + m_entity_name + "("
                                 + "bid integer,"
                                 + "uid integer,"
                                 + "primary key (bid));");
@@ -56,17 +57,20 @@ public class UUIDGenerator {
                 try {
                         m_mutex.acquire();
                         
-                        Statement s = m_conn.get_connection().createStatement();
-                        int r = s.executeUpdate("update " + m_entity_name
+                        Statement s = m_conn.get_statement();
+                        int r = m_conn.process_update(s,
+				  "update " + m_entity_name
                                 + " set uid = uid + 1 "
                                 + " where bid = 0");
                         if (r == 0) {
                                 // The row for ClickCounter doesn't exist yet.
-                                s.executeUpdate("insert into " + m_entity_name
+                                m_conn.process_update(s,
+					  "insert into " + m_entity_name
                                         + " (bid, uid) "
                                         + " values(0, " + m_min + ");");
                         }
-                        ResultSet result = s.executeQuery("select uid from " + m_entity_name + " where bid = 0");
+                        ResultSet result = m_conn.process_query(s,
+					"select uid from " + m_entity_name + " where bid = 0");
                         
                         m_mutex.release();
                         

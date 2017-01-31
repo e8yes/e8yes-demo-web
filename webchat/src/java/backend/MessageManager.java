@@ -39,8 +39,9 @@ public class MessageManager {
         public MessageManager(DBConnector conn, FriendshipManager fs_mgr) {
                 m_conn = conn;
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("create table if not exists message_manager("
+                        Statement s = m_conn.get_statement();
+                        m_conn.process_update(s,
+				  "create table if not exists message_manager("
                                 + "fid integer,"
                                 + "t timestamp default current_timestamp,"
                                 + "uid_b integer not null,"
@@ -52,8 +53,10 @@ public class MessageManager {
                                         + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
                                         + " on delete cascade) "
                                 + " default character set=utf8;");
-                        s.executeUpdate("create table if not exists unread_message_manager like message_manager;");
-                        s.executeUpdate("alter table unread_message_manager add index (uid_b) using btree;");
+                        m_conn.process_update(s, 
+				"create table if not exists unread_message_manager like message_manager;");
+                        m_conn.process_update(s,
+				"alter table unread_message_manager add index (uid_b) using btree;");
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -62,8 +65,8 @@ public class MessageManager {
         private boolean insert_message(Message msg, String entity) {
                 Timestamp t = new Timestamp(msg.get_timestamp());
                 try {
-                        PreparedStatement ps = m_conn.get_connection().prepareStatement(
-                                "insert into " + entity + " (uid_a, uid_b, fid, t, msg) "
+                        PreparedStatement ps = m_conn.get_prepared_statement(
+                                  "insert into " + entity + " (uid_a, uid_b, fid, t, msg) "
                                 + " values (" + msg.sender() + "," 
                                               + msg.receiver() + ","
                                               + msg.get_fid() + "," 
@@ -71,7 +74,7 @@ public class MessageManager {
                                               + "?);");
                         ps.setTimestamp(1, t);
                         ps.setString(2, msg.get_content());
-                        int r = ps.executeUpdate();
+                        int r = m_conn.process_update(ps);
                         return r == 1;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,11 +93,11 @@ public class MessageManager {
         private boolean clear_unread_messages(int receiver, long timestamp) {
                 Timestamp t = new Timestamp(timestamp);
                 try {
-                        PreparedStatement ps = m_conn.get_connection().prepareStatement(
+                        PreparedStatement ps = m_conn.get_prepared_statement(
                                 "delete from unread_message_manager "
                                 + " where uid_b = " + receiver + " and t <= ?;");
                         ps.setTimestamp(1, t);
-                        int q = ps.executeUpdate();
+                        int q = m_conn.process_update(ps);
                         return true;
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,8 +107,9 @@ public class MessageManager {
         
         private boolean clear_unread_messages(int uid) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        s.executeUpdate("delete from unread_message_manager "
+                        Statement s = m_conn.get_statement();
+                        m_conn.process_update(s,
+				  "delete from unread_message_manager "
                                 + " where uid_b = " + uid + ";");
                         return true;
                 } catch (SQLException ex) {
@@ -116,8 +120,9 @@ public class MessageManager {
         
         public ArrayList<Message> pull_messages(int fid, int uid, int n) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select * from message_manager "
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s, 
+				  "select * from message_manager "
                                 + "where fid = " + fid
                                 + " order by t desc "
                                 + " limit " + n + ";");
@@ -142,8 +147,9 @@ public class MessageManager {
         
         public ArrayList<Message> pull_unread_messages(int uid_receiver) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select * from unread_message_manager "
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s,
+				  "select * from unread_message_manager "
                                 + " where uid_b = " + uid_receiver
                                 + " order by t asc;");
                         ArrayList<Message> msgs = new ArrayList<>();
@@ -167,8 +173,9 @@ public class MessageManager {
 
         public HashMap<Integer, Integer> get_number_unread(int uid_receiver) {
                 try {
-                        Statement s = m_conn.get_connection().createStatement();
-                        ResultSet result = s.executeQuery("select uid_a, count(*) as n from unread_message_manager "
+                        Statement s = m_conn.get_statement();
+                        ResultSet result = m_conn.process_query(s,
+				  "select uid_a, count(*) as n from unread_message_manager "
                                 + " where uid_b = " + uid_receiver
                                 + " group by uid_a;");
                         HashMap<Integer, Integer> num = new HashMap<>();
