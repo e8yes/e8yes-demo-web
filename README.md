@@ -1,6 +1,6 @@
-# webchat
+# webchat 
 
-http://174.77.41.231/webchat/
+A web-based immediate messaging application.
 
 ![alt tag](screenshots/login.png)
 
