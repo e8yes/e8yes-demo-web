@@ -15,24 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package backend;
-
-import org.json.simple.JSONObject;
+package app;
 
 /**
- *
  * @author davis
  */
-public interface Notification {
-        
-        public enum Type {
-                Message,
-                FriendRequest,
-		FriendRequestConfirm,
-                ApplicationNews
-        };
-        
-        Type            get_type();
-        int             get_target_user();
-        JSONObject      jsonize();
+public class AppConstants {
+	public static String friend_request_message(String me) {
+		return me + " wants to add you as his friend!";
+	}
+	
+	public static String friend_request_confirm_message(String me) {
+		return me + " has confirmed you as his friend!";
+	}
 }

@@ -54,8 +54,8 @@
         <servlet-class>servlet.FireChat</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PollChat</servlet-name>
-        <servlet-class>servlet.PollChat</servlet-class>
+        <servlet-name>PollNotification</servlet-name>
+        <servlet-class>servlet.PollNotification</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>FriendRequest</servlet-name>
@@ -90,8 +90,8 @@
         <url-pattern>/FireChat</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PollChat</servlet-name>
-        <url-pattern>/PollChat</url-pattern>
+        <servlet-name>PollNotification</servlet-name>
+        <url-pattern>/PollNotification</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FriendRequest</servlet-name>

@@ -23,6 +23,7 @@ package backend;
  */
 public interface NotificationListener {
         
-        void start();
+	void hold();
+        void release();
         boolean on_receive(Notification noti);
 }

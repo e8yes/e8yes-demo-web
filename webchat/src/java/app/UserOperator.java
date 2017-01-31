@@ -71,10 +71,13 @@ public class UserOperator {
                         return false;
                 }
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
-                if (!frm.create_friend_request(new backend.FriendRequest(user, target_user))) {
+		backend.FriendRequest fr = new backend.FriendRequest(user, target_user);
+                if (!frm.create_friend_request(fr)) {
                         error.println("You have sent the request already.");
                         return false;
                 }
+		backend.Notifier notifier = backend.SingletonEntities.get_notifier();
+		notifier.send_notification(fr);
                 return true;
         }
         
@@ -89,8 +92,11 @@ public class UserOperator {
                 backend.FriendRequestManager frm = backend.SingletonEntities.get_friend_request_manager();
                 backend.FriendshipManager fm = backend.SingletonEntities.get_friendship_manager();
                 
-                if (frm.remove_request(new backend.FriendRequest(target_user, user))) {
+		backend.FriendRequest fr = new backend.FriendRequest(target_user, user);
+                if (frm.remove_request(fr)) {
                         fm.make_friend(user.get_user_id(), target);
+			backend.Notifier notifier = backend.SingletonEntities.get_notifier();
+			notifier.send_notification(new backend.FriendRequestConfirmation(fr));
                         return true;
                 } else {
                         error.println("Good try.");

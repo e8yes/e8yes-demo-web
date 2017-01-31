@@ -69,17 +69,16 @@ public class FriendRequest extends HttpServlet {
                 Integer uid;
                 Integer target_id;
                 try {
-                        if (action == null || target == null) {
+			user = (backend.User) request.getSession().getAttribute("user");
+                        if (user == null || action == null || target == null) {
                                 throw new Exception();
                         }
-                        user = (backend.User) request.getSession().getAttribute("user");
                         uid = (Integer) request.getSession().getAttribute("user_id");
                         target_id = Integer.parseInt(target);
                 } catch (Exception ex) {
                         out.print("Malformed request: " + qs);
                         return ;
                 }
-                
                 
                 switch (action) {
                         case "send":

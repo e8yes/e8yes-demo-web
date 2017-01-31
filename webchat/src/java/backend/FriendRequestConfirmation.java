@@ -22,41 +22,33 @@ import org.json.simple.JSONObject;
 /**
  * @author davis
  */
-public class FriendRequest implements Notification {
-        
-        protected final User      m_sender;
-        protected final User      m_receiver;
-        
-        public FriendRequest(User sender, User receiver) {
-                m_sender = sender;
-                m_receiver = receiver;
-        }
-        
-        public User sender() {
-                return m_sender;
-        }
-        
-        public User receiver() {
-                return m_receiver;
-        }
-
-        @Override
+public class FriendRequestConfirmation extends FriendRequest {
+	
+	public FriendRequestConfirmation(FriendRequest fr) {
+		super(fr.sender(), fr.receiver());
+	}
+	
+	public FriendRequestConfirmation(User sender, User receiver) {
+		super(sender, receiver);
+	}
+	
+	@Override
         public Type get_type() {
-                return Notification.Type.FriendRequest;
+                return Notification.Type.FriendRequestConfirm;
         }
-
-        @Override
-        public int get_target_user() {
-                return m_receiver.get_user_id();
+	
+	@Override
+        public int get_target_user()  {
+                return m_sender.get_user_id();
         }
-
-        @Override
+	
+	@Override
         public JSONObject jsonize() {
                 JSONObject o = new JSONObject();
-                o.put("sender", m_sender.get_user_id());
-		o.put("sender_alias", m_sender.get_alias());
-                o.put("receiver",  m_receiver.get_user_id());
-		o.put("receiver_alias", m_receiver.get_alias());
+                o.put("sender",  m_receiver.get_user_id());
+		o.put("sender_alias", m_receiver.get_alias());
+                o.put("receiver", m_sender.get_user_id());
+		o.put("receiver_alias", m_sender.get_alias());
                 return o;
         }
 }

@@ -21,7 +21,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import servlet.PollChat;
+import servlet.PollNotification;
 
 /**
  * @author davis
@@ -43,7 +43,7 @@ public class NotificationPoller {
                         try {
                                 Thread.sleep(delay);
                         } catch (InterruptedException ex) {
-                                Logger.getLogger(PollChat.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(PollNotification.class.getName()).log(Level.SEVERE, null, ex);
                         }
                 }
                 

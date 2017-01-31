@@ -97,20 +97,42 @@
             }
         }
         
-        function chat_poll() {
+        function process_chat_messages(chat) {
+            if (current_chat_target !== null && chat.sender === current_chat_target) {
+                append_to_chat_box(chat.sender, chat.content);
+                // if (!window_focusing)
+                pop_notification(chat.sender, chat.content);
+            } else
+                pop_notification(chat.sender, chat.content);
+        }
+        
+        function process_friend_request(fr) {
+            if (fr.type === "FriendRequest") {
+                pop_notification(fr.sender_alias + "(" + fr.sender + ")", 
+                                 " wanted to add you as his friend.");
+            } else {
+                pop_notification(fr.sender_alias + "(" + fr.sender + ")", 
+                                 " has confirmed your friend request.");
+            }
+            location.reload();
+        }
+        
+        function notification_poll() {
             // Long polling.
-            $.ajax({url: "PollChat",
+            $.ajax({url: "PollNotification",
                     success: function(result) {
                         try {
-                            var chats = JSON.parse(result);
-                            
-                            for (var i = 0; i < chats.length; i ++) {
-                                if (current_chat_target !== null && chats[i].sender === current_chat_target) {
-                                    append_to_chat_box(chats[i].sender, chats[i].content);
-                                    if (!window_focusing)
-                                        pop_notification(chats[i].sender, chats[i].content);
-                                } else
-                                    pop_notification(chats[i].sender, chats[i].content);
+                            var notifications = JSON.parse(result);
+                            for (var i = 0; i < notifications.length; i ++) {
+                                switch (notifications[i].type) {
+                                    case "Message":
+                                        process_chat_messages(notifications[i]);
+                                        break;
+                                    case "FriendRequest":
+                                    case "FriendRequestConfirm":
+                                        process_friend_request(notifications[i]);
+                                        break;
+                                }
                             }
                         } catch (ex) {
                             if (result !== "") {
@@ -118,7 +140,7 @@
                                 return ;
                             }
                         }
-                        chat_poll();
+                        notification_poll();
             }});
         }
         
@@ -286,6 +308,6 @@
         
         update_chat_title();
         update_chat_history();
-        chat_poll();
+        notification_poll();
     </script>
 </html>

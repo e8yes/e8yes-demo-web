@@ -38,7 +38,6 @@ public class CommunicationManager {
                 // Check any unread messages.
                 ArrayList<Message> msgs = m_mgr.pull_unread_messages(user_id);
                 msgs.stream().forEach(listener::on_receive);
-                listener.start();
         }
         
         public void close_channel(int user_id) {

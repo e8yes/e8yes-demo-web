@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author davis
  */
-public class PollChat extends HttpServlet {
+public class PollNotification extends HttpServlet {
         
         private static final int LONG_POLL_CONNECTION_LENGTH = 30000;
 

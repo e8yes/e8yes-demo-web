@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class  NotificationInterruptListener implements backend.NotificationListener {
         
         private final ArrayList<backend.Notification>   m_notifications;
-        private boolean                                 m_has_started = false;
+        private boolean                                 m_has_started = true;
         private final Mutex                             m_mutex;
         
         public NotificationInterruptListener() {
@@ -52,9 +52,20 @@ public class  NotificationInterruptListener implements backend.NotificationListe
                         return null;
                 }
         }
+	
+	@Override
+	public void hold() {
+		try {
+			m_mutex.acquire();
+			m_has_started = false;
+			m_mutex.release();
+		} catch (InterruptedException ex) {
+			Logger.getLogger(NotificationInterruptListener.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
         
         @Override
-        public void start() {
+        public void release() {
                 try {
                         m_mutex.acquire();
                         m_has_started = true;
