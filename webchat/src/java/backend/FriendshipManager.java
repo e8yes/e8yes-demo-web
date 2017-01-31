@@ -57,6 +57,7 @@ public class FriendshipManager {
                                         + UserManager.get_entity_name() + UserManager.get_key_name() + " on delete cascade,"
                                 + "foreign key (uid_b) references "
                                         + UserManager.get_entity_name() + UserManager.get_key_name() + " on delete cascade);");
+			m_conn.set_table_utf8_character_set("friendship_manager");
                 } catch (SQLException ex) {
                         Logger.getLogger(FriendshipManager.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -48,6 +48,7 @@ public class UUIDGenerator {
                                 + "bid integer,"
                                 + "uid integer,"
                                 + "primary key (bid));");
+			m_conn.set_table_utf8_character_set(m_entity_name);
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
                 }

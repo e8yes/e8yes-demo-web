@@ -32,8 +32,7 @@ public final class SingletonEntities {
         private static CommunicationManager COMMUNICATION_MANAGER;
         private static Notifier NOTIFIER;
         
-        public static void init() 
-        {
+        public static void init() {
                 DB_CONNECTOR = new DBConnector();
                 UID_COUNTER = new UserIDGenerator(DB_CONNECTOR);
                 FID_COUNTER = new FriendshipIDGenerator(DB_CONNECTOR);
@@ -44,6 +43,10 @@ public final class SingletonEntities {
                 NOTIFIER = new Notifier();
                 COMMUNICATION_MANAGER = new CommunicationManager(MESSAGE_MANAGER, NOTIFIER);
         }
+	
+	public static void destroy() {
+		DB_CONNECTOR.destroy();
+	}
         
         public static UserManager get_user_manager() {
                 return USER_MANAGER;

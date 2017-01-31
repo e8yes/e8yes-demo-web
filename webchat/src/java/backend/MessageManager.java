@@ -29,7 +29,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author davis
  */
 public class MessageManager {
@@ -47,16 +46,26 @@ public class MessageManager {
                                 + "uid_b integer not null,"
                                 + "uid_a integer not null,"
                                 + "msg text,"
+				+ "primary key (fid, t),"
+                                + "foreign key (uid_a, uid_b) references " 
+                                        + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
+                                        + " on delete cascade);");
+			m_conn.process_update(s,
+				  "create table if not exists unread_message_manager("
+                                + "fid integer,"
+                                + "t timestamp default current_timestamp,"
+                                + "uid_b integer not null,"
+                                + "uid_a integer not null,"
+                                + "msg text,"
                                 + "unique key (uid_b, uid_a, t),"
                                 + "primary key (fid, t),"
                                 + "foreign key (uid_a, uid_b) references " 
                                         + FriendshipManager.get_entity_name() + FriendshipManager.get_key_name() 
-                                        + " on delete cascade) "
-                                + " default character set=utf8;");
-                        m_conn.process_update(s, 
-				"create table if not exists unread_message_manager like message_manager;");
+                                        + " on delete cascade);");
                         m_conn.process_update(s,
 				"alter table unread_message_manager add index (uid_b) using btree;");
+			m_conn.set_table_utf8_character_set("message_manager");
+			m_conn.set_table_utf8_character_set("unread_message_manager");
                 } catch (SQLException ex) {
                         Logger.getLogger(MessageManager.class.getName()).log(Level.SEVERE, null, ex);
                 }

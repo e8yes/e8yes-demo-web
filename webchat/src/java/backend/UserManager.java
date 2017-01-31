@@ -59,7 +59,8 @@ public class UserManager {
                                 + "uid integer,"
                                 + "alias varchar(20),"
                                 + "pwd varchar(20),"
-                                + "primary key (uid)) default character set=utf8;");
+                                + "primary key (uid));");
+			m_conn.set_table_utf8_character_set("user_manager");
                 } catch (SQLException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
                 }

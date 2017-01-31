@@ -18,7 +18,6 @@
 package app;
 
 /**
- *
  * @author davis
  */
 public class App {
@@ -28,9 +27,10 @@ public class App {
         }
         
         public static String get_version_string() {
-                return "0.1";
+                return "1.0-a1";
         }
         
         public static void destroy() {
+		backend.SingletonEntities.destroy();
         }
 }
