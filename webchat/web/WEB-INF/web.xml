@@ -65,6 +65,10 @@
         <servlet-name>ChatTo</servlet-name>
         <servlet-class>servlet.ChatTo</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DBConsole</servlet-name>
+        <servlet-class>servlet.DBConsole</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern/>
@@ -100,6 +104,10 @@
     <servlet-mapping>
         <servlet-name>ChatTo</servlet-name>
         <url-pattern>/ChatTo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DBConsole</servlet-name>
+        <url-pattern>/db</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

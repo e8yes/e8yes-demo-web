@@ -48,6 +48,10 @@ public final class SingletonEntities {
 		DB_CONNECTOR.destroy();
 	}
         
+	public static DBConnector get_db_connector() {
+		return DB_CONNECTOR;
+	}
+	
         public static UserManager get_user_manager() {
                 return USER_MANAGER;
         }

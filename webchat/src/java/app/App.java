@@ -33,4 +33,8 @@ public class App {
         public static void destroy() {
 		backend.SingletonEntities.destroy();
         }
+	
+	public static String get_db_console_url() {
+		return backend.SingletonEntities.get_db_connector().get_db_console_location();
+	}
 }

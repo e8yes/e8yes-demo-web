@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.h2.tools.Server;
 
 /**
  * @author davis
@@ -32,6 +33,8 @@ import java.util.logging.Logger;
 public final class DBConnector {
 
 	private Connection m_db_conn = null;	// Database connection.
+	private Server m_tcp_server = null;
+	private Server m_web_server = null;
 
 	private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
 	private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/webchat?useUnicode=true&characterEncoding=utf8";
@@ -71,6 +74,16 @@ public final class DBConnector {
 	public DBConnector() {
 		try {
 			create_connection();
+			
+			if (DRIVER.equals(H2_DRIVER)) {
+				// Start web console.
+				m_tcp_server = Server.createTcpServer("-tcp", "-tcpAllowOthers").start();
+				m_web_server = Server.createWebServer("-web", "-webAllowOthers").start();
+				
+				Logger.getLogger(DBConnector.class.getName()).log(
+					Level.INFO, "H2 Web server started at: {0}", m_web_server.getURL());
+			}
+			
 			set_database_utf8_character_set("webchat");
 		} catch (SQLException ex) {
 			Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,11 +92,25 @@ public final class DBConnector {
 	
 	public void destroy() {
 		try {
-			if (!m_db_conn.isClosed()) {
+			if (m_db_conn != null && !m_db_conn.isClosed()) {
 				m_db_conn.close();
+			}
+			if (m_tcp_server != null) {
+				m_tcp_server.stop();
+			}
+			if (m_web_server != null) {
+				m_web_server.stop();
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+	
+	public String get_db_console_location() {
+		if (m_web_server != null) {
+			return m_web_server.getURL();
+		} else {
+			return "/";
 		}
 	}
 
