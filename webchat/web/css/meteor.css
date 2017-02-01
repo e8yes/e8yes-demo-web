@@ -21,21 +21,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 body.background {
-    background-image: url("../man_meteor.jpg");
     background-repeat: no-repeat;  
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
 }
-.container{
+
+body.background-meteor {
+    background-image: url("../img/man_meteor.jpg");
+}
+
+body.background-hk {
+    background-image: url("../img/hong-kong_1920.jpg");
+}
+
+.container {
     width: 260px;
     height: 150px;
     text-align: center;
     background-color: rgba(52, 73, 94, 0.7);
     margin: 0 auto;
     margin-top: 1%;
-    color: #9B59B6;
 }
+
+.container-transparent {
+    background-color: rgba(52, 73, 94, 0.5);
+}
+
 input{
     height: 20px;
     width: 140px;
@@ -46,17 +58,19 @@ input{
 }
 .form-input::before{
     content: "\f2c0";
+    color: #9B59B6;
     position: absolute;
     font-family: "FontAwesome";
     font-size: 15px;
     padding-top: 1.9%;
     padding-left: 0.3%;
+    display: inline-block;
 }
 .form-input:nth-child(2)::before{
     content: "\f023";
     padding-left: 0.4%;
 }
-.btn-login{
+.btn{
     width: 100px; 
     padding-left: 10%;
     padding-right: 10%;

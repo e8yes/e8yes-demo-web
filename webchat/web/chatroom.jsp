@@ -10,36 +10,37 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/font-awesome.css">
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/meteor.css">
+        <script src="<%=request.getContextPath()%>/js/jquery-1.12.4.js"></script>
+        <script src="<%=request.getContextPath()%>/js/jquery-ui.js"></script>
+        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script lang="javascript" src="js/jquery-3.1.1.js"></script>
         <title>Webchat@<%=request.getSession().getAttribute("alias") %> </title>
     </head>
-    <body>
-        <div>
-        <!--<a style = "text-decoration: none; color: black;" href=<%=request.getContextPath()%>>-->
-            <h1 style="display: inline-block;">Webchat <%= request.getSession().getAttribute("version_string") %></h1>
-            <div style="float: right; margin-right: 2%; margin-top: 1%; font-size: 10pt; ">
-                Page owner: <%=request.getSession().getAttribute("alias") %> 
-                           (<%=request.getSession().getAttribute("user_id").toString() %>)
-            </div>
-        <!--</a>-->
-        </div>
-        
+    
+    
+    <%@include file="user_tag.jsp" %>
+    <body class="background background-hk">
+        <%@include file="heading.jsp" %>
         <div style="text-align: center;">
             <h4>Add contact</h4>
             <div>
                 <input id="t_friend_request_id" type="text" />
-                <button id="b_send_request">Send request</button>
+                <button class="btn" id="b_send_request">Send request</button>
             </div>
 
              <h4>Friend requests</h4>
              <%
-                    ArrayList<backend.User> friend_requests = (ArrayList<backend.User>) request.getAttribute("friend_request_list");
+                    ArrayList<backend.User> friend_requests = 
+                        (ArrayList<backend.User>) request.getAttribute("friend_request_list");
                     if (friend_requests == null || friend_requests.isEmpty()) {
                             out.println("<div>You don't have any friend request.</div>");
                     } else {
                         for (backend.User friend_request: friend_requests) {
-                                out.println("<button name='b_friend_request' id='" + friend_request.get_user_id() + "'" + ">" 
+                                out.println("<button name='b_friend_request' id='" 
+                                            + friend_request.get_user_id() + "'" + ">" 
                                             + "from " + friend_request.get_alias() 
                                             + "(" + friend_request.get_user_id() + ")" + "</button>");
                         }
@@ -66,7 +67,7 @@
             </div>
 
             <p>
-                <button id="b_unfriend">Unfriend</button>
+                <button class="btn" id="b_unfriend">Unfriend</button>
             </p>
 
             <h4 id="h_chat_title"></h4>
@@ -76,7 +77,7 @@
             <div>
                 <textarea id="t_msg_box" cols="50" rows="5"></textarea>
             </div>
-            <button id="b_send">Send</button>
+            <button class="btn" id="b_send">Send</button>
         </div>
     </body>
     
