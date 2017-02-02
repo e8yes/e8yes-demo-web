@@ -54,12 +54,11 @@ public class Login extends HttpServlet {
                 
                 backend.User user = app.UserOperator.verify(user_id, password);
                 if (user != null) {
-                        request.getSession().setAttribute("user", user);
                         request.getSession().setAttribute("user_id", user.get_user_id());
                         request.getSession().setAttribute("alias", user.get_alias());
-                        request.getRequestDispatcher("/ChatroomLoader").forward(request, response);
+                        response.sendRedirect("ChatroomLoader");
                 } else {
-                        request.getRequestDispatcher("401.jsp").forward(request, response);
+			response.sendRedirect("401.jsp");
                 }
         }
 
