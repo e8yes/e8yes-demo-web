@@ -1,6 +1,6 @@
-# webchat 
+# X3ddemoweb 
 
-A web-based immediate messaging application.
+A web platform for project showcase.
 
 ![alt tag](screenshots/webchat.png)
 
