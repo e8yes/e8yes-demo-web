@@ -151,7 +151,7 @@
             $("div[name='" + sender + "']").html(n + 1);
             
             // Play sound.
-            new Audio("snd/bing.mp3").play();
+            new Audio("snd/flyffnotif.wav").play();
             
             // Pop out notification.
             if (!("Notification" in window)) {

@@ -22,7 +22,7 @@
     <%@include file="about_dialog.jsp" %>
     <%@include file="about_tag.jsp" %>
     
-    <body class="background background-meteor">
+    <body class="background background-hk">
         <%@include file="heading.jsp" %>
         <div class="container">
             <form action=<%=request.getContextPath() + "/Login"%> method="POST">
