@@ -18,6 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 -->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<h1>
-    <i class="fa fa-comments-o" aria-hidden="true"></i>Webchat <%=request.getSession().getAttribute("version_string")%>
+<h1 class="animated fadeInLeft fasterAnimation">
+    <i class="fa fa-comments-o" aria-hidden="true"></i>WebChat <%=request.getSession().getAttribute("version_string")%>
 </h1>

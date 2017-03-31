@@ -35,61 +35,52 @@ body.background-hk {
     background-image: url("../img/hong-kong_1920.jpg");
 }
 
-.container {
-    width: 260px;
-    height: 150px;
-    text-align: center;
-    background-color: rgba(52, 73, 94, 0.7);
-    margin: 0 auto;
-    margin-top: 1%;
+body.background-doge {
+    background-image: url("../img/doge_error.jpg");
 }
 
-.container-transparent {
-    background-color: rgba(52, 73, 94, 0.5);
+.container-down {
+    margin-top: 10%;
 }
 
-input{
-    height: 20px;
-    width: 140px;
-    font-size: 12px;
-    margin-top: 7%;
-    background-color: #fff;
-    padding-left: 8%;
+.shorter-div {
+    width: 50%;
 }
-.form-input::before{
-    content: "\f2c0";
-    color: #9B59B6;
-    position: absolute;
-    font-family: "FontAwesome";
-    font-size: 15px;
-    padding-top: 1.9%;
-    padding-left: 0.3%;
-    display: inline-block;
-}
-.form-input:nth-child(2)::before{
-    content: "\f023";
-    padding-left: 0.4%;
-}
-.btn{
-    width: 100px; 
-    padding-left: 10%;
-    padding-right: 10%;
+
+.btn-login {
+    border-radius: 4px;
     border: none;
     border-radius: 4px;
     color: #fff;
     background-color: #2ECC71;
-    cursor: pointer;
+    display: block;
+    width: 50%;
+    line-height: 9px;
+    margin: auto;
+}
+
+.btn-join {
+    width: 100%;
+    line-height: 9px;
 }
 a{
     color:#fff;
     font-size: 11px;
 }
-.about{
-    color:#42d7f4;
-    font-size: 12px;
-    position: relative;
-    left:92%;
+
+.join-result-a {
+    text-align: center;
 }
+
+.result-font-a {
+    color: #4286f4;
+    font-size: 24px;
+}
+
+.fasterAnimation {
+    -webkit-animation-duration: 0.7s;
+}
+
 h1 {
     position: relative;
     font-size: 35px;
@@ -97,6 +88,11 @@ h1 {
     padding-left: 8%;
     font-family: 'FontAwesome', Apple LiGothic;
 }
+
+h1.h1-error {
+    color: #fff;
+}
+
 .ui-dialog{
     background: #73a09f;
 }
@@ -109,4 +105,19 @@ h1 {
     margin-top: 5%; 
     text-align: right; 
     margin-right: 5%;
+}
+
+.prettyline {
+    height: 5px;
+    border-top: 0;
+    background: #c4e17f;
+    border-radius: 5px;
+    background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+    background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+    background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+    background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+}
+
+.container-bottom {
+    position:absolute; bottom:0;
 }
