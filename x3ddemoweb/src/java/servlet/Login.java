@@ -56,6 +56,7 @@ public class Login extends HttpServlet {
                 if (user != null) {
                         request.getSession().setAttribute("user_id", user.get_user_id());
                         request.getSession().setAttribute("alias", user.get_alias());
+                        request.getSession().setAttribute("user", user);
                         response.sendRedirect("ChatroomLoader");
                 } else {
 			response.sendRedirect("401.jsp");
