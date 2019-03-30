@@ -90,11 +90,11 @@
                 <div class="col-lg-6 pull-left animated fadeInRight fasterAnimation">
                     <div class="pull-right">
                         <div id="chatTitle"></div>
-                        <div>
-                            <textarea id="t_chat_history" cols="50" rows="10" readonly></textarea>
+                        <div class="input-group">
+                            <textarea id="t_chat_history" class="form-control" cols="50" rows="10" readonly></textarea>
                         </div>
                         <div>
-                            <textarea id="t_msg_box" cols="50" rows="5"></textarea>
+                            <textarea id="t_msg_box" class="form-control" cols="50" rows="5"></textarea>
                         </div>
                         <button class="btn btn-success" id="b_send">Send</button>
                     </div>
