@@ -1,4 +1,4 @@
-# X3ddemoweb 
+# X3ddemoweb (legacy)
 
 A web platform for project showcase.
 
