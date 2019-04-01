@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.srvs.AuthService;
+import org.e8yes.srvs.FriendshipService;
 
 /**
  * Adapted from https://github.com/grpc/grpc-java/blob/v1.19.0/examples/src/main/java/io/grpc/examples/helloworld/HelloWorldServer.java
@@ -24,6 +25,7 @@ public class DemoWebServer {
                 int port = 50051;
                 server = ServerBuilder.forPort(port)
                         .addService(new AuthService())
+                        .addService(new FriendshipService())
                         .build()
                         .start();
                 LOGGER.log(Level.INFO, "Server started, listening on {0}", port);

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "generic_exception.proto";
+import "generic_error.proto";
 
 option java_multiple_files = true;
 option java_package = "org.e8yes.srvs";
