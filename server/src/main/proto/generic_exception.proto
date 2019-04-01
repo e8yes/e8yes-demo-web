@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.srvs";
+option java_outer_classname = "GenericExcepProto";
+
+package org.e8yes.srvs;
+
+enum GenericErrType {
+    GET_NoErr = 0;
+    GET_BotDetected = 1;
+}

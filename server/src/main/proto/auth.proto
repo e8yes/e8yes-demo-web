@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+import "generic_exception.proto";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.srvs";
+option java_outer_classname = "AuthProto";
+
+package org.e8yes.srvs;
+
+
+message AuthRequest {
+    string user_name = 1;
+    string password = 2;
+}
+
+enum AuthErrType {
+    AET_NoErr = 0;
+    AET_IncorrectCredential = 1;
+    AET_TooManyAttempts = 2;
+    AET_RequireSecondFactor = 3;
+    AET_Other = 4;
+}
+
+message AuthReply {
+    int32 status = 1;
+    string token = 2;
+    AuthErrType err_type = 3;
+    GenericErrType generic_err_type = 4;
+}
+
+enum RegErrType {
+    RET_NoErr = 0;
+    RET_UserNameConflict = 1;
+    RET_Other = 2;
+}
+
+message RegRequest {
+    string user_name = 1;
+    string password = 2;
+}
+
+message RegReply {
+    int32 status = 1;
+    RegErrType err_type = 2;
+    GenericErrType generic_err_type = 3;
+}
+
+service AuthService {
+  rpc Authorize (AuthRequest) returns (AuthReply) {}
+  rpc Register (RegRequest) returns (RegReply) {}
+}

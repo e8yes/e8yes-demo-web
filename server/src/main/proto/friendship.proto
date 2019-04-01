@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.service";
+option java_outer_classname = "FriendShipProto";
+
+message FriendShip {
+}
+
+message FriendshipRRequest {
+}
+
+message FriendshipRReply {
+}
+
+message AcceptFriendshipRRequest {
+}
+
+message AcceptFriendshipRReply {
+}
+
+message FriendListRequest {
+}
+
+message FriendListReply {
+}
+
+message RemoveFriendRequest {
+}
+
+message RemoveFriendReply {
+}
+
+service FriendshipService {
+    rpc SendFriendshipRequest (FriendshipRRequest) returns (FriendshipRReply) {}
+    rpc AcceptFriendRequest (AcceptFriendshipRRequest) returns (AcceptFriendshipRReply) {}
+    rpc RemoveFriend (RemoveFriendRequest) returns (RemoveFriendReply) {}
+    rpc GetFriendList (FriendListRequest) returns (FriendListReply) {}
+}
