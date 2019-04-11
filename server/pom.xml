@@ -61,6 +61,21 @@
             <artifactId>grpc-stub</artifactId>
             <version>1.19.0</version>
         </dependency>
+        
+        <!-- Data Access -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901-1.jdbc4</version>
+        </dependency>
+
                 
         <!-- Rule engine -->
         <dependency>
@@ -108,8 +123,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>12</source>
-                    <target>12</target>
+                    <source>11</source>
+                    <target>11</target>
                     <debug>true</debug>
                     <optimize>true</optimize>
                 </configuration>
