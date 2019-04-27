@@ -14,7 +14,7 @@ message EtUser  {
     string user_name = 2;
     string alias = 3;
     string passcode = 4;
-    uint64 created_at_us = 5;
+    uint64 created_at_sec = 5;
     uint64 avatar_path = 6;
     UserStatus status = 7;
 }

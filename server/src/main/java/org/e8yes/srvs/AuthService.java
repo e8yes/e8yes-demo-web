@@ -1,6 +1,7 @@
 package org.e8yes.srvs;
 
 import io.grpc.stub.StreamObserver;
+import org.drools.core.util.StringUtils;
 import org.e8yes.srvs.buzlogic.AUserLogic;
 
 /**
@@ -26,7 +27,9 @@ public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
         @Override
         public void 
         register(RegRequest req, StreamObserver<RegReply> res) {
-                EtUser user = AUserLogic.createUser(req.getUserName(), null, req.getPassword());
+                EtUser user = AUserLogic.createUser(req.getUserName(), 
+                                                    StringUtils.EMPTY, 
+                                                    req.getPassword());
                 RegReply reply = RegReply
                         .newBuilder()
                         .setErrType(RegErrType.RET_NoErr)

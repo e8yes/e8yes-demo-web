@@ -17,6 +17,7 @@ import org.e8yes.srvs.dao.mappers.AUserMapper;
 public class DatabaseConnection {
 
         private static SqlSessionFactory fact;
+        private static AUserMapper auserMapper;
 
         private static void
                 init() {
@@ -42,5 +43,13 @@ public class DatabaseConnection {
                         init();
                 }
                 return fact.openSession();
+        }
+
+        public static AUserMapper
+                getAUserMapper() {
+                if (auserMapper == null) {
+                        auserMapper = getSession().getMapper(AUserMapper.class);
+                }
+                return auserMapper;
         }
 }

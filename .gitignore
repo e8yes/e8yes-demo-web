@@ -13,3 +13,4 @@ hs_err_pid*
 /webchat/build/
 /webchat/dist/
 /server/target/
+/server/nbproject/
