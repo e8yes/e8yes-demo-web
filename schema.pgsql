@@ -86,7 +86,7 @@ CREATE SEQUENCE message_queue_id_seq
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE message_quque (
+CREATE TABLE message_queue (
     id BIGINT NOT NULL DEFAULT nextval('message_queue_id_seq'),
     message_id BIGINT NOT NULL,
     receiver_id BIGINT NOT NULL,
