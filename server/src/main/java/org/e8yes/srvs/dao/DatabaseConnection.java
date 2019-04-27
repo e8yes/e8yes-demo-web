@@ -14,7 +14,7 @@ import org.e8yes.srvs.dao.mappers.AUserMapper;
  *
  * @author daviswen
  */
-class Database {
+public class DatabaseConnection {
 
         private static SqlSessionFactory fact;
 

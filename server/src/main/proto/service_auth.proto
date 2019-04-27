@@ -4,7 +4,7 @@ import "generic_error.proto";
 
 option java_multiple_files = true;
 option java_package = "org.e8yes.srvs";
-option java_outer_classname = "AuthProto";
+option java_outer_classname = "ServiceAuthProto";
 
 package org.e8yes.srvs;
 
@@ -44,6 +44,7 @@ message RegReply {
     int32 status = 1;
     RegErrType err_type = 2;
     GenericErrType generic_err_type = 3;
+    uint64 user_id = 4;
 }
 
 service AuthService {
