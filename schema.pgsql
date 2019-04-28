@@ -17,6 +17,24 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 SET default_with_oids = false;
 
+
+CREATE SEQUENCE auser_group_id_seq
+    START WITH 32
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE auser_group (
+    id INT NOT NULL DEFAULT nextval('auser_group_id_seq'),
+    description VARCHAR(256) UNIQUE NOT NULL,
+    permissions BIGINT[] NOT NULL DEFAULT '{}',
+    PRIMARY KEY (id)
+);
+
+CREATE INDEX idx_auser_group_description ON auser_group USING btree (description);
+
+
 CREATE SEQUENCE auser_id_seq
     START WITH 1024
     INCREMENT BY 1
@@ -32,7 +50,9 @@ CREATE TABLE auser (
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     avatar_path BIGINT,
     status INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
+    group_id INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (group_id) REFERENCES auser_group (id) ON DELETE CASCADE
 );
 
 CREATE INDEX idx_auser_user_name ON auser USING btree (user_name);
@@ -95,3 +115,7 @@ CREATE TABLE message_queue (
     FOREIGN KEY (message_id) REFERENCES message (id) ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES auser (id) ON DELETE CASCADE
 )
+
+
+INSERT INTO auser_group(id, description, permissions) VALUES (1, 'SUPERUSER GROUP', ARRAY[]::integer[]);
+INSERT INTO auser(id, user_name, alias, passcode, avatar_path, group_id) VALUES (1, 'root', 'superuser', 'PASS', 0, (SELECT id FROM auser_group WHERE description = 'SUPERUSER GROUP'));
