@@ -59,4 +59,14 @@ public interface AUserMapper {
         public EtUser
                 loadByIdOrUserName(@Param("id") Long id,
                                    @Param("userName") String userName);
+
+        @Select("SELECT "
+                + "     COUNT(u.id) > 0 "
+                + "FROM "
+                + "     auser u "
+                + "WHERE "
+                + "     u.id = #{id} OR u.user_name = #{userName} ")
+        public boolean
+                existsByIdOrUserName(@Param("id") Long id,
+                                     @Param("userName") String userName);
 }
