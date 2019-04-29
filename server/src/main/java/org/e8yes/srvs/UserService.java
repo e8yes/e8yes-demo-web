@@ -1,10 +1,13 @@
 package org.e8yes.srvs;
 
 import io.grpc.stub.StreamObserver;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.drools.core.util.StringUtils;
 import org.e8yes.srvs.buzlogic.AUserGroupLogic;
 import org.e8yes.srvs.buzlogic.AUserLogic;
 import org.e8yes.srvs.buzlogic.ctx.AUserGroupContext;
+import org.e8yes.srvs.buzlogic.errs.ResourceConflictException;
 
 /**
  *
@@ -15,18 +18,29 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         @Override
         public void
                 register(RegRequest req, StreamObserver<RegReply> res) {
-                AUserGroupContext ctx = AUserGroupLogic.getContext();
-                EtUser user = AUserLogic.createBaselineUser(req.getUserName(),
-                                                            StringUtils.EMPTY,
-                                                            req.getPassword(),
-                                                            ctx);
-                RegReply reply = RegReply
-                        .newBuilder()
-                        .setErrType(RegErrType.RET_NoErr)
-                        .setGenericErrType(GenericErrType.GET_NoErr)
-                        .setUserId(user.getId())
-                        .setStatus(200)
-                        .build();
+
+                RegReply reply;
+                try {
+                        EtUser user = AUserLogic.createBaselineUser(req.getUserName(),
+                                                                    StringUtils.EMPTY,
+                                                                    req.getPassword(),
+                                                                    AUserGroupLogic.getContext());
+                        reply = RegReply
+                                .newBuilder()
+                                .setErrType(RegErrType.RET_NoErr)
+                                .setGenericErrType(GenericErrType.GET_NoErr)
+                                .setUserId(user.getId())
+                                .setStatus(200)
+                                .build();
+                } catch (ResourceConflictException ex) {
+                        reply = RegReply
+                                .newBuilder()
+                                .setErrType(RegErrType.RET_UserNameConflict)
+                                .setGenericErrType(GenericErrType.UNRECOGNIZED)
+                                .setStatus(200)
+                                .build();
+                }
+
                 res.onNext(reply);
                 res.onCompleted();
         }

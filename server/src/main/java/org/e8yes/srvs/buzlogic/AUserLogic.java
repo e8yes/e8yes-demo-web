@@ -1,9 +1,12 @@
 package org.e8yes.srvs.buzlogic;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.ibatis.session.SqlSession;
 import org.e8yes.srvs.EtUser;
 import org.e8yes.srvs.EtUserGroup;
 import org.e8yes.srvs.buzlogic.ctx.AUserGroupContext;
+import org.e8yes.srvs.buzlogic.errs.ResourceConflictException;
 import org.e8yes.srvs.dao.DatabaseConnection;
 import org.e8yes.srvs.dao.mappers.AUserMapper;
 import org.mindrot.jbcrypt.BCrypt;
@@ -17,19 +20,24 @@ public class AUserLogic {
 
         public static void
                 init(AUserGroupContext userGroupCtx) {
-                // Create root user.
-                createUser("root",
-                           "superuser",
-                           "c6cefcab-67fc-414d-b105-7ce7f0faae9f",
-                           userGroupCtx.getSystemUserGroup(
-                                   AUserGroupContext.SystemUserGroup.BASELINE_USER_GROUP));
+                try {
+                        // Create root user.
+                        createUser("root",
+                                   "superuser",
+                                   "c6cefcab-67fc-414d-b105-7ce7f0faae9f",
+                                   userGroupCtx.getSystemUserGroup(
+                                           AUserGroupContext.SystemUserGroup.SUPER_USER_GROUP));
+                } catch (ResourceConflictException ex) {
+                        Logger.getLogger(AUserLogic.class.getName()).log(Level.INFO, null, "root user exists.");
+                        Logger.getLogger(AUserLogic.class.getName()).log(Level.INFO, null, ex);
+                }
         }
 
         private static EtUser
                 createUser(String userName,
                            String alias,
                            String passWord,
-                           EtUserGroup userGroup) {
+                           EtUserGroup userGroup) throws ResourceConflictException {
                 SqlSession sess = DatabaseConnection.openSession();
                 AUserMapper mapper = sess.getMapper(AUserMapper.class);
 
@@ -44,7 +52,10 @@ public class AUserLogic {
                         .setGroupId(userGroup.getId())
                         .build();
 
-                mapper.save(user);
+                int rowsAffected = mapper.save(user);
+                if (rowsAffected != 1) {
+                        throw new ResourceConflictException();
+                }
                 sess.commit();
                 DatabaseConnection.closeSession(sess);
                 return user;
@@ -54,7 +65,7 @@ public class AUserLogic {
                 createBaselineUser(String userName,
                                    String alias,
                                    String passWord,
-                                   AUserGroupContext userGroupCtx) {
+                                   AUserGroupContext userGroupCtx) throws ResourceConflictException {
                 return createUser(userName,
                                   alias,
                                   passWord,
