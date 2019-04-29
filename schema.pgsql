@@ -114,8 +114,4 @@ CREATE TABLE message_queue (
     PRIMARY KEY (id),
     FOREIGN KEY (message_id) REFERENCES message (id) ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES auser (id) ON DELETE CASCADE
-)
-
-
-INSERT INTO auser_group(id, description, permissions) VALUES (1, 'SUPERUSER GROUP', ARRAY[]::integer[]);
-INSERT INTO auser(id, user_name, alias, passcode, avatar_path, group_id) VALUES (1, 'root', 'superuser', 'PASS', 0, (SELECT id FROM auser_group WHERE description = 'SUPERUSER GROUP'));
+);

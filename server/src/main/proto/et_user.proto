@@ -17,4 +17,5 @@ message EtUser  {
     uint64 created_at_sec = 5;
     uint64 avatar_path = 6;
     UserStatus status = 7;
+    int32 group_id = 8;
 }

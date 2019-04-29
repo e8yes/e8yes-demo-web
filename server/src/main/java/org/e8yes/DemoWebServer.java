@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.srvs.AuthService;
+import org.e8yes.srvs.EnvironmentContext;
 import org.e8yes.srvs.FriendshipService;
+import org.e8yes.srvs.InitializerService;
 
 /**
  * Adapted from https://github.com/grpc/grpc-java/blob/v1.19.0/examples/src/main/java/io/grpc/examples/helloworld/HelloWorldServer.java
@@ -63,6 +65,7 @@ public class DemoWebServer {
                                            InterruptedException {
                 final DemoWebServer server = new DemoWebServer();
                 server.start();
+                InitializerService.init(new EnvironmentContext(EnvironmentContext.Mode.Prod));
                 server.blockUntilShutdown();
         }
 }

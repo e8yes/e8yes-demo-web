@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.srvs";
+option java_outer_classname = "PermissionProto";
+
+enum Permission  {
+    PERM_USER_GROUP_CREATE = 0;
+    PERM_USER_GROUP_REMOVE = 1;
+    PERM_USER_GROUP_VIEW = 10;
+    PERM_USER_GROUP_ASSIGN = 11;
+    PERM_USER_GROUP_UNASSIGN = 12;
+    PERM_USER_SELF_CREATE = 20;
+    PERM_USER_SELF_REMOVE = 21;
+    PERM_USER_CREATE = 22;
+    PERM_USER_REMOVE = 23;
+}
