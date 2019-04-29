@@ -11,8 +11,9 @@ import org.e8yes.srvs.FriendshipService;
 import org.e8yes.srvs.InitializerService;
 
 /**
- * Adapted from https://github.com/grpc/grpc-java/blob/v1.19.0/examples/src/main/java/io/grpc/examples/helloworld/HelloWorldServer.java
- * 
+ * Adapted from
+ * https://github.com/grpc/grpc-java/blob/v1.19.0/examples/src/main/java/io/grpc/examples/helloworld/HelloWorldServer.java
+ *
  * @author davis
  */
 public class DemoWebServer {

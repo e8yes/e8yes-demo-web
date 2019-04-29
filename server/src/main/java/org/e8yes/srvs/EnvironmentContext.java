@@ -13,7 +13,7 @@ public class EnvironmentContext {
         }
 
         public Mode mode = Mode.Test;
-        
+
         public EnvironmentContext(Mode mode) {
                 this.mode = mode;
         }

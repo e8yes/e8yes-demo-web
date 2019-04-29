@@ -11,11 +11,11 @@ import org.e8yes.srvs.EtUserGroup;
  * @author davis
  */
 public interface AUserGroupMapper {
-        
+
         @Select("SELECT nextval('auser_group_id_seq') ")
         public int
                 reservePk();
-                
+
         @Insert("INSERT INTO "
                 + "     auser_group(id, "
                 + "                 description, "

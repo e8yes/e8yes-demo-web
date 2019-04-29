@@ -77,7 +77,7 @@ public class DatabaseConnection {
                         SqlSession sess = openSession();
                         DatabaseMapper mapper = sess.getMapper(DatabaseMapper.class);
                         List<String> tbNames = mapper.getAllTableNames();
-                        for (String tbName: tbNames) {
+                        for (String tbName : tbNames) {
                                 sess.getConnection()
                                         .createStatement()
                                         .executeUpdate("DELETE FROM " + tbName + " CASCADE ");

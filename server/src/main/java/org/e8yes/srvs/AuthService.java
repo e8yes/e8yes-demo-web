@@ -31,9 +31,9 @@ public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
                 register(RegRequest req, StreamObserver<RegReply> res) {
                 AUserGroupContext ctx = AUserGroupLogic.getContext();
                 EtUser user = AUserLogic.createBaselineUser(req.getUserName(),
-                                                    StringUtils.EMPTY,
-                                                    req.getPassword(),
-                                                    ctx);
+                                                            StringUtils.EMPTY,
+                                                            req.getPassword(),
+                                                            ctx);
                 RegReply reply = RegReply
                         .newBuilder()
                         .setErrType(RegErrType.RET_NoErr)

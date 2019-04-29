@@ -34,7 +34,7 @@ public class AUserGroupLogic {
                 perms.add(Permission.PERM_USER_REMOVE);
                 return perms;
         }
-        
+
         private static Set<Permission> baselineUserPerms() {
                 Set<Permission> perms = new HashSet();
                 perms.add(Permission.PERM_USER_GROUP_VIEW);
@@ -42,7 +42,7 @@ public class AUserGroupLogic {
                 perms.add(Permission.PERM_USER_SELF_REMOVE);
                 return perms;
         }
-        
+
         public static void
                 init() {
                 EtUserGroup superUserGroup = createUserGroup("super_user_group", superUserPerms());

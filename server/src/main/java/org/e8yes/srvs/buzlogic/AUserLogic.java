@@ -5,7 +5,6 @@ import org.e8yes.srvs.EtUser;
 import org.e8yes.srvs.EtUserGroup;
 import org.e8yes.srvs.buzlogic.ctx.AUserGroupContext;
 import org.e8yes.srvs.dao.DatabaseConnection;
-import org.e8yes.srvs.dao.mappers.AUserGroupMapper;
 import org.e8yes.srvs.dao.mappers.AUserMapper;
 import org.mindrot.jbcrypt.BCrypt;
 
