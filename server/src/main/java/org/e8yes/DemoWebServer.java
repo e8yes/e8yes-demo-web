@@ -21,7 +21,7 @@ public class DemoWebServer {
 
   private static final Logger LOGGER = Logger.getLogger(DemoWebServer.class.getName());
 
-   private Server server;
+  private Server server;
 
   private void start() throws IOException {
     /* The port on which the server should run */
