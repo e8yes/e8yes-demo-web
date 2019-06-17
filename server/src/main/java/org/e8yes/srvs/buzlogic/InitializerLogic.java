@@ -7,9 +7,8 @@ package org.e8yes.srvs.buzlogic;
  */
 public class InitializerLogic {
 
-        public static void
-                init() {
-                AUserGroupLogic.init();
-                AUserLogic.init(AUserGroupLogic.getContext());
-        }
+  public static void init() {
+    AUserGroupLogic.init();
+    AUserLogic.init(AUserGroupLogic.getContext());
+  }
 }
