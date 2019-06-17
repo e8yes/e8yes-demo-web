@@ -7,8 +7,8 @@ package org.e8yes.srvs.buzlogic.errs;
  */
 public class ResourceConflictException extends Exception {
 
-        @Override
-        public String getMessage() {
-                return "Resource Conflict";
-        }
+  @Override
+  public String getMessage() {
+    return "Resource Conflict";
+  }
 }

@@ -19,56 +19,51 @@ import org.e8yes.srvs.UserService;
  */
 public class DemoWebServer {
 
-        private static final Logger LOGGER = Logger.getLogger(DemoWebServer.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(DemoWebServer.class.getName());
 
-        private Server server;
+  private Server server;
 
-        private void
-                start() throws IOException {
-                /* The port on which the server should run */
-                int port = 50051;
-                server = ServerBuilder.forPort(port)
-                        .addService(new AuthService())
-                        .addService(new UserService())
-                        .addService(new FriendshipService())
-                        .build()
-                        .start();
-                LOGGER.log(Level.INFO, "Server started, listening on {0}", port);
-                Runtime.getRuntime().addShutdownHook(new Thread() {
-                        @Override
-                        public void run() {
-                                // Use stderr here since the logger may have been reset by its JVM shutdown hook.
-                                System.err.println("*** shutting down gRPC server since JVM is shutting down");
-                                DemoWebServer.this.stop();
-                                System.err.println("*** server shut down");
-                        }
-                });
-        }
+  private void start() throws IOException {
+    /* The port on which the server should run */
+    int port = 50051;
+    server =
+        ServerBuilder.forPort(port)
+            .addService(new AuthService())
+            .addService(new UserService())
+            .addService(new FriendshipService())
+            .build()
+            .start();
+    LOGGER.log(Level.INFO, "Server started, listening on {0}", port);
+    Runtime.getRuntime()
+        .addShutdownHook(
+            new Thread() {
+              @Override
+              public void run() {
+                // Use stderr here since the logger may have been reset by its JVM shutdown hook.
+                System.err.println("*** shutting down gRPC server since JVM is shutting down");
+                DemoWebServer.this.stop();
+                System.err.println("*** server shut down");
+              }
+            });
+  }
 
-        private void
-                stop() {
-                if (server != null) {
-                        server.shutdown();
-                }
-        }
+  private void stop() {
+    if (server != null) {
+      server.shutdown();
+    }
+  }
 
-        /**
-         * Await termination on the main thread since the grpc library uses
-         * daemon threads.
-         */
-        private void
-                blockUntilShutdown() throws InterruptedException {
-                if (server != null) {
-                        server.awaitTermination();
-                }
-        }
+  /** Await termination on the main thread since the grpc library uses daemon threads. */
+  private void blockUntilShutdown() throws InterruptedException {
+    if (server != null) {
+      server.awaitTermination();
+    }
+  }
 
-        public static void
-                main(String[] args) throws IOException,
-                                           InterruptedException {
-                final DemoWebServer server = new DemoWebServer();
-                server.start();
-                InitializerService.init(new EnvironmentContext(EnvironmentContext.Mode.Prod));
-                server.blockUntilShutdown();
-        }
+  public static void main(String[] args) throws IOException, InterruptedException {
+    final DemoWebServer server = new DemoWebServer();
+    server.start();
+    InitializerService.init(new EnvironmentContext(EnvironmentContext.Mode.Prod));
+    server.blockUntilShutdown();
+  }
 }
