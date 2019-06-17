@@ -10,6 +10,6 @@ import org.e8yes.srvs.Permission;
  */
 public class IdentityContext {
 
-  public Long userId;
-  public Set<Permission> perms;
+        public Long userId;
+        public Set<Permission> perms;
 }

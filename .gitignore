@@ -14,7 +14,3 @@ hs_err_pid*
 /webchat/dist/
 /server/target/
 /server/nbproject/
-
-.cache/
-
-./server/.idea/workspace.xml
