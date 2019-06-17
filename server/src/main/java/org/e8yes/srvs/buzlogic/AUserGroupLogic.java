@@ -1,9 +1,7 @@
 package org.e8yes.srvs.buzlogic;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.apache.ibatis.session.SqlSession;
 import org.e8yes.srvs.EtUserGroup;

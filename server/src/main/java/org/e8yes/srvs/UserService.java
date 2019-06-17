@@ -1,12 +1,9 @@
 package org.e8yes.srvs;
 
 import io.grpc.stub.StreamObserver;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.drools.core.util.StringUtils;
 import org.e8yes.srvs.buzlogic.AUserGroupLogic;
 import org.e8yes.srvs.buzlogic.AUserLogic;
-import org.e8yes.srvs.buzlogic.ctx.AUserGroupContext;
 import org.e8yes.srvs.buzlogic.errs.ResourceConflictException;
 
 /**
@@ -18,7 +15,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         @Override
         public void
                 register(RegRequest req, StreamObserver<RegReply> res) {
-
                 RegReply reply;
                 try {
                         EtUser user = AUserLogic.createBaselineUser(req.getUserName(),

@@ -9,6 +9,7 @@ import org.e8yes.srvs.AuthService;
 import org.e8yes.srvs.EnvironmentContext;
 import org.e8yes.srvs.FriendshipService;
 import org.e8yes.srvs.InitializerService;
+import org.e8yes.srvs.UserService;
 
 /**
  * Adapted from
@@ -28,6 +29,7 @@ public class DemoWebServer {
                 int port = 50051;
                 server = ServerBuilder.forPort(port)
                         .addService(new AuthService())
+                        .addService(new UserService())
                         .addService(new FriendshipService())
                         .build()
                         .start();
