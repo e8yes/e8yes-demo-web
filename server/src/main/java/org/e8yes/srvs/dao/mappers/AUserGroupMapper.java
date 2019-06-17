@@ -12,19 +12,20 @@ import org.e8yes.srvs.EtUserGroup;
  */
 public interface AUserGroupMapper {
 
-  @Select("SELECT nextval('auser_group_id_seq') ")
-  public int reservePk();
+        @Select("SELECT nextval('auser_group_id_seq') ")
+        public int
+                reservePk();
 
-  @Insert(
-      "INSERT INTO "
-          + "     auser_group(id, "
-          + "                 description, "
-          + "                 permissions) "
-          + "VALUES "
-          + "     (#{userGroup.id}, "
-          + "      #{userGroup.description}, "
-          + "      #{userGroup.permissionsValueList, typeHandler=org.e8yes.srvs.dao.mappers.handlers.IntegerListTypeHandler}) "
-          + "ON CONFLICT "
-          + "     DO NOTHING ")
-  public int save(@Param("userGroup") EtUserGroup userGroup);
+        @Insert("INSERT INTO "
+                + "     auser_group(id, "
+                + "                 description, "
+                + "                 permissions) "
+                + "VALUES "
+                + "     (#{userGroup.id}, "
+                + "      #{userGroup.description}, "
+                + "      #{userGroup.permissionsValueList, typeHandler=org.e8yes.srvs.dao.mappers.handlers.IntegerListTypeHandler}) "
+                + "ON CONFLICT "
+                + "     DO NOTHING ")
+        public int
+                save(@Param("userGroup") EtUserGroup userGroup);
 }
