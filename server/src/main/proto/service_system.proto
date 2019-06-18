@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "generic_error.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.srvs";
+option java_outer_classname = "ServiceSystemProto";
+
+package org.e8yes.srvs;
+
+message VersionReply {
+    string version = 1;
+}
+
+service SystemService {
+    rpc Version (google.protobuf.Empty) returns (VersionReply) {}
+}

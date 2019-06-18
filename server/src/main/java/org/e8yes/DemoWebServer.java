@@ -5,11 +5,8 @@ import io.grpc.ServerBuilder;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.e8yes.srvs.AuthService;
-import org.e8yes.srvs.EnvironmentContext;
-import org.e8yes.srvs.FriendshipService;
-import org.e8yes.srvs.InitializerService;
-import org.e8yes.srvs.UserService;
+
+import org.e8yes.srvs.*;
 
 /**
  * Adapted from
@@ -31,6 +28,7 @@ public class DemoWebServer {
                         .addService(new AuthService())
                         .addService(new UserService())
                         .addService(new FriendshipService())
+                        .addService(new SystemService())
                         .build()
                         .start();
                 LOGGER.log(Level.INFO, "Server started, listening on {0}", port);
