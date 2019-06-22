@@ -1,11 +1,13 @@
 version: 2
 jobs:
   build:
-    working_directory: ./server
     docker:
       - image: circleci/openjdk:11
     steps:
       - checkout
+      - run:
+          name: Current directory
+          command: ls
       - run:
           name: Run maven test
           command: make test
