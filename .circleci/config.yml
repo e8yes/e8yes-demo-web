@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-sdk
+    steps:
+      - checkout
+      - run:
+        name: Run maven test
+        command: echo "Hello"
