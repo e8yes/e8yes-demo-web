@@ -2,9 +2,9 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:11-sdk
+      - image: circleci/openjdk:11
     steps:
       - checkout
       - run:
-        name: Run maven test
-        command: echo "Hello"
+          name: Run maven test
+          command: cd server && make test
