@@ -7,4 +7,4 @@ jobs:
       - checkout
       - run:
           name: Run maven test
-          command: echo "Hello"
+          command: cd ~/server && make test
