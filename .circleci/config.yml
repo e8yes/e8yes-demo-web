@@ -10,4 +10,4 @@ jobs:
           command: ls
       - run:
           name: Run maven test
-          command: make test
+          command: cd server && make test
