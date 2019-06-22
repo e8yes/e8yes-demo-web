@@ -6,8 +6,5 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Current directory
-          command: ls
-      - run:
           name: Run maven test
           command: cd server && make test
