@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.e8yes.srvs.EtUser;
-import org.e8yes.srvs.buzlogic.ctx.AUserGroupContext;
 import org.e8yes.srvs.buzlogic.errs.ResourceConflictException;
 import org.e8yes.srvs.dao.mappers.AUserMapper;
 
@@ -70,6 +69,8 @@ public class AUserLogicTest {
                 Assertions.assertEquals(loadedUser, user);
 
                 Assertions.assertTrue(AUserLogic.userNameExists(user0Name));
+                
+                DatabaseConnection.closeSession(sess);
         }
 
         @Test

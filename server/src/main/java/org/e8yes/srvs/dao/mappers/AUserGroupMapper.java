@@ -28,4 +28,5 @@ public interface AUserGroupMapper {
                 + "     DO NOTHING ")
         public int
                 save(@Param("userGroup") EtUserGroup userGroup);
+        
 }
