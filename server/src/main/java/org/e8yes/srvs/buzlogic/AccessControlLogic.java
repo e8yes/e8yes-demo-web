@@ -1,6 +1,5 @@
 package org.e8yes.srvs.buzlogic;
 
-import com.auth0.jwt.JWT;
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -11,7 +10,7 @@ import org.e8yes.srvs.EtUserGroup;
 import org.e8yes.srvs.buzlogic.ctx.IdentityContext;
 import org.e8yes.srvs.buzlogic.errs.AccessDeniedException;
 import org.e8yes.srvs.dao.DatabaseConnection;
-import org.e8yes.srvs.dao.mappers.AUserGroupMapper;
+import org.e8yes.srvs.dao.mappers.AUserGroupMapperEx;
 import org.e8yes.srvs.dao.mappers.AUserMapper;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -31,8 +30,7 @@ public class AccessControlLogic {
                         DatabaseConnection.closeSession(sess);
                         throw new AccessDeniedException();
                 }
-                AUserGroupMapper userGroupMapper = sess.getMapper(AUserGroupMapper.class);
-                EtUserGroup userGroup = userGroupMapper.loadById(user.getGroupId());
+                EtUserGroup userGroup = AUserGroupMapperEx.loadById(sess, user.getGroupId());
                 DatabaseConnection.closeSession(sess);
                 try {
                         return Optional.of(
