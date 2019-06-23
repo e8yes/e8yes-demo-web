@@ -33,7 +33,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                                 .newBuilder()
                                 .setErrType(RegErrType.RET_UserNameConflict)
                                 .setGenericErrType(GenericErrType.UNRECOGNIZED)
-                                .setStatus(200)
+                                .setStatus(ex.getStatusCode())
                                 .build();
                 }
 
