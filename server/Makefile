@@ -9,7 +9,7 @@ setup-linux-dbs:
 	./linux-db-setup.sh
 init-linux: init-linux-pkgs create-linux-dbs setup-linux-dbs
 
-install-maven-pkgs:
+install-maven-pkgs: init-linux
 	mvn install
 run: install-maven-pkgs
 	mvn package
