@@ -6,12 +6,13 @@ jobs:
       - image: circleci/postgres:9.6.2-alpine
         environment:
           POSTGRES_USER: postgres
+          POSTGRES_DB: demoweb
           POSTGRES_DB: demowebtest
     steps:
       - checkout
       - run:
           name: Initialize Environment
-          command: cd server && make init
+          command: cd server && make setup-linux-dbs
       - checkout
       - run:
           name: Run maven test
