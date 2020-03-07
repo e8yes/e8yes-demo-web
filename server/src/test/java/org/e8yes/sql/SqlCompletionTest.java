@@ -26,9 +26,9 @@ import org.junit.jupiter.api.Test;
  *
  * @author zjz20
  */
-public class SqlTemplateBuilderTest {
+public class SqlCompletionTest {
         
-        public SqlTemplateBuilderTest() {
+        public SqlCompletionTest() {
         }
         
         public static class UserHasOneCreditCard {
@@ -47,11 +47,11 @@ public class SqlTemplateBuilderTest {
         
          @Test
          public void testOneToOneCase() {
-                 String query = "FROM AUser user JOIN CreditCard card ON "
+                 String query = "AUser user JOIN CreditCard card ON "
                          + "card.userId = user.id WHERE user.joinDate > '2020-1-1'";
                  String completedquery = 
-                        SqlTemplateBuilder.completeSelectQuery(query, UserHasOneCreditCard.class);
-                 String real = "select user.id,user.username,card.id,"
+                        SqlCompletion.completeSelectQuery(query, UserHasOneCreditCard.class);
+                 String real = "SELECT user.id,user.username,card.id,"
                          + "card.number FROM AUser user JOIN CreditCard card ON "
                          + "card.userId = user.id WHERE user.joinDate > '2020-1-1'";
                  Assertions.assertEquals(real, completedquery);
@@ -73,11 +73,11 @@ public class SqlTemplateBuilderTest {
          
          @Test
          public void testOneToManyCase() {
-                 String query = "FROM AUser user JOIN CreditCard cards ON "
+                 String query = "AUser user JOIN CreditCard cards ON "
                          + "cards.userId = user.id WHERE user.joinDate > '2020-1-1'";
                  String completedquery = 
-                        SqlTemplateBuilder.completeSelectQuery(query, UserHasManyCreditCards.class);
-                 String real = "select user.id,user.username,cards.id,"
+                        SqlCompletion.completeSelectQuery(query, UserHasManyCreditCards.class);
+                 String real = "SELECT user.id,user.username,cards.id,"
                          + "cards.number FROM AUser user JOIN CreditCard cards ON "
                          + "cards.userId = user.id WHERE user.joinDate > '2020-1-1'";
                  Assertions.assertEquals(real, completedquery);
