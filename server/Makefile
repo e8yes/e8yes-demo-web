@@ -7,4 +7,4 @@ run:
 	java -jar target/demoweb-server-0.1.1-jar-with-dependencies.jar
 test:
 	mvn install
-	mvn package
+	mvn test

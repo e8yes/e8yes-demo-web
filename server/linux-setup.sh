@@ -1,6 +1,7 @@
 #!/bin/bash
 
-sudo apt install postgresql
+sudo apt install -y maven
+sudo apt install -y postgresql
 
 echo "ALTER USER postgres WITH PASSWORD 'password';" | sudo -u postgres psql demoweb
 
