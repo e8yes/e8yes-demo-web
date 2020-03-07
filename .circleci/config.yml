@@ -3,8 +3,12 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:11
+        environment: 
+          PG_HOST: localhost
+          PG_USER: postgres
       - image: circleci/postgres:latest-postgis
         environment:
+          POSTGRES_DB: postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
     steps:
