@@ -25,7 +25,7 @@ import java.lang.reflect.Field;
  *
  * @author davis
  */
-public class SqlCompletion {
+public class QueryCompletion {
 
     /**
      * It takes in a partial select query and the result class structure and

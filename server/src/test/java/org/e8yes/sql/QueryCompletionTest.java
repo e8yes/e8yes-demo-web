@@ -26,9 +26,9 @@ import org.junit.jupiter.api.Test;
  *
  * @author zjz20
  */
-public class SqlCompletionTest {
+public class QueryCompletionTest {
         
-        public SqlCompletionTest() {
+        public QueryCompletionTest() {
         }
         
         public static class UserHasOneCreditCard {
@@ -50,7 +50,7 @@ public class SqlCompletionTest {
                  String query = "AUser user JOIN CreditCard card ON "
                          + "card.userId = user.id WHERE user.joinDate > '2020-1-1'";
                  String completedquery = 
-                        SqlCompletion.completeSelectQuery(query, UserHasOneCreditCard.class);
+                        QueryCompletion.completeSelectQuery(query, UserHasOneCreditCard.class);
                  String real = "SELECT user.id,user.username,card.id,"
                          + "card.number FROM AUser user JOIN CreditCard card ON "
                          + "card.userId = user.id WHERE user.joinDate > '2020-1-1'";
@@ -76,7 +76,7 @@ public class SqlCompletionTest {
                  String query = "AUser user JOIN CreditCard cards ON "
                          + "cards.userId = user.id WHERE user.joinDate > '2020-1-1'";
                  String completedquery = 
-                        SqlCompletion.completeSelectQuery(query, UserHasManyCreditCards.class);
+                        QueryCompletion.completeSelectQuery(query, UserHasManyCreditCards.class);
                  String real = "SELECT user.id,user.username,cards.id,"
                          + "cards.number FROM AUser user JOIN CreditCard cards ON "
                          + "cards.userId = user.id WHERE user.joinDate > '2020-1-1'";
