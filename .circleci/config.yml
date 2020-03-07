@@ -6,5 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Initialize Environment
+          command: cd server && make init
+      - checkout
+      - run:
           name: Run maven test
           command: cd server && make test
