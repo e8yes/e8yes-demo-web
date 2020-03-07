@@ -1,3 +1,5 @@
+init:
+	./linux-setup.sh
 run:
 	mvn install
 	mvn package
