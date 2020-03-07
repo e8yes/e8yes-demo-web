@@ -8,7 +8,6 @@ import org.e8yes.srvs.EnvironmentContext;
 import org.e8yes.srvs.EtUserGroup;
 import org.e8yes.srvs.Permission;
 import org.e8yes.srvs.dao.DatabaseConnection;
-import org.e8yes.srvs.dao.mappers.AUserGroupMapper;
 import org.e8yes.srvs.dao.mappers.AUserGroupMapperEx;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
