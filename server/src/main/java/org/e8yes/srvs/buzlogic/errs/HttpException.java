@@ -7,8 +7,8 @@ package org.e8yes.srvs.buzlogic.errs;
  */
 public abstract class HttpException extends Exception {
 
-        @Override
-        public abstract String getMessage();
+  @Override
+  public abstract String getMessage();
 
-        public abstract int getStatusCode();
+  public abstract int getStatusCode();
 }

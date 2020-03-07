@@ -1,20 +1,18 @@
 /**
  * e8yes demo web server.
  *
- * Copyright (C) 2020 Yichen Ma Yichen Ma {yichenm2@uci.edu}, Chifeng Wen {daviesx66@gmail.com}
+ * <p>Copyright (C) 2020 Yichen Ma Yichen Ma {yichenm2@uci.edu}, Chifeng Wen {daviesx66@gmail.com}
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
  */
 package org.e8yes.sql;
 
@@ -23,35 +21,32 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Collects information from different sources to build then execute an SQL
- * query.
+ * Collects information from different sources to build then execute an SQL query.
  *
  * @author zjz20
  */
 public class SqlTemplateBuilder {
 
-    private Class entityType;
-    private Optional<String> query = Optional.empty();
+  private Class entityType;
+  private Optional<String> query = Optional.empty();
 
-    /**
-     * Example: query = "AUser user JOIN CreditCard card ON card.userId =
-     * user.id WHERE user.joinDate > '2020-1-1'"
-     *
-     * @param query
-     * @param resultType
-     * @return
-     */
-    public SqlTemplateBuilder withSelect(String query, Class resultType) {
-        this.query = Optional.of(query);
-        this.entityType = resultType;
-        return this;
-    }
+  /**
+   * Example: query = "AUser user JOIN CreditCard card ON card.userId = user.id WHERE user.joinDate
+   * > '2020-1-1'"
+   *
+   * @param query
+   * @param resultType
+   * @return
+   */
+  public SqlTemplateBuilder withSelect(String query, Class resultType) {
+    this.query = Optional.of(query);
+    this.entityType = resultType;
+    return this;
+  }
 
-    public <ReturnType> List<ReturnType> run() throws NoSuchMethodException,
-            InstantiationException,
-            IllegalAccessException,
-            IllegalArgumentException,
-            InvocationTargetException {
-        throw new UnsupportedOperationException();
-    }
+  public <ReturnType> List<ReturnType> run()
+      throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+          IllegalArgumentException, InvocationTargetException {
+    throw new UnsupportedOperationException();
+  }
 }
