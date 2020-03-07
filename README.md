@@ -2,8 +2,8 @@
 A gRPC server for Chat.
 
 ## Setup Requirements
-OS: Debian Linux Distros
-Build tools: GNU Make
+- OS: Debian Linux Distros
+- Build tools: GNU Make
 
 Run `./gitpush.sh` in the top-level directory to initialize the development environment as well as pushing commits to the github repository. Do not recommend running `git push` because that allows you to skip the important automated testing processes.
 
