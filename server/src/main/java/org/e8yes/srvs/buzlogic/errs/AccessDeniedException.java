@@ -1,19 +1,19 @@
 package org.e8yes.srvs.buzlogic.errs;
 
 /**
- * ResourceConflictException
+ * AccessDeniedException
  *
  * @author davis
  */
-public class ResourceConflictException extends HttpException {
+public class AccessDeniedException extends HttpException {
 
   @Override
   public String getMessage() {
-    return "Resource Conflict";
+    return "Access Denied";
   }
 
   @Override
   public int getStatusCode() {
-    return 409;
+    return 401;
   }
 }

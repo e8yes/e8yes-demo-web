@@ -10,12 +10,12 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface DatabaseMapper {
 
-        @Select("SELECT "
-                + "     tb.table_name "
-                + "FROM "
-                + "     information_schema.tables tb "
-                + "WHERE "
-                + "     tb.table_schema='public' ")
-        public List<String>
-                getAllTableNames();
+  @Select(
+      "SELECT "
+          + "     tb.table_name "
+          + "FROM "
+          + "     information_schema.tables tb "
+          + "WHERE "
+          + "     tb.table_schema='public' ")
+  public List<String> getAllTableNames();
 }

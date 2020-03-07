@@ -7,14 +7,14 @@ package org.e8yes.srvs;
  */
 public class EnvironmentContext {
 
-        public enum Mode {
-                Prod,
-                Test
-        }
+  public enum Mode {
+    Prod,
+    Test
+  }
 
-        public Mode mode = Mode.Test;
+  public Mode mode = Mode.Test;
 
-        public EnvironmentContext(Mode mode) {
-                this.mode = mode;
-        }
+  public EnvironmentContext(Mode mode) {
+    this.mode = mode;
+  }
 }

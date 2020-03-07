@@ -13,60 +13,47 @@ import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 
-/**
- *
- * @author davis
- */
+/** @author davis */
 @MappedJdbcTypes(JdbcType.ARRAY)
 public class IntegerListTypeHandler extends BaseTypeHandler<List> {
 
-        @Override
-        public void
-                setNonNullParameter(PreparedStatement ps,
-                                    int col,
-                                    List arr,
-                                    JdbcType jdbcType) throws SQLException {
-                Connection conn = ps.getConnection();
-                ps.setArray(col, conn.createArrayOf("int", arr.toArray()));
-        }
+  @Override
+  public void setNonNullParameter(PreparedStatement ps, int col, List arr, JdbcType jdbcType)
+      throws SQLException {
+    Connection conn = ps.getConnection();
+    ps.setArray(col, conn.createArrayOf("int", arr.toArray()));
+  }
 
-        @Override
-        public List<Integer>
-                getNullableResult(ResultSet rs,
-                                  String colName) throws SQLException {
-                Array arr = rs.getArray(colName);
-                if (arr != null) {
-                        Integer[] intArr = (Integer[]) arr.getArray();
-                        return Arrays.asList(intArr);
-                } else {
-                        return new ArrayList();
-                }
-        }
+  @Override
+  public List<Integer> getNullableResult(ResultSet rs, String colName) throws SQLException {
+    Array arr = rs.getArray(colName);
+    if (arr != null) {
+      Integer[] intArr = (Integer[]) arr.getArray();
+      return Arrays.asList(intArr);
+    } else {
+      return new ArrayList();
+    }
+  }
 
-        @Override
-        public List<Integer>
-                getNullableResult(ResultSet rs,
-                                  int col) throws SQLException {
-                Array arr = rs.getArray(col);
-                if (arr != null) {
-                        Integer[] intArr = (Integer[]) arr.getArray();
-                        return Arrays.asList(intArr);
-                } else {
-                        return new ArrayList();
-                }
-        }
+  @Override
+  public List<Integer> getNullableResult(ResultSet rs, int col) throws SQLException {
+    Array arr = rs.getArray(col);
+    if (arr != null) {
+      Integer[] intArr = (Integer[]) arr.getArray();
+      return Arrays.asList(intArr);
+    } else {
+      return new ArrayList();
+    }
+  }
 
-        @Override
-        public List<Integer>
-                getNullableResult(CallableStatement cs,
-                                  int col) throws SQLException {
-                Array arr = cs.getArray(col);
-                if (arr != null) {
-                        Integer[] intArr = (Integer[]) arr.getArray();
-                        return Arrays.asList(intArr);
-                } else {
-                        return new ArrayList();
-                }
-        }
-
+  @Override
+  public List<Integer> getNullableResult(CallableStatement cs, int col) throws SQLException {
+    Array arr = cs.getArray(col);
+    if (arr != null) {
+      Integer[] intArr = (Integer[]) arr.getArray();
+      return Arrays.asList(intArr);
+    } else {
+      return new ArrayList();
+    }
+  }
 }

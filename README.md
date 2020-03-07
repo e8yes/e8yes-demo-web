@@ -1,13 +1,17 @@
-# X3ddemoweb 
+# Chat Server 
+A gRPC server for Chat.
 
-A web platform for project showcase.
+## Setup Requirements
+- OS: Debian Linux Distros
+- Build tools: GNU Make
 
-![alt tag](screenshots/webchat.png)
+Run `./gitpush.sh` in the top-level directory to initialize the development environment as well as pushing commits to the github repository. Do not recommend running `git push` because that allows you to skip the important automated testing processes.
 
-![alt tag](screenshots/b.png)
+### Client
+ - [Android](https://github.com/e8yes/e8yes-chat-android)
+ - [iOS](https://github.com/e8yes/e8yes-chat-ios)
 
-Created by [Chifeng Wen](https://github.com/DaviesX), Zhaonian Luan.  
-Many thanks to [FontAwesome](http://fontawesome.io/) for providing amazing CSS font templates.
+### Note
+`legacy-jee` branch contains a deprecated Java-EE version and a web client.
 
-The Notification ("webchat/web/snd/flyffnotif.wav") uses sound from freesound by user grey24 ( https://www.freesound.org/people/grey24/sounds/316798/ )
-
+Created by [Chifeng Wen](https://www.linkedin.com/in/chifeng-wen-392b41ba/), [Zhaonian Luan](https://www.linkedin.com/in/zhaonianluan/).
