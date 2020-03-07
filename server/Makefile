@@ -1,4 +1,5 @@
 init:
+	chmod +x linux-setup.sh
 	./linux-setup.sh
 run:
 	mvn install
