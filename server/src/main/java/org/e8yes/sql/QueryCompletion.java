@@ -20,8 +20,6 @@ import java.lang.reflect.Field;
 
 /**
  * Functions to automate SQL query completion via reflection.
- *
- * @author davis
  */
 public class QueryCompletion {
 

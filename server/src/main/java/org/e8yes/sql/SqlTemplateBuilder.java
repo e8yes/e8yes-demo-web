@@ -1,7 +1,7 @@
 /**
  * e8yes demo web server.
  *
- * <p>Copyright (C) 2020 Yichen Ma Yichen Ma {yichenm2@uci.edu}, Chifeng Wen {daviesx66@gmail.com}
+ * <p>Copyright (C) 2020 Yichen Ma {yichenm2@uci.edu}, Chifeng Wen {daviesx66@gmail.com}
  *
  * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -22,8 +22,6 @@ import java.util.Optional;
 
 /**
  * Collects information from different sources to build then execute an SQL query.
- *
- * @author zjz20
  */
 public class SqlTemplateBuilder {
 
