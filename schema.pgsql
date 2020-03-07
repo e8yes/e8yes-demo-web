@@ -9,7 +9,7 @@ SET row_security = off;
 
 ALTER DATABASE demoweb OWNER TO postgres;
 
-CREATE EXTENSION btree_gin;
+CREATE EXTENSION IF NOT EXISTS btree_gin;
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
@@ -18,31 +18,31 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 
-CREATE SEQUENCE auser_group_id_seq
+CREATE SEQUENCE IF NOT EXISTS auser_group_id_seq
     START WITH 32
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE auser_group (
+CREATE TABLE IF NOT EXISTS auser_group (
     id INT NOT NULL DEFAULT nextval('auser_group_id_seq'),
     description VARCHAR(256) UNIQUE NOT NULL,
     permissions BIGINT[] NOT NULL DEFAULT '{}',
     PRIMARY KEY (id)
 );
 
-CREATE INDEX idx_auser_group_description ON auser_group USING btree (description);
+CREATE INDEX IF NOT EXISTS idx_auser_group_description ON auser_group USING btree (description);
 
 
-CREATE SEQUENCE auser_id_seq
+CREATE SEQUENCE IF NOT EXISTS auser_id_seq
     START WITH 1024
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE auser (
+CREATE TABLE IF NOT EXISTS auser (
     id BIGINT NOT NULL DEFAULT nextval('auser_id_seq'),
     user_name VARCHAR(256) UNIQUE NOT NULL,
     alias VARCHAR(256) NOT NULL,
@@ -55,10 +55,10 @@ CREATE TABLE auser (
     FOREIGN KEY (group_id) REFERENCES auser_group (id) ON DELETE CASCADE
 );
 
-CREATE INDEX idx_auser_user_name ON auser USING btree (user_name);
+CREATE INDEX IF NOT EXISTS idx_auser_user_name ON auser USING btree (user_name);
 
 
-CREATE TABLE friend_request (
+CREATE TABLE IF NOT EXISTS friend_request (
     sender_id BIGINT NOT NULL,
     receiver_id BIGINT NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -68,10 +68,10 @@ CREATE TABLE friend_request (
     FOREIGN KEY (receiver_id) REFERENCES auser (id) ON DELETE CASCADE
 );
 
-CREATE INDEX idx_friend_request_created_at ON friend_request USING btree (created_at);
+CREATE INDEX IF NOT EXISTS idx_friend_request_created_at ON friend_request USING btree (created_at);
 
 
-CREATE TABLE friend (
+CREATE TABLE IF NOT EXISTS friend (
     sender_id BIGINT NOT NULL,
     receiver_id BIGINT NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -82,14 +82,14 @@ CREATE TABLE friend (
 );
 
 
-CREATE SEQUENCE message_id_seq
+CREATE SEQUENCE IF NOT EXISTS message_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE message (
+CREATE TABLE IF NOT EXISTS message (
     id BIGINT NOT NULL DEFAULT nextval('message_id_seq'),
     sender_id BIGINT NOT NULL,
     msg VARCHAR(2048),
@@ -99,14 +99,14 @@ CREATE TABLE message (
 );
 
 
-CREATE SEQUENCE message_queue_id_seq
+CREATE SEQUENCE IF NOT EXISTS message_queue_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE message_queue (
+CREATE TABLE IF NOT EXISTS message_queue (
     id BIGINT NOT NULL DEFAULT nextval('message_queue_id_seq'),
     message_id BIGINT NOT NULL,
     receiver_id BIGINT NOT NULL,
