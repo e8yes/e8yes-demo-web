@@ -6,7 +6,7 @@ jobs:
       - image: circleci/postgres:latest-postgis
         environment:
           POSTGRES_USER: postgres
-	  POSTGRES_PASSWORD: password
+          POSTGRES_PASSWORD: password
     steps:
       - checkout
       - run:
