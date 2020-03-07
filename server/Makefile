@@ -1,6 +1,6 @@
 init-linux-pkgs:
-	sudo apt install -y maven
-	sudo apt install -y postgresql
+	chmod +x linux-pkgs-setup.sh
+	./linux-pkgs-setup.sh
 create-linux-dbs:
 	chmod +x linux-db-create.sh
 	./linux-db-create.sh
@@ -15,3 +15,6 @@ run: install-maven-pkgs
 	mvn package
 	java -jar target/demoweb-server-0.1.1-jar-with-dependencies.jar
 test: install-maven-pkgs
+
+push: test
+	git push
