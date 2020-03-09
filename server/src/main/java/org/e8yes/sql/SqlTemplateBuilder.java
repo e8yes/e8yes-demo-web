@@ -20,9 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Collects information from different sources to build then execute an SQL query.
- */
+/** Collects information from different sources to build then execute an SQL query. */
 public class SqlTemplateBuilder {
 
   private Class entityType;

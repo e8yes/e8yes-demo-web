@@ -16,9 +16,16 @@
  */
 package org.e8yes.sql.resultset;
 
-/**
- *
- */
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+
+/** */
 public interface ResultSetInterface {
-  
+
+  public void next() throws SQLException;
+
+  public boolean hasNext();
+
+  public <RecordType> void setCellValueToField(int i, Field field, RecordType record)
+      throws SQLException, IllegalArgumentException, IllegalAccessException;
 }

@@ -18,9 +18,7 @@ package org.e8yes.sql;
 
 import java.lang.reflect.Field;
 
-/**
- * Functions to automate SQL query completion via reflection.
- */
+/** Functions to automate SQL query completion via reflection. */
 public class QueryCompletion {
 
   /**

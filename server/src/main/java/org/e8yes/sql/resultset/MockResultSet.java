@@ -16,9 +16,26 @@
  */
 package org.e8yes.sql.resultset;
 
-/**
- * This implementations tailors to testing purposes
- */
+import java.lang.reflect.Field;
+
+/** This implementations tailors to testing purposes */
 public class MockResultSet implements ResultSetInterface {
-  
+
+  @Override
+  public void next() {
+    throw new UnsupportedOperationException(
+        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public boolean hasNext() {
+    throw new UnsupportedOperationException(
+        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public <RecordType> void setCellValueToField(int i, Field field, RecordType recordType) {
+    throw new UnsupportedOperationException(
+        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  }
 }
