@@ -19,13 +19,35 @@ package org.e8yes.sql.resultset;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 
-/** */
+/** An iterator to access the set of rows resulting from a query. */
 public interface ResultSetInterface {
 
+  /**
+   * Move cursor to the next record if possible.
+   *
+   * @throws SQLException When hasNext() returns false.
+   */
   public void next() throws SQLException;
 
+  /**
+   * Check if the cursor reaches the end of the result set.
+   *
+   * @return false when the cursor has moved to the end of the result set. Otherwise, it returns
+   *     true.
+   */
   public boolean hasNext();
 
+  /**
+   * Set the value of the ith cell at the current row cursor position to the record's field.
+   *
+   * @param <RecordType> The type of record.
+   * @param i The ith cell to pull value from.
+   * @param field The field to assign value to.
+   * @param record The RecordType instance to be modified.
+   * @throws SQLException
+   * @throws IllegalArgumentException
+   * @throws IllegalAccessException
+   */
   public <RecordType> void setCellValueToField(int i, Field field, RecordType record)
       throws SQLException, IllegalArgumentException, IllegalAccessException;
 }
