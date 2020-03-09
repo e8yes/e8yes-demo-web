@@ -78,29 +78,29 @@ public class JdbcResultSet implements ResultSetInterface {
     if (rs.wasNull()) {
       return;
     }
-    if (field.getType().componentType().equals(Integer.class)) {
+    if (field.getType().getComponentType().equals(Integer.class)) {
       field.set(record, (Integer[]) val.getArray());
-    } else if (field.getType().componentType().equals(Long.class)) {
+    } else if (field.getType().getComponentType().equals(Long.class)) {
       field.set(record, (Long[]) val.getArray());
-    } else if (field.getType().componentType().equals(Boolean.class)) {
+    } else if (field.getType().getComponentType().equals(Boolean.class)) {
       field.set(record, (Boolean[]) val.getArray());
-    } else if (field.getType().componentType().equals(Float.class)) {
+    } else if (field.getType().getComponentType().equals(Float.class)) {
       field.set(record, (Float[]) val.getArray());
-    } else if (field.getType().componentType().equals(Double.class)) {
+    } else if (field.getType().getComponentType().equals(Double.class)) {
       field.set(record, (Double[]) val.getArray());
-    } else if (field.getType().componentType().equals(Date.class)) {
+    } else if (field.getType().getComponentType().equals(Date.class)) {
       Timestamp[] timestamps = (Timestamp[]) val.getArray();
       Date[] utilDates = new Date[timestamps.length];
       for (int j = 0; j < timestamps.length; j++) {
         utilDates[j] = new Date(timestamps[j].getTime());
       }
       field.set(record, utilDates);
-    } else if (field.getType().componentType().equals(String.class)) {
+    } else if (field.getType().getComponentType().equals(String.class)) {
       field.set(record, (String[]) val.getArray());
     } else {
       throw new IllegalArgumentException(
           "Unexpected array type when assigning cell value. type="
-              + field.getType().componentType());
+              + field.getType().getComponentType());
     }
   }
 
