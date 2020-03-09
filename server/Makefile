@@ -10,7 +10,7 @@ setup-linux-dbs:
 init-linux: init-linux-pkgs create-linux-dbs setup-linux-dbs
 
 install-maven-pkgs: init-linux
-	mvn install
+	mvn install -Dhttps.protocols=TLSv1.2
 run: install-maven-pkgs
 	mvn package
 	java -jar target/demoweb-server-0.1.1-jar-with-dependencies.jar
