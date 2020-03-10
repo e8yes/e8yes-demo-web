@@ -31,13 +31,23 @@ public class DataCollectionTest {
       public String username;
     }
 
-    public static class Cards {
+    public static class Card {
       public Integer id;
       public String number;
     }
 
     public UserInfo user;
-    public Cards card;
+    public Card[] card;
+
+    @Override
+    public int hashCode() {
+      return user.id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      return user.id.equals(((UserHasOneCreditCard) obj).user.id);
+    }
   }
 
   @Test
@@ -45,7 +55,8 @@ public class DataCollectionTest {
       throws NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException, SQLException {
     MockResultSet rs = new MockResultSet(/*numCells=*/ 4);
-    rs.addRecord(new Object[] {1, "user_name", 11, "card_number"});
+    rs.addRecord(new Object[] {1, "user_name", 11, "card_number0"});
+    rs.addRecord(new Object[] {1, "user_name", 12, "card_number1"});
 
     List<UserHasOneCreditCard> results = DataCollection.collect(rs, UserHasOneCreditCard.class);
 
@@ -54,7 +65,11 @@ public class DataCollectionTest {
 
     Assertions.assertEquals((Integer) 1, record.user.id);
     Assertions.assertEquals("user_name", record.user.username);
-    Assertions.assertEquals((Integer) 11, record.card.id);
-    Assertions.assertEquals("card_number", record.card.number);
+
+    Assertions.assertEquals(2, record.card.length);
+    Assertions.assertEquals((Integer) 11, record.card[0].id);
+    Assertions.assertEquals("card_number0", record.card[0].number);
+    Assertions.assertEquals((Integer) 12, record.card[1].id);
+    Assertions.assertEquals("card_number1", record.card[1].number);
   }
 }
