@@ -14,7 +14,7 @@
  * <p>You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
-package org.e8yes.sql;
+package org.e8yes.sql.orm;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

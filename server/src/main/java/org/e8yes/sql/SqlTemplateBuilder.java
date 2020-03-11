@@ -19,6 +19,7 @@ package org.e8yes.sql;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
+import org.e8yes.sql.connection.ConnectionInterface;
 
 /** Collects information from different sources to build then execute an SQL query. */
 public class SqlTemplateBuilder {
@@ -40,7 +41,7 @@ public class SqlTemplateBuilder {
     return this;
   }
 
-  public <ReturnType> List<ReturnType> run()
+  public <ReturnType> List<ReturnType> run(ConnectionInterface conn)
       throws NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
     throw new UnsupportedOperationException();
