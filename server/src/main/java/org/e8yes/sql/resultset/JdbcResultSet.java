@@ -16,12 +16,10 @@
  */
 package org.e8yes.sql.resultset;
 
-import java.lang.reflect.Field;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Date;
+import org.e8yes.sql.primitive.SqlPrimitiveInterface;
 
 /** JDBC implementation of the result set interface */
 public class JdbcResultSet implements ResultSetInterface {
@@ -44,73 +42,23 @@ public class JdbcResultSet implements ResultSetInterface {
     return this.hasNextRecord;
   }
 
-  private static <RecordType> void setCellValueToRegularField(
-      ResultSet rs, int i, Field field, RecordType record)
-      throws SQLException, IllegalArgumentException, IllegalAccessException {
-    Object val = rs.getObject(i);
-    if (rs.wasNull()) {
-      return;
-    }
-    if (field.getType().equals(Integer.class)) {
-      field.set(record, (Integer) val);
-    } else if (field.getType().equals(Long.class)) {
-      field.set(record, (Long) val);
-    } else if (field.getType().equals(Boolean.class)) {
-      field.set(record, (Boolean) val);
-    } else if (field.getType().equals(Float.class)) {
-      field.set(record, (Float) val);
-    } else if (field.getType().equals(Double.class)) {
-      field.set(record, (Double) val);
-    } else if (field.getType().equals(Date.class)) {
-      field.set(record, new Date(((Timestamp) val).getTime()));
-    } else if (field.getType().equals(String.class)) {
-      field.set(record, val);
-    } else {
-      throw new IllegalArgumentException(
-          "Unexpected type when assigning cell value. type=" + field.getType());
-    }
-  }
-
-  private static <RecordType> void setCellValueToArrayField(
-      ResultSet rs, int i, Field field, RecordType record)
-      throws SQLException, IllegalArgumentException, IllegalAccessException {
-    Array val = rs.getArray(i);
-    if (rs.wasNull()) {
-      return;
-    }
-    if (field.getType().getComponentType().equals(Integer.class)) {
-      field.set(record, (Integer[]) val.getArray());
-    } else if (field.getType().getComponentType().equals(Long.class)) {
-      field.set(record, (Long[]) val.getArray());
-    } else if (field.getType().getComponentType().equals(Boolean.class)) {
-      field.set(record, (Boolean[]) val.getArray());
-    } else if (field.getType().getComponentType().equals(Float.class)) {
-      field.set(record, (Float[]) val.getArray());
-    } else if (field.getType().getComponentType().equals(Double.class)) {
-      field.set(record, (Double[]) val.getArray());
-    } else if (field.getType().getComponentType().equals(Date.class)) {
-      Timestamp[] timestamps = (Timestamp[]) val.getArray();
-      Date[] utilDates = new Date[timestamps.length];
-      for (int j = 0; j < timestamps.length; j++) {
-        utilDates[j] = new Date(timestamps[j].getTime());
-      }
-      field.set(record, utilDates);
-    } else if (field.getType().getComponentType().equals(String.class)) {
-      field.set(record, (String[]) val.getArray());
-    } else {
-      throw new IllegalArgumentException(
-          "Unexpected array type when assigning cell value. type="
-              + field.getType().getComponentType());
-    }
-  }
-
   @Override
-  public <RecordType> void setCellValueToField(int i, Field field, RecordType record)
-      throws SQLException, IllegalArgumentException, IllegalAccessException {
-    if (field.getType().isArray()) {
-      JdbcResultSet.setCellValueToArrayField(this.rs, i, field, record);
+  public <RecordType> void setCellValueToField(int i, SqlPrimitiveInterface field)
+      throws SQLException {
+    Object val;
+    if (field.isArray()) {
+      Array arr = rs.getArray(i);
+      if (rs.wasNull()) {
+        return;
+      }
+      val = arr.getArray();
     } else {
-      JdbcResultSet.setCellValueToRegularField(this.rs, i, field, record);
+      val = rs.getObject(i);
+      if (rs.wasNull()) {
+        return;
+      }
     }
+
+    field.importValueFromSqlObject(val);
   }
 }

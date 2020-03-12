@@ -16,8 +16,8 @@
  */
 package org.e8yes.sql.resultset;
 
-import java.lang.reflect.Field;
 import java.sql.SQLException;
+import org.e8yes.sql.primitive.SqlPrimitiveInterface;
 
 /** An iterator to access the set of rows resulting from a query. */
 public interface ResultSetInterface {
@@ -43,11 +43,9 @@ public interface ResultSetInterface {
    * @param <RecordType> The type of record.
    * @param i The ith cell to pull value from.
    * @param field The field to assign value to.
-   * @param record The RecordType instance to be modified.
    * @throws SQLException
    * @throws IllegalArgumentException
-   * @throws IllegalAccessException
    */
-  public <RecordType> void setCellValueToField(int i, Field field, RecordType record)
-      throws SQLException, IllegalArgumentException, IllegalAccessException;
+  public <RecordType> void setCellValueToField(int i, SqlPrimitiveInterface field)
+      throws SQLException;
 }

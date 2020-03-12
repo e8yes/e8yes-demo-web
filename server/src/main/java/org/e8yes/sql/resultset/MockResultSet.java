@@ -16,10 +16,10 @@
  */
 package org.e8yes.sql.resultset;
 
-import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.e8yes.sql.primitive.SqlPrimitiveInterface;
 
 /** This implementations tailors to testing purposes */
 public class MockResultSet implements ResultSetInterface {
@@ -54,8 +54,8 @@ public class MockResultSet implements ResultSetInterface {
   }
 
   @Override
-  public <RecordType> void setCellValueToField(int i, Field field, RecordType record)
-      throws IllegalArgumentException, IllegalAccessException, SQLException {
+  public <RecordType> void setCellValueToField(int i, SqlPrimitiveInterface field)
+      throws SQLException {
     if (i <= 0 || i > numCells) {
       throw new SQLException(
           "Cell index is out of bound. lowerBound="
@@ -69,6 +69,7 @@ public class MockResultSet implements ResultSetInterface {
     if (val == null) {
       return;
     }
-    field.set(record, val);
+
+    field.importValueFromSqlObject(val);
   }
 }

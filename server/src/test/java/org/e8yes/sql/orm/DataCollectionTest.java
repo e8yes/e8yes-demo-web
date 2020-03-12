@@ -19,6 +19,8 @@ package org.e8yes.sql.orm;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import org.e8yes.sql.primitive.SqlInt;
+import org.e8yes.sql.primitive.SqlStr;
 import org.e8yes.sql.resultset.MockResultSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,13 +29,13 @@ public class DataCollectionTest {
 
   public static class UserHasOneCreditCard {
     public static class UserInfo {
-      public Integer id;
-      public String username;
+      public SqlInt id = new SqlInt();
+      public SqlStr username = new SqlStr();
     }
 
     public static class Card {
-      public Integer id;
-      public String number;
+      public SqlInt id = new SqlInt();
+      public SqlStr number = new SqlStr();
     }
 
     public UserInfo user;
@@ -63,13 +65,13 @@ public class DataCollectionTest {
     Assertions.assertEquals(1, results.size());
     UserHasOneCreditCard record = results.iterator().next();
 
-    Assertions.assertEquals((Integer) 1, record.user.id);
-    Assertions.assertEquals("user_name", record.user.username);
+    Assertions.assertEquals((Integer) 1, record.user.id.value());
+    Assertions.assertEquals("user_name", record.user.username.value());
 
     Assertions.assertEquals(2, record.card.length);
-    Assertions.assertEquals((Integer) 11, record.card[0].id);
-    Assertions.assertEquals("card_number0", record.card[0].number);
-    Assertions.assertEquals((Integer) 12, record.card[1].id);
-    Assertions.assertEquals("card_number1", record.card[1].number);
+    Assertions.assertEquals((Integer) 11, record.card[0].id.value());
+    Assertions.assertEquals("card_number0", record.card[0].number.value());
+    Assertions.assertEquals((Integer) 12, record.card[1].id.value());
+    Assertions.assertEquals("card_number1", record.card[1].number.value());
   }
 }

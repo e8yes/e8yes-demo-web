@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.e8yes.sql.primitive.SqlPrimitiveInterface;
 import org.e8yes.sql.resultset.ResultSetInterface;
 
 /** Collects data from SQL ResultSet and transform the data into regular Java objects. */
@@ -39,13 +40,14 @@ public class DataCollection {
 
   private static Object retrieveRowDataForTable(
       Class tableType, ResultSetInterface rs, CellNumberIterator cellNumIterator)
-      throws NoSuchMethodException, InstantiationException, IllegalAccessException,
-          IllegalArgumentException, InvocationTargetException, SQLException {
+      throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
+          IllegalArgumentException, InvocationTargetException {
     Object record = tableType.getConstructor().newInstance();
 
     // Assign values to the table's fields.
     for (Field field : tableType.getDeclaredFields()) {
-      rs.setCellValueToField(cellNumIterator.next(), field, record);
+      SqlPrimitiveInterface fieldInstance = (SqlPrimitiveInterface) field.get(record);
+      rs.setCellValueToField(cellNumIterator.next(), fieldInstance);
     }
 
     return record;

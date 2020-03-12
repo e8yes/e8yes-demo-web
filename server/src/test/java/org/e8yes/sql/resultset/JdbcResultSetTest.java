@@ -16,11 +16,25 @@
  */
 package org.e8yes.sql.resultset;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import org.apache.ibatis.session.SqlSession;
+import org.e8yes.sql.primitive.SqlBool;
+import org.e8yes.sql.primitive.SqlBoolArr;
+import org.e8yes.sql.primitive.SqlDate;
+import org.e8yes.sql.primitive.SqlDateArr;
+import org.e8yes.sql.primitive.SqlDouble;
+import org.e8yes.sql.primitive.SqlDoubleArr;
+import org.e8yes.sql.primitive.SqlFloat;
+import org.e8yes.sql.primitive.SqlFloatArr;
+import org.e8yes.sql.primitive.SqlInt;
+import org.e8yes.sql.primitive.SqlIntArr;
+import org.e8yes.sql.primitive.SqlLong;
+import org.e8yes.sql.primitive.SqlLongArr;
+import org.e8yes.sql.primitive.SqlStr;
+import org.e8yes.sql.primitive.SqlStrArr;
 import org.e8yes.srvs.EnvironmentContext;
 import org.e8yes.srvs.dao.DatabaseConnection;
 import org.junit.jupiter.api.AfterEach;
@@ -39,27 +53,28 @@ public class JdbcResultSetTest {
     DatabaseConnection.deleteAllData();
   }
 
-  public static class Record {
-    public Integer intField;
-    public Long longField;
-    public Boolean booleanField;
-    public Float floatField;
-    public Double doubleField;
-    public Date dateField;
-    public String stringField;
+  private static class Record {
+    public SqlInt intField = new SqlInt();
+    public SqlLong longField = new SqlLong();
+    public SqlBool booleanField = new SqlBool();
+    public SqlFloat floatField = new SqlFloat();
+    public SqlDouble doubleField = new SqlDouble();
+    public SqlDate dateField = new SqlDate();
+    public SqlStr stringField = new SqlStr();
 
-    public Integer[] intArrayField;
-    public Long[] longArrayField;
-    public Boolean[] booleanArrayField;
-    public Float[] floatArrayField;
-    public Double[] doubleArrayField;
-    public Date[] dateArrayField;
-    public String[] stringArrayField;
+    public SqlIntArr intArrayField = new SqlIntArr();
+    public SqlLongArr longArrayField = new SqlLongArr();
+    public SqlBoolArr booleanArrayField = new SqlBoolArr();
+    public SqlFloatArr floatArrayField = new SqlFloatArr();
+    public SqlDoubleArr doubleArrayField = new SqlDoubleArr();
+    public SqlDateArr dateArrayField = new SqlDateArr();
+    public SqlStrArr stringArrayField = new SqlStrArr();
   }
 
   @Test
   public void retrieveOneRecordTest()
-      throws SQLException, IllegalArgumentException, IllegalAccessException {
+      throws SQLException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException,
+          InvocationTargetException {
     String dropTableStmt = "DROP TABLE IF EXISTS JdbcResultSetTestTable;";
     String createTableStmt =
         "CREATE TABLE IF NOT EXISTS JdbcResultSetTestTable ("
@@ -124,54 +139,54 @@ public class JdbcResultSetTest {
     Assertions.assertTrue(jdbcRs.hasNext());
 
     Record record = new Record();
-    jdbcRs.setCellValueToField(1, Record.class.getFields()[0], record);
-    Assertions.assertEquals((Integer) 10, record.intField);
+    jdbcRs.setCellValueToField(1, record.intField);
+    Assertions.assertEquals((Integer) 10, record.intField.value());
 
-    jdbcRs.setCellValueToField(2, Record.class.getFields()[1], record);
-    Assertions.assertEquals((Long) 100L, record.longField);
+    jdbcRs.setCellValueToField(2, record.longField);
+    Assertions.assertEquals((Long) 100L, record.longField.value());
 
-    jdbcRs.setCellValueToField(3, Record.class.getFields()[2], record);
-    Assertions.assertEquals((Boolean) true, record.booleanField);
+    jdbcRs.setCellValueToField(3, record.booleanField);
+    Assertions.assertEquals((Boolean) true, record.booleanField.value());
 
-    jdbcRs.setCellValueToField(4, Record.class.getFields()[3], record);
-    Assertions.assertEquals((Float) 0.5f, record.floatField);
+    jdbcRs.setCellValueToField(4, record.floatField);
+    Assertions.assertEquals((Float) 0.5f, record.floatField.value());
 
-    jdbcRs.setCellValueToField(5, Record.class.getFields()[4], record);
-    Assertions.assertEquals((Double) 0.25, record.doubleField);
+    jdbcRs.setCellValueToField(5, record.doubleField);
+    Assertions.assertEquals((Double) 0.25, record.doubleField.value());
 
-    jdbcRs.setCellValueToField(6, Record.class.getFields()[5], record);
-    Assertions.assertEquals((Long) 111000L, (Long) record.dateField.getTime());
+    jdbcRs.setCellValueToField(6, record.dateField);
+    Assertions.assertEquals((Long) 111000L, (Long) record.dateField.value().getTime());
 
-    jdbcRs.setCellValueToField(7, Record.class.getFields()[6], record);
-    Assertions.assertEquals("string_value", record.stringField);
+    jdbcRs.setCellValueToField(7, record.stringField);
+    Assertions.assertEquals("string_value", record.stringField.value());
 
-    jdbcRs.setCellValueToField(8, Record.class.getFields()[7], record);
-    Assertions.assertEquals((Integer) 10, record.intArrayField[0]);
-    Assertions.assertEquals((Integer) 11, record.intArrayField[1]);
+    jdbcRs.setCellValueToField(8, record.intArrayField);
+    Assertions.assertEquals((Integer) 10, record.intArrayField.value()[0]);
+    Assertions.assertEquals((Integer) 11, record.intArrayField.value()[1]);
 
-    jdbcRs.setCellValueToField(9, Record.class.getFields()[8], record);
-    Assertions.assertEquals((Long) 100L, record.longArrayField[0]);
-    Assertions.assertEquals((Long) 101L, record.longArrayField[1]);
+    jdbcRs.setCellValueToField(9, record.longArrayField);
+    Assertions.assertEquals((Long) 100L, record.longArrayField.value()[0]);
+    Assertions.assertEquals((Long) 101L, record.longArrayField.value()[1]);
 
-    jdbcRs.setCellValueToField(10, Record.class.getFields()[9], record);
-    Assertions.assertEquals((Boolean) true, record.booleanArrayField[0]);
-    Assertions.assertEquals((Boolean) false, record.booleanArrayField[1]);
+    jdbcRs.setCellValueToField(10, record.booleanArrayField);
+    Assertions.assertEquals((Boolean) true, record.booleanArrayField.value()[0]);
+    Assertions.assertEquals((Boolean) false, record.booleanArrayField.value()[1]);
 
-    jdbcRs.setCellValueToField(11, Record.class.getFields()[10], record);
-    Assertions.assertEquals((Float) 0.5f, record.floatArrayField[0]);
-    Assertions.assertEquals((Float) 1.5f, record.floatArrayField[1]);
+    jdbcRs.setCellValueToField(11, record.floatArrayField);
+    Assertions.assertEquals((Float) 0.5f, record.floatArrayField.value()[0]);
+    Assertions.assertEquals((Float) 1.5f, record.floatArrayField.value()[1]);
 
-    jdbcRs.setCellValueToField(12, Record.class.getFields()[11], record);
-    Assertions.assertEquals((Double) 0.25, record.doubleArrayField[0]);
-    Assertions.assertEquals((Double) 1.25, record.doubleArrayField[1]);
+    jdbcRs.setCellValueToField(12, record.doubleArrayField);
+    Assertions.assertEquals((Double) 0.25, record.doubleArrayField.value()[0]);
+    Assertions.assertEquals((Double) 1.25, record.doubleArrayField.value()[1]);
 
-    jdbcRs.setCellValueToField(13, Record.class.getFields()[12], record);
-    Assertions.assertEquals((Long) 111000L, (Long) record.dateArrayField[0].getTime());
-    Assertions.assertEquals((Long) 112000L, (Long) record.dateArrayField[1].getTime());
+    jdbcRs.setCellValueToField(13, record.dateArrayField);
+    Assertions.assertEquals((Long) 111000L, (Long) record.dateArrayField.value()[0].getTime());
+    Assertions.assertEquals((Long) 112000L, (Long) record.dateArrayField.value()[1].getTime());
 
-    jdbcRs.setCellValueToField(14, Record.class.getFields()[13], record);
-    Assertions.assertEquals("string_value0", record.stringArrayField[0]);
-    Assertions.assertEquals("string_value1", record.stringArrayField[1]);
+    jdbcRs.setCellValueToField(14, record.stringArrayField);
+    Assertions.assertEquals("string_value0", record.stringArrayField.value()[0]);
+    Assertions.assertEquals("string_value1", record.stringArrayField.value()[1]);
 
     jdbcRs.next();
     Assertions.assertFalse(jdbcRs.hasNext());
