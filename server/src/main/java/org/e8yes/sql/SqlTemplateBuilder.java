@@ -25,7 +25,7 @@ import org.e8yes.sql.connection.ConnectionInterface;
 public class SqlTemplateBuilder {
 
   private Class entityType;
-  private Optional<String> query = Optional.empty();
+  private Optional<SqlQueryBuilder> query = Optional.empty();
 
   /**
    * Example: query = "AUser user JOIN CreditCard card ON card.userId = user.id WHERE user.joinDate
@@ -35,7 +35,7 @@ public class SqlTemplateBuilder {
    * @param resultType
    * @return
    */
-  public SqlTemplateBuilder withSelect(String query, Class resultType) {
+  public SqlTemplateBuilder withSelect(SqlQueryBuilder query, Class resultType) {
     this.query = Optional.of(query);
     this.entityType = resultType;
     return this;

@@ -16,5 +16,4 @@
  */
 package org.e8yes.sql;
 
-/** */
 public class SqlTemplateBuilderTest {}

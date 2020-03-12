@@ -14,40 +14,6 @@
  * <p>You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
-package org.e8yes.sql.connection;
+package org.e8yes.sql;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.e8yes.sql.primitive.SqlPrimitiveInterface;
-import org.e8yes.sql.resultset.ResultSetInterface;
-
-/** */
-public interface ConnectionInterface {
-
-  /** */
-  public static class QueryParams {
-    Map<Integer, SqlPrimitiveInterface> params = new HashMap();
-
-    public void clear() {
-      params.clear();
-    }
-
-    public void setparam(int position, SqlPrimitiveInterface val) {
-      params.put(position, val);
-    }
-  }
-
-  /**
-   * @param query
-   * @param params
-   * @return
-   */
-  ResultSetInterface runQuery(String query, QueryParams params);
-
-  /**
-   * @param query
-   * @param params
-   * @return
-   */
-  long runUpdate(String query, QueryParams params);
-}
+public class SqlQueryBuilderTest {}
