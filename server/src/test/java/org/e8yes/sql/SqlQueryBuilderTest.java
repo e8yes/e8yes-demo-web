@@ -53,9 +53,19 @@ public class SqlQueryBuilderTest {
     builder.setPlaceholderValue(endDate, new SqlDate(new Date(101)));
 
     ConnectionInterface.QueryParams params = builder.queryParams();
+    Assertions.assertEquals(4, params.numPositions());
     Assertions.assertEquals((Integer) 1, params.getParam(1).value());
     Assertions.assertEquals(100L, ((Date) params.getParam(2).value()).getTime());
     Assertions.assertEquals(101L, ((Date) params.getParam(3).value()).getTime());
     Assertions.assertEquals((Integer) 1, params.getParam(4).value());
+
+    builder.setPlaceholderValue(userId, new SqlInt(2));
+
+    params = builder.queryParams();
+    Assertions.assertEquals(4, params.numPositions());
+    Assertions.assertEquals((Integer) 2, params.getParam(1).value());
+    Assertions.assertEquals(100L, ((Date) params.getParam(2).value()).getTime());
+    Assertions.assertEquals(101L, ((Date) params.getParam(3).value()).getTime());
+    Assertions.assertEquals((Integer) 2, params.getParam(4).value());
   }
 }
