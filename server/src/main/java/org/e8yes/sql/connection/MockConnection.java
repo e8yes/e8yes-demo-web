@@ -18,7 +18,7 @@ package org.e8yes.sql.connection;
 
 import org.e8yes.sql.resultset.ResultSetInterface;
 
-/** */
+/** This implementations tailors to testing purposes */
 public class MockConnection implements ConnectionInterface {
 
   @Override

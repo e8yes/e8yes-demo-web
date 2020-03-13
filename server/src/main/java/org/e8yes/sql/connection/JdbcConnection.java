@@ -27,7 +27,7 @@ import org.e8yes.sql.primitive.SqlPrimitiveInterface;
 import org.e8yes.sql.resultset.JdbcResultSet;
 import org.e8yes.sql.resultset.ResultSetInterface;
 
-/** */
+/** JDBC implementation of the connection interface */
 public class JdbcConnection implements ConnectionInterface {
 
   private final Connection conn;
