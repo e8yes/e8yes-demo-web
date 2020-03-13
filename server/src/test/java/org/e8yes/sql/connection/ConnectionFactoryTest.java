@@ -34,6 +34,7 @@ public class ConnectionFactoryTest {
             /*password=*/ null);
     ConnectionInterface conn = factory.create();
     Assertions.assertTrue(conn instanceof MockConnection);
+    Assertions.assertFalse(conn.isClosed());
   }
 
   @Test

@@ -16,32 +16,17 @@
  */
 package org.e8yes.sql.connection;
 
-import org.e8yes.sql.resultset.ResultSetInterface;
+import java.sql.SQLException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-/** This implementations tailors to testing purposes */
-public class MockConnection implements ConnectionInterface {
+public class MockConnectionTest {
 
-  private boolean closed = false;
-
-  @Override
-  public ResultSetInterface runQuery(String query, QueryParams params) {
-    throw new UnsupportedOperationException(
-        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
-  }
-
-  @Override
-  public int runUpdate(String query, QueryParams params) {
-    throw new UnsupportedOperationException(
-        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
-  }
-
-  @Override
-  public void close() {
-    closed = true;
-  }
-
-  @Override
-  public boolean isClosed() {
-    return closed;
+  @Test
+  public void testConnectionState() throws SQLException {
+    MockConnection conn = new MockConnection();
+    Assertions.assertFalse(conn.isClosed());
+    conn.close();
+    Assertions.assertTrue(conn.isClosed());
   }
 }
