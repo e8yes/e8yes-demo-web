@@ -16,6 +16,8 @@
  */
 package org.e8yes.sql.orm;
 
+import org.e8yes.sql.primitive.SqlInt;
+import org.e8yes.sql.primitive.SqlStr;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -26,13 +28,13 @@ public class QueryCompletionTest {
 
   public static class UserHasOneCreditCard {
     public static class UserInfo {
-      public int id;
-      public String username;
+      public SqlInt id = new SqlInt();
+      public SqlStr username = new SqlStr();
     }
 
     public static class Cards {
-      public int id;
-      public String number;
+      public SqlInt id = new SqlInt();
+      public SqlStr number = new SqlStr();
     }
 
     public UserInfo user;
@@ -54,13 +56,13 @@ public class QueryCompletionTest {
 
   public static class UserHasManyCreditCards {
     public static class UserInfo {
-      public int id;
-      public String username;
+      public SqlInt id = new SqlInt();
+      public SqlStr username = new SqlStr();
     }
 
     public static class Cards {
-      public int id;
-      public String number;
+      public SqlInt id = new SqlInt();
+      public SqlStr number = new SqlStr();
     }
 
     public UserInfo user;
