@@ -35,6 +35,10 @@ public interface ConnectionInterface {
     public void setparam(int position, SqlPrimitiveInterface val) {
       params.put(position, val);
     }
+
+    public SqlPrimitiveInterface getParam(int position) {
+      return params.get(position);
+    }
   }
 
   /**

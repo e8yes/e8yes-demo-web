@@ -53,7 +53,7 @@ public class DataCollectionTest {
   }
 
   @Test
-  public void testOneToOneCase()
+  public void testOneToManySingleRecordCase()
       throws NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException, SQLException {
     MockResultSet rs = new MockResultSet(/*numCells=*/ 4);

@@ -39,13 +39,19 @@ public class SqlQueryBuilder {
    * Append a query string piece.
    *
    * @param piece Query string piece
+   * @return The current builder.
    */
-  public void queryPiece(String piece) {
+  public SqlQueryBuilder queryPiece(String piece) {
     queryPieces.append(piece);
+    return this;
   }
 
-  /** Represents a variable placeholder */
-  public static class Placeholder {
+  /**
+   * Represents a variable placeholder
+   *
+   * @param <Type>
+   */
+  public static class Placeholder<Type> {
     private final List<Integer> slots = new ArrayList();
   }
 
@@ -53,19 +59,22 @@ public class SqlQueryBuilder {
    * Append a variable placeholder.
    *
    * @param holder Variable placeholder
+   * @return The current builder.
    */
-  public void placeholder(Placeholder holder) {
+  public SqlQueryBuilder placeholder(Placeholder holder) {
     holder.slots.add(this.nextPlaceHolderId());
     queryPieces.append("?");
+    return this;
   }
 
   /**
    * Collectively assigns the value to the holder to all the query positions.
    *
+   * @param <Type>
    * @param holder Placeholder to be assigned a value.
    * @param val The value to be assigned.
    */
-  public void setPlaceholderValue(Placeholder holder, SqlPrimitiveInterface val) {
+  public <Type> void setPlaceholderValue(Placeholder<Type> holder, SqlPrimitiveInterface val) {
     for (int slot : holder.slots) {
       params.setparam(slot, val);
     }

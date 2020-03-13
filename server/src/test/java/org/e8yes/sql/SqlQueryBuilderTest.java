@@ -16,4 +16,46 @@
  */
 package org.e8yes.sql;
 
-public class SqlQueryBuilderTest {}
+import java.util.Date;
+import org.e8yes.sql.connection.ConnectionInterface;
+import org.e8yes.sql.primitive.SqlDate;
+import org.e8yes.sql.primitive.SqlInt;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+public class SqlQueryBuilderTest {
+
+  @Test
+  public void testQueryBuilder() {
+    SqlQueryBuilder.Placeholder<SqlInt> userId = new SqlQueryBuilder.Placeholder();
+    SqlQueryBuilder.Placeholder<SqlDate> beginDate = new SqlQueryBuilder.Placeholder();
+    SqlQueryBuilder.Placeholder<SqlDate> endDate = new SqlQueryBuilder.Placeholder();
+
+    SqlQueryBuilder builder = new SqlQueryBuilder();
+    builder
+        .queryPiece("Security s JOIN Image im ON s.id=im.securityId AND ")
+        .queryPiece("s.userId=")
+        .placeholder(userId)
+        .queryPiece(" WHERE im.date>=")
+        .placeholder(beginDate)
+        .queryPiece(" AND im.date<")
+        .placeholder(endDate)
+        .queryPiece(" AND im.blockID!=")
+        .placeholder(userId);
+
+    Assertions.assertEquals(
+        "Security s JOIN Image im ON s.id=im.securityId AND "
+            + "s.userId=? WHERE im.date>=? AND im.date<? AND im.blockID!=?",
+        builder.jdbcQuery());
+
+    builder.setPlaceholderValue(userId, new SqlInt(1));
+    builder.setPlaceholderValue(beginDate, new SqlDate(new Date(100)));
+    builder.setPlaceholderValue(endDate, new SqlDate(new Date(101)));
+
+    ConnectionInterface.QueryParams params = builder.queryParams();
+    Assertions.assertEquals((Integer) 1, params.getParam(1).value());
+    Assertions.assertEquals(100L, ((Date) params.getParam(2).value()).getTime());
+    Assertions.assertEquals(101L, ((Date) params.getParam(3).value()).getTime());
+    Assertions.assertEquals((Integer) 1, params.getParam(4).value());
+  }
+}
