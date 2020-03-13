@@ -22,49 +22,80 @@ import java.util.Map;
 import org.e8yes.sql.primitive.SqlPrimitiveInterface;
 import org.e8yes.sql.resultset.ResultSetInterface;
 
-/** */
+/** Represents a connection to a database server */
 public interface ConnectionInterface {
 
-  /** */
+  /** Stores information about the parameter values to a parameterized query */
   public static class QueryParams {
     Map<Integer, SqlPrimitiveInterface> params = new HashMap();
 
+    /** Clear all the parameter values. */
     public void clear() {
       params.clear();
     }
 
-    public void setparam(int position, SqlPrimitiveInterface val) {
+    /**
+     * Set value to the position-th parameter placeholder.
+     *
+     * @param position Position to set value to.
+     * @param val value to set.
+     */
+    public void setParam(int position, SqlPrimitiveInterface val) {
       params.put(position, val);
     }
 
+    /**
+     * Get the value set to the position-th placeholder.
+     *
+     * @param position Position to read from.
+     * @return The value if it exists. Otherwise null.
+     */
     public SqlPrimitiveInterface getParam(int position) {
       return params.get(position);
     }
 
+    /**
+     * Get the number of placeholders that are assigned a value of.
+     *
+     * @return The number of placeholders.
+     */
     public int numPositions() {
       return params.size();
     }
   }
 
   /**
-   * @param query
-   * @param params
-   * @return
+   * Run a parameterized query.
+   *
+   * @param query Query to run.
+   * @param params Parameters for the query.
+   * @return Query's result set.
    * @throws java.sql.SQLException
    */
   ResultSetInterface runQuery(String query, QueryParams params) throws SQLException;
 
   /**
-   * @param query
-   * @param params
-   * @return
+   * Run a parameterized update query.
+   *
+   * @param query Update query to run.
+   * @param params Parameters for the query.
+   * @return The number of rows updated by the query.
    * @throws java.sql.SQLException
    */
   int runUpdate(String query, QueryParams params) throws SQLException;
 
-  /** @throws java.sql.SQLException */
+  /**
+   * Closing the connection.
+   *
+   * @throws java.sql.SQLException
+   */
   void close() throws SQLException;
 
-  /** @return */
+  /**
+   * Check if the connection is closed
+   *
+   * @throws java.sql.SQLException
+   * @return true if it is closed.
+   */
   boolean isClosed() throws SQLException;
 }

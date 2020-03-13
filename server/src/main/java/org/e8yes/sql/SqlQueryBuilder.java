@@ -76,7 +76,7 @@ public class SqlQueryBuilder {
    */
   public <Type> void setPlaceholderValue(Placeholder<Type> holder, SqlPrimitiveInterface val) {
     for (int slot : holder.slots) {
-      params.setparam(slot, val);
+      params.setParam(slot, val);
     }
   }
 
