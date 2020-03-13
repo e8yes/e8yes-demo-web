@@ -5,7 +5,12 @@ import io.grpc.ServerBuilder;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.e8yes.srvs.*;
+import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.service.AuthService;
+import org.e8yes.service.FriendshipService;
+import org.e8yes.service.InitializerService;
+import org.e8yes.service.SystemService;
+import org.e8yes.service.UserService;
 
 /**
  * Adapted from

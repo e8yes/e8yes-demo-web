@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "org.e8yes.srvs";
+option java_package = "org.e8yes.service";
 option java_outer_classname = "GenericExcepProto";
 
 package org.e8yes.srvs;
