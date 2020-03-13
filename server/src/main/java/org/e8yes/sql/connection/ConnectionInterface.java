@@ -16,6 +16,7 @@
  */
 package org.e8yes.sql.connection;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import org.e8yes.sql.primitive.SqlPrimitiveInterface;
@@ -39,19 +40,31 @@ public interface ConnectionInterface {
     public SqlPrimitiveInterface getParam(int position) {
       return params.get(position);
     }
+
+    public int numPositions() {
+      return params.size();
+    }
   }
 
   /**
    * @param query
    * @param params
    * @return
+   * @throws java.sql.SQLException
    */
-  ResultSetInterface runQuery(String query, QueryParams params);
+  ResultSetInterface runQuery(String query, QueryParams params) throws SQLException;
 
   /**
    * @param query
    * @param params
    * @return
+   * @throws java.sql.SQLException
    */
-  long runUpdate(String query, QueryParams params);
+  int runUpdate(String query, QueryParams params) throws SQLException;
+
+  /** @throws java.sql.SQLException */
+  void close() throws SQLException;
+
+  /** @return */
+  boolean isClosed() throws SQLException;
 }

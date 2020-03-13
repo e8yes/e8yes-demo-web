@@ -28,7 +28,19 @@ public class MockConnection implements ConnectionInterface {
   }
 
   @Override
-  public long runUpdate(String query, QueryParams params) {
+  public int runUpdate(String query, QueryParams params) {
+    throw new UnsupportedOperationException(
+        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public void close() {
+    throw new UnsupportedOperationException(
+        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public boolean isClosed() {
     throw new UnsupportedOperationException(
         "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
   }
