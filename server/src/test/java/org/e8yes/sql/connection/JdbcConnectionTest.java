@@ -26,7 +26,21 @@ import org.junit.jupiter.api.Test;
 public class JdbcConnectionTest {
 
   @Test
-  public void RunUpdateAndQuery() throws SQLException {
+  public void testConnectionState() throws SQLException {
+    JdbcConnection conn =
+        new JdbcConnection(
+            /*hostName=*/ "localHost",
+            /*port=*/ 5432,
+            /*dbName=*/ "demowebtest",
+            /*userName=*/ "postgres",
+            /*password=*/ "password");
+    Assertions.assertFalse(conn.isClosed());
+    conn.close();
+    Assertions.assertTrue(conn.isClosed());
+  }
+
+  @Test
+  public void testUpdateAndQuery() throws SQLException {
     JdbcConnection conn =
         new JdbcConnection(
             /*hostName=*/ "localHost",
