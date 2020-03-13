@@ -1,5 +1,5 @@
-# Chat Server 
-A gRPC server for Chat.
+# Service Location
+Deployed at HTTP2 api.e8yes.org:50051
 
 ## Setup Requirements
 - OS: Debian Linux Distros
