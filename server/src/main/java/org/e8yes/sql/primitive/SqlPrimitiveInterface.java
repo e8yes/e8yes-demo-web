@@ -28,9 +28,10 @@ public interface SqlPrimitiveInterface {
    *
    * @param stmt SQL statement to export to.
    * @param position Position of the placeholder to be assigned a value of.
+   * @param conn Connection the statement is in.
    * @throws SQLException
    */
-  void exportValueToStatement(PreparedStatement stmt, int position, Connection conn)
+  public void exportValueToStatement(PreparedStatement stmt, int position, Connection conn)
       throws SQLException;
 
   /**
@@ -39,7 +40,7 @@ public interface SqlPrimitiveInterface {
    * @param o SQL object to import from.
    * @throws SQLException
    */
-  void importValueFromSqlObject(Object o) throws SQLException;
+  public void importValueFromSqlObject(Object o) throws SQLException;
 
   /**
    * Retrieve the internally represented Java object.
@@ -54,7 +55,7 @@ public interface SqlPrimitiveInterface {
    *
    * @return If so, true.
    */
-  boolean isArray();
+  public boolean isArray();
 
   /**
    * Implementation of this method is required.
@@ -63,5 +64,5 @@ public interface SqlPrimitiveInterface {
    * @return True if equivalent.
    */
   @Override
-  boolean equals(Object o);
+  public boolean equals(Object o);
 }
