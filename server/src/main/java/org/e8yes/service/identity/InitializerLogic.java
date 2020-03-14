@@ -8,7 +8,7 @@ package org.e8yes.service.identity;
 public class InitializerLogic {
 
   public static void init() {
-    AUserGroupLogic.init();
-    AUserLogic.init(AUserGroupLogic.getContext());
+    UserGroup.init();
+    User.init(UserGroup.getContext());
   }
 }

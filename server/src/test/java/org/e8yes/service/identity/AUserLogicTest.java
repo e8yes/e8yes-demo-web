@@ -58,8 +58,7 @@ public class AUserLogicTest {
     String user0Alias = "";
     String user0PassWord = "PASS";
     EtUser user =
-        AUserLogic.createBaselineUser(
-            user0Name, user0Alias, user0PassWord, AUserGroupLogic.getContext());
+        User.createBaselineUser(user0Name, user0Alias, user0PassWord, UserGroup.getContext());
     user.getUserName();
     Assertions.assertNotEquals(0, user.getId());
     Assertions.assertEquals(user0Name, user.getUserName());
@@ -72,7 +71,7 @@ public class AUserLogicTest {
     Assertions.assertNotNull(loadedUser);
     Assertions.assertEquals(loadedUser, user);
 
-    Assertions.assertTrue(AUserLogic.userNameExists(user0Name));
+    Assertions.assertTrue(User.userNameExists(user0Name));
 
     DatabaseConnection.closeSession(sess);
   }
@@ -82,13 +81,11 @@ public class AUserLogicTest {
     String user0Name = "USER0";
     String user0Alias = "";
     String user0PassWord = "PASS";
-    AUserLogic.createBaselineUser(
-        user0Name, user0Alias, user0PassWord, AUserGroupLogic.getContext());
+    User.createBaselineUser(user0Name, user0Alias, user0PassWord, UserGroup.getContext());
     Assertions.assertThrows(
         ResourceConflictException.class,
         () -> {
-          AUserLogic.createBaselineUser(
-              user0Name, user0Alias, user0PassWord, AUserGroupLogic.getContext());
+          User.createBaselineUser(user0Name, user0Alias, user0PassWord, UserGroup.getContext());
         });
   }
 }

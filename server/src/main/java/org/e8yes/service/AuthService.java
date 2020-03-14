@@ -3,7 +3,7 @@ package org.e8yes.service;
 import io.grpc.stub.StreamObserver;
 import java.util.Optional;
 import org.e8yes.exception.AccessDeniedException;
-import org.e8yes.service.identity.AccessControlLogic;
+import org.e8yes.service.identity.AccessControl;
 
 /** @author davis */
 public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
@@ -13,7 +13,7 @@ public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
     AuthReply reply;
     try {
       Optional<String> token =
-          AccessControlLogic.genTokenFromCredentialPair(req.getUserName(), req.getPassword());
+          AccessControl.genTokenFromCredentialPair(req.getUserName(), req.getPassword());
       if (token.isPresent()) {
         reply =
             AuthReply.newBuilder()

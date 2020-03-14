@@ -9,6 +9,7 @@ import org.e8yes.service.EtUser;
 import org.e8yes.service.EtUserGroup;
 import org.e8yes.service.identity.ctx.AUserGroupContext;
 import org.e8yes.service.identity.dao.mappers.AUserMapper;
+import org.e8yes.util.Time;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -16,7 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author davis
  */
-public class AUserLogic {
+public class User {
 
   public static void init(AUserGroupContext userGroupCtx) {
     try {
@@ -27,8 +28,8 @@ public class AUserLogic {
           "c6cefcab-67fc-414d-b105-7ce7f0faae9f",
           userGroupCtx.getSystemUserGroup(AUserGroupContext.SystemUserGroup.SUPER_USER_GROUP));
     } catch (ResourceConflictException ex) {
-      Logger.getLogger(AUserLogic.class.getName()).log(Level.INFO, null, "root user exists.");
-      Logger.getLogger(AUserLogic.class.getName()).log(Level.INFO, null, ex);
+      Logger.getLogger(User.class.getName()).log(Level.INFO, null, "root user exists.");
+      Logger.getLogger(User.class.getName()).log(Level.INFO, null, ex);
     }
   }
 
@@ -44,7 +45,7 @@ public class AUserLogic {
             .setUserName(userName)
             .setAlias(alias)
             .setPasscode(BCrypt.hashpw(passWord, BCrypt.gensalt()))
-            .setCreatedAtSec(UtilTime.curTimestampSec())
+            .setCreatedAtSec(Time.curTimestampSec())
             .setStatus(EtUser.UserStatus.ACTIVE)
             .setGroupId(userGroup.getId())
             .build();

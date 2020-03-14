@@ -3,8 +3,8 @@ package org.e8yes.service;
 import io.grpc.stub.StreamObserver;
 import org.drools.core.util.StringUtils;
 import org.e8yes.exception.ResourceConflictException;
-import org.e8yes.service.identity.AUserGroupLogic;
-import org.e8yes.service.identity.AUserLogic;
+import org.e8yes.service.identity.User;
+import org.e8yes.service.identity.UserGroup;
 
 /** @author davis */
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
@@ -14,11 +14,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     RegReply reply;
     try {
       EtUser user =
-          AUserLogic.createBaselineUser(
-              req.getUserName(),
-              StringUtils.EMPTY,
-              req.getPassword(),
-              AUserGroupLogic.getContext());
+          User.createBaselineUser(
+              req.getUserName(), StringUtils.EMPTY, req.getPassword(), UserGroup.getContext());
       reply =
           RegReply.newBuilder()
               .setErrType(RegErrType.RET_NoErr)

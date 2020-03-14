@@ -19,7 +19,7 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author davis
  */
-public class AccessControlLogic {
+public class AccessControl {
 
   public static Optional<String> genTokenFromCredentialPair(String userName, String passcode)
       throws AccessDeniedException {
@@ -37,7 +37,7 @@ public class AccessControlLogic {
           // TODO: need a secret key provider.
           new IdentityContext(user.getId(), userGroup).sign("abc"));
     } catch (IllegalArgumentException | UnsupportedEncodingException ex) {
-      Logger.getLogger(AccessControlLogic.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(AccessControl.class.getName()).log(Level.SEVERE, null, ex);
     }
     return Optional.empty();
   }

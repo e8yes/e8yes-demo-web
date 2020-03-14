@@ -15,7 +15,7 @@ import org.e8yes.service.identity.dao.mappers.AUserGroupMapper;
  *
  * @author davis
  */
-public class AUserGroupLogic {
+public class UserGroup {
 
   private static AUserGroupContext ctx;
 

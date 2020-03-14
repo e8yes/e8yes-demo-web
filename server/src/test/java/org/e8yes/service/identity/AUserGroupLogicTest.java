@@ -48,7 +48,7 @@ public class AUserGroupLogicTest {
             add(Permission.PERM_USER_GROUP_REMOVE);
           }
         };
-    EtUserGroup group = AUserGroupLogic.createUserGroup(groupName, perms);
+    EtUserGroup group = UserGroup.createUserGroup(groupName, perms);
     Assertions.assertTrue(group.getId() != 0);
     Assertions.assertEquals(groupName, group.getDescription());
     Assertions.assertArrayEquals(perms.toArray(), group.getPermissionsList().toArray());
