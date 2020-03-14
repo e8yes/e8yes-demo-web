@@ -6,29 +6,28 @@ option java_multiple_files = true;
 option java_package = "org.e8yes.service";
 option java_outer_classname = "ServiceAuthProto";
 
-package org.e8yes.srvs;
+package org.e8yes.services;
 
 
-message AuthRequest {
+message AuthorizationRequest {
     string user_name = 1;
     string password = 2;
 }
 
-enum AuthErrType {
-    AET_NoErr = 0;
-    AET_IncorrectCredential = 1;
-    AET_TooManyAttempts = 2;
-    AET_RequireSecondFactor = 3;
-    AET_Other = 4;
-}
-
-message AuthReply {
+message AuthorizationResponse {
+    enum AuthorizationErrorType {
+        AET_NoErr = 0;
+        AET_IncorrectCredential = 1;
+        AET_TooManyAttempts = 2;
+        AET_RequireSecondFactor = 3;
+        AET_Other = 4;
+    }
     int32 status = 1;
-    string token = 2;
-    AuthErrType err_type = 3;
-    GenericErrType generic_err_type = 4;
+    bytes token = 2;
+    AuthorizationErrorType error_type = 3;
+    GenericErrorType generic_error_type = 4;
 }
 
 service AuthService {
-  rpc Authorize (AuthRequest) returns (AuthReply) {}
+  rpc Authorize (AuthorizationRequest) returns (AuthorizationResponse) {}
 }

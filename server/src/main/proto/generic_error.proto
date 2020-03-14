@@ -4,9 +4,9 @@ option java_multiple_files = true;
 option java_package = "org.e8yes.service";
 option java_outer_classname = "GenericExcepProto";
 
-package org.e8yes.srvs;
+package org.e8yes.services;
 
-enum GenericErrType {
+enum GenericErrorType {
     GET_NoErr = 0;
     GET_BotDetected = 1;
 }

@@ -4,9 +4,9 @@ option java_multiple_files = true;
 option java_package = "org.e8yes.service";
 option java_outer_classname = "ServiceSystemProto";
 
-package org.e8yes.srvs;
+package org.e8yes.services;
 
-message VersionReply {
+message VersionResponse {
     string version = 1;
 }
 
@@ -15,5 +15,5 @@ message Empty {
 }
 
 service SystemService {
-    rpc Version (Empty) returns (VersionReply) {}
+    rpc Version (Empty) returns (VersionResponse) {}
 }
