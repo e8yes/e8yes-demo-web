@@ -6,6 +6,7 @@ import java.util.Set;
 import org.apache.ibatis.session.SqlSession;
 import org.e8yes.connection.DatabaseConnection;
 import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.environment.Initializer;
 import org.e8yes.service.EtUserGroup;
 import org.e8yes.service.Permission;
 import org.e8yes.service.identity.dao.mappers.AUserGroupMapperEx;
@@ -16,10 +17,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/** @author davis */
-public class AUserGroupLogicTest {
+public class UserGroupTest {
 
-  public AUserGroupLogicTest() {}
+  public UserGroupTest() {}
 
   @BeforeAll
   public static void setUpClass() {}
@@ -29,8 +29,7 @@ public class AUserGroupLogicTest {
 
   @BeforeEach
   public void setUp() {
-    DatabaseConnection.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
-    InitializerLogic.init();
+    Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
   }
 
   @AfterEach

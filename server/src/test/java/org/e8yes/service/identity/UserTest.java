@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import org.apache.ibatis.session.SqlSession;
 import org.e8yes.connection.DatabaseConnection;
 import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.environment.Initializer;
 import org.e8yes.exception.ResourceConflictException;
 import org.e8yes.service.EtUser;
 import org.e8yes.service.identity.dao.mappers.AUserMapper;
@@ -30,10 +31,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/** @author davis */
-public class AUserLogicTest {
+public class UserTest {
 
-  public AUserLogicTest() {}
+  public UserTest() {}
 
   @BeforeAll
   public static void setUpClass() {}
@@ -43,8 +43,7 @@ public class AUserLogicTest {
 
   @BeforeEach
   public void setUp() throws SQLException {
-    DatabaseConnection.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
-    InitializerLogic.init();
+    Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
   }
 
   @AfterEach

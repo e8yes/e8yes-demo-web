@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.environment.Initializer;
 import org.e8yes.service.AuthService;
 import org.e8yes.service.FriendshipService;
-import org.e8yes.service.InitializerService;
 import org.e8yes.service.SystemService;
 import org.e8yes.service.UserService;
 
@@ -65,7 +65,7 @@ public class DemoWebServer {
   public static void main(String[] args) throws IOException, InterruptedException {
     final DemoWebServer server = new DemoWebServer();
     server.start();
-    InitializerService.init(new EnvironmentContext(EnvironmentContext.Mode.Prod));
+    Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Prod));
     server.blockUntilShutdown();
   }
 }
