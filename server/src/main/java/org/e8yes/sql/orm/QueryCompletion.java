@@ -50,4 +50,43 @@ public class QueryCompletion {
     sb.append(query);
     return sb.toString();
   }
+
+  /**
+   * It takes in the target table name and entity type and construct an insertion sql query.
+   *
+   * @param tableName Name of the table to insert the record into..
+   * @param entityType Type of the entity to be inserted.
+   * @param withUpsert Whether to builder a query which upserts a record.
+   * @return A complete insertion SQL query.
+   */
+  public static String completeInsertQuery(String tableName, Class entityType, boolean withUpsert) {
+    Field[] fields = entityType.getDeclaredFields();
+    assert (fields.length > 0);
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO ");
+    query.append(tableName);
+    query.append("(");
+    for (Field field : fields) {
+      query.append(field.getName());
+      query.append(",");
+    }
+    query.setLength(query.length() - 1);
+    query.append(")VALUES(?");
+    for (int i = 1; i < fields.length; i++) {
+      query.append(",?");
+    }
+    query.append(")");
+
+    if (withUpsert) {
+      // Update record on conflict.
+      query.append("ON CONFLICT DO UPDATE SET ");
+      for (Field field : fields) {
+        query.append(field.getName());
+        query.append("=?,");
+      }
+      query.setLength(query.length() - 1);
+    }
+    return query.toString();
+  }
 }
