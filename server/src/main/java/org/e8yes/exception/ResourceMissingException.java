@@ -5,7 +5,7 @@ package org.e8yes.exception;
  *
  * @author davis
  */
-public class ResourceMissingException extends HttpException {
+public class ResourceMissingException extends RpcException {
 
   @Override
   public String getMessage() {

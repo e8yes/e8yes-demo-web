@@ -5,7 +5,7 @@ package org.e8yes.exception;
  *
  * @author davis
  */
-public class AccessDeniedException extends HttpException {
+public class AccessDeniedException extends RpcException {
 
   @Override
   public String getMessage() {

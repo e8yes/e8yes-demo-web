@@ -5,7 +5,7 @@ package org.e8yes.exception;
  *
  * @author davis
  */
-public class ResourceConflictException extends HttpException {
+public class ResourceConflictException extends RpcException {
 
   @Override
   public String getMessage() {
