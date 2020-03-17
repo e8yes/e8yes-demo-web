@@ -17,6 +17,8 @@
 package org.e8yes.sql.orm;
 
 import java.lang.reflect.Field;
+import org.e8yes.sql.connection.ConnectionInterface;
+import org.e8yes.sql.primitive.SqlPrimitiveInterface;
 
 /** Functions to automate SQL query completion via reflection. */
 public class QueryCompletion {
@@ -86,7 +88,27 @@ public class QueryCompletion {
         query.append("=?,");
       }
       query.setLength(query.length() - 1);
+    } else {
+      query.append("ON CONFLICT DO NOTHING");
     }
     return query.toString();
+  }
+
+  public static <Type> ConnectionInterface.QueryParams generateInsertQueryParams(
+      Type entityRecord, Class entityType, boolean withUpsert) throws IllegalAccessException {
+    ConnectionInterface.QueryParams params = new ConnectionInterface.QueryParams();
+    Field[] fields = entityType.getDeclaredFields();
+    int i = 0;
+    for (i = 0; i < fields.length; i++) {
+      SqlPrimitiveInterface val = (SqlPrimitiveInterface) fields[i].get(entityRecord);
+      params.setParam(i + 1, val);
+    }
+    if (withUpsert) {
+      for (int j = 0; j < fields.length; i++, j++) {
+        SqlPrimitiveInterface val = (SqlPrimitiveInterface) fields[i].get(entityRecord);
+        params.setParam(i + 1, val);
+      }
+    }
+    return params;
   }
 }

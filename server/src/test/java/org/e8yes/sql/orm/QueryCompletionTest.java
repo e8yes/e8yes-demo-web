@@ -92,7 +92,7 @@ public class QueryCompletionTest {
   public void testInsertion() {
     String completedQuery =
         QueryCompletion.completeInsertQuery("auser", UserEntity.class, /*withUpsert=*/ false);
-    String expected = "INSERT INTO auser(id,user_name)VALUES(?,?)";
+    String expected = "INSERT INTO auser(id,user_name)VALUES(?,?)ON CONFLICT DO NOTHING";
     Assertions.assertEquals(expected, completedQuery);
   }
 
