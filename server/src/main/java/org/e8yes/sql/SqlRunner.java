@@ -32,6 +32,7 @@ public class SqlRunner {
   private Class entityType;
   private Optional<SqlQueryBuilder> query = Optional.empty();
   private ConnectionReservoirInterface reservoir;
+  private boolean overrideRecord = false;
 
   /**
    * Connection reservoir to allocate database connections.
@@ -55,6 +56,16 @@ public class SqlRunner {
   public SqlRunner withSelect(SqlQueryBuilder query, Class resultType) {
     this.query = Optional.of(query);
     this.entityType = resultType;
+    return this;
+  }
+
+  public SqlRunner withEntity(Class entityType) {
+    this.entityType = entityType;
+    return this;
+  }
+
+  public SqlRunner withOverrideRecord(boolean overrideRecord) {
+    this.overrideRecord = overrideRecord;
     return this;
   }
 
@@ -90,5 +101,24 @@ public class SqlRunner {
     List<ReturnType> results = DataCollection.collect(rs, entityType);
     reservoir.put(conn);
     return results;
+  }
+
+  public <Type> int runUpdate(Type entityRecord, String tableName)
+      throws SQLException, IllegalAccessException {
+    if (entityType == null) {
+      throw new IllegalArgumentException("Entity type not specified.");
+    }
+    if (reservoir == null) {
+      throw new IllegalArgumentException("Connection reservoir not specified.");
+    }
+
+    String completedQuery =
+        QueryCompletion.completeInsertQuery(tableName, this.entityType, this.overrideRecord);
+    ConnectionInterface.QueryParams params =
+        QueryCompletion.generateInsertQueryParams(entityRecord, entityType, this.overrideRecord);
+    ConnectionInterface conn = reservoir.take();
+    int numRowsUpdated = conn.runUpdate(completedQuery, params);
+    reservoir.put(conn);
+    return numRowsUpdated;
   }
 }

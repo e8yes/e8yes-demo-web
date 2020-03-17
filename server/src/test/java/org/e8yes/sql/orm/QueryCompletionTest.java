@@ -82,4 +82,26 @@ public class QueryCompletionTest {
             + "cards.userId = user.id WHERE user.joinDate > '2020-1-1'";
     Assertions.assertEquals(real, completedquery);
   }
+
+  public static class UserEntity {
+    public SqlInt id = new SqlInt();
+    public SqlStr user_name = new SqlStr();
+  }
+
+  @Test
+  public void testInsertion() {
+    String completedQuery =
+        QueryCompletion.completeInsertQuery("auser", UserEntity.class, /*withUpsert=*/ false);
+    String expected = "INSERT INTO auser(id,user_name)VALUES(?,?)ON CONFLICT DO NOTHING";
+    Assertions.assertEquals(expected, completedQuery);
+  }
+
+  @Test
+  public void testUpsertion() {
+    String completedQuery =
+        QueryCompletion.completeInsertQuery("auser", UserEntity.class, /*withUpsert=*/ true);
+    String expected =
+        "INSERT INTO auser(id,user_name)VALUES(?,?)ON CONFLICT DO UPDATE SET id=?,user_name=?";
+    Assertions.assertEquals(expected, completedQuery);
+  }
 }

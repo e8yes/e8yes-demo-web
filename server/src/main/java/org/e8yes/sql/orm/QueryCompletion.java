@@ -17,6 +17,8 @@
 package org.e8yes.sql.orm;
 
 import java.lang.reflect.Field;
+import org.e8yes.sql.connection.ConnectionInterface;
+import org.e8yes.sql.primitive.SqlPrimitiveInterface;
 
 /** Functions to automate SQL query completion via reflection. */
 public class QueryCompletion {
@@ -49,5 +51,64 @@ public class QueryCompletion {
     sb.append(" FROM ");
     sb.append(query);
     return sb.toString();
+  }
+
+  /**
+   * It takes in the target table name and entity type and construct an insertion sql query.
+   *
+   * @param tableName Name of the table to insert the record into..
+   * @param entityType Type of the entity to be inserted.
+   * @param withUpsert Whether to builder a query which upserts a record.
+   * @return A complete insertion SQL query.
+   */
+  public static String completeInsertQuery(String tableName, Class entityType, boolean withUpsert) {
+    Field[] fields = entityType.getDeclaredFields();
+    assert (fields.length > 0);
+
+    StringBuilder query = new StringBuilder();
+    query.append("INSERT INTO ");
+    query.append(tableName);
+    query.append("(");
+    for (Field field : fields) {
+      query.append(field.getName());
+      query.append(",");
+    }
+    query.setLength(query.length() - 1);
+    query.append(")VALUES(?");
+    for (int i = 1; i < fields.length; i++) {
+      query.append(",?");
+    }
+    query.append(")");
+
+    if (withUpsert) {
+      // Update record on conflict.
+      query.append("ON CONFLICT DO UPDATE SET ");
+      for (Field field : fields) {
+        query.append(field.getName());
+        query.append("=?,");
+      }
+      query.setLength(query.length() - 1);
+    } else {
+      query.append("ON CONFLICT DO NOTHING");
+    }
+    return query.toString();
+  }
+
+  public static <Type> ConnectionInterface.QueryParams generateInsertQueryParams(
+      Type entityRecord, Class entityType, boolean withUpsert) throws IllegalAccessException {
+    ConnectionInterface.QueryParams params = new ConnectionInterface.QueryParams();
+    Field[] fields = entityType.getDeclaredFields();
+    int i = 0;
+    for (i = 0; i < fields.length; i++) {
+      SqlPrimitiveInterface val = (SqlPrimitiveInterface) fields[i].get(entityRecord);
+      params.setParam(i + 1, val);
+    }
+    if (withUpsert) {
+      for (int j = 0; j < fields.length; i++, j++) {
+        SqlPrimitiveInterface val = (SqlPrimitiveInterface) fields[i].get(entityRecord);
+        params.setParam(i + 1, val);
+      }
+    }
+    return params;
   }
 }
