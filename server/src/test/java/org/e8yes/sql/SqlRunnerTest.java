@@ -30,13 +30,13 @@ import org.junit.jupiter.api.Test;
 public class SqlRunnerTest {
 
   public static class UserHasManyCreditCards {
-    public static class UserInfo {
+    public static class User {
       public SqlInt id = new SqlInt();
       public SqlStr userName = new SqlStr();
 
       @Override
       public boolean equals(Object o) {
-        return id.equals(((UserInfo) o).id);
+        return id.equals(((User) o).id);
       }
 
       @Override
@@ -48,9 +48,10 @@ public class SqlRunnerTest {
     public static class Cards {
       public SqlInt id = new SqlInt();
       public SqlStr number = new SqlStr();
+      public SqlInt userId = new SqlInt();
     }
 
-    public UserInfo userInfo;
+    public User userInfo;
     public Cards[] cards;
 
     @Override
@@ -65,7 +66,7 @@ public class SqlRunnerTest {
   }
 
   @Test
-  public void testRunQuery()
+  public void testRunUpdateAndQuery()
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
     ConnectionFactory factory =
@@ -99,20 +100,40 @@ public class SqlRunnerTest {
             + " FOREIGN KEY (userId) REFERENCES QueryRunnerTestUser (id) ON DELETE CASCADE)";
     conn.runUpdate(createCardTable, new ConnectionInterface.QueryParams());
 
-    String insertUser = "INSERT INTO QueryRunnerTestUser(id, userName) VALUES (1, 'user0')";
-    conn.runUpdate(insertUser, new ConnectionInterface.QueryParams());
+    // Run update.
+    UserHasManyCreditCards.User user = new UserHasManyCreditCards.User();
+    user.id.assign(1);
+    user.userName.assign("user0");
+    int nRows =
+        new SqlRunner()
+            .withConnectionReservoir(new BasicConnectionReservoir(factory))
+            .withEntity(UserHasManyCreditCards.User.class)
+            .runUpdate(user, /*tableName=*/ "QueryRunnerTestUser");
+    Assertions.assertEquals(1, nRows);
 
-    String insertCard0 =
-        "INSERT INTO QueryRunnerTestCard(id, userId, number) VALUES (10, 1, '1234')";
-    String insertCard1 =
-        "INSERT INTO QueryRunnerTestCard(id, userId, number) VALUES (11, 1, '2234')";
-    conn.runUpdate(insertCard0, new ConnectionInterface.QueryParams());
-    conn.runUpdate(insertCard1, new ConnectionInterface.QueryParams());
+    UserHasManyCreditCards.Cards card0 = new UserHasManyCreditCards.Cards();
+    card0.id.assign(10);
+    card0.number.assign("1234");
+    card0.userId.assign(1);
+    UserHasManyCreditCards.Cards card1 = new UserHasManyCreditCards.Cards();
+    card1.id.assign(11);
+    card1.number.assign("2234");
+    card1.userId.assign(1);
+
+    SqlRunner cardRunner =
+        new SqlRunner()
+            .withConnectionReservoir(new BasicConnectionReservoir(factory))
+            .withEntity(UserHasManyCreditCards.Cards.class);
+
+    nRows = cardRunner.runUpdate(card0, /*tableName=*/ "QueryRunnerTestCard");
+    Assertions.assertEquals(1, nRows);
+
+    nRows = cardRunner.runUpdate(card1, /*tableName=*/ "QueryRunnerTestCard");
+    Assertions.assertEquals(1, nRows);
 
     // Run query.
-    SqlRunner runner = new SqlRunner();
     List<UserHasManyCreditCards> results =
-        runner
+        new SqlRunner()
             .withConnectionReservoir(new BasicConnectionReservoir(factory))
             .withEntity(UserHasManyCreditCards.class)
             .runQuery(
