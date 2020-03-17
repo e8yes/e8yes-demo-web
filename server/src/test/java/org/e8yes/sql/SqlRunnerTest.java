@@ -114,16 +114,15 @@ public class SqlRunnerTest {
     List<UserHasManyCreditCards> results =
         runner
             .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .withSelect(
+            .withEntity(UserHasManyCreditCards.class)
+            .runQuery(
                 new SqlQueryBuilder()
                     .queryPiece(
                         "QueryRunnerTestUser userInfo "
                             + "JOIN "
                             + "QueryRunnerTestCard cards "
                             + "ON cards.userId = userInfo.id "
-                            + "ORDER BY cards.id DESC"),
-                UserHasManyCreditCards.class)
-            .runQuery();
+                            + "ORDER BY cards.id DESC"));
 
     Assertions.assertEquals(1, results.size());
     UserHasManyCreditCards record = results.get(0);

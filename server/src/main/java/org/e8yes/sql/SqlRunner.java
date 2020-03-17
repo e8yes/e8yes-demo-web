@@ -19,7 +19,6 @@ package org.e8yes.sql;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import org.e8yes.sql.connection.ConnectionInterface;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.e8yes.sql.orm.DataCollection;
@@ -30,7 +29,6 @@ import org.e8yes.sql.resultset.ResultSetInterface;
 public class SqlRunner {
 
   private Class entityType;
-  private Optional<SqlQueryBuilder> query = Optional.empty();
   private ConnectionReservoirInterface reservoir;
   private boolean overrideRecord = false;
 
@@ -46,33 +44,35 @@ public class SqlRunner {
   }
 
   /**
-   * Example: query = "AUser user JOIN CreditCard card ON card.userId = user.id WHERE user.joinDate
-   * > '2020-1-1'"
+   * The type of Java object to run ORM on -- runQuery() will convert query result to this target
+   * entity type; runUpdate() will convert the entity type to the SQL row format.
    *
-   * @param query
-   * @param resultType
+   * @param entityType
    * @return
    */
-  public SqlRunner withSelect(SqlQueryBuilder query, Class resultType) {
-    this.query = Optional.of(query);
-    this.entityType = resultType;
-    return this;
-  }
-
   public SqlRunner withEntity(Class entityType) {
     this.entityType = entityType;
     return this;
   }
 
+  /**
+   * Whether or not to override existing record when conflict occurs on update.
+   *
+   * @param overrideRecord
+   * @return
+   */
   public SqlRunner withOverrideRecord(boolean overrideRecord) {
     this.overrideRecord = overrideRecord;
     return this;
   }
 
   /**
-   * Constructs and runs query with the information provided and synchronously returns the result.
+   * Constructs and runs query with partial information provided and synchronously returns the
+   * result.
    *
    * @param <ReturnType>
+   * @param query Partial query. example: "AUser user JOIN CreditCard card ON card.userId = user.id
+   *     WHERE user.joinDate > '2020-1-1'"
    * @return The query result.
    * @throws NoSuchMethodException
    * @throws InstantiationException
@@ -81,29 +81,35 @@ public class SqlRunner {
    * @throws InvocationTargetException
    * @throws SQLException
    */
-  public <ReturnType> List<ReturnType> runQuery()
+  public <ReturnType> List<ReturnType> runQuery(SqlQueryBuilder query)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
     if (entityType == null) {
       throw new IllegalArgumentException("Result type not specified.");
     }
-    if (query.isEmpty()) {
-      throw new IllegalArgumentException("Query not specified.");
-    }
     if (reservoir == null) {
       throw new IllegalArgumentException("Connection reservoir not specified.");
     }
 
-    String completedQuery =
-        QueryCompletion.completeSelectQuery(query.get().jdbcQuery(), entityType);
+    String completedQuery = QueryCompletion.completeSelectQuery(query.jdbcQuery(), entityType);
     ConnectionInterface conn = reservoir.take();
-    ResultSetInterface rs = conn.runQuery(completedQuery, query.get().queryParams());
+    ResultSetInterface rs = conn.runQuery(completedQuery, query.queryParams());
     List<ReturnType> results = DataCollection.collect(rs, entityType);
     reservoir.put(conn);
     return results;
   }
 
-  public <Type> int runUpdate(Type entityRecord, String tableName)
+  /**
+   * Save a Java object to the specified SQL table.
+   *
+   * @param <Type>
+   * @param record Java object to be saved.
+   * @param tableName Target SQL table to save to.
+   * @return The number of SQL rows affected by this update.
+   * @throws SQLException
+   * @throws IllegalAccessException
+   */
+  public <Type> int runUpdate(Type record, String tableName)
       throws SQLException, IllegalAccessException {
     if (entityType == null) {
       throw new IllegalArgumentException("Entity type not specified.");
@@ -115,7 +121,7 @@ public class SqlRunner {
     String completedQuery =
         QueryCompletion.completeInsertQuery(tableName, this.entityType, this.overrideRecord);
     ConnectionInterface.QueryParams params =
-        QueryCompletion.generateInsertQueryParams(entityRecord, entityType, this.overrideRecord);
+        QueryCompletion.generateInsertQueryParams(record, entityType, this.overrideRecord);
     ConnectionInterface conn = reservoir.take();
     int numRowsUpdated = conn.runUpdate(completedQuery, params);
     reservoir.put(conn);
