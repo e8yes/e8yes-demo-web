@@ -48,7 +48,7 @@ public interface SqlPrimitiveInterface {
    * @param <Type>
    * @return The Java object if not null. Otherwise, null.
    */
-  <Type> Type value();
+  public <Type> Type value();
 
   /**
    * Is this an array type?

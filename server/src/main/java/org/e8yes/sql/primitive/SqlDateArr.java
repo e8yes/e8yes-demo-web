@@ -47,6 +47,10 @@ public class SqlDateArr implements SqlPrimitiveInterface {
     val = (Date[]) o;
   }
 
+  public void assign(Date[] val) {
+    this.val = val;
+  }
+
   @Override
   public Date[] value() {
     return val;

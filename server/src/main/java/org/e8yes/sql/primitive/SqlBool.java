@@ -45,6 +45,10 @@ public class SqlBool implements SqlPrimitiveInterface {
     val = (Boolean) o;
   }
 
+  public void assign(Boolean val) {
+    this.val = val;
+  }
+
   @Override
   public Boolean value() {
     return val;

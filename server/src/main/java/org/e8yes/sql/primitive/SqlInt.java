@@ -45,6 +45,10 @@ public class SqlInt implements SqlPrimitiveInterface {
     val = (Integer) o;
   }
 
+  public void assign(Integer val) {
+    this.val = val;
+  }
+
   @Override
   public Integer value() {
     return val;

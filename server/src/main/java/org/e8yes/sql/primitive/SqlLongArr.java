@@ -46,6 +46,10 @@ public class SqlLongArr implements SqlPrimitiveInterface {
     val = (Long[]) o;
   }
 
+  public void assign(Long[] val) {
+    this.val = val;
+  }
+
   @Override
   public Long[] value() {
     return val;

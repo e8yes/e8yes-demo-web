@@ -45,6 +45,10 @@ public class SqlDouble implements SqlPrimitiveInterface {
     val = (Double) o;
   }
 
+  public void assign(Double val) {
+    this.val = val;
+  }
+
   @Override
   public Double value() {
     return val;

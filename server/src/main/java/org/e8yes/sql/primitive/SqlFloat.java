@@ -45,6 +45,10 @@ public class SqlFloat implements SqlPrimitiveInterface {
     val = (Float) o;
   }
 
+  public void assign(Float val) {
+    this.val = val;
+  }
+
   @Override
   public Float value() {
     return val;

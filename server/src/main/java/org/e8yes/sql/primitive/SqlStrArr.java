@@ -46,6 +46,10 @@ public class SqlStrArr implements SqlPrimitiveInterface {
     val = (String[]) o;
   }
 
+  public void assign(String[] val) {
+    this.val = val;
+  }
+
   @Override
   public String[] value() {
     return val;
