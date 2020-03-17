@@ -18,11 +18,13 @@ package org.e8yes.sql;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.List;
 import org.e8yes.sql.connection.ConnectionInterface;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.e8yes.sql.orm.DataCollection;
 import org.e8yes.sql.orm.QueryCompletion;
+import org.e8yes.sql.primitive.SqlLong;
 import org.e8yes.sql.resultset.ResultSetInterface;
 
 /** Collects information from different sources to build then execute an SQL query. */
@@ -126,5 +128,41 @@ public class SqlRunner {
     int numRowsUpdated = conn.runUpdate(completedQuery, params);
     reservoir.put(conn);
     return numRowsUpdated;
+  }
+
+  /**
+   * Generate approximately unique ID from time.
+   *
+   * @return unique ID.
+   */
+  public long timeId() {
+    Instant inst = Instant.now();
+    long nano = inst.getEpochSecond() + inst.getNano();
+    return Long.reverse(nano);
+  }
+
+  /**
+   * Generate sequential ID from a sequence table.
+   *
+   * @param seqTable Name of the sequence table to generate ID from.
+   * @return unique ID.
+   * @throws SQLException
+   */
+  public long seqId(String seqTable) throws SQLException {
+    if (reservoir == null) {
+      throw new IllegalArgumentException("Connection reservoir not specified.");
+    }
+    ConnectionInterface conn = reservoir.take();
+
+    ResultSetInterface rs =
+        conn.runQuery("SELECT nextval('" + seqTable + "')", new ConnectionInterface.QueryParams());
+    assert (rs.hasNext());
+    SqlLong id = new SqlLong();
+    rs.setCellValueToField(0, id);
+    assert (id.value() != null);
+
+    reservoir.put(conn);
+
+    return id.value();
   }
 }
