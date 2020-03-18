@@ -1,7 +1,7 @@
 /**
  * e8yes demo web server.
  *
- * <p>Copyright (C) 2020 Yichen Ma {yichenm2@uci.edu}, Chifeng Wen {daviesx66@gmail.com}
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
  *
  * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -17,13 +17,12 @@
 package org.e8yes.service.identity;
 
 import java.sql.SQLException;
-import org.apache.ibatis.session.SqlSession;
+import java.time.Instant;
 import org.e8yes.connection.DatabaseConnection;
 import org.e8yes.environment.EnvironmentContext;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.ResourceConflictException;
-import org.e8yes.service.EtUser;
-import org.e8yes.service.identity.dao.mappers.AUserMapper;
+import org.e8yes.service.identity.ctx.AUserGroupContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -31,9 +30,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class UserTest {
+public class UserCreationTest {
 
-  public UserTest() {}
+  public UserCreationTest() {}
 
   @BeforeAll
   public static void setUpClass() {}
@@ -52,39 +51,28 @@ public class UserTest {
   }
 
   @Test
-  public void createUserTest() throws ResourceConflictException {
-    String user0Name = "USER0";
-    String user0Alias = "";
+  public void createUserTest()
+      throws ResourceConflictException, SQLException, IllegalAccessException {
     String user0PassWord = "PASS";
-    EtUser user =
-        User.createBaselineUser(user0Name, user0Alias, user0PassWord, UserGroup.getContext());
-    user.getUserName();
-    Assertions.assertNotEquals(0, user.getId());
-    Assertions.assertEquals(user0Name, user.getUserName());
-    Assertions.assertEquals(user0Alias, user.getAlias());
-    Assertions.assertNotNull(user.getPasscode());
-
-    SqlSession sess = DatabaseConnection.openSession();
-    AUserMapper mapper = sess.getMapper(AUserMapper.class);
-    EtUser loadedUser = mapper.loadByIdOrUserName(user.getId(), null);
-    Assertions.assertNotNull(loadedUser);
-    Assertions.assertEquals(loadedUser, user);
-
-    Assertions.assertTrue(User.userNameExists(user0Name));
-
-    DatabaseConnection.closeSession(sess);
-  }
-
-  @Test
-  public void createRepeatedUserTest() throws ResourceConflictException {
-    String user0Name = "USER0";
-    String user0Alias = "";
-    String user0PassWord = "PASS";
-    User.createBaselineUser(user0Name, user0Alias, user0PassWord, UserGroup.getContext());
-    Assertions.assertThrows(
-        ResourceConflictException.class,
-        () -> {
-          User.createBaselineUser(user0Name, user0Alias, user0PassWord, UserGroup.getContext());
-        });
+    UserCreation.UserEntity user =
+        UserCreation.createBaselineUser(user0PassWord.getBytes(), UserGroup.getContext());
+    Assertions.assertNotNull(user.id.value());
+    Assertions.assertNotNull(user.security_key_hash.value());
+    Assertions.assertFalse(user.security_key_hash.value().isBlank());
+    Assertions.assertNull(user.alias.value());
+    Assertions.assertNull(user.avatar_file_id.value());
+    Assertions.assertNull(user.emails.value());
+    Assertions.assertNotNull(user.created_at);
+    Assertions.assertTrue(
+        (user.created_at.value().getTime() - Instant.now().toEpochMilli()) < 5000);
+    Assertions.assertNotNull(user.active_level.value());
+    Assertions.assertEquals((Integer) 0, user.active_level.value());
+    Assertions.assertNotNull(user.group_id.value());
+    Assertions.assertEquals(
+        (Integer)
+            UserGroup.getContext()
+                .getSystemUserGroup(AUserGroupContext.SystemUserGroup.BASELINE_USER_GROUP)
+                .getId(),
+        user.group_id.value());
   }
 }

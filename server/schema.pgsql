@@ -18,6 +18,32 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 
+/* File */
+CREATE SEQUENCE IF NOT EXISTS file_id_seq
+    START WITH 100
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE IF NOT EXISTS file (
+    id BIGINT NOT NULL DEFAULT nextval('file_id_seq'),
+    volumn INT NOT NULL,
+    format INT NOT NULL,
+    encryption_key_source INT NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+
+/* Email */
+CREATE TABLE IF NOT EXISTS email_set (
+    email CHARACTER VARYING NOT NULL,
+    PRIMARY KEY (email)
+);
+
+
+/* User group */
 CREATE SEQUENCE IF NOT EXISTS auser_group_id_seq
     START WITH 32
     INCREMENT BY 1
@@ -35,6 +61,7 @@ CREATE TABLE IF NOT EXISTS auser_group (
 CREATE INDEX IF NOT EXISTS idx_auser_group_description ON auser_group USING btree (description);
 
 
+/* User */
 CREATE SEQUENCE IF NOT EXISTS auser_id_seq
     START WITH 1024
     INCREMENT BY 1
@@ -44,44 +71,58 @@ CREATE SEQUENCE IF NOT EXISTS auser_id_seq
 
 CREATE TABLE IF NOT EXISTS auser (
     id BIGINT NOT NULL DEFAULT nextval('auser_id_seq'),
-    user_name VARCHAR(256) UNIQUE NOT NULL,
-    alias VARCHAR(256) NOT NULL,
-    passcode VARCHAR(1024) NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    avatar_path BIGINT,
-    status INT NOT NULL DEFAULT 0,
+    emails CHARACTER VARYING [] NULL,
+    alias CHARACTER VARYING(40) NULL,
+    avatar_file_id BIGINT NULL,
+    security_key_hash CHARACTER VARYING NOT NULL,
     group_id INT NOT NULL,
+    active_level INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (group_id) REFERENCES auser_group (id) ON DELETE CASCADE
+    FOREIGN KEY (group_id) REFERENCES auser_group (id) ON DELETE CASCADE,
+    FOREIGN KEY (avatar_file_id) REFERENCES file (id) ON DELETE SET NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_auser_user_name ON auser USING btree (user_name);
 
-
-CREATE TABLE IF NOT EXISTS friend_request (
-    sender_id BIGINT NOT NULL,
-    receiver_id BIGINT NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    status INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (sender_id, receiver_id),
-    FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE,
-    FOREIGN KEY (receiver_id) REFERENCES auser (id) ON DELETE CASCADE
-);
-
-CREATE INDEX IF NOT EXISTS idx_friend_request_created_at ON friend_request USING btree (created_at);
-
-
+/* Friendship */
 CREATE TABLE IF NOT EXISTS friend (
-    sender_id BIGINT NOT NULL,
-    receiver_id BIGINT NOT NULL,
+    /* We requires that user0_id < user1_id. */
+    user0_id BIGINT NOT NULL,
+    user1_id BIGINT NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (sender_id, receiver_id),
-    FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE,
-    FOREIGN KEY (receiver_id) REFERENCES auser (id) ON DELETE CASCADE
+    PRIMARY KEY (user0_id, user1_id),
+    FOREIGN KEY (user0_id) REFERENCES auser (id) ON DELETE CASCADE,
+    FOREIGN KEY (user1_id) REFERENCES auser (id) ON DELETE CASCADE
 );
 
 
+/* Messaging channel */
+CREATE SEQUENCE IF NOT EXISTS messaging_channel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE IF NOT EXISTS messaging_channel (
+    id BIGINT NOT NULL DEFAULT nextval('messaging_channel_id_seq'),
+    channel_name CHARACTER VARYING(40),
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS messaging_channel_has_users (
+    channel_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    ownership INT NOT NULL,
+    PRIMARY KEY (channel_id, user_id),
+    FOREIGN KEY (channel_id) REFERENCES messaging_channel (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES auser (id) ON DELETE CASCADE
+);
+
+
+/* Message */
 CREATE SEQUENCE IF NOT EXISTS message_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -91,27 +132,13 @@ CREATE SEQUENCE IF NOT EXISTS message_id_seq
 
 CREATE TABLE IF NOT EXISTS message (
     id BIGINT NOT NULL DEFAULT nextval('message_id_seq'),
+    channel_id BIGINT NOT NULL,
     sender_id BIGINT NOT NULL,
-    msg VARCHAR(2048),
+    encrypted_content CHARACTER VARYING,
+    media_file_id BIGINT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE
-);
-
-
-CREATE SEQUENCE IF NOT EXISTS message_queue_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-CREATE TABLE IF NOT EXISTS message_queue (
-    id BIGINT NOT NULL DEFAULT nextval('message_queue_id_seq'),
-    message_id BIGINT NOT NULL,
-    receiver_id BIGINT NOT NULL,
-    status INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (id),
-    FOREIGN KEY (message_id) REFERENCES message (id) ON DELETE CASCADE,
-    FOREIGN KEY (receiver_id) REFERENCES auser (id) ON DELETE CASCADE
+    FOREIGN KEY (channel_id) REFERENCES messaging_channel (id) ON DELETE CASCADE,
+    FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE,
+    FOREIGN KEY (media_file_id) REFERENCES file (id) ON DELETE SET NULL
 );

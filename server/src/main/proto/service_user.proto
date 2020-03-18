@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "generic_error.proto";
-
 option java_multiple_files = true;
 option java_package = "org.e8yes.service";
 option java_outer_classname = "ServiceUserProto";
@@ -9,20 +7,17 @@ option java_outer_classname = "ServiceUserProto";
 package org.e8yes.services;
 
 message RegistrationRequest {
-    string user_name = 1;
-    string password = 2;
+    bytes security_key = 1;
 }
 
 message RegistrationReponse {
     enum RegistrationErrorType {
-        RET_NoErr = 0;
-        RET_UserNameConflict = 1;
-        RET_Other = 2;
+        RET_NoError = 0;
+        RET_BadSecurityKey = 1;
+        RET_BotDetected = 2;
     }
-    int32 status = 1;
-    RegistrationErrorType error_type = 2;
-    GenericErrorType generic_error_type = 3;
-    uint64 user_id = 4;
+    RegistrationErrorType error_type = 1;
+    uint64 user_id = 3;
 }
 
 service UserService {

@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.environment.EnvironmentContext;
 import org.e8yes.environment.Initializer;
-import org.e8yes.service.AuthorizationService;
 import org.e8yes.service.FriendshipService;
 import org.e8yes.service.SystemService;
 import org.e8yes.service.UserService;
@@ -29,7 +28,6 @@ public class DemoWebServer {
     int port = 50051;
     server =
         ServerBuilder.forPort(port)
-            .addService(new AuthorizationService())
             .addService(new UserService())
             .addService(new FriendshipService())
             .addService(new SystemService())
