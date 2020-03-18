@@ -11,22 +11,37 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.e8yes.environment.DatabaseInfo;
 import org.e8yes.environment.EnvironmentContext;
 import org.e8yes.service.identity.dao.mappers.AUserGroupMapper;
-import org.e8yes.service.identity.dao.mappers.AUserMapper;
 import org.e8yes.service.identity.dao.mappers.DatabaseMapper;
+import org.e8yes.sql.connection.BasicConnectionReservoir;
+import org.e8yes.sql.connection.ConnectionFactory;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 
-/** @author daviswen */
+/** */
 public class DatabaseConnection {
 
   private static SqlSessionFactory fact;
-  private static EnvironmentContext env_ctx;
+  private static EnvironmentContext envCtx;
+  private static ConnectionReservoirInterface demowebDbConnections;
 
   public static void init(EnvironmentContext ctx) {
-    env_ctx = ctx;
+    envCtx = ctx;
+
+    DatabaseInfo info = DatabaseInfo.get(ctx);
+    ConnectionFactory factory =
+        new ConnectionFactory(
+            ConnectionFactory.ConnectionType.JDBC,
+            info.hostName,
+            info.port,
+            info.dbName,
+            info.userName,
+            info.password);
+    demowebDbConnections = new BasicConnectionReservoir(factory);
 
     DataSource dataSource;
-    switch (env_ctx.mode) {
+    switch (envCtx.mode) {
       case Prod:
         {
           dataSource =
@@ -51,15 +66,19 @@ public class DatabaseConnection {
     }
 
     Environment environment =
-        new Environment(env_ctx.mode.toString(), new JdbcTransactionFactory(), dataSource);
+        new Environment(envCtx.mode.toString(), new JdbcTransactionFactory(), dataSource);
 
     Configuration config = new Configuration(environment);
     config.addMapper(DatabaseMapper.class);
-    config.addMapper(AUserMapper.class);
     config.addMapper(AUserGroupMapper.class);
 
     SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
     fact = builder.build(config);
+  }
+
+  public static ConnectionReservoirInterface demoweb() {
+    assert (demowebDbConnections != null);
+    return demowebDbConnections;
   }
 
   public static SqlSession openSession() {
@@ -71,7 +90,7 @@ public class DatabaseConnection {
   }
 
   public static void deleteAllData() throws SQLException {
-    if (env_ctx.mode == EnvironmentContext.Mode.Test) {
+    if (envCtx.mode == EnvironmentContext.Mode.Test) {
       SqlSession sess = openSession();
       DatabaseMapper mapper = sess.getMapper(DatabaseMapper.class);
       List<String> tbNames = mapper.getAllTableNames();
