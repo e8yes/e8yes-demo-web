@@ -1,44 +1,22 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
 package org.e8yes.service.identity;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.ibatis.session.SqlSession;
-import org.e8yes.connection.DatabaseConnection;
-import org.e8yes.exception.AccessDeniedException;
-import org.e8yes.service.EtUser;
-import org.e8yes.service.EtUserGroup;
-import org.e8yes.service.identity.ctx.IdentityContext;
-import org.e8yes.service.identity.dao.mappers.AUserGroupMapperEx;
-import org.e8yes.service.identity.dao.mappers.AUserMapper;
-import org.mindrot.jbcrypt.BCrypt;
-
 /**
- * Business logic to handle access control and establish user identity.
- *
- * @author davis
+ * Handle access control and establish user identity.
  */
-public class AccessControl {
-
-  public static Optional<String> genTokenFromCredentialPair(String userName, String passcode)
-      throws AccessDeniedException {
-    SqlSession sess = DatabaseConnection.openSession();
-    AUserMapper userMapper = sess.getMapper(AUserMapper.class);
-    EtUser user = userMapper.loadByIdOrUserName(null, userName);
-    if (!BCrypt.checkpw(passcode, user.getPasscode())) {
-      DatabaseConnection.closeSession(sess);
-      throw new AccessDeniedException();
-    }
-    EtUserGroup userGroup = AUserGroupMapperEx.loadById(sess, user.getGroupId());
-    DatabaseConnection.closeSession(sess);
-    try {
-      return Optional.of(
-          // TODO: need a secret key provider.
-          new IdentityContext(user.getId(), userGroup).sign("abc"));
-    } catch (IllegalArgumentException | UnsupportedEncodingException ex) {
-      Logger.getLogger(AccessControl.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    return Optional.empty();
-  }
-}
+public class AccessControl {}
