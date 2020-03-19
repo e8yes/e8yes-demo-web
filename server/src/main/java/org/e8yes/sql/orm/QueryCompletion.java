@@ -81,8 +81,10 @@ public class QueryCompletion {
     query.append(")");
 
     if (withUpsert) {
-      // Update record on conflict.
-      query.append("ON CONFLICT DO UPDATE SET ");
+      // Update record on primary key conflict.
+      query.append("ON CONFLICT ON CONSTRAINT ");
+      query.append(tableName);
+      query.append("_pkey DO UPDATE SET ");
       for (Field field : fields) {
         query.append(field.getName());
         query.append("=?,");
@@ -105,7 +107,7 @@ public class QueryCompletion {
     }
     if (withUpsert) {
       for (int j = 0; j < fields.length; i++, j++) {
-        SqlPrimitiveInterface val = (SqlPrimitiveInterface) fields[i].get(entityRecord);
+        SqlPrimitiveInterface val = (SqlPrimitiveInterface) fields[j].get(entityRecord);
         params.setParam(i + 1, val);
       }
     }

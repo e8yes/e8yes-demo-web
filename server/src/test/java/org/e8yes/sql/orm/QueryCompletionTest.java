@@ -16,6 +16,7 @@
  */
 package org.e8yes.sql.orm;
 
+import org.e8yes.sql.connection.ConnectionInterface;
 import org.e8yes.sql.primitive.SqlInt;
 import org.e8yes.sql.primitive.SqlStr;
 import org.junit.jupiter.api.Assertions;
@@ -89,7 +90,7 @@ public class QueryCompletionTest {
   }
 
   @Test
-  public void testInsertion() {
+  public void testInsertSqlGeneration() {
     String completedQuery =
         QueryCompletion.completeInsertQuery("auser", UserEntity.class, /*withUpsert=*/ false);
     String expected = "INSERT INTO auser(id,user_name)VALUES(?,?)ON CONFLICT DO NOTHING";
@@ -97,11 +98,45 @@ public class QueryCompletionTest {
   }
 
   @Test
-  public void testUpsertion() {
+  public void testInsertQueryParamsGeneration() throws IllegalAccessException {
+    UserEntity entity = new UserEntity();
+    entity.id.assign(1);
+    entity.user_name.assign("name");
+    ConnectionInterface.QueryParams params =
+        QueryCompletion.generateInsertQueryParams(entity, UserEntity.class, /*withUpsert=*/ false);
+
+    Assertions.assertNotNull(params.getParam(1));
+    Assertions.assertEquals((Integer) 1, params.getParam(1).value());
+    Assertions.assertNotNull(params.getParam(2));
+    Assertions.assertEquals("name", params.getParam(2).value());
+  }
+
+  @Test
+  public void testUpsertSqlGeneration() {
     String completedQuery =
         QueryCompletion.completeInsertQuery("auser", UserEntity.class, /*withUpsert=*/ true);
     String expected =
-        "INSERT INTO auser(id,user_name)VALUES(?,?)ON CONFLICT DO UPDATE SET id=?,user_name=?";
+        "INSERT INTO auser(id,user_name)VALUES(?,?)ON CONFLICT ON CONSTRAINT auser_pkey "
+            + "DO UPDATE SET id=?,user_name=?";
     Assertions.assertEquals(expected, completedQuery);
+  }
+
+  @Test
+  public void testUpsertQueryParamsGeneration() throws IllegalAccessException {
+    UserEntity entity = new UserEntity();
+    entity.id.assign(1);
+    entity.user_name.assign("name");
+    ConnectionInterface.QueryParams params =
+        QueryCompletion.generateInsertQueryParams(entity, UserEntity.class, /*withUpsert=*/ true);
+
+    Assertions.assertNotNull(params.getParam(1));
+    Assertions.assertEquals((Integer) 1, params.getParam(1).value());
+    Assertions.assertNotNull(params.getParam(2));
+    Assertions.assertEquals("name", params.getParam(2).value());
+
+    Assertions.assertNotNull(params.getParam(3));
+    Assertions.assertEquals((Integer) 1, params.getParam(3).value());
+    Assertions.assertNotNull(params.getParam(4));
+    Assertions.assertEquals("name", params.getParam(4).value());
   }
 }

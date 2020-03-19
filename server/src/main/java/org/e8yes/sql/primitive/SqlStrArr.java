@@ -35,7 +35,7 @@ public class SqlStrArr implements SqlPrimitiveInterface {
   public void exportValueToStatement(PreparedStatement stmt, int position, Connection conn)
       throws SQLException {
     if (val != null) {
-      stmt.setArray(position, conn.createArrayOf("CHARACTER VARYING", val));
+      stmt.setArray(position, conn.createArrayOf("VARCHAR", val));
     } else {
       stmt.setNull(position, java.sql.Types.ARRAY);
     }
