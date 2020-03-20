@@ -210,6 +210,8 @@
                 <version>2.22.1</version>
                 <configuration>
                     <testFailureIgnore>false</testFailureIgnore>
+                    <trimStackTrace>false</trimStackTrace>
+                    <useFile>false</useFile>
                 </configuration>
             </plugin>
         </plugins>
