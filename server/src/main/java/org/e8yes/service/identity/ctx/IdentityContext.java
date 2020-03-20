@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.UnsupportedEncodingException;
-import org.e8yes.service.EtUserGroup;
 
 /**
  * Defines the identity context of a user -- Who is that and what can it do?
@@ -15,11 +14,9 @@ import org.e8yes.service.EtUserGroup;
 public class IdentityContext {
 
   public long userId;
-  public EtUserGroup userGroup;
 
-  public IdentityContext(long userId, EtUserGroup userGroup) {
+  public IdentityContext(long userId) {
     this.userId = userId;
-    this.userGroup = userGroup;
   }
 
   private static Integer[] toIntegerArray(byte[] bytes) {
@@ -39,16 +36,11 @@ public class IdentityContext {
   }
 
   public String sign(String secret) throws IllegalArgumentException, UnsupportedEncodingException {
-    return JWT.create()
-        .withClaim("U", userId)
-        .withArrayClaim("G", toIntegerArray(userGroup.toByteArray()))
-        .sign(Algorithm.HMAC256(secret));
+    return JWT.create().withClaim("U", userId).sign(Algorithm.HMAC256(secret));
   }
 
   public static IdentityContext decode(String token) throws InvalidProtocolBufferException {
     DecodedJWT decoded = JWT.decode(token);
-    return new IdentityContext(
-        decoded.getClaim("U").asLong(),
-        EtUserGroup.parseFrom(toBytes(decoded.getClaim("G").asArray(Integer.class))));
+    return new IdentityContext(decoded.getClaim("U").asLong());
   }
 }

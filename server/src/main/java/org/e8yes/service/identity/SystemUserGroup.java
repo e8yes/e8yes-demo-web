@@ -14,19 +14,10 @@
  * <p>You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
-package org.e8yes.environment;
+package org.e8yes.service.identity;
 
-import java.sql.SQLException;
-import org.e8yes.connection.DatabaseConnection;
-import org.e8yes.service.identity.UserCreation;
-import org.e8yes.service.identity.UserGroup;
-
-/** Initialize the environment. */
-public class Initializer {
-
-  public static void init(EnvironmentContext ctx) throws IllegalAccessException, SQLException {
-    DatabaseConnection.init(ctx);
-    UserGroup.createSystemUserGroups();
-    UserCreation.createRootUser();
-  }
+/** System's internally managed user groups. */
+public enum SystemUserGroup {
+  SUPER_USER_GROUP,
+  BASELINE_USER_GROUP
 }

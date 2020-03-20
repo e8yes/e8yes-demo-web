@@ -16,7 +16,5 @@
  */
 package org.e8yes.service.identity;
 
-/**
- * Handle access control and establish user identity.
- */
+/** Handle access control and establish user identity. */
 public class AccessControl {}

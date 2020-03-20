@@ -21,7 +21,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.service.identity.UserCreation;
-import org.e8yes.service.identity.UserGroup;
 
 /** */
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
@@ -31,9 +30,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     RegistrationReponse response;
     UserCreation.UserEntity user;
     try {
-      user =
-          UserCreation.createBaselineUser(
-              req.getSecurityKey().toByteArray(), UserGroup.getContext());
+      user = UserCreation.createBaselineUser(req.getSecurityKey().toByteArray());
       response =
           RegistrationReponse.newBuilder()
               .setErrorType(RegistrationReponse.RegistrationErrorType.RET_NoError)

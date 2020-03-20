@@ -22,7 +22,6 @@ import org.e8yes.connection.DatabaseConnection;
 import org.e8yes.environment.EnvironmentContext;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.ResourceConflictException;
-import org.e8yes.service.identity.ctx.AUserGroupContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -41,7 +40,7 @@ public class UserCreationTest {
   public static void tearDownClass() {}
 
   @BeforeEach
-  public void setUp() throws SQLException {
+  public void setUp() throws SQLException, IllegalAccessException {
     Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
   }
 
@@ -51,11 +50,10 @@ public class UserCreationTest {
   }
 
   @Test
-  public void createUserTest()
+  public void createBaselineUserTest()
       throws ResourceConflictException, SQLException, IllegalAccessException {
     String user0PassWord = "PASS";
-    UserCreation.UserEntity user =
-        UserCreation.createBaselineUser(user0PassWord.getBytes(), UserGroup.getContext());
+    UserCreation.UserEntity user = UserCreation.createBaselineUser(user0PassWord.getBytes());
     Assertions.assertNotNull(user.id.value());
     Assertions.assertNotNull(user.security_key_hash.value());
     Assertions.assertFalse(user.security_key_hash.value().isBlank());
@@ -67,12 +65,9 @@ public class UserCreationTest {
         (user.created_at.value().getTime() - Instant.now().toEpochMilli()) < 5000);
     Assertions.assertNotNull(user.active_level.value());
     Assertions.assertEquals((Integer) 0, user.active_level.value());
-    Assertions.assertNotNull(user.group_id.value());
+    Assertions.assertNotNull(user.group_names.value());
+    Assertions.assertEquals(1, user.group_names.value().length);
     Assertions.assertEquals(
-        (Integer)
-            UserGroup.getContext()
-                .getSystemUserGroup(AUserGroupContext.SystemUserGroup.BASELINE_USER_GROUP)
-                .getId(),
-        user.group_id.value());
+        SystemUserGroup.BASELINE_USER_GROUP.name(), user.group_names.value()[0]);
   }
 }

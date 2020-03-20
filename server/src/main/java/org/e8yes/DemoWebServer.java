@@ -3,6 +3,7 @@ package org.e8yes;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.environment.EnvironmentContext;
@@ -60,7 +61,8 @@ public class DemoWebServer {
     }
   }
 
-  public static void main(String[] args) throws IOException, InterruptedException {
+  public static void main(String[] args)
+      throws IOException, InterruptedException, IllegalAccessException, SQLException {
     final DemoWebServer server = new DemoWebServer();
     server.start();
     Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Prod));

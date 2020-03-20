@@ -19,10 +19,10 @@ package org.e8yes.service.identity;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import org.e8yes.connection.DatabaseConnection;
 import org.e8yes.constant.DbTableConstants;
-import org.e8yes.service.EtUserGroup;
-import org.e8yes.service.identity.ctx.AUserGroupContext;
 import org.e8yes.sql.SqlRunner;
 import org.e8yes.sql.primitive.SqlDate;
 import org.e8yes.sql.primitive.SqlInt;
@@ -34,7 +34,7 @@ import org.mindrot.jbcrypt.BCrypt;
 /** Static class for user creation. */
 public class UserCreation {
 
-  public static void init(AUserGroupContext userGroupCtx) {}
+  public static void createRootUser() {}
 
   public static class UserEntity {
     public SqlLong id = new SqlLong();
@@ -42,19 +42,29 @@ public class UserCreation {
     public SqlStr alias = new SqlStr();
     public SqlLong avatar_file_id = new SqlLong();
     public SqlStr security_key_hash = new SqlStr();
-    public SqlInt group_id = new SqlInt();
+    public SqlStrArr group_names = new SqlStrArr();
     public SqlInt active_level = new SqlInt();
     public SqlDate created_at = new SqlDate();
   }
 
-  private static UserEntity createUser(byte[] securityKey, EtUserGroup userGroup)
+  /**
+   * Create a user of arbitrary group.
+   *
+   * @param securityKey Security key associated with new user.
+   * @param userGroupNames Name of the groups the user will be in.
+   * @return A newly created user with its associated unique ID.
+   * @throws SQLException
+   * @throws IllegalAccessException
+   */
+  public static UserEntity createUser(byte[] securityKey, Set<String> userGroupNames)
       throws SQLException, IllegalAccessException {
     SqlRunner runner = new SqlRunner().withConnectionReservoir(DatabaseConnection.demoweb());
 
     UserEntity user = new UserEntity();
     user.id.assign(runner.timeId());
+    // Stores a irreversibly hashed security key.
     user.security_key_hash.assign(BCrypt.hashpw(Arrays.toString(securityKey), BCrypt.gensalt()));
-    user.group_id.assign(userGroup.getId());
+    user.group_names.assign(userGroupNames.toArray(new String[userGroupNames.size()]));
     user.active_level.assign(0);
     user.created_at.assign(new Date());
 
@@ -65,10 +75,22 @@ public class UserCreation {
     return user;
   }
 
-  public static UserEntity createBaselineUser(byte[] securityKey, AUserGroupContext userGroupCtx)
+  /**
+   * Similar to the above, but the new user will be in the system's baseline user group.
+   *
+   * @param securityKey Security key associated with new user.
+   * @return A newly created user with its associated unique ID.
+   * @throws SQLException
+   * @throws IllegalAccessException
+   */
+  public static UserEntity createBaselineUser(byte[] securityKey)
       throws SQLException, IllegalAccessException {
     return createUser(
         securityKey,
-        userGroupCtx.getSystemUserGroup(AUserGroupContext.SystemUserGroup.BASELINE_USER_GROUP));
+        new HashSet() {
+          {
+            add(SystemUserGroup.BASELINE_USER_GROUP.name());
+          }
+        });
   }
 }

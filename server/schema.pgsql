@@ -52,10 +52,9 @@ CREATE SEQUENCE IF NOT EXISTS auser_group_id_seq
     CACHE 1;
 
 CREATE TABLE IF NOT EXISTS auser_group (
-    id INT NOT NULL DEFAULT nextval('auser_group_id_seq'),
-    description VARCHAR(256) UNIQUE NOT NULL,
+    group_name VARCHAR(60) NOT NULL,
     permissions BIGINT[] NOT NULL DEFAULT '{}',
-    PRIMARY KEY (id)
+    PRIMARY KEY (group_name)
 );
 
 CREATE INDEX IF NOT EXISTS idx_auser_group_description ON auser_group USING btree (description);
@@ -75,11 +74,10 @@ CREATE TABLE IF NOT EXISTS auser (
     alias CHARACTER VARYING(40) NULL,
     avatar_file_id BIGINT NULL,
     security_key_hash CHARACTER VARYING NOT NULL,
-    group_id INT NOT NULL,
+    group_names CHARACTER VARYING(60) [] NULL,
     active_level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (group_id) REFERENCES auser_group (id) ON DELETE CASCADE,
     FOREIGN KEY (avatar_file_id) REFERENCES file (id) ON DELETE SET NULL
 );
 

@@ -13,7 +13,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.e8yes.environment.DatabaseInfo;
 import org.e8yes.environment.EnvironmentContext;
-import org.e8yes.service.identity.dao.mappers.AUserGroupMapper;
 import org.e8yes.service.identity.dao.mappers.DatabaseMapper;
 import org.e8yes.sql.connection.BasicConnectionReservoir;
 import org.e8yes.sql.connection.ConnectionFactory;
@@ -70,7 +69,6 @@ public class DatabaseConnection {
 
     Configuration config = new Configuration(environment);
     config.addMapper(DatabaseMapper.class);
-    config.addMapper(AUserGroupMapper.class);
 
     SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
     fact = builder.build(config);
