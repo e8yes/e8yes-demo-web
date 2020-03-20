@@ -90,5 +90,6 @@ public class JdbcConnectionTest {
 
     // Clean up.
     conn.runUpdate(dropTableStmt, new ConnectionInterface.QueryParams());
+    conn.close();
   }
 }

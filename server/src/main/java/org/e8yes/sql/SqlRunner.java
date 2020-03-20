@@ -20,11 +20,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import org.e8yes.sql.connection.ConnectionInterface;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.e8yes.sql.orm.DataCollection;
 import org.e8yes.sql.orm.QueryCompletion;
 import org.e8yes.sql.primitive.SqlLong;
+import org.e8yes.sql.primitive.SqlStr;
 import org.e8yes.sql.resultset.ResultSetInterface;
 
 /** Collects information from different sources to build then execute an SQL query. */
@@ -152,6 +155,36 @@ public class SqlRunner {
     reservoir.put(conn);
 
     return numRowsUpdated;
+  }
+
+  /**
+   * Get all the database tables.
+   *
+   * @return table name of all the database tables.
+   * @throws java.sql.SQLException
+   */
+  public Set<String> tables() throws SQLException {
+    if (reservoir == null) {
+      throw new IllegalArgumentException("Connection reservoir not specified.");
+    }
+
+    ConnectionInterface conn = reservoir.take();
+    String reflectionQuery =
+        "SELECT tb.table_name FROM information_schema.tables tb "
+            + "WHERE tb.table_schema='public'";
+    ResultSetInterface rs = conn.runQuery(reflectionQuery, new ConnectionInterface.QueryParams());
+
+    Set<String> tableNames = new TreeSet();
+    SqlStr tableName = new SqlStr();
+    for (; rs.hasNext(); rs.next()) {
+      rs.setCellValueToField(1, tableName);
+      assert (tableName.value() != null);
+      tableNames.add(tableName.value());
+    }
+
+    reservoir.put(conn);
+
+    return tableNames;
   }
 
   /**

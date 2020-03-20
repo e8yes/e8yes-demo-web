@@ -17,12 +17,11 @@
 package org.e8yes.sql.resultset;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.apache.ibatis.session.SqlSession;
 import org.e8yes.connection.DatabaseConnection;
 import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.sql.connection.ConnectionInterface;
+import org.e8yes.sql.connection.JdbcConnection;
 import org.e8yes.sql.primitive.SqlBool;
 import org.e8yes.sql.primitive.SqlBoolArr;
 import org.e8yes.sql.primitive.SqlDate;
@@ -75,6 +74,14 @@ public class JdbcResultSetTest {
   public void retrieveOneRecordTest()
       throws SQLException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException,
           InvocationTargetException {
+    JdbcConnection conn =
+        new JdbcConnection(
+            /*hostName=*/ "localHost",
+            /*port=*/ 5432,
+            /*dbName=*/ "demowebtest",
+            /*userName=*/ "postgres",
+            /*password=*/ "password");
+
     String dropTableStmt = "DROP TABLE IF EXISTS JdbcResultSetTestTable;";
     String createTableStmt =
         "CREATE TABLE IF NOT EXISTS JdbcResultSetTestTable ("
@@ -93,11 +100,8 @@ public class JdbcResultSetTest {
             + " dateArrayField TIMESTAMP WITHOUT TIME ZONE[], "
             + " stringArrayField CHARACTER VARYING[] "
             + ");";
-    SqlSession sess = DatabaseConnection.openSession();
-    Connection conn = sess.getConnection();
-    conn.setAutoCommit(true);
-    conn.createStatement().executeUpdate(dropTableStmt);
-    conn.createStatement().executeUpdate(createTableStmt);
+    conn.runUpdate(dropTableStmt, new ConnectionInterface.QueryParams());
+    conn.runUpdate(createTableStmt, new ConnectionInterface.QueryParams());
 
     String insertRecordStmt =
         "INSERT INTO JdbcResultSetTestTable ("
@@ -131,11 +135,12 @@ public class JdbcResultSetTest {
             + " ARRAY[to_timestamp(CAST(111 AS BIGINT)), to_timestamp(CAST(112 AS BIGINT))], "
             + " ARRAY['string_value0', 'string_value1'] "
             + ");";
-    conn.createStatement().executeUpdate(insertRecordStmt);
+    conn.runUpdate(insertRecordStmt, new ConnectionInterface.QueryParams());
 
     String queryStmt = "SELECT * FROM JdbcResultSetTestTable;";
-    ResultSet rs = conn.createStatement().executeQuery(queryStmt);
-    JdbcResultSet jdbcRs = new JdbcResultSet(rs);
+
+    ResultSetInterface jdbcRs = conn.runQuery(queryStmt, new ConnectionInterface.QueryParams());
+    Assertions.assertTrue(jdbcRs instanceof JdbcResultSet);
     Assertions.assertTrue(jdbcRs.hasNext());
 
     Record record = new Record();
@@ -191,7 +196,7 @@ public class JdbcResultSetTest {
     jdbcRs.next();
     Assertions.assertFalse(jdbcRs.hasNext());
 
-    conn.createStatement().executeUpdate(dropTableStmt);
-    DatabaseConnection.closeSession(sess);
+    conn.runUpdate(dropTableStmt, new ConnectionInterface.QueryParams());
+    conn.close();
   }
 }
