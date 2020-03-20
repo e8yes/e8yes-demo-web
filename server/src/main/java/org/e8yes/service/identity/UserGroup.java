@@ -55,6 +55,8 @@ public class UserGroup {
   }
 
   /**
+   * Creates and assigns permissions to the internally managed user groups.
+   *
    * @throws IllegalAccessException
    * @throws SQLException
    */
@@ -74,8 +76,10 @@ public class UserGroup {
   }
 
   /**
-   * @param groupName
-   * @return
+   * Obtain the set of assigned permissions to the user group.
+   *
+   * @param groupName Name of the user group to read permissions from.
+   * @return The set of assigned permissions.
    * @throws SQLException
    * @throws NoSuchMethodException
    * @throws InstantiationException
@@ -115,8 +119,10 @@ public class UserGroup {
   }
 
   /**
-   * @param group
-   * @return
+   * Like this above, this function allows the checking of internally managed user group.
+   *
+   * @param group Internally managed user group to read permissions from.
+   * @return The set of assigned permissions.
    * @throws SQLException
    * @throws NoSuchMethodException
    * @throws InstantiationException
@@ -131,8 +137,10 @@ public class UserGroup {
   }
 
   /**
-   * @param groupName
-   * @param perms
+   * Add permissions to the specified user group.
+   *
+   * @param groupName Name of the user group to add permissions to.
+   * @param perms The set of permissions to add to the user group.
    * @throws SQLException
    * @throws NoSuchMethodException
    * @throws InstantiationException
@@ -149,10 +157,15 @@ public class UserGroup {
   }
 
   /**
-   * @param groupName
-   * @param perms
-   * @param replace
-   * @return
+   * Create/update (depends on the "replace" argument) a user group.
+   *
+   * @param groupName Name of the new/existing user group.
+   * @param perms Permissions that will be assigned to the user group.
+   * @param replace If the replace mode is used, then this function will update an existing user
+   *     group if possible. Otherwise, it will attempt to create a new user group.
+   * @return If the replace mode is used, it will always return either a new user group or an
+   *     existing one. Otherwise, it only returns a new user group if it could be created without
+   *     conflict.
    * @throws IllegalAccessException
    * @throws SQLException
    */
@@ -184,8 +197,11 @@ public class UserGroup {
   }
 
   /**
-   * @param groupName
-   * @return
+   * Delete a user group.
+   *
+   * @param groupName Name of the user group to be deleted.
+   * @return true only when a user group is successfully deleted. If the user group doesn't exist,
+   *     it returns false.
    * @throws SQLException
    */
   public static boolean deleteUserGroup(String groupName) throws SQLException {
