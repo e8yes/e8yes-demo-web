@@ -26,6 +26,10 @@ public class Initializer {
 
   public static void init(EnvironmentContext ctx) throws IllegalAccessException, SQLException {
     DatabaseConnection.init(ctx);
+    if (ctx.mode == EnvironmentContext.Mode.Test) {
+      // Reset table contents on test mode.
+      DatabaseConnection.deleteAllData();
+    }
     UserGroup.createSystemUserGroups();
     UserCreation.createRootUser();
   }

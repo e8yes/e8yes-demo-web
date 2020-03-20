@@ -53,7 +53,7 @@ CREATE SEQUENCE IF NOT EXISTS auser_group_id_seq
 
 CREATE TABLE IF NOT EXISTS auser_group (
     group_name VARCHAR(60) NOT NULL,
-    permissions BIGINT[] NOT NULL DEFAULT '{}',
+    permissions INT[] NULL,
     PRIMARY KEY (group_name)
 );
 

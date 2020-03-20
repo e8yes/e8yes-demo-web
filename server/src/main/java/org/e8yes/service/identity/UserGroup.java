@@ -69,10 +69,32 @@ public class UserGroup {
   public static class UserGroupEntity {
     public SqlStr group_name = new SqlStr();
     public SqlIntArr permissions = new SqlIntArr();
+
+    @Override
+    public int hashCode() {
+      return group_name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      final UserGroupEntity other = (UserGroupEntity) obj;
+      return this.group_name.equals(other.group_name);
+    }
   }
 
   public static class UserGroupEntityWrapper {
-    public UserGroupEntity userGroup;
+    public UserGroupEntity user_group;
+
+    @Override
+    public int hashCode() {
+      return user_group.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      final UserGroupEntityWrapper other = (UserGroupEntityWrapper) obj;
+      return this.user_group.equals(other.user_group);
+    }
   }
 
   /**
@@ -94,7 +116,7 @@ public class UserGroup {
     SqlQueryBuilder query =
         new SqlQueryBuilder()
             .queryPiece(DbTableConstants.userGroupTable())
-            .queryPiece(" userGroup WHERE userGroup.groupName=")
+            .queryPiece(" user_group WHERE user_group.group_name=")
             .placeholder(groupNamePh);
     query.setPlaceholderValue(groupNamePh, new SqlStr(groupName));
 
@@ -109,12 +131,14 @@ public class UserGroup {
     }
 
     assert (groups.size() == 1);
-    Integer[] perms = groups.get(0).userGroup.permissions.value();
-    Set<Permission> result = new HashSet();
-    for (Integer p : perms) {
-      result.add(Permission.forNumber(p));
-    }
 
+    Set<Permission> result = new HashSet();
+    Integer[] perms = groups.get(0).user_group.permissions.value();
+    if (perms != null) {
+      for (Integer p : perms) {
+        result.add(Permission.forNumber(p));
+      }
+    }
     return result;
   }
 
@@ -157,6 +181,26 @@ public class UserGroup {
   }
 
   /**
+   * Delete permissions from the specified user group.
+   *
+   * @param groupName Name of the user group to add permissions to.
+   * @param perms The set of permissions to add to the user group.
+   * @throws SQLException
+   * @throws NoSuchMethodException
+   * @throws InstantiationException
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
+   * @throws InvocationTargetException
+   */
+  public static void deletePermissionSetFromGroup(String groupName, Set<Permission> perms)
+      throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
+          IllegalArgumentException, InvocationTargetException {
+    Set<Permission> toBeUpdated = UserGroup.getGroupPermissionSet(groupName);
+    toBeUpdated.removeAll(perms);
+    UserGroup.createUserGroup(groupName, toBeUpdated, /*replace=*/ true);
+  }
+
+  /**
    * Create/update (depends on the "replace" argument) a user group.
    *
    * @param groupName Name of the new/existing user group.
@@ -179,7 +223,7 @@ public class UserGroup {
     Integer[] permOrdinals = new Integer[perms.size()];
     int i = 0;
     for (Permission p : perms) {
-      permOrdinals[i] = p.ordinal();
+      permOrdinals[i] = p.getNumber();
       ++i;
     }
     userGroup.permissions.assign(permOrdinals);
@@ -207,7 +251,7 @@ public class UserGroup {
   public static boolean deleteUserGroup(String groupName) throws SQLException {
     SqlQueryBuilder.Placeholder<String> groupNamePh = new SqlQueryBuilder.Placeholder();
     SqlQueryBuilder query =
-        new SqlQueryBuilder().queryPiece("WHERE groupName=").placeholder(groupNamePh);
+        new SqlQueryBuilder().queryPiece("WHERE group_name=").placeholder(groupNamePh);
     query.setPlaceholderValue(groupNamePh, new SqlStr(groupName));
 
     int numRows =
@@ -221,5 +265,28 @@ public class UserGroup {
       assert (numRows == 1);
       return true;
     }
+  }
+
+  /**
+   * Retrieves all the user group entities.
+   *
+   * @return List of all user group entities.
+   * @throws SQLException
+   * @throws NoSuchMethodException
+   * @throws InstantiationException
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
+   * @throws InvocationTargetException
+   */
+  public static List<UserGroupEntityWrapper> retrieveAllUserGroups()
+      throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
+          IllegalArgumentException, InvocationTargetException {
+    return new SqlRunner()
+        .withConnectionReservoir(DatabaseConnection.demoweb())
+        .withEntity(UserGroupEntityWrapper.class)
+        .runQuery(
+            new SqlQueryBuilder()
+                .queryPiece(DbTableConstants.userGroupTable())
+                .queryPiece(" user_group"));
   }
 }
