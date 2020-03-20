@@ -65,10 +65,7 @@ public class SqlRunnerTest {
     }
   }
 
-  @Test
-  public void testRunUpdateAndQuery()
-      throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
-          IllegalArgumentException, InvocationTargetException {
+  private static ConnectionFactory connectionFactory() {
     ConnectionFactory factory =
         new ConnectionFactory(
             ConnectionFactory.ConnectionType.JDBC,
@@ -77,14 +74,17 @@ public class SqlRunnerTest {
             /*dbName=*/ "demowebtest",
             /*userName=*/ "postgres",
             /*password=*/ "password");
-    ConnectionInterface conn = factory.create();
+    return factory;
+  }
 
-    // Prepare test data.
+  private static void dropSchema(ConnectionInterface conn) throws SQLException {
     String dropUserTable = "DROP TABLE IF EXISTS QueryRunnerTestUser";
     String dropCardTable = "DROP TABLE IF EXISTS QueryRunnerTestCard";
     conn.runUpdate(dropCardTable, new ConnectionInterface.QueryParams());
     conn.runUpdate(dropUserTable, new ConnectionInterface.QueryParams());
+  }
 
+  private static void createSchema(ConnectionInterface conn) throws SQLException {
     String createUserTable =
         "CREATE TABLE QueryRunnerTestUser("
             + " id INTEGER NOT NULL,"
@@ -99,6 +99,18 @@ public class SqlRunnerTest {
             + " PRIMARY KEY (id),"
             + " FOREIGN KEY (userId) REFERENCES QueryRunnerTestUser (id) ON DELETE CASCADE)";
     conn.runUpdate(createCardTable, new ConnectionInterface.QueryParams());
+  }
+
+  @Test
+  public void testRunUpdateAndQuery()
+      throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
+          IllegalArgumentException, InvocationTargetException {
+    ConnectionFactory factory = SqlRunnerTest.connectionFactory();
+    ConnectionInterface conn = factory.create();
+
+    // Prepare schema.
+    SqlRunnerTest.dropSchema(conn);
+    SqlRunnerTest.createSchema(conn);
 
     // Run update.
     UserHasManyCreditCards.User user = new UserHasManyCreditCards.User();
@@ -157,8 +169,50 @@ public class SqlRunnerTest {
     Assertions.assertEquals("1234", record.cards[1].number.value());
 
     // Clean up.
-    conn.runUpdate(dropCardTable, new ConnectionInterface.QueryParams());
-    conn.runUpdate(dropUserTable, new ConnectionInterface.QueryParams());
+    SqlRunnerTest.dropSchema(conn);
+    conn.close();
+  }
+
+  @Test
+  public void testRunDelete() throws SQLException, IllegalAccessException {
+    ConnectionFactory factory = SqlRunnerTest.connectionFactory();
+    ConnectionInterface conn = factory.create();
+
+    // Prepare schema.
+    SqlRunnerTest.dropSchema(conn);
+    SqlRunnerTest.createSchema(conn);
+
+    // Prepare test data.
+    UserHasManyCreditCards.User user = new UserHasManyCreditCards.User();
+    user.id.assign(1);
+    user.userName.assign("user0");
+    int nRows =
+        new SqlRunner()
+            .withConnectionReservoir(new BasicConnectionReservoir(factory))
+            .withEntity(UserHasManyCreditCards.User.class)
+            .runUpdate(user, /*tableName=*/ "QueryRunnerTestUser");
+    Assertions.assertEquals(1, nRows);
+
+    // Delete nothing.
+    nRows =
+        new SqlRunner()
+            .withConnectionReservoir(new BasicConnectionReservoir(factory))
+            .runDelete(
+                /*tableName=*/ "QueryRunnerTestUser",
+                new SqlQueryBuilder().queryPiece("WHERE id != 1"));
+    Assertions.assertEquals(0, nRows);
+
+    // Delete the user.
+    nRows =
+        new SqlRunner()
+            .withConnectionReservoir(new BasicConnectionReservoir(factory))
+            .runDelete(
+                /*tableName=*/ "QueryRunnerTestUser",
+                new SqlQueryBuilder().queryPiece("WHERE id = 1"));
+    Assertions.assertEquals(1, nRows);
+
+    // Clean up.
+    SqlRunnerTest.dropSchema(conn);
     conn.close();
   }
 }

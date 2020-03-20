@@ -73,7 +73,7 @@ public class SqlRunner {
    * result.
    *
    * @param <ReturnType>
-   * @param query Partial query. example: "AUser user JOIN CreditCard card ON card.userId = user.id
+   * @param query Partial query. Example: "AUser user JOIN CreditCard card ON card.userId = user.id
    *     WHERE user.joinDate > '2020-1-1'"
    * @return The query result.
    * @throws NoSuchMethodException
@@ -98,7 +98,30 @@ public class SqlRunner {
     ResultSetInterface rs = conn.runQuery(completedQuery, query.queryParams());
     List<ReturnType> results = DataCollection.collect(rs, entityType);
     reservoir.put(conn);
+
     return results;
+  }
+
+  /**
+   * Runs a deletion SQL query on the specified table.
+   *
+   * @param <ReturnType>
+   * @param tableName Name of the table to run deletion query on.
+   * @param query Partial deletion query. Example: "WHERE id = 100"
+   * @return The number of rows deleted.
+   * @throws SQLException
+   */
+  public <ReturnType> int runDelete(String tableName, SqlQueryBuilder query) throws SQLException {
+    if (reservoir == null) {
+      throw new IllegalArgumentException("Connection reservoir not specified.");
+    }
+
+    String completedQuery = "DELETE FROM " + tableName + " " + query.jdbcQuery();
+    ConnectionInterface conn = reservoir.take();
+    int numRowsUpdated = conn.runUpdate(completedQuery, query.queryParams());
+    reservoir.put(conn);
+
+    return numRowsUpdated;
   }
 
   /**
@@ -127,6 +150,7 @@ public class SqlRunner {
     ConnectionInterface conn = reservoir.take();
     int numRowsUpdated = conn.runUpdate(completedQuery, params);
     reservoir.put(conn);
+
     return numRowsUpdated;
   }
 
