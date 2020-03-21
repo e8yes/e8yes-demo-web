@@ -18,7 +18,7 @@ package org.e8yes.service.identity;
 
 import java.sql.SQLException;
 import java.time.Instant;
-import org.e8yes.connection.DatabaseConnection;
+import org.e8yes.environment.DatabaseConnection;
 import org.e8yes.environment.EnvironmentContext;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.ResourceConflictException;

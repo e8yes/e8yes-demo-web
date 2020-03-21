@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.e8yes.connection.DatabaseConnection;
+import org.e8yes.environment.DatabaseConnection;
 import org.e8yes.environment.EnvironmentContext;
 import org.e8yes.environment.Initializer;
 import org.e8yes.service.Permission;

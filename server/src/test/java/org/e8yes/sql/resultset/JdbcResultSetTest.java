@@ -18,7 +18,7 @@ package org.e8yes.sql.resultset;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import org.e8yes.connection.DatabaseConnection;
+import org.e8yes.environment.DatabaseConnection;
 import org.e8yes.environment.EnvironmentContext;
 import org.e8yes.sql.connection.ConnectionInterface;
 import org.e8yes.sql.connection.JdbcConnection;

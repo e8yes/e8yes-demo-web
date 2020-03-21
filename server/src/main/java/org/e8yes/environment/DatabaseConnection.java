@@ -1,10 +1,8 @@
-package org.e8yes.connection;
+package org.e8yes.environment;
 
 import java.security.AccessControlException;
 import java.sql.SQLException;
 import java.util.Set;
-import org.e8yes.environment.DatabaseInfo;
-import org.e8yes.environment.EnvironmentContext;
 import org.e8yes.sql.SqlQueryBuilder;
 import org.e8yes.sql.SqlRunner;
 import org.e8yes.sql.connection.BasicConnectionReservoir;

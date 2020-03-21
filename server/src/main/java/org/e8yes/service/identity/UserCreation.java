@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import org.e8yes.connection.DatabaseConnection;
 import org.e8yes.constant.DbTableConstants;
+import org.e8yes.environment.DatabaseConnection;
 import org.e8yes.sql.SqlRunner;
 import org.mindrot.jbcrypt.BCrypt;
 
