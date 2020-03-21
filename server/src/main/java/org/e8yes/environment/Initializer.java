@@ -16,20 +16,34 @@
  */
 package org.e8yes.environment;
 
-import java.sql.SQLException;
 import org.e8yes.service.identity.UserCreation;
 import org.e8yes.service.identity.UserGroup;
 
 /** Initialize the environment. */
 public class Initializer {
 
-  public static void init(EnvironmentContext ctx) throws IllegalAccessException, SQLException {
-    DatabaseConnection.init(ctx);
-    if (ctx.mode == EnvironmentContext.Mode.Test) {
-      // Reset table contents on test mode.
-      DatabaseConnection.deleteAllData();
+  private static EnvironmentContextInterface envCtx;
+
+  public static void init(EnvironmentContextInterface.Environment env) throws Exception {
+    switch (env) {
+      case Prod:
+        envCtx = new ProdEnvironmentContext();
+        break;
+      case Test:
+        envCtx = new TestEnvironmentContext();
+        break;
     }
-    UserGroup.createSystemUserGroups();
-    UserCreation.createRootUser();
+    envCtx.init();
+
+    UserGroup.createSystemUserGroups(envCtx.demowebDbConnections().connectionReservoir());
+    UserCreation.createRootUser(envCtx.demowebDbConnections().connectionReservoir());
+  }
+
+  public static void cleanUp() throws Exception {
+    envCtx.cleanUp();
+  }
+
+  public static EnvironmentContextInterface environmentContext() {
+    return envCtx;
   }
 }

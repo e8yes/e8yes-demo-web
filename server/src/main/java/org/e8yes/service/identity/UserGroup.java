@@ -22,10 +22,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.e8yes.constant.DbTableConstants;
-import org.e8yes.environment.DatabaseConnection;
 import org.e8yes.service.Permission;
 import org.e8yes.sql.SqlQueryBuilder;
 import org.e8yes.sql.SqlRunner;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.e8yes.sql.primitive.SqlIntArr;
 import org.e8yes.sql.primitive.SqlStr;
 
@@ -57,13 +57,16 @@ public class UserGroup {
   /**
    * Creates and assigns permissions to the internally managed user groups.
    *
+   * @param dbConn Connection to the DB server.
    * @throws IllegalAccessException
    * @throws SQLException
    */
-  public static void createSystemUserGroups() throws IllegalAccessException, SQLException {
-    createUserGroup(SystemUserGroup.SUPER_USER_GROUP.name(), superUserPerms(), /*replace=*/ true);
+  public static void createSystemUserGroups(ConnectionReservoirInterface dbConn)
+      throws IllegalAccessException, SQLException {
     createUserGroup(
-        SystemUserGroup.BASELINE_USER_GROUP.name(), baselineUserPerms(), /*replace=*/ true);
+        SystemUserGroup.SUPER_USER_GROUP.name(), superUserPerms(), /*replace=*/ true, dbConn);
+    createUserGroup(
+        SystemUserGroup.BASELINE_USER_GROUP.name(), baselineUserPerms(), /*replace=*/ true, dbConn);
   }
 
   public static class UserGroupEntity {
@@ -101,6 +104,7 @@ public class UserGroup {
    * Obtain the set of assigned permissions to the user group.
    *
    * @param groupName Name of the user group to read permissions from.
+   * @param dbConn Connection to the DB server.
    * @return The set of assigned permissions.
    * @throws SQLException
    * @throws NoSuchMethodException
@@ -109,7 +113,8 @@ public class UserGroup {
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
-  public static Set<Permission> getGroupPermissionSet(String groupName)
+  public static Set<Permission> getGroupPermissionSet(
+      String groupName, ConnectionReservoirInterface dbConn)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
     SqlQueryBuilder.Placeholder<String> groupNamePh = new SqlQueryBuilder.Placeholder();
@@ -122,7 +127,7 @@ public class UserGroup {
 
     List<UserGroupEntityWrapper> groups =
         new SqlRunner()
-            .withConnectionReservoir(DatabaseConnection.demoweb())
+            .withConnectionReservoir(dbConn)
             .withEntity(UserGroupEntityWrapper.class)
             .runQuery(query);
 
@@ -146,6 +151,7 @@ public class UserGroup {
    * Like this above, this function allows the checking of internally managed user group.
    *
    * @param group Internally managed user group to read permissions from.
+   * @param dbConn Connection to the DB server.
    * @return The set of assigned permissions.
    * @throws SQLException
    * @throws NoSuchMethodException
@@ -154,10 +160,11 @@ public class UserGroup {
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
-  public static Set<Permission> getGroupPermissionSet(SystemUserGroup group)
+  public static Set<Permission> getGroupPermissionSet(
+      SystemUserGroup group, ConnectionReservoirInterface dbConn)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
-    return UserGroup.getGroupPermissionSet(group.name());
+    return UserGroup.getGroupPermissionSet(group.name(), dbConn);
   }
 
   /**
@@ -165,6 +172,7 @@ public class UserGroup {
    *
    * @param groupName Name of the user group to add permissions to.
    * @param perms The set of permissions to add to the user group.
+   * @param dbConn Connection to the DB server.
    * @throws SQLException
    * @throws NoSuchMethodException
    * @throws InstantiationException
@@ -172,12 +180,13 @@ public class UserGroup {
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
-  public static void addPermissionSetToGroup(String groupName, Set<Permission> perms)
+  public static void addPermissionSetToGroup(
+      String groupName, Set<Permission> perms, ConnectionReservoirInterface dbConn)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
-    Set<Permission> toBeUpdated = UserGroup.getGroupPermissionSet(groupName);
+    Set<Permission> toBeUpdated = UserGroup.getGroupPermissionSet(groupName, dbConn);
     toBeUpdated.addAll(perms);
-    UserGroup.createUserGroup(groupName, toBeUpdated, /*replace=*/ true);
+    UserGroup.createUserGroup(groupName, toBeUpdated, /*replace=*/ true, dbConn);
   }
 
   /**
@@ -185,6 +194,7 @@ public class UserGroup {
    *
    * @param groupName Name of the user group to add permissions to.
    * @param perms The set of permissions to add to the user group.
+   * @param dbConn Connection to the DB server.
    * @throws SQLException
    * @throws NoSuchMethodException
    * @throws InstantiationException
@@ -192,12 +202,13 @@ public class UserGroup {
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
-  public static void deletePermissionSetFromGroup(String groupName, Set<Permission> perms)
+  public static void deletePermissionSetFromGroup(
+      String groupName, Set<Permission> perms, ConnectionReservoirInterface dbConn)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
-    Set<Permission> toBeUpdated = UserGroup.getGroupPermissionSet(groupName);
+    Set<Permission> toBeUpdated = UserGroup.getGroupPermissionSet(groupName, dbConn);
     toBeUpdated.removeAll(perms);
-    UserGroup.createUserGroup(groupName, toBeUpdated, /*replace=*/ true);
+    UserGroup.createUserGroup(groupName, toBeUpdated, /*replace=*/ true, dbConn);
   }
 
   /**
@@ -207,6 +218,7 @@ public class UserGroup {
    * @param perms Permissions that will be assigned to the user group.
    * @param replace If the replace mode is used, then this function will update an existing user
    *     group if possible. Otherwise, it will attempt to create a new user group.
+   * @param dbConn Connection to the DB server.
    * @return If the replace mode is used, it will always return either a new user group or an
    *     existing one. Otherwise, it only returns a new user group if it could be created without
    *     conflict.
@@ -214,9 +226,9 @@ public class UserGroup {
    * @throws SQLException
    */
   public static UserGroupEntity createUserGroup(
-      String groupName, Set<Permission> perms, boolean replace)
+      String groupName, Set<Permission> perms, boolean replace, ConnectionReservoirInterface dbConn)
       throws IllegalAccessException, SQLException {
-    SqlRunner runner = new SqlRunner().withConnectionReservoir(DatabaseConnection.demoweb());
+    SqlRunner runner = new SqlRunner().withConnectionReservoir(dbConn);
 
     UserGroupEntity userGroup = new UserGroupEntity();
     userGroup.group_name.assign(groupName);
@@ -244,11 +256,13 @@ public class UserGroup {
    * Delete a user group.
    *
    * @param groupName Name of the user group to be deleted.
+   * @param dbConn Connection to the DB server.
    * @return true only when a user group is successfully deleted. If the user group doesn't exist,
    *     it returns false.
    * @throws SQLException
    */
-  public static boolean deleteUserGroup(String groupName) throws SQLException {
+  public static boolean deleteUserGroup(String groupName, ConnectionReservoirInterface dbConn)
+      throws SQLException {
     SqlQueryBuilder.Placeholder<String> groupNamePh = new SqlQueryBuilder.Placeholder();
     SqlQueryBuilder query =
         new SqlQueryBuilder().queryPiece("WHERE group_name=").placeholder(groupNamePh);
@@ -256,7 +270,7 @@ public class UserGroup {
 
     int numRows =
         new SqlRunner()
-            .withConnectionReservoir(DatabaseConnection.demoweb())
+            .withConnectionReservoir(dbConn)
             .runDelete(DbTableConstants.userGroupTable(), query);
 
     if (numRows == 0) {
@@ -270,6 +284,7 @@ public class UserGroup {
   /**
    * Retrieves all the user group entities.
    *
+   * @param dbConn Connection to the DB server.
    * @return List of all user group entities.
    * @throws SQLException
    * @throws NoSuchMethodException
@@ -278,11 +293,12 @@ public class UserGroup {
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
-  public static List<UserGroupEntityWrapper> retrieveAllUserGroups()
+  public static List<UserGroupEntityWrapper> retrieveAllUserGroups(
+      ConnectionReservoirInterface dbConn)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
     return new SqlRunner()
-        .withConnectionReservoir(DatabaseConnection.demoweb())
+        .withConnectionReservoir(dbConn)
         .withEntity(UserGroupEntityWrapper.class)
         .runQuery(
             new SqlQueryBuilder()

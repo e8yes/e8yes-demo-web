@@ -18,8 +18,8 @@ package org.e8yes.sql.resultset;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import org.e8yes.environment.DatabaseConnection;
-import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.environment.EnvironmentContextInterface;
+import org.e8yes.environment.Initializer;
 import org.e8yes.sql.connection.ConnectionInterface;
 import org.e8yes.sql.connection.JdbcConnection;
 import org.e8yes.sql.primitive.SqlBool;
@@ -43,13 +43,13 @@ import org.junit.jupiter.api.Test;
 
 public class JdbcResultSetTest {
   @BeforeEach
-  public void setUp() throws SQLException {
-    DatabaseConnection.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
+  public void setUp() throws Exception {
+    Initializer.init(EnvironmentContextInterface.Environment.Test);
   }
 
   @AfterEach
-  public void tearDown() throws SQLException {
-    DatabaseConnection.deleteAllData();
+  public void tearDown() throws Exception {
+    Initializer.cleanUp();
   }
 
   private static class Record {

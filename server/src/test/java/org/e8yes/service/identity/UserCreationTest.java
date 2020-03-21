@@ -18,8 +18,7 @@ package org.e8yes.service.identity;
 
 import java.sql.SQLException;
 import java.time.Instant;
-import org.e8yes.environment.DatabaseConnection;
-import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.ResourceConflictException;
 import org.junit.jupiter.api.AfterAll;
@@ -40,20 +39,23 @@ public class UserCreationTest {
   public static void tearDownClass() {}
 
   @BeforeEach
-  public void setUp() throws SQLException, IllegalAccessException {
-    Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
+  public void setUp() throws Exception {
+    Initializer.init(EnvironmentContextInterface.Environment.Test);
   }
 
   @AfterEach
-  public void tearDown() throws SQLException {
-    DatabaseConnection.deleteAllData();
+  public void tearDown() throws Exception {
+    Initializer.cleanUp();
   }
 
   @Test
   public void createBaselineUserTest()
       throws ResourceConflictException, SQLException, IllegalAccessException {
     String user0PassWord = "PASS";
-    UserEntity user = UserCreation.createBaselineUser(user0PassWord.getBytes());
+    UserEntity user =
+        UserCreation.createBaselineUser(
+            user0PassWord.getBytes(),
+            Initializer.environmentContext().demowebDbConnections().connectionReservoir());
     Assertions.assertNotNull(user.id.value());
     Assertions.assertNotNull(user.security_key_hash.value());
     Assertions.assertFalse(user.security_key_hash.value().isBlank());

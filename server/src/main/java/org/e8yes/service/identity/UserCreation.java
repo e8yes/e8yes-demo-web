@@ -22,27 +22,35 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.e8yes.constant.DbTableConstants;
-import org.e8yes.environment.DatabaseConnection;
 import org.e8yes.sql.SqlRunner;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.mindrot.jbcrypt.BCrypt;
 
 /** Static class for user creation. */
 public class UserCreation {
 
-  public static void createRootUser() {}
+  /**
+   * Create a root user who has all the permissions so it can bootstrap the permission configuration
+   * process.
+   *
+   * @param dbConn Connection to the DB server.
+   */
+  public static void createRootUser(ConnectionReservoirInterface dbConn) {}
 
   /**
    * Create a user of arbitrary group.
    *
    * @param securityKey Security key associated with new user.
    * @param userGroupNames Name of the groups the user will be in.
+   * @param dbConn Connection to the DB server.
    * @return A newly created user with its associated unique ID.
    * @throws SQLException
    * @throws IllegalAccessException
    */
-  public static UserEntity createUser(byte[] securityKey, Set<String> userGroupNames)
+  public static UserEntity createUser(
+      byte[] securityKey, Set<String> userGroupNames, ConnectionReservoirInterface dbConn)
       throws SQLException, IllegalAccessException {
-    SqlRunner runner = new SqlRunner().withConnectionReservoir(DatabaseConnection.demoweb());
+    SqlRunner runner = new SqlRunner().withConnectionReservoir(dbConn);
 
     UserEntity user = new UserEntity();
     user.id.assign(runner.timeId());
@@ -64,10 +72,12 @@ public class UserCreation {
    *
    * @param securityKey Security key associated with new user.
    * @return A newly created user with its associated unique ID.
+   * @param dbConn Connection to the DB server.
    * @throws SQLException
    * @throws IllegalAccessException
    */
-  public static UserEntity createBaselineUser(byte[] securityKey)
+  public static UserEntity createBaselineUser(
+      byte[] securityKey, ConnectionReservoirInterface dbConn)
       throws SQLException, IllegalAccessException {
     return createUser(
         securityKey,
@@ -75,6 +85,7 @@ public class UserCreation {
           {
             add(SystemUserGroup.BASELINE_USER_GROUP.name());
           }
-        });
+        },
+        dbConn);
   }
 }

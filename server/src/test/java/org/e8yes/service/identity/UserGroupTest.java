@@ -5,10 +5,10 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.e8yes.environment.DatabaseConnection;
-import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
 import org.e8yes.service.Permission;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -27,19 +27,22 @@ public class UserGroupTest {
   public static void tearDownClass() {}
 
   @BeforeEach
-  public void setUp() throws IllegalAccessException, SQLException {
-    Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
+  public void setUp() throws Exception {
+    Initializer.init(EnvironmentContextInterface.Environment.Test);
   }
 
   @AfterEach
-  public void tearDown() throws SQLException {
-    DatabaseConnection.deleteAllData();
+  public void tearDown() throws Exception {
+    Initializer.cleanUp();
   }
 
   @Test
   public void createUserGroupAndCheckPermissionsTest()
       throws IllegalAccessException, SQLException, NoSuchMethodException, InstantiationException,
           IllegalArgumentException, InvocationTargetException {
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+
     // Create a user group.
     String groupName = "TestUserGroup";
     Set<Permission> perms =
@@ -50,7 +53,7 @@ public class UserGroupTest {
           }
         };
     UserGroup.UserGroupEntity group =
-        UserGroup.createUserGroup(groupName, perms, /*replace=*/ false);
+        UserGroup.createUserGroup(groupName, perms, /*replace=*/ false, dbConn);
     Assertions.assertEquals(groupName, group.group_name.value());
 
     Assertions.assertEquals(2, group.permissions.value().length);
@@ -71,14 +74,15 @@ public class UserGroupTest {
     Assertions.assertEquals(expectedPermNos, actualPermNos);
 
     // Check if the created group is visible from a separate group retrieval call.
-    List<UserGroup.UserGroupEntityWrapper> retrievedGroups = UserGroup.retrieveAllUserGroups();
+    List<UserGroup.UserGroupEntityWrapper> retrievedGroups =
+        UserGroup.retrieveAllUserGroups(dbConn);
     int numInternalGroups = SystemUserGroup.values().length;
     Assertions.assertEquals(numInternalGroups + 1, retrievedGroups.size());
     Assertions.assertTrue(
         retrievedGroups.stream().map(g -> g.user_group).anyMatch(ug -> group.equals(ug)));
 
     // Check the new group's permission set.
-    Set<Permission> actualPerms = UserGroup.getGroupPermissionSet(groupName);
+    Set<Permission> actualPerms = UserGroup.getGroupPermissionSet(groupName, dbConn);
     Assertions.assertEquals(perms, actualPerms);
   }
 
@@ -86,17 +90,21 @@ public class UserGroupTest {
   public void deleteUserGroupTest()
       throws IllegalAccessException, SQLException, NoSuchMethodException, InstantiationException,
           IllegalArgumentException, InvocationTargetException {
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+
     UserGroup.UserGroupEntity group =
         UserGroup.createUserGroup(
-            /*groupName=*/ "TestUserGroup", /*perms=*/ new HashSet(), /*replace=*/ false);
+            /*groupName=*/ "TestUserGroup", /*perms=*/ new HashSet(), /*replace=*/ false, dbConn);
     Assertions.assertNotNull(group);
-    List<UserGroup.UserGroupEntityWrapper> retrievedGroups = UserGroup.retrieveAllUserGroups();
+    List<UserGroup.UserGroupEntityWrapper> retrievedGroups =
+        UserGroup.retrieveAllUserGroups(dbConn);
     int numInternalGroups = SystemUserGroup.values().length;
     Assertions.assertEquals(numInternalGroups + 1, retrievedGroups.size());
 
-    boolean deleted = UserGroup.deleteUserGroup(/*groupName=*/ "TestUserGroup");
+    boolean deleted = UserGroup.deleteUserGroup(/*groupName=*/ "TestUserGroup", dbConn);
     Assertions.assertTrue(deleted);
-    retrievedGroups = UserGroup.retrieveAllUserGroups();
+    retrievedGroups = UserGroup.retrieveAllUserGroups(dbConn);
     Assertions.assertEquals(numInternalGroups + 0, retrievedGroups.size());
   }
 
@@ -104,16 +112,19 @@ public class UserGroupTest {
   public void changeUserGroupPermissionSetTest()
       throws IllegalAccessException, SQLException, NoSuchMethodException, InstantiationException,
           IllegalArgumentException, InvocationTargetException {
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+
     String groupName = "TestUserGroup";
-    UserGroup.createUserGroup(groupName, /*perms=*/ new HashSet(), /*replace=*/ false);
+    UserGroup.createUserGroup(groupName, /*perms=*/ new HashSet(), /*replace=*/ false, dbConn);
 
     // Should be empty.
-    Set<Permission> perms = UserGroup.getGroupPermissionSet(groupName);
+    Set<Permission> perms = UserGroup.getGroupPermissionSet(groupName, dbConn);
     Assertions.assertTrue(perms.isEmpty());
 
     // Add 0 permission.
-    UserGroup.addPermissionSetToGroup(groupName, new HashSet());
-    perms = UserGroup.getGroupPermissionSet(groupName);
+    UserGroup.addPermissionSetToGroup(groupName, new HashSet(), dbConn);
+    perms = UserGroup.getGroupPermissionSet(groupName, dbConn);
     Assertions.assertTrue(perms.isEmpty());
 
     // Add 1 permission.
@@ -123,8 +134,9 @@ public class UserGroupTest {
           {
             add(Permission.PERM_USER_CREATE);
           }
-        });
-    perms = UserGroup.getGroupPermissionSet(groupName);
+        },
+        dbConn);
+    perms = UserGroup.getGroupPermissionSet(groupName, dbConn);
     Assertions.assertEquals(1, perms.size());
     Assertions.assertTrue(perms.stream().allMatch(p -> p == Permission.PERM_USER_CREATE));
 
@@ -136,15 +148,16 @@ public class UserGroupTest {
             add(Permission.PERM_USER_CREATE);
             add(Permission.PERM_USER_REMOVE);
           }
-        });
-    perms = UserGroup.getGroupPermissionSet(groupName);
+        },
+        dbConn);
+    perms = UserGroup.getGroupPermissionSet(groupName, dbConn);
     Assertions.assertEquals(2, perms.size());
     Assertions.assertTrue(perms.stream().anyMatch(p -> p == Permission.PERM_USER_CREATE));
     Assertions.assertTrue(perms.stream().anyMatch(p -> p == Permission.PERM_USER_REMOVE));
 
     // Remove 0 permission.
-    UserGroup.deletePermissionSetFromGroup(groupName, new HashSet());
-    perms = UserGroup.getGroupPermissionSet(groupName);
+    UserGroup.deletePermissionSetFromGroup(groupName, new HashSet(), dbConn);
+    perms = UserGroup.getGroupPermissionSet(groupName, dbConn);
     Assertions.assertEquals(2, perms.size());
 
     // Remove 2 permissions with one the group doesn't have.
@@ -155,8 +168,9 @@ public class UserGroupTest {
             add(Permission.PERM_USER_CREATE);
             add(Permission.PERM_USER_SELF_CREATE);
           }
-        });
-    perms = UserGroup.getGroupPermissionSet(groupName);
+        },
+        dbConn);
+    perms = UserGroup.getGroupPermissionSet(groupName, dbConn);
     Assertions.assertEquals(1, perms.size());
     Assertions.assertTrue(perms.stream().anyMatch(p -> p == Permission.PERM_USER_REMOVE));
   }

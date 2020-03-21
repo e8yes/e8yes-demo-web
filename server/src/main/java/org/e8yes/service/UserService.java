@@ -20,6 +20,7 @@ import io.grpc.stub.StreamObserver;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.e8yes.environment.Initializer;
 import org.e8yes.service.identity.UserCreation;
 import org.e8yes.service.identity.UserEntity;
 
@@ -31,7 +32,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     RegistrationReponse response;
     UserEntity user;
     try {
-      user = UserCreation.createBaselineUser(req.getSecurityKey().toByteArray());
+      user =
+          UserCreation.createBaselineUser(
+              req.getSecurityKey().toByteArray(),
+              Initializer.environmentContext().demowebDbConnections().connectionReservoir());
       response =
           RegistrationReponse.newBuilder()
               .setErrorType(RegistrationReponse.RegistrationErrorType.RET_NoError)

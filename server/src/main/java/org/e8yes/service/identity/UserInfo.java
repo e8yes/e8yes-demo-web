@@ -20,9 +20,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import org.e8yes.constant.DbTableConstants;
-import org.e8yes.environment.DatabaseConnection;
 import org.e8yes.sql.SqlQueryBuilder;
 import org.e8yes.sql.SqlRunner;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.e8yes.sql.primitive.SqlLong;
 
 /** Module to retrieve and manage information about a user. */
@@ -47,6 +47,7 @@ public class UserInfo {
    * Retrieve user entity by user ID.
    *
    * @param userId ID of the user to be retrieved.
+   * @param dbConns Connection to the DemoWeb DB server.
    * @return The user entity if exists.
    * @throws SQLException
    * @throws NoSuchMethodException
@@ -55,7 +56,7 @@ public class UserInfo {
    * @throws IllegalArgumentException
    * @throws InvocationTargetException
    */
-  public static UserEntity retrieveUserEntity(long userId)
+  public static UserEntity retrieveUserEntity(long userId, ConnectionReservoirInterface dbConns)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
     SqlQueryBuilder.Placeholder<Long> userIdPh = new SqlQueryBuilder.Placeholder();
@@ -69,7 +70,7 @@ public class UserInfo {
 
     List<UserEntityWrapper> results =
         new SqlRunner()
-            .withConnectionReservoir(DatabaseConnection.demoweb())
+            .withConnectionReservoir(dbConns)
             .withEntity(UserEntityWrapper.class)
             .runQuery(query);
     if (results.isEmpty()) {

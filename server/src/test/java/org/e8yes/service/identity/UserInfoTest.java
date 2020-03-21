@@ -18,9 +18,9 @@ package org.e8yes.service.identity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import org.e8yes.environment.DatabaseConnection;
-import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,23 +29,25 @@ import org.junit.jupiter.api.Test;
 public class UserInfoTest {
 
   @BeforeEach
-  public void setUp() throws SQLException, IllegalAccessException {
-    Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Test));
+  public void setUp() throws Exception {
+    Initializer.init(EnvironmentContextInterface.Environment.Test);
   }
 
   @AfterEach
-  public void tearDown() throws SQLException {
-    DatabaseConnection.deleteAllData();
+  public void tearDown() throws Exception {
+    Initializer.cleanUp();
   }
 
   @Test
   public void retrieveUserEntityTest()
       throws SQLException, IllegalAccessException, NoSuchMethodException, InstantiationException,
           IllegalArgumentException, InvocationTargetException {
-    UserEntity user = UserCreation.createBaselineUser("PASS".getBytes());
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+    UserEntity user = UserCreation.createBaselineUser("PASS".getBytes(), dbConn);
     Assertions.assertNotNull(user);
 
-    UserEntity retrieved = UserInfo.retrieveUserEntity(user.id.value());
+    UserEntity retrieved = UserInfo.retrieveUserEntity(user.id.value(), dbConn);
     Assertions.assertEquals(user, retrieved);
   }
 }

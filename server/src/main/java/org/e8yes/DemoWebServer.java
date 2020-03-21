@@ -3,12 +3,10 @@ package org.e8yes;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.e8yes.environment.EnvironmentContext;
+import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
-import org.e8yes.environment.JwtAlgorithmProvider;
 import org.e8yes.service.FriendshipService;
 import org.e8yes.service.SystemService;
 import org.e8yes.service.UserService;
@@ -26,7 +24,7 @@ public class DemoWebServer {
 
   private Server server;
 
-  private void start() throws IOException {
+  private void start(EnvironmentContextInterface env) throws IOException {
     // The port on which the server should run
     int port = 50051;
 
@@ -35,7 +33,8 @@ public class DemoWebServer {
             .addService(new UserService())
             .addService(new FriendshipService())
             .addService(new SystemService())
-            .intercept(new AuthorizationServerInterceptor(JwtAlgorithmProvider.jwtverifier()))
+            .intercept(
+                new AuthorizationServerInterceptor(env.authorizationJwtProvider().jwtverifier()))
             .build()
             .start();
     LOGGER.log(Level.INFO, "Server started, listening on {0}", port);
@@ -65,12 +64,13 @@ public class DemoWebServer {
     }
   }
 
-  public static void main(String[] args)
-      throws IOException, InterruptedException, IllegalAccessException, SQLException {
-    Initializer.init(new EnvironmentContext(EnvironmentContext.Mode.Prod));
+  public static void main(String[] args) throws Exception {
+    Initializer.init(EnvironmentContextInterface.Environment.Prod);
 
     final DemoWebServer server = new DemoWebServer();
-    server.start();
+    server.start(Initializer.environmentContext());
     server.blockUntilShutdown();
+
+    Initializer.cleanUp();
   }
 }
