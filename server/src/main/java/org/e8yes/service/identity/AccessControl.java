@@ -16,26 +16,68 @@
  */
 package org.e8yes.service.identity;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Date;
+import org.e8yes.exception.AccessDeniedException;
+import org.mindrot.jbcrypt.BCrypt;
+
 /** Handle access control and establish user identity. */
 public class AccessControl {
-  //  public static Optional<String> genTokenFromCredentialPair(String userName, String passcode)
-  //      throws AccessDeniedException {
-  //    SqlSession sess = DatabaseConnection.openSession();
-  //    AUserMapper userMapper = sess.getMapper(AUserMapper.class);
-  //    EtUser user = userMapper.loadByIdOrUserName(null, userName);
-  //    if (!BCrypt.checkpw(passcode, user.getPasscode())) {
-  //      DatabaseConnection.closeSession(sess);
-  //      throw new AccessDeniedException();
-  //    }
-  //    EtUserGroup userGroup = AUserGroupMapperEx.loadById(sess, user.getGroupId());
-  //    DatabaseConnection.closeSession(sess);
-  //    try {
-  //      return Optional.of(
-  //          // TODO: need a secret key provider.
-  //          new IdentityContext(user.getId(), userGroup).sign("abc"));
-  //    } catch (IllegalArgumentException | UnsupportedEncodingException ex) {
-  //      Logger.getLogger(AccessControl.class.getName()).log(Level.SEVERE, null, ex);
-  //    }
-  //    return Optional.empty();
-  //  }
+
+  private static final String USER_ID_KEY = "I";
+
+  private static final long EXPIRY_AFTER_MILLIS = 1000 * 60 * 5;
+
+  public static class AuthorizationToken {
+    public byte[] jwtToken;
+  }
+
+  /**
+   * @param user
+   * @param security_key
+   * @param alg
+   * @return
+   * @throws AccessDeniedException
+   */
+  public static AuthorizationToken generateAuthorizationToken(
+      UserEntity user, byte[] security_key, Algorithm alg) throws AccessDeniedException {
+    if (!BCrypt.checkpw(Arrays.toString(security_key), user.security_key_hash.value())) {
+      throw new AccessDeniedException();
+    }
+
+    long expiryTimestampMillis = Instant.now().plusMillis(EXPIRY_AFTER_MILLIS).toEpochMilli();
+    String base64Token =
+        JWT.create()
+            .withClaim(USER_ID_KEY, user.id.value())
+            .withExpiresAt(new Date(expiryTimestampMillis))
+            .sign(alg);
+
+    AuthorizationToken authToken = new AuthorizationToken();
+    authToken.jwtToken = Base64.getDecoder().decode(base64Token);
+
+    return authToken;
+  }
+
+  /**
+   * @param jwtToken
+   * @param verifier
+   * @return
+   * @throws JWTDecodeException
+   */
+  public static Identity parseToken(byte[] jwtToken, JWTVerifier verifier)
+      throws JWTVerificationException {
+    String base64Token = Base64.getEncoder().encodeToString(jwtToken);
+    DecodedJWT decoded = verifier.verify(base64Token);
+
+    long userId = decoded.getClaim(USER_ID_KEY).asLong();
+    return new Identity(userId);
+  }
 }

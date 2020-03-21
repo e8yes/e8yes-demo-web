@@ -16,20 +16,29 @@
  */
 package org.e8yes.environment;
 
-import java.sql.SQLException;
-import org.e8yes.service.identity.UserCreation;
-import org.e8yes.service.identity.UserGroup;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import java.io.UnsupportedEncodingException;
 
-/** Initialize the environment. */
-public class Initializer {
+/** */
+public class JwtAlgorithmProvider {
 
-  public static void init(EnvironmentContext ctx) throws IllegalAccessException, SQLException {
-    DatabaseConnection.init(ctx);
-    if (ctx.mode == EnvironmentContext.Mode.Test) {
-      // Reset table contents on test mode.
-      DatabaseConnection.deleteAllData();
-    }
-    UserGroup.createSystemUserGroups();
-    UserCreation.createRootUser();
+  private static Algorithm encryptAlgorithm;
+  private static JWTVerifier jwtVerifier;
+  private static final String TEST_ENV_KEY =
+      "68be2374ee7d4fb49dc86d2359f1592b3a366632322042509597252d5a1203c5";
+
+  public static void initProvider() throws IllegalArgumentException, UnsupportedEncodingException {
+    encryptAlgorithm = Algorithm.HMAC256(TEST_ENV_KEY);
+    jwtVerifier = JWT.require(encryptAlgorithm).build();
+  }
+
+  public static Algorithm algorithm() {
+    return encryptAlgorithm;
+  }
+
+  public static JWTVerifier jwtverifier() {
+    return jwtVerifier;
   }
 }
