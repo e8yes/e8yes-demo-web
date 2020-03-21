@@ -24,28 +24,12 @@ import java.util.Set;
 import org.e8yes.connection.DatabaseConnection;
 import org.e8yes.constant.DbTableConstants;
 import org.e8yes.sql.SqlRunner;
-import org.e8yes.sql.primitive.SqlDate;
-import org.e8yes.sql.primitive.SqlInt;
-import org.e8yes.sql.primitive.SqlLong;
-import org.e8yes.sql.primitive.SqlStr;
-import org.e8yes.sql.primitive.SqlStrArr;
 import org.mindrot.jbcrypt.BCrypt;
 
 /** Static class for user creation. */
 public class UserCreation {
 
   public static void createRootUser() {}
-
-  public static class UserEntity {
-    public SqlLong id = new SqlLong();
-    public SqlStrArr emails = new SqlStrArr();
-    public SqlStr alias = new SqlStr();
-    public SqlLong avatar_file_id = new SqlLong();
-    public SqlStr security_key_hash = new SqlStr();
-    public SqlStrArr group_names = new SqlStrArr();
-    public SqlInt active_level = new SqlInt();
-    public SqlDate created_at = new SqlDate();
-  }
 
   /**
    * Create a user of arbitrary group.

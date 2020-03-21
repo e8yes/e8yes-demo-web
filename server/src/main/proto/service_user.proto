@@ -17,12 +17,27 @@ message RegistrationReponse {
         RET_BotDetected = 2;
     }
     RegistrationErrorType error_type = 1;
-    uint64 user_id = 3;
+    int64 user_id = 3;
+}
+
+message AuthorizationRequest {
+    int64 user_id = 1;
+    bytes security_key = 2;
+}
+
+message AuthorizationResponse {
+    bytes jwt_token = 1;
+    int64 expiry_timestamp = 2;
 }
 
 service UserService {
   /**
    * Register a user to the system.
    */
-  rpc Register (RegistrationRequest) returns (RegistrationReponse) {}
+  rpc Register (RegistrationRequest) returns (RegistrationReponse);
+  
+  /*
+   * Authorize 
+   */
+  rpc Authorize (AuthorizationRequest) returns (AuthorizationResponse);
 }

@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.service.identity.UserCreation;
+import org.e8yes.service.identity.UserEntity;
 
 /** */
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
@@ -28,7 +29,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   @Override
   public void register(RegistrationRequest req, StreamObserver<RegistrationReponse> res) {
     RegistrationReponse response;
-    UserCreation.UserEntity user;
+    UserEntity user;
     try {
       user = UserCreation.createBaselineUser(req.getSecurityKey().toByteArray());
       response =
@@ -44,4 +45,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       res.onError(ex);
     }
   }
+
+  @Override
+  public void authorize(AuthorizationRequest req, StreamObserver<AuthorizationResponse> res) {}
 }

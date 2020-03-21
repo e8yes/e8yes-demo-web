@@ -17,4 +17,25 @@
 package org.e8yes.service.identity;
 
 /** Handle access control and establish user identity. */
-public class AccessControl {}
+public class AccessControl {
+  //  public static Optional<String> genTokenFromCredentialPair(String userName, String passcode)
+  //      throws AccessDeniedException {
+  //    SqlSession sess = DatabaseConnection.openSession();
+  //    AUserMapper userMapper = sess.getMapper(AUserMapper.class);
+  //    EtUser user = userMapper.loadByIdOrUserName(null, userName);
+  //    if (!BCrypt.checkpw(passcode, user.getPasscode())) {
+  //      DatabaseConnection.closeSession(sess);
+  //      throw new AccessDeniedException();
+  //    }
+  //    EtUserGroup userGroup = AUserGroupMapperEx.loadById(sess, user.getGroupId());
+  //    DatabaseConnection.closeSession(sess);
+  //    try {
+  //      return Optional.of(
+  //          // TODO: need a secret key provider.
+  //          new IdentityContext(user.getId(), userGroup).sign("abc"));
+  //    } catch (IllegalArgumentException | UnsupportedEncodingException ex) {
+  //      Logger.getLogger(AccessControl.class.getName()).log(Level.SEVERE, null, ex);
+  //    }
+  //    return Optional.empty();
+  //  }
+}

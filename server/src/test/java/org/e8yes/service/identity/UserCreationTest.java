@@ -53,7 +53,7 @@ public class UserCreationTest {
   public void createBaselineUserTest()
       throws ResourceConflictException, SQLException, IllegalAccessException {
     String user0PassWord = "PASS";
-    UserCreation.UserEntity user = UserCreation.createBaselineUser(user0PassWord.getBytes());
+    UserEntity user = UserCreation.createBaselineUser(user0PassWord.getBytes());
     Assertions.assertNotNull(user.id.value());
     Assertions.assertNotNull(user.security_key_hash.value());
     Assertions.assertFalse(user.security_key_hash.value().isBlank());
