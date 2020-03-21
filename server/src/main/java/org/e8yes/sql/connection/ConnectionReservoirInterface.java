@@ -36,4 +36,11 @@ public interface ConnectionReservoirInterface {
    * @throws SQLException
    */
   public void put(ConnectionInterface conn) throws SQLException;
+
+  /**
+   * Close all the connections.
+   *
+   * @throws SQLException
+   */
+  public void closeAll() throws SQLException;
 }

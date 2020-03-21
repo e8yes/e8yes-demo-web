@@ -39,4 +39,7 @@ public class BasicConnectionReservoir implements ConnectionReservoirInterface {
   public void put(ConnectionInterface conn) throws SQLException {
     conn.close();
   }
+
+  @Override
+  public void closeAll() throws SQLException {}
 }
