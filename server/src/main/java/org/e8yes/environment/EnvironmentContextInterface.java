@@ -34,10 +34,18 @@ public interface EnvironmentContextInterface {
    */
   public Environment environmentType();
 
-  /** @throws Exception */
+  /**
+   * Initialize the internal global objects.
+   *
+   * @throws Exception
+   */
   public void init() throws Exception;
 
-  /** @throws Exception */
+  /**
+   * Clean up the internal global objects.
+   *
+   * @throws Exception
+   */
   public void cleanUp() throws Exception;
 
   /**
