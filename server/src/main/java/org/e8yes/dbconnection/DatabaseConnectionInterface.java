@@ -14,7 +14,7 @@
  * <p>You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
-package org.e8yes.dbconnections;
+package org.e8yes.dbconnection;
 
 import java.sql.SQLException;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;

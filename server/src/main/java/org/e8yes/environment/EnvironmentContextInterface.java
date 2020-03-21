@@ -16,7 +16,7 @@
  */
 package org.e8yes.environment;
 
-import org.e8yes.dbconnections.DatabaseConnectionInterface;
+import org.e8yes.dbconnection.DatabaseConnectionInterface;
 import org.e8yes.jwtprovider.JwtAlgorithmProviderInterface;
 
 /** Returns global objects the runs in a deployment environment. */

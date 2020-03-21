@@ -16,8 +16,8 @@
  */
 package org.e8yes.environment;
 
-import org.e8yes.dbconnections.DatabaseConnectionInterface;
-import org.e8yes.dbconnections.DemowebTestDatabaseConnection;
+import org.e8yes.dbconnection.DatabaseConnectionInterface;
+import org.e8yes.dbconnection.DemowebTestDatabaseConnection;
 import org.e8yes.jwtprovider.FixedKeyJwtAlgorithmProvider;
 import org.e8yes.jwtprovider.JwtAlgorithmProviderInterface;
 

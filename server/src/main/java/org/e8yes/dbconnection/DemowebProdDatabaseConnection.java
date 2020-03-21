@@ -14,28 +14,25 @@
  * <p>You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
-package org.e8yes.dbconnections;
+package org.e8yes.dbconnection;
 
 import java.sql.SQLException;
-import java.util.Set;
-import org.e8yes.sql.SqlQueryBuilder;
-import org.e8yes.sql.SqlRunner;
 import org.e8yes.sql.connection.BasicConnectionReservoir;
 import org.e8yes.sql.connection.ConnectionFactory;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
 
-/** Store connections to the test DemoWeb database. */
-public class DemowebTestDatabaseConnection implements DatabaseConnectionInterface {
+/** Store connections to the production DemoWeb database. */
+public class DemowebProdDatabaseConnection implements DatabaseConnectionInterface {
 
   private static final String HOST_NAME = "localhost";
   private static final int HOST_PORT = 5432;
-  private static final String DB_NAME = "demowebtest";
+  private static final String DB_NAME = "demoweb";
   private static final String DB_USER = "postgres";
   private static final String DB_PASS = "password";
 
   private final ConnectionReservoirInterface demowebDbConnections;
 
-  public DemowebTestDatabaseConnection() {
+  public DemowebProdDatabaseConnection() {
     ConnectionFactory factory =
         new ConnectionFactory(
             ConnectionFactory.ConnectionType.JDBC, HOST_NAME, HOST_PORT, DB_NAME, DB_USER, DB_PASS);
@@ -54,12 +51,7 @@ public class DemowebTestDatabaseConnection implements DatabaseConnectionInterfac
 
   @Override
   public void clearAllTables() throws SQLException {
-    SqlRunner runner = new SqlRunner();
-    Set<String> tableNames = runner.withConnectionReservoir(connectionReservoir()).tables();
-    SqlQueryBuilder constraint = new SqlQueryBuilder().queryPiece("CASCADE");
-    for (String tbName : tableNames) {
-      runner.runDelete(tbName, constraint);
-    }
+    // Can't do this in non-testing environment.
   }
 
   @Override
