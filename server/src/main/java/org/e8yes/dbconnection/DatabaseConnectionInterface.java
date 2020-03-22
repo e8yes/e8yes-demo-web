@@ -29,7 +29,11 @@ public interface DatabaseConnectionInterface {
    */
   public ConnectionReservoirInterface connectionReservoir();
 
-  /** @throws SQLException */
+  /**
+   * Test the database connection.
+   *
+   * @throws SQLException
+   */
   public void testConnection() throws SQLException;
 
   /**

@@ -49,7 +49,7 @@ public class DemowebTestDatabaseConnection implements DatabaseConnectionInterfac
 
   @Override
   public void testConnection() throws SQLException {
-    // TODO.
+    new SqlRunner().withConnectionReservoir(demowebDbConnections).sendHeartBeat();
   }
 
   @Override

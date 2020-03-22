@@ -17,6 +17,7 @@
 package org.e8yes.dbconnection;
 
 import java.sql.SQLException;
+import org.e8yes.sql.SqlRunner;
 import org.e8yes.sql.connection.BasicConnectionReservoir;
 import org.e8yes.sql.connection.ConnectionFactory;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
@@ -46,7 +47,7 @@ public class DemowebProdDatabaseConnection implements DatabaseConnectionInterfac
 
   @Override
   public void testConnection() throws SQLException {
-    // TODO.
+    new SqlRunner().withConnectionReservoir(demowebDbConnections).sendHeartBeat();
   }
 
   @Override

@@ -26,6 +26,7 @@ import org.e8yes.sql.connection.ConnectionInterface;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.e8yes.sql.orm.DataCollection;
 import org.e8yes.sql.orm.QueryCompletion;
+import org.e8yes.sql.primitive.SqlInt;
 import org.e8yes.sql.primitive.SqlLong;
 import org.e8yes.sql.primitive.SqlStr;
 import org.e8yes.sql.resultset.ResultSetInterface;
@@ -185,6 +186,27 @@ public class SqlRunner {
     reservoir.put(conn);
 
     return tableNames;
+  }
+
+  /**
+   * Send a heartbeat to test the connection.
+   *
+   * @throws SQLException
+   */
+  public void sendHeartBeat() throws SQLException {
+    if (reservoir == null) {
+      throw new IllegalArgumentException("Connection reservoir not specified.");
+    }
+
+    ConnectionInterface conn = reservoir.take();
+    ResultSetInterface rs = conn.runQuery("SELECT 1", new ConnectionInterface.QueryParams());
+
+    SqlInt one = new SqlInt();
+    rs.setCellValueToField(1, one);
+    assert (one.value() != null);
+    assert (one.value() == 1);
+
+    reservoir.put(conn);
   }
 
   /**
