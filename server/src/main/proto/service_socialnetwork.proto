@@ -29,7 +29,7 @@ message RemoveFriendRequest {
 message RemoveFriendReply {
 }
 
-service FriendshipService {
+service SocialNetworkService {
     rpc SendFriendshipRequest (FriendshipRRequest) returns (FriendshipRReply) {}
     rpc AcceptFriendRequest (AcceptFriendshipRRequest) returns (AcceptFriendshipRReply) {}
     rpc RemoveFriend (RemoveFriendRequest) returns (RemoveFriendReply) {}

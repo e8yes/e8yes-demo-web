@@ -3,7 +3,7 @@ package org.e8yes.service;
 import io.grpc.stub.StreamObserver;
 
 /** @author davis */
-public class FriendshipService extends FriendshipServiceGrpc.FriendshipServiceImplBase {
+public class SocialNetworkService extends SocialNetworkServiceGrpc.SocialNetworkServiceImplBase {
 
   @Override
   public void sendFriendshipRequest(FriendshipRRequest req, StreamObserver<FriendshipRReply> res) {}

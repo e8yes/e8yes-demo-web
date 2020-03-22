@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
-import org.e8yes.service.FriendshipService;
+import org.e8yes.service.SocialNetworkService;
 import org.e8yes.service.SystemService;
 import org.e8yes.service.UserService;
 import org.e8yes.service.interceptor.AuthorizationServerInterceptor;
@@ -31,7 +31,7 @@ public class DemoWebServer {
     server =
         ServerBuilder.forPort(port)
             .addService(new UserService())
-            .addService(new FriendshipService())
+            .addService(new SocialNetworkService())
             .addService(new SystemService())
             .intercept(
                 new AuthorizationServerInterceptor(env.authorizationJwtProvider().jwtverifier()))
