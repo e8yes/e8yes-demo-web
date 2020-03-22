@@ -18,8 +18,11 @@ package org.e8yes.service.identity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
+import org.e8yes.service.Pagination;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -44,10 +47,66 @@ public class UserRetrievalTest {
           IllegalArgumentException, InvocationTargetException {
     ConnectionReservoirInterface dbConn =
         Initializer.environmentContext().demowebDbConnections().connectionReservoir();
-    UserEntity user = UserCreation.createBaselineUser("PASS".getBytes(), dbConn);
-    Assertions.assertNotNull(user);
+    UserEntity user0 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(123L), dbConn);
+    Assertions.assertNotNull(user0);
+    UserEntity user1 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(223L), dbConn);
+    Assertions.assertNotNull(user1);
 
-    UserEntity retrieved = UserRetrieval.retrieveUserEntity(user.id.value(), dbConn);
-    Assertions.assertEquals(user, retrieved);
+    UserEntity retrieved = UserRetrieval.retrieveUserEntity(/*userId=*/ 123L, dbConn);
+    Assertions.assertEquals(user0, retrieved);
+  }
+
+  @Test
+  public void searchUserByIdPrefixTest()
+      throws SQLException, IllegalAccessException, NoSuchMethodException, InstantiationException,
+          IllegalArgumentException, InvocationTargetException {
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+
+    UserEntity user0 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(12300L), dbConn);
+    Assertions.assertNotNull(user0);
+    UserEntity user1 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(12301L), dbConn);
+    Assertions.assertNotNull(user1);
+    UserEntity user2 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(12302L), dbConn);
+    Assertions.assertNotNull(user2);
+    UserEntity user3 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(12303L), dbConn);
+    Assertions.assertNotNull(user3);
+    UserEntity user4 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(22300L), dbConn);
+    Assertions.assertNotNull(user4);
+
+    List<UserEntity> page0 =
+        UserRetrieval.searchUserEntity(
+            /*userIdPrefix=*/ Optional.of(123L),
+            /*aliasPrefix=*/ Optional.empty(),
+            Pagination.newBuilder().setPageNumber(0).setResultPerPage(2).build(),
+            dbConn);
+    Assertions.assertEquals(2, page0.size());
+    Assertions.assertTrue(page0.stream().anyMatch(u -> u.id.value() == 12300L));
+    Assertions.assertTrue(page0.stream().anyMatch(u -> u.id.value() == 12301L));
+
+    List<UserEntity> page1 =
+        UserRetrieval.searchUserEntity(
+            /*userIdPrefix=*/ Optional.of(123L),
+            /*aliasPrefix=*/ Optional.empty(),
+            Pagination.newBuilder().setPageNumber(1).setResultPerPage(2).build(),
+            dbConn);
+    Assertions.assertEquals(2, page1.size());
+    Assertions.assertTrue(page1.stream().anyMatch(u -> u.id.value() == 12302L));
+    Assertions.assertTrue(page1.stream().anyMatch(u -> u.id.value() == 12303L));
+
+    List<UserEntity> page2 =
+        UserRetrieval.searchUserEntity(
+            /*userIdPrefix=*/ Optional.of(123L),
+            /*aliasPrefix=*/ Optional.empty(),
+            Pagination.newBuilder().setPageNumber(2).setResultPerPage(2).build(),
+            dbConn);
+    Assertions.assertTrue(page2.isEmpty());
   }
 }

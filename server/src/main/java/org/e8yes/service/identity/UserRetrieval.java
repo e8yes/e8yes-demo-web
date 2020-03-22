@@ -87,7 +87,8 @@ public class UserRetrieval {
   }
 
   /**
-   * Search for user entities on optionally different fields.
+   * Search for user entities on optionally different fields. The search result is ordered by id in
+   * ascending order.
    *
    * @param userIdPrefix Filter by the prefix of the userId.
    * @param aliasPrefix Filter by the prefix of the alias.
@@ -119,13 +120,15 @@ public class UserRetrieval {
             .queryPiece(DbTableConstants.userTable())
             .queryPiece(" entity WHERE TRUE");
     if (userIdPrefix.isPresent()) {
-      query.queryPiece(" AND entity.id_str=").placeholder(userIdPrefixPh).queryPiece("%");
-      query.setPlaceholderValue(userIdPrefixPh, new SqlStr(Long.toString(userIdPrefix.get())));
+      query.queryPiece(" AND entity.id_str LIKE ").placeholder(userIdPrefixPh);
+      query.setPlaceholderValue(
+          userIdPrefixPh, new SqlStr(Long.toString(userIdPrefix.get()) + "%"));
     }
     if (aliasPrefix.isPresent()) {
-      query.queryPiece(" AND entity.alias=").placeholder(aliasPrefixPh).queryPiece("%");
-      query.setPlaceholderValue(aliasPrefixPh, new SqlStr(aliasPrefix.get()));
+      query.queryPiece(" AND entity.alias LIKE ").placeholder(aliasPrefixPh);
+      query.setPlaceholderValue(aliasPrefixPh, new SqlStr(aliasPrefix.get() + "%"));
     }
+    query.queryPiece(" ORDER BY entity.id ASC");
     query.queryPiece(" LIMIT ").placeholder(limitPh).queryPiece(" OFFSET ").placeholder(offsetPh);
     query.setPlaceholderValue(limitPh, new SqlInt(pagination.getResultPerPage()));
     query.setPlaceholderValue(

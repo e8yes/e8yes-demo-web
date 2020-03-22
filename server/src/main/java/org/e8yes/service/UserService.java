@@ -20,6 +20,7 @@ import com.google.protobuf.ByteString;
 import io.grpc.stub.StreamObserver;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.environment.Initializer;
@@ -41,6 +42,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       user =
           UserCreation.createBaselineUser(
               req.getSecurityKey().toByteArray(),
+              /*userId=*/ Optional.empty(),
               Initializer.environmentContext().demowebDbConnections().connectionReservoir());
       response =
           RegistrationReponse.newBuilder()

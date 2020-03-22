@@ -18,6 +18,7 @@ package org.e8yes.service.identity;
 
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.Optional;
 import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.ResourceConflictException;
@@ -55,6 +56,7 @@ public class UserCreationTest {
     UserEntity user =
         UserCreation.createBaselineUser(
             user0PassWord.getBytes(),
+            /*userId=*/ Optional.empty(),
             Initializer.environmentContext().demowebDbConnections().connectionReservoir());
     Assertions.assertNotNull(user.id.value());
     Assertions.assertNotNull(user.id_str.value());
