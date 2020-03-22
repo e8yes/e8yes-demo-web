@@ -16,6 +16,7 @@
  */
 package org.e8yes.service;
 
+import com.google.protobuf.ByteString;
 import io.grpc.stub.StreamObserver;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -65,10 +66,17 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       if (user == null) {
         throw new ResourceMissingException("User with ID=" + req.getUserId() + " doesn't exist.");
       }
-      JwtAuthorizer.generateAuthorizationToken(
-          user,
-          req.getSecurityKey().toByteArray(),
-          Initializer.environmentContext().authorizationJwtProvider().algorithm());
+      JwtAuthorizer.AuthorizationToken token =
+          JwtAuthorizer.signAuthorizationToken(
+              user,
+              req.getSecurityKey().toByteArray(),
+              Initializer.environmentContext().authorizationJwtProvider().algorithm());
+
+      res.onNext(
+          AuthorizationResponse.newBuilder()
+              .setJwtToken(ByteString.copyFrom(token.jwtToken))
+              .build());
+      res.onCompleted();
     } catch (AccessDeniedException
         | SQLException
         | NoSuchMethodException
