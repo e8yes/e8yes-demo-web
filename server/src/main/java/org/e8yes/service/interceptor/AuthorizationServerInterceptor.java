@@ -40,7 +40,7 @@ public class AuthorizationServerInterceptor implements ServerInterceptor {
 
   private static final Metadata.Key<byte[]> AUTHORIZATION_METADATA_KEY =
       Metadata.Key.of("A-bin", Metadata.BINARY_BYTE_MARSHALLER);
-  
+
   private static final Set<String> publicEndpoints =
       new HashSet() {
         {

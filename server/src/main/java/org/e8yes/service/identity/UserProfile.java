@@ -16,7 +16,12 @@
  */
 package org.e8yes.service.identity;
 
+import java.sql.SQLException;
+import java.util.Optional;
+import org.e8yes.constant.DbTableConstants;
 import org.e8yes.service.UserPublicProfile;
+import org.e8yes.sql.SqlRunner;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 
 /** Manages user's public profile. */
 public class UserProfile {
@@ -35,5 +40,33 @@ public class UserProfile {
     }
 
     return builder.build();
+  }
+
+  /**
+   * Update a user's profile.See below for what parameters are considered a user's profile.
+   *
+   * @param user Entity of the user whose profile needs to be updated.
+   * @param alias Parameter of user's profile.
+   * @param dbConn Connection to the DB server.
+   * @return The updated user entity.
+   * @throws SQLException
+   * @throws IllegalAccessException
+   */
+  public static UserEntity updateProfile(
+      UserEntity user, Optional<String> alias, ConnectionReservoirInterface dbConn)
+      throws SQLException, IllegalAccessException {
+    if (alias.isPresent()) {
+      user.alias.assign(alias.get());
+    }
+
+    int numRowsUpdated =
+        new SqlRunner()
+            .withConnectionReservoir(dbConn)
+            .withEntity(UserEntity.class)
+            .withOverrideRecord(true)
+            .runUpdate(user, DbTableConstants.userTable());
+    assert (numRowsUpdated == 1);
+
+    return user;
   }
 }
