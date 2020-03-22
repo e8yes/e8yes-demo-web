@@ -17,14 +17,19 @@
 package org.e8yes.service;
 
 import io.grpc.stub.StreamObserver;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.e8yes.environment.Initializer;
+import org.e8yes.exception.AccessDeniedException;
+import org.e8yes.exception.ResourceMissingException;
+import org.e8yes.service.identity.JwtAuthorizer;
 import org.e8yes.service.identity.UserCreation;
 import org.e8yes.service.identity.UserEntity;
+import org.e8yes.service.identity.UserInfo;
 
-/** */
+/** Service for user management. */
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
   @Override
@@ -51,5 +56,29 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   }
 
   @Override
-  public void authorize(AuthorizationRequest req, StreamObserver<AuthorizationResponse> res) {}
+  public void authorize(AuthorizationRequest req, StreamObserver<AuthorizationResponse> res) {
+    try {
+      UserEntity user =
+          UserInfo.retrieveUserEntity(
+              req.getUserId(),
+              Initializer.environmentContext().demowebDbConnections().connectionReservoir());
+      if (user == null) {
+        throw new ResourceMissingException("User with ID=" + req.getUserId() + " doesn't exist.");
+      }
+      JwtAuthorizer.generateAuthorizationToken(
+          user,
+          req.getSecurityKey().toByteArray(),
+          Initializer.environmentContext().authorizationJwtProvider().algorithm());
+    } catch (AccessDeniedException
+        | SQLException
+        | NoSuchMethodException
+        | InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException
+        | ResourceMissingException ex) {
+      Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(ex);
+    }
+  }
 }

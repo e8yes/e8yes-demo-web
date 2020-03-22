@@ -1,15 +1,21 @@
 package org.e8yes.exception;
 
-/**
- * ResourceMissingException.
- *
- * @author davis
- */
+/** ResourceMissingException. */
 public class ResourceMissingException extends RpcException {
+
+  private final String message;
+
+  public ResourceMissingException() {
+    message = "Resource Missing";
+  }
+
+  public ResourceMissingException(String message) {
+    this.message = message;
+  }
 
   @Override
   public String getMessage() {
-    return "Resource Missing";
+    return message;
   }
 
   @Override

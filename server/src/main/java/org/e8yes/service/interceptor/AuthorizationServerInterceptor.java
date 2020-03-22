@@ -27,8 +27,8 @@ import io.grpc.ServerInterceptor;
 import io.grpc.Status;
 import java.util.HashSet;
 import java.util.Set;
-import org.e8yes.service.identity.JwtAuthorizer;
 import org.e8yes.service.identity.Identity;
+import org.e8yes.service.identity.JwtAuthorizer;
 
 /**
  * Intercepts RPC call and decode the JWT token from the metadata. The decoded identity will be
