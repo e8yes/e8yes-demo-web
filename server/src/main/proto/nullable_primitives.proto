@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.service";
+option java_outer_classname = "NullablePrimitivesProto";
+
+
+message NullableInt32 {
+    int32 value = 1;
+}
+
+message NullableInt64 {
+    int64 value = 1;
+}
+
+message NullableFloat {
+    float value = 1;
+}
+
+message NullableDouble {
+    double value = 1;
+}
+
+message NullableString {
+    string value = 1;
+}

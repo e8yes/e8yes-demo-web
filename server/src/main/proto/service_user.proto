@@ -6,6 +6,7 @@ option java_outer_classname = "ServiceUserProto";
 
 package org.e8yes.services;
 
+import "nullable_primitives.proto";
 import "pagination.proto";
 
 message RegistrationRequest {
@@ -49,8 +50,8 @@ message GetPublicProfileResponse {
 message UpdatePublicProfileRequest {
     // Optional. If this field isn't provided, it will fetch the public profile
     // of the logged-in user.
-    int64 user_id = 1;
-    string alias = 2;
+    NullableInt64 user_id = 1;
+    NullableString alias = 2;
 }
 
 message UpdatePublicProfileResponse {
@@ -59,10 +60,10 @@ message UpdatePublicProfileResponse {
 
 message SearchUserRequest {
     // Optional. Could be partial input.
-    string alias = 1;
+    NullableString alias = 1;
     
     // Optional. Could be partial prefix input.
-    int64 user_id = 2;
+    NullableInt64 user_id = 2;
     Pagination pagination = 3;
 }
 
