@@ -27,7 +27,7 @@ import io.grpc.ServerInterceptor;
 import io.grpc.Status;
 import java.util.HashSet;
 import java.util.Set;
-import org.e8yes.service.identity.AccessControl;
+import org.e8yes.service.identity.JwtAuthorizer;
 import org.e8yes.service.identity.Identity;
 
 /**
@@ -82,7 +82,7 @@ public class AuthorizationServerInterceptor implements ServerInterceptor {
     }
 
     try {
-      Identity identity = AccessControl.parseToken(jwtToken, jwtverifier);
+      Identity identity = JwtAuthorizer.parseToken(jwtToken, jwtverifier);
       Context ctx = Context.current().withValue(IDENTITY_CONTEXT_KEY, identity);
       return Contexts.interceptCall(ctx, serverCall, metadata, serverCallHandler);
     } catch (JWTVerificationException e) {

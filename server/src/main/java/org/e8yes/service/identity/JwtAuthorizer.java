@@ -29,8 +29,8 @@ import java.util.Date;
 import org.e8yes.exception.AccessDeniedException;
 import org.mindrot.jbcrypt.BCrypt;
 
-/** Handle access control and establish user identity. */
-public class AccessControl {
+/** Establish and verify user identity via JWT. */
+public class JwtAuthorizer {
 
   private static final String USER_ID_KEY = "I";
 
