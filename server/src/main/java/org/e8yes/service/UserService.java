@@ -17,6 +17,7 @@
 package org.e8yes.service;
 
 import com.google.protobuf.ByteString;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -57,7 +58,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       res.onCompleted();
     } catch (SQLException | IllegalAccessException ex) {
       Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-      res.onError(ex);
+      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
     }
   }
 
@@ -82,16 +83,18 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
               .setJwtToken(ByteString.copyFrom(token.jwtToken))
               .build());
       res.onCompleted();
-    } catch (AccessDeniedException
-        | SQLException
+    } catch (SQLException
         | NoSuchMethodException
         | InstantiationException
         | IllegalAccessException
         | IllegalArgumentException
-        | InvocationTargetException
-        | ResourceMissingException ex) {
+        | InvocationTargetException ex) {
       Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-      res.onError(ex);
+      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+    } catch (ResourceMissingException ex) {
+      res.onError(Status.NOT_FOUND.withDescription(ex.getMessage()).asException());
+    } catch (AccessDeniedException ex) {
+      res.onError(Status.UNAUTHENTICATED.withDescription(ex.getMessage()).asException());
     }
   }
 
@@ -135,10 +138,11 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         | NoSuchMethodException
         | InstantiationException
         | IllegalAccessException
-        | IllegalArgumentException
         | InvocationTargetException ex) {
       Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-      res.onError(ex);
+      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+    } catch (IllegalArgumentException ex) {
+      res.onError(Status.INVALID_ARGUMENT.withDescription(ex.getMessage()).asException());
     }
   }
 }
