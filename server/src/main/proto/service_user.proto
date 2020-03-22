@@ -40,7 +40,7 @@ message UserPublicProfile {
 message GetPublicProfileRequest {
     // Optional. If this field isn't provided, it will fetch the public profile
     // of the logged-in user.
-    int64 user_id = 1;
+    NullableInt64 user_id = 1;
 }
 
 message GetPublicProfileResponse {

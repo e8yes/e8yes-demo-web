@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.e8yes.constant.GrpcContexts;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.AccessDeniedException;
 import org.e8yes.exception.ResourceMissingException;
@@ -100,7 +101,39 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
   @Override
   public void getPublicProfile(
-      GetPublicProfileRequest req, StreamObserver<GetPublicProfileResponse> res) {}
+      GetPublicProfileRequest req, StreamObserver<GetPublicProfileResponse> res) {
+    try {
+      long userId;
+      if (req.getUserId() == null || req.getUserId().getValue() == 0) {
+        userId = GrpcContexts.IDENTITY_CONTEXT_KEY.get().userId;
+      } else {
+        userId = req.getUserId().getValue();
+      }
+
+      UserEntity user =
+          UserRetrieval.retrieveUserEntity(
+              userId,
+              Initializer.environmentContext().demowebDbConnections().connectionReservoir());
+      if (user == null) {
+        throw new ResourceMissingException("User with ID=" + userId + " doesn't exist.");
+      }
+
+      UserPublicProfile profile = UserProfile.extractPublicInfo(user);
+
+      res.onNext(GetPublicProfileResponse.newBuilder().setProfile(profile).build());
+      res.onCompleted();
+    } catch (SQLException
+        | NoSuchMethodException
+        | InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException ex) {
+      Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+    } catch (ResourceMissingException ex) {
+      res.onError(Status.NOT_FOUND.withDescription(ex.getMessage()).asException());
+    }
+  }
 
   @Override
   public void updatePublicProfile(
