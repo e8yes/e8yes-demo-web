@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class UserInfoTest {
+public class UserRetrievalTest {
 
   @BeforeEach
   public void setUp() throws Exception {
@@ -47,7 +47,7 @@ public class UserInfoTest {
     UserEntity user = UserCreation.createBaselineUser("PASS".getBytes(), dbConn);
     Assertions.assertNotNull(user);
 
-    UserEntity retrieved = UserInfo.retrieveUserEntity(user.id.value(), dbConn);
+    UserEntity retrieved = UserRetrieval.retrieveUserEntity(user.id.value(), dbConn);
     Assertions.assertEquals(user, retrieved);
   }
 }

@@ -28,7 +28,7 @@ import org.e8yes.exception.ResourceMissingException;
 import org.e8yes.service.identity.JwtAuthorizer;
 import org.e8yes.service.identity.UserCreation;
 import org.e8yes.service.identity.UserEntity;
-import org.e8yes.service.identity.UserInfo;
+import org.e8yes.service.identity.UserRetrieval;
 
 /** Service for user management. */
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
@@ -60,7 +60,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   public void authorize(AuthorizationRequest req, StreamObserver<AuthorizationResponse> res) {
     try {
       UserEntity user =
-          UserInfo.retrieveUserEntity(
+          UserRetrieval.retrieveUserEntity(
               req.getUserId(),
               Initializer.environmentContext().demowebDbConnections().connectionReservoir());
       if (user == null) {

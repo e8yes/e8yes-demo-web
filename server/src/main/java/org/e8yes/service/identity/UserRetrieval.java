@@ -30,8 +30,8 @@ import org.e8yes.sql.primitive.SqlInt;
 import org.e8yes.sql.primitive.SqlLong;
 import org.e8yes.sql.primitive.SqlStr;
 
-/** Module to retrieve and manage information about a user. */
-public class UserInfo {
+/** Module to retrieve and search users. */
+public class UserRetrieval {
 
   public static class UserEntityWrapper {
     public UserEntity entity;
