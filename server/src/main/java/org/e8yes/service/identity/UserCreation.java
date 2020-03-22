@@ -53,16 +53,22 @@ public class UserCreation {
     SqlRunner runner = new SqlRunner().withConnectionReservoir(dbConn);
 
     UserEntity user = new UserEntity();
-    user.id.assign(runner.timeId());
-    user.id_str.assign(Long.toString(user.id.value()));
     // Stores a irreversibly hashed security key.
     user.security_key_hash.assign(BCrypt.hashpw(Arrays.toString(securityKey), BCrypt.gensalt()));
     user.group_names.assign(userGroupNames.toArray(new String[userGroupNames.size()]));
     user.active_level.assign(0);
     user.created_at.assign(new Date());
 
-    int numRowUpdated =
-        runner.withEntity(UserEntity.class).runUpdate(user, DbTableConstants.userTable());
+    // 10 retries if the ID collides before giving up.
+    int numRetriesLeft = 10;
+    int numRowUpdated;
+    do {
+      user.id.assign(runner.timeId());
+      user.id_str.assign(Long.toString(user.id.value()));
+      numRowUpdated =
+          runner.withEntity(UserEntity.class).runUpdate(user, DbTableConstants.userTable());
+    } while (numRowUpdated != 1 && numRetriesLeft-- > 0);
+
     assert (numRowUpdated == 1);
 
     return user;
