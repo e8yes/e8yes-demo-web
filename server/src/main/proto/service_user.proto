@@ -48,10 +48,8 @@ message GetPublicProfileResponse {
 }
 
 message UpdatePublicProfileRequest {
-    // Optional. If this field isn't provided, it will fetch the public profile
-    // of the logged-in user.
-    NullableInt64 user_id = 1;
-    NullableString alias = 2;
+    // It will only fetch and update the public profile of the logged-in user.
+    NullableString alias = 1;
 }
 
 message UpdatePublicProfileResponse {
