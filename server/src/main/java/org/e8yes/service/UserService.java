@@ -34,6 +34,7 @@ import org.e8yes.service.identity.UserCreation;
 import org.e8yes.service.identity.UserEntity;
 import org.e8yes.service.identity.UserProfile;
 import org.e8yes.service.identity.UserRetrieval;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.e8yes.util.PaginationValidator;
 
 /** Service for user management. */
@@ -137,7 +138,36 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
   @Override
   public void updatePublicProfile(
-      UpdatePublicProfileRequest req, StreamObserver<UpdatePublicProfileResponse> res) {}
+      UpdatePublicProfileRequest req, StreamObserver<UpdatePublicProfileResponse> res) {
+    try {
+      long userId = GrpcContexts.IDENTITY_CONTEXT_KEY.get().userId;
+
+      ConnectionReservoirInterface dbConn =
+          Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+      UserEntity user = UserRetrieval.retrieveUserEntity(userId, dbConn);
+      if (user == null) {
+        throw new ResourceMissingException("User with ID=" + userId + " doesn't exist.");
+      }
+
+      Optional<String> alias =
+          req.getAlias() != null ? Optional.of(req.getAlias().getValue()) : Optional.empty();
+      user = UserProfile.updateProfile(user, alias, dbConn);
+      UserPublicProfile updatedProfile = UserProfile.extractPublicInfo(user);
+
+      res.onNext(UpdatePublicProfileResponse.newBuilder().setProfile(updatedProfile).build());
+      res.onCompleted();
+    } catch (SQLException
+        | NoSuchMethodException
+        | InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException ex) {
+      Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+    } catch (ResourceMissingException ex) {
+      res.onError(Status.NOT_FOUND.withDescription(ex.getMessage()).asException());
+    }
+  }
 
   @Override
   public void search(SearchUserRequest req, StreamObserver<SearchUserResponse> res) {

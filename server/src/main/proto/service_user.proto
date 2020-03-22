@@ -59,10 +59,10 @@ message UpdatePublicProfileResponse {
 }
 
 message SearchUserRequest {
-    // Optional. Could be partial input.
+    // Optional. Could be a partial input.
     NullableString alias = 1;
     
-    // Optional. Could be partial prefix input.
+    // Optional. Could be a partial prefix input.
     NullableInt64 user_id = 2;
     Pagination pagination = 3;
 }
