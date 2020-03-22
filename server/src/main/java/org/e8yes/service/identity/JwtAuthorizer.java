@@ -34,7 +34,7 @@ public class JwtAuthorizer {
 
   private static final String USER_ID_KEY = "I";
 
-  private static final long EXPIRY_AFTER_MILLIS = 1000 * 60 * 5;
+  private static final long EXPIRY_AFTER_MILLIS = 1000 * 60 * 10;
 
   /**
    * This is done to reduce the size of the JWT token, since byte array takes less space than base64

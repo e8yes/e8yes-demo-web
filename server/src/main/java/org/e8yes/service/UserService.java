@@ -20,6 +20,7 @@ import com.google.protobuf.ByteString;
 import io.grpc.stub.StreamObserver;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,9 @@ import org.e8yes.exception.ResourceMissingException;
 import org.e8yes.service.identity.JwtAuthorizer;
 import org.e8yes.service.identity.UserCreation;
 import org.e8yes.service.identity.UserEntity;
+import org.e8yes.service.identity.UserProfile;
 import org.e8yes.service.identity.UserRetrieval;
+import org.e8yes.util.PaginationValidator;
 
 /** Service for user management. */
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
@@ -101,6 +104,41 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       UpdatePublicProfileRequest req, StreamObserver<UpdatePublicProfileResponse> res) {}
 
   @Override
-  public void search(
-      SearchUserRequest request, StreamObserver<SearchUserResponse> responseObserver) {}
+  public void search(SearchUserRequest req, StreamObserver<SearchUserResponse> res) {
+    try {
+      PaginationValidator.validate(req.getPagination(), /*resultPerPageLimit=*/ 100);
+      Optional<Long> userIdPrefix =
+          req.getUserId() == null || req.getUserId().getValue() == 0
+              ? Optional.empty()
+              : Optional.of(req.getUserId().getValue());
+      Optional<String> aliasPrefix =
+          req.getAlias() == null || req.getAlias().getValue().isEmpty()
+              ? Optional.empty()
+              : Optional.of(req.getAlias().getValue());
+
+      List<UserEntity> results =
+          UserRetrieval.searchUserEntity(
+              userIdPrefix,
+              aliasPrefix,
+              req.getPagination(),
+              Initializer.environmentContext().demowebDbConnections().connectionReservoir());
+
+      SearchUserResponse.Builder builder = SearchUserResponse.newBuilder();
+      for (UserEntity user : results) {
+        UserPublicProfile profile = UserProfile.extractPublicInfo(user);
+        builder.addEntries(profile);
+      }
+
+      res.onNext(builder.build());
+      res.onCompleted();
+    } catch (SQLException
+        | NoSuchMethodException
+        | InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException ex) {
+      Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(ex);
+    }
+  }
 }

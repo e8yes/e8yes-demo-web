@@ -16,5 +16,24 @@
  */
 package org.e8yes.service.identity;
 
+import org.e8yes.service.UserPublicProfile;
+
 /** Manages user's public profile. */
-public class UserPublicProfile {}
+public class UserProfile {
+
+  /**
+   * Extract public profile info from raw database entities.
+   *
+   * @param user Raw database entity.
+   * @return The public profile.
+   */
+  public static UserPublicProfile extractPublicInfo(UserEntity user) {
+    UserPublicProfile.Builder builder = UserPublicProfile.newBuilder().setUserId(user.id.value());
+
+    if (user.alias.value() != null) {
+      builder.setAlias(user.alias.value());
+    }
+
+    return builder.build();
+  }
+}
