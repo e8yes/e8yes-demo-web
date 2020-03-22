@@ -18,12 +18,17 @@ package org.e8yes.service.identity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.e8yes.constant.DbTableConstants;
+import org.e8yes.service.Pagination;
 import org.e8yes.sql.SqlQueryBuilder;
 import org.e8yes.sql.SqlRunner;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
+import org.e8yes.sql.primitive.SqlInt;
 import org.e8yes.sql.primitive.SqlLong;
+import org.e8yes.sql.primitive.SqlStr;
 
 /** Module to retrieve and manage information about a user. */
 public class UserInfo {
@@ -79,5 +84,62 @@ public class UserInfo {
     assert (results.size() == 1);
 
     return results.get(0).entity;
+  }
+
+  /**
+   * Search for user entities on optionally different fields.
+   *
+   * @param userIdPrefix Filter by the prefix of the userId.
+   * @param aliasPrefix Filter by the prefix of the alias.
+   * @param pagination Pagination constraint.
+   * @param dbConn Connection to the DemoWeb DB server.
+   * @return A list of users that satisfy the specified filters.
+   * @throws SQLException
+   * @throws NoSuchMethodException
+   * @throws InstantiationException
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
+   * @throws InvocationTargetException
+   */
+  public static List<UserEntity> searchUserEntity(
+      Optional<Long> userIdPrefix,
+      Optional<String> aliasPrefix,
+      Pagination pagination,
+      ConnectionReservoirInterface dbConn)
+      throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
+          IllegalArgumentException, InvocationTargetException {
+    SqlQueryBuilder.Placeholder<String> userIdPrefixPh = new SqlQueryBuilder.Placeholder();
+    SqlQueryBuilder.Placeholder<String> aliasPrefixPh = new SqlQueryBuilder.Placeholder();
+
+    SqlQueryBuilder.Placeholder<Integer> limitPh = new SqlQueryBuilder.Placeholder();
+    SqlQueryBuilder.Placeholder<Integer> offsetPh = new SqlQueryBuilder.Placeholder();
+
+    SqlQueryBuilder query =
+        new SqlQueryBuilder()
+            .queryPiece(DbTableConstants.userTable())
+            .queryPiece(" entity WHERE TRUE");
+    if (userIdPrefix.isPresent()) {
+      query.queryPiece(" AND entity.id_str=").placeholder(userIdPrefixPh).queryPiece("%");
+      query.setPlaceholderValue(userIdPrefixPh, new SqlStr(Long.toString(userIdPrefix.get())));
+    }
+    if (aliasPrefix.isPresent()) {
+      query.queryPiece(" AND entity.alias=").placeholder(aliasPrefixPh).queryPiece("%");
+      query.setPlaceholderValue(aliasPrefixPh, new SqlStr(aliasPrefix.get()));
+    }
+    query.queryPiece(" LIMIT ").placeholder(limitPh).queryPiece(" OFFSET ").placeholder(offsetPh);
+    query.setPlaceholderValue(limitPh, new SqlInt(pagination.getResultPerPage()));
+    query.setPlaceholderValue(
+        offsetPh, new SqlInt(pagination.getPageNumber() * pagination.getResultPerPage()));
+
+    List<UserEntityWrapper> queryResults =
+        new SqlRunner()
+            .withConnectionReservoir(dbConn)
+            .withEntity(UserEntityWrapper.class)
+            .runQuery(query);
+    List<UserEntity> users = new ArrayList();
+    for (UserEntityWrapper wrapper : queryResults) {
+      users.add(wrapper.entity);
+    }
+    return users;
   }
 }

@@ -5,6 +5,9 @@ option java_package = "org.e8yes.service";
 option java_outer_classname = "PaginationProto";
 
 message Pagination {
+    // Zero-offset.
     int32 page_number = 3;
+    
+    // Count.
     int32 result_per_page = 4;
 }
