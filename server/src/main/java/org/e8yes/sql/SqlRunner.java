@@ -194,8 +194,8 @@ public class SqlRunner {
    */
   public long timeId() {
     Instant inst = Instant.now();
-    long nano = inst.getEpochSecond() + inst.getNano();
-    return Long.reverse(nano);
+    long micros = inst.getEpochSecond() * 1000 * 1000 + inst.getNano() / 1000;
+    return Long.reverse(micros);
   }
 
   /**
