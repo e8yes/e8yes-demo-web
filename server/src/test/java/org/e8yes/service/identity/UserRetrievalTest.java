@@ -109,4 +109,60 @@ public class UserRetrievalTest {
             dbConn);
     Assertions.assertTrue(page2.isEmpty());
   }
+
+  @Test
+  public void searchUserByAliasPrefixTest()
+      throws SQLException, IllegalAccessException, NoSuchMethodException, InstantiationException,
+          IllegalArgumentException, InvocationTargetException {
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+
+    UserEntity user0 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(1L), dbConn);
+    UserProfile.updateProfile(user0, /*alias=*/ Optional.of("John A"), dbConn);
+
+    UserEntity user1 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(2L), dbConn);
+    UserProfile.updateProfile(user1, /*alias=*/ Optional.of("John A"), dbConn);
+
+    UserEntity user2 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(3L), dbConn);
+    UserProfile.updateProfile(user2, /*alias=*/ Optional.of("John B"), dbConn);
+
+    UserEntity user3 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(4L), dbConn);
+    UserProfile.updateProfile(user3, /*alias=*/ Optional.of("John C"), dbConn);
+
+    UserEntity user4 =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(5L), dbConn);
+    UserProfile.updateProfile(user4, /*alias=*/ Optional.of("Stieve A"), dbConn);
+
+    List<UserEntity> page0 =
+        UserRetrieval.searchUserEntity(
+            /*userIdPrefix=*/ Optional.empty(),
+            /*aliasPrefix=*/ Optional.of("John"),
+            Pagination.newBuilder().setPageNumber(0).setResultPerPage(2).build(),
+            dbConn);
+    Assertions.assertEquals(2, page0.size());
+    Assertions.assertTrue(page0.stream().anyMatch(u -> u.id.value() == 1L));
+    Assertions.assertTrue(page0.stream().anyMatch(u -> u.id.value() == 2L));
+
+    List<UserEntity> page1 =
+        UserRetrieval.searchUserEntity(
+            /*userIdPrefix=*/ Optional.empty(),
+            /*aliasPrefix=*/ Optional.of("John"),
+            Pagination.newBuilder().setPageNumber(1).setResultPerPage(2).build(),
+            dbConn);
+    Assertions.assertEquals(2, page1.size());
+    Assertions.assertTrue(page1.stream().anyMatch(u -> u.id.value() == 3L));
+    Assertions.assertTrue(page1.stream().anyMatch(u -> u.id.value() == 4L));
+
+    List<UserEntity> page2 =
+        UserRetrieval.searchUserEntity(
+            /*userIdPrefix=*/ Optional.empty(),
+            /*aliasPrefix=*/ Optional.of("John"),
+            Pagination.newBuilder().setPageNumber(2).setResultPerPage(2).build(),
+            dbConn);
+    Assertions.assertTrue(page2.isEmpty());
+  }
 }
