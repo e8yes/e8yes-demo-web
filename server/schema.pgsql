@@ -57,8 +57,6 @@ CREATE TABLE IF NOT EXISTS auser_group (
     PRIMARY KEY (group_name)
 );
 
-CREATE INDEX IF NOT EXISTS idx_auser_group_description ON auser_group USING btree (description);
-
 
 /* User */
 CREATE SEQUENCE IF NOT EXISTS auser_id_seq
@@ -80,6 +78,8 @@ CREATE TABLE IF NOT EXISTS auser (
     PRIMARY KEY (id),
     FOREIGN KEY (avatar_file_id) REFERENCES file (id) ON DELETE SET NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_auser_alias ON auser USING btree (alias);
 
 
 /* Friendship */
