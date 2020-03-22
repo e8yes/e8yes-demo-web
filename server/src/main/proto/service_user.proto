@@ -6,6 +6,8 @@ option java_outer_classname = "ServiceUserProto";
 
 package org.e8yes.services;
 
+import "pagination.proto";
+
 message RegistrationRequest {
     bytes security_key = 1;
 }
@@ -61,10 +63,7 @@ message SearchUserRequest {
     
     // Optional. Could be partial prefix input.
     int64 user_id = 2;
-    
-    // Pagination.
-    int32 page_number = 3;
-    int32 result_per_page = 4;
+    Pagination pagination = 3;
 }
 
 message SearchUserResponse {
