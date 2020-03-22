@@ -91,6 +91,14 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   }
 
   @Override
+  public void getPublicProfile(
+      GetPublicProfileRequest req, StreamObserver<GetPublicProfileResponse> res) {}
+
+  @Override
+  public void updatePublicProfile(
+      UpdatePublicProfileRequest req, StreamObserver<UpdatePublicProfileResponse> res) {}
+
+  @Override
   public void search(
       SearchUserRequest request, StreamObserver<SearchUserResponse> responseObserver) {}
 }

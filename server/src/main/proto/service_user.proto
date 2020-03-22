@@ -29,6 +29,32 @@ message AuthorizationResponse {
     bytes jwt_token = 1;
 }
 
+message UserPublicProfile {
+    int64 user_id = 1;
+    string alias = 2;
+}
+
+message GetPublicProfileRequest {
+    // Optional. If this field isn't provided, it will fetch the public profile
+    // of the logged-in user.
+    int64 user_id = 1;
+}
+
+message GetPublicProfileResponse {
+    UserPublicProfile profile = 1;
+}
+
+message UpdatePublicProfileRequest {
+    // Optional. If this field isn't provided, it will fetch the public profile
+    // of the logged-in user.
+    int64 user_id = 1;
+    string alias = 2;
+}
+
+message UpdatePublicProfileResponse {
+    UserPublicProfile profile = 1;
+}
+
 message SearchUserRequest {
     // Optional. Could be partial input.
     string alias = 1;
@@ -42,12 +68,7 @@ message SearchUserRequest {
 }
 
 message SearchUserResponse {
-    message UserSearchResultEntry {
-        int64 user_id = 1;
-        string alias = 2;
-        int64 avatar_file_id = 3;
-    }
-    repeated UserSearchResultEntry entries = 1;
+    repeated UserPublicProfile entries = 1;
 }
 
 service UserService {
@@ -60,6 +81,16 @@ service UserService {
    * Verify and obtain a signed token. 
    */
   rpc Authorize (AuthorizationRequest) returns (AuthorizationResponse);
+  
+  /**
+   * Get a user's profile
+   */
+  rpc GetPublicProfile (GetPublicProfileRequest) returns (GetPublicProfileResponse);
+  
+  /**
+   * Update a user's profile
+   */
+  rpc UpdatePublicProfile (UpdatePublicProfileRequest) returns (UpdatePublicProfileResponse);
   
   /*
    * Search users.
