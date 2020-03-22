@@ -24,6 +24,7 @@ import org.e8yes.sql.primitive.SqlStrArr;
 
 public class UserEntity {
   public SqlLong id = new SqlLong();
+  public SqlStr id_str = new SqlStr();
   public SqlStrArr emails = new SqlStrArr();
   public SqlStr alias = new SqlStr();
   public SqlLong avatar_file_id = new SqlLong();

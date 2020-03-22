@@ -54,6 +54,7 @@ public class UserCreation {
 
     UserEntity user = new UserEntity();
     user.id.assign(runner.timeId());
+    user.id_str.assign(Long.toString(user.id.value()));
     // Stores a irreversibly hashed security key.
     user.security_key_hash.assign(BCrypt.hashpw(Arrays.toString(securityKey), BCrypt.gensalt()));
     user.group_names.assign(userGroupNames.toArray(new String[userGroupNames.size()]));

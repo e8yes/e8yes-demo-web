@@ -68,8 +68,9 @@ CREATE SEQUENCE IF NOT EXISTS auser_id_seq
 
 CREATE TABLE IF NOT EXISTS auser (
     id BIGINT NOT NULL DEFAULT nextval('auser_id_seq'),
-    emails CHARACTER VARYING [] NULL,
+    id_str CHARACTER VARYING(30) NOT NULL,
     alias CHARACTER VARYING(40) NULL,
+    emails CHARACTER VARYING [] NULL,
     avatar_file_id BIGINT NULL,
     security_key_hash CHARACTER VARYING NOT NULL,
     group_names CHARACTER VARYING(60) [] NULL,
@@ -79,6 +80,7 @@ CREATE TABLE IF NOT EXISTS auser (
     FOREIGN KEY (avatar_file_id) REFERENCES file (id) ON DELETE SET NULL
 );
 
+CREATE INDEX IF NOT EXISTS idx_auser_id_str ON auser USING btree (id_str);
 CREATE INDEX IF NOT EXISTS idx_auser_alias ON auser USING btree (alias);
 
 

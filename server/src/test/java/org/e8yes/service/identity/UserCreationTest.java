@@ -57,6 +57,8 @@ public class UserCreationTest {
             user0PassWord.getBytes(),
             Initializer.environmentContext().demowebDbConnections().connectionReservoir());
     Assertions.assertNotNull(user.id.value());
+    Assertions.assertNotNull(user.id_str.value());
+    Assertions.assertEquals(user.id.value(), (Long) Long.parseLong(user.id_str.value()));
     Assertions.assertNotNull(user.security_key_hash.value());
     Assertions.assertFalse(user.security_key_hash.value().isBlank());
     Assertions.assertNull(user.alias.value());
