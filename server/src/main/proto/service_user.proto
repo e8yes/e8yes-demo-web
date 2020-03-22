@@ -29,6 +29,27 @@ message AuthorizationResponse {
     bytes jwt_token = 1;
 }
 
+message SearchUserRequest {
+    // Optional. Could be partial input.
+    string alias = 1;
+    
+    // Optional. Could be partial prefix input.
+    int64 user_id = 2;
+    
+    // Pagination.
+    int32 page_number = 3;
+    int32 result_per_page = 4;
+}
+
+message SearchUserResponse {
+    message UserSearchResultEntry {
+        int64 user_id = 1;
+        string alias = 2;
+        int64 avatar_file_id = 3;
+    }
+    repeated UserSearchResultEntry entries = 1;
+}
+
 service UserService {
   /**
    * Register a user to the system.
@@ -36,7 +57,12 @@ service UserService {
   rpc Register (RegistrationRequest) returns (RegistrationReponse);
   
   /*
-   * Authorize 
+   * Verify and obtain a signed token. 
    */
   rpc Authorize (AuthorizationRequest) returns (AuthorizationResponse);
+  
+  /*
+   * Search users.
+   */
+  rpc Search (SearchUserRequest) returns (SearchUserResponse);
 }

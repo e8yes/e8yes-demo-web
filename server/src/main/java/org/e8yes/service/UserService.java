@@ -89,4 +89,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       res.onError(ex);
     }
   }
+
+  @Override
+  public void search(
+      SearchUserRequest request, StreamObserver<SearchUserResponse> responseObserver) {}
 }
