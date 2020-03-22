@@ -27,6 +27,7 @@ import io.grpc.ServerInterceptor;
 import io.grpc.Status;
 import java.util.HashSet;
 import java.util.Set;
+import org.e8yes.constant.GrpcContexts;
 import org.e8yes.service.identity.Identity;
 import org.e8yes.service.identity.JwtAuthorizer;
 
@@ -37,16 +38,15 @@ import org.e8yes.service.identity.JwtAuthorizer;
  */
 public class AuthorizationServerInterceptor implements ServerInterceptor {
 
-  public static final Context.Key<Identity> IDENTITY_CONTEXT_KEY = Context.key("C");
-
   private static final Metadata.Key<byte[]> AUTHORIZATION_METADATA_KEY =
       Metadata.Key.of("A-bin", Metadata.BINARY_BYTE_MARSHALLER);
-
+  
   private static final Set<String> publicEndpoints =
       new HashSet() {
         {
           add("org.e8yes.services.UserService/Authorize");
           add("org.e8yes.services.UserService/Register");
+          add("org.e8yes.services.UserService/Search");
         }
       };
 
@@ -83,7 +83,7 @@ public class AuthorizationServerInterceptor implements ServerInterceptor {
 
     try {
       Identity identity = JwtAuthorizer.parseToken(jwtToken, jwtverifier);
-      Context ctx = Context.current().withValue(IDENTITY_CONTEXT_KEY, identity);
+      Context ctx = Context.current().withValue(GrpcContexts.IDENTITY_CONTEXT_KEY, identity);
       return Contexts.interceptCall(ctx, serverCall, metadata, serverCallHandler);
     } catch (JWTVerificationException e) {
       Status status = Status.UNAUTHENTICATED.withDescription(e.getMessage()).withCause(e);
