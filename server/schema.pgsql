@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS messaging_channel (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS messaging_channel_has_users (
+CREATE TABLE IF NOT EXISTS messaging_channel_has_user (
     channel_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     ownership INT NOT NULL,
