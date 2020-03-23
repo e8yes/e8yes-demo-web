@@ -27,10 +27,6 @@ public class DbTableConstants {
   }
 
   public static String userGroupTable() {
-    return "auser_group";
-  }
-
-  public static String userGroupIdSeq() {
-    return "auser_group_id_seq";
+    return "user_group";
   }
 }

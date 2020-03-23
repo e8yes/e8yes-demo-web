@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS email_set (
 
 
 /* User group */
-CREATE TABLE IF NOT EXISTS auser_group (
+CREATE TABLE IF NOT EXISTS user_group (
     group_name VARCHAR(60) NOT NULL,
     permissions INT[] NULL,
     PRIMARY KEY (group_name)
