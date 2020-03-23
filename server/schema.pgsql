@@ -21,7 +21,7 @@ SET default_with_oids = false;
 /* File */
 CREATE TABLE IF NOT EXISTS file (
     volume INT NOT NULL,
-    path VARCHAR(256) not null,
+    path CHARACTER VARYING(256) not null,
     format INT NOT NULL,
     encryption_key_source INT NOT NULL,
     storage_size BIGINT NOT NULL,
@@ -40,9 +40,20 @@ CREATE TABLE IF NOT EXISTS email_set (
 
 /* User group */
 CREATE TABLE IF NOT EXISTS user_group (
-    group_name VARCHAR(60) NOT NULL,
+    group_name CHARACTER VARYING(60) NOT NULL,
     permissions INT[] NULL,
     PRIMARY KEY (group_name)
+);
+
+CREATE TABLE IF NOT EXISTS user_group_has_file (
+    group_name CHARACTER VARYING(60) NOT NULL,
+    file_volume INT NOT NULL,
+    file_path CHARACTER VARYING(256) NOT NULL,
+    can_read BOOLEAN NOT NULL DEFAULT FALSE,
+    can_write BOOLEAN NOT NULL DEFAULT FALSE,
+    PRIMARY KEY (group_name, file_volume, file_path),
+    FOREIGN KEY (group_name) REFERENCES user_group (group_name) ON DELETE CASCADE,
+    FOREIGN KEY (file_volume, file_path) REFERENCES file (volume, path) ON DELETE CASCADE
 );
 
 
