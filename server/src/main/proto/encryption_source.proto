@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.service";
+option java_outer_classname = "EncryptionSourceProto";
+
+
+enum EncryptionSource {
+    ESRC_NONE = 0;
+    ESRC_SECURITY_KEY = 1;
+    ESRC_MESSAGING_CHANNEL_KEY = 2;
+}

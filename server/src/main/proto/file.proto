@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.service";
+option java_outer_classname = "FileProto";
+
+import "encryption_source.proto";
+
+enum FileFormat  {
+    FFMT_UNKNOWN = 0;
+    FFMT_IMAGE_JPEG = 1;
+    FFMT_IMAGE_PNG = 2;
+    FFMT_VIDEO_MPEG4 = 3;
+    FFMT_VIDEO_GIF = 4;
+}
+
+enum StorageVolume {
+    SVOL_UNKNOWN = 0;
+    SVOL_LOCAL_FS = 1;
+}
+
+message FileChunk {
+    // Zero offset.
+    int32 chunk_number = 1;
+    
+    // Data chuck.
+    bytes data = 2;
+}
+
+message FileTokenAcess {
+    bytes access_token = 1;
+}
+
+message FileDirectAcess {
+    StorageVolume volume = 1;
+    string path = 2;
+}
+
+message FileDescriptor {
+    oneof AccessMethod {
+        FileTokenAcess file_token_acess = 1;
+        FileDirectAcess file_direct_acess = 2;
+    }
+    FileFormat file_format = 4;
+    EncryptionSource encryption_source = 5;
+    int64 storage_size = 6;
+    int64 created_at_timestamp = 7;
+    int64 last_modified_at_timestamp = 8;
+}

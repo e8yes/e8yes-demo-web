@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.service";
+option java_outer_classname = "ServiceFileProto";
+
+package org.e8yes.services;
+
+import "file.proto";
+import "nullable_primitives.proto";
+
+
+message UploadFileRequest {
+    FileDescriptor file_descriptor = 1;
+    FileChunk current_chunk = 2;
+}
+
+message UploadFileResponse {}
+
+message DownloadFileRequest {
+    FileDescriptor file_descriptor = 1;
+}
+
+message DownloadFileResponse {
+    FileDescriptor file_descriptor = 1;
+    FileChunk current_chunk = 2;
+}
+
+service FileService {
+    
+    /**
+     * Upload a file.
+     */
+    rpc Upload (stream UploadFileRequest) returns (UploadFileResponse);
+    
+    /**
+     * Downlaod a file.
+     */
+    rpc Download (DownloadFileRequest) returns (stream DownloadFileResponse);
+}
