@@ -27,7 +27,8 @@ public class UserEntity {
   public SqlStr id_str = new SqlStr();
   public SqlStrArr emails = new SqlStrArr();
   public SqlStr alias = new SqlStr();
-  public SqlLong avatar_file_id = new SqlLong();
+  public SqlInt avatar_volume = new SqlInt();
+  public SqlStr avatar_path = new SqlStr();
   public SqlStr security_key_hash = new SqlStr();
   public SqlStrArr group_names = new SqlStrArr();
   public SqlInt active_level = new SqlInt();

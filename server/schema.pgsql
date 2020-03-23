@@ -19,20 +19,15 @@ SET default_with_oids = false;
 
 
 /* File */
-CREATE SEQUENCE IF NOT EXISTS file_id_seq
-    START WITH 100
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
 CREATE TABLE IF NOT EXISTS file (
-    id BIGINT NOT NULL DEFAULT nextval('file_id_seq'),
-    volumn INT NOT NULL,
+    volume INT NOT NULL,
+    path VARCHAR(256) not null,
     format INT NOT NULL,
     encryption_key_source INT NOT NULL,
+    storage_size BIGINT NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    last_modified_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (volume, path)
 );
 
 
@@ -44,13 +39,6 @@ CREATE TABLE IF NOT EXISTS email_set (
 
 
 /* User group */
-CREATE SEQUENCE IF NOT EXISTS auser_group_id_seq
-    START WITH 32
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
 CREATE TABLE IF NOT EXISTS auser_group (
     group_name VARCHAR(60) NOT NULL,
     permissions INT[] NULL,
@@ -71,13 +59,14 @@ CREATE TABLE IF NOT EXISTS auser (
     id_str CHARACTER VARYING(30) NOT NULL,
     alias CHARACTER VARYING(40) NULL,
     emails CHARACTER VARYING [] NULL,
-    avatar_file_id BIGINT NULL,
-    security_key_hash CHARACTER VARYING NOT NULL,
+    avatar_volume INT NULL,
+    avatar_path CHARACTER VARYING(128) NULL,
+    security_key_hash CHARACTER VARYING(80) NOT NULL,
     group_names CHARACTER VARYING(60) [] NULL,
     active_level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (avatar_file_id) REFERENCES file (id) ON DELETE SET NULL
+    FOREIGN KEY (avatar_volume, avatar_path) REFERENCES file (volume, path) ON DELETE SET NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_auser_id_str ON auser USING btree (id_str);
@@ -135,10 +124,14 @@ CREATE TABLE IF NOT EXISTS message (
     channel_id BIGINT NOT NULL,
     sender_id BIGINT NOT NULL,
     encrypted_content CHARACTER VARYING,
-    media_file_id BIGINT NULL,
+    media_file_volume INT NULL,
+    media_file_path CHARACTER VARYING(128) NULL,
+    media_file_preview_volume INT NULL,
+    media_file_preview_path CHARACTER VARYING(128) NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (channel_id) REFERENCES messaging_channel (id) ON DELETE CASCADE,
     FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE,
-    FOREIGN KEY (media_file_id) REFERENCES file (id) ON DELETE SET NULL
+    FOREIGN KEY (media_file_volume, media_file_path) REFERENCES file (volume, path) ON DELETE SET NULL,
+    FOREIGN KEY (media_file_preview_volume, media_file_preview_path) REFERENCES file (volume, path) ON DELETE SET NULL
 );
