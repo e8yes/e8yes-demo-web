@@ -18,15 +18,47 @@ package org.e8yes.constant;
 
 public class DbTableConstants {
 
+  public static String emailSetTable() {
+    return "email_set";
+  }
+
+  public static String fileTable() {
+    return "file";
+  }
+
+  public static String friendTable() {
+    return "friend";
+  }
+
+  public static String messageTable() {
+    return "message";
+  }
+
+  public static String messageIdSeq() {
+    return "message_id_seq";
+  }
+
+  public static String messagingChannelTable() {
+    return "messaging_channel";
+  }
+
+  public static String messagingChannelHasUserTable() {
+    return "messaging_channel_has_user";
+  }
+
+  public static String userGroupTable() {
+    return "user_group";
+  }
+
+  public static String userGroupHasFileTable() {
+    return "user_group_has_file";
+  }
+
   public static String userTable() {
     return "auser";
   }
 
   public static String userIdSeq() {
     return "auser_id_seq";
-  }
-
-  public static String userGroupTable() {
-    return "user_group";
   }
 }
