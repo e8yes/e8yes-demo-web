@@ -10,7 +10,9 @@ setup-linux-dbs:
 init-linux: init-linux-pkgs create-linux-dbs setup-linux-dbs
 
 install-maven-pkgs: init-linux
+	mvn clean
 	mvn install -Dhttps.protocols=TLSv1.2 -Dexec.args=-ea
+
 run: install-maven-pkgs
 	mvn exec:java -Dexec.args=-ea
 test: install-maven-pkgs
