@@ -4,9 +4,11 @@ package org.e8yes.service.identity;
 public class Identity {
 
   public long userId;
+  public String[] groupNames;
 
-  public Identity(long userId) {
+  public Identity(long userId, String[] groupNames) {
     this.userId = userId;
+    this.groupNames = groupNames;
   }
 
   @Override

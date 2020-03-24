@@ -24,71 +24,18 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Date;
 import org.e8yes.exception.AccessDeniedException;
+import org.e8yes.jwtprovider.JwtUtil;
 import org.mindrot.jbcrypt.BCrypt;
 
 /** Establish and verify user identity via JWT. */
 public class JwtAuthorizer {
 
   private static final String USER_ID_KEY = "I";
+  private static final String USER_GROUP_KEY = "G";
 
   private static final long EXPIRY_AFTER_MILLIS = 1000 * 60 * 10;
-
-  /**
-   * This is done to reduce the size of the JWT token, since byte array takes less space than base64
-   * string.
-   *
-   * @param jwtToken JWT token encoded in base64 format.
-   * @return JWT byte array.
-   */
-  private static byte[] convertToByteArray(String jwtToken) {
-    // Split into header, payload and signature.
-    String[] parts = jwtToken.split("\\.");
-    assert (parts.length == 3);
-    byte[] header = Base64.getUrlDecoder().decode(parts[0]);
-    byte[] payload = Base64.getUrlDecoder().decode(parts[1]);
-    byte[] signature = Base64.getUrlDecoder().decode(parts[2]);
-    int headerLength = header.length;
-    int payloadLength = payload.length;
-    assert (headerLength < (1 << 8));
-    assert (payloadLength < (1 << 8));
-    byte[] finalToken = new byte[2 + header.length + payload.length + signature.length];
-    // Write the segment length information into the first 2 bytes in little-endian format.
-    finalToken[0] = (byte) headerLength;
-    finalToken[1] = (byte) payloadLength;
-    System.arraycopy(header, 0, finalToken, 2, headerLength);
-    System.arraycopy(payload, 0, finalToken, 2 + headerLength, payloadLength);
-    System.arraycopy(signature, 0, finalToken, 2 + headerLength + payloadLength, signature.length);
-    return finalToken;
-  }
-
-  /**
-   * JWT verifier has to ingest the standard base64 string format. It converts from a compact byte
-   * array back to the standard base64 format.
-   *
-   * @param jwtBytes Compact byte array.
-   * @return standard base64 format.
-   */
-  private static String convertFromByteArray(byte[] jwtBytes) {
-    int headerLength = jwtBytes[0];
-    int payloadLength = jwtBytes[1];
-    int signatureLength = jwtBytes.length - headerLength - payloadLength - 2;
-
-    byte[] header = new byte[headerLength];
-    byte[] payload = new byte[payloadLength];
-    byte[] signature = new byte[signatureLength];
-    System.arraycopy(jwtBytes, 2, header, 0, headerLength);
-    System.arraycopy(jwtBytes, 2 + headerLength, payload, 0, payloadLength);
-    System.arraycopy(jwtBytes, 2 + headerLength + payloadLength, signature, 0, signature.length);
-
-    String b64Header = Base64.getUrlEncoder().withoutPadding().encodeToString(header);
-    String b64Payload = Base64.getUrlEncoder().withoutPadding().encodeToString(payload);
-    String b64Signature = Base64.getUrlEncoder().withoutPadding().encodeToString(signature);
-
-    return String.format("%s.%s.%s", b64Header, b64Payload, b64Signature);
-  }
 
   public static class AuthorizationToken {
     public byte[] jwtToken;
@@ -114,11 +61,12 @@ public class JwtAuthorizer {
     String base64Token =
         JWT.create()
             .withClaim(USER_ID_KEY, user.id.value())
+            .withArrayClaim(USER_GROUP_KEY, user.group_names.value())
             .withExpiresAt(new Date(expiryTimestampMillis))
             .sign(alg);
 
     AuthorizationToken authToken = new AuthorizationToken();
-    authToken.jwtToken = convertToByteArray(base64Token);
+    authToken.jwtToken = JwtUtil.convertToByteArray(base64Token);
 
     return authToken;
   }
@@ -133,10 +81,11 @@ public class JwtAuthorizer {
    */
   public static Identity parseToken(byte[] jwtToken, JWTVerifier verifier)
       throws JWTVerificationException {
-    String base64Token = convertFromByteArray(jwtToken);
+    String base64Token = JwtUtil.convertFromByteArray(jwtToken);
     DecodedJWT decoded = verifier.verify(base64Token);
 
     long userId = decoded.getClaim(USER_ID_KEY).asLong();
-    return new Identity(userId);
+    String[] groupNames = decoded.getClaim(USER_GROUP_KEY).asArray(String.class);
+    return new Identity(userId, groupNames);
   }
 }
