@@ -21,14 +21,21 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Date;
+import org.e8yes.constant.DbTableConstants;
 import org.e8yes.exception.AccessDeniedException;
 import org.e8yes.jwtprovider.JwtUtil;
 import org.e8yes.service.FileAccessMode;
 import org.e8yes.service.StorageVolume;
 import org.e8yes.service.identity.Identity;
+import org.e8yes.sql.SqlQueryBuilder;
+import org.e8yes.sql.SqlRunner;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
+import org.e8yes.sql.primitive.SqlInt;
+import org.e8yes.sql.primitive.SqlStr;
+import org.e8yes.sql.primitive.SqlStrArr;
 
 /** Validates file access. */
 public class FileAccessValidator {
@@ -60,6 +67,11 @@ public class FileAccessValidator {
     public boolean equals(Object obj) {
       final FileAccessLocation other = (FileAccessLocation) obj;
       return this.vol == other.vol && this.path.equals(other.path);
+    }
+
+    @Override
+    public String toString() {
+      return "FileAccessLocation{" + "vol=" + vol + ", path=" + path + '}';
     }
   }
 
@@ -98,8 +110,8 @@ public class FileAccessValidator {
    * Validate access to a location using a specified access mode through a file access token.
    *
    * @param viewer Identity of the viewer to validate against.
-   * @param accessMode Expected access mode to the file location.
-   * @param accessToken The access token to be validated.
+   * @param accessMode Access mode to the file location the user wants to use.
+   * @param accessToken The access token the viewer is holding.
    * @param verifier JWT verification algorithm.
    * @return Locate of the file the token permits access to.
    * @throws JWTVerificationException
@@ -128,10 +140,68 @@ public class FileAccessValidator {
         decoded.getClaim(FILE_PATH_KEY).asString());
   }
 
+  /**
+   * Check if the viewer has access right to the file location on the specified access mode based on
+   * the user groups he is in.
+   *
+   * @param viewer The user identity to be checked against.
+   * @param location Location the user wants to have access to.
+   * @param accessMode Access mode of the location the user wants to use on the location.
+   * @param dbConn Connection to the DB server.
+   * @throws AccessDeniedException
+   * @throws IllegalArgumentException
+   * @throws SQLException
+   */
   public static void validateDirectAccess(
       Identity viewer,
       FileAccessLocation location,
       FileAccessMode accessMode,
       ConnectionReservoirInterface dbConn)
-      throws IllegalArgumentException {}
+      throws AccessDeniedException, IllegalArgumentException, SQLException {
+    if (viewer.groupNames == null || viewer.groupNames.length == 0) {
+      throw new AccessDeniedException("The user has participated zero user group.");
+    }
+
+    SqlQueryBuilder.Placeholder<SqlStrArr> participatedGroups = new SqlQueryBuilder.Placeholder();
+    SqlQueryBuilder.Placeholder<SqlInt> storageVolume = new SqlQueryBuilder.Placeholder();
+    SqlQueryBuilder.Placeholder<SqlStr> filePath = new SqlQueryBuilder.Placeholder();
+
+    SqlQueryBuilder query =
+        new SqlQueryBuilder()
+            .queryPiece(DbTableConstants.userGroupHasFileTable())
+            .queryPiece(" WHERE file_volume=")
+            .placeholder(storageVolume)
+            .queryPiece(" AND file_path=")
+            .placeholder(filePath)
+            .queryPiece(" AND group_name=ANY(")
+            .placeholder(participatedGroups)
+            .queryPiece(")");
+    switch (accessMode) {
+      case FAM_READ:
+        query.queryPiece(" AND can_read=TRUE");
+        break;
+      case FAM_WRITE:
+        query.queryPiece(" AND can_write=TRUE");
+        break;
+      case FAM_READWRITE:
+        query.queryPiece(" AND can_read=TRUE AND can_write=TRUE");
+        break;
+      default:
+        throw new IllegalArgumentException("Doesn't expect accessMode=" + accessMode);
+    }
+    query.setPlaceholderValue(participatedGroups, new SqlStrArr(viewer.groupNames));
+    query.setPlaceholderValue(storageVolume, new SqlInt(location.vol.getNumber()));
+    query.setPlaceholderValue(filePath, new SqlStr(location.path));
+
+    boolean hasAccess = new SqlRunner().withConnectionReservoir(dbConn).runExists(query);
+    if (!hasAccess) {
+      throw new AccessDeniedException(
+          "Access to location="
+              + location
+              + " on accessMode="
+              + accessMode
+              + " is not possible for user="
+              + viewer);
+    }
+  }
 }
