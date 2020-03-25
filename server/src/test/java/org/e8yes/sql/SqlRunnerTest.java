@@ -215,4 +215,42 @@ public class SqlRunnerTest {
     SqlRunnerTest.dropSchema(conn);
     conn.close();
   }
+
+  @Test
+  public void testRunExists() throws SQLException, IllegalAccessException {
+    ConnectionFactory factory = SqlRunnerTest.connectionFactory();
+    ConnectionInterface conn = factory.create();
+
+    // Prepare schema.
+    SqlRunnerTest.dropSchema(conn);
+    SqlRunnerTest.createSchema(conn);
+
+    // Prepare test data.
+    UserHasManyCreditCards.User user = new UserHasManyCreditCards.User();
+    user.id.assign(1);
+    user.userName.assign("user0");
+    int nRows =
+        new SqlRunner()
+            .withConnectionReservoir(new BasicConnectionReservoir(factory))
+            .withEntity(UserHasManyCreditCards.User.class)
+            .runUpdate(user, /*tableName=*/ "QueryRunnerTestUser");
+    Assertions.assertEquals(1, nRows);
+
+    // Run "exists" query.
+    boolean shouldNotExist =
+        !new SqlRunner()
+            .withConnectionReservoir(new BasicConnectionReservoir(factory))
+            .runExists(new SqlQueryBuilder().queryPiece("QueryRunnerTestUser WHERE id=2"));
+    Assertions.assertTrue(shouldNotExist);
+
+    boolean shouldExist =
+        new SqlRunner()
+            .withConnectionReservoir(new BasicConnectionReservoir(factory))
+            .runExists(new SqlQueryBuilder().queryPiece("QueryRunnerTestUser WHERE id=1"));
+    Assertions.assertTrue(shouldExist);
+
+    // Clean up.
+    SqlRunnerTest.dropSchema(conn);
+    conn.close();
+  }
 }

@@ -107,6 +107,28 @@ public class SqlRunner {
   }
 
   /**
+   * Constructs and runs query then checks if the query returns at least 1 result.
+   *
+   * @param query Partial query to test against. Example: "AUser user JOIN CreditCard card ON
+   *     card.userId = user.id WHERE user.joinDate > '2020-1-1'"
+   * @return true if at least 1 entry returns from the query, otherwise, false.
+   * @throws SQLException
+   */
+  public boolean runExists(SqlQueryBuilder query) throws SQLException {
+    if (reservoir == null) {
+      throw new IllegalArgumentException("Connection reservoir not specified.");
+    }
+
+    String completedQuery = "SELECT TRUE FROM " + query.jdbcQuery();
+    ConnectionInterface conn = reservoir.take();
+    ResultSetInterface rs = conn.runQuery(completedQuery, query.queryParams());
+    boolean exists = rs.hasNext();
+    reservoir.put(conn);
+
+    return exists;
+  }
+
+  /**
    * Runs a deletion SQL query on the specified table.
    *
    * @param <ReturnType>
