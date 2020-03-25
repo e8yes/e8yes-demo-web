@@ -1,5 +1,7 @@
 package org.e8yes.service.identity;
 
+import java.util.Arrays;
+
 /** Defines the identity context of a user -- Who is that and what can it do? */
 public class Identity {
 
@@ -29,5 +31,10 @@ public class Identity {
     }
     final Identity other = (Identity) obj;
     return this.userId == other.userId;
+  }
+
+  @Override
+  public String toString() {
+    return "Identity{" + "userId=" + userId + ", groupNames=" + Arrays.toString(groupNames) + '}';
   }
 }
