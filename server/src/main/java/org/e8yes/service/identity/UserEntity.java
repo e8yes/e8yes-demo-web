@@ -22,6 +22,7 @@ import org.e8yes.sql.primitive.SqlLong;
 import org.e8yes.sql.primitive.SqlStr;
 import org.e8yes.sql.primitive.SqlStrArr;
 
+/** Java class representation of the database table "auser" */
 public class UserEntity {
   public SqlLong id = new SqlLong();
   public SqlStr id_str = new SqlStr();
@@ -43,5 +44,31 @@ public class UserEntity {
   public boolean equals(Object obj) {
     final UserEntity other = (UserEntity) obj;
     return id.equals(other.id);
+  }
+
+  @Override
+  public String toString() {
+    return "UserEntity{"
+        + "id="
+        + id
+        + ", id_str="
+        + id_str
+        + ", emails="
+        + emails
+        + ", alias="
+        + alias
+        + ", avatar_volume="
+        + avatar_volume
+        + ", avatar_path="
+        + avatar_path
+        + ", security_key_hash="
+        + security_key_hash
+        + ", group_names="
+        + group_names
+        + ", active_level="
+        + active_level
+        + ", created_at="
+        + created_at
+        + '}';
   }
 }
