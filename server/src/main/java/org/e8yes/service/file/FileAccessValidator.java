@@ -46,35 +46,6 @@ public class FileAccessValidator {
   private static final String FILE_ACCESS_MODE_KEY = "A";
   private static final long EXPIRY_AFTER_MILLIS = 1000 * 60 * 10;
 
-  public static class FileAccessLocation {
-    public StorageVolume vol;
-    public String path;
-
-    public FileAccessLocation(StorageVolume vol, String path) {
-      this.vol = vol;
-      this.path = path;
-    }
-
-    @Override
-    public int hashCode() {
-      int hash = 7;
-      hash = hash * 23 + vol.hashCode();
-      hash = hash * 23 + path.hashCode();
-      return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      final FileAccessLocation other = (FileAccessLocation) obj;
-      return this.vol == other.vol && this.path.equals(other.path);
-    }
-
-    @Override
-    public String toString() {
-      return "FileAccessLocation{" + "vol=" + vol + ", path=" + path + '}';
-    }
-  }
-
   public static class FileAccessToken {
     byte[] jwtToken;
   }

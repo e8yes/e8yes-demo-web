@@ -44,8 +44,8 @@ public class FileAccessValidatorTest {
   public void signAndValidateTokenAccessTest()
       throws JWTVerificationException, AccessDeniedException {
     Identity viewer = new Identity(/*userId=*/ 1L, /*groupNames=*/ null);
-    FileAccessValidator.FileAccessLocation location =
-        new FileAccessValidator.FileAccessLocation(StorageVolume.SVOL_LOCAL_FS, "avatar/a.jpeg");
+    FileAccessLocation location =
+        new FileAccessLocation(StorageVolume.SVOL_LOCAL_FS, "avatar/a.jpeg");
     FileAccessValidator.FileAccessToken token =
         FileAccessValidator.signAccessToken(
             viewer,
@@ -54,7 +54,7 @@ public class FileAccessValidatorTest {
             Initializer.environmentContext().authorizationJwtProvider().algorithm());
 
     // Valid usage of the token.
-    FileAccessValidator.FileAccessLocation decodedLocation =
+    FileAccessLocation decodedLocation =
         FileAccessValidator.validateTokenAccess(
             viewer,
             FileAccessMode.FAM_READ,
