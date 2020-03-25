@@ -1,15 +1,21 @@
 package org.e8yes.exception;
 
-/**
- * AccessDeniedException
- *
- * @author davis
- */
+/** AccessDeniedException */
 public class AccessDeniedException extends RpcException {
+
+  private final String message;
+
+  public AccessDeniedException() {
+    message = "Access Denied";
+  }
+
+  public AccessDeniedException(String message) {
+    this.message = message;
+  }
 
   @Override
   public String getMessage() {
-    return "Access Denied";
+    return message;
   }
 
   @Override

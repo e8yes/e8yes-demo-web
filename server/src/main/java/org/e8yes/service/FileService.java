@@ -16,5 +16,40 @@
  */
 package org.e8yes.service;
 
+import io.grpc.stub.StreamObserver;
+
+class UploadStreamObserver implements StreamObserver<UploadFileRequest> {
+
+  private final StreamObserver<UploadFileResponse> res;
+
+  public UploadStreamObserver(StreamObserver<UploadFileResponse> res) {
+    this.res = res;
+  }
+
+  @Override
+  public void onNext(UploadFileRequest v) {
+    throw new UnsupportedOperationException(
+        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public void onError(Throwable thrwbl) {
+    throw new UnsupportedOperationException(
+        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public void onCompleted() {
+    throw new UnsupportedOperationException(
+        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  }
+}
+
 /** Service for file management. */
-public class FileService extends FileServiceGrpc.FileServiceImplBase {}
+public class FileService extends FileServiceGrpc.FileServiceImplBase {
+
+  @Override
+  public StreamObserver<UploadFileRequest> upload(StreamObserver<UploadFileResponse> res) {
+    return new UploadStreamObserver(res);
+  }
+}
