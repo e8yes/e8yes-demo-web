@@ -164,7 +164,7 @@ public class FileAccessValidator {
     query.setPlaceholderValue(storageVolume, new SqlInt(location.vol.getNumber()));
     query.setPlaceholderValue(filePath, new SqlStr(location.path));
 
-    boolean hasAccess = new SqlRunner().withConnectionReservoir(dbConn).runExists(query);
+    boolean hasAccess = SqlRunner.runExists(query, dbConn);
     if (!hasAccess) {
       throw new AccessDeniedException(
           "Access to location="

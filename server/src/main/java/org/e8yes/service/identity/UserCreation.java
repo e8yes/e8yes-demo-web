@@ -46,15 +46,14 @@ public class UserCreation {
   private static UserEntity createUserWithoutSpecifiedId(
       UserEntity user, ConnectionReservoirInterface dbConn)
       throws SQLException, IllegalAccessException {
-    SqlRunner runner = new SqlRunner().withConnectionReservoir(dbConn);
-
     // 10 retries if the ID collides before giving up.
     int numRetriesLeft = 10;
     int numRowUpdated;
     do {
-      assignUserId(user, runner.timeId());
+      assignUserId(user, SqlRunner.timeId());
       numRowUpdated =
-          runner.withEntity(UserEntity.class).runUpdate(user, DbTableConstants.userTable());
+          SqlRunner.runUpdate(
+              user, DbTableConstants.userTable(), UserEntity.class, /*override=*/ false, dbConn);
     } while (numRowUpdated != 1 && numRetriesLeft-- > 0);
     assert (numRowUpdated == 1);
 
@@ -89,10 +88,8 @@ public class UserCreation {
     if (userId.isPresent()) {
       assignUserId(user, userId.get());
       int numRowUpdated =
-          new SqlRunner()
-              .withConnectionReservoir(dbConn)
-              .withEntity(UserEntity.class)
-              .runUpdate(user, DbTableConstants.userTable());
+          SqlRunner.runUpdate(
+              user, DbTableConstants.userTable(), UserEntity.class, /*overrdie=*/ false, dbConn);
       assert (numRowUpdated == 1);
       return user;
     }

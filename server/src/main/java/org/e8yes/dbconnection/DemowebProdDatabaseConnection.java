@@ -47,7 +47,7 @@ public class DemowebProdDatabaseConnection implements DatabaseConnectionInterfac
 
   @Override
   public void testConnection() throws SQLException {
-    new SqlRunner().withConnectionReservoir(demowebDbConnections).sendHeartBeat();
+    SqlRunner.sendHeartBeat(connectionReservoir());
   }
 
   @Override

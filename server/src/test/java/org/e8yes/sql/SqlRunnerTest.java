@@ -22,6 +22,7 @@ import java.util.List;
 import org.e8yes.sql.connection.BasicConnectionReservoir;
 import org.e8yes.sql.connection.ConnectionFactory;
 import org.e8yes.sql.connection.ConnectionInterface;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.e8yes.sql.primitive.SqlInt;
 import org.e8yes.sql.primitive.SqlStr;
 import org.junit.jupiter.api.Assertions;
@@ -107,6 +108,7 @@ public class SqlRunnerTest {
           IllegalArgumentException, InvocationTargetException {
     ConnectionFactory factory = SqlRunnerTest.connectionFactory();
     ConnectionInterface conn = factory.create();
+    ConnectionReservoirInterface reservoir = new BasicConnectionReservoir(factory);
 
     // Prepare schema.
     SqlRunnerTest.dropSchema(conn);
@@ -117,10 +119,12 @@ public class SqlRunnerTest {
     user.id.assign(1);
     user.userName.assign("user0");
     int nRows =
-        new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .withEntity(UserHasManyCreditCards.User.class)
-            .runUpdate(user, /*tableName=*/ "QueryRunnerTestUser");
+        SqlRunner.runUpdate(
+            user,
+            /*tableName=*/ "QueryRunnerTestUser",
+            UserHasManyCreditCards.User.class,
+            /*replace=*/ true,
+            reservoir);
     Assertions.assertEquals(1, nRows);
 
     UserHasManyCreditCards.Cards card0 = new UserHasManyCreditCards.Cards();
@@ -132,30 +136,36 @@ public class SqlRunnerTest {
     card1.number.assign("2234");
     card1.userId.assign(1);
 
-    SqlRunner cardRunner =
-        new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .withEntity(UserHasManyCreditCards.Cards.class);
-
-    nRows = cardRunner.runUpdate(card0, /*tableName=*/ "QueryRunnerTestCard");
+    nRows =
+        SqlRunner.runUpdate(
+            card0,
+            /*tableName=*/ "QueryRunnerTestCard",
+            UserHasManyCreditCards.Cards.class,
+            /*replace=*/ true,
+            reservoir);
     Assertions.assertEquals(1, nRows);
 
-    nRows = cardRunner.runUpdate(card1, /*tableName=*/ "QueryRunnerTestCard");
+    nRows =
+        SqlRunner.runUpdate(
+            card1,
+            /*tableName=*/ "QueryRunnerTestCard",
+            UserHasManyCreditCards.Cards.class,
+            /*replace=*/ true,
+            reservoir);
     Assertions.assertEquals(1, nRows);
 
     // Run query.
     List<UserHasManyCreditCards> results =
-        new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .withEntity(UserHasManyCreditCards.class)
-            .runQuery(
-                new SqlQueryBuilder()
-                    .queryPiece(
-                        "QueryRunnerTestUser userInfo "
-                            + "JOIN "
-                            + "QueryRunnerTestCard cards "
-                            + "ON cards.userId = userInfo.id "
-                            + "ORDER BY cards.id DESC"));
+        SqlRunner.runQuery(
+            new SqlQueryBuilder()
+                .queryPiece(
+                    "QueryRunnerTestUser userInfo "
+                        + "JOIN "
+                        + "QueryRunnerTestCard cards "
+                        + "ON cards.userId = userInfo.id "
+                        + "ORDER BY cards.id DESC"),
+            UserHasManyCreditCards.class,
+            reservoir);
 
     Assertions.assertEquals(1, results.size());
     UserHasManyCreditCards record = results.get(0);
@@ -177,6 +187,7 @@ public class SqlRunnerTest {
   public void testRunDelete() throws SQLException, IllegalAccessException {
     ConnectionFactory factory = SqlRunnerTest.connectionFactory();
     ConnectionInterface conn = factory.create();
+    ConnectionReservoirInterface reservoir = new BasicConnectionReservoir(factory);
 
     // Prepare schema.
     SqlRunnerTest.dropSchema(conn);
@@ -187,28 +198,28 @@ public class SqlRunnerTest {
     user.id.assign(1);
     user.userName.assign("user0");
     int nRows =
-        new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .withEntity(UserHasManyCreditCards.User.class)
-            .runUpdate(user, /*tableName=*/ "QueryRunnerTestUser");
+        SqlRunner.runUpdate(
+            user,
+            /*tableName=*/ "QueryRunnerTestUser",
+            UserHasManyCreditCards.User.class,
+            /*replace=*/ true,
+            reservoir);
     Assertions.assertEquals(1, nRows);
 
     // Delete nothing.
     nRows =
-        new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .runDelete(
-                /*tableName=*/ "QueryRunnerTestUser",
-                new SqlQueryBuilder().queryPiece("WHERE id != 1"));
+        SqlRunner.runDelete(
+            /*tableName=*/ "QueryRunnerTestUser",
+            new SqlQueryBuilder().queryPiece("WHERE id != 1"),
+            reservoir);
     Assertions.assertEquals(0, nRows);
 
     // Delete the user.
     nRows =
-        new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .runDelete(
-                /*tableName=*/ "QueryRunnerTestUser",
-                new SqlQueryBuilder().queryPiece("WHERE id = 1"));
+        SqlRunner.runDelete(
+            /*tableName=*/ "QueryRunnerTestUser",
+            new SqlQueryBuilder().queryPiece("WHERE id = 1"),
+            reservoir);
     Assertions.assertEquals(1, nRows);
 
     // Clean up.
@@ -220,6 +231,7 @@ public class SqlRunnerTest {
   public void testRunExists() throws SQLException, IllegalAccessException {
     ConnectionFactory factory = SqlRunnerTest.connectionFactory();
     ConnectionInterface conn = factory.create();
+    ConnectionReservoirInterface reservoir = new BasicConnectionReservoir(factory);
 
     // Prepare schema.
     SqlRunnerTest.dropSchema(conn);
@@ -230,23 +242,23 @@ public class SqlRunnerTest {
     user.id.assign(1);
     user.userName.assign("user0");
     int nRows =
-        new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .withEntity(UserHasManyCreditCards.User.class)
-            .runUpdate(user, /*tableName=*/ "QueryRunnerTestUser");
+        SqlRunner.runUpdate(
+            user,
+            /*tableName=*/ "QueryRunnerTestUser",
+            UserHasManyCreditCards.User.class,
+            /*replace=*/ true,
+            reservoir);
     Assertions.assertEquals(1, nRows);
 
     // Run "exists" query.
     boolean shouldNotExist =
-        !new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .runExists(new SqlQueryBuilder().queryPiece("QueryRunnerTestUser WHERE id=2"));
+        !SqlRunner.runExists(
+            new SqlQueryBuilder().queryPiece("QueryRunnerTestUser WHERE id=2"), reservoir);
     Assertions.assertTrue(shouldNotExist);
 
     boolean shouldExist =
-        new SqlRunner()
-            .withConnectionReservoir(new BasicConnectionReservoir(factory))
-            .runExists(new SqlQueryBuilder().queryPiece("QueryRunnerTestUser WHERE id=1"));
+        SqlRunner.runExists(
+            new SqlQueryBuilder().queryPiece("QueryRunnerTestUser WHERE id=1"), reservoir);
     Assertions.assertTrue(shouldExist);
 
     // Clean up.

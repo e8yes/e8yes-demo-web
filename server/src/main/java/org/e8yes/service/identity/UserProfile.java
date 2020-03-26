@@ -60,11 +60,8 @@ public class UserProfile {
     }
 
     int numRowsUpdated =
-        new SqlRunner()
-            .withConnectionReservoir(dbConn)
-            .withEntity(UserEntity.class)
-            .withOverrideRecord(true)
-            .runUpdate(user, DbTableConstants.userTable());
+        SqlRunner.runUpdate(
+            user, DbTableConstants.userTable(), UserEntity.class, /*override=*/ true, dbConn);
     assert (numRowsUpdated == 1);
 
     return user;

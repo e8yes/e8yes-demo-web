@@ -34,44 +34,6 @@ import org.e8yes.sql.resultset.ResultSetInterface;
 /** Collects information from different sources to build then execute an SQL query. */
 public class SqlRunner {
 
-  private Class entityType;
-  private ConnectionReservoirInterface reservoir;
-  private boolean overrideRecord = false;
-
-  /**
-   * Connection reservoir to allocate database connections.
-   *
-   * @param reservoir
-   * @return
-   */
-  public SqlRunner withConnectionReservoir(ConnectionReservoirInterface reservoir) {
-    this.reservoir = reservoir;
-    return this;
-  }
-
-  /**
-   * The type of Java object to run ORM on -- runQuery() will convert query result to this target
-   * entity type; runUpdate() will convert the entity type to the SQL row format.
-   *
-   * @param entityType
-   * @return
-   */
-  public SqlRunner withEntity(Class entityType) {
-    this.entityType = entityType;
-    return this;
-  }
-
-  /**
-   * Whether or not to override existing record when conflict occurs on update.
-   *
-   * @param overrideRecord
-   * @return
-   */
-  public SqlRunner withOverrideRecord(boolean overrideRecord) {
-    this.overrideRecord = overrideRecord;
-    return this;
-  }
-
   /**
    * Constructs and runs query with partial information provided and synchronously returns the
    * result.
@@ -79,6 +41,9 @@ public class SqlRunner {
    * @param <ReturnType>
    * @param query Partial query. Example: "AUser user JOIN CreditCard card ON card.userId = user.id
    *     WHERE user.joinDate > '2020-1-1'"
+   * @param entityType The type of Java object to run ORM on. It will convert query result to this
+   *     target entity type
+   * @param reservoir Connection reservoir to allocate database connections.
    * @return The query result.
    * @throws NoSuchMethodException
    * @throws InstantiationException
@@ -87,22 +52,15 @@ public class SqlRunner {
    * @throws InvocationTargetException
    * @throws SQLException
    */
-  public <ReturnType> List<ReturnType> runQuery(SqlQueryBuilder query)
+  public static <ReturnType> List<ReturnType> runQuery(
+      SqlQueryBuilder query, Class entityType, ConnectionReservoirInterface reservoir)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
-    if (entityType == null) {
-      throw new IllegalArgumentException("Result type not specified.");
-    }
-    if (reservoir == null) {
-      throw new IllegalArgumentException("Connection reservoir not specified.");
-    }
-
     String completedQuery = QueryCompletion.completeSelectQuery(query.jdbcQuery(), entityType);
     ConnectionInterface conn = reservoir.take();
     ResultSetInterface rs = conn.runQuery(completedQuery, query.queryParams());
     List<ReturnType> results = DataCollection.collect(rs, entityType);
     reservoir.put(conn);
-
     return results;
   }
 
@@ -111,14 +69,12 @@ public class SqlRunner {
    *
    * @param query Partial query to test against. Example: "AUser user JOIN CreditCard card ON
    *     card.userId = user.id WHERE user.joinDate > '2020-1-1'"
+   * @param reservoir Connection reservoir to allocate database connections.
    * @return true if at least 1 entry returns from the query, otherwise, false.
    * @throws SQLException
    */
-  public boolean runExists(SqlQueryBuilder query) throws SQLException {
-    if (reservoir == null) {
-      throw new IllegalArgumentException("Connection reservoir not specified.");
-    }
-
+  public static boolean runExists(SqlQueryBuilder query, ConnectionReservoirInterface reservoir)
+      throws SQLException {
     String completedQuery = "SELECT TRUE FROM " + query.jdbcQuery();
     ConnectionInterface conn = reservoir.take();
     ResultSetInterface rs = conn.runQuery(completedQuery, query.queryParams());
@@ -134,14 +90,13 @@ public class SqlRunner {
    * @param <ReturnType>
    * @param tableName Name of the table to run deletion query on.
    * @param query Partial deletion query. Example: "WHERE id = 100"
+   * @param reservoir Connection reservoir to allocate database connections.
    * @return The number of rows deleted.
    * @throws SQLException
    */
-  public <ReturnType> int runDelete(String tableName, SqlQueryBuilder query) throws SQLException {
-    if (reservoir == null) {
-      throw new IllegalArgumentException("Connection reservoir not specified.");
-    }
-
+  public static <ReturnType> int runDelete(
+      String tableName, SqlQueryBuilder query, ConnectionReservoirInterface reservoir)
+      throws SQLException {
     String completedQuery = "DELETE FROM " + tableName + " " + query.jdbcQuery();
     ConnectionInterface conn = reservoir.take();
     int numRowsUpdated = conn.runUpdate(completedQuery, query.queryParams());
@@ -156,23 +111,24 @@ public class SqlRunner {
    * @param <Type>
    * @param record Java object to be saved.
    * @param tableName Target SQL table to save to.
+   * @param entityType The type of Java object to run ORM on. It will convert the entity type to the
+   *     SQL row format.
+   * @param override Whether or not to override existing record when conflict occurs on update.
+   * @param reservoir Connection reservoir to allocate database connections.
    * @return The number of SQL rows affected by this update.
    * @throws SQLException
    * @throws IllegalAccessException
    */
-  public <Type> int runUpdate(Type record, String tableName)
+  public static <Type> int runUpdate(
+      Type record,
+      String tableName,
+      Class entityType,
+      boolean override,
+      ConnectionReservoirInterface reservoir)
       throws SQLException, IllegalAccessException {
-    if (entityType == null) {
-      throw new IllegalArgumentException("Entity type not specified.");
-    }
-    if (reservoir == null) {
-      throw new IllegalArgumentException("Connection reservoir not specified.");
-    }
-
-    String completedQuery =
-        QueryCompletion.completeInsertQuery(tableName, this.entityType, this.overrideRecord);
+    String completedQuery = QueryCompletion.completeInsertQuery(tableName, entityType, override);
     ConnectionInterface.QueryParams params =
-        QueryCompletion.generateInsertQueryParams(record, entityType, this.overrideRecord);
+        QueryCompletion.generateInsertQueryParams(record, entityType, override);
     ConnectionInterface conn = reservoir.take();
     int numRowsUpdated = conn.runUpdate(completedQuery, params);
     reservoir.put(conn);
@@ -183,14 +139,11 @@ public class SqlRunner {
   /**
    * Get all the database tables.
    *
+   * @param reservoir Connection reservoir to allocate database connections.
    * @return table name of all the database tables.
    * @throws java.sql.SQLException
    */
-  public Set<String> tables() throws SQLException {
-    if (reservoir == null) {
-      throw new IllegalArgumentException("Connection reservoir not specified.");
-    }
-
+  public static Set<String> tables(ConnectionReservoirInterface reservoir) throws SQLException {
     ConnectionInterface conn = reservoir.take();
     String reflectionQuery =
         "SELECT tb.table_name FROM information_schema.tables tb "
@@ -213,13 +166,10 @@ public class SqlRunner {
   /**
    * Send a heartbeat to test the connection.
    *
+   * @param reservoir Connection reservoir to allocate database connections.
    * @throws SQLException
    */
-  public void sendHeartBeat() throws SQLException {
-    if (reservoir == null) {
-      throw new IllegalArgumentException("Connection reservoir not specified.");
-    }
-
+  public static void sendHeartBeat(ConnectionReservoirInterface reservoir) throws SQLException {
     ConnectionInterface conn = reservoir.take();
     ResultSetInterface rs = conn.runQuery("SELECT 1", new ConnectionInterface.QueryParams());
 
@@ -236,7 +186,7 @@ public class SqlRunner {
    *
    * @return unique ID.
    */
-  public long timeId() {
+  public static long timeId() {
     Instant inst = Instant.now();
     long micros = inst.getEpochSecond() * 1000 * 1000 + inst.getNano() / 1000;
     return Long.reverse(micros);
@@ -246,13 +196,12 @@ public class SqlRunner {
    * Generate sequential ID from a sequence table.
    *
    * @param seqTable Name of the sequence table to generate ID from.
+   * @param reservoir Connection reservoir to allocate database connections.
    * @return unique ID.
    * @throws SQLException
    */
-  public long seqId(String seqTable) throws SQLException {
-    if (reservoir == null) {
-      throw new IllegalArgumentException("Connection reservoir not specified.");
-    }
+  public static long seqId(String seqTable, ConnectionReservoirInterface reservoir)
+      throws SQLException {
     ConnectionInterface conn = reservoir.take();
 
     ResultSetInterface rs =

@@ -126,10 +126,7 @@ public class UserGroup {
     query.setPlaceholderValue(groupNamePh, new SqlStr(groupName));
 
     List<UserGroupEntityWrapper> groups =
-        new SqlRunner()
-            .withConnectionReservoir(dbConn)
-            .withEntity(UserGroupEntityWrapper.class)
-            .runQuery(query);
+        SqlRunner.runQuery(query, UserGroupEntityWrapper.class, dbConn);
 
     if (groups.isEmpty()) {
       return null;
@@ -228,8 +225,6 @@ public class UserGroup {
   public static UserGroupEntity createUserGroup(
       String groupName, Set<Permission> perms, boolean replace, ConnectionReservoirInterface dbConn)
       throws IllegalAccessException, SQLException {
-    SqlRunner runner = new SqlRunner().withConnectionReservoir(dbConn);
-
     UserGroupEntity userGroup = new UserGroupEntity();
     userGroup.group_name.assign(groupName);
     Integer[] permOrdinals = new Integer[perms.size()];
@@ -241,10 +236,8 @@ public class UserGroup {
     userGroup.permissions.assign(permOrdinals);
 
     int numRows =
-        runner
-            .withEntity(UserGroupEntity.class)
-            .withOverrideRecord(replace)
-            .runUpdate(userGroup, DbTableConstants.userGroupTable());
+        SqlRunner.runUpdate(
+            userGroup, DbTableConstants.userGroupTable(), UserGroupEntity.class, replace, dbConn);
     if (!replace && numRows != 1) {
       return null;
     }
@@ -268,10 +261,7 @@ public class UserGroup {
         new SqlQueryBuilder().queryPiece("WHERE group_name=").placeholder(groupNamePh);
     query.setPlaceholderValue(groupNamePh, new SqlStr(groupName));
 
-    int numRows =
-        new SqlRunner()
-            .withConnectionReservoir(dbConn)
-            .runDelete(DbTableConstants.userGroupTable(), query);
+    int numRows = SqlRunner.runDelete(DbTableConstants.userGroupTable(), query, dbConn);
 
     if (numRows == 0) {
       return false;
@@ -297,12 +287,11 @@ public class UserGroup {
       ConnectionReservoirInterface dbConn)
       throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
-    return new SqlRunner()
-        .withConnectionReservoir(dbConn)
-        .withEntity(UserGroupEntityWrapper.class)
-        .runQuery(
-            new SqlQueryBuilder()
-                .queryPiece(DbTableConstants.userGroupTable())
-                .queryPiece(" user_group"));
+    return SqlRunner.runQuery(
+        new SqlQueryBuilder()
+            .queryPiece(DbTableConstants.userGroupTable())
+            .queryPiece(" user_group"),
+        UserGroupEntityWrapper.class,
+        dbConn);
   }
 }

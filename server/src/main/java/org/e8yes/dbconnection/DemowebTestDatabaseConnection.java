@@ -49,16 +49,15 @@ public class DemowebTestDatabaseConnection implements DatabaseConnectionInterfac
 
   @Override
   public void testConnection() throws SQLException {
-    new SqlRunner().withConnectionReservoir(demowebDbConnections).sendHeartBeat();
+    SqlRunner.sendHeartBeat(connectionReservoir());
   }
 
   @Override
   public void clearAllTables() throws SQLException {
-    SqlRunner runner = new SqlRunner();
-    Set<String> tableNames = runner.withConnectionReservoir(connectionReservoir()).tables();
+    Set<String> tableNames = SqlRunner.tables(connectionReservoir());
     SqlQueryBuilder constraint = new SqlQueryBuilder().queryPiece("CASCADE");
     for (String tbName : tableNames) {
-      runner.runDelete(tbName, constraint);
+      SqlRunner.runDelete(tbName, constraint, connectionReservoir());
     }
   }
 

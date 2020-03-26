@@ -73,11 +73,7 @@ public class UserRetrieval {
             .placeholder(userIdPh);
     query.setPlaceholderValue(userIdPh, new SqlLong(userId));
 
-    List<UserEntityWrapper> results =
-        new SqlRunner()
-            .withConnectionReservoir(dbConns)
-            .withEntity(UserEntityWrapper.class)
-            .runQuery(query);
+    List<UserEntityWrapper> results = SqlRunner.runQuery(query, UserEntityWrapper.class, dbConns);
     if (results.isEmpty()) {
       return null;
     }
@@ -135,10 +131,7 @@ public class UserRetrieval {
         offsetPh, new SqlInt(pagination.getPageNumber() * pagination.getResultPerPage()));
 
     List<UserEntityWrapper> queryResults =
-        new SqlRunner()
-            .withConnectionReservoir(dbConn)
-            .withEntity(UserEntityWrapper.class)
-            .runQuery(query);
+        SqlRunner.runQuery(query, UserEntityWrapper.class, dbConn);
     List<UserEntity> users = new ArrayList();
     for (UserEntityWrapper wrapper : queryResults) {
       users.add(wrapper.entity);
