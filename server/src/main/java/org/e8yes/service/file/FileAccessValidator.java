@@ -28,12 +28,10 @@ import org.e8yes.constant.DbTableConstants;
 import org.e8yes.exception.AccessDeniedException;
 import org.e8yes.jwtprovider.JwtUtil;
 import org.e8yes.service.FileAccessMode;
-import org.e8yes.service.StorageVolume;
 import org.e8yes.service.identity.Identity;
 import org.e8yes.sql.SqlQueryBuilder;
 import org.e8yes.sql.SqlRunner;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
-import org.e8yes.sql.primitive.SqlInt;
 import org.e8yes.sql.primitive.SqlStr;
 import org.e8yes.sql.primitive.SqlStrArr;
 
@@ -41,7 +39,6 @@ import org.e8yes.sql.primitive.SqlStrArr;
 public class FileAccessValidator {
 
   private static final String FILE_VIEWER_ID_KEY = "I";
-  private static final String FILE_VOLUME_KEY = "V";
   private static final String FILE_PATH_KEY = "P";
   private static final String FILE_ACCESS_MODE_KEY = "A";
   private static final long EXPIRY_AFTER_MILLIS = 1000 * 60 * 10;
@@ -65,7 +62,6 @@ public class FileAccessValidator {
     String base64Token =
         JWT.create()
             .withClaim(FILE_VIEWER_ID_KEY, viewer.userId)
-            .withClaim(FILE_VOLUME_KEY, location.vol.getNumber())
             .withClaim(FILE_PATH_KEY, location.path)
             .withClaim(FILE_ACCESS_MODE_KEY, accessMode.getNumber())
             .withExpiresAt(new Date(expiryTimestampMillis))
@@ -106,9 +102,7 @@ public class FileAccessValidator {
           "Requires accessMode=" + accessMode + ", but got=" + tokenFileAccessMode);
     }
 
-    return new FileAccessLocation(
-        StorageVolume.forNumber(decoded.getClaim(FILE_VOLUME_KEY).asInt()),
-        decoded.getClaim(FILE_PATH_KEY).asString());
+    return new FileAccessLocation(decoded.getClaim(FILE_PATH_KEY).asString());
   }
 
   /**
@@ -134,15 +128,12 @@ public class FileAccessValidator {
     }
 
     SqlQueryBuilder.Placeholder<SqlStrArr> participatedGroups = new SqlQueryBuilder.Placeholder();
-    SqlQueryBuilder.Placeholder<SqlInt> storageVolume = new SqlQueryBuilder.Placeholder();
     SqlQueryBuilder.Placeholder<SqlStr> filePath = new SqlQueryBuilder.Placeholder();
 
     SqlQueryBuilder query =
         new SqlQueryBuilder()
             .queryPiece(DbTableConstants.userGroupHasFileTable())
-            .queryPiece(" WHERE file_volume=")
-            .placeholder(storageVolume)
-            .queryPiece(" AND file_path=")
+            .queryPiece(" WHERE file_path=")
             .placeholder(filePath)
             .queryPiece(" AND group_name=ANY(")
             .placeholder(participatedGroups)
@@ -161,7 +152,6 @@ public class FileAccessValidator {
         throw new IllegalArgumentException("Doesn't expect accessMode=" + accessMode);
     }
     query.setPlaceholderValue(participatedGroups, new SqlStrArr(viewer.groupNames));
-    query.setPlaceholderValue(storageVolume, new SqlInt(location.vol.getNumber()));
     query.setPlaceholderValue(filePath, new SqlStr(location.path));
 
     boolean hasAccess = SqlRunner.runExists(query, dbConn);

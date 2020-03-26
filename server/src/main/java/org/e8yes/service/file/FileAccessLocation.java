@@ -16,22 +16,17 @@
  */
 package org.e8yes.service.file;
 
-import org.e8yes.service.StorageVolume;
-
 /** Represents all the information to specified the location of a file. */
 public class FileAccessLocation {
-  public StorageVolume vol;
   public String path;
 
-  public FileAccessLocation(StorageVolume vol, String path) {
-    this.vol = vol;
+  public FileAccessLocation(String path) {
     this.path = path;
   }
 
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = hash * 23 + vol.hashCode();
     hash = hash * 23 + path.hashCode();
     return hash;
   }
@@ -39,11 +34,11 @@ public class FileAccessLocation {
   @Override
   public boolean equals(Object obj) {
     final FileAccessLocation other = (FileAccessLocation) obj;
-    return this.vol == other.vol && this.path.equals(other.path);
+    return path.equals(other.path);
   }
 
   @Override
   public String toString() {
-    return "FileAccessLocation{" + "vol=" + vol + ", path=" + path + '}';
+    return "FileAccessLocation{path=" + path + '}';
   }
 }

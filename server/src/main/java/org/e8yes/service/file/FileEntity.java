@@ -16,7 +16,6 @@
  */
 package org.e8yes.service.file;
 
-import java.util.Objects;
 import org.e8yes.sql.primitive.SqlDate;
 import org.e8yes.sql.primitive.SqlInt;
 import org.e8yes.sql.primitive.SqlLong;
@@ -24,7 +23,6 @@ import org.e8yes.sql.primitive.SqlStr;
 
 /** Java class representation of the database table "file" */
 public class FileEntity {
-  public SqlInt volume = new SqlInt();
   public SqlStr path = new SqlStr();
   public SqlInt format = new SqlInt();
   public SqlInt encryption_key_source = new SqlInt();
@@ -35,7 +33,6 @@ public class FileEntity {
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = hash * 23 + volume.hashCode();
     hash = hash * 23 + path.hashCode();
     return hash;
   }
@@ -43,15 +40,13 @@ public class FileEntity {
   @Override
   public boolean equals(Object obj) {
     final FileEntity other = (FileEntity) obj;
-    return volume.equals(other.volume) && Objects.equals(path, other.path);
+    return path.equals(other.path);
   }
 
   @Override
   public String toString() {
     return "FileEntity{"
-        + "volume="
-        + volume
-        + ", path="
+        + "path="
         + path
         + ", format="
         + format

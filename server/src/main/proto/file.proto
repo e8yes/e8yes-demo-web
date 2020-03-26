@@ -14,11 +14,6 @@ enum FileFormat  {
     FFMT_VIDEO_GIF = 4;
 }
 
-enum StorageVolume {
-    SVOL_UNKNOWN = 0;
-    SVOL_LOCAL_FS = 1;
-}
-
 message FileChunk {
     // Zero offset.
     int32 chunk_number = 1;
@@ -38,7 +33,6 @@ message FileTokenAcess {
 }
 
 message FileDirectAcess {
-    StorageVolume volume = 1;
     string path = 2;
     FileAccessMode access_mode = 3;
 }

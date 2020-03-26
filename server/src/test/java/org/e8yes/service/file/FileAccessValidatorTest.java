@@ -17,11 +17,11 @@
 package org.e8yes.service.file;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import java.sql.SQLException;
 import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.AccessDeniedException;
 import org.e8yes.service.FileAccessMode;
-import org.e8yes.service.StorageVolume;
 import org.e8yes.service.identity.Identity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -44,8 +44,7 @@ public class FileAccessValidatorTest {
   public void signAndValidateTokenAccessTest()
       throws JWTVerificationException, AccessDeniedException {
     Identity viewer = new Identity(/*userId=*/ 1L, /*groupNames=*/ null);
-    FileAccessLocation location =
-        new FileAccessLocation(StorageVolume.SVOL_LOCAL_FS, "avatar/a.jpeg");
+    FileAccessLocation location = new FileAccessLocation("avatar/a.jpeg");
     FileAccessValidator.FileAccessToken token =
         FileAccessValidator.signAccessToken(
             viewer,
@@ -97,4 +96,7 @@ public class FileAccessValidatorTest {
       Assertions.assertTrue(true);
     }
   }
+
+  @Test
+  public void validateDirectAcessTest() throws SQLException, IllegalAccessException {}
 }

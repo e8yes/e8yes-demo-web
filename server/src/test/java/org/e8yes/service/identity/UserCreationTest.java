@@ -64,7 +64,6 @@ public class UserCreationTest {
     Assertions.assertNotNull(user.security_key_hash.value());
     Assertions.assertFalse(user.security_key_hash.value().isBlank());
     Assertions.assertNull(user.alias.value());
-    Assertions.assertNull(user.avatar_volume.value());
     Assertions.assertNull(user.avatar_path.value());
     Assertions.assertNull(user.emails.value());
     Assertions.assertNotNull(user.created_at);
