@@ -14,7 +14,7 @@
  * <p>You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
-package org.e8yes.service.file;
+package org.e8yes.fsprovider;
 
 /** Represents all the information to specified the location of a file. */
 public class FileAccessLocation {

@@ -12,6 +12,9 @@ enum FileFormat  {
     FFMT_IMAGE_PNG = 2;
     FFMT_VIDEO_MPEG4 = 3;
     FFMT_VIDEO_GIF = 4;
+    FFMT_VIDEO_OGV = 5;
+    FFMT_AUDIO_MP3 = 6;
+    FFMT_AUDIO_OGG = 7;
 }
 
 message FileChunk {
@@ -42,9 +45,12 @@ message FileDescriptor {
         FileTokenAcess file_token_acess = 1;
         FileDirectAcess file_direct_acess = 2;
     }
+    // Do not specify this parameter.
     FileFormat file_format = 4;
     EncryptionSource encryption_source = 5;
     int64 storage_size = 6;
+    // Do not specify this parameter.
     int64 created_at_timestamp = 7;
+    // Dp mpt specify this parameter.
     int64 last_modified_at_timestamp = 8;
 }
