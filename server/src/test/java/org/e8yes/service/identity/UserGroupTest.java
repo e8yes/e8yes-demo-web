@@ -68,8 +68,7 @@ public class UserGroupTest {
             add(Permission.PERM_USER_GROUP_REMOVE);
           }
         };
-    UserGroup.UserGroupEntity group =
-        UserGroup.createUserGroup(groupName, perms, /*replace=*/ false, dbConn);
+    UserGroupEntity group = UserGroup.createUserGroup(groupName, perms, /*replace=*/ false, dbConn);
     Assertions.assertEquals(groupName, group.group_name.value());
 
     Assertions.assertEquals(2, group.permissions.value().length);
@@ -109,7 +108,7 @@ public class UserGroupTest {
     ConnectionReservoirInterface dbConn =
         Initializer.environmentContext().demowebDbConnections().connectionReservoir();
 
-    UserGroup.UserGroupEntity group =
+    UserGroupEntity group =
         UserGroup.createUserGroup(
             /*groupName=*/ "TestUserGroup", /*perms=*/ new HashSet(), /*replace=*/ false, dbConn);
     Assertions.assertNotNull(group);

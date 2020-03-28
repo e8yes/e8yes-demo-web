@@ -26,7 +26,6 @@ import org.e8yes.service.Permission;
 import org.e8yes.sql.SqlQueryBuilder;
 import org.e8yes.sql.SqlRunner;
 import org.e8yes.sql.connection.ConnectionReservoirInterface;
-import org.e8yes.sql.primitive.SqlIntArr;
 import org.e8yes.sql.primitive.SqlStr;
 
 /** User group management. */
@@ -67,22 +66,6 @@ public class UserGroup {
         SystemUserGroup.SUPER_USER_GROUP.name(), superUserPerms(), /*replace=*/ true, dbConn);
     createUserGroup(
         SystemUserGroup.BASELINE_USER_GROUP.name(), baselineUserPerms(), /*replace=*/ true, dbConn);
-  }
-
-  public static class UserGroupEntity {
-    public SqlStr group_name = new SqlStr();
-    public SqlIntArr permissions = new SqlIntArr();
-
-    @Override
-    public int hashCode() {
-      return group_name.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      final UserGroupEntity other = (UserGroupEntity) obj;
-      return this.group_name.equals(other.group_name);
-    }
   }
 
   public static class UserGroupEntityWrapper {
