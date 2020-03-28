@@ -18,11 +18,20 @@ package org.e8yes.service.file;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Optional;
 import org.e8yes.environment.EnvironmentContextInterface;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.AccessDeniedException;
+import org.e8yes.fsprovider.FileAccessLocation;
+import org.e8yes.service.EncryptionSource;
 import org.e8yes.service.FileAccessMode;
 import org.e8yes.service.identity.Identity;
+import org.e8yes.service.identity.UserCreation;
+import org.e8yes.service.identity.UserEntity;
+import org.e8yes.service.identity.UserGroup;
+import org.e8yes.service.identity.UserGroupEntity;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -98,5 +107,68 @@ public class FileAccessValidatorTest {
   }
 
   @Test
-  public void validateDirectAcessTest() throws SQLException, IllegalAccessException {}
+  public void validateDirectAcessTest()
+      throws SQLException, IllegalAccessException, AccessDeniedException {
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+
+    // Create file.
+    FileAccessLocation location = new FileAccessLocation("/avatar/user_avatar.jpeg");
+    FileMetaData.addMetaDataForFile(location, EncryptionSource.ESRC_NONE, dbConn);
+
+    // Create users.
+    UserGroupEntity group =
+        UserGroup.createUserGroup("file_group", new HashSet(), /*replace*=*/ true, dbConn);
+    UserEntity user =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(1L), dbConn);
+    UserEntity impersonatedUser =
+        UserCreation.createBaselineUser("PASS".getBytes(), /*userId=*/ Optional.of(2L), dbConn);
+
+    // Create user file group.
+    FileMetaData.addFileLocationToGroup(location, group, FileAccessMode.FAM_READ, dbConn);
+
+    // Valid access.
+    FileAccessValidator.validateDirectAccess(
+        new Identity(user.id.value(), new String[] {"file_group"}),
+        location,
+        FileAccessMode.FAM_READ,
+        dbConn);
+
+    // Bad location.
+    try {
+      FileAccessLocation badLocation = new FileAccessLocation("/avatar/bad_file.jpeg");
+      FileAccessValidator.validateDirectAccess(
+          new Identity(user.id.value(), new String[] {"file_group"}),
+          badLocation,
+          FileAccessMode.FAM_READ,
+          dbConn);
+      Assertions.fail();
+    } catch (AccessDeniedException ex) {
+      Assertions.assertTrue(true);
+    }
+
+    // Impersonate access.
+    try {
+      FileAccessValidator.validateDirectAccess(
+          new Identity(impersonatedUser.id.value(), new String[] {}),
+          location,
+          FileAccessMode.FAM_READ,
+          dbConn);
+      Assertions.fail();
+    } catch (AccessDeniedException ex) {
+      Assertions.assertTrue(true);
+    }
+
+    // Bad access mode.
+    try {
+      FileAccessValidator.validateDirectAccess(
+          new Identity(user.id.value(), new String[] {"file_group"}),
+          location,
+          FileAccessMode.FAM_WRITE,
+          dbConn);
+      Assertions.fail();
+    } catch (AccessDeniedException ex) {
+      Assertions.assertTrue(true);
+    }
+  }
 }

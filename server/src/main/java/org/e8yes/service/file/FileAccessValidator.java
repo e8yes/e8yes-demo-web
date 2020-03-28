@@ -26,6 +26,7 @@ import java.time.Instant;
 import java.util.Date;
 import org.e8yes.constant.DbTableConstants;
 import org.e8yes.exception.AccessDeniedException;
+import org.e8yes.fsprovider.FileAccessLocation;
 import org.e8yes.jwtprovider.JwtUtil;
 import org.e8yes.service.FileAccessMode;
 import org.e8yes.service.identity.Identity;
