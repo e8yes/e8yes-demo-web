@@ -22,8 +22,8 @@ public class DbTableConstants {
     return "email_set";
   }
 
-  public static String fileTable() {
-    return "file";
+  public static String fileMetadataTable() {
+    return "file_metadata";
   }
 
   public static String friendTable() {

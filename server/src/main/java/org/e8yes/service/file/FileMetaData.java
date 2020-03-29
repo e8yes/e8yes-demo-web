@@ -71,7 +71,11 @@ public class FileMetaData {
 
     int numRows =
         SqlRunner.runUpdate(
-            file, DbTableConstants.fileTable(), FileEntity.class, /*override=*/ true, dbConn);
+            file,
+            DbTableConstants.fileMetadataTable(),
+            FileEntity.class,
+            /*override=*/ true,
+            dbConn);
     assert (numRows == 1);
 
     return file;
@@ -101,7 +105,7 @@ public class FileMetaData {
     SqlQueryBuilder.Placeholder<SqlStr> path = new SqlQueryBuilder.Placeholder();
     SqlQueryBuilder query =
         new SqlQueryBuilder()
-            .queryPiece(DbTableConstants.fileTable())
+            .queryPiece(DbTableConstants.fileMetadataTable())
             .queryPiece(" file_meta WHERE file_meta.path=")
             .placeholder(path);
     query.setPlaceholderValue(path, new SqlStr(location.path));
@@ -144,7 +148,11 @@ public class FileMetaData {
 
     int numRows =
         SqlRunner.runUpdate(
-            file, DbTableConstants.fileTable(), FileEntity.class, /*override=*/ true, dbConn);
+            file,
+            DbTableConstants.fileMetadataTable(),
+            FileEntity.class,
+            /*override=*/ true,
+            dbConn);
     assert (numRows == 1);
 
     return file;

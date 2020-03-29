@@ -6,7 +6,7 @@ option java_outer_classname = "FileProto";
 
 import "encryption_source.proto";
 
-enum FileFormat  {
+enum FileFormat {
     FFMT_UNKNOWN = 0;
     FFMT_IMAGE_JPEG = 1;
     FFMT_IMAGE_PNG = 2;

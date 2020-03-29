@@ -18,8 +18,8 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 
-/* File */
-CREATE TABLE IF NOT EXISTS file (
+/* File Metadata */
+CREATE TABLE IF NOT EXISTS file_metadata (
     path CHARACTER VARYING(256) not null,
     format INT NOT NULL,
     encryption_key_source INT NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS user_group_has_file (
     can_write BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (group_name, file_path),
     FOREIGN KEY (group_name) REFERENCES user_group (group_name) ON DELETE CASCADE,
-    FOREIGN KEY (file_path) REFERENCES file (path) ON DELETE CASCADE
+    FOREIGN KEY (file_path) REFERENCES file_metadata (path) ON DELETE CASCADE
 );
 
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS auser (
     active_level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (avatar_path) REFERENCES file (path) ON DELETE SET NULL
+    FOREIGN KEY (avatar_path) REFERENCES file_metadata (path) ON DELETE SET NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_auser_id_str ON auser USING btree (id_str);
@@ -138,6 +138,6 @@ CREATE TABLE IF NOT EXISTS message (
     PRIMARY KEY (id),
     FOREIGN KEY (channel_id) REFERENCES messaging_channel (id) ON DELETE CASCADE,
     FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE,
-    FOREIGN KEY (media_file_path) REFERENCES file (path) ON DELETE SET NULL,
-    FOREIGN KEY (media_file_preview_path) REFERENCES file (path) ON DELETE SET NULL
+    FOREIGN KEY (media_file_path) REFERENCES file_metadata (path) ON DELETE SET NULL,
+    FOREIGN KEY (media_file_preview_path) REFERENCES file_metadata (path) ON DELETE SET NULL
 );
