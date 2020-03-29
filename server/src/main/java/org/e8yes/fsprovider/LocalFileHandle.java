@@ -16,66 +16,40 @@
  */
 package org.e8yes.fsprovider;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 /** Represents handle to a file in the local file system. */
 public class LocalFileHandle implements FileHandleInterface {
 
-  public File file;
-  public FileInputStream inputStream;
-  public FileOutputStream outputStream;
+  private final FileChannel file;
+  private final FileLock lock;
 
-  public LocalFileHandle(File file) {
-    this.file = file;
+  public LocalFileHandle(Path path) throws IOException {
+    file =
+        FileChannel.open(
+            path, StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+    lock = file.lock();
   }
 
-  /**
-   * Reads the next specified number of bytes. If there isn't enough bytes in the file, it reads
-   * whatever that is available.
-   *
-   * @param result A memory buffer that holds the specified number of bytes.
-   * @return The number of bytes read.
-   * @throws FileNotFoundException
-   * @throws IOException
-   */
-  public int readNext(byte[] result) throws FileNotFoundException, IOException {
-    if (inputStream == null) {
-      inputStream = new FileInputStream(file);
-    }
-    return inputStream.read(result);
+  @Override
+  public int readNext(ByteBuffer result) throws IOException {
+    return file.read(result);
   }
 
-  /**
-   * Writes the next specified number of bytes to the end of the file.
-   *
-   * @param result The data to write to the file.
-   * @throws FileNotFoundException
-   * @throws IOException
-   */
-  public void writeNext(byte[] result) throws FileNotFoundException, IOException {
-    if (outputStream == null) {
-      outputStream = new FileOutputStream(file);
-    }
-    outputStream.write(result);
+  @Override
+  public int writeNext(ByteBuffer data) throws IOException {
+    return file.write(data);
   }
 
-  /**
-   * Closing the file handle.
-   *
-   * @throws IOException
-   */
+  @Override
   public void close() throws IOException {
-    if (inputStream != null) {
-      inputStream.close();
-      inputStream = null;
-    }
-    if (outputStream != null) {
-      outputStream.close();
-      outputStream = null;
-    }
+    lock.release();
+    lock.close();
+    file.close();
   }
 }

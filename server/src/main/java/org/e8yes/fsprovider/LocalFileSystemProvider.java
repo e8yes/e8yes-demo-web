@@ -16,7 +16,6 @@
  */
 package org.e8yes.fsprovider;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,25 +53,7 @@ public class LocalFileSystemProvider implements FileSystemProviderInterface {
   @Override
   public FileHandleInterface open(FileAccessLocation location) throws IOException {
     Path path = Path.of(rootPath.toString(), location.path);
-    File file = path.toFile();
-    assert (file.exists());
-    return new LocalFileHandle(file);
-  }
-
-  @Override
-  public int read(FileHandleInterface handle, byte[] result) throws IOException {
-    assert (handle instanceof LocalFileHandle);
-    LocalFileHandle localFile = (LocalFileHandle) handle;
-    assert (localFile.file.canRead());
-    return localFile.readNext(result);
-  }
-
-  @Override
-  public void write(FileHandleInterface handle, byte[] data) throws IOException {
-    assert (handle instanceof LocalFileHandle);
-    LocalFileHandle localFile = (LocalFileHandle) handle;
-    assert (localFile.file.canWrite());
-    localFile.writeNext(data);
+    return new LocalFileHandle(path);
   }
 
   @Override

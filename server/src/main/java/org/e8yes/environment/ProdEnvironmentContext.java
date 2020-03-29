@@ -18,6 +18,8 @@ package org.e8yes.environment;
 
 import org.e8yes.dbconnection.DatabaseConnectionInterface;
 import org.e8yes.dbconnection.DemowebProdDatabaseConnection;
+import org.e8yes.fsprovider.FileSystemProviderInterface;
+import org.e8yes.fsprovider.LocalFileSystemProvider;
 import org.e8yes.jwtprovider.FixedKeyJwtAlgorithmProvider;
 import org.e8yes.jwtprovider.JwtAlgorithmProviderInterface;
 
@@ -26,17 +28,21 @@ public class ProdEnvironmentContext implements EnvironmentContextInterface {
 
   private final DatabaseConnectionInterface demowebDbConn = new DemowebProdDatabaseConnection();
   private final JwtAlgorithmProviderInterface jwtProvider = new FixedKeyJwtAlgorithmProvider();
+  private final FileSystemProviderInterface fsProvider =
+      new LocalFileSystemProvider(/*root=*/ "./demowebfs");
 
   @Override
   public void init() throws Exception {
     demowebDbConn.testConnection();
     jwtProvider.init();
+    fsProvider.init();
   }
 
   @Override
   public void cleanUp() throws Exception {
     demowebDbConn.cleanUp();
     jwtProvider.cleanUp();
+    fsProvider.cleanUp();
   }
 
   @Override
@@ -52,5 +58,10 @@ public class ProdEnvironmentContext implements EnvironmentContextInterface {
   @Override
   public JwtAlgorithmProviderInterface authorizationJwtProvider() {
     return jwtProvider;
+  }
+
+  @Override
+  public FileSystemProviderInterface fileSystemProvider() {
+    return fsProvider;
   }
 }

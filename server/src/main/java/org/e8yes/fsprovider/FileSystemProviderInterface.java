@@ -53,26 +53,6 @@ public interface FileSystemProviderInterface {
   public FileHandleInterface open(FileAccessLocation location) throws IOException;
 
   /**
-   * Reads the next specified number of bytes. If the remaining file is shorter than the number of
-   * bytes requested, it fills an array with the number of bytes available.
-   *
-   * @param handle Handle to the file to be read.
-   * @param result A memory buffer which holds the specified number bytes that can be read.
-   * @return Number of bytes read.
-   * @throws IOException
-   */
-  public int read(FileHandleInterface handle, byte[] result) throws IOException;
-
-  /**
-   * Writes the next specified number of bytes to the end of the file.
-   *
-   * @param handle Handle to the file to be written.
-   * @param data The data to write to the file.
-   * @throws IOException
-   */
-  public void write(FileHandleInterface handle, byte[] data) throws IOException;
-
-  /**
    * Closes a file handle. The file handle can be closed only once.
    *
    * @param handle File handle to be closed.

@@ -17,6 +17,7 @@
 package org.e8yes.environment;
 
 import org.e8yes.dbconnection.DatabaseConnectionInterface;
+import org.e8yes.fsprovider.FileSystemProviderInterface;
 import org.e8yes.jwtprovider.JwtAlgorithmProviderInterface;
 
 /** Returns global objects the runs in a deployment environment. */
@@ -61,4 +62,11 @@ public interface EnvironmentContextInterface {
    * @return the provider.
    */
   public JwtAlgorithmProviderInterface authorizationJwtProvider();
+
+  /**
+   * File system provider.
+   *
+   * @return the provider.
+   */
+  public FileSystemProviderInterface fileSystemProvider();
 }

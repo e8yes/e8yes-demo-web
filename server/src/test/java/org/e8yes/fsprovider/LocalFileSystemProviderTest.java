@@ -17,6 +17,7 @@
 package org.e8yes.fsprovider;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,25 +32,36 @@ public class LocalFileSystemProviderTest {
     localFs.createAndOverride(location);
 
     FileHandleInterface handle = localFs.open(location);
-    byte[] data = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    localFs.write(handle, data);
+    ByteBuffer data = ByteBuffer.allocate(10);
+    byte[] byteData = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    data.put(byteData);
+    data.flip();
+    int numBytesWritten = handle.writeNext(data);
+    Assertions.assertEquals(10, numBytesWritten);
+
     byte[] extraByte = new byte[] {10};
-    localFs.write(handle, extraByte);
+    data = ByteBuffer.allocate(1);
+    data.put(extraByte);
+    data.flip();
+    numBytesWritten = handle.writeNext(data);
+    Assertions.assertEquals(1, numBytesWritten);
     localFs.close(handle);
 
     handle = localFs.open(location);
-    byte[] buf = new byte[5];
-    int numBytesRead = localFs.read(handle, buf);
+    ByteBuffer buf = ByteBuffer.allocate(5);
+    int numBytesRead = handle.readNext(buf);
     Assertions.assertEquals(5, numBytesRead);
-    Assertions.assertArrayEquals(new byte[] {0, 1, 2, 3, 4}, buf);
+    Assertions.assertArrayEquals(new byte[] {0, 1, 2, 3, 4}, buf.array());
 
-    numBytesRead = localFs.read(handle, buf);
+    buf.clear();
+    numBytesRead = handle.readNext(buf);
     Assertions.assertEquals(5, numBytesRead);
-    Assertions.assertArrayEquals(new byte[] {5, 6, 7, 8, 9}, buf);
+    Assertions.assertArrayEquals(new byte[] {5, 6, 7, 8, 9}, buf.array());
 
-    numBytesRead = localFs.read(handle, buf);
+    buf.clear();
+    numBytesRead = handle.readNext(buf);
     Assertions.assertEquals(1, numBytesRead);
-    Assertions.assertArrayEquals(new byte[] {10, 6, 7, 8, 9}, buf);
+    Assertions.assertArrayEquals(new byte[] {10, 6, 7, 8, 9}, buf.array());
 
     localFs.close(handle);
   }

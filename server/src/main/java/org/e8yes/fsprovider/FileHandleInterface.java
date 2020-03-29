@@ -16,5 +16,35 @@
  */
 package org.e8yes.fsprovider;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
 /** Represents a handle(pointer) to a file. */
-public interface FileHandleInterface {}
+public interface FileHandleInterface {
+
+  /**
+   * Reads the next specified number of bytes. If the remaining file is shorter than the number of
+   * bytes requested, it fills an array with the number of bytes available.
+   *
+   * @param result A memory buffer which holds the specified number bytes that can be read.
+   * @return The number of bytes read.
+   * @throws IOException
+   */
+  public int readNext(ByteBuffer result) throws IOException;
+
+  /**
+   * Writes the next specified number of bytes to the end of the file.
+   *
+   * @param data The data to write to the file.
+   * @return The number of bytes written.
+   * @throws IOException
+   */
+  public int writeNext(ByteBuffer data) throws IOException;
+
+  /**
+   * Closing the file handle.
+   *
+   * @throws IOException
+   */
+  public void close() throws IOException;
+}
