@@ -31,19 +31,19 @@ enum FileAccessMode {
     FAM_READWRITE = 2;
 }
 
-message FileTokenAcess {
+message FileTokenAccess {
     bytes access_token = 1;
 }
 
-message FileDirectAcess {
+message FileDirectAccess {
     string path = 2;
     FileAccessMode access_mode = 3;
 }
 
 message FileDescriptor {
     oneof AccessMethod {
-        FileTokenAcess file_token_acess = 1;
-        FileDirectAcess file_direct_acess = 2;
+        FileTokenAccess file_token_access = 1;
+        FileDirectAccess file_direct_access = 2;
     }
     // Do not specify this parameter.
     FileFormat file_format = 4;

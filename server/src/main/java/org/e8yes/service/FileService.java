@@ -16,32 +16,103 @@
  */
 package org.e8yes.service;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.e8yes.constant.GrpcContexts;
+import org.e8yes.environment.Initializer;
+import org.e8yes.exception.AccessDeniedException;
+import org.e8yes.fsprovider.FileAccessLocation;
+import org.e8yes.fsprovider.FileHandleInterface;
+import org.e8yes.fsprovider.FileSystemProviderInterface;
+import org.e8yes.jwtprovider.JwtAlgorithmProviderInterface;
+import org.e8yes.service.file.FileAccessValidator;
+import org.e8yes.service.file.FileAccessValidator.FileAccessToken;
+import org.e8yes.service.identity.Identity;
 
+/**
+ * Handle file upload. Validate identity then store the data chunk in sequence to the file system.
+ */
 class UploadStreamObserver implements StreamObserver<UploadFileRequest> {
 
   private final StreamObserver<UploadFileResponse> res;
+  private FileHandleInterface file;
 
   public UploadStreamObserver(StreamObserver<UploadFileResponse> res) {
     this.res = res;
   }
 
-  @Override
-  public void onNext(UploadFileRequest v) {
-    throw new UnsupportedOperationException(
-        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  private static FileHandleInterface validateIdentityAndOpenFile(
+      FileDescriptor fileDesc, Identity viewer)
+      throws JWTVerificationException, AccessDeniedException, IOException {
+    JwtAlgorithmProviderInterface jwtProvider =
+        Initializer.environmentContext().authorizationJwtProvider();
+
+    FileAccessLocation location;
+    if (fileDesc.hasFileTokenAccess()) {
+      FileTokenAccess tokenAccess = fileDesc.getFileTokenAccess();
+      FileAccessToken token = new FileAccessToken();
+      token.jwtToken = tokenAccess.getAccessToken().toByteArray();
+      location =
+          FileAccessValidator.validateTokenAccess(
+              viewer, FileAccessMode.FAM_WRITE, token, jwtProvider.jwtverifier());
+    } else if (fileDesc.hasFileDirectAccess()) {
+      location = new FileAccessLocation(fileDesc.getFileDirectAccess().getPath());
+      FileAccessValidator.signAccessToken(
+          viewer, location, FileAccessMode.FAM_WRITE, jwtProvider.algorithm());
+    } else {
+      throw new AccessDeniedException("Unknown access validation method.");
+    }
+
+    FileSystemProviderInterface fsProvider = Initializer.environmentContext().fileSystemProvider();
+    fsProvider.createAndOverride(location);
+    return fsProvider.open(location);
   }
 
   @Override
-  public void onError(Throwable thrwbl) {
-    throw new UnsupportedOperationException(
-        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+  public void onNext(UploadFileRequest request) {
+    if (file == null) {
+      try {
+        file =
+            validateIdentityAndOpenFile(
+                request.getFileDescriptor(), GrpcContexts.IDENTITY_CONTEXT_KEY.get());
+      } catch (IOException ex) {
+        Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
+        res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+      } catch (AccessDeniedException | JWTVerificationException ex) {
+        Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
+        res.onError(Status.UNAUTHENTICATED.withDescription(ex.getMessage()).asException());
+      }
+    }
+
+    try {
+      file.writeNext(request.getCurrentChunk().getData().asReadOnlyByteBuffer());
+      res.onNext(UploadFileResponse.newBuilder().build());
+    } catch (IOException ex) {
+      Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+    }
+  }
+
+  @Override
+  public void onError(Throwable ex) {
+    res.onError(ex);
   }
 
   @Override
   public void onCompleted() {
-    throw new UnsupportedOperationException(
-        "Not supported yet."); // To change body of generated methods, choose Tools | Templates.
+    try {
+      FileSystemProviderInterface fsProvider =
+          Initializer.environmentContext().fileSystemProvider();
+      fsProvider.close(file);
+      res.onCompleted();
+    } catch (IOException ex) {
+      Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+    }
   }
 }
 

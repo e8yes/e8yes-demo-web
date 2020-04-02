@@ -45,7 +45,7 @@ public class FileAccessValidator {
   private static final long EXPIRY_AFTER_MILLIS = 1000 * 60 * 10;
 
   public static class FileAccessToken {
-    byte[] jwtToken;
+    public byte[] jwtToken;
   }
 
   /**
