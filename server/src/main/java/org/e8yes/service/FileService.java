@@ -209,6 +209,8 @@ public class FileService extends FileServiceGrpc.FileServiceImplBase {
 
         buf.clear();
       }
+
+      res.onCompleted();
     } catch (AccessDeniedException | JWTVerificationException ex) {
       Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
       res.onError(Status.UNAUTHENTICATED.withDescription(ex.getMessage()).asException());
