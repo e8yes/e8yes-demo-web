@@ -189,6 +189,9 @@ public class FileService extends FileServiceGrpc.FileServiceImplBase {
           FileMetaData.retrieveFileMetadata(
               info.location,
               Initializer.environmentContext().demowebDbConnections().connectionReservoir());
+      if (fileMeta == null) {
+        throw new ResourceMissingException("File at " + info.location + " doesn't exist.");
+      }
 
       FileDescriptor.Builder desc = FileMetaData.createFileDescriptorBuilder(fileMeta);
       desc.setFileDirectAccess(request.getFileDescriptor().getFileDirectAccess());
@@ -214,6 +217,9 @@ public class FileService extends FileServiceGrpc.FileServiceImplBase {
     } catch (AccessDeniedException | JWTVerificationException ex) {
       Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
       res.onError(Status.UNAUTHENTICATED.withDescription(ex.getMessage()).asException());
+    } catch (ResourceMissingException ex) {
+      Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(Status.NOT_FOUND.withDescription(ex.getMessage()).asException());
     } catch (SQLException
         | NoSuchMethodException
         | InstantiationException
