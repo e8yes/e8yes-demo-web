@@ -9,6 +9,7 @@ import org.e8yes.exception.ResourceMissingException;
 import org.e8yes.fsprovider.FileAccessLocation;
 import org.e8yes.service.EncryptionSource;
 import org.e8yes.service.FileAccessMode;
+import org.e8yes.service.FileDescriptor;
 import org.e8yes.service.FileFormat;
 import org.e8yes.service.identity.UserGroupEntity;
 import org.e8yes.sql.SqlQueryBuilder;
@@ -117,6 +118,20 @@ public class FileMetaData {
 
     assert (result.size() == 1);
     return result.get(0).file_meta;
+  }
+
+  /**
+   * Creates file descriptor builder and pre-fill values from entity.
+   * @param entity File entity used to pre-fill the file descriptor builder.
+   * @return The pre-filled builder.
+   */
+  public static FileDescriptor.Builder createFileDescriptorBuilder(FileEntity entity) {
+    return FileDescriptor.newBuilder()
+        .setFileFormat(FileFormat.forNumber(entity.format.value()))
+        .setEncryptionSource(EncryptionSource.forNumber(entity.encryption_key_source.value()))
+        .setCreatedAtTimestamp(entity.created_at.value().getTime())
+        .setLastModifiedAtTimestamp(entity.last_modified_at.value().getTime())
+        .setStorageSize(entity.storage_size.value());
   }
 
   /**
