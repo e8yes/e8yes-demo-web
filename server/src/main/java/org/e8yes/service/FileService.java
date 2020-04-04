@@ -26,19 +26,15 @@ import java.nio.ByteBuffer;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.e8yes.constant.FileStreamConstants;
 import org.e8yes.constant.GrpcContexts;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.AccessDeniedException;
 import org.e8yes.exception.ResourceMissingException;
-import org.e8yes.fsprovider.FileAccessLocation;
-import org.e8yes.fsprovider.FileHandleInterface;
 import org.e8yes.fsprovider.FileSystemProviderInterface;
-import org.e8yes.jwtprovider.JwtAlgorithmProviderInterface;
-import org.e8yes.service.file.FileAccessValidator;
-import org.e8yes.service.file.FileAccessValidator.FileAccessToken;
 import org.e8yes.service.file.FileEntity;
+import org.e8yes.service.file.FileIO;
 import org.e8yes.service.file.FileMetaData;
-import org.e8yes.service.identity.Identity;
 
 /**
  * Handle file upload. Validate identity then store the data chunk in sequence to the file system.
@@ -46,7 +42,7 @@ import org.e8yes.service.identity.Identity;
 class UploadStreamObserver implements StreamObserver<UploadFileRequest> {
 
   private final StreamObserver<UploadFileResponse> res;
-  private FileService.FileInfo fileInfo;
+  private FileIO.FileAccessor fileAccessor;
   private int fileSize = 0;
 
   public UploadStreamObserver(StreamObserver<UploadFileResponse> res) {
@@ -55,14 +51,19 @@ class UploadStreamObserver implements StreamObserver<UploadFileRequest> {
 
   @Override
   public void onNext(UploadFileRequest request) {
-    if (fileInfo == null) {
+    if (fileAccessor == null) {
       try {
-        fileInfo =
-            FileService.validateIdentityAndOpenFile(
-                request.getFileDescriptor(), FileAccessMode.FAM_WRITE);
+        fileAccessor =
+            FileIO.validateAndOpenFile(
+                GrpcContexts.IDENTITY_CONTEXT_KEY.get(),
+                request.getFileDescriptor(),
+                FileAccessMode.FAM_READ,
+                Initializer.environmentContext().fileSystemProvider(),
+                Initializer.environmentContext().authorizationJwtProvider().jwtverifier(),
+                Initializer.environmentContext().demowebDbConnections().connectionReservoir());
 
         FileMetaData.addMetaDataForFile(
-            fileInfo.location,
+            fileAccessor.location,
             request.getFileDescriptor().getEncryptionSource(),
             Initializer.environmentContext().demowebDbConnections().connectionReservoir());
       } catch (IllegalArgumentException | SQLException | IllegalAccessException | IOException ex) {
@@ -78,7 +79,7 @@ class UploadStreamObserver implements StreamObserver<UploadFileRequest> {
 
     try {
       fileSize +=
-          fileInfo.file.writeNext(request.getCurrentChunk().getData().asReadOnlyByteBuffer());
+          fileAccessor.file.writeNext(request.getCurrentChunk().getData().asReadOnlyByteBuffer());
       res.onNext(UploadFileResponse.newBuilder().build());
     } catch (IOException ex) {
       Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,10 +97,10 @@ class UploadStreamObserver implements StreamObserver<UploadFileRequest> {
     try {
       FileSystemProviderInterface fsProvider =
           Initializer.environmentContext().fileSystemProvider();
-      fsProvider.close(fileInfo.file);
+      fsProvider.close(fileAccessor.file);
 
       FileMetaData.updateFileSize(
-          fileInfo.location,
+          fileAccessor.location,
           fileSize,
           Initializer.environmentContext().demowebDbConnections().connectionReservoir());
 
@@ -121,59 +122,6 @@ class UploadStreamObserver implements StreamObserver<UploadFileRequest> {
 /** Service for file management. */
 public class FileService extends FileServiceGrpc.FileServiceImplBase {
 
-  private final int DOWNLOAD_CHUNK_SIZE = 32 * 1000;
-
-  public static class FileInfo {
-    public FileHandleInterface file;
-    public FileAccessLocation location;
-  }
-
-  /**
-   * Utility function to securely open a file.
-   *
-   * @param fileDesc FileDescriptor involving access metadata.
-   * @param accessMode Access mode required for the access.
-   * @return The opened file handle.
-   * @throws JWTVerificationException
-   * @throws AccessDeniedException
-   * @throws IOException
-   */
-  public static FileInfo validateIdentityAndOpenFile(
-      FileDescriptor fileDesc, FileAccessMode accessMode)
-      throws JWTVerificationException, AccessDeniedException, IOException {
-    Identity viewer = GrpcContexts.IDENTITY_CONTEXT_KEY.get();
-
-    JwtAlgorithmProviderInterface jwtProvider =
-        Initializer.environmentContext().authorizationJwtProvider();
-
-    FileAccessLocation location;
-    if (fileDesc.hasFileTokenAccess()) {
-      FileTokenAccess tokenAccess = fileDesc.getFileTokenAccess();
-      FileAccessToken token = new FileAccessToken();
-      token.jwtToken = tokenAccess.getAccessToken().toByteArray();
-      location =
-          FileAccessValidator.validateTokenAccess(
-              viewer, accessMode, token, jwtProvider.jwtverifier());
-    } else if (fileDesc.hasFileDirectAccess()) {
-      location = new FileAccessLocation(fileDesc.getFileDirectAccess().getPath());
-      FileAccessValidator.signAccessToken(viewer, location, accessMode, jwtProvider.algorithm());
-    } else {
-      throw new AccessDeniedException("Unknown access validation method.");
-    }
-
-    FileSystemProviderInterface fsProvider = Initializer.environmentContext().fileSystemProvider();
-    if (accessMode == FileAccessMode.FAM_WRITE) {
-      fsProvider.createAndOverride(location);
-    }
-    FileHandleInterface file = fsProvider.open(location);
-
-    FileInfo info = new FileInfo();
-    info.file = file;
-    info.location = location;
-
-    return info;
-  }
-
   @Override
   public StreamObserver<UploadFileRequest> upload(StreamObserver<UploadFileResponse> res) {
     return new UploadStreamObserver(res);
@@ -182,15 +130,21 @@ public class FileService extends FileServiceGrpc.FileServiceImplBase {
   @Override
   public void download(DownloadFileRequest request, StreamObserver<DownloadFileResponse> res) {
     try {
-      FileInfo info =
-          validateIdentityAndOpenFile(request.getFileDescriptor(), FileAccessMode.FAM_READ);
+      FileIO.FileAccessor fileAccessor =
+          FileIO.validateAndOpenFile(
+              GrpcContexts.IDENTITY_CONTEXT_KEY.get(),
+              request.getFileDescriptor(),
+              FileAccessMode.FAM_READ,
+              Initializer.environmentContext().fileSystemProvider(),
+              Initializer.environmentContext().authorizationJwtProvider().jwtverifier(),
+              Initializer.environmentContext().demowebDbConnections().connectionReservoir());
 
       FileEntity fileMeta =
           FileMetaData.retrieveFileMetadata(
-              info.location,
+              fileAccessor.location,
               Initializer.environmentContext().demowebDbConnections().connectionReservoir());
       if (fileMeta == null) {
-        throw new ResourceMissingException("File at " + info.location + " doesn't exist.");
+        throw new ResourceMissingException("File at " + fileAccessor.location + " doesn't exist.");
       }
 
       FileDescriptor.Builder desc = FileMetaData.createFileDescriptorBuilder(fileMeta);
@@ -202,8 +156,8 @@ public class FileService extends FileServiceGrpc.FileServiceImplBase {
 
       int chunkNumber = -1;
       FileChunk.Builder curChunkBuilder = FileChunk.newBuilder();
-      ByteBuffer buf = ByteBuffer.allocate(DOWNLOAD_CHUNK_SIZE);
-      while (info.file.readNext(buf) > 0) {
+      ByteBuffer buf = ByteBuffer.allocate(FileStreamConstants.CHUNK_SIZE_LIMIT);
+      while (fileAccessor.file.readNext(buf) > 0) {
         curChunkBuilder.setChunkNumber(++chunkNumber);
         curChunkBuilder.setData(ByteString.copyFrom(buf));
 
