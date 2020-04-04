@@ -13,6 +13,11 @@ public class Identity {
     this.groupNames = groupNames;
   }
 
+  public Identity(UserEntity entity) {
+    this.userId = entity.id.value();
+    this.groupNames = entity.group_names.value();
+  }
+
   @Override
   public int hashCode() {
     return Long.hashCode(userId);

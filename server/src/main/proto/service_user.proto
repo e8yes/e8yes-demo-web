@@ -6,6 +6,7 @@ option java_outer_classname = "ServiceUserProto";
 
 package org.e8yes.services;
 
+import "file.proto";
 import "nullable_primitives.proto";
 import "pagination.proto";
 
@@ -23,6 +24,7 @@ message RegistrationReponse {
     int64 user_id = 3;
 }
 
+
 message AuthorizationRequest {
     int64 user_id = 1;
     bytes security_key = 2;
@@ -32,9 +34,11 @@ message AuthorizationResponse {
     bytes jwt_token = 1;
 }
 
+
 message UserPublicProfile {
     int64 user_id = 1;
     string alias = 2;
+    FileTokenAccess avatar_readonly_access = 3;
 }
 
 message GetPublicProfileRequest {
@@ -47,6 +51,7 @@ message GetPublicProfileResponse {
     UserPublicProfile profile = 1;
 }
 
+
 message UpdatePublicProfileRequest {
     // It will only fetch and update the public profile of the logged-in user.
     NullableString alias = 1;
@@ -55,6 +60,7 @@ message UpdatePublicProfileRequest {
 message UpdatePublicProfileResponse {
     UserPublicProfile profile = 1;
 }
+
 
 message SearchUserRequest {
     // Optional. Could be a partial input.
@@ -67,6 +73,20 @@ message SearchUserRequest {
 
 message SearchUserResponse {
     repeated UserPublicProfile entries = 1;
+}
+
+
+message CreateNewAvatarRequest {
+    // File name of the new avatar file. It can be a file path containing the
+    // name.
+    string avatar_file_name = 1;
+}
+
+message CreateNewAvatarResponse {
+    // Gain read/write access to the specified avatar file location. Using the
+    // access token allows the client to later upload avatar file through token
+    // access.
+    FileTokenAccess avatar_readwrite_access = 1;
 }
 
 service UserService {
@@ -94,4 +114,10 @@ service UserService {
    * Search users.
    */
   rpc Search (SearchUserRequest) returns (SearchUserResponse);
+  
+  /**
+   * Create a new avatar for the logged-in user.
+   */
+  rpc createNewAvatar(CreateNewAvatarRequest) returns 
+    (CreateNewAvatarResponse);
 }

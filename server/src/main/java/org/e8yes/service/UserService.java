@@ -29,6 +29,7 @@ import org.e8yes.constant.GrpcContexts;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.AccessDeniedException;
 import org.e8yes.exception.ResourceMissingException;
+import org.e8yes.service.identity.Identity;
 import org.e8yes.service.identity.JwtAuthorizer;
 import org.e8yes.service.identity.UserCreation;
 import org.e8yes.service.identity.UserEntity;
@@ -119,7 +120,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         throw new ResourceMissingException("User with ID=" + userId + " doesn't exist.");
       }
 
-      UserPublicProfile profile = UserProfile.extractPublicInfo(user);
+      UserPublicProfile profile =
+          UserProfile.extractPublicInfo(
+              user, Initializer.environmentContext().authorizationJwtProvider().algorithm());
 
       res.onNext(GetPublicProfileResponse.newBuilder().setProfile(profile).build());
       res.onCompleted();
@@ -152,7 +155,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       Optional<String> alias =
           req.getAlias() != null ? Optional.of(req.getAlias().getValue()) : Optional.empty();
       user = UserProfile.updateProfile(user, alias, dbConn);
-      UserPublicProfile updatedProfile = UserProfile.extractPublicInfo(user);
+      UserPublicProfile updatedProfile =
+          UserProfile.extractPublicInfo(
+              user, Initializer.environmentContext().authorizationJwtProvider().algorithm());
 
       res.onNext(UpdatePublicProfileResponse.newBuilder().setProfile(updatedProfile).build());
       res.onCompleted();
@@ -191,7 +196,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
       SearchUserResponse.Builder builder = SearchUserResponse.newBuilder();
       for (UserEntity user : results) {
-        UserPublicProfile profile = UserProfile.extractPublicInfo(user);
+        UserPublicProfile profile =
+            UserProfile.extractPublicInfo(
+                user, Initializer.environmentContext().authorizationJwtProvider().algorithm());
         builder.addEntries(profile);
       }
 
@@ -206,6 +213,41 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
     } catch (IllegalArgumentException ex) {
       res.onError(Status.INVALID_ARGUMENT.withDescription(ex.getMessage()).asException());
+    }
+  }
+
+  @Override
+  public void createNewAvatar(
+      CreateNewAvatarRequest request, StreamObserver<CreateNewAvatarResponse> res) {
+    Identity viewer = GrpcContexts.IDENTITY_CONTEXT_KEY.get();
+
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+
+    try {
+      UserEntity viewerEntity = UserRetrieval.retrieveUserEntity(viewer.userId, dbConn);
+      UserProfile.AvatarSetup setup =
+          UserProfile.setUpNewAvatar(
+              viewerEntity,
+              request.getAvatarFileName(),
+              Initializer.environmentContext().authorizationJwtProvider().algorithm(),
+              dbConn);
+
+      FileTokenAccess.Builder builder =
+          FileTokenAccess.newBuilder()
+              .setAccessToken(ByteString.copyFrom(setup.avatarAccessToken.jwtToken));
+      res.onNext(CreateNewAvatarResponse.newBuilder().setAvatarReadwriteAccess(builder).build());
+      res.onCompleted();
+    } catch (IllegalArgumentException ex) {
+      Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(Status.INVALID_ARGUMENT.withDescription(ex.getMessage()).asException());
+    } catch (SQLException
+        | NoSuchMethodException
+        | InstantiationException
+        | IllegalAccessException
+        | InvocationTargetException ex) {
+      Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
     }
   }
 }
