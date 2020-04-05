@@ -46,6 +46,8 @@ message FileDescriptor {
         FileDirectAccess file_direct_access = 2;
     }
     // Do not specify this parameter.
+    string file_name = 3;
+    // Do not specify this parameter.
     FileFormat file_format = 4;
     EncryptionSource encryption_source = 5;
     int64 storage_size = 6;

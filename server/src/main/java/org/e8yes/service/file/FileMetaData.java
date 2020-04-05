@@ -1,6 +1,7 @@
 package org.e8yes.service.file;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -128,6 +129,7 @@ public class FileMetaData {
    */
   public static FileDescriptor.Builder createFileDescriptorBuilder(FileEntity entity) {
     return FileDescriptor.newBuilder()
+        .setFileName(Path.of(entity.path.value()).getFileName().toString())
         .setFileFormat(FileFormat.forNumber(entity.format.value()))
         .setEncryptionSource(EncryptionSource.forNumber(entity.encryption_key_source.value()))
         .setCreatedAtTimestamp(entity.created_at.value().getTime())

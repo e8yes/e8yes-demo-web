@@ -119,6 +119,7 @@ public class FileMetaDataTest {
 
     FileDescriptor.Builder builder = FileMetaData.createFileDescriptorBuilder(file);
     FileDescriptor desc = builder.build();
+    Assertions.assertEquals("test_file.jpg", desc.getFileName());
     Assertions.assertEquals(FileFormat.FFMT_AUDIO_MP3, desc.getFileFormat());
     Assertions.assertEquals(100L, desc.getStorageSize());
     Assertions.assertEquals(yesterday.getTime().getTime(), desc.getCreatedAtTimestamp());
