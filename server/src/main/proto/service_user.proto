@@ -39,6 +39,7 @@ message UserPublicProfile {
     int64 user_id = 1;
     string alias = 2;
     FileTokenAccess avatar_readonly_access = 3;
+    FileTokenAccess avatar_preview_readonly_access = 4;
 }
 
 message GetPublicProfileRequest {

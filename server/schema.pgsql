@@ -69,12 +69,14 @@ CREATE TABLE IF NOT EXISTS auser (
     alias CHARACTER VARYING(40) NULL,
     emails CHARACTER VARYING [] NULL,
     avatar_path CHARACTER VARYING(128) NULL,
+    avatar_preview_path CHARACTER VARYING(128) NULL,
     security_key_hash CHARACTER VARYING(80) NOT NULL,
     group_names CHARACTER VARYING(60) [] NULL,
     active_level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (avatar_path) REFERENCES file_metadata (path) ON DELETE SET NULL
+    FOREIGN KEY (avatar_path) REFERENCES file_metadata (path) ON DELETE SET NULL,
+    FOREIGN KEY (avatar_preview_path) REFERENCES file_metadata (path) ON DELETE SET NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_auser_id_str ON auser USING btree (id_str);

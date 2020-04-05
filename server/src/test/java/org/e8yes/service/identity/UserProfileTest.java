@@ -46,36 +46,118 @@ public class UserProfileTest {
   }
 
   @Test
-  public void extractPublicInfoTest() throws JWTVerificationException, AccessDeniedException {
+  public void extractPublicInfoNoAvatarTest()
+      throws JWTVerificationException, AccessDeniedException {
     UserEntity user = new UserEntity();
     user.id.assign(100L);
     user.alias.assign("user_alias");
-    user.avatar_path.assign("/users/100/avatar/selfie.jpg");
 
     UserPublicProfile profile =
         UserProfile.extractPublicInfo(
             user, Initializer.environmentContext().authorizationJwtProvider().algorithm());
     Assertions.assertEquals(100L, profile.getUserId());
     Assertions.assertEquals("user_alias", profile.getAlias());
-    Assertions.assertTrue(profile.hasAvatarReadonlyAccess());
+    Assertions.assertFalse(profile.hasAvatarReadonlyAccess());
+    Assertions.assertFalse(profile.hasAvatarPreviewReadonlyAccess());
+  }
 
-    FileAccessValidator.FileAccessToken accessToken = new FileAccessValidator.FileAccessToken();
-    accessToken.jwtToken = profile.getAvatarReadonlyAccess().getAccessToken().toByteArray();
+  @Test
+  public void extractPublicInfoWithAvatarAndPreviewTest()
+      throws JWTVerificationException, AccessDeniedException {
+    UserEntity user = new UserEntity();
+    user.id.assign(100L);
+    user.avatar_path.assign("/users/100/avatar/selfie.jpg");
+    user.avatar_preview_path.assign("/users/100/avatar/selfie_preview.jpg");
+
+    UserPublicProfile profile =
+        UserProfile.extractPublicInfo(
+            user, Initializer.environmentContext().authorizationJwtProvider().algorithm());
+    Assertions.assertEquals(100L, profile.getUserId());
+    Assertions.assertTrue(profile.hasAvatarReadonlyAccess());
+    Assertions.assertTrue(profile.hasAvatarPreviewReadonlyAccess());
+
     // Valid access.
-    FileAccessLocation loc =
+    FileAccessValidator.FileAccessToken avatarAccessToken =
+        new FileAccessValidator.FileAccessToken();
+    avatarAccessToken.jwtToken = profile.getAvatarReadonlyAccess().getAccessToken().toByteArray();
+    FileAccessLocation avatarLoc =
         FileAccessValidator.validateTokenAccess(
             new Identity(user),
             FileAccessMode.FAM_READ,
-            accessToken,
+            avatarAccessToken,
             Initializer.environmentContext().authorizationJwtProvider().jwtverifier());
-    Assertions.assertEquals("/users/100/avatar/selfie.jpg", loc.path);
+    Assertions.assertEquals("/users/100/avatar/selfie.jpg", avatarLoc.path);
+
+    FileAccessValidator.FileAccessToken avatarPreviewAccessToken =
+        new FileAccessValidator.FileAccessToken();
+    avatarPreviewAccessToken.jwtToken =
+        profile.getAvatarPreviewReadonlyAccess().getAccessToken().toByteArray();
+    FileAccessLocation avatarPreviewLoc =
+        FileAccessValidator.validateTokenAccess(
+            new Identity(user),
+            FileAccessMode.FAM_READ,
+            avatarPreviewAccessToken,
+            Initializer.environmentContext().authorizationJwtProvider().jwtverifier());
+    Assertions.assertEquals("/users/100/avatar/selfie_preview.jpg", avatarPreviewLoc.path);
 
     // Invalid write access.
     try {
       FileAccessValidator.validateTokenAccess(
           new Identity(user),
           FileAccessMode.FAM_WRITE,
-          accessToken,
+          avatarAccessToken,
+          Initializer.environmentContext().authorizationJwtProvider().jwtverifier());
+      Assertions.fail();
+    } catch (AccessDeniedException ex) {
+      Assertions.assertTrue(true);
+    }
+    try {
+      FileAccessValidator.validateTokenAccess(
+          new Identity(user),
+          FileAccessMode.FAM_WRITE,
+          avatarPreviewAccessToken,
+          Initializer.environmentContext().authorizationJwtProvider().jwtverifier());
+      Assertions.fail();
+    } catch (AccessDeniedException ex) {
+      Assertions.assertTrue(true);
+    }
+  }
+
+  @Test
+  public void extractPublicInfoWithAvatarButNoPreviewTest()
+      throws JWTVerificationException, AccessDeniedException {
+    UserEntity user = new UserEntity();
+    user.id.assign(100L);
+    user.avatar_path.assign("/users/100/avatar/selfie.jpg");
+
+    UserPublicProfile profile =
+        UserProfile.extractPublicInfo(
+            user, Initializer.environmentContext().authorizationJwtProvider().algorithm());
+    Assertions.assertEquals(100L, profile.getUserId());
+    Assertions.assertTrue(profile.hasAvatarReadonlyAccess());
+    Assertions.assertTrue(profile.hasAvatarPreviewReadonlyAccess());
+    Assertions.assertEquals(
+        profile.getAvatarReadonlyAccess().getAccessToken(),
+        profile.getAvatarPreviewReadonlyAccess().getAccessToken());
+
+    // Valid access.
+    FileAccessValidator.FileAccessToken avatarAccessToken =
+        new FileAccessValidator.FileAccessToken();
+    avatarAccessToken.jwtToken = profile.getAvatarReadonlyAccess().getAccessToken().toByteArray();
+    FileAccessLocation avatarLoc =
+        FileAccessValidator.validateTokenAccess(
+            new Identity(user),
+            FileAccessMode.FAM_READ,
+            avatarAccessToken,
+            Initializer.environmentContext().authorizationJwtProvider().jwtverifier());
+    Assertions.assertEquals("/users/100/avatar/selfie.jpg", avatarLoc.path);
+
+    // Invalid write access.
+    try {
+      FileAccessValidator.validateTokenAccess(
+          new Identity(user),
+          FileAccessMode.FAM_WRITE,
+          avatarAccessToken,
           Initializer.environmentContext().authorizationJwtProvider().jwtverifier());
       Assertions.fail();
     } catch (AccessDeniedException ex) {

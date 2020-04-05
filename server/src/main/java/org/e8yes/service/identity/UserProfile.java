@@ -46,22 +46,41 @@ public class UserProfile {
    * @return The public profile.
    */
   public static UserPublicProfile extractPublicInfo(UserEntity user, Algorithm jwtAlg) {
-    FileAccessValidator.FileAccessToken avatarAccessToken =
-        FileAccessValidator.signAccessToken(
-            new Identity(user),
-            new FileAccessLocation(user.avatar_path.value()),
-            FileAccessMode.FAM_READ,
-            jwtAlg);
-
-    UserPublicProfile.Builder builder =
-        UserPublicProfile.newBuilder()
-            .setUserId(user.id.value())
-            .setAvatarReadonlyAccess(
-                FileTokenAccess.newBuilder()
-                    .setAccessToken(ByteString.copyFrom(avatarAccessToken.jwtToken)));
+    UserPublicProfile.Builder builder = UserPublicProfile.newBuilder().setUserId(user.id.value());
 
     if (user.alias.value() != null) {
       builder.setAlias(user.alias.value());
+    }
+
+    if (user.avatar_path.value() != null) {
+      FileAccessValidator.FileAccessToken avatarAccessToken =
+          FileAccessValidator.signAccessToken(
+              new Identity(user),
+              new FileAccessLocation(user.avatar_path.value()),
+              FileAccessMode.FAM_READ,
+              jwtAlg);
+      FileTokenAccess avatarReadonlyAccess =
+          FileTokenAccess.newBuilder()
+              .setAccessToken(ByteString.copyFrom(avatarAccessToken.jwtToken))
+              .build();
+      builder.setAvatarReadonlyAccess(avatarReadonlyAccess);
+
+      if (user.avatar_preview_path.value() != null) {
+        FileAccessValidator.FileAccessToken avatarPreviewAccessToken =
+            FileAccessValidator.signAccessToken(
+                new Identity(user),
+                new FileAccessLocation(user.avatar_preview_path.value()),
+                FileAccessMode.FAM_READ,
+                jwtAlg);
+        FileTokenAccess avatarPreviewReadonlyAccess =
+            FileTokenAccess.newBuilder()
+                .setAccessToken(ByteString.copyFrom(avatarPreviewAccessToken.jwtToken))
+                .build();
+        builder.setAvatarPreviewReadonlyAccess(avatarPreviewReadonlyAccess);
+      } else {
+        // Use the avatar path as the preview path when preview doesn't exist.
+        builder.setAvatarPreviewReadonlyAccess(avatarReadonlyAccess);
+      }
     }
 
     return builder.build();

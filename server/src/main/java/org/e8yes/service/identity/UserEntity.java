@@ -29,6 +29,7 @@ public class UserEntity {
   public SqlStrArr emails = new SqlStrArr();
   public SqlStr alias = new SqlStr();
   public SqlStr avatar_path = new SqlStr();
+  public SqlStr avatar_preview_path = new SqlStr();
   public SqlStr security_key_hash = new SqlStr();
   public SqlStrArr group_names = new SqlStrArr();
   public SqlInt active_level = new SqlInt();
@@ -58,6 +59,8 @@ public class UserEntity {
         + alias
         + ", avatar_path="
         + avatar_path
+        + ", avatar_preview_path="
+        + avatar_preview_path
         + ", security_key_hash="
         + security_key_hash
         + ", group_names="
