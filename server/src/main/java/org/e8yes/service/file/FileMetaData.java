@@ -121,7 +121,7 @@ public class FileMetaData {
   }
 
   /**
-   * Creates file descriptor builder and pre-fill values from entity.
+   * Creates file descriptor builder and pre-fill values from entity. Access methods are ignored.
    *
    * @param entity File entity used to pre-fill the file descriptor builder.
    * @return The pre-filled builder.
