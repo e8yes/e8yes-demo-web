@@ -226,7 +226,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     try {
       UserEntity viewerEntity = UserRetrieval.retrieveUserEntity(viewer.userId, dbConn);
-      
+
       // TODO: Need to generate avatar preview.
       UserProfile.AvatarSetup setup =
           UserProfile.setUpNewAvatar(
