@@ -199,7 +199,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         UserPublicProfile profile =
             UserProfile.extractPublicInfo(
                 user, Initializer.environmentContext().authorizationJwtProvider().algorithm());
-        builder.addEntries(profile);
+        builder.addUserProfiles(profile);
       }
 
       res.onNext(builder.build());

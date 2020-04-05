@@ -7,8 +7,6 @@ option java_outer_classname = "ServiceFileProto";
 package org.e8yes.services;
 
 import "file.proto";
-import "nullable_primitives.proto";
-
 
 message UploadFileRequest {
     FileDescriptor file_descriptor = 1;

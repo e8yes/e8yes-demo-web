@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.service";
+option java_outer_classname = "UserProfileProto";
+
+package org.e8yes.services;
+
+import "file.proto";
+
+message UserPublicProfile {
+    int64 user_id = 1;
+    string alias = 2;
+    FileTokenAccess avatar_readonly_access = 3;
+    FileTokenAccess avatar_preview_readonly_access = 4;
+}

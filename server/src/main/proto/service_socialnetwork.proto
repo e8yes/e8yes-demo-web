@@ -2,36 +2,99 @@ syntax = "proto3";
 
 option java_multiple_files = true;
 option java_package = "org.e8yes.service";
-option java_outer_classname = "ServiceFriendShipProto";
+option java_outer_classname = "ServiceSocialNetworkProto";
 
+package org.e8yes.services;
 
-message FriendshipRRequest {
+import "pagination.proto";
+import "user_profile.proto";
+
+message SendInvitationRequest {
+    int64 invitee_user_id = 1;
 }
 
-message FriendshipRReply {
+message SendInvitationResponse {}
+
+
+message DeleteInvitationRequest {
+    int64 invitee_user_id = 1;
 }
 
-message AcceptFriendshipRRequest {
+message DeleteInvitationResponse {}
+
+
+message AcceptInvitationRequest {
+    int64 inviter_user_id = 1;
 }
 
-message AcceptFriendshipRReply {
+message AcceptInvitationResponse {}
+
+
+message RejectInvitationRequest {
+    int64 inviter_user_id = 1;
 }
 
-message FriendListRequest {
+message RejectInvitationResponse {}
+
+
+message GetInvitationListRequest {
+    Pagination pagination = 1;
 }
 
-message FriendListReply {
+message GetInvitationListResponse {
+    repeated UserPublicProfile user_profiles = 1;
 }
 
-message RemoveFriendRequest {
+
+message DeleteFriendRequest {
+    int64 friend_user_id = 1;
 }
 
-message RemoveFriendReply {
+message DeleteFriendResponse {}
+
+
+message GetFriendListRequest {
+    Pagination pagination = 1;
+}
+
+message GetFriendListResponse {
+    repeated UserPublicProfile user_profiles = 1;
 }
 
 service SocialNetworkService {
-    rpc SendFriendshipRequest (FriendshipRRequest) returns (FriendshipRReply) {}
-    rpc AcceptFriendRequest (AcceptFriendshipRRequest) returns (AcceptFriendshipRReply) {}
-    rpc RemoveFriend (RemoveFriendRequest) returns (RemoveFriendReply) {}
-    rpc GetFriendList (FriendListRequest) returns (FriendListReply) {}
+    /**
+     * Send a friend request invitation to another user and the logged-in user is the inviter.
+     */
+    rpc SendInvitation (SendInvitationRequest) returns (SendInvitationResponse);
+    
+    /**
+     * Delete invitation previously sent where the logged-in user is inviter.
+     */
+    rpc DeleteInvitation (DeleteInvitationRequest) returns (DeleteInvitationResponse);
+    
+    /**
+     * Accept an invitation to establish friend relation where the logged-in user is the invitee.
+     */
+    rpc AcceptInvitation (AcceptInvitationRequest) returns (AcceptInvitationResponse);
+    
+    /**
+     * Reject an invitation where the logged-in user is the invitee.
+     */
+    rpc RejectInvitation (RejectInvitationRequest) returns (RejectInvitationResponse);
+    
+    /**
+     * Get the friend invitation list where the logged-in user is the invitee.
+     */
+    rpc GetInvitationList (GetInvitationListRequest) returns (GetInvitationListResponse);
+    
+    /**
+     * Delete a friend relation for the logged-in user.
+     */
+    rpc DeleteFriend (DeleteFriendRequest) returns (DeleteFriendResponse);
+    
+    
+    /**
+     * Get the friend list of the logged-in user.
+     */
+    rpc GetFriendList (GetFriendListRequest) returns (GetFriendListResponse);
 }

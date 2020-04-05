@@ -9,6 +9,7 @@ package org.e8yes.services;
 import "file.proto";
 import "nullable_primitives.proto";
 import "pagination.proto";
+import "user_profile.proto";
 
 message RegistrationRequest {
     bytes security_key = 1;
@@ -34,13 +35,6 @@ message AuthorizationResponse {
     bytes jwt_token = 1;
 }
 
-
-message UserPublicProfile {
-    int64 user_id = 1;
-    string alias = 2;
-    FileTokenAccess avatar_readonly_access = 3;
-    FileTokenAccess avatar_preview_readonly_access = 4;
-}
 
 message GetPublicProfileRequest {
     // Optional. If this field isn't provided, it will fetch the public profile
@@ -73,7 +67,7 @@ message SearchUserRequest {
 }
 
 message SearchUserResponse {
-    repeated UserPublicProfile entries = 1;
+    repeated UserPublicProfile user_profiles = 1;
 }
 
 
