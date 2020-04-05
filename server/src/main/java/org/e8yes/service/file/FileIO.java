@@ -112,8 +112,19 @@ public class FileIO {
 
     int chunkNumber = 0;
     ByteBuffer buf = ByteBuffer.allocate(FileStreamConstants.CHUNK_SIZE_LIMIT);
-    while (accessor.file.readNext(buf) > 0) {
-      listener.processNextChunk(buf, chunkNumber);
+
+    int numBytes;
+    while ((numBytes = accessor.file.readNext(buf)) > 0) {
+      switch (numBytes) {
+        case FileStreamConstants.CHUNK_SIZE_LIMIT:
+          listener.processNextChunk(buf, chunkNumber);
+          break;
+        default:
+          ByteBuffer shortened = ByteBuffer.allocate(numBytes);
+          shortened.put(buf.limit(numBytes).flip());
+          listener.processNextChunk(shortened, chunkNumber);
+          break;
+      }
       buf.clear();
       ++chunkNumber;
     }
