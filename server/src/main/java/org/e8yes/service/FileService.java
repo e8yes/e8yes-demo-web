@@ -26,151 +26,117 @@ import java.nio.ByteBuffer;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.e8yes.constant.FileStreamConstants;
 import org.e8yes.constant.GrpcContexts;
 import org.e8yes.environment.Initializer;
 import org.e8yes.exception.AccessDeniedException;
 import org.e8yes.exception.ResourceMissingException;
-import org.e8yes.fsprovider.FileSystemProviderInterface;
 import org.e8yes.service.file.FileEntity;
 import org.e8yes.service.file.FileIO;
+import org.e8yes.service.file.FileIO.FileChunkWriter;
 import org.e8yes.service.file.FileMetaData;
+import org.e8yes.sql.connection.ConnectionReservoirInterface;
 
 /**
  * Handle file upload. Validate identity then store the data chunk in sequence to the file system.
  */
-class UploadStreamObserver implements StreamObserver<UploadFileRequest> {
 
-  private final StreamObserver<UploadFileResponse> res;
-  private FileIO.FileAccessor fileAccessor;
-  private int fileSize = 0;
-
-  public UploadStreamObserver(StreamObserver<UploadFileResponse> res) {
-    this.res = res;
-  }
-
-  @Override
-  public void onNext(UploadFileRequest request) {
-    if (fileAccessor == null) {
-      try {
-        fileAccessor =
-            FileIO.validateAndOpenFile(
-                GrpcContexts.IDENTITY_CONTEXT_KEY.get(),
-                request.getFileDescriptor(),
-                FileAccessMode.FAM_READ,
-                Initializer.environmentContext().fileSystemProvider(),
-                Initializer.environmentContext().authorizationJwtProvider().jwtverifier(),
-                Initializer.environmentContext().demowebDbConnections().connectionReservoir());
-
-        FileMetaData.addMetaDataForFile(
-            fileAccessor.location,
-            request.getFileDescriptor().getEncryptionSource(),
-            Initializer.environmentContext().demowebDbConnections().connectionReservoir());
-      } catch (IllegalArgumentException | SQLException | IllegalAccessException | IOException ex) {
-        Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
-        res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
-        return;
-      } catch (AccessDeniedException | JWTVerificationException ex) {
-        Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
-        res.onError(Status.UNAUTHENTICATED.withDescription(ex.getMessage()).asException());
-        return;
-      }
-    }
-
-    try {
-      fileSize +=
-          fileAccessor.file.writeNext(request.getCurrentChunk().getData().asReadOnlyByteBuffer());
-      res.onNext(UploadFileResponse.newBuilder().build());
-    } catch (IOException ex) {
-      Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
-      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
-    }
-  }
-
-  @Override
-  public void onError(Throwable ex) {
-    res.onError(ex);
-  }
-
-  @Override
-  public void onCompleted() {
-    try {
-      FileSystemProviderInterface fsProvider =
-          Initializer.environmentContext().fileSystemProvider();
-      fsProvider.close(fileAccessor.file);
-
-      FileMetaData.updateFileSize(
-          fileAccessor.location,
-          fileSize,
-          Initializer.environmentContext().demowebDbConnections().connectionReservoir());
-
-      res.onCompleted();
-    } catch (SQLException
-        | NoSuchMethodException
-        | InstantiationException
-        | IllegalAccessException
-        | IllegalArgumentException
-        | InvocationTargetException
-        | ResourceMissingException
-        | IOException ex) {
-      Logger.getLogger(UploadStreamObserver.class.getName()).log(Level.SEVERE, null, ex);
-      res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
-    }
-  }
-}
-
-/** Service for file management. */
+/** Service for file transfer. */
 public class FileService extends FileServiceGrpc.FileServiceImplBase {
 
   @Override
   public StreamObserver<UploadFileRequest> upload(StreamObserver<UploadFileResponse> res) {
-    return new UploadStreamObserver(res);
-  }
-
-  @Override
-  public void download(DownloadFileRequest request, StreamObserver<DownloadFileResponse> res) {
-    try {
-      FileIO.FileAccessor fileAccessor =
-          FileIO.validateAndOpenFile(
-              GrpcContexts.IDENTITY_CONTEXT_KEY.get(),
-              request.getFileDescriptor(),
-              FileAccessMode.FAM_READ,
+    return new StreamObserver<UploadFileRequest>() {
+      private final FileChunkWriter fileWriter =
+          new FileChunkWriter(
               Initializer.environmentContext().fileSystemProvider(),
               Initializer.environmentContext().authorizationJwtProvider().jwtverifier(),
               Initializer.environmentContext().demowebDbConnections().connectionReservoir());
 
-      FileEntity fileMeta =
-          FileMetaData.retrieveFileMetadata(
-              fileAccessor.location,
-              Initializer.environmentContext().demowebDbConnections().connectionReservoir());
-      if (fileMeta == null) {
-        throw new ResourceMissingException("File at " + fileAccessor.location + " doesn't exist.");
+      @Override
+      public void onNext(UploadFileRequest request) {
+        try {
+          fileWriter.writeNextChunk(
+              GrpcContexts.IDENTITY_CONTEXT_KEY.get(),
+              request.getFileDescriptor(),
+              request.getCurrentChunk().getData().asReadOnlyByteBuffer());
+        } catch (IOException | IllegalArgumentException | SQLException ex) {
+          Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+          res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+        } catch (JWTVerificationException | AccessDeniedException ex) {
+          Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+          res.onError(Status.PERMISSION_DENIED.withDescription(ex.getMessage()).asException());
+        } catch (IllegalAccessException ex) {
+          Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+          res.onError(Status.INVALID_ARGUMENT.withDescription(ex.getMessage()).asException());
+        }
       }
 
-      FileDescriptor.Builder desc = FileMetaData.createFileDescriptorBuilder(fileMeta);
-      desc.setFileDirectAccess(request.getFileDescriptor().getFileDirectAccess());
-      desc.setFileTokenAccess(request.getFileDescriptor().getFileTokenAccess());
-
-      DownloadFileResponse.Builder respBuilder = DownloadFileResponse.newBuilder();
-      respBuilder.setFileDescriptor(desc.build());
-
-      int chunkNumber = -1;
-      FileChunk.Builder curChunkBuilder = FileChunk.newBuilder();
-      ByteBuffer buf = ByteBuffer.allocate(FileStreamConstants.CHUNK_SIZE_LIMIT);
-      while (fileAccessor.file.readNext(buf) > 0) {
-        curChunkBuilder.setChunkNumber(++chunkNumber);
-        curChunkBuilder.setData(ByteString.copyFrom(buf));
-
-        respBuilder.setCurrentChunk(curChunkBuilder.build());
-        res.onNext(respBuilder.build());
-
-        buf.clear();
+      @Override
+      public void onError(Throwable ex) {
+        res.onError(ex);
       }
 
-      res.onCompleted();
+      @Override
+      public void onCompleted() {
+        try {
+          fileWriter.close();
+          res.onCompleted();
+        } catch (IOException
+            | SQLException
+            | NoSuchMethodException
+            | InstantiationException
+            | IllegalAccessException
+            | IllegalArgumentException
+            | InvocationTargetException ex) {
+          Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+          res.onError(Status.INTERNAL.withDescription(ex.getMessage()).asException());
+        } catch (ResourceMissingException ex) {
+          Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+          res.onError(Status.NOT_FOUND.withDescription(ex.getMessage()).asException());
+        }
+      }
+    };
+  }
+
+  @Override
+  public void download(DownloadFileRequest request, StreamObserver<DownloadFileResponse> res) {
+    ConnectionReservoirInterface dbConn =
+        Initializer.environmentContext().demowebDbConnections().connectionReservoir();
+
+    try {
+      FileIO.readFile(
+          GrpcContexts.IDENTITY_CONTEXT_KEY.get(),
+          request.getFileDescriptor(),
+          Initializer.environmentContext().fileSystemProvider(),
+          Initializer.environmentContext().authorizationJwtProvider().jwtverifier(),
+          dbConn,
+          new FileIO.FileChunkListener() {
+            private DownloadFileResponse.Builder respBuilder;
+            private FileChunk.Builder chunkBuilder;
+
+            @Override
+            public void onReady(FileEntity metadata) {
+              FileDescriptor.Builder desc = FileMetaData.createFileDescriptorBuilder(metadata);
+              respBuilder = DownloadFileResponse.newBuilder();
+              respBuilder.setFileDescriptor(desc.build());
+            }
+
+            @Override
+            public void onComplete() {
+              res.onCompleted();
+            }
+
+            @Override
+            public void processNextChunk(ByteBuffer chunkData, int chunkNumber) {
+              chunkBuilder.setChunkNumber(chunkNumber);
+              chunkBuilder.setData(ByteString.copyFrom(chunkData));
+              respBuilder.setCurrentChunk(chunkBuilder.build());
+              res.onNext(respBuilder.build());
+            }
+          });
     } catch (AccessDeniedException | JWTVerificationException ex) {
       Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
-      res.onError(Status.UNAUTHENTICATED.withDescription(ex.getMessage()).asException());
+      res.onError(Status.PERMISSION_DENIED.withDescription(ex.getMessage()).asException());
     } catch (ResourceMissingException ex) {
       Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
       res.onError(Status.NOT_FOUND.withDescription(ex.getMessage()).asException());
