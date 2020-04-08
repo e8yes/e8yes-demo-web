@@ -1,15 +1,21 @@
 package org.e8yes.exception;
 
-/**
- * ResourceConflictException
- *
- * @author davis
- */
+/** ResourceConflictException */
 public class ResourceConflictException extends RpcException {
+
+  private final String message;
+
+  public ResourceConflictException() {
+    message = "Resource Conflict";
+  }
+
+  public ResourceConflictException(String message) {
+    this.message = message;
+  }
 
   @Override
   public String getMessage() {
-    return "Resource Conflict";
+    return message;
   }
 
   @Override

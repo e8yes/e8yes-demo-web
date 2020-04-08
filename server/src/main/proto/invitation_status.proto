@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.e8yes.service";
+option java_outer_classname = "InvitationStatusProto";
+
+enum InvitationStatus {
+    UNKNOWN = 0;
+    PENDING = 1;
+    ACCEPTED = 2;
+    REJECTED = 3;
+    HIDDEN = 4;
+}

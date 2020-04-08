@@ -9,13 +9,14 @@ setup-linux-dbs:
 	./linux-db-setup.sh
 init-linux: init-linux-pkgs create-linux-dbs setup-linux-dbs
 
-install-maven-pkgs: init-linux
+build: init-linux
 	mvn clean
+	mvn antrun:run@compile-protoc
 	mvn install -Dhttps.protocols=TLSv1.2 -Dexec.args=-ea
 
-run: install-maven-pkgs
+run: build 
 	mvn exec:java -Dexec.args=-ea
-test: install-maven-pkgs
+test: build 
 
 push: test
 	git push

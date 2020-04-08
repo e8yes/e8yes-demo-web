@@ -30,6 +30,10 @@ public class DbTableConstants {
     return "friend";
   }
 
+  public static String friendInvitationTable() {
+    return "friend_invitation";
+  }
+
   public static String messageTable() {
     return "message";
   }
