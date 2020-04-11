@@ -15,3 +15,6 @@ hs_err_pid*
 /webchat/dist/
 /server/target/
 /server/nbproject/
+
+# c++ binaries
+build-*/
