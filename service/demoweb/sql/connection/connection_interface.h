@@ -38,16 +38,20 @@ class ConnectionInterface {
     virtual ~ConnectionInterface() = default;
     ConnectionInterface(ConnectionInterface const &) = delete;
 
-    /** Stores information about the parameter values to a parameterized query */
+    /**
+     * @brief Stores information about the parameter values to a parameterized query
+     */
     class QueryParams {
       public:
         using SlotId = int32_t;
 
-        /** Clear all the parameter values. */
+        /**
+         * @brief Clear all the parameter values.
+         */
         void clear() { params_.clear(); }
 
         /**
-         * Set value to the position-th parameter placeholder.
+         * @brief Set value to the position-th parameter placeholder.
          *
          * @param position Position to set value to.
          * @param val value to set.
@@ -57,7 +61,7 @@ class ConnectionInterface {
         }
 
         /**
-         * Get the value set to the position-th placeholder.
+         * @brief Get the value set to the position-th placeholder.
          *
          * @param position Position to read from.
          * @return The value if it exists. Otherwise null.
@@ -72,12 +76,17 @@ class ConnectionInterface {
         }
 
         /**
-         * Get the number of placeholders that are assigned a value of.
+         * @brief Get the number of placeholders that are assigned a value of.
          *
          * @return The number of placeholders.
          */
         size_t num_slots() { return params_.size(); }
 
+        /**
+         * @brief allocate_slot Allocate a new parameter slot.
+         *
+         * @return ID of the parameter slot.
+         */
         SlotId allocate_slot() { return ++next_slot_id_; }
 
       private:
@@ -91,30 +100,26 @@ class ConnectionInterface {
      * @param query Query to run.
      * @param params Parameters for the query.
      * @return Query's result set.
-     * @throws java.sql.SQLException
      */
     virtual std::unique_ptr<ResultSetInterface> run_query(std::string const &query,
                                                           QueryParams const &params) = 0;
 
     /**
-     * Run a parameterized update query.
+     * @brief Run a parameterized update query.
      *
      * @param query Update query to run.
      * @param params Parameters for the query.
      * @return The number of rows updated by the query.
-     * @throws java.sql.SQLException
      */
     virtual int run_update(std::string const &query, QueryParams const &params) = 0;
 
     /**
-     * Closing the connection.
-     *
-     * @throws java.sql.SQLException
+     * @brief Closing the connection.
      */
     virtual void close() = 0;
 
     /**
-     * Check if the connection is closed
+     * @brief Check if the connection is closed
      *
      * @throws java.sql.SQLException
      * @return true if it is closed.

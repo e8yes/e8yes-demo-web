@@ -22,7 +22,8 @@ HEADERS += \
     sql/resultset/result_set_interface.h \
     sql/reflection/sql_entity_interface.h \
     sql/reflection/sql_primitives.h \
-    sql/reflection/sql_primitives.h
+    sql/reflection/sql_primitives.h \
+    sql/resultset/pq_result_set.h
 
 SOURCES += \
     sql/sql_query_builder.cc \
@@ -30,6 +31,7 @@ SOURCES += \
     sql/reflection/sql_primitive_interface.cc \
     sql/reflection/sql_entity_interface.cc \
     sql/reflection/sql_primitives.cc \
-    sql/resultset/result_set_interface.cc
+    sql/resultset/result_set_interface.cc \
+    sql/resultset/pq_result_set.cc
 
 LIBS += -lpqxx

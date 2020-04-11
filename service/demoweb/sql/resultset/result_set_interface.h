@@ -49,7 +49,7 @@ class ResultSetInterface {
      * field.
      *
      * @param <RecordType> The type of record.
-     * @param i The ith cell to pull value from.
+     * @param i The i-th(zero-offset) cell to pull value from.
      * @param field The field to assign value to.
      */
     virtual void set_field(int i, SqlPrimitiveInterface *field) = 0;

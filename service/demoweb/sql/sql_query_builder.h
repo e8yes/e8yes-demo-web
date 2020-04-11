@@ -60,8 +60,9 @@ class SqlQueryBuilder {
      * @return The current builder.
      */
     template <typename Type> SqlQueryBuilder &placeholder(Placeholder<Type> *holder) {
-        holder->slots.add(params_.allocate_slot());
-        query_.append("?");
+        ConnectionInterface::QueryParams::SlotId slot_id = params_.allocate_slot();
+        holder->slots.add(slot_id);
+        query_.append("$" + std::to_string(slot_id));
         return *this;
     }
 
