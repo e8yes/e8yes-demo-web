@@ -21,8 +21,8 @@
 #include <memory> // IWYU pragma: keep
 #include <stdint.h>
 // IWYU pragma: no_include <bits/stdint-intn.h>
+#include <map>
 #include <string>
-#include <unordered_map>
 
 #include "sql/reflection/sql_primitive_interface.h"
 #include "sql/resultset/result_set_interface.h"
@@ -31,12 +31,15 @@ namespace e8 {
 
 /**
  * @brief The ConnectionInterface class Represents a connection to a database server.
+ * There should only be one thread accessing a connection at a time.
  */
 class ConnectionInterface {
   public:
     ConnectionInterface() = default;
     virtual ~ConnectionInterface() = default;
     ConnectionInterface(ConnectionInterface const &) = delete;
+
+    using ParameterizedQuery = std::string;
 
     /**
      * @brief Stores information about the parameter values to a parameterized query
@@ -48,7 +51,7 @@ class ConnectionInterface {
         /**
          * @brief Clear all the parameter values.
          */
-        void clear() { params_.clear(); }
+        void clear();
 
         /**
          * @brief Set value to the position-th parameter placeholder.
@@ -56,9 +59,7 @@ class ConnectionInterface {
          * @param position Position to set value to.
          * @param val value to set.
          */
-        void set_param(SlotId slot, SqlPrimitiveInterface const &val) {
-            params_.insert(std::make_pair(slot, &val));
-        }
+        void set_param(SlotId slot, SqlPrimitiveInterface const &val);
 
         /**
          * @brief Get the value set to the position-th placeholder.
@@ -66,31 +67,31 @@ class ConnectionInterface {
          * @param position Position to read from.
          * @return The value if it exists. Otherwise null.
          */
-        SqlPrimitiveInterface const *get_param(SlotId slot) const {
-            auto it = params_.find(slot);
-            if (it != params_.end()) {
-                return it->second;
-            } else {
-                return nullptr;
-            }
-        }
+        SqlPrimitiveInterface const *get_param(SlotId slot) const;
 
         /**
          * @brief Get the number of placeholders that are assigned a value of.
          *
          * @return The number of placeholders.
          */
-        size_t num_slots() { return params_.size(); }
+        size_t num_slots() const;
 
         /**
          * @brief allocate_slot Allocate a new parameter slot.
          *
          * @return ID of the parameter slot.
          */
-        SlotId allocate_slot() { return ++next_slot_id_; }
+        SlotId allocate_slot();
+
+        /**
+         * @brief params Returns the internally allocated parameters.
+         *
+         * @return Slot parameters.
+         */
+        std::map<SlotId, SqlPrimitiveInterface const *> const &parameters() const;
 
       private:
-        std::unordered_map<SlotId, SqlPrimitiveInterface const *> params_;
+        std::map<SlotId, SqlPrimitiveInterface const *> params_;
         SlotId next_slot_id_ = 0;
     };
 
@@ -101,7 +102,7 @@ class ConnectionInterface {
      * @param params Parameters for the query.
      * @return Query's result set.
      */
-    virtual std::unique_ptr<ResultSetInterface> run_query(std::string const &query,
+    virtual std::unique_ptr<ResultSetInterface> run_query(ParameterizedQuery const &query,
                                                           QueryParams const &params) = 0;
 
     /**
@@ -111,12 +112,7 @@ class ConnectionInterface {
      * @param params Parameters for the query.
      * @return The number of rows updated by the query.
      */
-    virtual int run_update(std::string const &query, QueryParams const &params) = 0;
-
-    /**
-     * @brief Closing the connection.
-     */
-    virtual void close() = 0;
+    virtual uint64_t run_update(ParameterizedQuery const &query, QueryParams const &params) = 0;
 
     /**
      * @brief Check if the connection is closed

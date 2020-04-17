@@ -17,4 +17,32 @@
 
 #include "sql/connection/connection_interface.h"
 
-namespace e8 {} // namespace e8
+namespace e8 {
+
+void ConnectionInterface::QueryParams::set_param(SlotId slot, SqlPrimitiveInterface const &val) {
+    params_.insert(std::make_pair(slot, &val));
+}
+
+SqlPrimitiveInterface const *ConnectionInterface::QueryParams::get_param(SlotId slot) const {
+    auto it = params_.find(slot);
+    if (it != params_.end()) {
+        return it->second;
+    } else {
+        return nullptr;
+    }
+}
+
+void ConnectionInterface::QueryParams::clear() { params_.clear(); }
+
+size_t ConnectionInterface::QueryParams::num_slots() const { return params_.size(); }
+
+ConnectionInterface::QueryParams::SlotId ConnectionInterface::QueryParams::allocate_slot() {
+    return ++next_slot_id_;
+}
+
+std::map<ConnectionInterface::QueryParams::SlotId, SqlPrimitiveInterface const *> const &
+ConnectionInterface::QueryParams::parameters() const {
+    return params_;
+}
+
+} // namespace e8
