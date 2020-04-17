@@ -18,8 +18,7 @@
 #ifndef SQL_PRIMITIVE_INTERFACE_H
 #define SQL_PRIMITIVE_INTERFACE_H
 
-#include <pqxx/prepared_statement.hxx>
-#include <pqxx/types.hxx>
+#include <pqxx/pqxx>
 #include <string>
 
 namespace e8 {

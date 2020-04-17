@@ -17,13 +17,10 @@
 
 #include <cassert>
 #include <ctime>
-#include <inttypes.h>
 #include <iomanip>
 #include <iostream>
-#include <pqxx/array.hxx>
-#include <pqxx/connection.hxx>
-#include <pqxx/field.hxx>
-#include <pqxx/prepared_statement.hxx>
+#include <pqxx/pqxx>
+#include <stdint.h>
 #include <string>
 
 #include "sql/reflection/sql_primitives.h"
@@ -38,8 +35,8 @@ void from_string(std::string const &str_val, bool *val) {
         *val = false;
     }
 }
-void from_string(std::string const &str_val, int *val) { *val = std::stoi(str_val); }
-void from_string(std::string const &str_val, long *val) { *val = std::stol(str_val); }
+void from_string(std::string const &str_val, int32_t *val) { *val = std::stoi(str_val); }
+void from_string(std::string const &str_val, int64_t *val) { *val = std::stol(str_val); }
 void from_string(std::string const &str_val, float *val) { *val = std::stof(str_val); }
 void from_string(std::string const &str_val, double *val) { *val = std::stod(str_val); }
 void from_string(std::string const &str_val, std::string *val) { *val = str_val; }

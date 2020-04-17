@@ -20,9 +20,7 @@
 
 #include <ctime>
 #include <optional> // IWYU pragma: keep
-#include <pqxx/connection>
-#include <pqxx/field>
-#include <pqxx/prepared_statement>
+#include <pqxx/pqxx>
 #include <stdint.h>
 #include <string>
 #include <vector>
