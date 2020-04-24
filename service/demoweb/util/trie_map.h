@@ -126,6 +126,18 @@ class TrieMap {
          */
         std::pair<KeyType const &, IteratorValueType &> const operator*();
 
+        /**
+         * @brief current_node
+         * @return
+         */
+        PathletNodeType *node();
+
+        /**
+         * @brief node
+         * @return
+         */
+        PathletNodeType const *node() const;
+
       public:
         KeyType key_;
         std::vector<Pathlet<PathletNodeType>> path_;
@@ -370,6 +382,25 @@ std::pair<KeyType const &, IteratorValueType &> const
     std::optional<IteratorValueType> &val = path_.back().node->value;
     assert(val.has_value());
     return std::pair<KeyType const &, IteratorValueType &>(key_, val.value());
+}
+
+template <typename KeyType, typename ValueType, typename NodeType>
+template <typename PathletNodeType, typename IteratorValueType>
+PathletNodeType *
+TrieMap<KeyType, ValueType, NodeType>::iterator_base<PathletNodeType, IteratorValueType>::node() {
+    assert(!path_.empty());
+    assert(!path_.back().node->value.has_value());
+    return path_.back().node;
+}
+
+template <typename KeyType, typename ValueType, typename NodeType>
+template <typename PathletNodeType, typename IteratorValueType>
+PathletNodeType const *
+TrieMap<KeyType, ValueType, NodeType>::iterator_base<PathletNodeType, IteratorValueType>::node()
+    const {
+    assert(!path_.empty());
+    assert(!path_.back().node->value.has_value());
+    return path_.back().node;
 }
 
 template <typename KeyType, typename ValueType, typename NodeType>
