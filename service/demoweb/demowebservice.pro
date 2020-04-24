@@ -2,7 +2,12 @@ QT       -= core gui
 TARGET = demowebservice
 TEMPLATE = lib
 CONFIG += c++17
+
 QMAKE_CXXFLAGS += -std=c++17
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -Ofast -flto -march=native -mtune=native
+QMAKE_LDFLAGS_RELEASE += -Ofast -flto -march=native -mtune=native
+
 DEFINES += DEMOWEBLIB_LIBRARY
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
