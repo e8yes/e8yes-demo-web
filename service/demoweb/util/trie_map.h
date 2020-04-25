@@ -39,9 +39,44 @@ using TrieNodeIterator = typename TrieNodes<KeyElementType, NodeType>::const_ite
  * @brief TrieNode struct The default trie node.
  */
 template <typename KeyElementType, typename ValueType> struct TrieNode {
+    TrieNode() = default;
+    TrieNode(TrieNode const &other);
+
+    bool operator==(TrieNode const &rhs) const;
+
     TrieNodes<KeyElementType, TrieNode> children;
     std::optional<ValueType> value;
 };
+
+template <typename KeyElementType, typename ValueType>
+TrieNode<KeyElementType, ValueType>::TrieNode(TrieNode const &other) {
+    if (other.value.has_value()) {
+        value = ValueType(other.value.value());
+    }
+    children.clear();
+    for (auto const &[key, value] : other.children) {
+        children.insert(std::make_pair(key, std::make_unique<TrieNode>(*value)));
+    }
+}
+
+template <typename KeyElementType, typename ValueType>
+bool TrieNode<KeyElementType, ValueType>::operator==(TrieNode const &rhs) const {
+    if (value != rhs.value) {
+        return false;
+    }
+    if (children.size() != rhs.size()) {
+        return false;
+    }
+
+    for (auto const &[key, value] : children) {
+        auto it = rhs.children.find(key);
+        if (it == rhs.children.end() || !(*value == *it->second)) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 /**
  * @brief The TrieMap class Implements the map abstract data type using prefix tree.
@@ -82,15 +117,15 @@ class TrieMap {
         iterator_base() = default;
 
         /**
-         * @brief const_iterator Bootstrap from a root node.
+         * @brief iterator_base Bootstrap from a root node.
          * @param root Root node to bootstrap from.
          */
         iterator_base(Pathlet<PathletNodeType> const &root);
 
         /**
-         * @brief const_iterator
-         * @param key
-         * @param path
+         * @brief iterator_base Initializes from a path to form the key.
+         * @param key A key in the trie map.
+         * @param path A tree path in the trie which forms the specified key.
          */
         iterator_base(KeyType const &key, std::vector<Pathlet<PathletNodeType>> const &path);
         iterator_base(iterator_base const &) = default;
@@ -98,18 +133,18 @@ class TrieMap {
         ~iterator_base() = default;
 
         /**
-         * @brief operator ==
-         * @param it
-         * @return
+         * @brief operator == Two iterators are equal if they have the same tree path.
+         * @param rhs Another iterator to compare against.
+         * @return True if iterator rhs is equal to this iterator.
          */
-        bool operator==(iterator_base const &it) const;
+        bool operator==(iterator_base const &rhs) const;
 
         /**
-         * @brief operator !=
-         * @param it
-         * @return
+         * @brief operator != Negation of the equality operator.
+         * @param rhs Another iterator to compare against.
+         * @return True if iterator rhs does not equal to this iterator.
          */
-        bool operator!=(iterator_base const &it) const;
+        bool operator!=(iterator_base const &rhs) const;
 
         /**
          * @brief operator ++ Prefix increment. Move the iterator to the next element in the trie
@@ -121,20 +156,21 @@ class TrieMap {
         iterator_base &operator++();
 
         /**
-         * @brief operator *
-         * @return
+         * @brief operator * de-reference operator.
+         * @return mapped value at the current key, or the iterator position.
          */
         std::pair<KeyType const &, IteratorValueType &> const operator*();
 
         /**
-         * @brief current_node
-         * @return
+         * @brief current_node Exposes the external node.
+         * @return The external node at the current iterator position if exists. Otherwise, it
+         * returns null.
          */
         PathletNodeType *node();
 
         /**
-         * @brief node
-         * @return
+         * @brief node The constant version of the above function.
+         * @return See above.
          */
         PathletNodeType const *node() const;
 
@@ -147,105 +183,95 @@ class TrieMap {
     using iterator = iterator_base<NodeType, ValueType>;
 
     /**
-     * @brief operator =
-     * @param rhs
-     * @return
+     * @brief operator = Copy assignment operator.
      */
     TrieMap<KeyType, ValueType> &operator=(TrieMap<KeyType, ValueType> rhs);
 
     /**
-     * @brief operator ==
-     * @param rhs
-     * @return
+     * @brief operator == Two maps are equal if they both contain the same set of key-value pairs.
      */
     bool operator==(TrieMap<KeyType, ValueType> const &rhs) const;
 
     /**
-     * @brief operator !=
-     * @param rhs
-     * @return
+     * @brief operator != The negation of the equality operator.
      */
     bool operator!=(TrieMap<KeyType, ValueType> const &rhs) const;
 
     /**
-     * @brief operator []
-     * @param key
-     * @return
+     * @brief operator [] Taking the key as the index and returns the corresponding reference to the
+     * value. The behavior of this operator is undefined if the key doesn't exist in the map.
+     * @param key The key of the value in question.
+     * @return Reference to the value corresponding to the key.
      */
     ValueType &operator[](KeyType const &key);
 
     /**
-     * @brief operator []
-     * @param key
-     * @return
+     * @brief operator [] Constant version of the above operator.
      */
     ValueType operator[](KeyType const &key) const;
 
     /**
-     * @brief size
-     * @return
+     * @brief size The number of key value pairs.
      */
     size_t size() const;
 
     /**
-     * @brief empty
-     * @return
+     * @brief empty Test if the map contains nothing.
      */
     bool empty() const;
 
     /**
-     * @brief clear
+     * @brief clear Removes all the key-value pairs in the map.
      */
     void clear();
 
     /**
-     * @brief find
-     * @param key
-     * @return
+     * @brief find Retrieves an iterator in the map that points the key value pair.
+     * @param key The key of the key-value pair to be retrieved.
+     * @return Iterator pointing to the key-value pair if it exists. If not, it returns an iterator
+     * pointing to the end().
      */
     iterator find(KeyType const &key);
 
     /**
-     * @brief find
-     * @param key
-     * @return
+     * @brief find Constant version of the above function.
      */
     const_iterator find(KeyType const &key) const;
 
     /**
-     * @brief insert
-     * @param entry
-     * @return
+     * @brief insert Inserts a key-value pair into the map. It overrides the exsting value if the
+     * key has already existed.
+     * @param entry The key-value pair to be inserted.
+     * @return the iterator pointing to the insertion and an new entry indicator. The new entry
+     * indicator is true if the key doesn't exist in the map, otherwise, false.
      */
     std::pair<iterator, bool> insert(std::pair<KeyType, ValueType> const &entry);
 
     /**
-     * @brief erase
-     * @param it
+     * @brief erase Erase a key-value pair from the map.
+     * @param it An iterator pointing to the key-value pair which is going to be removed.
      */
-    void erase(iterator it);
+    void erase(iterator &it);
 
     /**
-     * @brief begin
-     * @return
+     * @brief begin Returns an iterator pointing to the first entry in the map. If the map is empty,
+     * it equals to the end().
      */
     iterator begin();
 
     /**
-     * @brief begin
-     * @return
+     * @brief begin Constant version of the above function.
      */
     const_iterator begin() const;
 
     /**
-     * @brief end
-     * @return
+     * @brief end Returns an iterator pointing to the next position after the last key-value pair in
+     * the map.
      */
     iterator end();
 
     /**
-     * @brief end
-     * @return
+     * @brief end Constant version of the above function.
      */
     const_iterator end() const;
 
@@ -407,7 +433,43 @@ template <typename KeyType, typename ValueType, typename NodeType>
 TrieMap<KeyType, ValueType, NodeType>::TrieMap() : root_(std::make_unique<NodeType>()) {}
 
 template <typename KeyType, typename ValueType, typename NodeType>
-TrieMap<KeyType, ValueType, NodeType>::TrieMap(TrieMap<KeyType, ValueType> const &other) {}
+TrieMap<KeyType, ValueType, NodeType>::TrieMap(TrieMap<KeyType, ValueType> const &other) {
+    root_ = std::make_unique<NodeType>(other.root_);
+    num_elements_ = other.num_elements_;
+}
+
+template <typename KeyType, typename ValueType, typename NodeType>
+TrieMap<KeyType, ValueType> &
+TrieMap<KeyType, ValueType, NodeType>::operator=(TrieMap<KeyType, ValueType> rhs) {
+    std::swap(*this, rhs);
+    return *this;
+}
+
+template <typename KeyType, typename ValueType, typename NodeType>
+bool TrieMap<KeyType, ValueType, NodeType>::operator==(
+    TrieMap<KeyType, ValueType> const &rhs) const {
+    return num_elements_ == rhs.num_elements_ && *root_ == *rhs.root_;
+}
+
+template <typename KeyType, typename ValueType, typename NodeType>
+bool TrieMap<KeyType, ValueType, NodeType>::operator!=(
+    TrieMap<KeyType, ValueType> const &rhs) const {
+    return !(*this == rhs);
+}
+
+template <typename KeyType, typename ValueType, typename NodeType>
+ValueType &TrieMap<KeyType, ValueType, NodeType>::operator[](KeyType const &key) {
+    auto it = this->find(key);
+    assert(it != this->end());
+    return (*it).second;
+}
+
+template <typename KeyType, typename ValueType, typename NodeType>
+ValueType TrieMap<KeyType, ValueType, NodeType>::operator[](KeyType const &key) const {
+    auto it = this->find(key);
+    assert(it != this->end());
+    return (*it).second;
+}
 
 template <typename KeyType, typename ValueType, typename NodeType>
 size_t TrieMap<KeyType, ValueType, NodeType>::size() const {
@@ -503,7 +565,7 @@ TrieMap<KeyType, ValueType, NodeType>::insert(std::pair<KeyType, ValueType> cons
 }
 
 template <typename KeyType, typename ValueType, typename NodeType>
-void TrieMap<KeyType, ValueType, NodeType>::erase(iterator it) {
+void TrieMap<KeyType, ValueType, NodeType>::erase(iterator &it) {
     assert(it != this->end());
 
     auto node = it.path_.back().node;
