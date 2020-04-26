@@ -1,3 +1,6 @@
 #!/bin/bash
 
-cd server && make push
+set -e
+
+./run-tests.sh
+git push
