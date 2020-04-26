@@ -1,8 +1,19 @@
 #!/bin/bash
 
+set -e
+
+n_cores=$(nproc --all)
+
+echo "============================================"
+echo "Building binaries"
+cd build && ./bootstrap.sh
+make -j $n_cores
+cd ..
+
+
 echo "============================================"
 echo "Adding the following DLLs to LD_LIBRARY_PATH"
-dlls=($(find . -regextype sed -regex ".*/build.*/demoweb"))
+dlls=($(find . -regextype sed -regex ".*/build/demoweb"))
 for dll in ${dlls[@]}
 do
 	echo $dll
@@ -11,11 +22,13 @@ done
 
 echo "============================================"
 echo "Creating test suite from the following tests"
-test_execs=($(find . -regextype sed -regex ".*/build.*/*_test" -type f))
+test_execs=($(find build -regextype sed -regex ".*_test" -type f))
 for test_exec in ${test_execs[@]}
 do
 	echo $test_exec
 done
+
+set +e
 
 echo "============================================"
 echo "Running the test suite"

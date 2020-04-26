@@ -16,5 +16,10 @@ hs_err_pid*
 /server/target/
 /server/nbproject/
 
-# c++ binaries
+# C++ binaries
 build-*/
+build/*
+
+# Exclude the boostrap script.
+!build/*.sh
+
