@@ -22,7 +22,9 @@ HEADERS += \
     sql/resultset/pq_result_set.h \
     sql/connection/pq_connection.h \
     util/trie_map.h \
-    util/lru_hash_map.h
+    util/lru_hash_map.h \
+    sql/sql_runner.h \
+    sql/orm/query_completion.h
 
 SOURCES += \
     sql/sql_query_builder.cc \
@@ -34,6 +36,8 @@ SOURCES += \
     sql/resultset/pq_result_set.cc \
     sql/connection/pq_connection.cc \
     util/trie_map.cc \
-    util/lru_hash_map.cc
+    util/lru_hash_map.cc \
+    sql/sql_runner.cc \
+    sql/orm/query_completion.cc
 
 LIBS += -lpqxx

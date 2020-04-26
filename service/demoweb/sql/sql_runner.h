@@ -15,20 +15,14 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <initializer_list>
-#include <string>
+#ifndef SQL_RUNNER_H
+#define SQL_RUNNER_H
+
 #include <vector>
 
 #include "sql/reflection/sql_entity_interface.h"
+#include "sql/sql_query_builder.h"
 
-namespace e8 {
+namespace e8 {} // namespace e8
 
-SqlEntityInterface::SqlEntityInterface(
-    std::initializer_list<SqlPrimitiveInterface const *> const &fields)
-    : fields_(fields) {}
-
-std::vector<SqlPrimitiveInterface const *> const &SqlEntityInterface::fields() const {
-    return fields_;
-}
-
-} // namespace e8
+#endif // SQL_RUNNER_H

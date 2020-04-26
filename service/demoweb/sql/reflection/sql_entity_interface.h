@@ -18,8 +18,10 @@
 #ifndef SQLENTITYINTERFACE_H
 #define SQLENTITYINTERFACE_H
 
-#include "sql/reflection/sql_primitive_interface.h"
 #include <initializer_list> // IWYU pragma: keep
+#include <vector>
+
+#include "sql/reflection/sql_primitive_interface.h"
 
 namespace e8 {
 
@@ -29,11 +31,11 @@ namespace e8 {
  *
  * Example usage:
  *
- * class User : public SqlReflectableInterface {
+ * class User : public SqlEntityInterface {
  *   public:
  *     SqlInt id = SqlInt("id");
  *     SqlStr user_name = SqlStr("user_name");
- *     User() : SqlEntityInterface{id, user_name} {}
+ *     User() : SqlEntityInterface{&id, &user_name} {}
  * };
  */
 class SqlEntityInterface {
@@ -43,16 +45,16 @@ class SqlEntityInterface {
      * reflection.
      * @param fields The primitive fields the entity contains (that it is interested in).
      */
-    SqlEntityInterface(std::initializer_list<SqlPrimitiveInterface const &> const &fields);
+    SqlEntityInterface(std::initializer_list<SqlPrimitiveInterface const *> const &fields);
 
     /**
      * @brief nested_fields The nested fields this entity contains.
      * @return The nested fields
      */
-    std::initializer_list<SqlPrimitiveInterface const &> const &fields() const;
+    std::vector<SqlPrimitiveInterface const *> const &fields() const;
 
   private:
-    std::initializer_list<SqlPrimitiveInterface const &> const &fields_;
+    std::vector<SqlPrimitiveInterface const *> const fields_;
 };
 
 } // namespace e8
