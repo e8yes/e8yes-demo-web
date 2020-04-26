@@ -24,7 +24,9 @@ HEADERS += \
     util/trie_map.h \
     util/lru_hash_map.h \
     sql/sql_runner.h \
-    sql/orm/query_completion.h
+    sql/orm/query_completion.h \
+    sql/orm/data_collection.h \
+    sql/resultset/mock_result_set.h
 
 SOURCES += \
     sql/sql_query_builder.cc \
@@ -38,6 +40,11 @@ SOURCES += \
     util/trie_map.cc \
     util/lru_hash_map.cc \
     sql/sql_runner.cc \
-    sql/orm/query_completion.cc
+    sql/orm/query_completion.cc \
+    sql/orm/data_collection.cc \
+    sql/resultset/mock_result_set.cc
 
 LIBS += -lpqxx
+LIBS += -lpthread
+LIBS += -ldl
+LIBS += -lgrpc++ -lgrpc++_reflection
