@@ -86,7 +86,7 @@ class SqlQueryBuilder {
      *
      * @return postgres-compliant query
      */
-    std::string psql_query();
+    std::string const &psql_query() const;
 
     /**
      * @brief Export the assigned query parameters.

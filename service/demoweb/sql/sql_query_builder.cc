@@ -26,7 +26,7 @@ SqlQueryBuilder &SqlQueryBuilder::query_piece(std::string const &piece) {
     return *this;
 }
 
-std::string SqlQueryBuilder::psql_query() { return query_; }
+std::string const &SqlQueryBuilder::psql_query() const { return query_; }
 
 ConnectionInterface::QueryParams const &SqlQueryBuilder::query_params() const { return params_; }
 
