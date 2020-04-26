@@ -45,5 +45,5 @@ do
 done
 
 echo "============================================"
-echo "Test suite has all passed."
+echo "Test suite has passed."
 
