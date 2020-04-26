@@ -37,7 +37,8 @@ namespace e8 {
  */
 class SqlBool : public SqlPrimitiveInterface {
   public:
-    SqlBool(std::string const &field_name = "");
+    SqlBool(std::string const &field_name);
+    SqlBool(bool value, std::string const &field_name = "");
     ~SqlBool() override;
     SqlBool(SqlBool const &) = default;
 
@@ -66,7 +67,8 @@ class SqlBool : public SqlPrimitiveInterface {
  */
 class SqlInt : public SqlPrimitiveInterface {
   public:
-    SqlInt(std::string const &field_name = "");
+    SqlInt(std::string const &field_name);
+    SqlInt(int32_t value, std::string const &field_name = "");
     ~SqlInt() override;
     SqlInt(SqlInt const &) = default;
 
@@ -95,7 +97,8 @@ class SqlInt : public SqlPrimitiveInterface {
  */
 class SqlLong : public SqlPrimitiveInterface {
   public:
-    SqlLong(std::string const &field_name = "");
+    SqlLong(std::string const &field_name);
+    SqlLong(int64_t value, std::string const &field_name = "");
     ~SqlLong() override;
     SqlLong(SqlLong const &) = default;
 
@@ -124,7 +127,8 @@ class SqlLong : public SqlPrimitiveInterface {
  */
 class SqlFloat : public SqlPrimitiveInterface {
   public:
-    SqlFloat(std::string const &field_name = "");
+    SqlFloat(std::string const &field_name);
+    SqlFloat(float value, std::string const &field_name = "");
     ~SqlFloat() override;
     SqlFloat(SqlFloat const &) = default;
 
@@ -153,7 +157,8 @@ class SqlFloat : public SqlPrimitiveInterface {
  */
 class SqlDouble : public SqlPrimitiveInterface {
   public:
-    SqlDouble(std::string const &field_name = "");
+    SqlDouble(std::string const &field_name);
+    SqlDouble(double value, std::string const &field_name = "");
     ~SqlDouble() override;
     SqlDouble(SqlDouble const &) = default;
 
@@ -182,7 +187,8 @@ class SqlDouble : public SqlPrimitiveInterface {
  */
 class SqlStr : public SqlPrimitiveInterface {
   public:
-    SqlStr(std::string const &field_name = "");
+    SqlStr(std::string const &field_name);
+    SqlStr(std::string const &value, std::string const &field_name);
     ~SqlStr() override;
     SqlStr(SqlStr const &) = default;
 
@@ -211,7 +217,8 @@ class SqlStr : public SqlPrimitiveInterface {
  */
 class SqlTimestamp : public SqlPrimitiveInterface {
   public:
-    SqlTimestamp(std::string const &field_name = "");
+    SqlTimestamp(std::string const &field_name);
+    SqlTimestamp(std::time_t value, std::string const &field_name = "");
     ~SqlTimestamp() override;
     SqlTimestamp(SqlTimestamp const &) = default;
 
@@ -241,7 +248,8 @@ class SqlTimestamp : public SqlPrimitiveInterface {
  */
 class SqlBoolArr : public SqlPrimitiveInterface {
   public:
-    SqlBoolArr(std::string const &field_name = "");
+    SqlBoolArr(std::string const &field_name);
+    SqlBoolArr(std::vector<bool> const &value, std::string const &field_name = "");
     ~SqlBoolArr() override;
     SqlBoolArr(SqlBoolArr const &) = default;
 
@@ -271,7 +279,8 @@ class SqlBoolArr : public SqlPrimitiveInterface {
  */
 class SqlIntArr : public SqlPrimitiveInterface {
   public:
-    SqlIntArr(std::string const &field_name = "");
+    SqlIntArr(std::string const &field_name);
+    SqlIntArr(std::vector<int32_t> const &value, std::string const &field_name = "");
     ~SqlIntArr() override;
     SqlIntArr(SqlIntArr const &) = default;
 
@@ -301,7 +310,8 @@ class SqlIntArr : public SqlPrimitiveInterface {
  */
 class SqlLongArr : public SqlPrimitiveInterface {
   public:
-    SqlLongArr(std::string const &field_name = "");
+    SqlLongArr(std::string const &field_name);
+    SqlLongArr(std::vector<int64_t> const &value, std::string const &field_name = "");
     ~SqlLongArr() override;
     SqlLongArr(SqlLongArr const &) = default;
 
@@ -331,7 +341,8 @@ class SqlLongArr : public SqlPrimitiveInterface {
  */
 class SqlFloatArr : public SqlPrimitiveInterface {
   public:
-    SqlFloatArr(std::string const &field_name = "");
+    SqlFloatArr(std::string const &field_name);
+    SqlFloatArr(std::vector<float> const &value, std::string const &field_name = "");
     ~SqlFloatArr() override;
     SqlFloatArr(SqlFloatArr const &) = default;
 
@@ -361,7 +372,8 @@ class SqlFloatArr : public SqlPrimitiveInterface {
  */
 class SqlDoubleArr : public SqlPrimitiveInterface {
   public:
-    SqlDoubleArr(std::string const &field_name = "");
+    SqlDoubleArr(std::string const &field_name);
+    SqlDoubleArr(std::vector<double> const &value, std::string const &field_name = "");
     ~SqlDoubleArr() override;
     SqlDoubleArr(SqlDoubleArr const &) = default;
 
@@ -391,7 +403,8 @@ class SqlDoubleArr : public SqlPrimitiveInterface {
  */
 class SqlStrArr : public SqlPrimitiveInterface {
   public:
-    SqlStrArr(std::string const &field_name = "");
+    SqlStrArr(std::string const &field_name);
+    SqlStrArr(std::vector<std::string> const &value, std::string const &field_name = "");
     ~SqlStrArr() override;
     SqlStrArr(SqlStrArr const &) = default;
 
@@ -421,7 +434,8 @@ class SqlStrArr : public SqlPrimitiveInterface {
  */
 class SqlTimestampArr : public SqlPrimitiveInterface {
   public:
-    SqlTimestampArr(std::string const &field_name = "");
+    SqlTimestampArr(std::string const &field_name);
+    SqlTimestampArr(std::vector<std::time_t> const &value, std::string const &field_name = "");
     ~SqlTimestampArr() override;
     SqlTimestampArr(SqlTimestampArr const &) = default;
 
