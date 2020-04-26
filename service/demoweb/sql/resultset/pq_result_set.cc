@@ -29,7 +29,7 @@ void PqResultSet::next() { ++it_; }
 
 bool PqResultSet::has_next() const { return it_ != rs_.end(); }
 
-void PqResultSet::set_field(int i, SqlPrimitiveInterface *field) {
+void PqResultSet::set_field(unsigned i, SqlPrimitiveInterface *field) {
     field->import_from_field((*it_)[i]);
 }
 

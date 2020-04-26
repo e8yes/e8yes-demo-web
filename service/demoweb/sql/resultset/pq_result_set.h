@@ -31,13 +31,14 @@ namespace e8 {
  */
 class PqResultSet : public ResultSetInterface {
   public:
+    PqResultSet() = default;
     PqResultSet(pqxx::result const &rs);
     ~PqResultSet() override = default;
     PqResultSet(PqResultSet const &) = delete;
 
     void next() override;
     bool has_next() const override;
-    void set_field(int i, SqlPrimitiveInterface *field) override;
+    void set_field(unsigned i, SqlPrimitiveInterface *field) override;
 
   private:
     pqxx::result rs_;
