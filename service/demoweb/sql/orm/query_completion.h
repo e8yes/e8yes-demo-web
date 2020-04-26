@@ -36,7 +36,7 @@ CompleteSelectList(std::initializer_list<std::string>::const_iterator const &ent
     std::string const fully_qualified_prefix = *entity_alias_it + ".";
 
     EntityType extracted_entity_fields;
-    std::vector<SqlPrimitiveInterface const *> const &fields = extracted_entity_fields.fields();
+    std::vector<SqlPrimitiveInterface *> const &fields = extracted_entity_fields.fields();
 
     std::string select_list = fully_qualified_prefix + fields[0]->field_name();
     for (unsigned i = 1; i < fields.size(); i++) {
@@ -50,7 +50,6 @@ template <typename EntityType1, typename EntityType2, typename... Others>
 std::string
 CompleteSelectList(std::initializer_list<std::string>::const_iterator const &entity_alias_it,
                    std::initializer_list<std::string>::const_iterator const &end_it) {
-
     return CompleteSelectList<EntityType1>(entity_alias_it, end_it) + "," +
            CompleteSelectList<EntityType2, Others...>(entity_alias_it + 1, end_it);
 }
