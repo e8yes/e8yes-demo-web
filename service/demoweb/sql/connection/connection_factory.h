@@ -36,16 +36,18 @@ class ConnectionFactory {
     ConnectionFactory(ConnectionType connection_type, std::string const &host_name, int port,
                       std::string const &db_name, std::string const &user_name,
                       std::string const &password);
+    ConnectionFactory(ConnectionFactory const &) = default;
+    ~ConnectionFactory() = default;
 
     std::unique_ptr<ConnectionInterface> Create() const;
 
   private:
-    ConnectionType const connection_type_;
-    std::string const host_name_;
-    std::string const db_name_;
-    std::string const user_name_;
-    std::string const password_;
-    int const port_;
+    ConnectionType connection_type_;
+    std::string host_name_;
+    std::string db_name_;
+    std::string user_name_;
+    std::string password_;
+    int port_;
 };
 
 } // namespace e8
