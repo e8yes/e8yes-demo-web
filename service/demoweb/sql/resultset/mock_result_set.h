@@ -19,6 +19,8 @@ class MockResultSet : public ResultSetInterface {
      * @param num_cells The length of each record in the result set.
      */
     MockResultSet(unsigned num_cells);
+    MockResultSet(MockResultSet const &) = default;
+    ~MockResultSet() override = default;
 
     // The length of each record should be the size of num_cells specified in the constructor.
     using Record = std::vector<std::shared_ptr<SqlPrimitiveInterface>>;
@@ -36,7 +38,7 @@ class MockResultSet : public ResultSetInterface {
 
   private:
     std::vector<Record> records_;
-    unsigned const num_cells_;
+    unsigned num_cells_;
     unsigned cur_record_ = 0;
 };
 
