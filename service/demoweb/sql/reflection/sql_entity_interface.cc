@@ -28,4 +28,6 @@ SqlEntityInterface::SqlEntityInterface(std::initializer_list<SqlPrimitiveInterfa
 
 std::vector<SqlPrimitiveInterface *> const &SqlEntityInterface::fields() { return fields_; }
 
+std::vector<SqlPrimitiveInterface *> const &SqlEntityInterface::fields() const { return fields_; }
+
 } // namespace e8

@@ -18,10 +18,9 @@
 #ifndef CONNECTIONINTERFACE_H
 #define CONNECTIONINTERFACE_H
 
-#include <memory> // IWYU pragma: keep
-#include <stdint.h>
-// IWYU pragma: no_include <bits/stdint-intn.h>
+#include <cstdint> // IWYU pragma: no_include <bits/stdint-intn.h>
 #include <map>
+#include <memory> // IWYU pragma: keep
 #include <string>
 
 #include "sql/reflection/sql_primitive_interface.h"
@@ -50,7 +49,7 @@ class ConnectionInterface {
         QueryParams(QueryParams const &) = default;
         ~QueryParams() = default;
 
-        using SlotId = int32_t;
+        using SlotId = uint32_t;
 
         /**
          * @brief Clear all the parameter values.

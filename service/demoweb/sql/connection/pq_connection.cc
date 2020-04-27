@@ -85,6 +85,7 @@ std::unique_ptr<ResultSetInterface> PqConnection::run_query(ParameterizedQuery c
     pqxx::work query_work(*impl_->conn);
     pqxx::prepare::invocation invocation = query_work.prepared(std::to_string(id));
     for (auto const &[slot_id, param] : params.parameters()) {
+        // slot_ids are iterated in ascending order which ensures the correct order of the export.
         param->export_to_invocation(&invocation);
     }
 

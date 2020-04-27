@@ -53,6 +53,11 @@ class SqlEntityInterface {
      */
     std::vector<SqlPrimitiveInterface *> const &fields();
 
+    /**
+     * @brief fields Constant version of the above function.
+     */
+    std::vector<SqlPrimitiveInterface *> const &fields() const;
+
   private:
     std::vector<SqlPrimitiveInterface *> const fields_;
 };

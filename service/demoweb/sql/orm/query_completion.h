@@ -22,6 +22,7 @@
 #include <initializer_list>
 #include <string>
 
+#include "sql/connection/connection_interface.h"
 #include "sql/reflection/sql_entity_interface.h"
 #include "sql/reflection/sql_primitive_interface.h"
 
@@ -80,6 +81,25 @@ std::string CompleteSelectQuery(std::string const &query,
     assert(!select_list.empty());
     return "SELECT " + select_list + " FROM " + query;
 }
+
+/**
+ * @brief The InsertQueryInfo struct Contains the insertion query and the query parameters
+ * associated with the query.
+ */
+struct InsertQueryInfo {
+    std::string query;
+    ConnectionInterface::QueryParams query_params;
+};
+
+/**
+ * @brief GenerateInsertQuery
+ * @param table_name
+ * @param entity
+ * @param with_upsert
+ * @return
+ */
+InsertQueryInfo GenerateInsertQuery(std::string const &table_name, SqlEntityInterface const &entity,
+                                    bool with_upsert);
 
 } // namespace e8
 
