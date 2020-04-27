@@ -46,6 +46,10 @@ class ConnectionInterface {
      */
     class QueryParams {
       public:
+        QueryParams() = default;
+        QueryParams(QueryParams const &) = default;
+        ~QueryParams() = default;
+
         using SlotId = int32_t;
 
         /**
