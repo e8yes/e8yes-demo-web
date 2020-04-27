@@ -76,6 +76,8 @@ PqConnection::PqConnection(std::string const &host_name, int port, std::string c
           "hostaddr=" + host_name + " port=" + std::to_string(port) + " dbname=" + db_name +
           " user=" + user_name + " password=" + password))) {}
 
+PqConnection::~PqConnection() {}
+
 std::unique_ptr<ResultSetInterface> PqConnection::run_query(ParameterizedQuery const &query,
                                                             QueryParams const &params) {
     StatementId id = impl_->statement_cache.Fetch(query);

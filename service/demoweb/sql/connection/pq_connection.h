@@ -24,6 +24,7 @@
 #include <string>
 
 #include "sql/connection/connection_interface.h"
+#include "sql/resultset/result_set_interface.h"
 
 namespace e8 {
 
@@ -35,7 +36,7 @@ class PqConnection : public ConnectionInterface {
   public:
     PqConnection(std::string const &host_name, int port, std::string const &db_name,
                  std::string const &user_name, std::string const &password);
-    ~PqConnection() override = default;
+    ~PqConnection() override;
     PqConnection(PqConnection const &) = delete;
 
     std::unique_ptr<ResultSetInterface> run_query(ParameterizedQuery const &query,
