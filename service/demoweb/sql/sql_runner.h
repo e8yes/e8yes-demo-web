@@ -24,6 +24,7 @@
 #include <vector>
 
 #include "sql/connection/connection_interface.h"
+#include "sql/connection/connection_reservoir_interface.h"
 #include "sql/orm/data_collection.h"
 #include "sql/orm/query_completion.h"
 #include "sql/resultset/result_set_interface.h"
@@ -51,20 +52,20 @@ namespace e8 {
  */
 template <typename EntityType, typename... Others>
 std::vector<std::tuple<EntityType, Others...>>
-Query(SqlQueryBuilder const &query, std::initializer_list<std::string> const &entity_aliases) {
-    //    std::string select_query =
-    //        CompleteSelectQuery<EntityType, Others...>(query.psql_query(), entity_aliases);
+Query(SqlQueryBuilder const &query, std::initializer_list<std::string> const &entity_aliases,
+      ConnectionReservoirInterface *reservoir) {
+    std::string select_query =
+        CompleteSelectQuery<EntityType, Others...>(query.psql_query(), entity_aliases);
 
-    //    ConnectionInterface *conn = reservoir.take();
-    //    std::unique_ptr<ResultSetInterface> rs = conn->run_query(select_query,
-    //    query.query_params());
+    ConnectionInterface *conn = reservoir->Take();
+    std::unique_ptr<ResultSetInterface> rs = conn->run_query(select_query, query.query_params());
 
-    //    std::vector<std::tuple<EntityType, Others...>> results =
-    //        ToEntityTuples<EntityType, Others...>(rs.get());
+    std::vector<std::tuple<EntityType, Others...>> results =
+        ToEntityTuples<EntityType, Others...>(rs.get());
 
-    //    reservoir.put(conn);
+    reservoir->Put(conn);
 
-    //    return results;
+    return results;
 }
 
 } // namespace e8
