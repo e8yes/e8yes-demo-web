@@ -27,7 +27,9 @@ HEADERS += \
     sql/orm/query_completion.h \
     sql/orm/data_collection.h \
     sql/resultset/mock_result_set.h \
-    sql/connection/connection_reservoir_interface.h
+    sql/connection/connection_reservoir_interface.h \
+    sql/connection/connection_factory.h \
+    sql/connection/mock_connection.h
 
 SOURCES += \
     sql/sql_query_builder.cc \
@@ -44,7 +46,9 @@ SOURCES += \
     sql/orm/query_completion.cc \
     sql/orm/data_collection.cc \
     sql/resultset/mock_result_set.cc \
-    sql/connection/connection_reservoir_interface.cc
+    sql/connection/connection_reservoir_interface.cc \
+    sql/connection/connection_factory.cc \
+    sql/connection/mock_connection.cc
 
 LIBS += -lpqxx
 LIBS += -lpthread
