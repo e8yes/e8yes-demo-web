@@ -27,13 +27,24 @@ ConnectionInterface *BasicConnectionReservoir::Take() {
     std::unique_ptr<ConnectionInterface> conn = fact_.Create();
 
     ConnectionInterface *ptr = conn.get();
+
+    mutex_.lock();
     conns_.insert(std::make_pair(ptr, std::move(conn)));
+    mutex_.unlock();
 
     return ptr;
 }
 
-void BasicConnectionReservoir::Put(ConnectionInterface *conn) { conns_.erase(conn); }
+void BasicConnectionReservoir::Put(ConnectionInterface *conn) {
+    mutex_.lock();
+    conns_.erase(conn);
+    mutex_.unlock();
+}
 
-void BasicConnectionReservoir::CloseAll() { conns_.clear(); }
+void BasicConnectionReservoir::CloseAll() {
+    mutex_.lock();
+    conns_.clear();
+    mutex_.unlock();
+}
 
 } // namespace e8

@@ -18,6 +18,7 @@
 #ifndef BASIC_CONNECTION_RESERVOIR_H
 #define BASIC_CONNECTION_RESERVOIR_H
 
+#include <mutex>
 #include <unordered_map>
 
 #include "sql/connection/connection_factory.h"
@@ -28,7 +29,7 @@ namespace e8 {
 
 /**
  * @brief The BasicConnectionReservoir class A basic connection reservoir that provides no pooling.
- * All Connections will be freshly created and immediately closed
+ * All Connections will be freshly created and immediately closed. This class is thread-safe.
  */
 class BasicConnectionReservoir : public ConnectionReservoirInterface {
   public:
@@ -41,6 +42,7 @@ class BasicConnectionReservoir : public ConnectionReservoirInterface {
 
   private:
     std::unordered_map<ConnectionInterface *, std::unique_ptr<ConnectionInterface>> conns_;
+    std::mutex mutex_;
     ConnectionFactory fact_;
 };
 
