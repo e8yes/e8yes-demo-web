@@ -37,8 +37,8 @@ namespace e8 {
  */
 class SqlBool : public SqlPrimitiveInterface {
   public:
-    SqlBool(std::string const &field_name);
-    SqlBool(bool value, std::string const &field_name = "");
+    explicit SqlBool(std::string const &field_name);
+    explicit SqlBool(bool value, std::string const &field_name);
     ~SqlBool() override;
     SqlBool(SqlBool const &) = default;
 

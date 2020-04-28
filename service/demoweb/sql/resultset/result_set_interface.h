@@ -48,7 +48,6 @@ class ResultSetInterface {
      * @brief Set the value of the ith cell at the current row cursor position to the record's
      * field.
      *
-     * @param <RecordType> The type of record.
      * @param i The i-th(zero-offset) cell to pull value from.
      * @param field The field to assign value to.
      */

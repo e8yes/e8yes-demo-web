@@ -34,8 +34,11 @@ using StatementId = uint32_t;
 class OnFetch {
   public:
     OnFetch(pqxx::connection *conn) : conn_(conn) {}
+    OnFetch(OnFetch const &) = default;
+    ~OnFetch() = default;
 
     StatementId operator()(ConnectionInterface::ParameterizedQuery const &query) {
+        assert(conn_ != nullptr);
         StatementId statement = this->allocate_statement();
         conn_->prepare(std::to_string(statement), query);
         return statement;
@@ -51,8 +54,13 @@ class OnFetch {
 class OnEvict {
   public:
     OnEvict(pqxx::connection *conn) : conn_(conn) {}
+    OnEvict(OnEvict const &) = default;
+    ~OnEvict() = default;
 
-    void operator()(StatementId statement_id) { conn_->unprepare(std::to_string(statement_id)); }
+    void operator()(StatementId statement_id) {
+        assert(conn_ != nullptr);
+        conn_->unprepare(std::to_string(statement_id));
+    }
 
   private:
     pqxx::connection *const conn_;
@@ -63,8 +71,8 @@ class OnEvict {
 class PqConnection::PqConnectionImpl {
   public:
     PqConnectionImpl(std::unique_ptr<pqxx::connection> conn)
-        : conn(std::move(conn)),
-          statement_cache(kStatementCacheLimit, OnFetch(conn.get()), OnEvict(conn.get())) {}
+        : conn(std::move(conn)), statement_cache(kStatementCacheLimit, OnFetch(this->conn.get()),
+                                                 OnEvict(this->conn.get())) {}
 
     std::unique_ptr<pqxx::connection> const conn;
     LruHashMap<ParameterizedQuery, StatementId, OnFetch, OnEvict> statement_cache;
@@ -72,8 +80,8 @@ class PqConnection::PqConnectionImpl {
 
 PqConnection::PqConnection(std::string const &host_name, int port, std::string const &db_name,
                            std::string const &user_name, std::string const &password)
-    : impl_(std::make_unique<PqConnectionImpl>(/*conn=*/std::make_unique<pqxx::connection>(
-          "hostaddr=" + host_name + " port=" + std::to_string(port) + " dbname=" + db_name +
+    : impl_(std::make_unique<PqConnectionImpl>(std::make_unique<pqxx::connection>(
+          "host=" + host_name + " port=" + std::to_string(port) + " dbname=" + db_name +
           " user=" + user_name + " password=" + password))) {}
 
 PqConnection::~PqConnection() {}
@@ -107,9 +115,7 @@ uint64_t PqConnection::run_update(ParameterizedQuery const &query, QueryParams c
     pqxx::result rs = invocation.exec();
     update_work.commit();
 
-    assert(rs.size() == 1);
-    uint64_t num_rows_updated = rs.begin()->at(0).as<uint64_t>();
-    return num_rows_updated;
+    return rs.affected_rows();
 }
 
 bool PqConnection::is_closed() const { return !impl_->conn->is_open(); }

@@ -28,8 +28,10 @@
 namespace e8 {
 namespace {
 
+#include <iostream>
+
 void from_string(std::string const &str_val, bool *val) {
-    if (str_val == "true") {
+    if (str_val == "t") {
         *val = true;
     } else {
         *val = false;
@@ -40,18 +42,21 @@ void from_string(std::string const &str_val, int64_t *val) { *val = std::stol(st
 void from_string(std::string const &str_val, float *val) { *val = std::stof(str_val); }
 void from_string(std::string const &str_val, double *val) { *val = std::stod(str_val); }
 void from_string(std::string const &str_val, std::string *val) { *val = str_val; }
+
 std::time_t timestamp_from_string(std::string const &str_val) {
     std::istringstream in(str_val);
     std::tm t{};
-    in >> std::get_time(&t, "%Y-%m-%dT%H:%M:%S");
+    in >> std::get_time(&t, "%Y-%m-%d %H:%M:%S");
     assert(!in.fail());
-    return std::mktime(&t);
+    std::time_t local_timestamp = std::mktime(&t);
+    std::time_t utc_timestamp = local_timestamp + t.tm_gmtoff;
+    return utc_timestamp;
 }
 
 std::string timestamp_to_string(std::time_t const &timestamp) {
     std::ostringstream out;
     std::tm const *t = std::gmtime(&timestamp);
-    out << std::put_time(t, "%Y-%m-%dT%H:%M:%S");
+    out << std::put_time(t, "%Y-%m-%d %H:%M:%S");
     assert(!out.fail());
     return out.str();
 }
@@ -379,7 +384,7 @@ void SqlTimestamp::import_from_field(pqxx::field const &field) {
     if (field.is_null()) {
         value_ = std::nullopt;
     } else {
-        std::string timestamp_str = field.as<std::string>();
+        std::string timestamp_str = field.c_str();
         value_ = timestamp_from_string(timestamp_str);
     }
 }
