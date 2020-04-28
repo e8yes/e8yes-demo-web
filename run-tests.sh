@@ -2,6 +2,12 @@
 
 set -e
 
+echo "============================================"
+echo "Starting a local postgres server for testing."
+cd postgres
+./push-test-schema.sh
+cd ..
+
 n_cores=$(nproc --all)
 
 echo "============================================"
