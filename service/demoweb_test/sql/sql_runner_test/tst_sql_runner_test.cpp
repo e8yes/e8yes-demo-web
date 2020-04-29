@@ -39,6 +39,7 @@ class sql_runner_test : public QObject {
   private slots:
     void insert_then_query_test();
     void insert_then_delete_test();
+    void insert_then_exists_test();
 };
 
 sql_runner_test::sql_runner_test() {}
@@ -197,6 +198,38 @@ void sql_runner_test::insert_then_delete_test() {
         /*table_name=*/"QueryRunnerTestUser", e8::SqlQueryBuilder().query_piece("WHERE id=1"),
         &reservoir);
     QVERIFY(num_rows_affected == 1);
+
+    // Clean up.
+    DropSchema(conn);
+    reservoir.Put(conn);
+}
+
+void sql_runner_test::insert_then_exists_test() {
+    e8::ConnectionFactory factory = CreateConnectionFactory();
+    e8::BasicConnectionReservoir reservoir(factory);
+    e8::ConnectionInterface *conn = reservoir.Take();
+
+    // Prepare schema.
+    DropSchema(conn);
+    CreateSchema(conn);
+
+    // Prepare test data.
+    User user;
+    *user.id.value_ptr() = 1;
+    *user.user_name.value_ptr() = "user0";
+    uint64_t num_rows_affected = e8::Update(user,
+                                            /*tableName=*/"QueryRunnerTestUser",
+                                            /*replace=*/true, &reservoir);
+    QVERIFY(num_rows_affected == 1);
+
+    // Run "exists" query.
+    bool should_not_exist = !e8::Exists(
+        e8::SqlQueryBuilder().query_piece("QueryRunnerTestUser WHERE id=2"), &reservoir);
+    QVERIFY(should_not_exist);
+
+    bool should_exist =
+        e8::Exists(e8::SqlQueryBuilder().query_piece("QueryRunnerTestUser WHERE id=1"), &reservoir);
+    QVERIFY(should_exist);
 
     // Clean up.
     DropSchema(conn);
