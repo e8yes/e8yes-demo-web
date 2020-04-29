@@ -86,20 +86,24 @@ std::string CompleteSelectQuery(std::string const &query,
  * @brief The InsertQueryInfo struct Contains the insertion query and the query parameters
  * associated with the query.
  */
-struct InsertQueryInfo {
+struct InsertQueryAndParams {
     std::string query;
     ConnectionInterface::QueryParams query_params;
 };
 
 /**
- * @brief GenerateInsertQuery
- * @param table_name
- * @param entity
- * @param with_upsert
- * @return
+ * @brief GenerateInsertQuery It takes in the target table name and entity that is going to insert
+ * then constructs an insertion sql query as well as the query parameters associated with that
+ * query.
+ *
+ * @param table_name Name of the table the entity is going to insert to.
+ * @param entity The entity to be inserted.
+ * @param with_upsert Whether or not to generate a query that will update the entity record if it
+ * exists.
+ * @return The insertion query and its parameters.
  */
-InsertQueryInfo GenerateInsertQuery(std::string const &table_name, SqlEntityInterface const &entity,
-                                    bool with_upsert);
+InsertQueryAndParams GenerateInsertQuery(std::string const &table_name,
+                                         SqlEntityInterface const &entity, bool with_upsert);
 
 } // namespace e8
 

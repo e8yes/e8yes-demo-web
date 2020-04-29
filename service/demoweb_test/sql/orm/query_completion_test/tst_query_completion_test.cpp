@@ -30,7 +30,9 @@ class query_completion_test : public QObject {
     ~query_completion_test();
 
   private slots:
-    void test_select_query_completion();
+    void select_query_completion_test();
+    void generate_insert_query_test();
+    void generate_upsert_query_test();
 };
 
 query_completion_test::query_completion_test() {}
@@ -52,9 +54,7 @@ class CreditCard : public e8::SqlEntityInterface {
     CreditCard() : SqlEntityInterface{&id, &user_id, &card_number} {}
 };
 
-void query_completion_test::test_select_query_completion() {
-    User user;
-
+void query_completion_test::select_query_completion_test() {
     std::string query = "AUser auser JOIN CreditCard card ON card.user_id = auser.id WHERE "
                         "auser.join_date > '2020-1-1'";
     std::string actual = e8::CompleteSelectQuery<User, CreditCard>(query, {"auser", "card"});
@@ -63,6 +63,36 @@ void query_completion_test::test_select_query_completion() {
         "SELECT auser.id,auser.user_name,card.id,card.user_id,card.card_number FROM AUser auser "
         "JOIN CreditCard card ON card.user_id = auser.id WHERE auser.join_date > "
         "'2020-1-1'");
+}
+
+void query_completion_test::generate_insert_query_test() {
+    User user;
+    *user.id.value_ptr() = 1;
+    *user.user_name.value_ptr() = "user0";
+
+    e8::InsertQueryAndParams query_and_params =
+        e8::GenerateInsertQuery(/*table_name=*/"AUser", user, /*with_upsert=*/false);
+    QVERIFY(query_and_params.query ==
+            "INSERT INTO AUser(id,user_name)VALUES($1,$2)ON CONFLICT DO NOTHING");
+
+    QVERIFY(*query_and_params.query_params.get_param(0) == user.id);
+    QVERIFY(*query_and_params.query_params.get_param(1) == user.user_name);
+}
+
+void query_completion_test::generate_upsert_query_test() {
+    User user;
+    *user.id.value_ptr() = 1;
+    *user.user_name.value_ptr() = "user0";
+
+    e8::InsertQueryAndParams query_and_params =
+        e8::GenerateInsertQuery(/*table_name=*/"AUser", user, /*with_upsert=*/true);
+    QVERIFY(query_and_params.query == "INSERT INTO AUser(id,user_name)VALUES($1,$2)ON CONFLICT ON "
+                                      "CONSTRAINT AUser_pkey DO UPDATE SET id=$3,user_name=$4");
+
+    QVERIFY(*query_and_params.query_params.get_param(0) == user.id);
+    QVERIFY(*query_and_params.query_params.get_param(1) == user.user_name);
+    QVERIFY(*query_and_params.query_params.get_param(2) == user.id);
+    QVERIFY(*query_and_params.query_params.get_param(3) == user.user_name);
 }
 
 QTEST_APPLESS_MAIN(query_completion_test)

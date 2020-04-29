@@ -51,6 +51,7 @@ std::string ConstructInsertQuery(std::string const &table_name, SqlEntityInterfa
         query += "ON CONFLICT ON CONSTRAINT ";
         query += table_name + "_pkey DO UPDATE SET ";
         query += fields[0]->field_name() + "=$" + std::to_string(i + 1);
+        i++;
         for (unsigned j = 1; j < fields.size(); j++, i++) {
             query += ',';
             query += fields[j]->field_name() + "=$" + std::to_string(i + 1);
@@ -84,13 +85,13 @@ ConnectionInterface::QueryParams ConstructQueryParams(SqlEntityInterface const &
 
 } // namespace
 
-InsertQueryInfo GenerateInsertQuery(std::string const &table_name, SqlEntityInterface const &entity,
-                                    bool with_upsert) {
-    InsertQueryInfo query_info;
-    query_info.query = ConstructInsertQuery(table_name, entity, with_upsert);
-    query_info.query_params = ConstructQueryParams(entity, with_upsert);
+InsertQueryAndParams GenerateInsertQuery(std::string const &table_name,
+                                         SqlEntityInterface const &entity, bool with_upsert) {
+    InsertQueryAndParams query_and_params;
+    query_and_params.query = ConstructInsertQuery(table_name, entity, with_upsert);
+    query_and_params.query_params = ConstructQueryParams(entity, with_upsert);
 
-    return query_info;
+    return query_and_params;
 }
 
 } // namespace e8
