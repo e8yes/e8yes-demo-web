@@ -17,6 +17,8 @@
 
 #include <QtTest>
 #include <memory>
+#include <optional>
+#include <string>
 #include <tuple>
 #include <vector>
 
@@ -77,17 +79,18 @@ void data_collection_test::test_to_entity_tuple() {
 
     QVERIFY(results.size() == 2);
 
-    QVERIFY(std::get<0>(results[0]).id.value() == 1);
-    QVERIFY(std::get<0>(results[0]).user_name.value() == "user1");
+    QVERIFY(std::get<0>(results[0]).id.value() == std::optional<int32_t>(1));
+    QVERIFY(std::get<0>(results[0]).user_name.value() == std::optional<std::string>("user1"));
     QVERIFY(!std::get<1>(results[0]).id.value().has_value());
     QVERIFY(!std::get<1>(results[0]).user_id.value().has_value());
     QVERIFY(!std::get<1>(results[0]).card_number.value().has_value());
 
-    QVERIFY(std::get<0>(results[1]).id.value() == 2);
-    QVERIFY(std::get<0>(results[1]).user_name.value() == "user2");
-    QVERIFY(std::get<1>(results[1]).id.value() == 101);
-    QVERIFY(std::get<1>(results[1]).user_id.value() == 2);
-    QVERIFY(std::get<1>(results[1]).card_number.value() == "1010101002");
+    QVERIFY(std::get<0>(results[1]).id.value() == std::optional<int32_t>(2));
+    QVERIFY(std::get<0>(results[1]).user_name.value() == std::optional<std::string>("user2"));
+    QVERIFY(std::get<1>(results[1]).id.value() == std::optional<int32_t>(101));
+    QVERIFY(std::get<1>(results[1]).user_id.value() == std::optional<int32_t>(2));
+    QVERIFY(std::get<1>(results[1]).card_number.value() ==
+            std::optional<std::string>("1010101002"));
 }
 
 QTEST_APPLESS_MAIN(data_collection_test)
