@@ -33,8 +33,8 @@
 namespace e8 {
 
 /**
- * Constructs and runs query with partial information provided and synchronously returns the
- * result.
+ * @brief Query Constructs and runs query with partial information provided and synchronously
+ * returns the result.
  *
  * The caller must specify the entities involved in the select query in the template argument list
  * as well as the aliases for those entities used in the select query.
@@ -67,6 +67,16 @@ Query(SqlQueryBuilder const &query, std::initializer_list<std::string> const &en
 
     return results;
 }
+
+/**
+ * @brief Exists Tells whethter the query returns at least one record.
+ *
+ * @param query The query is a partial SQL query where the SELECT ... FROM part is omitted. Example:
+ * Candidates candids WHERE candids.duration > [placeholder].
+ * @param reservoir Connection reservoir to allocate database connections.
+ * @return True only if there is at least one record.
+ */
+bool Exists(SqlQueryBuilder const &query, ConnectionReservoirInterface *reservoir);
 
 } // namespace e8
 
