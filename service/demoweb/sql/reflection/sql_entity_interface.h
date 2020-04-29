@@ -46,6 +46,7 @@ class SqlEntityInterface {
      * @param fields The primitive fields the entity contains (that it is interested in).
      */
     SqlEntityInterface(std::initializer_list<SqlPrimitiveInterface *> const &fields);
+    SqlEntityInterface(SqlEntityInterface const &) = delete;
 
     /**
      * @brief nested_fields The nested fields this entity contains.

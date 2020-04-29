@@ -44,6 +44,8 @@ class User : public e8::SqlEntityInterface {
     e8::SqlInt id = e8::SqlInt("id");
     e8::SqlStr user_name = e8::SqlStr("user_name");
     User() : SqlEntityInterface{&id, &user_name} {}
+    User(User const &other)
+        : SqlEntityInterface{&id, &user_name}, id(other.id), user_name(other.user_name) {}
 };
 
 class CreditCard : public e8::SqlEntityInterface {
@@ -52,6 +54,9 @@ class CreditCard : public e8::SqlEntityInterface {
     e8::SqlInt user_id = e8::SqlInt("user_id");
     e8::SqlStr card_number = e8::SqlStr("card_number");
     CreditCard() : SqlEntityInterface{&id, &user_id, &card_number} {}
+    CreditCard(CreditCard const &other)
+        : SqlEntityInterface{&id, &user_id, &card_number}, id(other.id), user_id(other.user_id),
+          card_number(other.card_number) {}
 };
 
 void data_collection_test::test_to_entity_tuple() {
