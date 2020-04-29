@@ -55,6 +55,11 @@ class SqlBool : public SqlPrimitiveInterface {
      */
     std::optional<bool> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::optional<bool> *value_ptr();
+
   private:
     std::optional<bool> value_;
 };
@@ -67,8 +72,8 @@ class SqlBool : public SqlPrimitiveInterface {
  */
 class SqlInt : public SqlPrimitiveInterface {
   public:
-    SqlInt(std::string const &field_name);
-    SqlInt(int32_t value, std::string const &field_name = "");
+    explicit SqlInt(std::string const &field_name);
+    explicit SqlInt(int32_t value, std::string const &field_name = "");
     ~SqlInt() override;
     SqlInt(SqlInt const &) = default;
 
@@ -85,6 +90,11 @@ class SqlInt : public SqlPrimitiveInterface {
      */
     std::optional<int32_t> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::optional<int32_t> *value_ptr();
+
   private:
     std::optional<int32_t> value_;
 };
@@ -97,8 +107,8 @@ class SqlInt : public SqlPrimitiveInterface {
  */
 class SqlLong : public SqlPrimitiveInterface {
   public:
-    SqlLong(std::string const &field_name);
-    SqlLong(int64_t value, std::string const &field_name = "");
+    explicit SqlLong(std::string const &field_name);
+    explicit SqlLong(int64_t value, std::string const &field_name = "");
     ~SqlLong() override;
     SqlLong(SqlLong const &) = default;
 
@@ -115,6 +125,11 @@ class SqlLong : public SqlPrimitiveInterface {
      */
     std::optional<int64_t> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::optional<int64_t> *value_ptr();
+
   private:
     std::optional<int64_t> value_;
 };
@@ -127,8 +142,8 @@ class SqlLong : public SqlPrimitiveInterface {
  */
 class SqlFloat : public SqlPrimitiveInterface {
   public:
-    SqlFloat(std::string const &field_name);
-    SqlFloat(float value, std::string const &field_name = "");
+    explicit SqlFloat(std::string const &field_name);
+    explicit SqlFloat(float value, std::string const &field_name = "");
     ~SqlFloat() override;
     SqlFloat(SqlFloat const &) = default;
 
@@ -145,6 +160,11 @@ class SqlFloat : public SqlPrimitiveInterface {
      */
     std::optional<float> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::optional<float> *value_ptr();
+
   private:
     std::optional<float> value_;
 };
@@ -157,8 +177,8 @@ class SqlFloat : public SqlPrimitiveInterface {
  */
 class SqlDouble : public SqlPrimitiveInterface {
   public:
-    SqlDouble(std::string const &field_name);
-    SqlDouble(double value, std::string const &field_name = "");
+    explicit SqlDouble(std::string const &field_name);
+    explicit SqlDouble(double value, std::string const &field_name = "");
     ~SqlDouble() override;
     SqlDouble(SqlDouble const &) = default;
 
@@ -175,6 +195,11 @@ class SqlDouble : public SqlPrimitiveInterface {
      */
     std::optional<double> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::optional<double> *value_ptr();
+
   private:
     std::optional<double> value_;
 };
@@ -187,7 +212,7 @@ class SqlDouble : public SqlPrimitiveInterface {
  */
 class SqlStr : public SqlPrimitiveInterface {
   public:
-    SqlStr(std::string const &field_name);
+    explicit SqlStr(std::string const &field_name);
     SqlStr(std::string const &value, std::string const &field_name);
     ~SqlStr() override;
     SqlStr(SqlStr const &) = default;
@@ -205,6 +230,11 @@ class SqlStr : public SqlPrimitiveInterface {
      */
     std::optional<std::string> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::optional<std::string> *value_ptr();
+
   private:
     std::optional<std::string> value_;
 };
@@ -217,8 +247,8 @@ class SqlStr : public SqlPrimitiveInterface {
  */
 class SqlTimestamp : public SqlPrimitiveInterface {
   public:
-    SqlTimestamp(std::string const &field_name);
-    SqlTimestamp(std::time_t value, std::string const &field_name = "");
+    explicit SqlTimestamp(std::string const &field_name);
+    explicit SqlTimestamp(std::time_t value, std::string const &field_name = "");
     ~SqlTimestamp() override;
     SqlTimestamp(SqlTimestamp const &) = default;
 
@@ -235,6 +265,11 @@ class SqlTimestamp : public SqlPrimitiveInterface {
      */
     std::optional<std::time_t> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::optional<std::time_t> *value_ptr();
+
   private:
     std::optional<std::time_t> value_;
 };
@@ -248,8 +283,8 @@ class SqlTimestamp : public SqlPrimitiveInterface {
  */
 class SqlBoolArr : public SqlPrimitiveInterface {
   public:
-    SqlBoolArr(std::string const &field_name);
-    SqlBoolArr(std::vector<bool> const &value, std::string const &field_name = "");
+    explicit SqlBoolArr(std::string const &field_name);
+    explicit SqlBoolArr(std::vector<bool> const &value, std::string const &field_name = "");
     ~SqlBoolArr() override;
     SqlBoolArr(SqlBoolArr const &) = default;
 
@@ -266,6 +301,11 @@ class SqlBoolArr : public SqlPrimitiveInterface {
      */
     std::vector<bool> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::vector<bool> *value_ptr();
+
   private:
     std::vector<bool> value_;
 };
@@ -279,8 +319,8 @@ class SqlBoolArr : public SqlPrimitiveInterface {
  */
 class SqlIntArr : public SqlPrimitiveInterface {
   public:
-    SqlIntArr(std::string const &field_name);
-    SqlIntArr(std::vector<int32_t> const &value, std::string const &field_name = "");
+    explicit SqlIntArr(std::string const &field_name);
+    explicit SqlIntArr(std::vector<int32_t> const &value, std::string const &field_name = "");
     ~SqlIntArr() override;
     SqlIntArr(SqlIntArr const &) = default;
 
@@ -297,6 +337,11 @@ class SqlIntArr : public SqlPrimitiveInterface {
      */
     std::vector<int32_t> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::vector<int32_t> *value_ptr();
+
   private:
     std::vector<int32_t> value_;
 };
@@ -310,8 +355,8 @@ class SqlIntArr : public SqlPrimitiveInterface {
  */
 class SqlLongArr : public SqlPrimitiveInterface {
   public:
-    SqlLongArr(std::string const &field_name);
-    SqlLongArr(std::vector<int64_t> const &value, std::string const &field_name = "");
+    explicit SqlLongArr(std::string const &field_name);
+    explicit SqlLongArr(std::vector<int64_t> const &value, std::string const &field_name = "");
     ~SqlLongArr() override;
     SqlLongArr(SqlLongArr const &) = default;
 
@@ -328,6 +373,11 @@ class SqlLongArr : public SqlPrimitiveInterface {
      */
     std::vector<int64_t> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::vector<int64_t> *value_ptr();
+
   private:
     std::vector<int64_t> value_;
 };
@@ -341,8 +391,8 @@ class SqlLongArr : public SqlPrimitiveInterface {
  */
 class SqlFloatArr : public SqlPrimitiveInterface {
   public:
-    SqlFloatArr(std::string const &field_name);
-    SqlFloatArr(std::vector<float> const &value, std::string const &field_name = "");
+    explicit SqlFloatArr(std::string const &field_name);
+    explicit SqlFloatArr(std::vector<float> const &value, std::string const &field_name = "");
     ~SqlFloatArr() override;
     SqlFloatArr(SqlFloatArr const &) = default;
 
@@ -359,6 +409,11 @@ class SqlFloatArr : public SqlPrimitiveInterface {
      */
     std::vector<float> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::vector<float> *value_ptr();
+
   private:
     std::vector<float> value_;
 };
@@ -372,8 +427,8 @@ class SqlFloatArr : public SqlPrimitiveInterface {
  */
 class SqlDoubleArr : public SqlPrimitiveInterface {
   public:
-    SqlDoubleArr(std::string const &field_name);
-    SqlDoubleArr(std::vector<double> const &value, std::string const &field_name = "");
+    explicit SqlDoubleArr(std::string const &field_name);
+    explicit SqlDoubleArr(std::vector<double> const &value, std::string const &field_name = "");
     ~SqlDoubleArr() override;
     SqlDoubleArr(SqlDoubleArr const &) = default;
 
@@ -390,6 +445,11 @@ class SqlDoubleArr : public SqlPrimitiveInterface {
      */
     std::vector<double> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::vector<double> *value_ptr();
+
   private:
     std::vector<double> value_;
 };
@@ -403,8 +463,8 @@ class SqlDoubleArr : public SqlPrimitiveInterface {
  */
 class SqlStrArr : public SqlPrimitiveInterface {
   public:
-    SqlStrArr(std::string const &field_name);
-    SqlStrArr(std::vector<std::string> const &value, std::string const &field_name = "");
+    explicit SqlStrArr(std::string const &field_name);
+    explicit SqlStrArr(std::vector<std::string> const &value, std::string const &field_name = "");
     ~SqlStrArr() override;
     SqlStrArr(SqlStrArr const &) = default;
 
@@ -421,6 +481,11 @@ class SqlStrArr : public SqlPrimitiveInterface {
      */
     std::vector<std::string> const &value() const;
 
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::vector<std::string> *value_ptr();
+
   private:
     std::vector<std::string> value_;
 };
@@ -434,8 +499,9 @@ class SqlStrArr : public SqlPrimitiveInterface {
  */
 class SqlTimestampArr : public SqlPrimitiveInterface {
   public:
-    SqlTimestampArr(std::string const &field_name);
-    SqlTimestampArr(std::vector<std::time_t> const &value, std::string const &field_name = "");
+    explicit SqlTimestampArr(std::string const &field_name);
+    explicit SqlTimestampArr(std::vector<std::time_t> const &value,
+                             std::string const &field_name = "");
     ~SqlTimestampArr() override;
     SqlTimestampArr(SqlTimestampArr const &) = default;
 
@@ -451,6 +517,11 @@ class SqlTimestampArr : public SqlPrimitiveInterface {
      * @brief value The internally stored C++ timestamp array.
      */
     std::vector<std::time_t> const &value() const;
+
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::vector<std::time_t> *value_ptr();
 
   private:
     std::vector<std::time_t> value_;

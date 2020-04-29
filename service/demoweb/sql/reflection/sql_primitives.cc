@@ -152,6 +152,8 @@ bool SqlBool::operator<(SqlPrimitiveInterface const &rhs) const {
 
 std::optional<bool> const &SqlBool::value() const { return value_; }
 
+std::optional<bool> *SqlBool::value_ptr() { return &value_; }
+
 SqlInt::SqlInt(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
 SqlInt::SqlInt(int32_t value, std::string const &field_name)
@@ -194,6 +196,8 @@ bool SqlInt::operator<(SqlPrimitiveInterface const &rhs) const {
 }
 
 std::optional<int32_t> const &SqlInt::value() const { return value_; }
+
+std::optional<int32_t> *SqlInt::value_ptr() { return &value_; }
 
 SqlLong::SqlLong(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -238,6 +242,8 @@ bool SqlLong::operator<(SqlPrimitiveInterface const &rhs) const {
 
 std::optional<int64_t> const &SqlLong::value() const { return value_; }
 
+std::optional<int64_t> *SqlLong::value_ptr() { return &value_; }
+
 SqlFloat::SqlFloat(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
 SqlFloat::SqlFloat(float value, std::string const &field_name)
@@ -280,6 +286,8 @@ bool SqlFloat::operator<(SqlPrimitiveInterface const &rhs) const {
 }
 
 std::optional<float> const &SqlFloat::value() const { return value_; }
+
+std::optional<float> *SqlFloat::value_ptr() { return &value_; }
 
 SqlDouble::SqlDouble(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -324,6 +332,8 @@ bool SqlDouble::operator<(SqlPrimitiveInterface const &rhs) const {
 
 std::optional<double> const &SqlDouble::value() const { return value_; }
 
+std::optional<double> *SqlDouble::value_ptr() { return &value_; }
+
 SqlStr::SqlStr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
 SqlStr::SqlStr(std::string const &value, std::string const &field_name)
@@ -366,6 +376,8 @@ bool SqlStr::operator<(SqlPrimitiveInterface const &rhs) const {
 }
 
 std::optional<std::string> const &SqlStr::value() const { return value_; }
+
+std::optional<std::string> *SqlStr::value_ptr() { return &value_; }
 
 SqlTimestamp::SqlTimestamp(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -412,6 +424,8 @@ bool SqlTimestamp::operator<(SqlPrimitiveInterface const &rhs) const {
 
 std::optional<std::time_t> const &SqlTimestamp::value() const { return value_; }
 
+std::optional<std::time_t> *SqlTimestamp::value_ptr() { return &value_; }
+
 SqlBoolArr::SqlBoolArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
 SqlBoolArr::SqlBoolArr(std::vector<bool> const &value, std::string const &field_name)
@@ -451,6 +465,8 @@ bool SqlBoolArr::operator<(SqlPrimitiveInterface const &rhs) const {
 }
 
 std::vector<bool> const &SqlBoolArr::value() const { return value_; }
+
+std::vector<bool> *SqlBoolArr::value_ptr() { return &value_; }
 
 SqlIntArr::SqlIntArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -492,6 +508,8 @@ bool SqlIntArr::operator<(SqlPrimitiveInterface const &rhs) const {
 
 std::vector<int32_t> const &SqlIntArr::value() const { return value_; }
 
+std::vector<int32_t> *SqlIntArr::value_ptr() { return &value_; }
+
 SqlLongArr::SqlLongArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
 SqlLongArr::SqlLongArr(std::vector<int64_t> const &value, std::string const &field_name)
@@ -531,6 +549,8 @@ bool SqlLongArr::operator<(SqlPrimitiveInterface const &rhs) const {
 }
 
 std::vector<int64_t> const &SqlLongArr::value() const { return value_; }
+
+std::vector<int64_t> *SqlLongArr::value_ptr() { return &value_; }
 
 SqlFloatArr::SqlFloatArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -572,6 +592,8 @@ bool SqlFloatArr::operator<(SqlPrimitiveInterface const &rhs) const {
 
 std::vector<float> const &SqlFloatArr::value() const { return value_; }
 
+std::vector<float> *SqlFloatArr::value_ptr() { return &value_; }
+
 SqlDoubleArr::SqlDoubleArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
 SqlDoubleArr::SqlDoubleArr(std::vector<double> const &value, std::string const &field_name)
@@ -612,6 +634,8 @@ bool SqlDoubleArr::operator<(SqlPrimitiveInterface const &rhs) const {
 
 std::vector<double> const &SqlDoubleArr::value() const { return value_; }
 
+std::vector<double> *SqlDoubleArr::value_ptr() { return &value_; }
+
 SqlStrArr::SqlStrArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
 SqlStrArr::SqlStrArr(std::vector<std::string> const &value, std::string const &field_name)
@@ -651,6 +675,8 @@ bool SqlStrArr::operator<(SqlPrimitiveInterface const &rhs) const {
 }
 
 std::vector<std::string> const &SqlStrArr::value() const { return value_; }
+
+std::vector<std::string> *SqlStrArr::value_ptr() { return &value_; }
 
 SqlTimestampArr::SqlTimestampArr(std::string const &field_name)
     : SqlPrimitiveInterface(field_name) {}
@@ -693,5 +719,7 @@ bool SqlTimestampArr::operator<(SqlPrimitiveInterface const &rhs) const {
 }
 
 std::vector<std::time_t> const &SqlTimestampArr::value() const { return value_; }
+
+std::vector<std::time_t> *SqlTimestampArr::value_ptr() { return &value_; }
 
 } // namespace e8
