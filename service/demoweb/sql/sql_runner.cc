@@ -33,18 +33,11 @@
 namespace e8 {
 namespace {
 
-int64_t reverse_bits(int64_t original) {
-    unsigned int reversed = 0;
-
-    while (original > 0) {
-        reversed <<= 1;
-        if (original & 1) {
-            reversed ^= 1;
-        }
-        original >>= 1;
-    }
-
-    return reversed;
+int64_t reverse_bytes(int64_t original) {
+    return (original & 0xFF) << 56 | ((original >> 8) & 0xFF) << 48 |
+           ((original >> 16) & 0xFF) << 40 | ((original >> 24) & 0xFF) << 32 |
+           ((original >> 32) & 0xFF) << 24 | ((original >> 40) & 0xFF) << 16 |
+           ((original >> 48) & 0xFF) << 8 | ((original >> 56) & 0xFF);
 }
 
 } // namespace
@@ -126,9 +119,10 @@ void SendHeartBeat(ConnectionReservoirInterface *reservoir) {
 
 int64_t TimeId() {
     auto now = std::chrono::high_resolution_clock::now();
-    auto micros = std::chrono::time_point_cast<std::chrono::microseconds>(now);
-    int64_t timestamp = micros.time_since_epoch().count();
-    return reverse_bits(timestamp);
+    auto nanos = std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
+    auto dura = std::chrono::duration_cast<std::chrono::nanoseconds>(nanos.time_since_epoch());
+    int64_t timestamp = dura.count();
+    return reverse_bytes(timestamp);
 }
 
 int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reservoir) {

@@ -122,7 +122,7 @@ void SendHeartBeat(ConnectionReservoirInterface *reservoir);
 
 /**
  * @brief TimeId Generate approximately unique integer ID from time. It has a resolution of
- * microsecond.
+ * sub-microsecond.
  *
  * @return Unique ID.
  */
