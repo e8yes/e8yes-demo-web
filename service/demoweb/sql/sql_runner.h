@@ -18,9 +18,11 @@
 #ifndef SQL_RUNNER_H
 #define SQL_RUNNER_H
 
+#include <cstdint>
 #include <initializer_list>
 #include <string>
 #include <tuple>
+#include <unordered_set>
 #include <vector>
 
 #include "sql/connection/connection_interface.h"
@@ -69,6 +71,29 @@ Query(SqlQueryBuilder const &query, std::initializer_list<std::string> const &en
 }
 
 /**
+ * @brief Update Save an entity to the specified SQL table.
+ *
+ * @param entity Entity to be saved.
+ * @param table_name Target SQL table to save to.
+ * @param override Whether or not to override existing record when conflict occurs on update.
+ * @param reservoir Connection reservoir to allocate database connections.
+ * @return The number of SQL rows affected by this update.
+ */
+uint64_t Update(SqlEntityInterface const &entity, std::string const &table_name, bool override,
+                ConnectionReservoirInterface *reservoir);
+
+/**
+ * @brief Delete Runs a deletion SQL query on the specified table.
+ *
+ * @param table_name  Name of the table to run deletion query on.
+ * @param query  Partial deletion query. Example: "WHERE id = 100"
+ * @param reservoir Connection reservoir to allocate database connections.
+ * @return The number of rows deleted.
+ */
+uint64_t Delete(std::string const &table_name, SqlQueryBuilder const &query,
+                ConnectionReservoirInterface *reservoir);
+
+/**
  * @brief Exists Tells whethter the query returns at least one record.
  *
  * @param query The query is a partial SQL query where the SELECT ... FROM part is omitted. Example:
@@ -77,6 +102,40 @@ Query(SqlQueryBuilder const &query, std::initializer_list<std::string> const &en
  * @return True only if there is at least one record.
  */
 bool Exists(SqlQueryBuilder const &query, ConnectionReservoirInterface *reservoir);
+
+/**
+ * @brief Tables Get the name of all tables in a database.
+ *
+ * @param reservoir Connection reservoir to allocate database connections which point to the
+ * database to be reflected.
+ * @return table name of the tables in the database.
+ */
+std::unordered_set<std::string> Tables(ConnectionReservoirInterface *reservoir);
+
+/**
+ * @brief SendHeartBeat Send a heartbeat to test the connection.
+ *
+ * @param reservoir Connection reservoir to allocate database connections which point to the
+ * database to send heart beat to.
+ */
+void SendHeartBeat(ConnectionReservoirInterface *reservoir);
+
+/**
+ * @brief TimeId Generate approximately unique integer ID from time. It has a resolution of
+ * microsecond.
+ *
+ * @return Unique ID.
+ */
+int64_t TimeId();
+
+/**
+ * @brief SeqId Generate sequential ID from a sequence table.
+ *
+ * @param seq_table Name of the sequence table to generate ID from.
+ * @param reservoir Connection reservoir to allocate database connections.
+ * @return Unique ID.
+ */
+int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reservoir);
 
 } // namespace e8
 

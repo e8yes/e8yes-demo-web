@@ -15,6 +15,136 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <chrono>
+#include <cstdint>
+#include <exception>
+#include <ios>
+#include <memory>
+#include <string>
+#include <unordered_set>
+
+#include "sql/connection/connection_interface.h"
+#include "sql/connection/connection_reservoir_interface.h"
+#include "sql/orm/query_completion.h"
+#include "sql/reflection/sql_primitives.h"
+#include "sql/resultset/result_set_interface.h"
 #include "sql/sql_runner.h"
 
-namespace e8 {} // namespace e8
+namespace e8 {
+namespace {
+
+int64_t reverse_bits(int64_t original) {
+    unsigned int reversed = 0;
+
+    while (original > 0) {
+        reversed <<= 1;
+        if (original & 1) {
+            reversed ^= 1;
+        }
+        original >>= 1;
+    }
+
+    return reversed;
+}
+
+} // namespace
+
+uint64_t Update(SqlEntityInterface const &entity, std::string const &table_name, bool override,
+                ConnectionReservoirInterface *reservoir) {
+    InsertQueryAndParams query_and_params = GenerateInsertQuery(table_name, entity, override);
+
+    ConnectionInterface *conn = reservoir->Take();
+    uint64_t numRowsUpdated =
+        conn->run_update(query_and_params.query, query_and_params.query_params);
+    reservoir->Put(conn);
+
+    return numRowsUpdated;
+}
+
+uint64_t Delete(std::string const &table_name, SqlQueryBuilder const &query,
+                ConnectionReservoirInterface *reservoir) {
+    std::string completed_query = "DELETE FROM " + table_name + " " + query.psql_query();
+
+    ConnectionInterface *conn = reservoir->Take();
+    uint64_t numRowsUpdated = conn->run_update(completed_query, query.query_params());
+    reservoir->Put(conn);
+
+    return numRowsUpdated;
+}
+
+bool Exists(SqlQueryBuilder const &query, ConnectionReservoirInterface *reservoir) {
+    std::string exists_query = "SELECT TRUE FROM " + query.psql_query();
+
+    ConnectionInterface *conn = reservoir->Take();
+
+    std::unique_ptr<ResultSetInterface> rs = conn->run_query(exists_query, query.query_params());
+    bool exists = rs->has_next();
+
+    reservoir->Put(conn);
+
+    return exists;
+}
+
+std::unordered_set<std::string> Tables(ConnectionReservoirInterface *reservoir) {
+    ConnectionInterface *conn = reservoir->Take();
+    std::string reflection_query =
+        "SELECT tb.table_name FROM information_schema.tables tb WHERE tb.table_schema='public'";
+    std::unique_ptr<ResultSetInterface> rs =
+        conn->run_query(reflection_query, ConnectionInterface::QueryParams());
+
+    std::unordered_set<std::string> table_names;
+    SqlStr table_name("table_name");
+    for (; rs->has_next(); rs->next()) {
+        rs->set_field(0, &table_name);
+        assert(table_name.value().has_value());
+        table_names.insert(table_name.value().value());
+    }
+
+    reservoir->Put(conn);
+
+    return table_names;
+}
+
+void SendHeartBeat(ConnectionReservoirInterface *reservoir) {
+    ConnectionInterface *conn = reservoir->Take();
+
+    std::unique_ptr<ResultSetInterface> rs =
+        conn->run_query("SELECT 1", ConnectionInterface::QueryParams());
+
+    if (!rs->has_next()) {
+        throw std::ios_base::failure("Heart beat results in an empty result set.");
+    }
+
+    SqlInt one("heart_beat");
+    rs->set_field(0, &one);
+    if (!one.value().has_value() || one.value().value() != 1) {
+        throw std::system_error();
+    }
+
+    reservoir->Put(conn);
+}
+
+int64_t TimeId() {
+    auto now = std::chrono::high_resolution_clock::now();
+    auto micros = std::chrono::time_point_cast<std::chrono::microseconds>(now);
+    int64_t timestamp = micros.time_since_epoch().count();
+    return reverse_bits(timestamp);
+}
+
+int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reservoir) {
+    ConnectionInterface *conn = reservoir->Take();
+
+    std::unique_ptr<ResultSetInterface> rs =
+        conn->run_query("SELECT nextval('" + seq_table + "')", ConnectionInterface::QueryParams());
+    assert(rs->has_next());
+
+    SqlLong id("id");
+    rs->set_field(0, &id);
+    assert(id.value().has_value());
+
+    reservoir->Put(conn);
+
+    return id.value().value();
+}
+
+} // namespace e8
