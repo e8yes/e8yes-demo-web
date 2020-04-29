@@ -60,9 +60,9 @@ class ConnectionInterface {
          * @brief Set value to the position-th parameter placeholder.
          *
          * @param position Position to set value to.
-         * @param val value to set.
+         * @param val Pointer to the value to set.
          */
-        void set_param(SlotId slot, SqlPrimitiveInterface const &val);
+        void set_param(SlotId slot, SqlPrimitiveInterface const *val);
 
         /**
          * @brief Get the value set to the position-th placeholder.

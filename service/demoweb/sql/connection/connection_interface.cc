@@ -19,8 +19,8 @@
 
 namespace e8 {
 
-void ConnectionInterface::QueryParams::set_param(SlotId slot, SqlPrimitiveInterface const &val) {
-    params_.insert(std::make_pair(slot, &val));
+void ConnectionInterface::QueryParams::set_param(SlotId slot, SqlPrimitiveInterface const *val) {
+    params_.insert(std::make_pair(slot, val));
 }
 
 SqlPrimitiveInterface const *ConnectionInterface::QueryParams::get_param(SlotId slot) const {

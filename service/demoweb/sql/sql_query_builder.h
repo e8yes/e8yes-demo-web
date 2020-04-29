@@ -71,11 +71,11 @@ class SqlQueryBuilder {
      *
      * @param <Type>
      * @param holder Placeholder to be assigned a value.
-     * @param val The value to be assigned.
+     * @param val Pointer to the value to be assigned.
      */
     template <typename Type>
     void set_value_to_placeholder(Placeholder<Type> const &holder,
-                                  SqlPrimitiveInterface const &val) {
+                                  SqlPrimitiveInterface const *val) {
         for (auto slot : holder.slots) {
             params_.set_param(slot, val);
         }
