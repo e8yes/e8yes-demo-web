@@ -49,8 +49,8 @@ class SqlQueryBuilder {
      * @param <Type> The type of variable the place holder represents for.
      */
     template <typename Type> class Placeholder {
-      private:
-        std::vector<ConnectionInterface::QueryParams::SlotId> slots;
+      public:
+        std::vector<ConnectionInterface::QueryParams::SlotId> param_slots;
     };
 
     /**
@@ -61,8 +61,8 @@ class SqlQueryBuilder {
      */
     template <typename Type> SqlQueryBuilder &placeholder(Placeholder<Type> *holder) {
         ConnectionInterface::QueryParams::SlotId slot_id = params_.allocate_slot();
-        holder->slots.add(slot_id);
-        query_.append("$" + std::to_string(slot_id));
+        holder->param_slots.push_back(slot_id);
+        query_ += "$" + std::to_string(slot_id);
         return *this;
     }
 
@@ -76,7 +76,7 @@ class SqlQueryBuilder {
     template <typename Type>
     void set_value_to_placeholder(Placeholder<Type> const &holder,
                                   SqlPrimitiveInterface const *val) {
-        for (auto slot : holder.slots) {
+        for (auto slot : holder.param_slots) {
             params_.set_param(slot, val);
         }
     }

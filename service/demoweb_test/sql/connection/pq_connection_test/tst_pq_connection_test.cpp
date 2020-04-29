@@ -74,8 +74,8 @@ void pq_connection_test::update_and_query_test() {
     e8::ConnectionInterface::QueryParams insertion_params;
     e8::SqlLong id_param(1L);
     e8::SqlStr str_param("test_string", "");
-    insertion_params.set_param(0, &id_param);
-    insertion_params.set_param(1, &str_param);
+    insertion_params.set_param(1, &id_param);
+    insertion_params.set_param(2, &str_param);
     uint64_t num_rows_affected = conn.run_update(insert_stmt, insertion_params);
 
     QVERIFY(num_rows_affected == 1);
@@ -84,7 +84,7 @@ void pq_connection_test::update_and_query_test() {
     std::string query_stmt = "SELECT * FROM PqConnectionTest WHERE id=$1";
     e8::ConnectionInterface::QueryParams query_params;
     e8::SqlLong id_query_param(1L);
-    query_params.set_param(0, &id_query_param);
+    query_params.set_param(1, &id_query_param);
 
     std::unique_ptr<e8::ResultSetInterface> rs = conn.run_query(query_stmt, query_params);
     QVERIFY(rs->has_next());
