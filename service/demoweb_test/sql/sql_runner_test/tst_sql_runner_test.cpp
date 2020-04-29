@@ -38,6 +38,7 @@ class sql_runner_test : public QObject {
 
   private slots:
     void insert_then_query_test();
+    void insert_then_delete_test();
 };
 
 sql_runner_test::sql_runner_test() {}
@@ -161,6 +162,41 @@ void sql_runner_test::insert_then_query_test() {
     CreditCard retrieved_card1 = std::get<1>(results[1]);
     QVERIFY(retrieved_card1.id.value() == std::optional<int32_t>(10));
     QVERIFY(retrieved_card1.card_number.value() == std::optional<std::string>("1234"));
+
+    // Clean up.
+    DropSchema(conn);
+    reservoir.Put(conn);
+}
+
+void sql_runner_test::insert_then_delete_test() {
+    e8::ConnectionFactory factory = CreateConnectionFactory();
+    e8::BasicConnectionReservoir reservoir(factory);
+    e8::ConnectionInterface *conn = reservoir.Take();
+
+    // Prepare schema.
+    DropSchema(conn);
+    CreateSchema(conn);
+
+    // Prepare test data.
+    User user;
+    *user.id.value_ptr() = 1;
+    *user.user_name.value_ptr() = "user0";
+    uint64_t num_rows_affected = e8::Update(user,
+                                            /*tableName=*/"QueryRunnerTestUser",
+                                            /*replace=*/true, &reservoir);
+    QVERIFY(num_rows_affected == 1);
+
+    // Delete nothing.
+    num_rows_affected = e8::Delete(
+        /*table_name=*/"QueryRunnerTestUser", e8::SqlQueryBuilder().query_piece("WHERE id!=1"),
+        &reservoir);
+    QVERIFY(num_rows_affected == 0);
+
+    // Delete the user.
+    num_rows_affected = e8::Delete(
+        /*table_name=*/"QueryRunnerTestUser", e8::SqlQueryBuilder().query_piece("WHERE id=1"),
+        &reservoir);
+    QVERIFY(num_rows_affected == 1);
 
     // Clean up.
     DropSchema(conn);
