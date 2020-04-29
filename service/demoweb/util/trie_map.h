@@ -185,7 +185,7 @@ class TrieMap {
     /**
      * @brief operator = Copy assignment operator.
      */
-    TrieMap<KeyType, ValueType> &operator=(TrieMap<KeyType, ValueType> rhs);
+    TrieMap<KeyType, ValueType> &operator=(TrieMap<KeyType, ValueType> const &rhs);
 
     /**
      * @brief operator == Two maps are equal if they both contain the same set of key-value pairs.
@@ -440,8 +440,9 @@ TrieMap<KeyType, ValueType, NodeType>::TrieMap(TrieMap<KeyType, ValueType> const
 
 template <typename KeyType, typename ValueType, typename NodeType>
 TrieMap<KeyType, ValueType> &
-TrieMap<KeyType, ValueType, NodeType>::operator=(TrieMap<KeyType, ValueType> rhs) {
-    std::swap(*this, rhs);
+TrieMap<KeyType, ValueType, NodeType>::operator=(TrieMap<KeyType, ValueType> const &rhs) {
+    root_ = std::make_unique<NodeType>(rhs.root_);
+    num_elements_ = rhs.num_elements_;
     return *this;
 }
 

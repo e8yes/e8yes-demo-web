@@ -75,11 +75,11 @@ Query(SqlQueryBuilder const &query, std::initializer_list<std::string> const &en
  *
  * @param entity Entity to be saved.
  * @param table_name Target SQL table to save to.
- * @param override Whether or not to override existing record when conflict occurs on update.
+ * @param replace Whether or not to override existing record when conflict occurs on update.
  * @param reservoir Connection reservoir to allocate database connections.
  * @return The number of SQL rows affected by this update.
  */
-uint64_t Update(SqlEntityInterface const &entity, std::string const &table_name, bool override,
+uint64_t Update(SqlEntityInterface const &entity, std::string const &table_name, bool replace,
                 ConnectionReservoirInterface *reservoir);
 
 /**
