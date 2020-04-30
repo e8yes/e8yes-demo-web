@@ -2,10 +2,12 @@
 
 set -e
 
+./install-dev-pkgs.sh
+
 echo "============================================"
 echo "Starting a local postgres server for testing."
 cd postgres
-./push-test-schema.sh
+./push-dev-schema.sh
 cd ..
 
 n_cores=$(nproc --all)
