@@ -9,17 +9,9 @@ then
 	    curl \
 	    gnupg-agent \
 	    software-properties-common
-	
-	echo "Add docker apt repository..."
-	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-	sudo add-apt-repository \
-	   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-	   $(lsb_release -cs) \
-	   stable"
-	sudo apt update
-	
+
 	echo "Installing docker..."
-	sudo apt install -y docker-ce docker-ce-cli containerd.io
+	curl -sSL https://get.docker.com | sh
 else
 	echo "Docker has already been installed. Skip."
 fi
