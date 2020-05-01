@@ -13,8 +13,8 @@ hs_err_pid*
 /webchat/nbproject/private/
 /webchat/build/
 /webchat/dist/
-/server/target/
-/server/nbproject/
+/java-demoweb-service-legacy/target/
+/java-demoweb-service-legacy/nbproject/
 
 # C++ binaries
 build-*/
