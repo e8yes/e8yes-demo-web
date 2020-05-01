@@ -10,11 +10,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/webchat/nbproject/private/
-/webchat/build/
-/webchat/dist/
-/java-demoweb-service-legacy/target/
-/java-demoweb-service-legacy/nbproject/
+/legacy/x3ddemoweb-legacy/nbproject/private/
+/legacy/x3ddemoweb-legacy/build/
+/legacy/x3ddemoweb-legacy/dist/
+/legacy/java-demoweb-service-legacy/target/
+/legacy/java-demoweb-service-legacy/nbproject/
 
 # C++ binaries
 build-*/
