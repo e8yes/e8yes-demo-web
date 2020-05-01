@@ -22,6 +22,7 @@ function copy_src {
     host_name=$1
     password=$2
 
+    copy_file $host_name $password shared_image
     copy_file $host_name $password service
     copy_file $host_name $password postgres
     copy_file $host_name $password build.sh

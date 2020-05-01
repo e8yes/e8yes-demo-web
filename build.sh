@@ -5,7 +5,12 @@ set -e
 echo "Installing build tools..."
 ./install-build-tools.sh
 
-echo "Building demoweb service..."
+echo "Building shared images..."
+cd shared_image
+./build.sh
+cd ..
+
+echo "Building demoweb service image..."
 cd service
 ./build.sh
 cd ..
