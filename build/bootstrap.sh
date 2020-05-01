@@ -1,4 +1,4 @@
 #!/bin/bash
 
-qmake ../service/demoweb.pro
+qmake ../demoweb_service/demoweb.pro
 

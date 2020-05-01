@@ -11,7 +11,7 @@ cd shared_image
 cd ..
 
 echo "Building demoweb service image..."
-cd service
+cd demoweb_service
 ./build.sh
 cd ..
 
