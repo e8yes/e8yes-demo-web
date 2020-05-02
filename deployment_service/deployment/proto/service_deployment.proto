@@ -1,0 +1,55 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+message DeployRequest {
+  // Source code to all the projects specified by a URL to the git repository.
+  string git_url = 1;
+
+  // The folder where it will pull the source into.
+  string folder_name = 2;
+
+  // Name of the bash script to run to build all the projects.
+  string build_script = 3;
+
+  // Name of the image that will be build after running the build script and 
+  // deployed.
+  string image_name = 4;
+}
+
+// The Status of the deployment is indicated by the RPC stub's status.
+message DeployResponse {
+  // The current step the deployment process is at.
+  int32 current_step = 1;
+
+  // Total number of steps needed to for the deployment.
+  int32 total_num_steps = 2;
+
+  // Human-readable description of the current step.
+  string step_description = 3;
+}
+
+service DeploymentService {
+  /**
+   * Updates the source code of the projects specified by a git repository, then it builds a 
+   * specific project into an image and deploy the image to other machines.
+   */
+  rpc Deploy (DeployRequest) returns (stream DeployResponse);
+}
