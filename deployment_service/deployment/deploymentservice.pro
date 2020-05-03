@@ -21,10 +21,14 @@ DEFINES += DEPLOYMENTSERVICE_LIBRARY
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    deployment_service.cc
+    deployment_service.cc \
+    deployment_service.pb.cc \
+    deployment_service.grpc.pb.cc
 
 HEADERS += \
-    deployment_service.h
+    deployment_service.h \
+    deployment_service.pb.h \
+    deployment_service.grpbc.pb.h
 
 unix {
     target.path = /usr/lib

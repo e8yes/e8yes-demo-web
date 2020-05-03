@@ -18,14 +18,19 @@
 #ifndef DEPLOYMENT_SERVICE_H
 #define DEPLOYMENT_SERVICE_H
 
+#include <grpcpp/grpcpp.h>
+
+#include "deployment_service.grpc.pb.h"
+
 namespace e8 {
 
 /**
- * @brief The DeploymentService class
+ * @brief The DeploymentServiceImpl class
  */
-class DeploymentService {
+class DeploymentServiceImpl : public DeploymentService::Service {
   public:
-    DeploymentService();
+    grpc::Status Deploy(grpc::ServerContext *context, DeployRequest const *request,
+                        grpc::ServerWriter<DeployResponse> *writer) override;
 };
 
 } // namespace e8

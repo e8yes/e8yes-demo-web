@@ -19,6 +19,8 @@
 
 namespace e8 {
 
-DeploymentService::DeploymentService() {}
+grpc::Status DeploymentServiceImpl::Deploy(grpc::ServerContext *context,
+                                           DeployRequest const *request,
+                                           grpc::ServerWriter<DeployResponse> *writer) {}
 
 } // namespace e8
