@@ -30,5 +30,9 @@
             "location": "pi5.local",
             "ssh_password": "raspberry"
         }
-    ]
+    ],
+    "cluster": {
+        "kubernetes_master": "pi2",
+        "postgres_citus_master": "pi3"
+    }
 }
