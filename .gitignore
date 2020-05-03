@@ -23,3 +23,10 @@ build/*
 # Exclude the boostrap script.
 !build/*.sh
 
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
