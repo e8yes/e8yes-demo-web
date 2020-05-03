@@ -122,11 +122,13 @@ void SendHeartBeat(ConnectionReservoirInterface *reservoir);
 
 /**
  * @brief TimeId Generate approximately unique integer ID from time. It has a resolution of
- * sub-microsecond.
+ * microsecond.
  *
+ * @param host_id zero-offset ID to scatter timestamps into different ranges to avoid ID collision
+ * among different host machines.
  * @return Unique ID.
  */
-int64_t TimeId();
+int64_t TimeId(unsigned host_id);
 
 /**
  * @brief SeqId Generate sequential ID from a sequence table.

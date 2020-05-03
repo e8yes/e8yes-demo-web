@@ -117,12 +117,13 @@ void SendHeartBeat(ConnectionReservoirInterface *reservoir) {
     reservoir->Put(conn);
 }
 
-int64_t TimeId() {
+int64_t TimeId(unsigned host_id) {
     auto now = std::chrono::high_resolution_clock::now();
-    auto nanos = std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
-    auto dura = std::chrono::duration_cast<std::chrono::nanoseconds>(nanos.time_since_epoch());
-    int64_t timestamp = dura.count();
-    return reverse_bytes(timestamp);
+    auto micros = std::chrono::time_point_cast<std::chrono::microseconds>(now);
+    auto dura = std::chrono::duration_cast<std::chrono::microseconds>(micros.time_since_epoch());
+    int64_t timestamp = dura.count() - 1588490444394000L;
+    int64_t unique_id = host_id * 0xFFFFFFFFFFFFF + timestamp;
+    return reverse_bytes(unique_id);
 }
 
 int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reservoir) {
