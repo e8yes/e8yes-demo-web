@@ -12,6 +12,8 @@ QMAKE_LDFLAGS_RELEASE += -O3 -flto
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += $$PWD/../../
+
 SOURCES += \
         main.cpp
 
@@ -19,6 +21,11 @@ SOURCES += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+unix:!macx: LIBS += -L$$OUT_PWD/./ -ldeploymentservice
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
 
 unix:!macx: LIBS += -L$$OUT_PWD/./ -ldeploymentservice
 

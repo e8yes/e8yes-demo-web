@@ -11,46 +11,15 @@ QMAKE_LDFLAGS_RELEASE += -O3 -flto
 DEFINES += DEMOWEBLIB_LIBRARY
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-HEADERS += \
-    sql/sql_query_builder.h \
-    sql/connection/connection_interface.h \
-    sql/reflection/sql_primitive_interface.h \
-    sql/resultset/result_set_interface.h \
-    sql/reflection/sql_entity_interface.h \
-    sql/reflection/sql_primitives.h \
-    sql/reflection/sql_primitives.h \
-    sql/resultset/pq_result_set.h \
-    sql/connection/pq_connection.h \
-    util/trie_map.h \
-    util/lru_hash_map.h \
-    sql/sql_runner.h \
-    sql/orm/query_completion.h \
-    sql/orm/data_collection.h \
-    sql/resultset/mock_result_set.h \
-    sql/connection/connection_reservoir_interface.h \
-    sql/connection/connection_factory.h \
-    sql/connection/mock_connection.h \
-    sql/connection/basic_connection_reservoir.h
+INCLUDEPATH += $$PWD/../../
 
-SOURCES += \
-    sql/sql_query_builder.cc \
-    sql/connection/connection_interface.cc \
-    sql/reflection/sql_primitive_interface.cc \
-    sql/reflection/sql_entity_interface.cc \
-    sql/reflection/sql_primitives.cc \
-    sql/resultset/result_set_interface.cc \
-    sql/resultset/pq_result_set.cc \
-    sql/connection/pq_connection.cc \
-    util/trie_map.cc \
-    util/lru_hash_map.cc \
-    sql/sql_runner.cc \
-    sql/orm/query_completion.cc \
-    sql/orm/data_collection.cc \
-    sql/resultset/mock_result_set.cc \
-    sql/connection/connection_reservoir_interface.cc \
-    sql/connection/connection_factory.cc \
-    sql/connection/mock_connection.cc \
-    sql/connection/basic_connection_reservoir.cc
+HEADERS +=
+SOURCES +=
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
+
+INCLUDEPATH += $$PWD/../../postgres/query_runner
+DEPENDPATH += $$PWD/../../postgres/query_runner
 
 LIBS += -lpqxx
 LIBS += -lpthread

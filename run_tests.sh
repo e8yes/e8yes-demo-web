@@ -19,7 +19,7 @@ cd ..
 
 echo "============================================"
 echo "Adding the following DLLs to LD_LIBRARY_PATH"
-dlls=($(find . -regextype sed -regex ".*/build/\(demoweb_service/demoweb\|deployment_service/deployment\)"))
+dlls=($(find . -regextype sed -regex ".*/build/\(demoweb_service/demoweb\|deployment_service/deployment\|postgres/query_runner\|common/container\)"))
 for dll in ${dlls[@]}
 do
 	echo $dll

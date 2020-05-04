@@ -1,15 +1,16 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2020-05-01T19:12:57
+# Project created by QtCreator 2020-05-03T23:46:38
 #
 #-------------------------------------------------
 
 QT       -= core gui
 
-TARGET = deploymentservice
+TARGET = container
 TEMPLATE = lib
 
-CONFIG -= qt
+DEFINES += CONTAINER_LIBRARY
+
 CONFIG += c++17
 
 QMAKE_CXXFLAGS += -std=c++17
@@ -17,26 +18,19 @@ QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -flto
 QMAKE_LDFLAGS_RELEASE += -O3 -flto
 
-DEFINES += DEPLOYMENTSERVICE_LIBRARY
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += $$PWD/../../
+INCLUDEPATH += ../../
 
 SOURCES += \
-    deployment_service.cc \
-    deployment_service.pb.cc \
-    deployment_service.grpc.pb.cc
+    lru_hash_map.cc \
+    trie_map.cc
 
 HEADERS += \
-    deployment_service.h \
-    deployment_service.pb.h \
-    deployment_service.grpbc.pb.h
+    lru_hash_map.h \
+    trie_map.h
 
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
-
-LIBS += -lpthread
-LIBS += -ldl
-LIBS += -lgrpc++ -lgrpc++_reflection
