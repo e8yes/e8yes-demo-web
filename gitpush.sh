@@ -2,5 +2,5 @@
 
 set -e
 
-./run-tests.sh
+./run_tests.sh
 git push
