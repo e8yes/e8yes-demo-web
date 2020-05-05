@@ -129,8 +129,12 @@ void SqlBool::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlBool &SqlBool::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlBool const &>(rhs).value_;
+SqlPrimitiveInterface &SqlBool::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlBool const &>(rhs));
+}
+
+SqlBool &SqlBool::operator=(SqlBool const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -174,8 +178,12 @@ void SqlInt::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlInt &SqlInt::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlInt const &>(rhs).value_;
+SqlPrimitiveInterface &SqlInt::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlInt const &>(rhs));
+}
+
+SqlInt &SqlInt::operator=(SqlInt const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -219,8 +227,12 @@ void SqlLong::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlLong &SqlLong::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlLong const &>(rhs).value_;
+SqlPrimitiveInterface &SqlLong::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlLong const &>(rhs));
+}
+
+SqlLong &SqlLong::operator=(SqlLong const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -264,8 +276,12 @@ void SqlFloat::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlFloat &SqlFloat::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlFloat const &>(rhs).value_;
+SqlPrimitiveInterface &SqlFloat::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlFloat const &>(rhs));
+}
+
+SqlFloat &SqlFloat::operator=(SqlFloat const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -309,8 +325,12 @@ void SqlDouble::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlDouble &SqlDouble::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlDouble const &>(rhs).value_;
+SqlPrimitiveInterface &SqlDouble::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlDouble const &>(rhs));
+}
+
+SqlDouble &SqlDouble::operator=(SqlDouble const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -354,8 +374,12 @@ void SqlStr::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlStr &SqlStr::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlStr const &>(rhs).value_;
+SqlPrimitiveInterface &SqlStr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlStr const &>(rhs));
+}
+
+SqlStr &SqlStr::operator=(SqlStr const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -401,8 +425,12 @@ void SqlTimestamp::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlTimestamp &SqlTimestamp::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlTimestamp const &>(rhs).value_;
+SqlPrimitiveInterface &SqlTimestamp::operator=(SqlPrimitiveInterface const &rhs) {
+    return *this = static_cast<SqlTimestamp const &>(rhs);
+}
+
+SqlTimestamp &SqlTimestamp::operator=(SqlTimestamp const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -447,8 +475,12 @@ void SqlBoolArr::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlBoolArr &SqlBoolArr::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlBoolArr const &>(rhs).value_;
+SqlPrimitiveInterface &SqlBoolArr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlBoolArr const &>(rhs));
+}
+
+SqlBoolArr &SqlBoolArr::operator=(SqlBoolArr const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -489,8 +521,12 @@ void SqlIntArr::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlIntArr &SqlIntArr::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlIntArr const &>(rhs).value_;
+SqlPrimitiveInterface &SqlIntArr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlIntArr const &>(rhs));
+}
+
+SqlIntArr &SqlIntArr::operator=(SqlIntArr const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -531,8 +567,12 @@ void SqlLongArr::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlLongArr &SqlLongArr::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlLongArr const &>(rhs).value_;
+SqlPrimitiveInterface &SqlLongArr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlLongArr const &>(rhs));
+}
+
+SqlLongArr &SqlLongArr::operator=(SqlLongArr const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -573,8 +613,12 @@ void SqlFloatArr::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlFloatArr &SqlFloatArr::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlFloatArr const &>(rhs).value_;
+SqlPrimitiveInterface &SqlFloatArr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlFloatArr const &>(rhs));
+}
+
+SqlFloatArr &SqlFloatArr::operator=(SqlFloatArr const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -615,8 +659,12 @@ void SqlDoubleArr::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlDoubleArr &SqlDoubleArr::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlDoubleArr const &>(rhs).value_;
+SqlPrimitiveInterface &SqlDoubleArr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlDoubleArr const &>(rhs));
+}
+
+SqlDoubleArr &SqlDoubleArr::operator=(SqlDoubleArr const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -657,8 +705,12 @@ void SqlStrArr::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlStrArr &SqlStrArr::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlStrArr const &>(rhs).value_;
+SqlPrimitiveInterface &SqlStrArr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlStrArr const &>(rhs));
+}
+
+SqlStrArr &SqlStrArr::operator=(SqlStrArr const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 
@@ -701,8 +753,12 @@ void SqlTimestampArr::import_from_field(pqxx::field const &field) {
     }
 }
 
-SqlTimestampArr &SqlTimestampArr::operator=(SqlPrimitiveInterface const &rhs) {
-    value_ = static_cast<SqlTimestampArr const &>(rhs).value_;
+SqlPrimitiveInterface &SqlTimestampArr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlTimestampArr const &>(rhs));
+}
+
+SqlTimestampArr &SqlTimestampArr::operator=(SqlTimestampArr const &rhs) {
+    value_ = rhs.value_;
     return *this;
 }
 

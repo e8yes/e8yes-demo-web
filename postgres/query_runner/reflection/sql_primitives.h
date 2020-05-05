@@ -45,10 +45,12 @@ class SqlBool : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlBool &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlBool &operator=(SqlBool const &rhs);
 
     /**
      * @brief value The internally stored C++ boolean value.
@@ -80,10 +82,12 @@ class SqlInt : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlInt &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlInt &operator=(SqlInt const &rhs);
 
     /**
      * @brief value The internally stored C++ 32-bit integer.
@@ -115,10 +119,12 @@ class SqlLong : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlLong &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlLong &operator=(SqlLong const &rhs);
 
     /**
      * @brief value The internally stored C++ 64-bit integer.
@@ -150,10 +156,12 @@ class SqlFloat : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlFloat &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlFloat &operator=(SqlFloat const &rhs);
 
     /**
      * @brief value The internally stored C++ single-precision float.
@@ -185,10 +193,12 @@ class SqlDouble : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlDouble &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlDouble &operator=(SqlDouble const &rhs);
 
     /**
      * @brief value The internally stored C++ double-precision float.
@@ -220,10 +230,12 @@ class SqlStr : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlStr &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlStr &operator=(SqlStr const &rhs);
 
     /**
      * @brief value The internally stored C++ string.
@@ -255,10 +267,12 @@ class SqlTimestamp : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlTimestamp &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlTimestamp &operator=(SqlTimestamp const &rhs);
 
     /**
      * @brief value The internally stored C++ time.
@@ -291,10 +305,12 @@ class SqlBoolArr : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlBoolArr &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlBoolArr &operator=(SqlBoolArr const &rhs);
 
     /**
      * @brief value The internally stored C++ boolean array.
@@ -327,10 +343,12 @@ class SqlIntArr : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlIntArr &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlIntArr &operator=(SqlIntArr const &rhs);
 
     /**
      * @brief value The internally stored C++ 32-bit integer array.
@@ -363,10 +381,12 @@ class SqlLongArr : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlLongArr &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlLongArr &operator=(SqlLongArr const &rhs);
 
     /**
      * @brief value The internally stored C++ 64-bit integer array.
@@ -399,10 +419,12 @@ class SqlFloatArr : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlFloatArr &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlFloatArr &operator=(SqlFloatArr const &rhs);
 
     /**
      * @brief value The internally stored C++ single-precision float array.
@@ -435,10 +457,12 @@ class SqlDoubleArr : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlDoubleArr &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlDoubleArr &operator=(SqlDoubleArr const &rhs);
 
     /**
      * @brief value The internally stored C++ double-precision float array.
@@ -471,10 +495,12 @@ class SqlStrArr : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlStrArr &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlStrArr &operator=(SqlStrArr const &rhs);
 
     /**
      * @brief value The internally stored C++ string array.
@@ -508,10 +534,12 @@ class SqlTimestampArr : public SqlPrimitiveInterface {
     void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
     void import_from_field(pqxx::field const &field) override;
 
-    SqlTimestampArr &operator=(SqlPrimitiveInterface const &rhs) override;
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
     bool operator!=(SqlPrimitiveInterface const &rhs) const override;
     bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlTimestampArr &operator=(SqlTimestampArr const &rhs);
 
     /**
      * @brief value The internally stored C++ timestamp array.
