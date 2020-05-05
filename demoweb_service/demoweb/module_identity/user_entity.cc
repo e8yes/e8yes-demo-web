@@ -15,20 +15,25 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABLE_NAMES_H
-#define TABLE_NAMES_H
-
-#include <string>
+#include "demoweb_service/demoweb/module_identity/user_entity.h"
 
 namespace e8 {
 
-/**
- * @brief The TableNames struct Table name constants for the demoweb schema.
- */
-struct TableNames {
-    static std::string AUser() { return "auser"; }
-};
+UserEntity::UserEntity()
+    : SqlEntityInterface({&id, &id_str, &emails, &alias, &avatar_path, &avatar_preview_path,
+                          &security_key_hash, &group_names, &active_level, &created_at}) {}
+
+UserEntity::UserEntity(UserEntity const &other) : UserEntity() {
+    id = other.id;
+    id_str = other.id_str;
+    emails = other.emails;
+    alias = other.alias;
+    avatar_path = other.avatar_path;
+    avatar_preview_path = other.avatar_preview_path;
+    security_key_hash = other.security_key_hash;
+    group_names = other.group_names;
+    active_level = other.active_level;
+    created_at = other.created_at;
+}
 
 } // namespace e8
-
-#endif // TABLE_NAMES_H

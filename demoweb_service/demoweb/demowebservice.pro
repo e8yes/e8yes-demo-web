@@ -13,8 +13,14 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 INCLUDEPATH += $$PWD/../../
 
-HEADERS +=
-SOURCES +=
+HEADERS += \
+    module_identity/create_user.h \
+    module_identity/user_entity.h \
+    constant/table_names.h \
+    module_rbac/system_user_group.h
+SOURCES += \
+    module_identity/create_user.cc \
+    module_identity/user_entity.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 

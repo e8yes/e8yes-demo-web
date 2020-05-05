@@ -15,20 +15,18 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABLE_NAMES_H
-#define TABLE_NAMES_H
-
-#include <string>
+#ifndef SYSTEM_USER_GROUP_H
+#define SYSTEM_USER_GROUP_H
 
 namespace e8 {
 
 /**
- * @brief The TableNames struct Table name constants for the demoweb schema.
+ * @brief The SystemUserGroup enum System's internally managed user groups.
  */
-struct TableNames {
-    static std::string AUser() { return "auser"; }
-};
+enum SystemUserGroup { SUPER_USER_GROUP, BASELINE_USER_GROUP };
+
+static char const *kSystemUserGroupStrings[] = {"SUPER_USER_GROUP", "BASELINE_USER_GROUP"};
 
 } // namespace e8
 
-#endif // TABLE_NAMES_H
+#endif // SYSTEM_USER_GROUP_H
