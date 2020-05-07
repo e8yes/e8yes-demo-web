@@ -17,15 +17,22 @@ HEADERS += \
     module_identity/create_user.h \
     module_identity/user_entity.h \
     constant/table_names.h \
-    module_rbac/system_user_group.h
+    module_rbac/system_user_group.h \
+    environment/environment_context_interface.h
 SOURCES += \
     module_identity/create_user.cc \
-    module_identity/user_entity.cc
+    module_identity/user_entity.cc \
+    environment/environment_context_interface.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 
 INCLUDEPATH += $$PWD/../../postgres/query_runner
 DEPENDPATH += $$PWD/../../postgres/query_runner
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../keygen/ -lkeygen
+
+INCLUDEPATH += $$PWD/../../keygen
+DEPENDPATH += $$PWD/../../keygen
 
 LIBS += -lpqxx
 LIBS += -lpthread
