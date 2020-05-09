@@ -59,6 +59,18 @@ class EnvironmentContextInterface {
     virtual e8::KeyGeneratorInterface *KeyGen() = 0;
 };
 
+/**
+ * @brief RegisterEnvironment Register the specified environment to be the currently active
+ * environment.
+ */
+void RegisterEnvironment(EnvironmentContextInterface *env);
+
+/**
+ * @brief CurrentEnvironment Retrieve the currently registered environment context. The returned
+ * context is guaranteed to be not null. If no environment is registered, this function will fail.
+ */
+EnvironmentContextInterface *CurrentEnvironment();
+
 } // namespace e8
 
 #endif // ENVIRONMENT_CONTEXT_INTERFACE_H

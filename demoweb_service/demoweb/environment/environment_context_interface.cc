@@ -15,6 +15,22 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
+
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 
-namespace e8 {}
+namespace e8 {
+namespace {
+
+static EnvironmentContextInterface *g_env = nullptr;
+
+}
+
+void RegisterEnvironment(EnvironmentContextInterface *env) { g_env = env; }
+
+EnvironmentContextInterface *CurrentEnvironment() {
+    assert(g_env != nullptr);
+    return g_env;
+}
+
+} // namespace e8
