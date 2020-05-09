@@ -44,7 +44,7 @@ HEADERS += \
     proto_cc/service_user.pb.h \
     proto_cc/user_profile.grpc.pb.h \
     proto_cc/user_profile.pb.h \
-    service/user_servicel.h
+    service/user_service.h
 SOURCES += \
     module_identity/create_user.cc \
     module_identity/user_entity.cc \
