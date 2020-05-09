@@ -24,13 +24,13 @@ INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
     deployment_service.cc \
-    deployment_service.pb.cc \
-    deployment_service.grpc.pb.cc
+    proto_cc/deployment_service.pb.cc \
+    proto_cc/deployment_service.grpc.pb.cc
 
 HEADERS += \
     deployment_service.h \
-    deployment_service.pb.h \
-    deployment_service.grpbc.pb.h
+    proto_cc/deployment_service.pb.h \
+    proto_cc/deployment_service.grpbc.pb.h
 
 unix {
     target.path = /usr/lib

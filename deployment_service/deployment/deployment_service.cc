@@ -15,7 +15,11 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "deployment_service.h"
+#include <grpcpp/grpcpp.h>
+
+#include "deployment_service/deployment/deployment_service.h"
+#include "deployment_service/deployment/proto_cc/deployment_service.grpc.pb.h"
+#include "deployment_service/deployment/proto_cc/deployment_service.pb.h"
 
 namespace e8 {
 
