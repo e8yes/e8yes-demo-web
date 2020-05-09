@@ -117,8 +117,11 @@ SqlBool::SqlBool(bool value, std::string const &field_name)
 SqlBool::~SqlBool() {}
 
 void SqlBool::export_to_invocation(pqxx::prepare::invocation *invocation) const {
-    assert(value_.has_value());
-    (*invocation)(value_.value());
+    if (value_.has_value()) {
+        (*invocation)(value_.value());
+    } else {
+        (*invocation)(bool(), false);
+    }
 }
 
 void SqlBool::import_from_field(pqxx::field const &field) {
@@ -166,8 +169,11 @@ SqlInt::SqlInt(int32_t value, std::string const &field_name)
 SqlInt::~SqlInt() {}
 
 void SqlInt::export_to_invocation(pqxx::prepare::invocation *invocation) const {
-    assert(value_.has_value());
-    (*invocation)(value_.value());
+    if (value_.has_value()) {
+        (*invocation)(value_.value());
+    } else {
+        (*invocation)(int32_t(), false);
+    }
 }
 
 void SqlInt::import_from_field(pqxx::field const &field) {
@@ -215,8 +221,11 @@ SqlLong::SqlLong(int64_t value, std::string const &field_name)
 SqlLong::~SqlLong() {}
 
 void SqlLong::export_to_invocation(pqxx::prepare::invocation *invocation) const {
-    assert(value_.has_value());
-    (*invocation)(value_.value());
+    if (value_.has_value()) {
+        (*invocation)(value_.value());
+    } else {
+        (*invocation)(int64_t(), false);
+    }
 }
 
 void SqlLong::import_from_field(pqxx::field const &field) {
@@ -264,8 +273,11 @@ SqlFloat::SqlFloat(float value, std::string const &field_name)
 SqlFloat::~SqlFloat() {}
 
 void SqlFloat::export_to_invocation(pqxx::prepare::invocation *invocation) const {
-    assert(value_.has_value());
-    (*invocation)(value_.value());
+    if (value_.has_value()) {
+        (*invocation)(value_.value());
+    } else {
+        (*invocation)(float(), false);
+    }
 }
 
 void SqlFloat::import_from_field(pqxx::field const &field) {
@@ -313,8 +325,11 @@ SqlDouble::SqlDouble(double value, std::string const &field_name)
 SqlDouble::~SqlDouble() {}
 
 void SqlDouble::export_to_invocation(pqxx::prepare::invocation *invocation) const {
-    assert(value_.has_value());
-    (*invocation)(value_.value());
+    if (value_.has_value()) {
+        (*invocation)(value_.value());
+    } else {
+        (*invocation)(double(), false);
+    }
 }
 
 void SqlDouble::import_from_field(pqxx::field const &field) {
@@ -362,8 +377,11 @@ SqlStr::SqlStr(std::string const &value, std::string const &field_name)
 SqlStr::~SqlStr() {}
 
 void SqlStr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
-    assert(value_.has_value());
-    (*invocation)(value_.value());
+    if (value_.has_value()) {
+        (*invocation)(value_.value());
+    } else {
+        (*invocation)(std::string(), false);
+    }
 }
 
 void SqlStr::import_from_field(pqxx::field const &field) {
@@ -411,9 +429,12 @@ SqlTimestamp::SqlTimestamp(std::time_t value, std::string const &field_name)
 SqlTimestamp::~SqlTimestamp() {}
 
 void SqlTimestamp::export_to_invocation(pqxx::prepare::invocation *invocation) const {
-    assert(value_.has_value());
-    std::string timestamp_str = timestamp_to_string(value_.value());
-    (*invocation)(timestamp_str);
+    if (value_.has_value()) {
+        std::string timestamp_str = timestamp_to_string(value_.value());
+        (*invocation)(timestamp_str);
+    } else {
+        (*invocation)("", false);
+    }
 }
 
 void SqlTimestamp::import_from_field(pqxx::field const &field) {
