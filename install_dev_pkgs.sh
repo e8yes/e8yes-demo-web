@@ -1,6 +1,7 @@
 #!/bin/bash
 
-postgres/install-dev-pkgs.sh
-deployment_service/install-dev-pkgs.sh
-demoweb_service/install-dev-pkgs.sh
+postgres/install_dev_pkgs.sh
+deployment_service/install_dev_pkgs.sh
+demoweb_service/install_dev_pkgs.sh
+keygen/install_dev_pkgs.sh
 
