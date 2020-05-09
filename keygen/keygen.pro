@@ -41,3 +41,4 @@ INCLUDEPATH += $$PWD/../postgres/query_runner
 DEPENDPATH += $$PWD/../postgres/query_runner
 
 LIBS += -lcrypto++
+
