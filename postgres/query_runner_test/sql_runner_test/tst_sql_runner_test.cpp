@@ -70,7 +70,7 @@ e8::ConnectionFactory CreateConnectionFactory() {
     e8::ConnectionFactory factory(e8::ConnectionFactory::PQ,
                                   /*host_name=*/"localhost",
                                   /*port=*/5432,
-                                  /*db_name=*/"demowebtest",
+                                  /*db_name=*/"demoweb",
                                   /*user_name=*/"postgres",
                                   /*password=*/"password");
     return factory;

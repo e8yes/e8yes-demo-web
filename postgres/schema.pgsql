@@ -20,8 +20,8 @@ SET default_with_oids = false;
 CREATE TABLE IF NOT EXISTS key_persistence (
     encrypter CHARACTER VARYING(256) NOT NULL,
     key_type INT NOT NULL,
-    crypto_key CHARACTER VARYING(4096) NOT NULL,
-    crypto_public_key CHARACTER VARYING(4096) NULL,
+    crypto_key CHARACTER VARYING NOT NULL,
+    crypto_public_key CHARACTER VARYING NULL
 );
 
 

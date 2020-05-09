@@ -139,6 +139,13 @@ int64_t TimeId(unsigned host_id);
  */
 int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reservoir);
 
+/**
+ * @brief ClearAllTables Delete data in all table but keeping the schema structure.
+ *
+ * @param reservoir Connections pointing to the database where its tables needed to be clear.
+ */
+void ClearAllTables(ConnectionReservoirInterface *reservoir);
+
 } // namespace e8
 
 #endif // SQL_RUNNER_H

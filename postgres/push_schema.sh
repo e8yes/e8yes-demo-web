@@ -11,6 +11,6 @@ set -e
 
 echo "ALTER DATABASE demoweb OWNER TO postgres;" | sudo -u postgres psql demoweb
 echo "ALTER USER postgres WITH PASSWORD 'password';" | sudo -u postgres psql demoweb
-cat 'schema_dev.pgsql' | sudo -u postgres psql demoweb
+cat 'schema.pgsql' | sudo -u postgres psql demoweb
 
 

@@ -45,7 +45,7 @@ void pq_connection_test::connection_state_test() {
     e8::PqConnection conn(
         /*host_name=*/"localhost",
         /*port=*/5432,
-        /*db_name=*/"demowebtest",
+        /*db_name=*/"demoweb",
         /*user_name=*/"postgres",
         /*password=*/"password");
     QVERIFY(!conn.is_closed());
@@ -55,7 +55,7 @@ void pq_connection_test::update_and_query_test() {
     e8::PqConnection conn(
         /*host_name=*/"localhost",
         /*port=*/5432,
-        /*db_name=*/"demowebtest",
+        /*db_name=*/"demoweb",
         /*user_name=*/"postgres",
         /*password=*/"password");
 

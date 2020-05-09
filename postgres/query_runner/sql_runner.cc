@@ -142,4 +142,13 @@ int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reserv
     return id.value().value();
 }
 
+void ClearAllTables(ConnectionReservoirInterface *reservoir) {
+    std::unordered_set<std::string> table_names = Tables(reservoir);
+    SqlQueryBuilder constraint;
+    constraint.query_piece("CASCADE");
+    for (std::string const &tb_name : table_names) {
+        Delete(tb_name, constraint, reservoir);
+    }
+}
+
 } // namespace e8

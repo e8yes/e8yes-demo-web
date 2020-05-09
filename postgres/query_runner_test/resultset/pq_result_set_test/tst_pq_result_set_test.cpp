@@ -64,7 +64,7 @@ void pq_result_set_test::insert_and_retrieve_test() {
     e8::PqConnection conn(
         /*host_name=*/"localhost",
         /*port=*/5432,
-        /*db_name=*/"demowebtest",
+        /*db_name=*/"demoweb",
         /*user_name=*/"postgres",
         /*password=*/"password");
     std::string drop_table_stmt = "DROP TABLE IF EXISTS PqResultSetTestTable";
