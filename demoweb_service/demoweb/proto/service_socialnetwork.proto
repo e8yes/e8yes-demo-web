@@ -1,0 +1,113 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "pagination.proto";
+import "user_profile.proto";
+
+message SendInvitationRequest {
+    int64 invitee_user_id = 1;
+}
+
+message SendInvitationResponse {}
+
+
+message DeleteInvitationRequest {
+    int64 invitee_user_id = 1;
+}
+
+message DeleteInvitationResponse {}
+
+
+message AcceptInvitationRequest {
+    int64 inviter_user_id = 1;
+}
+
+message AcceptInvitationResponse {}
+
+
+message RejectInvitationRequest {
+    int64 inviter_user_id = 1;
+}
+
+message RejectInvitationResponse {}
+
+
+message GetInvitationListRequest {
+    Pagination pagination = 1;
+}
+
+message GetInvitationListResponse {
+    repeated UserPublicProfile user_profiles = 1;
+}
+
+
+message DeleteFriendRequest {
+    int64 friend_user_id = 1;
+}
+
+message DeleteFriendResponse {}
+
+
+message GetFriendListRequest {
+    Pagination pagination = 1;
+}
+
+message GetFriendListResponse {
+    repeated UserPublicProfile user_profiles = 1;
+}
+
+service SocialNetworkService {
+    /**
+     * Send a friend request invitation to another user and the logged-in user is the inviter.
+     */
+    rpc SendInvitation (SendInvitationRequest) returns (SendInvitationResponse);
+    
+    /**
+     * Delete invitation previously sent where the logged-in user is inviter.
+     */
+    rpc DeleteInvitation (DeleteInvitationRequest) returns (DeleteInvitationResponse);
+    
+    /**
+     * Accept an invitation to establish friend relation where the logged-in user is the invitee.
+     */
+    rpc AcceptInvitation (AcceptInvitationRequest) returns (AcceptInvitationResponse);
+    
+    /**
+     * Reject an invitation where the logged-in user is the invitee.
+     */
+    rpc RejectInvitation (RejectInvitationRequest) returns (RejectInvitationResponse);
+    
+    /**
+     * Get the friend invitation list where the logged-in user is the invitee.
+     */
+    rpc GetInvitationList (GetInvitationListRequest) returns (GetInvitationListResponse);
+    
+    /**
+     * Delete a friend relation for the logged-in user.
+     */
+    rpc DeleteFriend (DeleteFriendRequest) returns (DeleteFriendResponse);
+    
+    
+    /**
+     * Get the friend list of the logged-in user.
+     */
+    rpc GetFriendList (GetFriendListRequest) returns (GetFriendListResponse);
+}

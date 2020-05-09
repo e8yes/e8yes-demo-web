@@ -21,14 +21,58 @@ HEADERS += \
     environment/test_environment_context.h \
     constant/demoweb_database.h \
     environment/host_id.h \
-    environment/prod_environment_context.h
+    environment/prod_environment_context.h \
+    proto_cc/encryption_source.grpc.pb.h \
+    proto_cc/encryption_source.pb.h \
+    proto_cc/file.grpc.pb.h \
+    proto_cc/file.pb.h \
+    proto_cc/invitation_status.grpc.pb.h \
+    proto_cc/invitation_status.pb.h \
+    proto_cc/nullable_primitives.grpc.pb.h \
+    proto_cc/nullable_primitives.pb.h \
+    proto_cc/pagination.grpc.pb.h \
+    proto_cc/pagination.pb.h \
+    proto_cc/permission.grpc.pb.h \
+    proto_cc/permission.pb.h \
+    proto_cc/service_file.grpc.pb.h \
+    proto_cc/service_file.pb.h \
+    proto_cc/service_socialnetwork.grpc.pb.h \
+    proto_cc/service_socialnetwork.pb.h \
+    proto_cc/service_system.grpc.pb.h \
+    proto_cc/service_system.pb.h \
+    proto_cc/service_user.grpc.pb.h \
+    proto_cc/service_user.pb.h \
+    proto_cc/user_profile.grpc.pb.h \
+    proto_cc/user_profile.pb.h
 SOURCES += \
     module_identity/create_user.cc \
     module_identity/user_entity.cc \
     environment/environment_context_interface.cc \
     environment/test_environment_context.cc \
     environment/host_id.cc \
-    environment/prod_environment_context.cc
+    environment/prod_environment_context.cc \
+    proto_cc/encryption_source.grpc.pb.cc \
+    proto_cc/encryption_source.pb.cc \
+    proto_cc/file.grpc.pb.cc \
+    proto_cc/file.pb.cc \
+    proto_cc/invitation_status.grpc.pb.cc \
+    proto_cc/invitation_status.pb.cc \
+    proto_cc/nullable_primitives.grpc.pb.cc \
+    proto_cc/nullable_primitives.pb.cc \
+    proto_cc/pagination.grpc.pb.cc \
+    proto_cc/pagination.pb.cc \
+    proto_cc/permission.grpc.pb.cc \
+    proto_cc/permission.pb.cc \
+    proto_cc/service_file.grpc.pb.cc \
+    proto_cc/service_file.pb.cc \
+    proto_cc/service_socialnetwork.grpc.pb.cc \
+    proto_cc/service_socialnetwork.pb.cc \
+    proto_cc/service_system.grpc.pb.cc \
+    proto_cc/service_system.pb.cc \
+    proto_cc/service_user.grpc.pb.cc \
+    proto_cc/service_user.pb.cc \
+    proto_cc/user_profile.grpc.pb.cc \
+    proto_cc/user_profile.pb.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 

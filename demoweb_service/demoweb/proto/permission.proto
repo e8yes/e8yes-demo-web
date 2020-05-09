@@ -1,0 +1,32 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+enum Permission  {
+    PERM_USER_GROUP_CREATE = 0;
+    PERM_USER_GROUP_REMOVE = 1;
+    PERM_USER_GROUP_VIEW = 10;
+    PERM_USER_GROUP_ASSIGN = 11;
+    PERM_USER_GROUP_UNASSIGN = 12;
+    PERM_USER_SELF_CREATE = 20;
+    PERM_USER_SELF_REMOVE = 21;
+    PERM_USER_CREATE = 22;
+    PERM_USER_REMOVE = 23;
+}

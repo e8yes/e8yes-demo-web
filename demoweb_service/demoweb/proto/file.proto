@@ -1,0 +1,73 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "encryption_source.proto";
+
+enum FileFormat {
+    FFMT_UNKNOWN = 0;
+    FFMT_IMAGE_JPEG = 1;
+    FFMT_IMAGE_PNG = 2;
+    FFMT_VIDEO_MPEG4 = 3;
+    FFMT_VIDEO_GIF = 4;
+    FFMT_VIDEO_OGV = 5;
+    FFMT_AUDIO_MP3 = 6;
+    FFMT_AUDIO_OGG = 7;
+}
+
+message FileChunk {
+    // Zero offset.
+    int32 chunk_number = 1;
+    
+    // Data chuck.
+    bytes data = 2;
+}
+
+enum FileAccessMode {
+    FAM_READ = 0;
+    FAM_WRITE = 1;
+    FAM_READWRITE = 2;
+}
+
+message FileTokenAccess {
+    bytes access_token = 1;
+}
+
+message FileDirectAccess {
+    string path = 2;
+    FileAccessMode access_mode = 3;
+}
+
+message FileDescriptor {
+    oneof AccessMethod {
+        FileTokenAccess file_token_access = 1;
+        FileDirectAccess file_direct_access = 2;
+    }
+    // Do not specify this parameter.
+    string file_name = 3;
+    // Do not specify this parameter.
+    FileFormat file_format = 4;
+    EncryptionSource encryption_source = 5;
+    int64 storage_size = 6;
+    // Do not specify this parameter.
+    int64 created_at_timestamp = 7;
+    // Dp mpt specify this parameter.
+    int64 last_modified_at_timestamp = 8;
+}

@@ -1,0 +1,131 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "file.proto";
+import "nullable_primitives.proto";
+import "pagination.proto";
+import "user_profile.proto";
+
+message RegistrationRequest {
+    bytes security_key = 1;
+}
+
+message RegistrationReponse {
+    enum RegistrationErrorType {
+        RET_NoError = 0;
+        RET_BadSecurityKey = 1;
+        RET_BotDetected = 2;
+    }
+    RegistrationErrorType error_type = 1;
+    int64 user_id = 3;
+}
+
+
+message AuthorizationRequest {
+    int64 user_id = 1;
+    bytes security_key = 2;
+}
+
+message AuthorizationResponse {
+    bytes jwt_token = 1;
+}
+
+
+message GetPublicProfileRequest {
+    // Optional. If this field isn't provided, it will fetch the public profile
+    // of the logged-in user.
+    NullableInt64 user_id = 1;
+}
+
+message GetPublicProfileResponse {
+    UserPublicProfile profile = 1;
+}
+
+
+message UpdatePublicProfileRequest {
+    // It will only fetch and update the public profile of the logged-in user.
+    NullableString alias = 1;
+}
+
+message UpdatePublicProfileResponse {
+    UserPublicProfile profile = 1;
+}
+
+
+message SearchUserRequest {
+    // Optional. Could be a partial input.
+    NullableString alias = 1;
+    
+    // Optional. Could be a partial prefix input.
+    NullableInt64 user_id = 2;
+    Pagination pagination = 3;
+}
+
+message SearchUserResponse {
+    repeated UserPublicProfile user_profiles = 1;
+}
+
+
+message CreateNewAvatarRequest {
+    // File name of the new avatar file. It can be a file path containing the
+    // name.
+    string avatar_file_name = 1;
+}
+
+message CreateNewAvatarResponse {
+    // Gain read/write access to the specified avatar file location. Using the
+    // access token allows the client to later upload avatar file through token
+    // access.
+    FileTokenAccess avatar_readwrite_access = 1;
+}
+
+service UserService {
+  /**
+   * Register a user to the system.
+   */
+  rpc Register (RegistrationRequest) returns (RegistrationReponse);
+  
+  /*
+   * Verify and obtain a signed token. 
+   */
+  rpc Authorize (AuthorizationRequest) returns (AuthorizationResponse);
+  
+  /**
+   * Get a user's profile
+   */
+  rpc GetPublicProfile (GetPublicProfileRequest) returns (GetPublicProfileResponse);
+  
+  /**
+   * Update a user's profile
+   */
+  rpc UpdatePublicProfile (UpdatePublicProfileRequest) returns (UpdatePublicProfileResponse);
+  
+  /*
+   * Search users.
+   */
+  rpc Search (SearchUserRequest) returns (SearchUserResponse);
+  
+  /**
+   * Create a new avatar for the logged-in user.
+   */
+  rpc createNewAvatar(CreateNewAvatarRequest) returns 
+    (CreateNewAvatarResponse);
+}
