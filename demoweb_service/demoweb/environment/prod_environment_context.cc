@@ -19,7 +19,7 @@
 
 #include "constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
-#include "demoweb_service/demoweb/environment/test_environment_context.h"
+#include "demoweb_service/demoweb/environment/prod_environment_context.h"
 #include "keygen/persistent_key_generator.h"
 #include "postgres/query_runner/connection/basic_connection_reservoir.h"
 #include "postgres/query_runner/connection/connection_factory.h"
@@ -27,29 +27,31 @@
 
 namespace e8 {
 
-TestEnvironmentContext::TestEnvironmentContext() {
-    ConnectionFactory fact(ConnectionFactory::PQ, /*host_name=*/"localhost",
-                           /*port=*/5432, kDemowebDatabaseName, /*user_name*/ "postgres",
-                           /*password=*/"password");
+ProductionEnvironmentContext::ProductionEnvironmentContext(std::string const &demoweb_db_hostname,
+                                                           int demoweb_db_port,
+                                                           std::string const &demoweb_db_user,
+                                                           std::string const &demoweb_db_password) {
+    ConnectionFactory fact(ConnectionFactory::PQ, demoweb_db_hostname, demoweb_db_port,
+                           kDemowebDatabaseName, demoweb_db_user, demoweb_db_password);
     demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
     ClearAllTables(demoweb_database_.get());
 
     key_gen_ = std::make_unique<PersistentKeyGenerator>(demoweb_database_.get());
 
-    host_id_ = 0;
+    host_id_ = CurrentHostId();
 }
 
-EnvironmentContextInterface::Environment TestEnvironmentContext::EnvironmentType() const {
+EnvironmentContextInterface::Environment ProductionEnvironmentContext::EnvironmentType() const {
     return EnvironmentContextInterface::TEST;
 }
 
-HostId TestEnvironmentContext::CurrentHostId() const { return host_id_; }
+unsigned ProductionEnvironmentContext::CurrentHostId() const { return host_id_; }
 
-e8::ConnectionReservoirInterface *TestEnvironmentContext::DemowebDatabase() {
+e8::ConnectionReservoirInterface *ProductionEnvironmentContext::DemowebDatabase() {
     return demoweb_database_.get();
 }
 
-e8::KeyGeneratorInterface *TestEnvironmentContext::KeyGen() { return key_gen_.get(); }
+e8::KeyGeneratorInterface *ProductionEnvironmentContext::KeyGen() { return key_gen_.get(); }
 
 } // namespace e8

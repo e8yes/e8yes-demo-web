@@ -20,13 +20,15 @@ HEADERS += \
     environment/environment_context_interface.h \
     environment/test_environment_context.h \
     constant/demoweb_database.h \
-    environment/host_id.h
+    environment/host_id.h \
+    environment/prod_environment_context.h
 SOURCES += \
     module_identity/create_user.cc \
     module_identity/user_entity.cc \
     environment/environment_context_interface.cc \
     environment/test_environment_context.cc \
-    environment/host_id.cc
+    environment/host_id.cc \
+    environment/prod_environment_context.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 
