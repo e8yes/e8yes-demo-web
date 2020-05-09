@@ -15,20 +15,34 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABLE_NAMES_H
-#define TABLE_NAMES_H
-
+#include <cassert>
+#include <regex>
 #include <string>
+#include <unistd.h>
+
+#include "demoweb_service/demoweb/environment/host_id.h"
 
 namespace e8 {
+namespace {
 
 /**
- * @brief The TableNames struct Table name constants for the demoweb schema.
+ * @brief ParseHostIdFromHostName host_name has the format [a-zA-Z_]*([0-9]+). The trailing
+ * numeric part of the host name is the host ID.
  */
-struct TableNames {
-    static std::string AUser() { return "auser"; }
-};
+HostId ParseHostIdFromHostName(std::string const &host_name) {
+    std::regex re("[a-zA-Z_]*([0-9]+)");
+    std::smatch sm;
+    std::regex_match(host_name, sm, re);
+    assert(sm.size() == 1);
+    return static_cast<unsigned>(std::stoi(sm[0].str()));
+}
+
+} // namespace
+
+HostId CurrentHostId() {
+    char host_name[64];
+    gethostname(host_name, sizeof(host_name));
+    return ParseHostIdFromHostName(host_name);
+}
 
 } // namespace e8
-
-#endif // TABLE_NAMES_H

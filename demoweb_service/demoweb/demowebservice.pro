@@ -16,13 +16,17 @@ INCLUDEPATH += $$PWD/../../
 HEADERS += \
     module_identity/create_user.h \
     module_identity/user_entity.h \
-    constant/table_names.h \
     module_rbac/system_user_group.h \
-    environment/environment_context_interface.h
+    environment/environment_context_interface.h \
+    environment/test_environment_context.h \
+    constant/demoweb_database.h \
+    environment/host_id.h
 SOURCES += \
     module_identity/create_user.cc \
     module_identity/user_entity.cc \
-    environment/environment_context_interface.cc
+    environment/environment_context_interface.cc \
+    environment/test_environment_context.cc \
+    environment/host_id.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 

@@ -18,6 +18,7 @@
 #ifndef ENVIRONMENT_CONTEXT_INTERFACE_H
 #define ENVIRONMENT_CONTEXT_INTERFACE_H
 
+#include "demoweb_service/demoweb/environment/host_id.h"
 #include "keygen/key_generator_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
@@ -43,19 +44,9 @@ class EnvironmentContextInterface {
     virtual Environment EnvironmentType() const = 0;
 
     /**
-     * @brief Initialize the internal global objects.
+     * @brief CurrentHostId Returns the host ID of the current machine it is running on.
      */
-    virtual void Init() = 0;
-
-    /**
-     * @brief Clean up the internal global objects.
-     */
-    virtual void CleanUp() = 0;
-
-    /**
-     * @brief HostId Returns the host ID of the current machine it is running on.
-     */
-    virtual unsigned HostId() const = 0;
+    virtual HostId CurrentHostId() const = 0;
 
     /**
      * @brief Connections to the DemoWeb database server.
