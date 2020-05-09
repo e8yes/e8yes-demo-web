@@ -43,7 +43,8 @@ HEADERS += \
     proto_cc/service_user.grpc.pb.h \
     proto_cc/service_user.pb.h \
     proto_cc/user_profile.grpc.pb.h \
-    proto_cc/user_profile.pb.h
+    proto_cc/user_profile.pb.h \
+    service/user_servicel.h
 SOURCES += \
     module_identity/create_user.cc \
     module_identity/user_entity.cc \
@@ -72,7 +73,8 @@ SOURCES += \
     proto_cc/service_user.grpc.pb.cc \
     proto_cc/service_user.pb.cc \
     proto_cc/user_profile.grpc.pb.cc \
-    proto_cc/user_profile.pb.cc
+    proto_cc/user_profile.pb.cc \
+    service/user_service.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 
