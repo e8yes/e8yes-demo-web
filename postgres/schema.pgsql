@@ -16,9 +16,18 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 
+/* Key Generator Persistence */
+CREATE TABLE IF NOT EXISTS key_persistence (
+    encrypter CHARACTER VARYING(256) NOT NULL,
+    key_type INT NOT NULL,
+    crypto_key CHARACTER VARYING(4096) NOT NULL,
+    crypto_public_key CHARACTER VARYING(4096) NULL,
+);
+
+
 /* File Metadata */
 CREATE TABLE IF NOT EXISTS file_metadata (
-    path CHARACTER VARYING(256) not null,
+    path CHARACTER VARYING(256) NOT NULL,
     format INT NOT NULL,
     encryption_key_source INT NOT NULL,
     storage_size BIGINT NOT NULL,

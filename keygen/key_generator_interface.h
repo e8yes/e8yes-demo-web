@@ -33,7 +33,7 @@ class KeyGeneratorInterface {
     KeyGeneratorInterface(KeyGeneratorInterface const &) = delete;
     virtual ~KeyGeneratorInterface() = default;
 
-    enum KeyType { ALPHANUMERIC_40, RSA_4096 };
+    enum KeyType { RANDOM_512_BITS, RSA_4096_BITS };
 
     struct Key {
         std::string key;

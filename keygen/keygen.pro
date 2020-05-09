@@ -23,12 +23,21 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../
 
 SOURCES += \
-        key_generator_interface.cc
+        key_generator_interface.cc \
+    persistent_key_generator.cc
 
 HEADERS += \
-        key_generator_interface.h
+        key_generator_interface.h \
+    persistent_key_generator.h
 
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+unix:!macx: LIBS += -L$$OUT_PWD/../postgres/query_runner/ -lquery_runner
+
+INCLUDEPATH += $$PWD/../postgres/query_runner
+DEPENDPATH += $$PWD/../postgres/query_runner
+
+LIBS += -lcrypto++
