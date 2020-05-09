@@ -31,7 +31,7 @@ namespace e8 {
  */
 class PersistentKeyGenerator : public KeyGeneratorInterface {
   public:
-    PersistentKeyGenerator(std::unique_ptr<ConnectionReservoirInterface> reservoir);
+    PersistentKeyGenerator(ConnectionReservoirInterface *reservoir);
     ~PersistentKeyGenerator() override;
 
     Key KeyOf(std::string const &encrypter, KeyType key_type) override;

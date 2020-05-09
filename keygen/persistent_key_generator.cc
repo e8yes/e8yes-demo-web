@@ -16,6 +16,7 @@
  */
 
 #include <cassert>
+#include <cryptopp/base64.h>
 #include <cryptopp/filters.h>
 #include <cryptopp/osrng.h>
 #include <cryptopp/rsa.h>
@@ -82,7 +83,7 @@ class KeyPersistenceEntity : public SqlEntityInterface {
     SqlStr encrypter = SqlStr("encrypter");
     SqlInt key_type = SqlInt("key_type");
     SqlStr crypto_key = SqlStr("crypto_key");
-    SqlStr crypto_public_key = SqlStr("crypto_key");
+    SqlStr crypto_public_key = SqlStr("crypto_public_key");
 };
 
 class OnFetch {
@@ -98,12 +99,13 @@ class OnFetch {
         query.query_piece(kKeyPersistenceTableName)
             .query_piece(" kp WHERE kp.encrypter=")
             .placeholder(&encrypter)
-            .query_piece("kp.key_type=")
+            .query_piece("AND kp.key_type=")
             .placeholder(&key_type);
 
         SqlStr encrypter_value = SqlStr(key_user.encrypter, "");
         SqlInt key_type_value = SqlInt(key_user.key_type);
         query.set_value_to_placeholder(encrypter, &encrypter_value);
+        query.set_value_to_placeholder(key_type, &key_type_value);
 
         std::vector<std::tuple<KeyPersistenceEntity>> key_persistence =
             Query<KeyPersistenceEntity>(query, {"kp"}, reservoir_);
@@ -138,9 +140,8 @@ class OnEvict {
 
 class PersistentKeyGenerator::PersistentKeyGeneratorImpl {
   public:
-    PersistentKeyGeneratorImpl(std::unique_ptr<ConnectionReservoirInterface> reservoir)
-        : crypto_key_cache(kNumCachedKeys, OnFetch(reservoir.get()), OnEvict()),
-          reservoir_(std::move(reservoir)) {}
+    PersistentKeyGeneratorImpl(ConnectionReservoirInterface *reservoir)
+        : crypto_key_cache(kNumCachedKeys, OnFetch(reservoir), OnEvict()), reservoir_(reservoir) {}
 
     Key GenerateKey(KeyUser const &key_user);
 
@@ -151,7 +152,7 @@ class PersistentKeyGenerator::PersistentKeyGeneratorImpl {
     Key GenerateAlphaNumeric(unsigned length);
     Key GenerateRSA(unsigned bit_len);
 
-    std::unique_ptr<ConnectionReservoirInterface> reservoir_;
+    ConnectionReservoirInterface *reservoir_;
     CryptoPP::AutoSeededRandomPool rng_;
 };
 
@@ -161,7 +162,7 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateAlphaNumeric(unsigne
     private_key.GenerateRandomWithKeySize(rng_, bit_len);
 
     PersistentKeyGenerator::Key result;
-    CryptoPP::StringSink sink(result.key);
+    CryptoPP::Base64Encoder sink(new CryptoPP::StringSink(result.key));
     private_key.DEREncode(sink);
 
     return result;
@@ -175,11 +176,11 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateRSA(unsigned bit_len
     CryptoPP::RSA::PublicKey public_key(private_key);
 
     PersistentKeyGenerator::Key result;
-    CryptoPP::StringSink private_key_sink(result.key);
+    CryptoPP::Base64Encoder private_key_sink(new CryptoPP::StringSink(result.key));
     private_key.DEREncode(private_key_sink);
 
     std::string public_key_str;
-    CryptoPP::StringSink public_key_sink(public_key_str);
+    CryptoPP::Base64Encoder public_key_sink(new CryptoPP::StringSink(public_key_str));
     public_key.DEREncodePublicKey(public_key_sink);
     result.public_key = public_key_str;
 
@@ -208,7 +209,7 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateKey(KeyUser const &k
     }
 
     uint64_t num_rows_updated =
-        Update(key_persistence, kKeyPersistenceTableName, /*replace=*/false, reservoir_.get());
+        Update(key_persistence, kKeyPersistenceTableName, /*replace=*/false, reservoir_);
     if (num_rows_updated == 1) {
         // Key added successfully.
         return key;
@@ -221,9 +222,8 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateKey(KeyUser const &k
     return fetched.value();
 }
 
-PersistentKeyGenerator::PersistentKeyGenerator(
-    std::unique_ptr<ConnectionReservoirInterface> reservoir)
-    : impl(std::make_unique<PersistentKeyGeneratorImpl>(std::move(reservoir))) {}
+PersistentKeyGenerator::PersistentKeyGenerator(ConnectionReservoirInterface *reservoir)
+    : impl(std::make_unique<PersistentKeyGeneratorImpl>(reservoir)) {}
 
 PersistentKeyGenerator::~PersistentKeyGenerator() {}
 
