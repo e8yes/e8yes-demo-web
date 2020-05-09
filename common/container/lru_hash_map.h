@@ -21,6 +21,8 @@
 #include <cassert>
 #include <list>
 #include <memory>
+#include <mutex>
+#include <optional>
 #include <utility>
 
 #include "common/container/trie_map.h"
@@ -48,7 +50,7 @@ LruCacheItem<KeyType, ValueType>::LruCacheItem(KeyType const &key, ValueType con
 
 /**
  * @brief The LruHashMap class An in-memory least-recently used cache, for which the underlying
- * key-value implementation uses a hash map. This cache does not guarantee thread safety.
+ * key-value implementation uses a hash map. This cache guarantees thread safety.
  */
 template <typename KeyType, typename ValueType, typename OnFetch, typename OnEvict>
 class LruHashMap {
@@ -70,13 +72,14 @@ class LruHashMap {
 
     /**
      * @brief Fetch Fetches the value of an item which associates with the key.
-     * If the key doesn't exist in the cache, it will load the item into the cache. If the cache
-     * exists the size limit, LRU item will be evicted.
+     * If the key doesn't exist in the cache, it will load the item into the cache. If the item
+     * still couldn't be found in the source storage, it will return an nullopt. If the cache
+     * exceeds the size limit, an LRU item will be evicted.
      *
      * @param key Unique key that maps to the value.
-     * @return The value mapped by the key.
+     * @return The value mapped by the key if the key exists.
      */
-    ValueType const &Fetch(KeyType const &key);
+    std::optional<ValueType> Fetch(KeyType const &key);
 
     /**
      * @brief clear Empties the cache to its original empty state. All the existing values will be
@@ -105,6 +108,7 @@ class LruHashMap {
     void SetMostRecentlyUsed(Item *most_recent_node);
 
     std::unordered_map<KeyType, std::unique_ptr<Item>> cache_;
+    std::mutex mutex_;
 
     Item *head_ = nullptr;
     Item *tail_ = nullptr;
@@ -175,25 +179,37 @@ LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::LruHashMap(uint32_t max_size,
     : max_size_(max_size), on_fetch_(on_fetch), on_evict_(on_evict) {}
 
 template <typename KeyType, typename ValueType, typename OnFetch, typename OnEvict>
-ValueType const &LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::Fetch(KeyType const &key) {
-    Item *item;
+std::optional<ValueType>
+LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::Fetch(KeyType const &key) {
+    mutex_.lock();
 
     auto it = cache_.find(key);
     if (it != cache_.end()) {
         // Cache hit.
-        item = it->second.get();
+        Item *item = it->second.get();
         this->SetMostRecentlyUsed(item);
-    } else {
-        // Cache miss.
-        ValueType value = on_fetch_(key);
-        item = this->CacheNewItem(key, value);
+
+        mutex_.unlock();
+        return item->value;
     }
 
+    // Cache miss.
+    std::optional<ValueType> fetched = on_fetch_(key);
+    if (!fetched.has_value()) {
+        mutex_.unlock();
+        return std::nullopt;
+    }
+
+    Item *item = this->CacheNewItem(key, fetched.value());
+
+    mutex_.unlock();
     return item->value;
 }
 
 template <typename KeyType, typename ValueType, typename OnFetch, typename OnEvict>
 void LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::Clear() {
+    mutex_.lock();
+
     for (auto const &[key, item] : cache_) {
         on_evict_(item->value);
     }
@@ -201,6 +217,8 @@ void LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::Clear() {
 
     head_ = nullptr;
     tail_ = nullptr;
+
+    mutex_.unlock();
 }
 
 template <typename KeyType, typename ValueType, typename OnFetch, typename OnEvict>

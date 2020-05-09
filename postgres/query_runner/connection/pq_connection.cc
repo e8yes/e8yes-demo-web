@@ -17,6 +17,7 @@
 
 #include <cassert>
 #include <memory>
+#include <optional>
 #include <pqxx/pqxx>
 
 #include "common/container/lru_hash_map.h"
@@ -38,7 +39,7 @@ class OnFetch {
     OnFetch(OnFetch const &) = default;
     ~OnFetch() = default;
 
-    StatementId operator()(ConnectionInterface::ParameterizedQuery const &query) {
+    std::optional<StatementId> operator()(ConnectionInterface::ParameterizedQuery const &query) {
         assert(conn_ != nullptr);
         StatementId statement = this->allocate_statement();
         conn_->prepare(std::to_string(statement), query);
@@ -89,10 +90,11 @@ PqConnection::~PqConnection() {}
 
 std::unique_ptr<ResultSetInterface> PqConnection::run_query(ParameterizedQuery const &query,
                                                             QueryParams const &params) {
-    StatementId id = impl_->statement_cache.Fetch(query);
+    std::optional<StatementId> id = impl_->statement_cache.Fetch(query);
+    assert(id.has_value());
 
     pqxx::work query_work(*impl_->conn);
-    pqxx::prepare::invocation invocation = query_work.prepared(std::to_string(id));
+    pqxx::prepare::invocation invocation = query_work.prepared(std::to_string(id.value()));
     for (auto const &[slot_id, param] : params.parameters()) {
         // slot_ids are iterated in ascending order which ensures the correct order of the export.
         param->export_to_invocation(&invocation);
@@ -105,10 +107,11 @@ std::unique_ptr<ResultSetInterface> PqConnection::run_query(ParameterizedQuery c
 }
 
 uint64_t PqConnection::run_update(ParameterizedQuery const &query, QueryParams const &params) {
-    StatementId id = impl_->statement_cache.Fetch(query);
+    std::optional<StatementId> id = impl_->statement_cache.Fetch(query);
+    assert(id.has_value());
 
     pqxx::work update_work(*impl_->conn);
-    pqxx::prepare::invocation invocation = update_work.prepared(std::to_string(id));
+    pqxx::prepare::invocation invocation = update_work.prepared(std::to_string(id.value()));
     for (auto const &[slot_id, param] : params.parameters()) {
         param->export_to_invocation(&invocation);
     }

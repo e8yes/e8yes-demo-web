@@ -16,6 +16,8 @@
  */
 
 #include <QtTest>
+#include <optional>
+#include <string>
 
 #include "common/container/lru_hash_map.h"
 
@@ -35,15 +37,21 @@ lru_hash_map_test::lru_hash_map_test() {}
 lru_hash_map_test::~lru_hash_map_test() {}
 
 struct OnFetch {
-    int operator()(std::string const &key) {
+    std::optional<int> operator()(std::string const &key) {
+        if (key.length() != 1) {
+            return std::nullopt;
+        }
+
         fetch_freq[key]++;
         return key[0];
     }
+
     std::map<std::string, int> fetch_freq;
 };
 
 struct OnEvict {
     void operator()(int value) { evict_freq[value]++; }
+
     std::map<int, int> evict_freq;
 };
 
@@ -54,18 +62,32 @@ void lru_hash_map_test::test_fetch_and_clear() {
     // A, B, A, C, B
     // A and C will be fetched once whereas B will be fetched twice.
     // Boath A and B will be evicted once.
-    int item_id = cache.Fetch("A");
-    QVERIFY(item_id == 'A');
+    std::optional<int> item_id = cache.Fetch("");
+    QVERIFY(!item_id.has_value());
+
     item_id = cache.Fetch("A");
-    QVERIFY(item_id == 'A');
+    QVERIFY(item_id.has_value());
+    QVERIFY(item_id.value() == 'A');
+
+    item_id = cache.Fetch("A");
+    QVERIFY(item_id.has_value());
+    QVERIFY(item_id.value() == 'A');
+
     item_id = cache.Fetch("B");
-    QVERIFY(item_id == 'B');
+    QVERIFY(item_id.has_value());
+    QVERIFY(item_id.value() == 'B');
+
     item_id = cache.Fetch("A");
-    QVERIFY(item_id == 'A');
+    QVERIFY(item_id.has_value());
+    QVERIFY(item_id.value() == 'A');
+
     item_id = cache.Fetch("C");
-    QVERIFY(item_id == 'C');
+    QVERIFY(item_id.has_value());
+    QVERIFY(item_id.value() == 'C');
+
     item_id = cache.Fetch("B");
-    QVERIFY(item_id == 'B');
+    QVERIFY(item_id.has_value());
+    QVERIFY(item_id.value() == 'B');
 
     // Verify the fetch frequencies.
     QVERIFY(cache.FetchOperator().fetch_freq.at("A") == 1);
