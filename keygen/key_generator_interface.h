@@ -18,6 +18,7 @@
 #ifndef KEY_GENERATOR_INTERFACE_H
 #define KEY_GENERATOR_INTERFACE_H
 
+#include <optional>
 #include <string>
 
 namespace e8 {
@@ -32,13 +33,22 @@ class KeyGeneratorInterface {
     KeyGeneratorInterface(KeyGeneratorInterface const &) = delete;
     virtual ~KeyGeneratorInterface() = default;
 
+    enum KeyType { ALPHANUMERIC_40, RSA_4096 };
+
+    struct Key {
+        std::string key;
+        std::optional<std::string> public_key;
+    };
+
     /**
-     * @brief KeyOf Retrieve an encryption key for the specified encrypter. If a key doesn't exist,
-     * it will generete one for the encrypter.
+     * @brief KeyOf Retrieve an encryption key for the specified encrypter and key type. If a key
+     * doesn't exist, it will generete one for the encrypter and key type.
+     *
      * @param encrypter Name of the encrypter for which the key needs to be returned.
-     * @return Dynamically generated encrpytion key for the encrypter.
+     * @param key_type The type of key to retrieve.
+     * @return Dynamically generated encrpytion key for the encrypter. RSA key pair is separated by
      */
-    virtual std::string KeyOf(std::string const &encrypter) = 0;
+    virtual Key KeyOf(std::string const &encrypter, KeyType key_type) = 0;
 };
 
 } // namespace e8
