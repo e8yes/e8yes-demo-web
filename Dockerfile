@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:19.10
 
 # Install required packages.
 WORKDIR /home/demoweb_src
