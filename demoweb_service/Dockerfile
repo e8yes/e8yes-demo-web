@@ -5,5 +5,4 @@ WORKDIR /home
 
 EXPOSE 50051 
 
-CMD ["./build/demoweb/demowebmain", "--port=50051"]
-
+CMD ["./build/demoweb_service/demoweb/demowebmain", "--port=50051"]
