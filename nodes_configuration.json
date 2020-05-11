@@ -35,5 +35,6 @@
         "kubernetes_master": "pi2",
         "postgres_citus_master": "pi3",
         "deployment_master": "pi2"
-    }
+    },
+    "git_repo": "https://github.com/e8yes/e8yes-demo-web.git"
 }

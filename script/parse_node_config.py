@@ -19,15 +19,18 @@ class ClusterConfig:
   def __init__(self, 
                kubernetes_master: str, 
                postgres_citus_master: str,
-               deployment_master: str):
+               deployment_master: str,
+               git_repo: str):
     self.kubernetes_master = kubernetes_master
     self.postgres_citus_master = postgres_citus_master
     self.deployment_master = deployment_master
+    self.git_repo = git_repo
 
   def __repr__(self):
     return "ClusterConfig={kubernetes_master=" + self.kubernetes_master + \
                          ",postgres_citus_master=" + self.postgres_citus_master + \
                          ",deployment_master=" + self.deployment_master + \
+                         ",git_repo=" + self.git_repo + \
                          "}"
 
 def ReadNodeConfig(config_file_path: str) -> List[NodeConfig]:
@@ -49,7 +52,8 @@ def ReadNodeConfig(config_file_path: str) -> List[NodeConfig]:
   cluster_config = ClusterConfig(
     kubernetes_master=json_cluster_config["kubernetes_master"],
     postgres_citus_master=json_cluster_config["postgres_citus_master"],
-    deployment_master=json_cluster_config["deployment_master"])
+    deployment_master=json_cluster_config["deployment_master"],
+    git_repo=json_obj["git_repo"])
 
   return node_configs, cluster_config
 
