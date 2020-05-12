@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demoweb-service-deployment
+  labels:
+    app: demoweb-service-app
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: demoweb-service-app
+  template:
+    metadata:
+      labels:
+        app: demoweb-service-app
+    spec:
+      containers:
+      - name: demoweb-service-container
+        image: DEMOWEB_SERVICE_IMAGE
+        ports:
+        - containerPort: 50051

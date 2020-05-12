@@ -1,0 +1,12 @@
+kind: Service 
+apiVersion: v1 
+metadata:
+  name: demoweb-service
+spec:
+  type: NodePort
+  selector:
+    app: demoweb-service-app
+  ports:
+    - nodePort: 50051
+      port: 50051 
+      targetPort: 50051
