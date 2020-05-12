@@ -5,10 +5,12 @@ from script.refresh_host_keys import RefreshHostKeys
 from script.run_bash_script import RunSingleCommandInNode
 from script.host_ip import GetHostIp
 
-def BuildImage(git_repo: str, deployment_node: NodeConfig):
+def BuildImages(git_repo: str, deployment_node: NodeConfig):
   RunSingleCommandInNode(node=deployment_node, 
                          command="git clone {0} demoweb_src"\
                            .format(git_repo))
+  RunSingleCommandInNode(node=deployment_node,
+                         command="cd demoweb_src && git reset --hard")
   RunSingleCommandInNode(node=deployment_node, 
                          command="cd demoweb_src && git pull {0} master"\
                            .format(git_repo))
@@ -28,9 +30,17 @@ def PushToDockerRegistry(deployment_node: NodeConfig):
                          command="sudo docker push {0}:5000/demowebservice"\
                            .format(GetHostIp(deployment_node.location)))
 
-def DeployImage(kube_master_node: NodeConfig, deployment_node: NodeConfig):
-  # TODO: Pull in yaml templates and complete the placeholders then deploy through kubernetes.
-  pass
+def DeployImages(kube_master_node: NodeConfig, deployment_node: NodeConfig):
+  with open("./script/template-demoweb_service_deployment.yaml", "r") as demoweb_service_deployment_template:
+    template = demoweb_service_deployment_template.read()
+    deployment_config = template.replace(\
+      "DEMOWEB_SERVICE_IMAGE", 
+      "{0}:5000/demowebservice".format(GetHostIp(deployment_node.location)))
+    write_config_file_cmd = "echo -e \"{0}\" > demoweb_src/script/demoweb_service_deployment.yaml"\
+      .format(deployment_config)
+    RunSingleCommandInNode(node=kube_master_node, command=write_config_file_cmd)
+    RunSingleCommandInNode(node=kube_master_node, 
+                           command="kubectl apply -f demoweb_src/script/demoweb_service_deployment.yaml")
 
 if __name__ == "__main__":
   node_configs, cluster_config = ReadNodeConfig(
@@ -43,7 +53,7 @@ if __name__ == "__main__":
   git_repo = cluster_config.git_repo
 
   print("Building from source " + git_repo + " in " + str(deployment_node))
-  BuildImage(git_repo=git_repo, deployment_node=deployment_node)
+  BuildImages(git_repo=git_repo, deployment_node=deployment_node)
 
   print("Prepare nodes for docker registry")
   for node_config in node_configs.values():
@@ -55,4 +65,4 @@ if __name__ == "__main__":
 
   print("Deploy image")
   kube_master_node = node_configs[cluster_config.kubernetes_master]
-  DeployImage(kube_master_node=kube_master_node, deployment_node=deployment_node)
+  DeployImages(kube_master_node=kube_master_node, deployment_node=deployment_node)
