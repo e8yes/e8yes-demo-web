@@ -36,4 +36,19 @@ UserEntity::UserEntity(UserEntity const &other) : UserEntity() {
     created_at = other.created_at;
 }
 
+UserEntity &UserEntity::operator=(UserEntity const &other) {
+    id = other.id;
+    id_str = other.id_str;
+    emails = other.emails;
+    alias = other.alias;
+    avatar_path = other.avatar_path;
+    avatar_preview_path = other.avatar_preview_path;
+    security_key_hash = other.security_key_hash;
+    group_names = other.group_names;
+    active_level = other.active_level;
+    created_at = other.created_at;
+
+    return *this;
+}
+
 } // namespace e8

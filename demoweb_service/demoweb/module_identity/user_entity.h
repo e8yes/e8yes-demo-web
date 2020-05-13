@@ -36,6 +36,8 @@ class UserEntity : public SqlEntityInterface {
     UserEntity(UserEntity const &other);
     ~UserEntity() = default;
 
+    UserEntity &operator=(UserEntity const &other);
+
     SqlLong id = SqlLong("id");
     SqlStr id_str = SqlStr("id_str");
     SqlStrArr emails = SqlStrArr("emails");

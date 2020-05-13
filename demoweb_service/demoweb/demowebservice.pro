@@ -15,6 +15,7 @@ INCLUDEPATH += $$PWD/../../
 
 HEADERS += \
     module_identity/create_user.h \
+    module_identity/retrieve_user.h \
     module_identity/user_entity.h \
     module_rbac/system_user_group.h \
     environment/environment_context_interface.h \
@@ -47,6 +48,7 @@ HEADERS += \
     service/user_service.h
 SOURCES += \
     module_identity/create_user.cc \
+    module_identity/retrieve_user.cc \
     module_identity/user_entity.cc \
     environment/environment_context_interface.cc \
     environment/test_environment_context.cc \
