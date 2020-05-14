@@ -37,10 +37,10 @@ static constexpr char kSaltCharacters[] =
     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 std::string GenSalt() {
-    int64_t s0 = TimeId(/*host_id=*/0);
-    unsigned i0 = static_cast<unsigned>(s0 % static_cast<int64_t>(sizeof(kSaltCharacters)));
-    int64_t s1 = TimeId(/*host_id=*/1);
-    unsigned i1 = static_cast<unsigned>(s1 % static_cast<int64_t>(sizeof(kSaltCharacters)));
+    uint64_t s0 = static_cast<uint64_t>(TimeId(/*host_id=*/0));
+    unsigned i0 = s0 % sizeof(kSaltCharacters);
+    uint64_t s1 = static_cast<uint64_t>(TimeId(/*host_id=*/1));
+    unsigned i1 = s1 % sizeof(kSaltCharacters);
 
     std::string salt;
     salt += kSaltCharacters[i0];
@@ -57,10 +57,10 @@ std::string HashSecurityKey(std::string const &security_key) {
 
 } // namespace
 
-UserEntity CreateUser(std::string const &security_key,
-                      std::vector<std::string> const &user_group_names,
-                      std::optional<UserId> user_id, unsigned host_id,
-                      ConnectionReservoirInterface *db_conn) {
+std::optional<UserEntity> CreateUser(std::string const &security_key,
+                                     std::vector<std::string> const &user_group_names,
+                                     std::optional<UserId> user_id, unsigned host_id,
+                                     ConnectionReservoirInterface *db_conn) {
     if (!user_id.has_value()) {
         user_id = TimeId(host_id);
     }
@@ -81,13 +81,18 @@ UserEntity CreateUser(std::string const &security_key,
     *user.created_at.value_ptr() = timestamp;
 
     uint64_t num_rows_affected = Update(user, TableNames::AUser(), /*overrdie=*/false, db_conn);
+    if (num_rows_affected == 0) {
+        return std::nullopt;
+    }
+
     assert(num_rows_affected == 1);
 
     return user;
 }
 
-UserEntity CreateBaselineUser(std::string const &security_key, std::optional<UserId> user_id,
-                              unsigned host_id, ConnectionReservoirInterface *db_conn) {
+std::optional<UserEntity> CreateBaselineUser(std::string const &security_key,
+                                             std::optional<UserId> user_id, unsigned host_id,
+                                             ConnectionReservoirInterface *db_conn) {
     return CreateUser(
         security_key,
         std::vector<std::string>({kSystemUserGroupStrings[SystemUserGroup::BASELINE_USER_GROUP]}),

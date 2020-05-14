@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <grpcpp/grpcpp.h>
 #include <optional>
 
@@ -28,15 +29,20 @@ namespace e8 {
 grpc::Status UserServiceImpl::Register(grpc::ServerContext *, RegistrationRequest const *request,
                                        RegistrationReponse *response) {
 
-    UserEntity user =
+    std::optional<UserEntity> user =
         CreateBaselineUser(request->security_key(),
                            /*userId=*/std::nullopt, CurrentEnvironment()->CurrentHostId(),
                            CurrentEnvironment()->DemowebDatabase());
+    assert(user.has_value());
 
-    response->set_user_id(user.id.value().value());
+    response->set_user_id(user.value().id.value().value());
     response->set_error_type(RegistrationReponse::RET_NoError);
 
     return grpc::Status::OK;
 }
+
+grpc::Status UserServiceImpl::Authorize(grpc::ServerContext *context,
+                                        AuthorizationRequest const *request,
+                                        AuthorizationResponse *response) {}
 
 } // namespace e8

@@ -32,30 +32,33 @@ namespace e8 {
  *
  * @param security_key Security key associated with new user.
  * @param user_group_names Name of the groups the user will be in.
- * @param user_id Optional ID to create user with. If the ID is empty, this function will generate a
- * unique user ID.
+ * @param user_id Optional ID to create user with.
+ *  If the ID is specified and the user with such ID exists, this function will return a nullopt.
+ *  If the ID is empty, this function will generate a unique user ID.
  * @param zero-offset ID of the host machine the service is currently running on.
  * @param db_conn Connection to the DB server.
- * @return A newly created user with its associated unique ID.
+ * @return A newly created user with its associated unique ID if there is no error.
  */
-UserEntity CreateUser(std::string const &security_key,
-                      std::vector<std::string> const &user_group_names,
-                      std::optional<UserId> user_id, unsigned host_id,
-                      ConnectionReservoirInterface *db_conn);
+std::optional<UserEntity> CreateUser(std::string const &security_key,
+                                     std::vector<std::string> const &user_group_names,
+                                     std::optional<UserId> user_id, unsigned host_id,
+                                     ConnectionReservoirInterface *db_conn);
 
 /**
  * @brief CreateBaselineUser Similar to the above, but the new user will be in the system's
  * baseline user group.
  *
  * @param security_key Security key associated with new user.
- * @param user_id Optional ID to create user with. If the ID is empty, this function will generate a
- * unique user ID.
+ * @param user_id Optional ID to create user with.
+ *  If the ID is specified and the user with such ID exists, this function will return a nullopt.
+ *  If the ID is empty, this function will generate a unique user ID.
  * @param zero-offset ID of the host machine the service is currently running on.
  * @param db_conn Connection to the DB server.
- * @return A newly created user with its associated unique ID.
+ * @return A newly created user with its associated unique ID if there is no error.
  */
-UserEntity CreateBaselineUser(std::string const &security_key, std::optional<UserId> user_id,
-                              unsigned host_id, ConnectionReservoirInterface *db_conn);
+std::optional<UserEntity> CreateBaselineUser(std::string const &security_key,
+                                             std::optional<UserId> user_id, unsigned host_id,
+                                             ConnectionReservoirInterface *db_conn);
 
 } // namespace e8
 

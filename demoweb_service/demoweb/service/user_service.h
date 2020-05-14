@@ -25,6 +25,9 @@
 
 namespace e8 {
 
+/**
+ * @brief The UserServiceImpl class Service for user management.
+ */
 class UserServiceImpl : public UserService::Service {
   public:
     UserServiceImpl() = default;
@@ -32,6 +35,9 @@ class UserServiceImpl : public UserService::Service {
 
     grpc::Status Register(grpc::ServerContext *context, RegistrationRequest const *request,
                           RegistrationReponse *response) override;
+
+    grpc::Status Authorize(grpc::ServerContext *context, AuthorizationRequest const *request,
+                           AuthorizationResponse *response) override;
 };
 
 } // namespace e8
