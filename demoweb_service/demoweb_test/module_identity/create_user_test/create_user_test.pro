@@ -11,12 +11,18 @@ QMAKE_CXXFLAGS += -std=c++17
 
 INCLUDEPATH += $$PWD/../../../../
 
-SOURCES +=  tst_create_user_test.cpp
+SOURCES +=  \
+    tst_create_user_test.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../../../postgres/query_runner/ -lquery_runner
 
 INCLUDEPATH += $$PWD/../../../../postgres/query_runner
 DEPENDPATH += $$PWD/../../../../postgres/query_runner
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../keygen/ -lkeygen
+
+INCLUDEPATH += $$PWD/../../../../keygen
+DEPENDPATH += $$PWD/../../../../keygen
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../../demoweb/ -ldemowebservice
 
