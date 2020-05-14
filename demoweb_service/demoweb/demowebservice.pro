@@ -17,6 +17,7 @@ HEADERS += \
     module_identity/create_user.h \
     module_identity/retrieve_user.h \
     module_identity/user_entity.h \
+    module_identity/user_profile.h \
     module_rbac/system_user_group.h \
     environment/environment_context_interface.h \
     environment/test_environment_context.h \
@@ -54,6 +55,7 @@ SOURCES += \
     environment/test_environment_context.cc \
     environment/host_id.cc \
     environment/prod_environment_context.cc \
+    module_identity/user_profile.cc \
     proto_cc/encryption_source.grpc.pb.cc \
     proto_cc/encryption_source.pb.cc \
     proto_cc/file.grpc.pb.cc \
@@ -89,6 +91,8 @@ INCLUDEPATH += $$PWD/../../keygen
 DEPENDPATH += $$PWD/../../keygen
 
 LIBS += -lpqxx
-LIBS += -lpthread
+LIBS += -pthread
 LIBS += -ldl
-LIBS += -lgrpc++ -lgrpc++_reflection
+LIBS += -lprotobuf
+LIBS += -lgrpc++
+LIBS += -lgrpc++_reflection

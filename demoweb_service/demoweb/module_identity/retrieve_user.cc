@@ -35,7 +35,7 @@ namespace e8 {
 std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     SqlQueryBuilder::Placeholder<SqlLong> user_id_ph;
-    query.query_piece(TableNames::AUser()).query_piece("u WHERE u.id=").placeholder(&user_id_ph);
+    query.query_piece(TableNames::AUser()).query_piece(" u WHERE u.id=").placeholder(&user_id_ph);
 
     SqlLong user_id_ph_value(user_id);
     query.set_value_to_placeholder(user_id_ph, &user_id_ph_value);
@@ -55,7 +55,7 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &user_id_prefix,
                                    ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     query.query_piece(TableNames::AUser());
-    query.query_piece("u WHERE TRUE");
+    query.query_piece(" u WHERE TRUE");
 
     SqlStr user_id_prefix_ph_value("", "");
     if (user_id_prefix.has_value()) {
@@ -69,13 +69,13 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &user_id_prefix,
     SqlStr alias_prefix_ph_value("", "");
     if (alias_prefix.has_value()) {
         SqlQueryBuilder::Placeholder<SqlStr> alias_prefix_ph;
-        query.query_piece(" AND entity.alias LIKE ").placeholder(&alias_prefix_ph);
+        query.query_piece(" AND u.alias LIKE ").placeholder(&alias_prefix_ph);
 
         *alias_prefix_ph_value.value_ptr() = alias_prefix.value() + "%";
         query.set_value_to_placeholder(alias_prefix_ph, &alias_prefix_ph_value);
     }
 
-    query.query_piece(" ORDER BY entity.id ASC");
+    query.query_piece(" ORDER BY u.id ASC");
 
     SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
     SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
