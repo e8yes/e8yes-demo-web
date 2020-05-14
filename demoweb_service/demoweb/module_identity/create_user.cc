@@ -25,7 +25,7 @@
 
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module_identity/create_user.h"
-#include "demoweb_service/demoweb/module_identity/user_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/module_rbac/system_user_group.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_runner.h"

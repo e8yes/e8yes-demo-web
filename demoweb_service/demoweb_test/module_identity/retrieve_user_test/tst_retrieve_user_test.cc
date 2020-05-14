@@ -22,7 +22,7 @@
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module_identity/create_user.h"
 #include "demoweb_service/demoweb/module_identity/retrieve_user.h"
-#include "demoweb_service/demoweb/module_identity/user_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/module_identity/user_profile.h"
 #include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
@@ -102,8 +102,6 @@ void retrieve_user_test::search_user_by_id_prefix_test() {
         /*alias_prefix=*/std::nullopt, pagination, db_conns);
     QVERIFY(page2.empty());
 }
-
-#include <iostream>
 
 void retrieve_user_test::search_user_by_id_alias_test() {
     e8::TestEnvironmentContext env;

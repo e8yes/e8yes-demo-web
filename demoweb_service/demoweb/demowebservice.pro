@@ -14,9 +14,9 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 HEADERS += \
+    common_entity/user_entity.h \
     module_identity/create_user.h \
     module_identity/retrieve_user.h \
-    module_identity/user_entity.h \
     module_identity/user_profile.h \
     module_rbac/system_user_group.h \
     environment/environment_context_interface.h \
@@ -48,9 +48,9 @@ HEADERS += \
     proto_cc/user_profile.pb.h \
     service/user_service.h
 SOURCES += \
+    common_entity/user_entity.cc \
     module_identity/create_user.cc \
     module_identity/retrieve_user.cc \
-    module_identity/user_entity.cc \
     environment/environment_context_interface.cc \
     environment/test_environment_context.cc \
     environment/host_id.cc \

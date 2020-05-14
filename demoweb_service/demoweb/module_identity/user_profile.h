@@ -21,7 +21,7 @@
 #include <optional>
 #include <string>
 
-#include "demoweb_service/demoweb/module_identity/user_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {

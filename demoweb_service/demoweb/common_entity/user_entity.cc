@@ -15,7 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "demoweb_service/demoweb/module_identity/user_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 
 namespace e8 {
 
