@@ -4,6 +4,7 @@ FROM ubuntu:19.10
 WORKDIR /home/demoweb_src
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
+RUN apt install -y haveged
 RUN apt install -y build-essential
 RUN echo 13 | apt install -y postgresql
 RUN apt install -y libpqxx-dev
