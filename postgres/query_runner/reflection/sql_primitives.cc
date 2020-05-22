@@ -799,4 +799,52 @@ std::vector<std::time_t> const &SqlTimestampArr::value() const { return value_; 
 
 std::vector<std::time_t> *SqlTimestampArr::value_ptr() { return &value_; }
 
+SqlByteArr::SqlByteArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
+
+SqlByteArr::SqlByteArr(std::vector<uint8_t> const &value, std::string const &field_name)
+    : SqlPrimitiveInterface(field_name), value_(value) {}
+
+SqlByteArr::~SqlByteArr() {}
+
+void SqlByteArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+    pqxx::binarystring blob(value_.data(), value_.size());
+    (*invocation)(blob);
+}
+
+void SqlByteArr::import_from_field(pqxx::field const &field) {
+    pqxx::binarystring blob(field);
+    uint8_t const *ptr = blob.data();
+    size_t size = blob.size();
+
+    value_.resize(size);
+    for (unsigned i = 0; i < size; i++) {
+        value_[i] = ptr[i];
+    }
+}
+
+SqlPrimitiveInterface &SqlByteArr::operator=(SqlPrimitiveInterface const &rhs) {
+    return (*this = static_cast<SqlByteArr const &>(rhs));
+}
+
+bool SqlByteArr::operator==(SqlPrimitiveInterface const &rhs) const {
+    SqlByteArr const &other = static_cast<SqlByteArr const &>(rhs);
+    return value_ == other.value_;
+}
+
+bool SqlByteArr::operator!=(SqlPrimitiveInterface const &rhs) const { return !(*this == rhs); }
+
+bool SqlByteArr::operator<(SqlPrimitiveInterface const &rhs) const {
+    SqlByteArr const &other = static_cast<SqlByteArr const &>(rhs);
+    return value_ < other.value_;
+}
+
+SqlByteArr &SqlByteArr::operator=(SqlByteArr const &rhs) {
+    value_ = rhs.value_;
+    return *this;
+}
+
+std::vector<uint8_t> const &SqlByteArr::value() const { return value_; }
+
+std::vector<uint8_t> *SqlByteArr::value_ptr() { return &value_; }
+
 } // namespace e8

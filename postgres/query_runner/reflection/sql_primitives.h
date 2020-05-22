@@ -555,6 +555,44 @@ class SqlTimestampArr : public SqlPrimitiveInterface {
     std::vector<std::time_t> value_;
 };
 
+/**
+ * @brief The SqlByteArr class byte array primitive type.
+ * Note that, this array type is not nullable, so are the array elements.
+ *
+ * Example usage:
+ * SqlByteArr rsa_key = SqlByteArr("rsa_key");
+ */
+class SqlByteArr : public SqlPrimitiveInterface {
+  public:
+    explicit SqlByteArr(std::string const &field_name);
+    explicit SqlByteArr(std::vector<uint8_t> const &value, std::string const &field_name = "");
+    SqlByteArr(SqlByteArr const &) = default;
+    ~SqlByteArr() override;
+
+    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
+    void import_from_field(pqxx::field const &field) override;
+
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
+    bool operator==(SqlPrimitiveInterface const &rhs) const override;
+    bool operator!=(SqlPrimitiveInterface const &rhs) const override;
+    bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlByteArr &operator=(SqlByteArr const &rhs);
+
+    /**
+     * @brief value The internally stored C++ byte array.
+     */
+    std::vector<uint8_t> const &value() const;
+
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    std::vector<uint8_t> *value_ptr();
+
+  private:
+    std::vector<uint8_t> value_;
+};
+
 } // namespace e8
 
 #endif // SQL_PRIMITIVES_H
