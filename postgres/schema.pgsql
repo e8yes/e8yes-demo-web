@@ -20,8 +20,8 @@ SET default_with_oids = false;
 CREATE TABLE IF NOT EXISTS key_persistence (
     encrypter CHARACTER VARYING(256) NOT NULL,
     key_type INT NOT NULL,
-    crypto_key CHARACTER VARYING NOT NULL,
-    crypto_public_key CHARACTER VARYING NULL
+    crypto_key BYTEA NOT NULL,
+    crypto_public_key BYTEA NULL
 );
 
 
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS auser (
     emails CHARACTER VARYING [] NULL,
     avatar_path CHARACTER VARYING(128) NULL,
     avatar_preview_path CHARACTER VARYING(128) NULL,
-    security_key_hash CHARACTER VARYING(80) NOT NULL,
+    security_key_hash CHARACTER VARYING NOT NULL,
     group_names CHARACTER VARYING(60) [] NULL,
     active_level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
