@@ -16,6 +16,7 @@
  */
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "postgres/query_runner/reflection/sql_entity_interface.h"
 
 namespace e8 {
 
@@ -47,7 +48,6 @@ UserEntity &UserEntity::operator=(UserEntity const &other) {
     group_names = other.group_names;
     active_level = other.active_level;
     created_at = other.created_at;
-
     return *this;
 }
 

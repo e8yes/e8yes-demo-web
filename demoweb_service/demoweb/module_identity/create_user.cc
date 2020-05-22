@@ -16,46 +16,20 @@
  */
 
 #include <cassert>
-#include <crypt.h>
-#include <cstdint>
 #include <ctime>
 #include <optional>
 #include <string>
 #include <vector>
 
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module_identity/create_user.h"
-#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/module_identity/user_identity.h"
 #include "demoweb_service/demoweb/module_rbac/system_user_group.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
-namespace {
-
-static constexpr char kSaltCharacters[] =
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-std::string GenSalt() {
-    uint64_t s0 = static_cast<uint64_t>(TimeId(/*host_id=*/0));
-    unsigned i0 = s0 % sizeof(kSaltCharacters);
-    uint64_t s1 = static_cast<uint64_t>(TimeId(/*host_id=*/1));
-    unsigned i1 = s1 % sizeof(kSaltCharacters);
-
-    std::string salt;
-    salt += kSaltCharacters[i0];
-    salt += kSaltCharacters[i1];
-
-    return salt;
-}
-
-std::string HashSecurityKey(std::string const &security_key) {
-    crypt_data data;
-    char *hash = crypt_r(security_key.c_str(), GenSalt().c_str(), &data);
-    return std::string(hash);
-}
-
-} // namespace
 
 std::optional<UserEntity> CreateUser(std::string const &security_key,
                                      std::vector<std::string> const &user_group_names,
@@ -70,14 +44,14 @@ std::optional<UserEntity> CreateUser(std::string const &security_key,
     *user.id_str.value_ptr() = std::to_string(user_id.value());
 
     // Stores a irreversibly hashed security key.
-    *user.security_key_hash.value_ptr() = HashSecurityKey(security_key);
+    std::optional<SecurityKeyHash> security_hash = DigestSecurityKey(security_key);
+    assert(security_hash.has_value());
+    *user.security_key_hash.value_ptr() = security_hash.value();
     *user.group_names.value_ptr() = user_group_names;
     *user.active_level.value_ptr() = 0;
 
     time_t timestamp;
     std::time(&timestamp);
-    std::tm tm;
-    gmtime_r(&timestamp, &tm);
     *user.created_at.value_ptr() = timestamp;
 
     uint64_t num_rows_affected = Update(user, TableNames::AUser(), /*overrdie=*/false, db_conn);

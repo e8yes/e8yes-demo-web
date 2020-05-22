@@ -28,7 +28,7 @@ namespace e8 {
 using UserId = int64_t;
 
 /**
- * @brief The UserEntity class Java class representation of the database table "auser".
+ * @brief The UserEntity class C++ class representation of the database table "auser".
  */
 class UserEntity : public SqlEntityInterface {
   public:
