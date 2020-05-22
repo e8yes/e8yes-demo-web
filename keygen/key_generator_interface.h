@@ -18,8 +18,10 @@
 #ifndef KEY_GENERATOR_INTERFACE_H
 #define KEY_GENERATOR_INTERFACE_H
 
+#include <cstdint>
 #include <optional>
 #include <string>
+#include <vector>
 
 namespace e8 {
 
@@ -36,8 +38,8 @@ class KeyGeneratorInterface {
     enum KeyType { RANDOM_512_BITS, RSA_4096_BITS };
 
     struct Key {
-        std::string key;
-        std::optional<std::string> public_key;
+        std::vector<uint8_t> key;
+        std::optional<std::vector<uint8_t>> public_key;
     };
 
     /**

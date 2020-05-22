@@ -24,11 +24,13 @@ INCLUDEPATH += $$PWD/../
 
 SOURCES += \
         key_generator_interface.cc \
-    persistent_key_generator.cc
+    persistent_key_generator.cc \
+    sign_message.cc
 
 HEADERS += \
         key_generator_interface.h \
-    persistent_key_generator.h
+    persistent_key_generator.h \
+    sign_message.h
 
 unix {
     target.path = /usr/lib

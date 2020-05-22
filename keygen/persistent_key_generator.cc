@@ -82,8 +82,8 @@ class KeyPersistenceEntity : public SqlEntityInterface {
 
     SqlStr encrypter = SqlStr("encrypter");
     SqlInt key_type = SqlInt("key_type");
-    SqlStr crypto_key = SqlStr("crypto_key");
-    SqlStr crypto_public_key = SqlStr("crypto_public_key");
+    SqlByteArr crypto_key = SqlByteArr("crypto_key");
+    SqlByteArr crypto_public_key = SqlByteArr("crypto_public_key");
 };
 
 class OnFetch {
@@ -116,8 +116,8 @@ class OnFetch {
 
         KeyPersistenceEntity const &entity = std::get<0>(key_persistence[0]);
         KeyGeneratorInterface::Key key;
-        assert(entity.crypto_key.value().has_value());
-        key.key = entity.crypto_key.value().value();
+        assert(!entity.crypto_key.value().empty());
+        key.key = entity.crypto_key.value();
         key.public_key = entity.crypto_public_key.value();
 
         return std::optional<KeyGeneratorInterface::Key>(key);
@@ -162,27 +162,32 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateAlphaNumeric(unsigne
     private_key.GenerateRandomWithKeySize(rng_, bit_len);
 
     PersistentKeyGenerator::Key result;
-    CryptoPP::Base64Encoder sink(new CryptoPP::StringSink(result.key));
-    private_key.DEREncode(sink);
+    result.key.resize(bit_len);
+    CryptoPP::ArraySink sink(result.key.data(), result.key.size());
+    private_key.Save(sink);
+    result.key.resize(sink.TotalPutLength());
 
     return result;
 }
 
 PersistentKeyGenerator::Key
 PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateRSA(unsigned bit_len) {
-    CryptoPP::RSA::PrivateKey private_key;
-    private_key.GenerateRandomWithKeySize(rng_, bit_len);
+    CryptoPP::InvertibleRSAFunction params;
+    params.GenerateRandomWithKeySize(rng_, bit_len);
 
-    CryptoPP::RSA::PublicKey public_key(private_key);
+    CryptoPP::RSA::PrivateKey private_key(params);
+    CryptoPP::RSA::PublicKey public_key(params);
 
     PersistentKeyGenerator::Key result;
-    CryptoPP::Base64Encoder private_key_sink(new CryptoPP::StringSink(result.key));
-    private_key.DEREncode(private_key_sink);
+    result.key.resize(bit_len);
+    CryptoPP::ArraySink private_key_sink(result.key.data(), result.key.size());
+    private_key.Save(private_key_sink);
 
-    std::string public_key_str;
-    CryptoPP::Base64Encoder public_key_sink(new CryptoPP::StringSink(public_key_str));
-    public_key.DEREncodePublicKey(public_key_sink);
-    result.public_key = public_key_str;
+    std::vector<uint8_t> public_key_bytes(bit_len);
+    CryptoPP::ArraySink public_key_sink(public_key_bytes.data(), public_key_bytes.size());
+    public_key.Save(public_key_sink);
+    public_key_bytes.resize(public_key_sink.TotalPutLength());
+    result.public_key = public_key_bytes;
 
     return result;
 }
@@ -196,7 +201,7 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateKey(KeyUser const &k
         key = GenerateAlphaNumeric(/*bit_len=*/512);
         break;
     case RSA_4096_BITS:
-        key = GenerateRSA(/*bit_len=*/4096);
+        key = GenerateRSA(/*bit_len=*/2048);
         break;
     }
 
