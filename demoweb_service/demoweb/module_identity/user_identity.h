@@ -55,15 +55,15 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
                                            KeyGeneratorInterface *key_gen);
 
 /**
- * @brief ExtractIdentity Decode the signed identity token into the identity object.
+ * @brief ValidateSignedIdentity Decode the signed identity token into the identity object.
  *
  * @param signed_identity .
  * @param key_gen .
  * @return The identity object if the signed identity token can be sucessfully validated. Otherwise,
  * it returns a nullopt.
  */
-std::optional<Identity> ExtractIdentity(SignedIdentity const &signed_identity,
-                                        KeyGeneratorInterface *key_gen);
+std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_identity,
+                                               KeyGeneratorInterface *key_gen);
 
 } // namespace e8
 

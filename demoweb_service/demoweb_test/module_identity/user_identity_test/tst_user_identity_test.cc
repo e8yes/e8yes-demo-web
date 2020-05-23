@@ -62,7 +62,8 @@ void user_identity_test::successful_sign_and_parse_test() {
         e8::SignIdentity(user, security_key, env.KeyGen());
     QVERIFY(signed_id.has_value());
 
-    std::optional<e8::Identity> identity = e8::ExtractIdentity(signed_id.value(), env.KeyGen());
+    std::optional<e8::Identity> identity =
+        e8::ValidateSignedIdentity(signed_id.value(), env.KeyGen());
     QVERIFY(identity.has_value());
     QVERIFY(identity.value().user_id() == 1L);
     QVERIFY(identity.value().group_names_size() == 1);

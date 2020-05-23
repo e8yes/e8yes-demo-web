@@ -18,6 +18,7 @@
 #include <cassert>
 #include <crypt.h>
 #include <cstdint>
+#include <ctime>
 #include <fstream>
 #include <optional>
 #include <sstream>
@@ -35,9 +36,10 @@ namespace e8 {
 namespace {
 
 static char const kDigestAlgorithmPrefix[] = "$2y$";
-static unsigned const kDigestStrength = 15;
+static unsigned const kDigestStrength = 11;
 static unsigned const kNumRandomBytes = 16;
 static char const kEncrypter[] = "DemowebIdentitySigner";
+static uint64_t const kIdentityValidDurationSecs = 60 * 10;
 
 std::vector<std::string> Split(std::string const &input, char delimiter) {
     std::stringstream ss(input);
@@ -107,6 +109,9 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
     identity.set_user_id(user.id.value().value());
     *identity.mutable_group_names() = {user.group_names.value().begin(),
                                        user.group_names.value().end()};
+    std::time_t cur_timestamp;
+    std::time(&cur_timestamp);
+    identity.set_expiry_timestamp(cur_timestamp + kIdentityValidDurationSecs);
 
     std::vector<uint8_t> identity_bytes(identity.ByteSize());
     bool serialize_status = identity.SerializeToArray(identity_bytes.data(), identity_bytes.size());
@@ -118,8 +123,8 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
     return SignMessage(identity_bytes, key_pair.key);
 }
 
-std::optional<Identity> ExtractIdentity(SignedIdentity const &signed_identity,
-                                        KeyGeneratorInterface *key_gen) {
+std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_identity,
+                                               KeyGeneratorInterface *key_gen) {
     KeyGeneratorInterface::Key key_pair =
         key_gen->KeyOf(kEncrypter, KeyGeneratorInterface::RSA_4096_BITS);
     assert(key_pair.public_key.has_value());
@@ -134,6 +139,12 @@ std::optional<Identity> ExtractIdentity(SignedIdentity const &signed_identity,
     bool deserialize_status =
         identity.ParseFromArray(decoded_bytes.value().data(), decoded_bytes.value().size());
     assert(deserialize_status == true);
+
+    std::time_t cur_timestamp;
+    std::time(&cur_timestamp);
+    if (cur_timestamp > identity.expiry_timestamp()) {
+        return std::nullopt;
+    }
 
     return identity;
 }
