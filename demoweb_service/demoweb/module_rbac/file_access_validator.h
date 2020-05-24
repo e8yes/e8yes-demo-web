@@ -62,6 +62,32 @@ std::optional<std::string> ValidateFileAccessToken(Identity const &viewer,
                                                    FileAccessToken const &access_token,
                                                    KeyGeneratorInterface *key_gen);
 
+/**
+ * @brief AddDirectFileAccessForUserGroup Assigns a file location to a user group which allows users
+ * of that group to have the specified direct access to the file location.
+ *
+ * @param file_path Location of the file to assign.
+ * @param user_group User group to be assigned the file location.
+ * @param access_mode The type of access mode this assignment allows.
+ * @param db_conns Connection to the DemoWeb DB server.
+ */
+void AddDirectFileAccessForUserGroup(std::string const &file_path,
+                                     UserGroupEntity const &user_group, FileAccessMode access_mode,
+                                     ConnectionReservoirInterface *db_conns);
+
+/**
+ * @brief ValidateDirectFileAccess Check if the viewer has access to the file location with the
+ * specified access mode based on the user groups he is in.
+ *
+ * @param viewer The user identity to be checked against.
+ * @param file_path Location the user requests access to.
+ * @param access_mode Access mode of the location the user requests to use on the location.
+ * @param db_conns Connection to the DemoWeb DB server.
+ * @return True if the user has valid access given the provided parameters, otherwise, false.
+ */
+bool ValidateDirectFileAccess(Identity const &viewer, std::string const &file_path,
+                              FileAccessMode access_mode, ConnectionReservoirInterface *db_conns);
+
 } // namespace e8
 
 #endif // FILE_ACCESS_VALIDATOR_H

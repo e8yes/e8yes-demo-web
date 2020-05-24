@@ -23,12 +23,16 @@
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_group_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_group_has_file_entity.h"
+#include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module_rbac/file_access_validator.h"
 #include "demoweb_service/demoweb/proto_cc/file.pb.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/sign_message.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "postgres/query_runner/sql_query_builder.h"
+#include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
 namespace {
@@ -90,6 +94,72 @@ std::optional<std::string> ValidateFileAccessToken(Identity const &viewer,
     }
 
     return file_access.file_path();
+}
+
+void AddDirectFileAccessForUserGroup(std::string const &file_path,
+                                     UserGroupEntity const &user_group, FileAccessMode access_mode,
+                                     ConnectionReservoirInterface *db_conns) {
+    UserGroupHasFileEntity file_group;
+    *file_group.group_name.value_ptr() = user_group.group_name.value();
+    *file_group.file_path.value_ptr() = file_path;
+
+    switch (access_mode) {
+    case FAM_READ:
+        *file_group.can_read.value_ptr() = true;
+        *file_group.can_write.value_ptr() = false;
+        break;
+    case FAM_WRITE:
+        *file_group.can_read.value_ptr() = false;
+        *file_group.can_write.value_ptr() = true;
+        break;
+    case FAM_READWRITE:
+        *file_group.can_read.value_ptr() = true;
+        *file_group.can_write.value_ptr() = true;
+        break;
+    default:
+        return;
+    }
+
+    uint64_t num_rows_affected = Update(file_group, TableNames::UserGroupHasFile(),
+                                        /*override=*/true, db_conns);
+    assert(num_rows_affected == 1);
+}
+
+bool ValidateDirectFileAccess(Identity const &viewer, std::string const &file_path,
+                              FileAccessMode access_mode, ConnectionReservoirInterface *db_conns) {
+    SqlQueryBuilder::Placeholder<SqlStrArr> viewer_participated_groups_ph;
+    SqlQueryBuilder::Placeholder<SqlStr> file_path_ph;
+    SqlQueryBuilder query;
+    query.query_piece(TableNames::UserGroupHasFile())
+        .query_piece(" WHERE file_path=")
+        .placeholder(&file_path_ph)
+        .query_piece(" AND group_name=ANY(")
+        .placeholder(&viewer_participated_groups_ph)
+        .query_piece(")");
+
+    switch (access_mode) {
+    case FAM_READ:
+        query.query_piece(" AND can_read=TRUE");
+        break;
+    case FAM_WRITE:
+        query.query_piece(" AND can_write=TRUE");
+        break;
+    case FAM_READWRITE:
+        query.query_piece(" AND can_read=TRUE AND can_write=TRUE");
+        break;
+    default:
+        return false;
+    }
+
+    SqlStrArr viewer_participated_groups_value(
+        std::vector<std::string>({viewer.group_names().begin(), viewer.group_names().end()}));
+    SqlStr file_path_value(file_path, "");
+    query.set_value_to_placeholder(viewer_participated_groups_ph,
+                                   &viewer_participated_groups_value);
+    query.set_value_to_placeholder(file_path_ph, &file_path_value);
+
+    bool has_access = Exists(query, db_conns);
+    return has_access;
 }
 
 } // namespace e8
