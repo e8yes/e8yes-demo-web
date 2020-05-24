@@ -57,8 +57,8 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
 /**
  * @brief ValidateSignedIdentity Decode the signed identity token into the identity object.
  *
- * @param signed_identity .
- * @param key_gen .
+ * @param signed_identity The signature to be validate and extract information from.
+ * @param key_gen Key generator that holds the public signature verification key..
  * @return The identity object if the signed identity token can be sucessfully validated. Otherwise,
  * it returns a nullopt.
  */
