@@ -1,6 +1,6 @@
 #!/bin/bash
 
-POSTGRESQL_VERSION=11
+POSTGRESQL_VERSION=12
 
 # Kill existing connections and ensures that the database server is started.
 sudo pg_ctlcluster $POSTGRESQL_VERSION main restart
