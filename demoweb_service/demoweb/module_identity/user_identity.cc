@@ -78,7 +78,6 @@ std::optional<SecurityKeyHash> DigestSecurityKey(std::string const &security_key
     char *salt_result = crypt_gensalt_rn(kDigestAlgorithmPrefix, kDigestStrength, random_bytes,
                                          kNumRandomBytes, settings, CRYPT_GENSALT_OUTPUT_SIZE);
     assert(salt_result != nullptr);
-    assert(crypt_checksalt(settings) == CRYPT_SALT_OK);
 
     // Hash the security key.
     crypt_data data;
