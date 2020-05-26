@@ -32,6 +32,10 @@
 #include "keygen/key_generator_interface.h"
 #include "keygen/sign_message.h"
 
+#ifndef CRYPT_GENSALT_OUTPUT_SIZE
+#define CRYPT_GENSALT_OUTPUT_SIZE 192
+#endif
+
 namespace e8 {
 namespace {
 
