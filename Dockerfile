@@ -12,6 +12,7 @@ RUN apt install -y libprotobuf-dev
 RUN apt install -y protobuf-compiler
 RUN apt install -y libgrpc++-dev
 RUN apt install -y libcrypto++-dev
+RUN apt install -y libcrypt2-dev
 RUN apt install -y qt5-default
 
 # Copy source code.
