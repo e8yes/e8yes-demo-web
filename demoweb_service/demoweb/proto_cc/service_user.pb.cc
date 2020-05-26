@@ -316,7 +316,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::AuthorizationResponse, jwt_token_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::AuthorizationResponse, signed_identity_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetPublicProfileRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -429,37 +429,37 @@ void AddDescriptorsImpl() {
       "\017\n\013RET_NoError\020\000\022\026\n\022RET_BadSecurityKey\020\001"
       "\022\023\n\017RET_BotDetected\020\002\"=\n\024AuthorizationRe"
       "quest\022\017\n\007user_id\030\001 \001(\003\022\024\n\014security_key\030\002"
-      " \001(\014\"*\n\025AuthorizationResponse\022\021\n\tjwt_tok"
-      "en\030\001 \001(\014\"=\n\027GetPublicProfileRequest\022\"\n\007u"
-      "ser_id\030\001 \001(\0132\021.e8.NullableInt64\"B\n\030GetPu"
-      "blicProfileResponse\022&\n\007profile\030\001 \001(\0132\025.e"
-      "8.UserPublicProfile\"\?\n\032UpdatePublicProfi"
-      "leRequest\022!\n\005alias\030\001 \001(\0132\022.e8.NullableSt"
-      "ring\"E\n\033UpdatePublicProfileResponse\022&\n\007p"
-      "rofile\030\001 \001(\0132\025.e8.UserPublicProfile\"~\n\021S"
-      "earchUserRequest\022!\n\005alias\030\001 \001(\0132\022.e8.Nul"
-      "lableString\022\"\n\007user_id\030\002 \001(\0132\021.e8.Nullab"
-      "leInt64\022\"\n\npagination\030\003 \001(\0132\016.e8.Paginat"
-      "ion\"B\n\022SearchUserResponse\022,\n\ruser_profil"
-      "es\030\001 \003(\0132\025.e8.UserPublicProfile\"2\n\026Creat"
-      "eNewAvatarRequest\022\030\n\020avatar_file_name\030\001 "
-      "\001(\t\"O\n\027CreateNewAvatarResponse\0224\n\027avatar"
-      "_readwrite_access\030\001 \001(\0132\023.e8.FileTokenAc"
-      "cess2\271\003\n\013UserService\022<\n\010Register\022\027.e8.Re"
-      "gistrationRequest\032\027.e8.RegistrationRepon"
-      "se\022@\n\tAuthorize\022\030.e8.AuthorizationReques"
-      "t\032\031.e8.AuthorizationResponse\022M\n\020GetPubli"
-      "cProfile\022\033.e8.GetPublicProfileRequest\032\034."
-      "e8.GetPublicProfileResponse\022V\n\023UpdatePub"
-      "licProfile\022\036.e8.UpdatePublicProfileReque"
-      "st\032\037.e8.UpdatePublicProfileResponse\0227\n\006S"
-      "earch\022\025.e8.SearchUserRequest\032\026.e8.Search"
-      "UserResponse\022J\n\017createNewAvatar\022\032.e8.Cre"
-      "ateNewAvatarRequest\032\033.e8.CreateNewAvatar"
-      "Responseb\006proto3"
+      " \001(\014\"0\n\025AuthorizationResponse\022\027\n\017signed_"
+      "identity\030\001 \001(\014\"=\n\027GetPublicProfileReques"
+      "t\022\"\n\007user_id\030\001 \001(\0132\021.e8.NullableInt64\"B\n"
+      "\030GetPublicProfileResponse\022&\n\007profile\030\001 \001"
+      "(\0132\025.e8.UserPublicProfile\"\?\n\032UpdatePubli"
+      "cProfileRequest\022!\n\005alias\030\001 \001(\0132\022.e8.Null"
+      "ableString\"E\n\033UpdatePublicProfileRespons"
+      "e\022&\n\007profile\030\001 \001(\0132\025.e8.UserPublicProfil"
+      "e\"~\n\021SearchUserRequest\022!\n\005alias\030\001 \001(\0132\022."
+      "e8.NullableString\022\"\n\007user_id\030\002 \001(\0132\021.e8."
+      "NullableInt64\022\"\n\npagination\030\003 \001(\0132\016.e8.P"
+      "agination\"B\n\022SearchUserResponse\022,\n\ruser_"
+      "profiles\030\001 \003(\0132\025.e8.UserPublicProfile\"2\n"
+      "\026CreateNewAvatarRequest\022\030\n\020avatar_file_n"
+      "ame\030\001 \001(\t\"O\n\027CreateNewAvatarResponse\0224\n\027"
+      "avatar_readwrite_access\030\001 \001(\0132\023.e8.FileT"
+      "okenAccess2\271\003\n\013UserService\022<\n\010Register\022\027"
+      ".e8.RegistrationRequest\032\027.e8.Registratio"
+      "nReponse\022@\n\tAuthorize\022\030.e8.Authorization"
+      "Request\032\031.e8.AuthorizationResponse\022M\n\020Ge"
+      "tPublicProfile\022\033.e8.GetPublicProfileRequ"
+      "est\032\034.e8.GetPublicProfileResponse\022V\n\023Upd"
+      "atePublicProfile\022\036.e8.UpdatePublicProfil"
+      "eRequest\032\037.e8.UpdatePublicProfileRespons"
+      "e\0227\n\006Search\022\025.e8.SearchUserRequest\032\026.e8."
+      "SearchUserResponse\022J\n\017CreateNewAvatar\022\032."
+      "e8.CreateNewAvatarRequest\032\033.e8.CreateNew"
+      "AvatarResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1496);
+      descriptor, 1502);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_user.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -1275,7 +1275,7 @@ void AuthorizationRequest::InternalSwap(AuthorizationRequest* other) {
 void AuthorizationResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int AuthorizationResponse::kJwtTokenFieldNumber;
+const int AuthorizationResponse::kSignedIdentityFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 AuthorizationResponse::AuthorizationResponse()
@@ -1289,15 +1289,15 @@ AuthorizationResponse::AuthorizationResponse(const AuthorizationResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  jwt_token_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.jwt_token().size() > 0) {
-    jwt_token_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.jwt_token_);
+  signed_identity_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.signed_identity().size() > 0) {
+    signed_identity_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signed_identity_);
   }
   // @@protoc_insertion_point(copy_constructor:e8.AuthorizationResponse)
 }
 
 void AuthorizationResponse::SharedCtor() {
-  jwt_token_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  signed_identity_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 AuthorizationResponse::~AuthorizationResponse() {
@@ -1306,7 +1306,7 @@ AuthorizationResponse::~AuthorizationResponse() {
 }
 
 void AuthorizationResponse::SharedDtor() {
-  jwt_token_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  signed_identity_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void AuthorizationResponse::SetCachedSize(int size) const {
@@ -1329,7 +1329,7 @@ void AuthorizationResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  jwt_token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  signed_identity_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
@@ -1343,12 +1343,12 @@ bool AuthorizationResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bytes jwt_token = 1;
+      // bytes signed_identity = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_jwt_token()));
+                input, this->mutable_signed_identity()));
         } else {
           goto handle_unusual;
         }
@@ -1381,10 +1381,10 @@ void AuthorizationResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes jwt_token = 1;
-  if (this->jwt_token().size() > 0) {
+  // bytes signed_identity = 1;
+  if (this->signed_identity().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      1, this->jwt_token(), output);
+      1, this->signed_identity(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1401,11 +1401,11 @@ void AuthorizationResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes jwt_token = 1;
-  if (this->jwt_token().size() > 0) {
+  // bytes signed_identity = 1;
+  if (this->signed_identity().size() > 0) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->jwt_token(), target);
+        1, this->signed_identity(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1425,11 +1425,11 @@ size_t AuthorizationResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // bytes jwt_token = 1;
-  if (this->jwt_token().size() > 0) {
+  // bytes signed_identity = 1;
+  if (this->signed_identity().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
-        this->jwt_token());
+        this->signed_identity());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1459,9 +1459,9 @@ void AuthorizationResponse::MergeFrom(const AuthorizationResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.jwt_token().size() > 0) {
+  if (from.signed_identity().size() > 0) {
 
-    jwt_token_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.jwt_token_);
+    signed_identity_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signed_identity_);
   }
 }
 
@@ -1489,7 +1489,7 @@ void AuthorizationResponse::Swap(AuthorizationResponse* other) {
 }
 void AuthorizationResponse::InternalSwap(AuthorizationResponse* other) {
   using std::swap;
-  jwt_token_.Swap(&other->jwt_token_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  signed_identity_.Swap(&other->signed_identity_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }

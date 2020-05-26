@@ -584,25 +584,25 @@ class AuthorizationResponse : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
-  // bytes jwt_token = 1;
-  void clear_jwt_token();
-  static const int kJwtTokenFieldNumber = 1;
-  const ::std::string& jwt_token() const;
-  void set_jwt_token(const ::std::string& value);
+  // bytes signed_identity = 1;
+  void clear_signed_identity();
+  static const int kSignedIdentityFieldNumber = 1;
+  const ::std::string& signed_identity() const;
+  void set_signed_identity(const ::std::string& value);
   #if LANG_CXX11
-  void set_jwt_token(::std::string&& value);
+  void set_signed_identity(::std::string&& value);
   #endif
-  void set_jwt_token(const char* value);
-  void set_jwt_token(const void* value, size_t size);
-  ::std::string* mutable_jwt_token();
-  ::std::string* release_jwt_token();
-  void set_allocated_jwt_token(::std::string* jwt_token);
+  void set_signed_identity(const char* value);
+  void set_signed_identity(const void* value, size_t size);
+  ::std::string* mutable_signed_identity();
+  ::std::string* release_signed_identity();
+  void set_allocated_signed_identity(::std::string* signed_identity);
 
   // @@protoc_insertion_point(class_scope:e8.AuthorizationResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr jwt_token_;
+  ::google::protobuf::internal::ArenaStringPtr signed_identity_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fuser_2eproto::TableStruct;
 };
@@ -1677,57 +1677,57 @@ inline void AuthorizationRequest::set_allocated_security_key(::std::string* secu
 
 // AuthorizationResponse
 
-// bytes jwt_token = 1;
-inline void AuthorizationResponse::clear_jwt_token() {
-  jwt_token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// bytes signed_identity = 1;
+inline void AuthorizationResponse::clear_signed_identity() {
+  signed_identity_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& AuthorizationResponse::jwt_token() const {
-  // @@protoc_insertion_point(field_get:e8.AuthorizationResponse.jwt_token)
-  return jwt_token_.GetNoArena();
+inline const ::std::string& AuthorizationResponse::signed_identity() const {
+  // @@protoc_insertion_point(field_get:e8.AuthorizationResponse.signed_identity)
+  return signed_identity_.GetNoArena();
 }
-inline void AuthorizationResponse::set_jwt_token(const ::std::string& value) {
+inline void AuthorizationResponse::set_signed_identity(const ::std::string& value) {
   
-  jwt_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.AuthorizationResponse.jwt_token)
+  signed_identity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.AuthorizationResponse.signed_identity)
 }
 #if LANG_CXX11
-inline void AuthorizationResponse::set_jwt_token(::std::string&& value) {
+inline void AuthorizationResponse::set_signed_identity(::std::string&& value) {
   
-  jwt_token_.SetNoArena(
+  signed_identity_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.AuthorizationResponse.jwt_token)
+  // @@protoc_insertion_point(field_set_rvalue:e8.AuthorizationResponse.signed_identity)
 }
 #endif
-inline void AuthorizationResponse::set_jwt_token(const char* value) {
+inline void AuthorizationResponse::set_signed_identity(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
-  jwt_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.AuthorizationResponse.jwt_token)
+  signed_identity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.AuthorizationResponse.signed_identity)
 }
-inline void AuthorizationResponse::set_jwt_token(const void* value, size_t size) {
+inline void AuthorizationResponse::set_signed_identity(const void* value, size_t size) {
   
-  jwt_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  signed_identity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.AuthorizationResponse.jwt_token)
+  // @@protoc_insertion_point(field_set_pointer:e8.AuthorizationResponse.signed_identity)
 }
-inline ::std::string* AuthorizationResponse::mutable_jwt_token() {
+inline ::std::string* AuthorizationResponse::mutable_signed_identity() {
   
-  // @@protoc_insertion_point(field_mutable:e8.AuthorizationResponse.jwt_token)
-  return jwt_token_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:e8.AuthorizationResponse.signed_identity)
+  return signed_identity_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* AuthorizationResponse::release_jwt_token() {
-  // @@protoc_insertion_point(field_release:e8.AuthorizationResponse.jwt_token)
+inline ::std::string* AuthorizationResponse::release_signed_identity() {
+  // @@protoc_insertion_point(field_release:e8.AuthorizationResponse.signed_identity)
   
-  return jwt_token_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return signed_identity_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void AuthorizationResponse::set_allocated_jwt_token(::std::string* jwt_token) {
-  if (jwt_token != NULL) {
+inline void AuthorizationResponse::set_allocated_signed_identity(::std::string* signed_identity) {
+  if (signed_identity != NULL) {
     
   } else {
     
   }
-  jwt_token_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), jwt_token);
-  // @@protoc_insertion_point(field_set_allocated:e8.AuthorizationResponse.jwt_token)
+  signed_identity_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), signed_identity);
+  // @@protoc_insertion_point(field_set_allocated:e8.AuthorizationResponse.signed_identity)
 }
 
 // -------------------------------------------------------------------

@@ -18,22 +18,29 @@
 #include <cassert>
 #include <grpcpp/grpcpp.h>
 #include <optional>
+#include <string>
 
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module_identity/create_user.h"
-#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/module_identity/retrieve_user.h"
+#include "demoweb_service/demoweb/module_identity/user_identity.h"
 #include "demoweb_service/demoweb/service/user_service.h"
 
 namespace e8 {
 
-grpc::Status UserServiceImpl::Register(grpc::ServerContext *, RegistrationRequest const *request,
+grpc::Status UserServiceImpl::Register(grpc::ServerContext * /*context*/,
+                                       RegistrationRequest const *request,
                                        RegistrationReponse *response) {
 
     std::optional<UserEntity> user =
         CreateBaselineUser(request->security_key(),
                            /*userId=*/std::nullopt, CurrentEnvironment()->CurrentHostId(),
                            CurrentEnvironment()->DemowebDatabase());
-    assert(user.has_value());
+    if (!user.has_value()) {
+        return grpc::Status(grpc::StatusCode::INTERNAL,
+                            "User ID conflicts when it shouldn't happen");
+    }
 
     response->set_user_id(user.value().id.value().value());
     response->set_error_type(RegistrationReponse::RET_NoError);
@@ -41,8 +48,26 @@ grpc::Status UserServiceImpl::Register(grpc::ServerContext *, RegistrationReques
     return grpc::Status::OK;
 }
 
-grpc::Status UserServiceImpl::Authorize(grpc::ServerContext *context,
+grpc::Status UserServiceImpl::Authorize(grpc::ServerContext * /*context*/,
                                         AuthorizationRequest const *request,
-                                        AuthorizationResponse *response) {}
+                                        AuthorizationResponse *response) {
+    std::optional<UserEntity> user =
+        RetrieveUser(request->user_id(), CurrentEnvironment()->DemowebDatabase());
+    if (!user.has_value()) {
+        return grpc::Status(grpc::StatusCode::NOT_FOUND,
+                            "User ID=" + std::to_string(request->user_id()) + " doesn't exist.");
+    }
+
+    std::optional<SignedIdentity> signed_identity =
+        SignIdentity(user.value(), request->security_key(), CurrentEnvironment()->KeyGen());
+    if (!signed_identity.has_value()) {
+        return grpc::Status(grpc::StatusCode::UNAUTHENTICATED,
+                            "Failed to validate the provided security key.");
+    }
+
+    response->set_signed_identity(signed_identity.value().data(), signed_identity.value().size());
+
+    return grpc::Status::OK;
+}
 
 } // namespace e8
