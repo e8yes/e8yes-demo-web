@@ -11,8 +11,8 @@ apt install -y libgrpc++-dev
 echo "Installing Qt5 development packages..."
 apt install -y qt5-default
 
-echo "Installing crypt2 development packages..."
-apt install -y libcrypt2-dev
+echo "Installing crypt development packages..."
+apt install -y libcrypt-dev
 
 echo "Installing crypto++ development packages..."
 apt install -y libcrypto++-dev
