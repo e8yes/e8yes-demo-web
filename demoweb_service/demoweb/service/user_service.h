@@ -42,6 +42,10 @@ class UserServiceImpl : public UserService::Service {
     grpc::Status GetPublicProfile(grpc::ServerContext *context,
                                   GetPublicProfileRequest const *request,
                                   GetPublicProfileResponse *response) override;
+
+    grpc::Status UpdatePublicProfile(grpc::ServerContext *context,
+                                     UpdatePublicProfileRequest const *request,
+                                     UpdatePublicProfileResponse *response) override;
 };
 
 } // namespace e8

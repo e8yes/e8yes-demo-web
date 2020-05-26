@@ -104,4 +104,29 @@ grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
     return grpc::Status::OK;
 }
 
+grpc::Status UserServiceImpl::UpdatePublicProfile(grpc::ServerContext *context,
+                                                  UpdatePublicProfileRequest const *request,
+                                                  UpdatePublicProfileResponse *response) {
+    Identity identity;
+    grpc::Status status = ExtractIdentityFromContext(*context, &identity);
+    if (!status.ok()) {
+        return status;
+    }
+    UserId user_id = identity.user_id();
+
+    std::optional<UserEntity> user = RetrieveUser(user_id, CurrentEnvironment()->DemowebDatabase());
+    if (!user.has_value()) {
+        return grpc::Status(grpc::StatusCode::NOT_FOUND,
+                            "User ID=" + std::to_string(user_id) + " doesn't exist.");
+    }
+
+    std::optional<std::string> alias =
+        request->has_alias() ? std::optional<std::string>(request->alias().value()) : std::nullopt;
+    UpdateProfile(alias, &user.value(), CurrentEnvironment()->DemowebDatabase());
+
+    *response->mutable_profile() = BuildPublicProfile(user.value(), CurrentEnvironment()->KeyGen());
+
+    return grpc::Status::OK;
+}
+
 } // namespace e8
