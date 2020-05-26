@@ -25,6 +25,11 @@ class IdentityDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<Identity>
       _instance;
 } _Identity_default_instance_;
+class IdentitySignatureDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<IdentitySignature>
+      _instance;
+} _IdentitySignature_default_instance_;
 }  // namespace e8
 namespace protobuf_identity_2eproto {
 static void InitDefaultsIdentity() {
@@ -41,11 +46,26 @@ static void InitDefaultsIdentity() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_Identity =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsIdentity}, {}};
 
-void InitDefaults() {
-  ::google::protobuf::internal::InitSCC(&scc_info_Identity.base);
+static void InitDefaultsIdentitySignature() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_IdentitySignature_default_instance_;
+    new (ptr) ::e8::IdentitySignature();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::e8::IdentitySignature::InitAsDefaultInstance();
 }
 
-::google::protobuf::Metadata file_level_metadata[1];
+::google::protobuf::internal::SCCInfo<0> scc_info_IdentitySignature =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsIdentitySignature}, {}};
+
+void InitDefaults() {
+  ::google::protobuf::internal::InitSCC(&scc_info_Identity.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_IdentitySignature.base);
+}
+
+::google::protobuf::Metadata file_level_metadata[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -56,13 +76,21 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Identity, expiry_timestamp_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Identity, user_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Identity, group_names_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::IdentitySignature, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::IdentitySignature, signature_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::Identity)},
+  { 8, -1, sizeof(::e8::IdentitySignature)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_Identity_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_IdentitySignature_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -80,7 +108,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 2);
 }
 
 void AddDescriptorsImpl() {
@@ -88,10 +116,11 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\016identity.proto\022\002e8\"J\n\010Identity\022\030\n\020expi"
       "ry_timestamp\030\001 \001(\003\022\017\n\007user_id\030\002 \001(\003\022\023\n\013g"
-      "roup_names\030\003 \003(\tb\006proto3"
+      "roup_names\030\003 \003(\t\"&\n\021IdentitySignature\022\021\n"
+      "\tsignature\030\001 \001(\014b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 104);
+      descriptor, 144);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "identity.proto", &protobuf_RegisterTypes);
 }
@@ -424,12 +453,245 @@ void Identity::InternalSwap(Identity* other) {
 }
 
 
+// ===================================================================
+
+void IdentitySignature::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int IdentitySignature::kSignatureFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+IdentitySignature::IdentitySignature()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_identity_2eproto::scc_info_IdentitySignature.base);
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:e8.IdentitySignature)
+}
+IdentitySignature::IdentitySignature(const IdentitySignature& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  signature_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.signature().size() > 0) {
+    signature_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signature_);
+  }
+  // @@protoc_insertion_point(copy_constructor:e8.IdentitySignature)
+}
+
+void IdentitySignature::SharedCtor() {
+  signature_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+IdentitySignature::~IdentitySignature() {
+  // @@protoc_insertion_point(destructor:e8.IdentitySignature)
+  SharedDtor();
+}
+
+void IdentitySignature::SharedDtor() {
+  signature_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void IdentitySignature::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ::google::protobuf::Descriptor* IdentitySignature::descriptor() {
+  ::protobuf_identity_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_identity_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const IdentitySignature& IdentitySignature::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_identity_2eproto::scc_info_IdentitySignature.base);
+  return *internal_default_instance();
+}
+
+
+void IdentitySignature::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.IdentitySignature)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  signature_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+bool IdentitySignature::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:e8.IdentitySignature)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // bytes signature = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_signature()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:e8.IdentitySignature)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:e8.IdentitySignature)
+  return false;
+#undef DO_
+}
+
+void IdentitySignature::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:e8.IdentitySignature)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // bytes signature = 1;
+  if (this->signature().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      1, this->signature(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:e8.IdentitySignature)
+}
+
+::google::protobuf::uint8* IdentitySignature::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:e8.IdentitySignature)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // bytes signature = 1;
+  if (this->signature().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->signature(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:e8.IdentitySignature)
+  return target;
+}
+
+size_t IdentitySignature::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.IdentitySignature)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // bytes signature = 1;
+  if (this->signature().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->signature());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void IdentitySignature::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.IdentitySignature)
+  GOOGLE_DCHECK_NE(&from, this);
+  const IdentitySignature* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const IdentitySignature>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.IdentitySignature)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.IdentitySignature)
+    MergeFrom(*source);
+  }
+}
+
+void IdentitySignature::MergeFrom(const IdentitySignature& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.IdentitySignature)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.signature().size() > 0) {
+
+    signature_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signature_);
+  }
+}
+
+void IdentitySignature::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.IdentitySignature)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void IdentitySignature::CopyFrom(const IdentitySignature& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.IdentitySignature)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool IdentitySignature::IsInitialized() const {
+  return true;
+}
+
+void IdentitySignature::Swap(IdentitySignature* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void IdentitySignature::InternalSwap(IdentitySignature* other) {
+  using std::swap;
+  signature_.Swap(&other->signature_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+}
+
+::google::protobuf::Metadata IdentitySignature::GetMetadata() const {
+  protobuf_identity_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_identity_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace e8
 namespace google {
 namespace protobuf {
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::Identity* Arena::CreateMaybeMessage< ::e8::Identity >(Arena* arena) {
   return Arena::CreateInternal< ::e8::Identity >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::IdentitySignature* Arena::CreateMaybeMessage< ::e8::IdentitySignature >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::IdentitySignature >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

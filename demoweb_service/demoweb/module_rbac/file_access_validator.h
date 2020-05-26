@@ -18,10 +18,8 @@
 #ifndef FILE_ACCESS_VALIDATOR_H
 #define FILE_ACCESS_VALIDATOR_H
 
-#include <cstdint>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_group_entity.h"
 #include "demoweb_service/demoweb/proto_cc/file.pb.h"
@@ -31,7 +29,7 @@
 
 namespace e8 {
 
-using FileAccessToken = std::vector<uint8_t>;
+using FileAccessToken = std::string;
 
 /**
  * @brief SignFileAccessToken Sign a token for a user allowing him to access the specified file

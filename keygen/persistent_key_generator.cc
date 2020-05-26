@@ -163,9 +163,8 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateAlphaNumeric(unsigne
 
     PersistentKeyGenerator::Key result;
     result.key.resize(bit_len);
-    CryptoPP::ArraySink sink(result.key.data(), result.key.size());
+    CryptoPP::StringSink sink(result.key);
     private_key.Save(sink);
-    result.key.resize(sink.TotalPutLength());
 
     return result;
 }
@@ -179,14 +178,12 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateRSA(unsigned bit_len
     CryptoPP::RSA::PublicKey public_key(params);
 
     PersistentKeyGenerator::Key result;
-    result.key.resize(bit_len);
-    CryptoPP::ArraySink private_key_sink(result.key.data(), result.key.size());
+    CryptoPP::StringSink private_key_sink(result.key);
     private_key.Save(private_key_sink);
 
-    std::vector<uint8_t> public_key_bytes(bit_len);
-    CryptoPP::ArraySink public_key_sink(public_key_bytes.data(), public_key_bytes.size());
+    std::string public_key_bytes;
+    CryptoPP::StringSink public_key_sink(public_key_bytes);
     public_key.Save(public_key_sink);
-    public_key_bytes.resize(public_key_sink.TotalPutLength());
     result.public_key = public_key_bytes;
 
     return result;

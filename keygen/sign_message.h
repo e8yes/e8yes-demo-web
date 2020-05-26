@@ -18,9 +18,8 @@
 #ifndef SIGN_MESSAGE_H
 #define SIGN_MESSAGE_H
 
-#include <cstdint>
 #include <optional>
-#include <vector>
+#include <string>
 
 namespace e8 {
 
@@ -32,8 +31,7 @@ namespace e8 {
  * @param raw_private_key The private key used to sign the message.
  * @return The signed and encrypted message.
  */
-std::vector<uint8_t> SignMessage(std::vector<uint8_t> const &message_bytes,
-                                 std::vector<uint8_t> const &raw_private_key);
+std::string SignMessage(std::string const &message_bytes, std::string const &raw_private_key);
 
 /**
  * @brief DecodeSignedMessage Verify and decode the signed message using an associated public key of
@@ -45,9 +43,8 @@ std::vector<uint8_t> SignMessage(std::vector<uint8_t> const &message_bytes,
  * encrypted.
  * @return The decoded message if the signed message is able to be verified.
  */
-std::optional<std::vector<uint8_t>>
-DecodeSignedMessage(std::vector<uint8_t> const &signed_message_bytes,
-                    std::vector<uint8_t> const &raw_public_key);
+std::optional<std::string> DecodeSignedMessage(std::string const &signed_message_bytes,
+                                               std::string const &raw_public_key);
 
 } // namespace e8
 

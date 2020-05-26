@@ -21,9 +21,8 @@
 #include <cryptopp/pssr.h>
 #include <cryptopp/rsa.h>
 #include <cryptopp/sha.h>
-#include <cstdint>
 #include <optional>
-#include <vector>
+#include <string>
 
 #include "keygen/sign_message.h"
 
@@ -34,45 +33,43 @@ static CryptoPP::AutoSeededRandomPool gRng;
 
 } // namespace
 
-std::vector<uint8_t> SignMessage(std::vector<uint8_t> const &message_bytes,
-                                 std::vector<uint8_t> const &raw_private_key) {
-    CryptoPP::ArraySource private_key_source(raw_private_key.data(), raw_private_key.size(),
-                                             /*pumpAll=*/true);
+std::string SignMessage(std::string const &message_bytes, std::string const &raw_private_key) {
+    CryptoPP::StringSource private_key_source(raw_private_key, /*pumpAll=*/true);
     CryptoPP::RSA::PrivateKey private_key;
     private_key.Load(private_key_source);
 
     CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Signer signer(private_key);
-    CryptoPP::SecByteBlock signature(signer.MaxSignatureLength(message_bytes.size()));
-    size_t signature_len = signer.SignMessageWithRecovery(
-        gRng, message_bytes.data(), message_bytes.size(), nullptr, 0, signature);
-    signature.resize(signature_len);
 
-    return std::vector<uint8_t>(signature.begin(), signature.end());
+    std::string signature;
+    CryptoPP::StringSource message_source(
+        message_bytes, true,
+        new CryptoPP::SignerFilter(gRng, signer, new CryptoPP::StringSink(signature), true));
+
+    return signature;
 }
 
-std::optional<std::vector<uint8_t>>
-DecodeSignedMessage(std::vector<uint8_t> const &signed_message_bytes,
-                    std::vector<uint8_t> const &raw_public_key) {
-    CryptoPP::ArraySource public_key_source(raw_public_key.data(), raw_public_key.size(),
-                                            /*pumpAll=*/true);
+std::optional<std::string> DecodeSignedMessage(std::string const &signed_message_bytes,
+                                               std::string const &raw_public_key) {
+    CryptoPP::StringSource public_key_source(raw_public_key, /*pumpAll=*/true);
     CryptoPP::RSA::PublicKey public_key;
     public_key.Load(public_key_source);
 
     CryptoPP::RSASS<CryptoPP::PSSR, CryptoPP::SHA256>::Verifier verifier(public_key);
-    CryptoPP::SecByteBlock recovered(
-        verifier.MaxRecoverableLengthFromSignatureLength(signed_message_bytes.size()));
 
-    CryptoPP::SecByteBlock signature(signed_message_bytes.data(), signed_message_bytes.size());
-    CryptoPP::DecodingResult result =
-        verifier.RecoverMessage(recovered, nullptr, 0, signature, signed_message_bytes.size());
+    std::string recovered;
 
-    if (!result.isValidCoding) {
+    try {
+        CryptoPP::StringSource signed_message_source(
+            signed_message_bytes, true,
+            new CryptoPP::SignatureVerificationFilter(
+                verifier, new CryptoPP::StringSink(recovered),
+                CryptoPP::SignatureVerificationFilter::THROW_EXCEPTION |
+                    CryptoPP::SignatureVerificationFilter::PUT_MESSAGE));
+    } catch (CryptoPP::SignatureVerificationFilter::SignatureVerificationFailed const &) {
         return std::nullopt;
     }
 
-    recovered.resize(result.messageLength);
-
-    return std::vector<uint8_t>(recovered.begin(), recovered.end());
+    return recovered;
 }
 
 } // namespace e8

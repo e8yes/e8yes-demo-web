@@ -112,8 +112,8 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
     std::time(&cur_timestamp);
     identity.set_expiry_timestamp(cur_timestamp + kIdentityValidDurationSecs);
 
-    std::vector<uint8_t> identity_bytes(identity.ByteSize());
-    bool serialize_status = identity.SerializeToArray(identity_bytes.data(), identity_bytes.size());
+    std::string identity_bytes;
+    bool serialize_status = identity.SerializeToString(&identity_bytes);
     assert(serialize_status == true);
 
     KeyGeneratorInterface::Key key_pair =
@@ -128,7 +128,7 @@ std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_iden
         key_gen->KeyOf(kEncrypter, KeyGeneratorInterface::RSA_4096_BITS);
     assert(key_pair.public_key.has_value());
 
-    std::optional<std::vector<uint8_t>> decoded_bytes =
+    std::optional<std::string> decoded_bytes =
         DecodeSignedMessage(signed_identity, key_pair.public_key.value());
     if (!decoded_bytes.has_value()) {
         return std::nullopt;

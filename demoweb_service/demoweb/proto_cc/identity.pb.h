@@ -38,7 +38,7 @@ namespace protobuf_identity_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[1];
+  static const ::google::protobuf::internal::ParseTable schema[2];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -49,10 +49,14 @@ namespace e8 {
 class Identity;
 class IdentityDefaultTypeInternal;
 extern IdentityDefaultTypeInternal _Identity_default_instance_;
+class IdentitySignature;
+class IdentitySignatureDefaultTypeInternal;
+extern IdentitySignatureDefaultTypeInternal _IdentitySignature_default_instance_;
 }  // namespace e8
 namespace google {
 namespace protobuf {
 template<> ::e8::Identity* Arena::CreateMaybeMessage<::e8::Identity>(Arena*);
+template<> ::e8::IdentitySignature* Arena::CreateMaybeMessage<::e8::IdentitySignature>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace e8 {
@@ -190,6 +194,117 @@ class Identity : public ::google::protobuf::Message /* @@protoc_insertion_point(
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_identity_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class IdentitySignature : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.IdentitySignature) */ {
+ public:
+  IdentitySignature();
+  virtual ~IdentitySignature();
+
+  IdentitySignature(const IdentitySignature& from);
+
+  inline IdentitySignature& operator=(const IdentitySignature& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  IdentitySignature(IdentitySignature&& from) noexcept
+    : IdentitySignature() {
+    *this = ::std::move(from);
+  }
+
+  inline IdentitySignature& operator=(IdentitySignature&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const IdentitySignature& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const IdentitySignature* internal_default_instance() {
+    return reinterpret_cast<const IdentitySignature*>(
+               &_IdentitySignature_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  void Swap(IdentitySignature* other);
+  friend void swap(IdentitySignature& a, IdentitySignature& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline IdentitySignature* New() const final {
+    return CreateMaybeMessage<IdentitySignature>(NULL);
+  }
+
+  IdentitySignature* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<IdentitySignature>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const IdentitySignature& from);
+  void MergeFrom(const IdentitySignature& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(IdentitySignature* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // bytes signature = 1;
+  void clear_signature();
+  static const int kSignatureFieldNumber = 1;
+  const ::std::string& signature() const;
+  void set_signature(const ::std::string& value);
+  #if LANG_CXX11
+  void set_signature(::std::string&& value);
+  #endif
+  void set_signature(const char* value);
+  void set_signature(const void* value, size_t size);
+  ::std::string* mutable_signature();
+  ::std::string* release_signature();
+  void set_allocated_signature(::std::string* signature);
+
+  // @@protoc_insertion_point(class_scope:e8.IdentitySignature)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr signature_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_identity_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -298,9 +413,68 @@ Identity::mutable_group_names() {
   return &group_names_;
 }
 
+// -------------------------------------------------------------------
+
+// IdentitySignature
+
+// bytes signature = 1;
+inline void IdentitySignature::clear_signature() {
+  signature_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& IdentitySignature::signature() const {
+  // @@protoc_insertion_point(field_get:e8.IdentitySignature.signature)
+  return signature_.GetNoArena();
+}
+inline void IdentitySignature::set_signature(const ::std::string& value) {
+  
+  signature_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.IdentitySignature.signature)
+}
+#if LANG_CXX11
+inline void IdentitySignature::set_signature(::std::string&& value) {
+  
+  signature_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.IdentitySignature.signature)
+}
+#endif
+inline void IdentitySignature::set_signature(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  signature_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.IdentitySignature.signature)
+}
+inline void IdentitySignature::set_signature(const void* value, size_t size) {
+  
+  signature_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.IdentitySignature.signature)
+}
+inline ::std::string* IdentitySignature::mutable_signature() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.IdentitySignature.signature)
+  return signature_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* IdentitySignature::release_signature() {
+  // @@protoc_insertion_point(field_release:e8.IdentitySignature.signature)
+  
+  return signature_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void IdentitySignature::set_allocated_signature(::std::string* signature) {
+  if (signature != NULL) {
+    
+  } else {
+    
+  }
+  signature_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), signature);
+  // @@protoc_insertion_point(field_set_allocated:e8.IdentitySignature.signature)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 

@@ -16,11 +16,9 @@
  */
 
 #include <cassert>
-#include <cstdint>
 #include <ctime>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_group_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_group_has_file_entity.h"
@@ -53,9 +51,8 @@ FileAccessToken SignFileAccessToken(Identity const &viewer, std::string const &f
     std::time(&cur_timestamp);
     file_access.set_expiry_timestamp(cur_timestamp + kFileSignatureValidDurationSecs);
 
-    std::vector<uint8_t> file_access_bytes(file_access.ByteSize());
-    bool serialize_status =
-        file_access.SerializeToArray(file_access_bytes.data(), file_access_bytes.size());
+    std::string file_access_bytes;
+    bool serialize_status = file_access.SerializeToString(&file_access_bytes);
     assert(serialize_status == true);
 
     KeyGeneratorInterface::Key key_pair =
@@ -72,7 +69,7 @@ std::optional<std::string> ValidateFileAccessToken(Identity const &viewer,
         key_gen->KeyOf(kEncrypter, KeyGeneratorInterface::RSA_4096_BITS);
     assert(key_pair.public_key.has_value());
 
-    std::optional<std::vector<uint8_t>> decoded_bytes =
+    std::optional<std::string> decoded_bytes =
         DecodeSignedMessage(access_token, key_pair.public_key.value());
     if (!decoded_bytes.has_value()) {
         return std::nullopt;

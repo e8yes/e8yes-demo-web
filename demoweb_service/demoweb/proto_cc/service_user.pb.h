@@ -32,6 +32,7 @@
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 #include "file.pb.h"
+#include "identity.pb.h"
 #include "nullable_primitives.pb.h"
 #include "pagination.pb.h"
 #include "user_profile.pb.h"
@@ -584,25 +585,23 @@ class AuthorizationResponse : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
-  // bytes signed_identity = 1;
+  // .e8.IdentitySignature signed_identity = 1;
+  bool has_signed_identity() const;
   void clear_signed_identity();
   static const int kSignedIdentityFieldNumber = 1;
-  const ::std::string& signed_identity() const;
-  void set_signed_identity(const ::std::string& value);
-  #if LANG_CXX11
-  void set_signed_identity(::std::string&& value);
-  #endif
-  void set_signed_identity(const char* value);
-  void set_signed_identity(const void* value, size_t size);
-  ::std::string* mutable_signed_identity();
-  ::std::string* release_signed_identity();
-  void set_allocated_signed_identity(::std::string* signed_identity);
+  private:
+  const ::e8::IdentitySignature& _internal_signed_identity() const;
+  public:
+  const ::e8::IdentitySignature& signed_identity() const;
+  ::e8::IdentitySignature* release_signed_identity();
+  ::e8::IdentitySignature* mutable_signed_identity();
+  void set_allocated_signed_identity(::e8::IdentitySignature* signed_identity);
 
   // @@protoc_insertion_point(class_scope:e8.AuthorizationResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr signed_identity_;
+  ::e8::IdentitySignature* signed_identity_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fuser_2eproto::TableStruct;
 };
@@ -1677,56 +1676,51 @@ inline void AuthorizationRequest::set_allocated_security_key(::std::string* secu
 
 // AuthorizationResponse
 
-// bytes signed_identity = 1;
-inline void AuthorizationResponse::clear_signed_identity() {
-  signed_identity_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// .e8.IdentitySignature signed_identity = 1;
+inline bool AuthorizationResponse::has_signed_identity() const {
+  return this != internal_default_instance() && signed_identity_ != NULL;
 }
-inline const ::std::string& AuthorizationResponse::signed_identity() const {
+inline const ::e8::IdentitySignature& AuthorizationResponse::_internal_signed_identity() const {
+  return *signed_identity_;
+}
+inline const ::e8::IdentitySignature& AuthorizationResponse::signed_identity() const {
+  const ::e8::IdentitySignature* p = signed_identity_;
   // @@protoc_insertion_point(field_get:e8.AuthorizationResponse.signed_identity)
-  return signed_identity_.GetNoArena();
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::IdentitySignature*>(
+      &::e8::_IdentitySignature_default_instance_);
 }
-inline void AuthorizationResponse::set_signed_identity(const ::std::string& value) {
-  
-  signed_identity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.AuthorizationResponse.signed_identity)
-}
-#if LANG_CXX11
-inline void AuthorizationResponse::set_signed_identity(::std::string&& value) {
-  
-  signed_identity_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.AuthorizationResponse.signed_identity)
-}
-#endif
-inline void AuthorizationResponse::set_signed_identity(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  signed_identity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.AuthorizationResponse.signed_identity)
-}
-inline void AuthorizationResponse::set_signed_identity(const void* value, size_t size) {
-  
-  signed_identity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.AuthorizationResponse.signed_identity)
-}
-inline ::std::string* AuthorizationResponse::mutable_signed_identity() {
-  
-  // @@protoc_insertion_point(field_mutable:e8.AuthorizationResponse.signed_identity)
-  return signed_identity_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* AuthorizationResponse::release_signed_identity() {
+inline ::e8::IdentitySignature* AuthorizationResponse::release_signed_identity() {
   // @@protoc_insertion_point(field_release:e8.AuthorizationResponse.signed_identity)
   
-  return signed_identity_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::e8::IdentitySignature* temp = signed_identity_;
+  signed_identity_ = NULL;
+  return temp;
 }
-inline void AuthorizationResponse::set_allocated_signed_identity(::std::string* signed_identity) {
-  if (signed_identity != NULL) {
+inline ::e8::IdentitySignature* AuthorizationResponse::mutable_signed_identity() {
+  
+  if (signed_identity_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::IdentitySignature>(GetArenaNoVirtual());
+    signed_identity_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.AuthorizationResponse.signed_identity)
+  return signed_identity_;
+}
+inline void AuthorizationResponse::set_allocated_signed_identity(::e8::IdentitySignature* signed_identity) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(signed_identity_);
+  }
+  if (signed_identity) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      signed_identity = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, signed_identity, submessage_arena);
+    }
     
   } else {
     
   }
-  signed_identity_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), signed_identity);
+  signed_identity_ = signed_identity;
   // @@protoc_insertion_point(field_set_allocated:e8.AuthorizationResponse.signed_identity)
 }
 

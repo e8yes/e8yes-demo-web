@@ -1,7 +1,6 @@
 #include <QtTest>
-#include <cstdint>
 #include <optional>
-#include <vector>
+#include <string>
 
 #include "keygen/key_generator_interface.h"
 #include "keygen/persistent_key_generator.h"
@@ -46,11 +45,11 @@ void sign_message_test::successful_encode_and_decode_message_test() {
     e8::KeyGeneratorInterface::Key key_set = key_gen.KeyOf(
         "successful_encode_and_decode_message_test", e8::KeyGeneratorInterface::RSA_4096_BITS);
 
-    std::vector<uint8_t> message({1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3});
-    std::vector<uint8_t> signed_message = e8::SignMessage(message, key_set.key);
+    std::string message({1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3});
+    std::string signed_message = e8::SignMessage(message, key_set.key);
     QVERIFY(!signed_message.empty());
 
-    std::optional<std::vector<uint8_t>> decoded_message =
+    std::optional<std::string> decoded_message =
         e8::DecodeSignedMessage(signed_message, key_set.public_key.value());
     QVERIFY(decoded_message.has_value());
     QVERIFY(decoded_message.value() == message);
@@ -65,13 +64,13 @@ void sign_message_test::encode_and_decode_disrupted_message_test() {
     e8::KeyGeneratorInterface::Key key_set = key_gen.KeyOf(
         "encode_and_decode_disrupted_message_test", e8::KeyGeneratorInterface::RSA_4096_BITS);
 
-    std::vector<uint8_t> message({1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3});
-    std::vector<uint8_t> signed_message = e8::SignMessage(message, key_set.key);
+    std::string message({1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3});
+    std::string signed_message = e8::SignMessage(message, key_set.key);
     QVERIFY(!signed_message.empty());
 
     signed_message[0]++;
 
-    std::optional<std::vector<uint8_t>> decoded_message =
+    std::optional<std::string> decoded_message =
         e8::DecodeSignedMessage(signed_message, key_set.public_key.value());
     QVERIFY(!decoded_message.has_value());
 }

@@ -30,7 +30,7 @@
 namespace e8 {
 
 using SecurityKeyHash = std::string;
-using SignedIdentity = std::vector<uint8_t>;
+using SignedIdentity = std::string;
 
 /**
  * @brief DigestSecurityKey A one-way encryption function that hashes a security key into a

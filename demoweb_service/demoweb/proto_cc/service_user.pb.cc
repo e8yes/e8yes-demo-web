@@ -22,6 +22,9 @@
 namespace protobuf_file_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_file_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_FileTokenAccess;
 }  // namespace protobuf_file_2eproto
+namespace protobuf_identity_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_identity_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_IdentitySignature;
+}  // namespace protobuf_identity_2eproto
 namespace protobuf_nullable_5fprimitives_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableInt64;
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableString;
@@ -148,8 +151,9 @@ static void InitDefaultsAuthorizationResponse() {
   ::e8::AuthorizationResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_AuthorizationResponse =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsAuthorizationResponse}, {}};
+::google::protobuf::internal::SCCInfo<1> scc_info_AuthorizationResponse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsAuthorizationResponse}, {
+      &protobuf_identity_2eproto::scc_info_IdentitySignature.base,}};
 
 static void InitDefaultsGetPublicProfileRequest() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -419,50 +423,52 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\022service_user.proto\022\002e8\032\nfile.proto\032\031nu"
-      "llable_primitives.proto\032\020pagination.prot"
-      "o\032\022user_profile.proto\"+\n\023RegistrationReq"
-      "uest\022\024\n\014security_key\030\001 \001(\014\"\300\001\n\023Registrat"
-      "ionReponse\022A\n\nerror_type\030\001 \001(\0162-.e8.Regi"
-      "strationReponse.RegistrationErrorType\022\017\n"
-      "\007user_id\030\003 \001(\003\"U\n\025RegistrationErrorType\022"
-      "\017\n\013RET_NoError\020\000\022\026\n\022RET_BadSecurityKey\020\001"
-      "\022\023\n\017RET_BotDetected\020\002\"=\n\024AuthorizationRe"
-      "quest\022\017\n\007user_id\030\001 \001(\003\022\024\n\014security_key\030\002"
-      " \001(\014\"0\n\025AuthorizationResponse\022\027\n\017signed_"
-      "identity\030\001 \001(\014\"=\n\027GetPublicProfileReques"
-      "t\022\"\n\007user_id\030\001 \001(\0132\021.e8.NullableInt64\"B\n"
-      "\030GetPublicProfileResponse\022&\n\007profile\030\001 \001"
-      "(\0132\025.e8.UserPublicProfile\"\?\n\032UpdatePubli"
-      "cProfileRequest\022!\n\005alias\030\001 \001(\0132\022.e8.Null"
-      "ableString\"E\n\033UpdatePublicProfileRespons"
-      "e\022&\n\007profile\030\001 \001(\0132\025.e8.UserPublicProfil"
-      "e\"~\n\021SearchUserRequest\022!\n\005alias\030\001 \001(\0132\022."
-      "e8.NullableString\022\"\n\007user_id\030\002 \001(\0132\021.e8."
-      "NullableInt64\022\"\n\npagination\030\003 \001(\0132\016.e8.P"
-      "agination\"B\n\022SearchUserResponse\022,\n\ruser_"
-      "profiles\030\001 \003(\0132\025.e8.UserPublicProfile\"2\n"
-      "\026CreateNewAvatarRequest\022\030\n\020avatar_file_n"
-      "ame\030\001 \001(\t\"O\n\027CreateNewAvatarResponse\0224\n\027"
-      "avatar_readwrite_access\030\001 \001(\0132\023.e8.FileT"
-      "okenAccess2\271\003\n\013UserService\022<\n\010Register\022\027"
-      ".e8.RegistrationRequest\032\027.e8.Registratio"
-      "nReponse\022@\n\tAuthorize\022\030.e8.Authorization"
-      "Request\032\031.e8.AuthorizationResponse\022M\n\020Ge"
-      "tPublicProfile\022\033.e8.GetPublicProfileRequ"
-      "est\032\034.e8.GetPublicProfileResponse\022V\n\023Upd"
-      "atePublicProfile\022\036.e8.UpdatePublicProfil"
-      "eRequest\032\037.e8.UpdatePublicProfileRespons"
-      "e\0227\n\006Search\022\025.e8.SearchUserRequest\032\026.e8."
-      "SearchUserResponse\022J\n\017CreateNewAvatar\022\032."
-      "e8.CreateNewAvatarRequest\032\033.e8.CreateNew"
-      "AvatarResponseb\006proto3"
+      "\n\022service_user.proto\022\002e8\032\nfile.proto\032\016id"
+      "entity.proto\032\031nullable_primitives.proto\032"
+      "\020pagination.proto\032\022user_profile.proto\"+\n"
+      "\023RegistrationRequest\022\024\n\014security_key\030\001 \001"
+      "(\014\"\300\001\n\023RegistrationReponse\022A\n\nerror_type"
+      "\030\001 \001(\0162-.e8.RegistrationReponse.Registra"
+      "tionErrorType\022\017\n\007user_id\030\003 \001(\003\"U\n\025Regist"
+      "rationErrorType\022\017\n\013RET_NoError\020\000\022\026\n\022RET_"
+      "BadSecurityKey\020\001\022\023\n\017RET_BotDetected\020\002\"=\n"
+      "\024AuthorizationRequest\022\017\n\007user_id\030\001 \001(\003\022\024"
+      "\n\014security_key\030\002 \001(\014\"G\n\025AuthorizationRes"
+      "ponse\022.\n\017signed_identity\030\001 \001(\0132\025.e8.Iden"
+      "titySignature\"=\n\027GetPublicProfileRequest"
+      "\022\"\n\007user_id\030\001 \001(\0132\021.e8.NullableInt64\"B\n\030"
+      "GetPublicProfileResponse\022&\n\007profile\030\001 \001("
+      "\0132\025.e8.UserPublicProfile\"\?\n\032UpdatePublic"
+      "ProfileRequest\022!\n\005alias\030\001 \001(\0132\022.e8.Nulla"
+      "bleString\"E\n\033UpdatePublicProfileResponse"
+      "\022&\n\007profile\030\001 \001(\0132\025.e8.UserPublicProfile"
+      "\"~\n\021SearchUserRequest\022!\n\005alias\030\001 \001(\0132\022.e"
+      "8.NullableString\022\"\n\007user_id\030\002 \001(\0132\021.e8.N"
+      "ullableInt64\022\"\n\npagination\030\003 \001(\0132\016.e8.Pa"
+      "gination\"B\n\022SearchUserResponse\022,\n\ruser_p"
+      "rofiles\030\001 \003(\0132\025.e8.UserPublicProfile\"2\n\026"
+      "CreateNewAvatarRequest\022\030\n\020avatar_file_na"
+      "me\030\001 \001(\t\"O\n\027CreateNewAvatarResponse\0224\n\027a"
+      "vatar_readwrite_access\030\001 \001(\0132\023.e8.FileTo"
+      "kenAccess2\271\003\n\013UserService\022<\n\010Register\022\027."
+      "e8.RegistrationRequest\032\027.e8.Registration"
+      "Reponse\022@\n\tAuthorize\022\030.e8.AuthorizationR"
+      "equest\032\031.e8.AuthorizationResponse\022M\n\020Get"
+      "PublicProfile\022\033.e8.GetPublicProfileReque"
+      "st\032\034.e8.GetPublicProfileResponse\022V\n\023Upda"
+      "tePublicProfile\022\036.e8.UpdatePublicProfile"
+      "Request\032\037.e8.UpdatePublicProfileResponse"
+      "\0227\n\006Search\022\025.e8.SearchUserRequest\032\026.e8.S"
+      "earchUserResponse\022J\n\017CreateNewAvatar\022\032.e"
+      "8.CreateNewAvatarRequest\032\033.e8.CreateNewA"
+      "vatarResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1502);
+      descriptor, 1541);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_user.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
+  ::protobuf_identity_2eproto::AddDescriptors();
   ::protobuf_nullable_5fprimitives_2eproto::AddDescriptors();
   ::protobuf_pagination_2eproto::AddDescriptors();
   ::protobuf_user_5fprofile_2eproto::AddDescriptors();
@@ -1273,6 +1279,14 @@ void AuthorizationRequest::InternalSwap(AuthorizationRequest* other) {
 // ===================================================================
 
 void AuthorizationResponse::InitAsDefaultInstance() {
+  ::e8::_AuthorizationResponse_default_instance_._instance.get_mutable()->signed_identity_ = const_cast< ::e8::IdentitySignature*>(
+      ::e8::IdentitySignature::internal_default_instance());
+}
+void AuthorizationResponse::clear_signed_identity() {
+  if (GetArenaNoVirtual() == NULL && signed_identity_ != NULL) {
+    delete signed_identity_;
+  }
+  signed_identity_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int AuthorizationResponse::kSignedIdentityFieldNumber;
@@ -1289,15 +1303,16 @@ AuthorizationResponse::AuthorizationResponse(const AuthorizationResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  signed_identity_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.signed_identity().size() > 0) {
-    signed_identity_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signed_identity_);
+  if (from.has_signed_identity()) {
+    signed_identity_ = new ::e8::IdentitySignature(*from.signed_identity_);
+  } else {
+    signed_identity_ = NULL;
   }
   // @@protoc_insertion_point(copy_constructor:e8.AuthorizationResponse)
 }
 
 void AuthorizationResponse::SharedCtor() {
-  signed_identity_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  signed_identity_ = NULL;
 }
 
 AuthorizationResponse::~AuthorizationResponse() {
@@ -1306,7 +1321,7 @@ AuthorizationResponse::~AuthorizationResponse() {
 }
 
 void AuthorizationResponse::SharedDtor() {
-  signed_identity_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete signed_identity_;
 }
 
 void AuthorizationResponse::SetCachedSize(int size) const {
@@ -1329,7 +1344,10 @@ void AuthorizationResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  signed_identity_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && signed_identity_ != NULL) {
+    delete signed_identity_;
+  }
+  signed_identity_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -1343,12 +1361,12 @@ bool AuthorizationResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bytes signed_identity = 1;
+      // .e8.IdentitySignature signed_identity = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_signed_identity()));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_signed_identity()));
         } else {
           goto handle_unusual;
         }
@@ -1381,10 +1399,10 @@ void AuthorizationResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes signed_identity = 1;
-  if (this->signed_identity().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      1, this->signed_identity(), output);
+  // .e8.IdentitySignature signed_identity = 1;
+  if (this->has_signed_identity()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->_internal_signed_identity(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1401,11 +1419,11 @@ void AuthorizationResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes signed_identity = 1;
-  if (this->signed_identity().size() > 0) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->signed_identity(), target);
+  // .e8.IdentitySignature signed_identity = 1;
+  if (this->has_signed_identity()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->_internal_signed_identity(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1425,11 +1443,11 @@ size_t AuthorizationResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // bytes signed_identity = 1;
-  if (this->signed_identity().size() > 0) {
+  // .e8.IdentitySignature signed_identity = 1;
+  if (this->has_signed_identity()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::BytesSize(
-        this->signed_identity());
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *signed_identity_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1459,9 +1477,8 @@ void AuthorizationResponse::MergeFrom(const AuthorizationResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.signed_identity().size() > 0) {
-
-    signed_identity_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.signed_identity_);
+  if (from.has_signed_identity()) {
+    mutable_signed_identity()->::e8::IdentitySignature::MergeFrom(from.signed_identity());
   }
 }
 
@@ -1489,8 +1506,7 @@ void AuthorizationResponse::Swap(AuthorizationResponse* other) {
 }
 void AuthorizationResponse::InternalSwap(AuthorizationResponse* other) {
   using std::swap;
-  signed_identity_.Swap(&other->signed_identity_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  swap(signed_identity_, other->signed_identity_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

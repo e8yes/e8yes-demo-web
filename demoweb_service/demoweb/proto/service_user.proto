@@ -20,6 +20,7 @@ syntax = "proto3";
 package e8;
 
 import "file.proto";
+import "identity.proto";
 import "nullable_primitives.proto";
 import "pagination.proto";
 import "user_profile.proto";
@@ -45,7 +46,7 @@ message AuthorizationRequest {
 }
 
 message AuthorizationResponse {
-    bytes signed_identity = 1;
+    IdentitySignature signed_identity = 1;
 }
 
 

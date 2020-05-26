@@ -15,16 +15,13 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
- syntax = "proto3";
+#ifndef CONTEXT_KEY_H
+#define CONTEXT_KEY_H
 
-package e8;
+namespace e8 {
 
-message Identity {
-    int64 expiry_timestamp = 1;
-    int64 user_id = 2;
-    repeated string group_names = 3;
-}
+static char const kAuthorizationKey[] = "AU";
 
-message IdentitySignature {
-    bytes signature = 1;
-}
+} // namespace e8
+
+#endif // CONTEXT_KEY_H

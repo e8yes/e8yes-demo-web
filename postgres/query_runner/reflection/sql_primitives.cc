@@ -18,7 +18,6 @@
 #include <cassert>
 #include <ctime>
 #include <iomanip>
-#include <iostream>
 #include <pqxx/pqxx>
 #include <stdint.h>
 #include <string>
@@ -27,8 +26,6 @@
 
 namespace e8 {
 namespace {
-
-#include <iostream>
 
 void from_string(std::string const &str_val, bool *val) {
     if (str_val == "t") {
@@ -801,7 +798,7 @@ std::vector<std::time_t> *SqlTimestampArr::value_ptr() { return &value_; }
 
 SqlByteArr::SqlByteArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
-SqlByteArr::SqlByteArr(std::vector<uint8_t> const &value, std::string const &field_name)
+SqlByteArr::SqlByteArr(std::string const &value, std::string const &field_name)
     : SqlPrimitiveInterface(field_name), value_(value) {}
 
 SqlByteArr::~SqlByteArr() {}
@@ -843,8 +840,8 @@ SqlByteArr &SqlByteArr::operator=(SqlByteArr const &rhs) {
     return *this;
 }
 
-std::vector<uint8_t> const &SqlByteArr::value() const { return value_; }
+std::string const &SqlByteArr::value() const { return value_; }
 
-std::vector<uint8_t> *SqlByteArr::value_ptr() { return &value_; }
+std::string *SqlByteArr::value_ptr() { return &value_; }
 
 } // namespace e8

@@ -21,6 +21,7 @@
 #include <string>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/constant/context_key.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module_identity/create_user.h"
 #include "demoweb_service/demoweb/module_identity/retrieve_user.h"
@@ -48,7 +49,7 @@ grpc::Status UserServiceImpl::Register(grpc::ServerContext * /*context*/,
     return grpc::Status::OK;
 }
 
-grpc::Status UserServiceImpl::Authorize(grpc::ServerContext * /*context*/,
+grpc::Status UserServiceImpl::Authorize(grpc::ServerContext *context,
                                         AuthorizationRequest const *request,
                                         AuthorizationResponse *response) {
     std::optional<UserEntity> user =
@@ -65,7 +66,11 @@ grpc::Status UserServiceImpl::Authorize(grpc::ServerContext * /*context*/,
                             "Failed to validate the provided security key.");
     }
 
-    response->set_signed_identity(signed_identity.value().data(), signed_identity.value().size());
+    IdentitySignature sig;
+    sig.set_signature(signed_identity.value());
+    *response->mutable_signed_identity() = sig;
+
+    context->AddInitialMetadata(kAuthorizationKey, signed_identity.value());
 
     return grpc::Status::OK;
 }

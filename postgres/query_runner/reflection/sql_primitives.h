@@ -565,7 +565,7 @@ class SqlTimestampArr : public SqlPrimitiveInterface {
 class SqlByteArr : public SqlPrimitiveInterface {
   public:
     explicit SqlByteArr(std::string const &field_name);
-    explicit SqlByteArr(std::vector<uint8_t> const &value, std::string const &field_name = "");
+    explicit SqlByteArr(std::string const &value, std::string const &field_name);
     SqlByteArr(SqlByteArr const &) = default;
     ~SqlByteArr() override;
 
@@ -582,15 +582,15 @@ class SqlByteArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ byte array.
      */
-    std::vector<uint8_t> const &value() const;
+    std::string const &value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<uint8_t> *value_ptr();
+    std::string *value_ptr();
 
   private:
-    std::vector<uint8_t> value_;
+    std::string value_;
 };
 
 } // namespace e8
