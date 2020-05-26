@@ -46,6 +46,13 @@ enum FileAccessMode {
     FAM_READWRITE = 2;
 }
 
+message SignableFileAccess {
+    int64 expiry_timestamp = 1;
+    int64 viewer_id = 2;
+    string file_path = 3;
+    FileAccessMode access_mode = 4;
+}
+
 message FileTokenAccess {
     bytes access_token = 1;
 }

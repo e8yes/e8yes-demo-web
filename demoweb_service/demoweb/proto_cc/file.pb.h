@@ -40,7 +40,7 @@ namespace protobuf_file_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[4];
+  static const ::google::protobuf::internal::ParseTable schema[5];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -60,6 +60,9 @@ extern FileDirectAccessDefaultTypeInternal _FileDirectAccess_default_instance_;
 class FileTokenAccess;
 class FileTokenAccessDefaultTypeInternal;
 extern FileTokenAccessDefaultTypeInternal _FileTokenAccess_default_instance_;
+class SignableFileAccess;
+class SignableFileAccessDefaultTypeInternal;
+extern SignableFileAccessDefaultTypeInternal _SignableFileAccess_default_instance_;
 }  // namespace e8
 namespace google {
 namespace protobuf {
@@ -67,6 +70,7 @@ template<> ::e8::FileChunk* Arena::CreateMaybeMessage<::e8::FileChunk>(Arena*);
 template<> ::e8::FileDescriptor* Arena::CreateMaybeMessage<::e8::FileDescriptor>(Arena*);
 template<> ::e8::FileDirectAccess* Arena::CreateMaybeMessage<::e8::FileDirectAccess>(Arena*);
 template<> ::e8::FileTokenAccess* Arena::CreateMaybeMessage<::e8::FileTokenAccess>(Arena*);
+template<> ::e8::SignableFileAccess* Arena::CreateMaybeMessage<::e8::SignableFileAccess>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace e8 {
@@ -240,6 +244,138 @@ class FileChunk : public ::google::protobuf::Message /* @@protoc_insertion_point
 };
 // -------------------------------------------------------------------
 
+class SignableFileAccess : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.SignableFileAccess) */ {
+ public:
+  SignableFileAccess();
+  virtual ~SignableFileAccess();
+
+  SignableFileAccess(const SignableFileAccess& from);
+
+  inline SignableFileAccess& operator=(const SignableFileAccess& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  SignableFileAccess(SignableFileAccess&& from) noexcept
+    : SignableFileAccess() {
+    *this = ::std::move(from);
+  }
+
+  inline SignableFileAccess& operator=(SignableFileAccess&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SignableFileAccess& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SignableFileAccess* internal_default_instance() {
+    return reinterpret_cast<const SignableFileAccess*>(
+               &_SignableFileAccess_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  void Swap(SignableFileAccess* other);
+  friend void swap(SignableFileAccess& a, SignableFileAccess& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SignableFileAccess* New() const final {
+    return CreateMaybeMessage<SignableFileAccess>(NULL);
+  }
+
+  SignableFileAccess* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<SignableFileAccess>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const SignableFileAccess& from);
+  void MergeFrom(const SignableFileAccess& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SignableFileAccess* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string file_path = 3;
+  void clear_file_path();
+  static const int kFilePathFieldNumber = 3;
+  const ::std::string& file_path() const;
+  void set_file_path(const ::std::string& value);
+  #if LANG_CXX11
+  void set_file_path(::std::string&& value);
+  #endif
+  void set_file_path(const char* value);
+  void set_file_path(const char* value, size_t size);
+  ::std::string* mutable_file_path();
+  ::std::string* release_file_path();
+  void set_allocated_file_path(::std::string* file_path);
+
+  // int64 expiry_timestamp = 1;
+  void clear_expiry_timestamp();
+  static const int kExpiryTimestampFieldNumber = 1;
+  ::google::protobuf::int64 expiry_timestamp() const;
+  void set_expiry_timestamp(::google::protobuf::int64 value);
+
+  // int64 viewer_id = 2;
+  void clear_viewer_id();
+  static const int kViewerIdFieldNumber = 2;
+  ::google::protobuf::int64 viewer_id() const;
+  void set_viewer_id(::google::protobuf::int64 value);
+
+  // .e8.FileAccessMode access_mode = 4;
+  void clear_access_mode();
+  static const int kAccessModeFieldNumber = 4;
+  ::e8::FileAccessMode access_mode() const;
+  void set_access_mode(::e8::FileAccessMode value);
+
+  // @@protoc_insertion_point(class_scope:e8.SignableFileAccess)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr file_path_;
+  ::google::protobuf::int64 expiry_timestamp_;
+  ::google::protobuf::int64 viewer_id_;
+  int access_mode_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_file_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class FileTokenAccess : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.FileTokenAccess) */ {
  public:
   FileTokenAccess();
@@ -275,7 +411,7 @@ class FileTokenAccess : public ::google::protobuf::Message /* @@protoc_insertion
                &_FileTokenAccess_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   void Swap(FileTokenAccess* other);
   friend void swap(FileTokenAccess& a, FileTokenAccess& b) {
@@ -386,7 +522,7 @@ class FileDirectAccess : public ::google::protobuf::Message /* @@protoc_insertio
                &_FileDirectAccess_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   void Swap(FileDirectAccess* other);
   friend void swap(FileDirectAccess& a, FileDirectAccess& b) {
@@ -510,7 +646,7 @@ class FileDescriptor : public ::google::protobuf::Message /* @@protoc_insertion_
                &_FileDescriptor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   void Swap(FileDescriptor* other);
   friend void swap(FileDescriptor& a, FileDescriptor& b) {
@@ -733,6 +869,105 @@ inline void FileChunk::set_allocated_data(::std::string* data) {
   }
   data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
   // @@protoc_insertion_point(field_set_allocated:e8.FileChunk.data)
+}
+
+// -------------------------------------------------------------------
+
+// SignableFileAccess
+
+// int64 expiry_timestamp = 1;
+inline void SignableFileAccess::clear_expiry_timestamp() {
+  expiry_timestamp_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 SignableFileAccess::expiry_timestamp() const {
+  // @@protoc_insertion_point(field_get:e8.SignableFileAccess.expiry_timestamp)
+  return expiry_timestamp_;
+}
+inline void SignableFileAccess::set_expiry_timestamp(::google::protobuf::int64 value) {
+  
+  expiry_timestamp_ = value;
+  // @@protoc_insertion_point(field_set:e8.SignableFileAccess.expiry_timestamp)
+}
+
+// int64 viewer_id = 2;
+inline void SignableFileAccess::clear_viewer_id() {
+  viewer_id_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 SignableFileAccess::viewer_id() const {
+  // @@protoc_insertion_point(field_get:e8.SignableFileAccess.viewer_id)
+  return viewer_id_;
+}
+inline void SignableFileAccess::set_viewer_id(::google::protobuf::int64 value) {
+  
+  viewer_id_ = value;
+  // @@protoc_insertion_point(field_set:e8.SignableFileAccess.viewer_id)
+}
+
+// string file_path = 3;
+inline void SignableFileAccess::clear_file_path() {
+  file_path_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SignableFileAccess::file_path() const {
+  // @@protoc_insertion_point(field_get:e8.SignableFileAccess.file_path)
+  return file_path_.GetNoArena();
+}
+inline void SignableFileAccess::set_file_path(const ::std::string& value) {
+  
+  file_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.SignableFileAccess.file_path)
+}
+#if LANG_CXX11
+inline void SignableFileAccess::set_file_path(::std::string&& value) {
+  
+  file_path_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.SignableFileAccess.file_path)
+}
+#endif
+inline void SignableFileAccess::set_file_path(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  file_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.SignableFileAccess.file_path)
+}
+inline void SignableFileAccess::set_file_path(const char* value, size_t size) {
+  
+  file_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.SignableFileAccess.file_path)
+}
+inline ::std::string* SignableFileAccess::mutable_file_path() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.SignableFileAccess.file_path)
+  return file_path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SignableFileAccess::release_file_path() {
+  // @@protoc_insertion_point(field_release:e8.SignableFileAccess.file_path)
+  
+  return file_path_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SignableFileAccess::set_allocated_file_path(::std::string* file_path) {
+  if (file_path != NULL) {
+    
+  } else {
+    
+  }
+  file_path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), file_path);
+  // @@protoc_insertion_point(field_set_allocated:e8.SignableFileAccess.file_path)
+}
+
+// .e8.FileAccessMode access_mode = 4;
+inline void SignableFileAccess::clear_access_mode() {
+  access_mode_ = 0;
+}
+inline ::e8::FileAccessMode SignableFileAccess::access_mode() const {
+  // @@protoc_insertion_point(field_get:e8.SignableFileAccess.access_mode)
+  return static_cast< ::e8::FileAccessMode >(access_mode_);
+}
+inline void SignableFileAccess::set_access_mode(::e8::FileAccessMode value) {
+  
+  access_mode_ = value;
+  // @@protoc_insertion_point(field_set:e8.SignableFileAccess.access_mode)
 }
 
 // -------------------------------------------------------------------
@@ -1090,6 +1325,8 @@ inline FileDescriptor::AccessMethodCase FileDescriptor::AccessMethod_case() cons
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

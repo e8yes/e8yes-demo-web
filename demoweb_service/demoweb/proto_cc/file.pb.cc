@@ -29,6 +29,11 @@ class FileChunkDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<FileChunk>
       _instance;
 } _FileChunk_default_instance_;
+class SignableFileAccessDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<SignableFileAccess>
+      _instance;
+} _SignableFileAccess_default_instance_;
 class FileTokenAccessDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<FileTokenAccess>
@@ -61,6 +66,20 @@ static void InitDefaultsFileChunk() {
 
 ::google::protobuf::internal::SCCInfo<0> scc_info_FileChunk =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsFileChunk}, {}};
+
+static void InitDefaultsSignableFileAccess() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_SignableFileAccess_default_instance_;
+    new (ptr) ::e8::SignableFileAccess();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::e8::SignableFileAccess::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<0> scc_info_SignableFileAccess =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSignableFileAccess}, {}};
 
 static void InitDefaultsFileTokenAccess() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -108,12 +127,13 @@ static void InitDefaultsFileDescriptor() {
 
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_FileChunk.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_SignableFileAccess.base);
   ::google::protobuf::internal::InitSCC(&scc_info_FileTokenAccess.base);
   ::google::protobuf::internal::InitSCC(&scc_info_FileDirectAccess.base);
   ::google::protobuf::internal::InitSCC(&scc_info_FileDescriptor.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[4];
+::google::protobuf::Metadata file_level_metadata[5];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -124,6 +144,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::FileChunk, chunk_number_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::FileChunk, data_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SignableFileAccess, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SignableFileAccess, expiry_timestamp_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SignableFileAccess, viewer_id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SignableFileAccess, file_path_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SignableFileAccess, access_mode_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::FileTokenAccess, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -154,13 +183,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::FileChunk)},
-  { 7, -1, sizeof(::e8::FileTokenAccess)},
-  { 13, -1, sizeof(::e8::FileDirectAccess)},
-  { 20, -1, sizeof(::e8::FileDescriptor)},
+  { 7, -1, sizeof(::e8::SignableFileAccess)},
+  { 16, -1, sizeof(::e8::FileTokenAccess)},
+  { 22, -1, sizeof(::e8::FileDirectAccess)},
+  { 29, -1, sizeof(::e8::FileDescriptor)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_FileChunk_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_SignableFileAccess_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_FileTokenAccess_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_FileDirectAccess_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_FileDescriptor_default_instance_),
@@ -181,7 +212,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 4);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 5);
 }
 
 void AddDescriptorsImpl() {
@@ -189,27 +220,30 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\nfile.proto\022\002e8\032\027encryption_source.prot"
       "o\"/\n\tFileChunk\022\024\n\014chunk_number\030\001 \001(\005\022\014\n\004"
-      "data\030\002 \001(\014\"\'\n\017FileTokenAccess\022\024\n\014access_"
-      "token\030\001 \001(\014\"I\n\020FileDirectAccess\022\014\n\004path\030"
-      "\002 \001(\t\022\'\n\013access_mode\030\003 \001(\0162\022.e8.FileAcce"
-      "ssMode\"\307\002\n\016FileDescriptor\0220\n\021file_token_"
-      "access\030\001 \001(\0132\023.e8.FileTokenAccessH\000\0222\n\022f"
-      "ile_direct_access\030\002 \001(\0132\024.e8.FileDirectA"
-      "ccessH\000\022\021\n\tfile_name\030\003 \001(\t\022#\n\013file_forma"
-      "t\030\004 \001(\0162\016.e8.FileFormat\022/\n\021encryption_so"
-      "urce\030\005 \001(\0162\024.e8.EncryptionSource\022\024\n\014stor"
-      "age_size\030\006 \001(\003\022\034\n\024created_at_timestamp\030\007"
-      " \001(\003\022\"\n\032last_modified_at_timestamp\030\010 \001(\003"
-      "B\016\n\014AccessMethod*\255\001\n\nFileFormat\022\020\n\014FFMT_"
-      "UNKNOWN\020\000\022\023\n\017FFMT_IMAGE_JPEG\020\001\022\022\n\016FFMT_I"
-      "MAGE_PNG\020\002\022\024\n\020FFMT_VIDEO_MPEG4\020\003\022\022\n\016FFMT"
-      "_VIDEO_GIF\020\004\022\022\n\016FFMT_VIDEO_OGV\020\005\022\022\n\016FFMT"
-      "_AUDIO_MP3\020\006\022\022\n\016FFMT_AUDIO_OGG\020\007*@\n\016File"
-      "AccessMode\022\014\n\010FAM_READ\020\000\022\r\n\tFAM_WRITE\020\001\022"
-      "\021\n\rFAM_READWRITE\020\002b\006proto3"
+      "data\030\002 \001(\014\"}\n\022SignableFileAccess\022\030\n\020expi"
+      "ry_timestamp\030\001 \001(\003\022\021\n\tviewer_id\030\002 \001(\003\022\021\n"
+      "\tfile_path\030\003 \001(\t\022\'\n\013access_mode\030\004 \001(\0162\022."
+      "e8.FileAccessMode\"\'\n\017FileTokenAccess\022\024\n\014"
+      "access_token\030\001 \001(\014\"I\n\020FileDirectAccess\022\014"
+      "\n\004path\030\002 \001(\t\022\'\n\013access_mode\030\003 \001(\0162\022.e8.F"
+      "ileAccessMode\"\307\002\n\016FileDescriptor\0220\n\021file"
+      "_token_access\030\001 \001(\0132\023.e8.FileTokenAccess"
+      "H\000\0222\n\022file_direct_access\030\002 \001(\0132\024.e8.File"
+      "DirectAccessH\000\022\021\n\tfile_name\030\003 \001(\t\022#\n\013fil"
+      "e_format\030\004 \001(\0162\016.e8.FileFormat\022/\n\021encryp"
+      "tion_source\030\005 \001(\0162\024.e8.EncryptionSource\022"
+      "\024\n\014storage_size\030\006 \001(\003\022\034\n\024created_at_time"
+      "stamp\030\007 \001(\003\022\"\n\032last_modified_at_timestam"
+      "p\030\010 \001(\003B\016\n\014AccessMethod*\255\001\n\nFileFormat\022\020"
+      "\n\014FFMT_UNKNOWN\020\000\022\023\n\017FFMT_IMAGE_JPEG\020\001\022\022\n"
+      "\016FFMT_IMAGE_PNG\020\002\022\024\n\020FFMT_VIDEO_MPEG4\020\003\022"
+      "\022\n\016FFMT_VIDEO_GIF\020\004\022\022\n\016FFMT_VIDEO_OGV\020\005\022"
+      "\022\n\016FFMT_AUDIO_MP3\020\006\022\022\n\016FFMT_AUDIO_OGG\020\007*"
+      "@\n\016FileAccessMode\022\014\n\010FAM_READ\020\000\022\r\n\tFAM_W"
+      "RITE\020\001\022\021\n\rFAM_READWRITE\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 786);
+      descriptor, 913);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file.proto", &protobuf_RegisterTypes);
   ::protobuf_encryption_5fsource_2eproto::AddDescriptors();
@@ -527,6 +561,367 @@ void FileChunk::InternalSwap(FileChunk* other) {
 }
 
 ::google::protobuf::Metadata FileChunk::GetMetadata() const {
+  protobuf_file_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_file_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void SignableFileAccess::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int SignableFileAccess::kExpiryTimestampFieldNumber;
+const int SignableFileAccess::kViewerIdFieldNumber;
+const int SignableFileAccess::kFilePathFieldNumber;
+const int SignableFileAccess::kAccessModeFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+SignableFileAccess::SignableFileAccess()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_file_2eproto::scc_info_SignableFileAccess.base);
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:e8.SignableFileAccess)
+}
+SignableFileAccess::SignableFileAccess(const SignableFileAccess& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  file_path_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.file_path().size() > 0) {
+    file_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_path_);
+  }
+  ::memcpy(&expiry_timestamp_, &from.expiry_timestamp_,
+    static_cast<size_t>(reinterpret_cast<char*>(&access_mode_) -
+    reinterpret_cast<char*>(&expiry_timestamp_)) + sizeof(access_mode_));
+  // @@protoc_insertion_point(copy_constructor:e8.SignableFileAccess)
+}
+
+void SignableFileAccess::SharedCtor() {
+  file_path_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&expiry_timestamp_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&access_mode_) -
+      reinterpret_cast<char*>(&expiry_timestamp_)) + sizeof(access_mode_));
+}
+
+SignableFileAccess::~SignableFileAccess() {
+  // @@protoc_insertion_point(destructor:e8.SignableFileAccess)
+  SharedDtor();
+}
+
+void SignableFileAccess::SharedDtor() {
+  file_path_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void SignableFileAccess::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ::google::protobuf::Descriptor* SignableFileAccess::descriptor() {
+  ::protobuf_file_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_file_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const SignableFileAccess& SignableFileAccess::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_file_2eproto::scc_info_SignableFileAccess.base);
+  return *internal_default_instance();
+}
+
+
+void SignableFileAccess::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.SignableFileAccess)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  file_path_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&expiry_timestamp_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&access_mode_) -
+      reinterpret_cast<char*>(&expiry_timestamp_)) + sizeof(access_mode_));
+  _internal_metadata_.Clear();
+}
+
+bool SignableFileAccess::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:e8.SignableFileAccess)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int64 expiry_timestamp = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &expiry_timestamp_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 viewer_id = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &viewer_id_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string file_path = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_file_path()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->file_path().data(), static_cast<int>(this->file_path().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "e8.SignableFileAccess.file_path"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .e8.FileAccessMode access_mode = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_access_mode(static_cast< ::e8::FileAccessMode >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:e8.SignableFileAccess)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:e8.SignableFileAccess)
+  return false;
+#undef DO_
+}
+
+void SignableFileAccess::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:e8.SignableFileAccess)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 expiry_timestamp = 1;
+  if (this->expiry_timestamp() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->expiry_timestamp(), output);
+  }
+
+  // int64 viewer_id = 2;
+  if (this->viewer_id() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->viewer_id(), output);
+  }
+
+  // string file_path = 3;
+  if (this->file_path().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->file_path().data(), static_cast<int>(this->file_path().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.SignableFileAccess.file_path");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->file_path(), output);
+  }
+
+  // .e8.FileAccessMode access_mode = 4;
+  if (this->access_mode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      4, this->access_mode(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:e8.SignableFileAccess)
+}
+
+::google::protobuf::uint8* SignableFileAccess::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:e8.SignableFileAccess)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 expiry_timestamp = 1;
+  if (this->expiry_timestamp() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->expiry_timestamp(), target);
+  }
+
+  // int64 viewer_id = 2;
+  if (this->viewer_id() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->viewer_id(), target);
+  }
+
+  // string file_path = 3;
+  if (this->file_path().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->file_path().data(), static_cast<int>(this->file_path().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.SignableFileAccess.file_path");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->file_path(), target);
+  }
+
+  // .e8.FileAccessMode access_mode = 4;
+  if (this->access_mode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      4, this->access_mode(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:e8.SignableFileAccess)
+  return target;
+}
+
+size_t SignableFileAccess::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.SignableFileAccess)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string file_path = 3;
+  if (this->file_path().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->file_path());
+  }
+
+  // int64 expiry_timestamp = 1;
+  if (this->expiry_timestamp() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->expiry_timestamp());
+  }
+
+  // int64 viewer_id = 2;
+  if (this->viewer_id() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->viewer_id());
+  }
+
+  // .e8.FileAccessMode access_mode = 4;
+  if (this->access_mode() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->access_mode());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SignableFileAccess::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.SignableFileAccess)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SignableFileAccess* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const SignableFileAccess>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.SignableFileAccess)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.SignableFileAccess)
+    MergeFrom(*source);
+  }
+}
+
+void SignableFileAccess::MergeFrom(const SignableFileAccess& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.SignableFileAccess)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.file_path().size() > 0) {
+
+    file_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_path_);
+  }
+  if (from.expiry_timestamp() != 0) {
+    set_expiry_timestamp(from.expiry_timestamp());
+  }
+  if (from.viewer_id() != 0) {
+    set_viewer_id(from.viewer_id());
+  }
+  if (from.access_mode() != 0) {
+    set_access_mode(from.access_mode());
+  }
+}
+
+void SignableFileAccess::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.SignableFileAccess)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SignableFileAccess::CopyFrom(const SignableFileAccess& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.SignableFileAccess)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SignableFileAccess::IsInitialized() const {
+  return true;
+}
+
+void SignableFileAccess::Swap(SignableFileAccess* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void SignableFileAccess::InternalSwap(SignableFileAccess* other) {
+  using std::swap;
+  file_path_.Swap(&other->file_path_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(expiry_timestamp_, other->expiry_timestamp_);
+  swap(viewer_id_, other->viewer_id_);
+  swap(access_mode_, other->access_mode_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+}
+
+::google::protobuf::Metadata SignableFileAccess::GetMetadata() const {
   protobuf_file_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_file_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1642,6 +2037,9 @@ namespace google {
 namespace protobuf {
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::FileChunk* Arena::CreateMaybeMessage< ::e8::FileChunk >(Arena* arena) {
   return Arena::CreateInternal< ::e8::FileChunk >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::SignableFileAccess* Arena::CreateMaybeMessage< ::e8::SignableFileAccess >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::SignableFileAccess >(arena);
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::FileTokenAccess* Arena::CreateMaybeMessage< ::e8::FileTokenAccess >(Arena* arena) {
   return Arena::CreateInternal< ::e8::FileTokenAccess >(arena);
