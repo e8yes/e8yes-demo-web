@@ -26,7 +26,9 @@
 #include "demoweb_service/demoweb/module_identity/create_user.h"
 #include "demoweb_service/demoweb/module_identity/retrieve_user.h"
 #include "demoweb_service/demoweb/module_identity/user_identity.h"
+#include "demoweb_service/demoweb/module_identity/user_profile.h"
 #include "demoweb_service/demoweb/service/user_service.h"
+#include "demoweb_service/demoweb/service/util.h"
 
 namespace e8 {
 
@@ -71,6 +73,33 @@ grpc::Status UserServiceImpl::Authorize(grpc::ServerContext *context,
     *response->mutable_signed_identity() = sig;
 
     context->AddInitialMetadata(kAuthorizationKey, signed_identity.value());
+
+    return grpc::Status::OK;
+}
+
+grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
+                                               GetPublicProfileRequest const *request,
+                                               GetPublicProfileResponse *response) {
+    UserId user_id;
+    if (request->has_user_id()) {
+        user_id = request->user_id().value();
+    } else {
+        Identity identity;
+        grpc::Status status = ExtractIdentityFromContext(*context, &identity);
+        if (!status.ok()) {
+            return status;
+        }
+
+        user_id = identity.user_id();
+    }
+
+    std::optional<UserEntity> user = RetrieveUser(user_id, CurrentEnvironment()->DemowebDatabase());
+    if (!user.has_value()) {
+        return grpc::Status(grpc::StatusCode::NOT_FOUND,
+                            "User ID=" + std::to_string(user_id) + " doesn't exist.");
+    }
+
+    *response->mutable_profile() = BuildPublicProfile(user.value(), CurrentEnvironment()->KeyGen());
 
     return grpc::Status::OK;
 }

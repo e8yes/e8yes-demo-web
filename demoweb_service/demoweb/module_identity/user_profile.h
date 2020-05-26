@@ -22,6 +22,8 @@
 #include <string>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/proto_cc/user_profile.pb.h"
+#include "keygen/key_generator_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
@@ -38,6 +40,16 @@ namespace e8 {
  */
 bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
                    ConnectionReservoirInterface *db_conns);
+
+/**
+ * @brief BuildPublicProfile Extract public profile info from raw database entities.Public profile
+ * includes a user's alias and a read only avatar path.
+ *
+ * @param user User to extract public profile from.
+ * @param key_gen Key generator for signing avatar path.
+ * @return The extracted public profile.
+ */
+UserPublicProfile BuildPublicProfile(UserEntity const &user, KeyGeneratorInterface *key_gen);
 
 } // namespace e8
 

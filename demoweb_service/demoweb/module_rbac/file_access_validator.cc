@@ -20,6 +20,7 @@
 #include <optional>
 #include <string>
 
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_group_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_group_has_file_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
@@ -40,10 +41,10 @@ static uint64_t const kFileSignatureValidDurationSecs = 60 * 10;
 
 } // namespace
 
-FileAccessToken SignFileAccessToken(Identity const &viewer, std::string const &file_path,
+FileAccessToken SignFileAccessToken(UserId viewer_id, std::string const &file_path,
                                     FileAccessMode access_mode, KeyGeneratorInterface *key_gen) {
     SignableFileAccess file_access;
-    file_access.set_viewer_id(viewer.user_id());
+    file_access.set_viewer_id(viewer_id);
     file_access.set_file_path(file_path);
     file_access.set_access_mode(access_mode);
 
@@ -61,8 +62,7 @@ FileAccessToken SignFileAccessToken(Identity const &viewer, std::string const &f
     return SignMessage(file_access_bytes, key_pair.key);
 }
 
-std::optional<std::string> ValidateFileAccessToken(Identity const &viewer,
-                                                   FileAccessMode access_mode,
+std::optional<std::string> ValidateFileAccessToken(UserId viewer_id, FileAccessMode access_mode,
                                                    FileAccessToken const &access_token,
                                                    KeyGeneratorInterface *key_gen) {
     KeyGeneratorInterface::Key key_pair =
@@ -80,7 +80,7 @@ std::optional<std::string> ValidateFileAccessToken(Identity const &viewer,
         file_access.ParseFromArray(decoded_bytes.value().data(), decoded_bytes.value().size());
     assert(deserialize_status == true);
 
-    if (file_access.viewer_id() != viewer.user_id() || file_access.access_mode() != access_mode) {
+    if (file_access.viewer_id() != viewer_id || file_access.access_mode() != access_mode) {
         return std::nullopt;
     }
 

@@ -22,6 +22,9 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module_identity/user_profile.h"
+#include "demoweb_service/demoweb/module_rbac/file_access_validator.h"
+#include "demoweb_service/demoweb/proto_cc/user_profile.pb.h"
+#include "keygen/key_generator_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_runner.h"
 
@@ -41,6 +44,35 @@ bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
     assert(num_rows_updated == 1);
 
     return true;
+}
+
+UserPublicProfile BuildPublicProfile(UserEntity const &user, KeyGeneratorInterface *key_gen) {
+    UserPublicProfile profile;
+    profile.set_user_id(user.id.value().value());
+
+    if (user.alias.value().has_value()) {
+        profile.set_alias(user.alias.value().value());
+    }
+
+    if (user.avatar_path.value().has_value()) {
+        FileAccessToken avatar_path_token =
+            SignFileAccessToken(user.id.value().value(), user.avatar_path.value().value(),
+                                FileAccessMode::FAM_READ, key_gen);
+        profile.mutable_avatar_readonly_access()->set_access_token(avatar_path_token);
+
+        if (user.avatar_preview_path.value().has_value()) {
+            FileAccessToken avatar_preview_path_token = SignFileAccessToken(
+                user.id.value().value(), user.avatar_preview_path.value().value(),
+                FileAccessMode::FAM_READ, key_gen);
+            profile.mutable_avatar_preview_readonly_access()->set_access_token(
+                avatar_preview_path_token);
+        } else {
+            // Use the avatar path as the preview path when preview doesn't exist.
+            profile.mutable_avatar_preview_readonly_access()->set_access_token(avatar_path_token);
+        }
+    }
+
+    return profile;
 }
 
 } // namespace e8

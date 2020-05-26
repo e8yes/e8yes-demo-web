@@ -38,6 +38,10 @@ class UserServiceImpl : public UserService::Service {
 
     grpc::Status Authorize(grpc::ServerContext *context, AuthorizationRequest const *request,
                            AuthorizationResponse *response) override;
+
+    grpc::Status GetPublicProfile(grpc::ServerContext *context,
+                                  GetPublicProfileRequest const *request,
+                                  GetPublicProfileResponse *response) override;
 };
 
 } // namespace e8

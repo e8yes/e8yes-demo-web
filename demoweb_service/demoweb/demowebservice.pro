@@ -57,7 +57,8 @@ HEADERS += \
     proto_cc/user_profile.grpc.pb.h \
     proto_cc/user_profile.pb.h \
     service/file_service.h \
-    service/user_service.h
+    service/user_service.h \
+    service/util.h
 SOURCES += \
     common_entity/file_metadata_entity.cc \
     common_entity/user_entity.cc \
@@ -99,7 +100,8 @@ SOURCES += \
     proto_cc/user_profile.grpc.pb.cc \
     proto_cc/user_profile.pb.cc \
     service/file_service.cc \
-    service/user_service.cc
+    service/user_service.cc \
+    service/util.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 
