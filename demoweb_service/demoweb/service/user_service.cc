@@ -22,6 +22,7 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/context_key.h"
+#include "demoweb_service/demoweb/constant/pagination.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module_identity/create_user.h"
 #include "demoweb_service/demoweb/module_identity/retrieve_user.h"
@@ -125,6 +126,31 @@ grpc::Status UserServiceImpl::UpdatePublicProfile(grpc::ServerContext *context,
     UpdateProfile(alias, &user.value(), CurrentEnvironment()->DemowebDatabase());
 
     *response->mutable_profile() = BuildPublicProfile(user.value(), CurrentEnvironment()->KeyGen());
+
+    return grpc::Status::OK;
+}
+
+grpc::Status UserServiceImpl::Search(grpc::ServerContext * /*context*/,
+                                     SearchUserRequest const *request,
+                                     SearchUserResponse *response) {
+    grpc::Status status = ValidatePagination(request->pagination(), kResultPerPageLimit);
+    if (!status.ok()) {
+        return status;
+    }
+
+    std::optional<UserId> user_id_prefix =
+        request->has_user_id() ? std::optional<UserId>(request->user_id().value()) : std::nullopt;
+    std::optional<std::string> alias_prefix =
+        request->has_alias() ? std::optional<std::string>(request->alias().value()) : std::nullopt;
+
+    std::vector<UserEntity> results =
+        SearchUser(user_id_prefix, alias_prefix, request->pagination(),
+                   CurrentEnvironment()->DemowebDatabase());
+
+    response->mutable_user_profiles()->Reserve(results.size());
+    for (auto const &user : results) {
+        *response->add_user_profiles() = BuildPublicProfile(user, CurrentEnvironment()->KeyGen());
+    }
 
     return grpc::Status::OK;
 }

@@ -16,11 +16,13 @@
  */
 
 #include <grpcpp/grpcpp.h>
+#include <string>
 
 #include "demoweb_service/demoweb/constant/context_key.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module_identity/user_identity.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
+#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "demoweb_service/demoweb/service/util.h"
 
 namespace e8 {
@@ -41,6 +43,26 @@ grpc::Status ExtractIdentityFromContext(grpc::ServerContext const &context, Iden
 
     *identity = identity_optional.value();
 
+    return grpc::Status::OK;
+}
+
+grpc::Status ValidatePagination(Pagination const &pagination, unsigned result_per_page_limit) {
+    if (pagination.page_number() < 0) {
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
+                            "page_number must be >= 0, but got page_number=" +
+                                std::to_string(pagination.page_number()));
+    }
+    if (pagination.result_per_page() <= 0) {
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
+                            "result_per_page must be > 0, but got result_per_page=" +
+                                std::to_string(pagination.result_per_page()));
+    }
+    if (static_cast<unsigned>(pagination.result_per_page()) > result_per_page_limit) {
+        return grpc::Status(
+            grpc::StatusCode::INVALID_ARGUMENT,
+            "result_per_page_limit=" + std::to_string(result_per_page_limit) +
+                ", but got result_per_page=" + std::to_string(pagination.result_per_page()));
+    }
     return grpc::Status::OK;
 }
 

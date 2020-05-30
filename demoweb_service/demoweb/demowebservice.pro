@@ -19,6 +19,7 @@ HEADERS += \
     common_entity/user_group_entity.h \
     common_entity/user_group_has_file_entity.h \
     constant/context_key.h \
+    constant/pagination.h \
     module_identity/create_user.h \
     module_identity/retrieve_user.h \
     module_identity/user_identity.h \
