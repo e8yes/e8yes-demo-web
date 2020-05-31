@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef SERVICE_UTIL_H
+#define SERVICE_UTIL_H
 
 #include <grpcpp/grpcpp.h>
 
@@ -45,4 +45,4 @@ grpc::Status ValidatePagination(Pagination const &pagination, unsigned result_pe
 
 } // namespace e8
 
-#endif // UTIL_H
+#endif // SERVICE_UTIL_H
