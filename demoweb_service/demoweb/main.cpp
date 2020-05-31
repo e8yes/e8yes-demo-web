@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
@@ -23,34 +24,85 @@
 #include <optional>
 #include <string>
 
+#include "demoweb_service/demoweb/environment/environment_context_interface.h"
+#include "demoweb_service/demoweb/environment/prod_environment_context.h"
+#include "demoweb_service/demoweb/service/file_service.h"
+#include "demoweb_service/demoweb/service/user_service.h"
+
+namespace {
+
+static char const kPortFlag[] = "port";
+static char const kDemowebDbHostNameFlag[] = "demoweb_db_host_name";
+static char const kDemowebDbPortFlag[] = "demoweb_db_port";
+static char const kDemowebDbUserName[] = "demoweb_db_user_name";
+static char const kDemowebDbPassword[] = "demoweb_db_password";
+
 static int const kDefaultPort = 50051;
 
-std::optional<int> port_option(int argc, char *argv[]) {
+static e8::UserServiceImpl gUserService;
+static e8::FileServiceImpl gFileService;
+
+std::optional<std::string> ScanFlag(int argc, char *argv[], std::string const &flag) {
+    std::string expected_flag_prefix = "--" + flag + "=";
+
     for (int i = 1; i < argc; i++) {
-        std::string option(argv[i]);
-        if (option.rfind("--port=", 0) == 0) {
-            std::string port = option.substr(std::string("--port=").length());
-            return std::stoi(port);
+        std::string cur_flag(argv[i]);
+        if (cur_flag.rfind(expected_flag_prefix, 0) == 0) {
+            std::string flag_value = cur_flag.substr(std::string(expected_flag_prefix).length());
+            return flag_value;
         }
     }
+
     return std::nullopt;
 }
 
+int PortValue(int argc, char *argv[]) {
+    std::optional<std::string> port_val = ScanFlag(argc, argv, kPortFlag);
+    if (port_val.has_value()) {
+        return std::stoi(port_val.value());
+    } else {
+        return kDefaultPort;
+    }
+}
+
+std::unique_ptr<e8::ProductionEnvironmentContext> BuildEnvironmentContext(int argc, char *argv[]) {
+    std::optional<std::string> demoweb_db_host_name = ScanFlag(argc, argv, kDemowebDbHostNameFlag);
+    std::optional<std::string> demoweb_db_port = ScanFlag(argc, argv, kDemowebDbPortFlag);
+    std::optional<std::string> demoweb_db_user_name = ScanFlag(argc, argv, kDemowebDbUserName);
+    std::optional<std::string> demoweb_db_password = ScanFlag(argc, argv, kDemowebDbPassword);
+    assert(demoweb_db_host_name.has_value());
+    assert(demoweb_db_port.has_value());
+    assert(demoweb_db_user_name.has_value());
+    assert(demoweb_db_password.has_value());
+
+    auto context = std::make_unique<e8::ProductionEnvironmentContext>(
+        demoweb_db_host_name.value(), std::stoi(demoweb_db_port.value()),
+        demoweb_db_user_name.value(), demoweb_db_password.value());
+
+    return context;
+}
+
+} // namespace
+
 int main(int argc, char *argv[]) {
+    auto prod_environment = BuildEnvironmentContext(argc, argv);
+    e8::RegisterEnvironment(prod_environment.get());
+
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 
-    std::optional<int> port = port_option(argc, argv);
-    if (!port.has_value()) {
-        port = kDefaultPort;
-    }
-    std::string server_address("0.0.0.0:" + std::to_string(port.value()));
+    int port = PortValue(argc, argv);
+    std::string server_address("0.0.0.0:" + std::to_string(port));
+
     grpc::ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+    builder.RegisterService(&gUserService);
+    builder.RegisterService(&gFileService);
 
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;
 
     server->Wait();
+
     return 0;
 }
