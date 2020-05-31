@@ -19,7 +19,9 @@ HEADERS += \
     common_entity/user_group_entity.h \
     common_entity/user_group_has_file_entity.h \
     constant/context_key.h \
+    constant/file_path.h \
     constant/pagination.h \
+    module_file/file_util.h \
     module_identity/create_user.h \
     module_identity/retrieve_user.h \
     module_identity/user_identity.h \
@@ -58,13 +60,14 @@ HEADERS += \
     proto_cc/user_profile.grpc.pb.h \
     proto_cc/user_profile.pb.h \
     service/file_service.h \
-    service/user_service.h \
-    service/util.h
+    service/service_util.h \
+    service/user_service.h
 SOURCES += \
     common_entity/file_metadata_entity.cc \
     common_entity/user_entity.cc \
     common_entity/user_group_entity.cc \
     common_entity/user_group_has_file_entity.cc \
+    module_file/file_util.cc \
     module_identity/create_user.cc \
     module_identity/retrieve_user.cc \
     environment/environment_context_interface.cc \
@@ -101,8 +104,8 @@ SOURCES += \
     proto_cc/user_profile.grpc.pb.cc \
     proto_cc/user_profile.pb.cc \
     service/file_service.cc \
-    service/user_service.cc \
-    service/util.cc
+    service/service_util.cc \
+    service/user_service.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 

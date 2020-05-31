@@ -29,7 +29,7 @@
 #include "demoweb_service/demoweb/module_identity/user_identity.h"
 #include "demoweb_service/demoweb/module_identity/user_profile.h"
 #include "demoweb_service/demoweb/service/user_service.h"
-#include "demoweb_service/demoweb/service/util.h"
+#include "demoweb_service/demoweb/service/service_util.h"
 
 namespace e8 {
 
@@ -151,6 +151,31 @@ grpc::Status UserServiceImpl::Search(grpc::ServerContext * /*context*/,
     for (auto const &user : results) {
         *response->add_user_profiles() = BuildPublicProfile(user, CurrentEnvironment()->KeyGen());
     }
+
+    return grpc::Status::OK;
+}
+
+grpc::Status UserServiceImpl::PrepareNewAvatar(grpc::ServerContext *context,
+                                               PrepareNewAvatarRequest const *request,
+                                               PrepareNewAvatarResponse *response) {
+    Identity identity;
+    grpc::Status status = ExtractIdentityFromContext(*context, &identity);
+    if (!status.ok()) {
+        return status;
+    }
+
+    std::optional<UserEntity> user =
+        RetrieveUser(identity.user_id(), CurrentEnvironment()->DemowebDatabase());
+    assert(user.has_value());
+
+    if (!AcceptableProfileAvatarFileFormat(request->file_format())) {
+        return grpc::Status(grpc::INVALID_ARGUMENT, "Cannot accept the provided file format.");
+    }
+
+    AvatarSetup setup =
+        SetUpNewProfileAvatar(user.value(), request->file_format(), CurrentEnvironment()->KeyGen(),
+                              CurrentEnvironment()->DemowebDatabase());
+    response->mutable_avatar_readwrite_access()->set_access_token(setup.avatar_path_access_token);
 
     return grpc::Status::OK;
 }

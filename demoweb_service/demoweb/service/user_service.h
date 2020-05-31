@@ -49,6 +49,10 @@ class UserServiceImpl : public UserService::Service {
 
     grpc::Status Search(grpc::ServerContext *context, SearchUserRequest const *request,
                         SearchUserResponse *response) override;
+
+    grpc::Status PrepareNewAvatar(grpc::ServerContext *context,
+                                  PrepareNewAvatarRequest const *request,
+                                  PrepareNewAvatarResponse *response) override;
 };
 
 } // namespace e8
