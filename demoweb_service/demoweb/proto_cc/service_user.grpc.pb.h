@@ -98,13 +98,13 @@ class UserService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchUserResponse>>(PrepareAsyncSearchRaw(context, request, cq));
     }
     // *
-    // Create a new avatar for the logged-in user.
-    virtual ::grpc::Status CreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::e8::CreateNewAvatarResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateNewAvatarResponse>> AsyncCreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateNewAvatarResponse>>(AsyncCreateNewAvatarRaw(context, request, cq));
+    // Prepare for a new avatar upload for the logged-in user.
+    virtual ::grpc::Status PrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::e8::PrepareNewAvatarResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::PrepareNewAvatarResponse>> AsyncPrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::PrepareNewAvatarResponse>>(AsyncPrepareNewAvatarRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateNewAvatarResponse>> PrepareAsyncCreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateNewAvatarResponse>>(PrepareAsyncCreateNewAvatarRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::PrepareNewAvatarResponse>> PrepareAsyncPrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::PrepareNewAvatarResponse>>(PrepareAsyncPrepareNewAvatarRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
@@ -125,8 +125,8 @@ class UserService final {
       // Search users.
       virtual void Search(::grpc::ClientContext* context, const ::e8::SearchUserRequest* request, ::e8::SearchUserResponse* response, std::function<void(::grpc::Status)>) = 0;
       // *
-      // Create a new avatar for the logged-in user.
-      virtual void CreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response, std::function<void(::grpc::Status)>) = 0;
+      // Prepare for a new avatar upload for the logged-in user.
+      virtual void PrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
@@ -140,8 +140,8 @@ class UserService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::UpdatePublicProfileResponse>* PrepareAsyncUpdatePublicProfileRaw(::grpc::ClientContext* context, const ::e8::UpdatePublicProfileRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchUserResponse>* AsyncSearchRaw(::grpc::ClientContext* context, const ::e8::SearchUserRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchUserResponse>* PrepareAsyncSearchRaw(::grpc::ClientContext* context, const ::e8::SearchUserRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateNewAvatarResponse>* AsyncCreateNewAvatarRaw(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateNewAvatarResponse>* PrepareAsyncCreateNewAvatarRaw(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::PrepareNewAvatarResponse>* AsyncPrepareNewAvatarRaw(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::PrepareNewAvatarResponse>* PrepareAsyncPrepareNewAvatarRaw(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -181,12 +181,12 @@ class UserService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SearchUserResponse>> PrepareAsyncSearch(::grpc::ClientContext* context, const ::e8::SearchUserRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SearchUserResponse>>(PrepareAsyncSearchRaw(context, request, cq));
     }
-    ::grpc::Status CreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::e8::CreateNewAvatarResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateNewAvatarResponse>> AsyncCreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateNewAvatarResponse>>(AsyncCreateNewAvatarRaw(context, request, cq));
+    ::grpc::Status PrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::e8::PrepareNewAvatarResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::PrepareNewAvatarResponse>> AsyncPrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::PrepareNewAvatarResponse>>(AsyncPrepareNewAvatarRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateNewAvatarResponse>> PrepareAsyncCreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateNewAvatarResponse>>(PrepareAsyncCreateNewAvatarRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::PrepareNewAvatarResponse>> PrepareAsyncPrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::PrepareNewAvatarResponse>>(PrepareAsyncPrepareNewAvatarRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
@@ -196,7 +196,7 @@ class UserService final {
       void GetPublicProfile(::grpc::ClientContext* context, const ::e8::GetPublicProfileRequest* request, ::e8::GetPublicProfileResponse* response, std::function<void(::grpc::Status)>) override;
       void UpdatePublicProfile(::grpc::ClientContext* context, const ::e8::UpdatePublicProfileRequest* request, ::e8::UpdatePublicProfileResponse* response, std::function<void(::grpc::Status)>) override;
       void Search(::grpc::ClientContext* context, const ::e8::SearchUserRequest* request, ::e8::SearchUserResponse* response, std::function<void(::grpc::Status)>) override;
-      void CreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response, std::function<void(::grpc::Status)>) override;
+      void PrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -218,14 +218,14 @@ class UserService final {
     ::grpc::ClientAsyncResponseReader< ::e8::UpdatePublicProfileResponse>* PrepareAsyncUpdatePublicProfileRaw(::grpc::ClientContext* context, const ::e8::UpdatePublicProfileRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::SearchUserResponse>* AsyncSearchRaw(::grpc::ClientContext* context, const ::e8::SearchUserRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::SearchUserResponse>* PrepareAsyncSearchRaw(::grpc::ClientContext* context, const ::e8::SearchUserRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::CreateNewAvatarResponse>* AsyncCreateNewAvatarRaw(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::CreateNewAvatarResponse>* PrepareAsyncCreateNewAvatarRaw(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::PrepareNewAvatarResponse>* AsyncPrepareNewAvatarRaw(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::PrepareNewAvatarResponse>* PrepareAsyncPrepareNewAvatarRaw(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Register_;
     const ::grpc::internal::RpcMethod rpcmethod_Authorize_;
     const ::grpc::internal::RpcMethod rpcmethod_GetPublicProfile_;
     const ::grpc::internal::RpcMethod rpcmethod_UpdatePublicProfile_;
     const ::grpc::internal::RpcMethod rpcmethod_Search_;
-    const ::grpc::internal::RpcMethod rpcmethod_CreateNewAvatar_;
+    const ::grpc::internal::RpcMethod rpcmethod_PrepareNewAvatar_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -249,8 +249,8 @@ class UserService final {
     // Search users.
     virtual ::grpc::Status Search(::grpc::ServerContext* context, const ::e8::SearchUserRequest* request, ::e8::SearchUserResponse* response);
     // *
-    // Create a new avatar for the logged-in user.
-    virtual ::grpc::Status CreateNewAvatar(::grpc::ServerContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response);
+    // Prepare for a new avatar upload for the logged-in user.
+    virtual ::grpc::Status PrepareNewAvatar(::grpc::ServerContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Register : public BaseClass {
@@ -353,26 +353,26 @@ class UserService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_CreateNewAvatar : public BaseClass {
+  class WithAsyncMethod_PrepareNewAvatar : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithAsyncMethod_CreateNewAvatar() {
+    WithAsyncMethod_PrepareNewAvatar() {
       ::grpc::Service::MarkMethodAsync(5);
     }
-    ~WithAsyncMethod_CreateNewAvatar() override {
+    ~WithAsyncMethod_PrepareNewAvatar() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CreateNewAvatar(::grpc::ServerContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response) override {
+    ::grpc::Status PrepareNewAvatar(::grpc::ServerContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestCreateNewAvatar(::grpc::ServerContext* context, ::e8::CreateNewAvatarRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::CreateNewAvatarResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestPrepareNewAvatar(::grpc::ServerContext* context, ::e8::PrepareNewAvatarRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::PrepareNewAvatarResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Register<WithAsyncMethod_Authorize<WithAsyncMethod_GetPublicProfile<WithAsyncMethod_UpdatePublicProfile<WithAsyncMethod_Search<WithAsyncMethod_CreateNewAvatar<Service > > > > > > AsyncService;
+  typedef WithAsyncMethod_Register<WithAsyncMethod_Authorize<WithAsyncMethod_GetPublicProfile<WithAsyncMethod_UpdatePublicProfile<WithAsyncMethod_Search<WithAsyncMethod_PrepareNewAvatar<Service > > > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_Register : public BaseClass {
    private:
@@ -459,18 +459,18 @@ class UserService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_CreateNewAvatar : public BaseClass {
+  class WithGenericMethod_PrepareNewAvatar : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithGenericMethod_CreateNewAvatar() {
+    WithGenericMethod_PrepareNewAvatar() {
       ::grpc::Service::MarkMethodGeneric(5);
     }
-    ~WithGenericMethod_CreateNewAvatar() override {
+    ~WithGenericMethod_PrepareNewAvatar() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CreateNewAvatar(::grpc::ServerContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response) override {
+    ::grpc::Status PrepareNewAvatar(::grpc::ServerContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -576,22 +576,22 @@ class UserService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_CreateNewAvatar : public BaseClass {
+  class WithRawMethod_PrepareNewAvatar : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithRawMethod_CreateNewAvatar() {
+    WithRawMethod_PrepareNewAvatar() {
       ::grpc::Service::MarkMethodRaw(5);
     }
-    ~WithRawMethod_CreateNewAvatar() override {
+    ~WithRawMethod_PrepareNewAvatar() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CreateNewAvatar(::grpc::ServerContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response) override {
+    ::grpc::Status PrepareNewAvatar(::grpc::ServerContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestCreateNewAvatar(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestPrepareNewAvatar(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -696,28 +696,28 @@ class UserService final {
     virtual ::grpc::Status StreamedSearch(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::SearchUserRequest,::e8::SearchUserResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_CreateNewAvatar : public BaseClass {
+  class WithStreamedUnaryMethod_PrepareNewAvatar : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithStreamedUnaryMethod_CreateNewAvatar() {
+    WithStreamedUnaryMethod_PrepareNewAvatar() {
       ::grpc::Service::MarkMethodStreamed(5,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::CreateNewAvatarRequest, ::e8::CreateNewAvatarResponse>(std::bind(&WithStreamedUnaryMethod_CreateNewAvatar<BaseClass>::StreamedCreateNewAvatar, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::PrepareNewAvatarRequest, ::e8::PrepareNewAvatarResponse>(std::bind(&WithStreamedUnaryMethod_PrepareNewAvatar<BaseClass>::StreamedPrepareNewAvatar, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithStreamedUnaryMethod_CreateNewAvatar() override {
+    ~WithStreamedUnaryMethod_PrepareNewAvatar() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status CreateNewAvatar(::grpc::ServerContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response) override {
+    ::grpc::Status PrepareNewAvatar(::grpc::ServerContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedCreateNewAvatar(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::CreateNewAvatarRequest,::e8::CreateNewAvatarResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedPrepareNewAvatar(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::PrepareNewAvatarRequest,::e8::PrepareNewAvatarResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_Register<WithStreamedUnaryMethod_Authorize<WithStreamedUnaryMethod_GetPublicProfile<WithStreamedUnaryMethod_UpdatePublicProfile<WithStreamedUnaryMethod_Search<WithStreamedUnaryMethod_CreateNewAvatar<Service > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_Register<WithStreamedUnaryMethod_Authorize<WithStreamedUnaryMethod_GetPublicProfile<WithStreamedUnaryMethod_UpdatePublicProfile<WithStreamedUnaryMethod_Search<WithStreamedUnaryMethod_PrepareNewAvatar<Service > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_Register<WithStreamedUnaryMethod_Authorize<WithStreamedUnaryMethod_GetPublicProfile<WithStreamedUnaryMethod_UpdatePublicProfile<WithStreamedUnaryMethod_Search<WithStreamedUnaryMethod_CreateNewAvatar<Service > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_Register<WithStreamedUnaryMethod_Authorize<WithStreamedUnaryMethod_GetPublicProfile<WithStreamedUnaryMethod_UpdatePublicProfile<WithStreamedUnaryMethod_Search<WithStreamedUnaryMethod_PrepareNewAvatar<Service > > > > > > StreamedService;
 };
 
 }  // namespace e8

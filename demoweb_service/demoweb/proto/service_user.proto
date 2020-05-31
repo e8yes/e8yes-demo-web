@@ -85,13 +85,12 @@ message SearchUserResponse {
 }
 
 
-message CreateNewAvatarRequest {
-    // File name of the new avatar file. It can be a file path containing the
-    // name.
-    string avatar_file_name = 1;
+message PrepareNewAvatarRequest {
+    // File format of the new avatar to be set and uploaded.
+    FileFormat file_format = 1;
 }
 
-message CreateNewAvatarResponse {
+message PrepareNewAvatarResponse {
     // Gain read/write access to the specified avatar file location. Using the
     // access token allows the client to later upload avatar file through token
     // access.
@@ -125,8 +124,7 @@ service UserService {
   rpc Search (SearchUserRequest) returns (SearchUserResponse);
   
   /**
-   * Create a new avatar for the logged-in user.
+   * Prepare for a new avatar upload for the logged-in user.
    */
-  rpc CreateNewAvatar(CreateNewAvatarRequest) returns 
-    (CreateNewAvatarResponse);
+  rpc PrepareNewAvatar(PrepareNewAvatarRequest) returns (PrepareNewAvatarResponse);
 }

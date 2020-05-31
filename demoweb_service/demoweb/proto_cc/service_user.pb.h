@@ -58,18 +58,18 @@ extern AuthorizationRequestDefaultTypeInternal _AuthorizationRequest_default_ins
 class AuthorizationResponse;
 class AuthorizationResponseDefaultTypeInternal;
 extern AuthorizationResponseDefaultTypeInternal _AuthorizationResponse_default_instance_;
-class CreateNewAvatarRequest;
-class CreateNewAvatarRequestDefaultTypeInternal;
-extern CreateNewAvatarRequestDefaultTypeInternal _CreateNewAvatarRequest_default_instance_;
-class CreateNewAvatarResponse;
-class CreateNewAvatarResponseDefaultTypeInternal;
-extern CreateNewAvatarResponseDefaultTypeInternal _CreateNewAvatarResponse_default_instance_;
 class GetPublicProfileRequest;
 class GetPublicProfileRequestDefaultTypeInternal;
 extern GetPublicProfileRequestDefaultTypeInternal _GetPublicProfileRequest_default_instance_;
 class GetPublicProfileResponse;
 class GetPublicProfileResponseDefaultTypeInternal;
 extern GetPublicProfileResponseDefaultTypeInternal _GetPublicProfileResponse_default_instance_;
+class PrepareNewAvatarRequest;
+class PrepareNewAvatarRequestDefaultTypeInternal;
+extern PrepareNewAvatarRequestDefaultTypeInternal _PrepareNewAvatarRequest_default_instance_;
+class PrepareNewAvatarResponse;
+class PrepareNewAvatarResponseDefaultTypeInternal;
+extern PrepareNewAvatarResponseDefaultTypeInternal _PrepareNewAvatarResponse_default_instance_;
 class RegistrationReponse;
 class RegistrationReponseDefaultTypeInternal;
 extern RegistrationReponseDefaultTypeInternal _RegistrationReponse_default_instance_;
@@ -93,10 +93,10 @@ namespace google {
 namespace protobuf {
 template<> ::e8::AuthorizationRequest* Arena::CreateMaybeMessage<::e8::AuthorizationRequest>(Arena*);
 template<> ::e8::AuthorizationResponse* Arena::CreateMaybeMessage<::e8::AuthorizationResponse>(Arena*);
-template<> ::e8::CreateNewAvatarRequest* Arena::CreateMaybeMessage<::e8::CreateNewAvatarRequest>(Arena*);
-template<> ::e8::CreateNewAvatarResponse* Arena::CreateMaybeMessage<::e8::CreateNewAvatarResponse>(Arena*);
 template<> ::e8::GetPublicProfileRequest* Arena::CreateMaybeMessage<::e8::GetPublicProfileRequest>(Arena*);
 template<> ::e8::GetPublicProfileResponse* Arena::CreateMaybeMessage<::e8::GetPublicProfileResponse>(Arena*);
+template<> ::e8::PrepareNewAvatarRequest* Arena::CreateMaybeMessage<::e8::PrepareNewAvatarRequest>(Arena*);
+template<> ::e8::PrepareNewAvatarResponse* Arena::CreateMaybeMessage<::e8::PrepareNewAvatarResponse>(Arena*);
 template<> ::e8::RegistrationReponse* Arena::CreateMaybeMessage<::e8::RegistrationReponse>(Arena*);
 template<> ::e8::RegistrationRequest* Arena::CreateMaybeMessage<::e8::RegistrationRequest>(Arena*);
 template<> ::e8::SearchUserRequest* Arena::CreateMaybeMessage<::e8::SearchUserRequest>(Arena*);
@@ -1287,24 +1287,24 @@ class SearchUserResponse : public ::google::protobuf::Message /* @@protoc_insert
 };
 // -------------------------------------------------------------------
 
-class CreateNewAvatarRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.CreateNewAvatarRequest) */ {
+class PrepareNewAvatarRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.PrepareNewAvatarRequest) */ {
  public:
-  CreateNewAvatarRequest();
-  virtual ~CreateNewAvatarRequest();
+  PrepareNewAvatarRequest();
+  virtual ~PrepareNewAvatarRequest();
 
-  CreateNewAvatarRequest(const CreateNewAvatarRequest& from);
+  PrepareNewAvatarRequest(const PrepareNewAvatarRequest& from);
 
-  inline CreateNewAvatarRequest& operator=(const CreateNewAvatarRequest& from) {
+  inline PrepareNewAvatarRequest& operator=(const PrepareNewAvatarRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  CreateNewAvatarRequest(CreateNewAvatarRequest&& from) noexcept
-    : CreateNewAvatarRequest() {
+  PrepareNewAvatarRequest(PrepareNewAvatarRequest&& from) noexcept
+    : PrepareNewAvatarRequest() {
     *this = ::std::move(from);
   }
 
-  inline CreateNewAvatarRequest& operator=(CreateNewAvatarRequest&& from) noexcept {
+  inline PrepareNewAvatarRequest& operator=(PrepareNewAvatarRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1314,34 +1314,34 @@ class CreateNewAvatarRequest : public ::google::protobuf::Message /* @@protoc_in
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const CreateNewAvatarRequest& default_instance();
+  static const PrepareNewAvatarRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const CreateNewAvatarRequest* internal_default_instance() {
-    return reinterpret_cast<const CreateNewAvatarRequest*>(
-               &_CreateNewAvatarRequest_default_instance_);
+  static inline const PrepareNewAvatarRequest* internal_default_instance() {
+    return reinterpret_cast<const PrepareNewAvatarRequest*>(
+               &_PrepareNewAvatarRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     10;
 
-  void Swap(CreateNewAvatarRequest* other);
-  friend void swap(CreateNewAvatarRequest& a, CreateNewAvatarRequest& b) {
+  void Swap(PrepareNewAvatarRequest* other);
+  friend void swap(PrepareNewAvatarRequest& a, PrepareNewAvatarRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline CreateNewAvatarRequest* New() const final {
-    return CreateMaybeMessage<CreateNewAvatarRequest>(NULL);
+  inline PrepareNewAvatarRequest* New() const final {
+    return CreateMaybeMessage<PrepareNewAvatarRequest>(NULL);
   }
 
-  CreateNewAvatarRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<CreateNewAvatarRequest>(arena);
+  PrepareNewAvatarRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<PrepareNewAvatarRequest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const CreateNewAvatarRequest& from);
-  void MergeFrom(const CreateNewAvatarRequest& from);
+  void CopyFrom(const PrepareNewAvatarRequest& from);
+  void MergeFrom(const PrepareNewAvatarRequest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -1358,7 +1358,7 @@ class CreateNewAvatarRequest : public ::google::protobuf::Message /* @@protoc_in
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CreateNewAvatarRequest* other);
+  void InternalSwap(PrepareNewAvatarRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1374,48 +1374,40 @@ class CreateNewAvatarRequest : public ::google::protobuf::Message /* @@protoc_in
 
   // accessors -------------------------------------------------------
 
-  // string avatar_file_name = 1;
-  void clear_avatar_file_name();
-  static const int kAvatarFileNameFieldNumber = 1;
-  const ::std::string& avatar_file_name() const;
-  void set_avatar_file_name(const ::std::string& value);
-  #if LANG_CXX11
-  void set_avatar_file_name(::std::string&& value);
-  #endif
-  void set_avatar_file_name(const char* value);
-  void set_avatar_file_name(const char* value, size_t size);
-  ::std::string* mutable_avatar_file_name();
-  ::std::string* release_avatar_file_name();
-  void set_allocated_avatar_file_name(::std::string* avatar_file_name);
+  // .e8.FileFormat file_format = 1;
+  void clear_file_format();
+  static const int kFileFormatFieldNumber = 1;
+  ::e8::FileFormat file_format() const;
+  void set_file_format(::e8::FileFormat value);
 
-  // @@protoc_insertion_point(class_scope:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(class_scope:e8.PrepareNewAvatarRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr avatar_file_name_;
+  int file_format_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fuser_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class CreateNewAvatarResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.CreateNewAvatarResponse) */ {
+class PrepareNewAvatarResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.PrepareNewAvatarResponse) */ {
  public:
-  CreateNewAvatarResponse();
-  virtual ~CreateNewAvatarResponse();
+  PrepareNewAvatarResponse();
+  virtual ~PrepareNewAvatarResponse();
 
-  CreateNewAvatarResponse(const CreateNewAvatarResponse& from);
+  PrepareNewAvatarResponse(const PrepareNewAvatarResponse& from);
 
-  inline CreateNewAvatarResponse& operator=(const CreateNewAvatarResponse& from) {
+  inline PrepareNewAvatarResponse& operator=(const PrepareNewAvatarResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  CreateNewAvatarResponse(CreateNewAvatarResponse&& from) noexcept
-    : CreateNewAvatarResponse() {
+  PrepareNewAvatarResponse(PrepareNewAvatarResponse&& from) noexcept
+    : PrepareNewAvatarResponse() {
     *this = ::std::move(from);
   }
 
-  inline CreateNewAvatarResponse& operator=(CreateNewAvatarResponse&& from) noexcept {
+  inline PrepareNewAvatarResponse& operator=(PrepareNewAvatarResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1425,34 +1417,34 @@ class CreateNewAvatarResponse : public ::google::protobuf::Message /* @@protoc_i
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const CreateNewAvatarResponse& default_instance();
+  static const PrepareNewAvatarResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const CreateNewAvatarResponse* internal_default_instance() {
-    return reinterpret_cast<const CreateNewAvatarResponse*>(
-               &_CreateNewAvatarResponse_default_instance_);
+  static inline const PrepareNewAvatarResponse* internal_default_instance() {
+    return reinterpret_cast<const PrepareNewAvatarResponse*>(
+               &_PrepareNewAvatarResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     11;
 
-  void Swap(CreateNewAvatarResponse* other);
-  friend void swap(CreateNewAvatarResponse& a, CreateNewAvatarResponse& b) {
+  void Swap(PrepareNewAvatarResponse* other);
+  friend void swap(PrepareNewAvatarResponse& a, PrepareNewAvatarResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline CreateNewAvatarResponse* New() const final {
-    return CreateMaybeMessage<CreateNewAvatarResponse>(NULL);
+  inline PrepareNewAvatarResponse* New() const final {
+    return CreateMaybeMessage<PrepareNewAvatarResponse>(NULL);
   }
 
-  CreateNewAvatarResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<CreateNewAvatarResponse>(arena);
+  PrepareNewAvatarResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<PrepareNewAvatarResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const CreateNewAvatarResponse& from);
-  void MergeFrom(const CreateNewAvatarResponse& from);
+  void CopyFrom(const PrepareNewAvatarResponse& from);
+  void MergeFrom(const PrepareNewAvatarResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -1469,7 +1461,7 @@ class CreateNewAvatarResponse : public ::google::protobuf::Message /* @@protoc_i
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CreateNewAvatarResponse* other);
+  void InternalSwap(PrepareNewAvatarResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1497,7 +1489,7 @@ class CreateNewAvatarResponse : public ::google::protobuf::Message /* @@protoc_i
   ::e8::FileTokenAccess* mutable_avatar_readwrite_access();
   void set_allocated_avatar_readwrite_access(::e8::FileTokenAccess* avatar_readwrite_access);
 
-  // @@protoc_insertion_point(class_scope:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(class_scope:e8.PrepareNewAvatarResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -2113,95 +2105,56 @@ SearchUserResponse::user_profiles() const {
 
 // -------------------------------------------------------------------
 
-// CreateNewAvatarRequest
+// PrepareNewAvatarRequest
 
-// string avatar_file_name = 1;
-inline void CreateNewAvatarRequest::clear_avatar_file_name() {
-  avatar_file_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// .e8.FileFormat file_format = 1;
+inline void PrepareNewAvatarRequest::clear_file_format() {
+  file_format_ = 0;
 }
-inline const ::std::string& CreateNewAvatarRequest::avatar_file_name() const {
-  // @@protoc_insertion_point(field_get:e8.CreateNewAvatarRequest.avatar_file_name)
-  return avatar_file_name_.GetNoArena();
+inline ::e8::FileFormat PrepareNewAvatarRequest::file_format() const {
+  // @@protoc_insertion_point(field_get:e8.PrepareNewAvatarRequest.file_format)
+  return static_cast< ::e8::FileFormat >(file_format_);
 }
-inline void CreateNewAvatarRequest::set_avatar_file_name(const ::std::string& value) {
+inline void PrepareNewAvatarRequest::set_file_format(::e8::FileFormat value) {
   
-  avatar_file_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.CreateNewAvatarRequest.avatar_file_name)
-}
-#if LANG_CXX11
-inline void CreateNewAvatarRequest::set_avatar_file_name(::std::string&& value) {
-  
-  avatar_file_name_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.CreateNewAvatarRequest.avatar_file_name)
-}
-#endif
-inline void CreateNewAvatarRequest::set_avatar_file_name(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  avatar_file_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.CreateNewAvatarRequest.avatar_file_name)
-}
-inline void CreateNewAvatarRequest::set_avatar_file_name(const char* value, size_t size) {
-  
-  avatar_file_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.CreateNewAvatarRequest.avatar_file_name)
-}
-inline ::std::string* CreateNewAvatarRequest::mutable_avatar_file_name() {
-  
-  // @@protoc_insertion_point(field_mutable:e8.CreateNewAvatarRequest.avatar_file_name)
-  return avatar_file_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* CreateNewAvatarRequest::release_avatar_file_name() {
-  // @@protoc_insertion_point(field_release:e8.CreateNewAvatarRequest.avatar_file_name)
-  
-  return avatar_file_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void CreateNewAvatarRequest::set_allocated_avatar_file_name(::std::string* avatar_file_name) {
-  if (avatar_file_name != NULL) {
-    
-  } else {
-    
-  }
-  avatar_file_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), avatar_file_name);
-  // @@protoc_insertion_point(field_set_allocated:e8.CreateNewAvatarRequest.avatar_file_name)
+  file_format_ = value;
+  // @@protoc_insertion_point(field_set:e8.PrepareNewAvatarRequest.file_format)
 }
 
 // -------------------------------------------------------------------
 
-// CreateNewAvatarResponse
+// PrepareNewAvatarResponse
 
 // .e8.FileTokenAccess avatar_readwrite_access = 1;
-inline bool CreateNewAvatarResponse::has_avatar_readwrite_access() const {
+inline bool PrepareNewAvatarResponse::has_avatar_readwrite_access() const {
   return this != internal_default_instance() && avatar_readwrite_access_ != NULL;
 }
-inline const ::e8::FileTokenAccess& CreateNewAvatarResponse::_internal_avatar_readwrite_access() const {
+inline const ::e8::FileTokenAccess& PrepareNewAvatarResponse::_internal_avatar_readwrite_access() const {
   return *avatar_readwrite_access_;
 }
-inline const ::e8::FileTokenAccess& CreateNewAvatarResponse::avatar_readwrite_access() const {
+inline const ::e8::FileTokenAccess& PrepareNewAvatarResponse::avatar_readwrite_access() const {
   const ::e8::FileTokenAccess* p = avatar_readwrite_access_;
-  // @@protoc_insertion_point(field_get:e8.CreateNewAvatarResponse.avatar_readwrite_access)
+  // @@protoc_insertion_point(field_get:e8.PrepareNewAvatarResponse.avatar_readwrite_access)
   return p != NULL ? *p : *reinterpret_cast<const ::e8::FileTokenAccess*>(
       &::e8::_FileTokenAccess_default_instance_);
 }
-inline ::e8::FileTokenAccess* CreateNewAvatarResponse::release_avatar_readwrite_access() {
-  // @@protoc_insertion_point(field_release:e8.CreateNewAvatarResponse.avatar_readwrite_access)
+inline ::e8::FileTokenAccess* PrepareNewAvatarResponse::release_avatar_readwrite_access() {
+  // @@protoc_insertion_point(field_release:e8.PrepareNewAvatarResponse.avatar_readwrite_access)
   
   ::e8::FileTokenAccess* temp = avatar_readwrite_access_;
   avatar_readwrite_access_ = NULL;
   return temp;
 }
-inline ::e8::FileTokenAccess* CreateNewAvatarResponse::mutable_avatar_readwrite_access() {
+inline ::e8::FileTokenAccess* PrepareNewAvatarResponse::mutable_avatar_readwrite_access() {
   
   if (avatar_readwrite_access_ == NULL) {
     auto* p = CreateMaybeMessage<::e8::FileTokenAccess>(GetArenaNoVirtual());
     avatar_readwrite_access_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:e8.CreateNewAvatarResponse.avatar_readwrite_access)
+  // @@protoc_insertion_point(field_mutable:e8.PrepareNewAvatarResponse.avatar_readwrite_access)
   return avatar_readwrite_access_;
 }
-inline void CreateNewAvatarResponse::set_allocated_avatar_readwrite_access(::e8::FileTokenAccess* avatar_readwrite_access) {
+inline void PrepareNewAvatarResponse::set_allocated_avatar_readwrite_access(::e8::FileTokenAccess* avatar_readwrite_access) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete reinterpret_cast< ::google::protobuf::MessageLite*>(avatar_readwrite_access_);
@@ -2217,7 +2170,7 @@ inline void CreateNewAvatarResponse::set_allocated_avatar_readwrite_access(::e8:
     
   }
   avatar_readwrite_access_ = avatar_readwrite_access;
-  // @@protoc_insertion_point(field_set_allocated:e8.CreateNewAvatarResponse.avatar_readwrite_access)
+  // @@protoc_insertion_point(field_set_allocated:e8.PrepareNewAvatarResponse.avatar_readwrite_access)
 }
 
 #ifdef __GNUC__

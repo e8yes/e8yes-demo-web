@@ -23,7 +23,7 @@ static const char* UserService_method_names[] = {
   "/e8.UserService/GetPublicProfile",
   "/e8.UserService/UpdatePublicProfile",
   "/e8.UserService/Search",
-  "/e8.UserService/CreateNewAvatar",
+  "/e8.UserService/PrepareNewAvatar",
 };
 
 std::unique_ptr< UserService::Stub> UserService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -38,7 +38,7 @@ UserService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channe
   , rpcmethod_GetPublicProfile_(UserService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_UpdatePublicProfile_(UserService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_Search_(UserService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_CreateNewAvatar_(UserService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_PrepareNewAvatar_(UserService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status UserService::Stub::Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::e8::RegistrationReponse* response) {
@@ -121,20 +121,20 @@ void UserService::Stub::experimental_async::Search(::grpc::ClientContext* contex
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SearchUserResponse>::Create(channel_.get(), cq, rpcmethod_Search_, context, request, false);
 }
 
-::grpc::Status UserService::Stub::CreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::e8::CreateNewAvatarResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_CreateNewAvatar_, context, request, response);
+::grpc::Status UserService::Stub::PrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::e8::PrepareNewAvatarResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_PrepareNewAvatar_, context, request, response);
 }
 
-void UserService::Stub::experimental_async::CreateNewAvatar(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_CreateNewAvatar_, context, request, response, std::move(f));
+void UserService::Stub::experimental_async::PrepareNewAvatar(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_PrepareNewAvatar_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::CreateNewAvatarResponse>* UserService::Stub::AsyncCreateNewAvatarRaw(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::CreateNewAvatarResponse>::Create(channel_.get(), cq, rpcmethod_CreateNewAvatar_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::PrepareNewAvatarResponse>* UserService::Stub::AsyncPrepareNewAvatarRaw(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::PrepareNewAvatarResponse>::Create(channel_.get(), cq, rpcmethod_PrepareNewAvatar_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::CreateNewAvatarResponse>* UserService::Stub::PrepareAsyncCreateNewAvatarRaw(::grpc::ClientContext* context, const ::e8::CreateNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::CreateNewAvatarResponse>::Create(channel_.get(), cq, rpcmethod_CreateNewAvatar_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::PrepareNewAvatarResponse>* UserService::Stub::PrepareAsyncPrepareNewAvatarRaw(::grpc::ClientContext* context, const ::e8::PrepareNewAvatarRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::PrepareNewAvatarResponse>::Create(channel_.get(), cq, rpcmethod_PrepareNewAvatar_, context, request, false);
 }
 
 UserService::Service::Service() {
@@ -166,8 +166,8 @@ UserService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       UserService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< UserService::Service, ::e8::CreateNewAvatarRequest, ::e8::CreateNewAvatarResponse>(
-          std::mem_fn(&UserService::Service::CreateNewAvatar), this)));
+      new ::grpc::internal::RpcMethodHandler< UserService::Service, ::e8::PrepareNewAvatarRequest, ::e8::PrepareNewAvatarResponse>(
+          std::mem_fn(&UserService::Service::PrepareNewAvatar), this)));
 }
 
 UserService::Service::~Service() {
@@ -208,7 +208,7 @@ UserService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status UserService::Service::CreateNewAvatar(::grpc::ServerContext* context, const ::e8::CreateNewAvatarRequest* request, ::e8::CreateNewAvatarResponse* response) {
+::grpc::Status UserService::Service::PrepareNewAvatar(::grpc::ServerContext* context, const ::e8::PrepareNewAvatarRequest* request, ::e8::PrepareNewAvatarResponse* response) {
   (void) context;
   (void) request;
   (void) response;

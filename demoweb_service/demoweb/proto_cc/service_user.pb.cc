@@ -86,16 +86,16 @@ class SearchUserResponseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<SearchUserResponse>
       _instance;
 } _SearchUserResponse_default_instance_;
-class CreateNewAvatarRequestDefaultTypeInternal {
+class PrepareNewAvatarRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CreateNewAvatarRequest>
+  ::google::protobuf::internal::ExplicitlyConstructed<PrepareNewAvatarRequest>
       _instance;
-} _CreateNewAvatarRequest_default_instance_;
-class CreateNewAvatarResponseDefaultTypeInternal {
+} _PrepareNewAvatarRequest_default_instance_;
+class PrepareNewAvatarResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CreateNewAvatarResponse>
+  ::google::protobuf::internal::ExplicitlyConstructed<PrepareNewAvatarResponse>
       _instance;
-} _CreateNewAvatarResponse_default_instance_;
+} _PrepareNewAvatarResponse_default_instance_;
 }  // namespace e8
 namespace protobuf_service_5fuser_2eproto {
 static void InitDefaultsRegistrationRequest() {
@@ -247,33 +247,33 @@ static void InitDefaultsSearchUserResponse() {
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSearchUserResponse}, {
       &protobuf_user_5fprofile_2eproto::scc_info_UserPublicProfile.base,}};
 
-static void InitDefaultsCreateNewAvatarRequest() {
+static void InitDefaultsPrepareNewAvatarRequest() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_CreateNewAvatarRequest_default_instance_;
-    new (ptr) ::e8::CreateNewAvatarRequest();
+    void* ptr = &::e8::_PrepareNewAvatarRequest_default_instance_;
+    new (ptr) ::e8::PrepareNewAvatarRequest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::CreateNewAvatarRequest::InitAsDefaultInstance();
+  ::e8::PrepareNewAvatarRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_CreateNewAvatarRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsCreateNewAvatarRequest}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_PrepareNewAvatarRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsPrepareNewAvatarRequest}, {}};
 
-static void InitDefaultsCreateNewAvatarResponse() {
+static void InitDefaultsPrepareNewAvatarResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_CreateNewAvatarResponse_default_instance_;
-    new (ptr) ::e8::CreateNewAvatarResponse();
+    void* ptr = &::e8::_PrepareNewAvatarResponse_default_instance_;
+    new (ptr) ::e8::PrepareNewAvatarResponse();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::CreateNewAvatarResponse::InitAsDefaultInstance();
+  ::e8::PrepareNewAvatarResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_CreateNewAvatarResponse =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsCreateNewAvatarResponse}, {
+::google::protobuf::internal::SCCInfo<1> scc_info_PrepareNewAvatarResponse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsPrepareNewAvatarResponse}, {
       &protobuf_file_2eproto::scc_info_FileTokenAccess.base,}};
 
 void InitDefaults() {
@@ -287,8 +287,8 @@ void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_UpdatePublicProfileResponse.base);
   ::google::protobuf::internal::InitSCC(&scc_info_SearchUserRequest.base);
   ::google::protobuf::internal::InitSCC(&scc_info_SearchUserResponse.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CreateNewAvatarRequest.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CreateNewAvatarResponse.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_PrepareNewAvatarRequest.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_PrepareNewAvatarResponse.base);
 }
 
 ::google::protobuf::Metadata file_level_metadata[12];
@@ -360,17 +360,17 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchUserResponse, user_profiles_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateNewAvatarRequest, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::PrepareNewAvatarRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateNewAvatarRequest, avatar_file_name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::PrepareNewAvatarRequest, file_format_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateNewAvatarResponse, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::PrepareNewAvatarResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateNewAvatarResponse, avatar_readwrite_access_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::PrepareNewAvatarResponse, avatar_readwrite_access_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::RegistrationRequest)},
@@ -383,8 +383,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 44, -1, sizeof(::e8::UpdatePublicProfileResponse)},
   { 50, -1, sizeof(::e8::SearchUserRequest)},
   { 58, -1, sizeof(::e8::SearchUserResponse)},
-  { 64, -1, sizeof(::e8::CreateNewAvatarRequest)},
-  { 70, -1, sizeof(::e8::CreateNewAvatarResponse)},
+  { 64, -1, sizeof(::e8::PrepareNewAvatarRequest)},
+  { 70, -1, sizeof(::e8::PrepareNewAvatarResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -398,8 +398,8 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_UpdatePublicProfileResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_SearchUserRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_SearchUserResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_CreateNewAvatarRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_CreateNewAvatarResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_PrepareNewAvatarRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_PrepareNewAvatarResponse_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -446,25 +446,25 @@ void AddDescriptorsImpl() {
       "8.NullableString\022\"\n\007user_id\030\002 \001(\0132\021.e8.N"
       "ullableInt64\022\"\n\npagination\030\003 \001(\0132\016.e8.Pa"
       "gination\"B\n\022SearchUserResponse\022,\n\ruser_p"
-      "rofiles\030\001 \003(\0132\025.e8.UserPublicProfile\"2\n\026"
-      "CreateNewAvatarRequest\022\030\n\020avatar_file_na"
-      "me\030\001 \001(\t\"O\n\027CreateNewAvatarResponse\0224\n\027a"
-      "vatar_readwrite_access\030\001 \001(\0132\023.e8.FileTo"
-      "kenAccess2\271\003\n\013UserService\022<\n\010Register\022\027."
-      "e8.RegistrationRequest\032\027.e8.Registration"
-      "Reponse\022@\n\tAuthorize\022\030.e8.AuthorizationR"
-      "equest\032\031.e8.AuthorizationResponse\022M\n\020Get"
-      "PublicProfile\022\033.e8.GetPublicProfileReque"
-      "st\032\034.e8.GetPublicProfileResponse\022V\n\023Upda"
-      "tePublicProfile\022\036.e8.UpdatePublicProfile"
-      "Request\032\037.e8.UpdatePublicProfileResponse"
-      "\0227\n\006Search\022\025.e8.SearchUserRequest\032\026.e8.S"
-      "earchUserResponse\022J\n\017CreateNewAvatar\022\032.e"
-      "8.CreateNewAvatarRequest\032\033.e8.CreateNewA"
-      "vatarResponseb\006proto3"
+      "rofiles\030\001 \003(\0132\025.e8.UserPublicProfile\">\n\027"
+      "PrepareNewAvatarRequest\022#\n\013file_format\030\001"
+      " \001(\0162\016.e8.FileFormat\"P\n\030PrepareNewAvatar"
+      "Response\0224\n\027avatar_readwrite_access\030\001 \001("
+      "\0132\023.e8.FileTokenAccess2\274\003\n\013UserService\022<"
+      "\n\010Register\022\027.e8.RegistrationRequest\032\027.e8"
+      ".RegistrationReponse\022@\n\tAuthorize\022\030.e8.A"
+      "uthorizationRequest\032\031.e8.AuthorizationRe"
+      "sponse\022M\n\020GetPublicProfile\022\033.e8.GetPubli"
+      "cProfileRequest\032\034.e8.GetPublicProfileRes"
+      "ponse\022V\n\023UpdatePublicProfile\022\036.e8.Update"
+      "PublicProfileRequest\032\037.e8.UpdatePublicPr"
+      "ofileResponse\0227\n\006Search\022\025.e8.SearchUserR"
+      "equest\032\026.e8.SearchUserResponse\022M\n\020Prepar"
+      "eNewAvatar\022\033.e8.PrepareNewAvatarRequest\032"
+      "\034.e8.PrepareNewAvatarResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1541);
+      descriptor, 1557);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_user.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -3062,87 +3062,82 @@ void SearchUserResponse::InternalSwap(SearchUserResponse* other) {
 
 // ===================================================================
 
-void CreateNewAvatarRequest::InitAsDefaultInstance() {
+void PrepareNewAvatarRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CreateNewAvatarRequest::kAvatarFileNameFieldNumber;
+const int PrepareNewAvatarRequest::kFileFormatFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-CreateNewAvatarRequest::CreateNewAvatarRequest()
+PrepareNewAvatarRequest::PrepareNewAvatarRequest()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fuser_2eproto::scc_info_CreateNewAvatarRequest.base);
+      &protobuf_service_5fuser_2eproto::scc_info_PrepareNewAvatarRequest.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(constructor:e8.PrepareNewAvatarRequest)
 }
-CreateNewAvatarRequest::CreateNewAvatarRequest(const CreateNewAvatarRequest& from)
+PrepareNewAvatarRequest::PrepareNewAvatarRequest(const PrepareNewAvatarRequest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  avatar_file_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.avatar_file_name().size() > 0) {
-    avatar_file_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.avatar_file_name_);
-  }
-  // @@protoc_insertion_point(copy_constructor:e8.CreateNewAvatarRequest)
+  file_format_ = from.file_format_;
+  // @@protoc_insertion_point(copy_constructor:e8.PrepareNewAvatarRequest)
 }
 
-void CreateNewAvatarRequest::SharedCtor() {
-  avatar_file_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void PrepareNewAvatarRequest::SharedCtor() {
+  file_format_ = 0;
 }
 
-CreateNewAvatarRequest::~CreateNewAvatarRequest() {
-  // @@protoc_insertion_point(destructor:e8.CreateNewAvatarRequest)
+PrepareNewAvatarRequest::~PrepareNewAvatarRequest() {
+  // @@protoc_insertion_point(destructor:e8.PrepareNewAvatarRequest)
   SharedDtor();
 }
 
-void CreateNewAvatarRequest::SharedDtor() {
-  avatar_file_name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void PrepareNewAvatarRequest::SharedDtor() {
 }
 
-void CreateNewAvatarRequest::SetCachedSize(int size) const {
+void PrepareNewAvatarRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* CreateNewAvatarRequest::descriptor() {
+const ::google::protobuf::Descriptor* PrepareNewAvatarRequest::descriptor() {
   ::protobuf_service_5fuser_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fuser_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const CreateNewAvatarRequest& CreateNewAvatarRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fuser_2eproto::scc_info_CreateNewAvatarRequest.base);
+const PrepareNewAvatarRequest& PrepareNewAvatarRequest::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fuser_2eproto::scc_info_PrepareNewAvatarRequest.base);
   return *internal_default_instance();
 }
 
 
-void CreateNewAvatarRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.CreateNewAvatarRequest)
+void PrepareNewAvatarRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.PrepareNewAvatarRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  avatar_file_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  file_format_ = 0;
   _internal_metadata_.Clear();
 }
 
-bool CreateNewAvatarRequest::MergePartialFromCodedStream(
+bool PrepareNewAvatarRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(parse_start:e8.PrepareNewAvatarRequest)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string avatar_file_name = 1;
+      // .e8.FileFormat file_format = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_avatar_file_name()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->avatar_file_name().data(), static_cast<int>(this->avatar_file_name().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "e8.CreateNewAvatarRequest.avatar_file_name"));
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_file_format(static_cast< ::e8::FileFormat >(value));
         } else {
           goto handle_unusual;
         }
@@ -3161,65 +3156,56 @@ bool CreateNewAvatarRequest::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(parse_success:e8.PrepareNewAvatarRequest)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(parse_failure:e8.PrepareNewAvatarRequest)
   return false;
 #undef DO_
 }
 
-void CreateNewAvatarRequest::SerializeWithCachedSizes(
+void PrepareNewAvatarRequest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(serialize_start:e8.PrepareNewAvatarRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string avatar_file_name = 1;
-  if (this->avatar_file_name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->avatar_file_name().data(), static_cast<int>(this->avatar_file_name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.CreateNewAvatarRequest.avatar_file_name");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->avatar_file_name(), output);
+  // .e8.FileFormat file_format = 1;
+  if (this->file_format() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->file_format(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(serialize_end:e8.PrepareNewAvatarRequest)
 }
 
-::google::protobuf::uint8* CreateNewAvatarRequest::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* PrepareNewAvatarRequest::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.PrepareNewAvatarRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string avatar_file_name = 1;
-  if (this->avatar_file_name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->avatar_file_name().data(), static_cast<int>(this->avatar_file_name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.CreateNewAvatarRequest.avatar_file_name");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->avatar_file_name(), target);
+  // .e8.FileFormat file_format = 1;
+  if (this->file_format() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->file_format(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.PrepareNewAvatarRequest)
   return target;
 }
 
-size_t CreateNewAvatarRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.CreateNewAvatarRequest)
+size_t PrepareNewAvatarRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.PrepareNewAvatarRequest)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -3227,11 +3213,10 @@ size_t CreateNewAvatarRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string avatar_file_name = 1;
-  if (this->avatar_file_name().size() > 0) {
+  // .e8.FileFormat file_format = 1;
+  if (this->file_format() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->avatar_file_name());
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->file_format());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -3239,64 +3224,62 @@ size_t CreateNewAvatarRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void CreateNewAvatarRequest::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.CreateNewAvatarRequest)
+void PrepareNewAvatarRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.PrepareNewAvatarRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  const CreateNewAvatarRequest* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const CreateNewAvatarRequest>(
+  const PrepareNewAvatarRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const PrepareNewAvatarRequest>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.PrepareNewAvatarRequest)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.CreateNewAvatarRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.PrepareNewAvatarRequest)
     MergeFrom(*source);
   }
 }
 
-void CreateNewAvatarRequest::MergeFrom(const CreateNewAvatarRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.CreateNewAvatarRequest)
+void PrepareNewAvatarRequest::MergeFrom(const PrepareNewAvatarRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.PrepareNewAvatarRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.avatar_file_name().size() > 0) {
-
-    avatar_file_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.avatar_file_name_);
+  if (from.file_format() != 0) {
+    set_file_format(from.file_format());
   }
 }
 
-void CreateNewAvatarRequest::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.CreateNewAvatarRequest)
+void PrepareNewAvatarRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.PrepareNewAvatarRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void CreateNewAvatarRequest::CopyFrom(const CreateNewAvatarRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.CreateNewAvatarRequest)
+void PrepareNewAvatarRequest::CopyFrom(const PrepareNewAvatarRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.PrepareNewAvatarRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CreateNewAvatarRequest::IsInitialized() const {
+bool PrepareNewAvatarRequest::IsInitialized() const {
   return true;
 }
 
-void CreateNewAvatarRequest::Swap(CreateNewAvatarRequest* other) {
+void PrepareNewAvatarRequest::Swap(PrepareNewAvatarRequest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void CreateNewAvatarRequest::InternalSwap(CreateNewAvatarRequest* other) {
+void PrepareNewAvatarRequest::InternalSwap(PrepareNewAvatarRequest* other) {
   using std::swap;
-  avatar_file_name_.Swap(&other->avatar_file_name_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  swap(file_format_, other->file_format_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata CreateNewAvatarRequest::GetMetadata() const {
+::google::protobuf::Metadata PrepareNewAvatarRequest::GetMetadata() const {
   protobuf_service_5fuser_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fuser_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -3304,28 +3287,28 @@ void CreateNewAvatarRequest::InternalSwap(CreateNewAvatarRequest* other) {
 
 // ===================================================================
 
-void CreateNewAvatarResponse::InitAsDefaultInstance() {
-  ::e8::_CreateNewAvatarResponse_default_instance_._instance.get_mutable()->avatar_readwrite_access_ = const_cast< ::e8::FileTokenAccess*>(
+void PrepareNewAvatarResponse::InitAsDefaultInstance() {
+  ::e8::_PrepareNewAvatarResponse_default_instance_._instance.get_mutable()->avatar_readwrite_access_ = const_cast< ::e8::FileTokenAccess*>(
       ::e8::FileTokenAccess::internal_default_instance());
 }
-void CreateNewAvatarResponse::clear_avatar_readwrite_access() {
+void PrepareNewAvatarResponse::clear_avatar_readwrite_access() {
   if (GetArenaNoVirtual() == NULL && avatar_readwrite_access_ != NULL) {
     delete avatar_readwrite_access_;
   }
   avatar_readwrite_access_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CreateNewAvatarResponse::kAvatarReadwriteAccessFieldNumber;
+const int PrepareNewAvatarResponse::kAvatarReadwriteAccessFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-CreateNewAvatarResponse::CreateNewAvatarResponse()
+PrepareNewAvatarResponse::PrepareNewAvatarResponse()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fuser_2eproto::scc_info_CreateNewAvatarResponse.base);
+      &protobuf_service_5fuser_2eproto::scc_info_PrepareNewAvatarResponse.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(constructor:e8.PrepareNewAvatarResponse)
 }
-CreateNewAvatarResponse::CreateNewAvatarResponse(const CreateNewAvatarResponse& from)
+PrepareNewAvatarResponse::PrepareNewAvatarResponse(const PrepareNewAvatarResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -3334,38 +3317,38 @@ CreateNewAvatarResponse::CreateNewAvatarResponse(const CreateNewAvatarResponse& 
   } else {
     avatar_readwrite_access_ = NULL;
   }
-  // @@protoc_insertion_point(copy_constructor:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(copy_constructor:e8.PrepareNewAvatarResponse)
 }
 
-void CreateNewAvatarResponse::SharedCtor() {
+void PrepareNewAvatarResponse::SharedCtor() {
   avatar_readwrite_access_ = NULL;
 }
 
-CreateNewAvatarResponse::~CreateNewAvatarResponse() {
-  // @@protoc_insertion_point(destructor:e8.CreateNewAvatarResponse)
+PrepareNewAvatarResponse::~PrepareNewAvatarResponse() {
+  // @@protoc_insertion_point(destructor:e8.PrepareNewAvatarResponse)
   SharedDtor();
 }
 
-void CreateNewAvatarResponse::SharedDtor() {
+void PrepareNewAvatarResponse::SharedDtor() {
   if (this != internal_default_instance()) delete avatar_readwrite_access_;
 }
 
-void CreateNewAvatarResponse::SetCachedSize(int size) const {
+void PrepareNewAvatarResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* CreateNewAvatarResponse::descriptor() {
+const ::google::protobuf::Descriptor* PrepareNewAvatarResponse::descriptor() {
   ::protobuf_service_5fuser_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fuser_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const CreateNewAvatarResponse& CreateNewAvatarResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fuser_2eproto::scc_info_CreateNewAvatarResponse.base);
+const PrepareNewAvatarResponse& PrepareNewAvatarResponse::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fuser_2eproto::scc_info_PrepareNewAvatarResponse.base);
   return *internal_default_instance();
 }
 
 
-void CreateNewAvatarResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.CreateNewAvatarResponse)
+void PrepareNewAvatarResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.PrepareNewAvatarResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -3377,11 +3360,11 @@ void CreateNewAvatarResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool CreateNewAvatarResponse::MergePartialFromCodedStream(
+bool PrepareNewAvatarResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(parse_start:e8.PrepareNewAvatarResponse)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -3411,17 +3394,17 @@ bool CreateNewAvatarResponse::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(parse_success:e8.PrepareNewAvatarResponse)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(parse_failure:e8.PrepareNewAvatarResponse)
   return false;
 #undef DO_
 }
 
-void CreateNewAvatarResponse::SerializeWithCachedSizes(
+void PrepareNewAvatarResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(serialize_start:e8.PrepareNewAvatarResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3435,13 +3418,13 @@ void CreateNewAvatarResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(serialize_end:e8.PrepareNewAvatarResponse)
 }
 
-::google::protobuf::uint8* CreateNewAvatarResponse::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* PrepareNewAvatarResponse::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.PrepareNewAvatarResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3456,12 +3439,12 @@ void CreateNewAvatarResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.PrepareNewAvatarResponse)
   return target;
 }
 
-size_t CreateNewAvatarResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.CreateNewAvatarResponse)
+size_t PrepareNewAvatarResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.PrepareNewAvatarResponse)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -3481,23 +3464,23 @@ size_t CreateNewAvatarResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void CreateNewAvatarResponse::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.CreateNewAvatarResponse)
+void PrepareNewAvatarResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.PrepareNewAvatarResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  const CreateNewAvatarResponse* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const CreateNewAvatarResponse>(
+  const PrepareNewAvatarResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const PrepareNewAvatarResponse>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.PrepareNewAvatarResponse)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.CreateNewAvatarResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.PrepareNewAvatarResponse)
     MergeFrom(*source);
   }
 }
 
-void CreateNewAvatarResponse::MergeFrom(const CreateNewAvatarResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.CreateNewAvatarResponse)
+void PrepareNewAvatarResponse::MergeFrom(const PrepareNewAvatarResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.PrepareNewAvatarResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -3508,35 +3491,35 @@ void CreateNewAvatarResponse::MergeFrom(const CreateNewAvatarResponse& from) {
   }
 }
 
-void CreateNewAvatarResponse::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.CreateNewAvatarResponse)
+void PrepareNewAvatarResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.PrepareNewAvatarResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void CreateNewAvatarResponse::CopyFrom(const CreateNewAvatarResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.CreateNewAvatarResponse)
+void PrepareNewAvatarResponse::CopyFrom(const PrepareNewAvatarResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.PrepareNewAvatarResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CreateNewAvatarResponse::IsInitialized() const {
+bool PrepareNewAvatarResponse::IsInitialized() const {
   return true;
 }
 
-void CreateNewAvatarResponse::Swap(CreateNewAvatarResponse* other) {
+void PrepareNewAvatarResponse::Swap(PrepareNewAvatarResponse* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void CreateNewAvatarResponse::InternalSwap(CreateNewAvatarResponse* other) {
+void PrepareNewAvatarResponse::InternalSwap(PrepareNewAvatarResponse* other) {
   using std::swap;
   swap(avatar_readwrite_access_, other->avatar_readwrite_access_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata CreateNewAvatarResponse::GetMetadata() const {
+::google::protobuf::Metadata PrepareNewAvatarResponse::GetMetadata() const {
   protobuf_service_5fuser_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fuser_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -3576,11 +3559,11 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::SearchUserRequest* Arena::Cr
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::SearchUserResponse* Arena::CreateMaybeMessage< ::e8::SearchUserResponse >(Arena* arena) {
   return Arena::CreateInternal< ::e8::SearchUserResponse >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::CreateNewAvatarRequest* Arena::CreateMaybeMessage< ::e8::CreateNewAvatarRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::CreateNewAvatarRequest >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::PrepareNewAvatarRequest* Arena::CreateMaybeMessage< ::e8::PrepareNewAvatarRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::PrepareNewAvatarRequest >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::CreateNewAvatarResponse* Arena::CreateMaybeMessage< ::e8::CreateNewAvatarResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::CreateNewAvatarResponse >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::PrepareNewAvatarResponse* Arena::CreateMaybeMessage< ::e8::PrepareNewAvatarResponse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::PrepareNewAvatarResponse >(arena);
 }
 }  // namespace protobuf
 }  // namespace google
