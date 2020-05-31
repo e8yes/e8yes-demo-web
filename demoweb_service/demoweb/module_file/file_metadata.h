@@ -29,8 +29,8 @@
 namespace e8 {
 
 /**
- * @brief AttachMetadataForFile Creates or updates metadata for an already existing file.
- * Metadata of the file is defined in the FileMetadataEntity.
+ * @brief AttachMetadataForFile Creates or updates metadata for a physical file. The physical file
+ * may not have to exist. Metadata of the file is defined in the FileMetadataEntity.
  *
  * @param file_path Path to the file to attach metadata to.
  * @param encryption_source Who holds the key to encrypt/decrypt the file.
