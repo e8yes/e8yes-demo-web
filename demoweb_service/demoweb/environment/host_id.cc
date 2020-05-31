@@ -30,11 +30,11 @@ namespace {
  * numeric part of the host name is the host ID.
  */
 HostId ParseHostIdFromHostName(std::string const &host_name) {
-    std::regex re("[a-zA-Z_]*([0-9]+)");
+    std::regex re(R"(^[a-zA-Z_]*([0-9]+)$)");
     std::smatch sm;
     std::regex_match(host_name, sm, re);
-    assert(sm.size() == 1);
-    return static_cast<unsigned>(std::stoi(sm[0].str()));
+    assert(sm.size() == 2);
+    return static_cast<unsigned>(std::stoi(sm[1].str()));
 }
 
 } // namespace
