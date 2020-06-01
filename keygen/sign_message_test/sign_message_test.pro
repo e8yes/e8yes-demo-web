@@ -14,7 +14,8 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 INCLUDEPATH += $$PWD/../../
 
-SOURCES +=  tst_sign_message_test.cpp
+SOURCES +=  \
+    tst_sign_message_test.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../ -lkeygen
 

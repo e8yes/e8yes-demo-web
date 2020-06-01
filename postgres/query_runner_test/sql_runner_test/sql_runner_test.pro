@@ -11,7 +11,8 @@ TEMPLATE = app
 
 INCLUDEPATH += $$PWD/../../../
 
-SOURCES +=  tst_sql_runner_test.cpp
+SOURCES +=  \
+    tst_sql_runner_test.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../query_runner/ -lquery_runner
 

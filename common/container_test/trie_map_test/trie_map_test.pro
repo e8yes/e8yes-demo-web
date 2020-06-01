@@ -11,7 +11,8 @@ TEMPLATE = app
 
 INCLUDEPATH += $$PWD/../../../
 
-SOURCES +=  tst_trie_map_test.cpp
+SOURCES +=  \
+    tst_trie_map_test.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../container/ -lcontainer
 

@@ -14,7 +14,7 @@ QMAKE_LDFLAGS_RELEASE += -O3 -flto
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
-        main.cpp
+    main.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/./ -ldemowebservice
 
