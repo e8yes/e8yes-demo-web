@@ -1,8 +1,15 @@
 <div *ngIf="displayAccountlessUi()">
-    <button (click)="onClickSignIn()">Sign In</button>
+    <button (click)="onClickSyncAccount()">Sync Account</button>
+    <div *ngIf="displaySyncAccountComponent">
+        <sync-account></sync-account>
+    </div>
+
     <button (click)="onClickSignUp()">Sign Up</button>
 </div>
 
-<div *ngIf="displayLoggedInUi()">
-    <button>{{userAlias}}</button>
+<div *ngIf="displaySignedInUi()">
+    <button (click)="onClickAccountSummaryTag()">{{accountSummaryTag}}</button>
+    <div *ngIf="displayAccountProfileComponent">
+        <profile></profile>
+    </div>
 </div>

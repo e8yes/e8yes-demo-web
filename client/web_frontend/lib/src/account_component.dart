@@ -1,36 +1,44 @@
 import 'package:angular/angular.dart';
 
-enum AccountStatus {
+import 'profile_component.dart';
+import 'sync_account_component.dart';
+
+enum AccountState {
   ACCOUNTLESS,
   SIGNED_IN,
-}
-
-class AccountState {
-  AccountStatus status = AccountStatus.ACCOUNTLESS;
 }
 
 @Component(
   selector: 'account',
   templateUrl: 'account_component.html',
-  directives: [coreDirectives]
+  directives: [coreDirectives, 
+               ProfileComponent,
+               SyncAccountComponent]
 )
 class AccountComponent {
-  AccountState accountState = AccountState();
-  String userAlias = 'Davis Wen';
+  AccountState accountState =  AccountState.ACCOUNTLESS;
+  String accountSummaryTag = "Davis Wen";
+
+  bool displaySyncAccountComponent = false;
+  bool displayAccountProfileComponent = false;
 
   bool displayAccountlessUi() {
-    return accountState.status == AccountStatus.ACCOUNTLESS;
+    return accountState == AccountState.ACCOUNTLESS;
   }
 
-  bool displayLoggedInUi() {
-    return accountState.status == AccountStatus.SIGNED_IN;
+  bool displaySignedInUi() {
+    return accountState == AccountState.SIGNED_IN;
   }
 
-  void onClickSignIn() {
-    accountState.status = AccountStatus.SIGNED_IN;
+  void onClickSyncAccount() {
+    displaySyncAccountComponent = !displaySyncAccountComponent;
+  }
+
+  void onClickAccountSummaryTag() {
+    displayAccountProfileComponent = !displayAccountProfileComponent;
   }
 
   void onClickSignUp() {
-    accountState.status = AccountStatus.SIGNED_IN;
+    accountState = AccountState.SIGNED_IN;
   }
 }
