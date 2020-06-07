@@ -1,9 +1,10 @@
 import 'package:angular/angular.dart';
+import 'src/account_component.dart';
 
 @Component(
-  selector: 'my-app',
-  template: '<h1>Hello {{name}}</h1>',
+  selector: 'app',
+  templateUrl: 'app_component.html',
+  directives: [AccountComponent]
 )
 class AppComponent {
-  var name = 'Angular';
 }

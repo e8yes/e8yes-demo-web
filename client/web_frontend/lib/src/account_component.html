@@ -1,0 +1,7 @@
+<div *ngIf="displayAccountlessUi()">
+    <button (click)="onClickSignIn()">Sign In</button>
+</div>
+
+<div *ngIf="displayLoggedInUi()">
+    <button>{{userAlias}}</button>
+</div>
