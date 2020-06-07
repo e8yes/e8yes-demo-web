@@ -35,7 +35,6 @@ ProductionEnvironmentContext::ProductionEnvironmentContext(std::string const &de
                            kDemowebDatabaseName, demoweb_db_user, demoweb_db_password);
     demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
-    ClearAllTables(demoweb_database_.get());
 
     key_gen_ = std::make_unique<PersistentKeyGenerator>(demoweb_database_.get());
 

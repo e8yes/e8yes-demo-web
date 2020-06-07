@@ -20,7 +20,7 @@
 
 namespace e8 {
 
-static char const kAuthorizationKey[] = "AU";
+static char const kAuthorizationKey[] = "a-bin";
 
 } // namespace e8
 

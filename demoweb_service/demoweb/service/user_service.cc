@@ -28,8 +28,8 @@
 #include "demoweb_service/demoweb/module_identity/retrieve_user.h"
 #include "demoweb_service/demoweb/module_identity/user_identity.h"
 #include "demoweb_service/demoweb/module_identity/user_profile.h"
-#include "demoweb_service/demoweb/service/user_service.h"
 #include "demoweb_service/demoweb/service/service_util.h"
+#include "demoweb_service/demoweb/service/user_service.h"
 
 namespace e8 {
 
@@ -72,8 +72,6 @@ grpc::Status UserServiceImpl::Authorize(grpc::ServerContext *context,
     IdentitySignature sig;
     sig.set_signature(signed_identity.value());
     *response->mutable_signed_identity() = sig;
-
-    context->AddInitialMetadata(kAuthorizationKey, signed_identity.value());
 
     return grpc::Status::OK;
 }

@@ -28,3 +28,8 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../demoweb/ -ldemowebservice
 
 INCLUDEPATH += $$PWD/../../../demoweb
 DEPENDPATH += $$PWD/../../../demoweb
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../third_party/base64/ -lbase64
+
+INCLUDEPATH += $$PWD/../../../../third_party/base64
+DEPENDPATH += $$PWD/../../../../third_party/base64

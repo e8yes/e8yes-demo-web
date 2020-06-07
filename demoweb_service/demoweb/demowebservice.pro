@@ -117,6 +117,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../keygen/ -lkeygen
 INCLUDEPATH += $$PWD/../../keygen
 DEPENDPATH += $$PWD/../../keygen
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../third_party/base64/ -lbase64
+
+INCLUDEPATH += $$PWD/../../third_party/base64
+DEPENDPATH += $$PWD/../../third_party/base64
+
 LIBS += -lcrypt
 LIBS += -lcrypto++
 LIBS += -lpqxx
