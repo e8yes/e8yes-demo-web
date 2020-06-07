@@ -29,4 +29,8 @@ class AccountComponent {
   void onClickSignIn() {
     accountState.status = AccountStatus.SIGNED_IN;
   }
+
+  void onClickSignUp() {
+    accountState.status = AccountStatus.SIGNED_IN;
+  }
 }

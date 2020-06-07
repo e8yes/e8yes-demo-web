@@ -1,4 +1,5 @@
 import 'package:angular/angular.dart';
+
 import 'src/account_component.dart';
 
 @Component(
