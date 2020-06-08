@@ -10,4 +10,5 @@ echo "Installing Dart packages..."
 /usr/lib/dart/bin/pub get
 /usr/lib/dart/bin/pub global activate webdev
 /usr/lib/dart/bin/pub global activate stagehand
+/usr/lib/dart/bin/pub global activate protoc_plugin
 
