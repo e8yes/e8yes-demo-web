@@ -9,8 +9,8 @@ enum AccountState {
 }
 
 @Component(
-  selector: 'account',
-  templateUrl: 'account_component.html',
+  selector: "account",
+  templateUrl: "account_component.html",
   directives: [coreDirectives, 
                ProfileComponent,
                SyncAccountComponent]

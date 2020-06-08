@@ -8,7 +8,7 @@ protoc --cpp_out=demoweb_service/demoweb/proto_cc \
 
 export PATH=$PATH:$HOME/.pub-cache/bin
 
-protoc --dart_out=client/web_frontend/proto_dart \
+protoc --dart_out=client/web_frontend/lib/src/proto_dart \
        --proto_path=proto \
        `find proto -name *.proto`
 
