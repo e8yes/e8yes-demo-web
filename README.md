@@ -14,4 +14,4 @@ Run `./gitpush.sh` in the top-level directory to initialize the development envi
 ### Note
 `legacy-jee` branch contains a deprecated Java-EE version and a web client.
 
-Created by [Chifeng Wen](https://www.linkedin.com/in/chifeng-wen-392b41ba/), [Zhaonian Luan](https://www.linkedin.com/in/zhaonianluan/).
+Created by [Chifeng Wen](https://www.linkedin.com/in/chifeng-wen-392b41ba/), [Zhaonian Luan](https:zluan.io).
