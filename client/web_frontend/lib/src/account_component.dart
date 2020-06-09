@@ -2,6 +2,7 @@ import 'package:angular/angular.dart';
 
 import 'profile_component.dart';
 import 'sync_account_component.dart';
+import "proto_dart/service_user.pb.dart";
 
 enum AccountState {
   ACCOUNTLESS,

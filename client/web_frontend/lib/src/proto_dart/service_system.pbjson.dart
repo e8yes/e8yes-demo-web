@@ -16,15 +16,3 @@ const Empty$json = const {
   '1': 'Empty',
 };
 
-const SystemServiceBase$json = const {
-  '1': 'SystemService',
-  '2': const [
-    const {'1': 'Version', '2': '.e8.Empty', '3': '.e8.VersionResponse', '4': const {}},
-  ],
-};
-
-const SystemServiceBase$messageJson = const {
-  '.e8.Empty': Empty$json,
-  '.e8.VersionResponse': VersionResponse$json,
-};
-

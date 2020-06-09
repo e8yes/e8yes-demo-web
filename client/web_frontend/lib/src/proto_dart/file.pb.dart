@@ -11,7 +11,7 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'file.pbenum.dart';
-import 'encryption_source.pbenum.dart' as $0;
+import 'encryption_source.pbenum.dart' as $4;
 
 export 'file.pbenum.dart';
 
@@ -207,7 +207,7 @@ class FileDescriptor extends $pb.GeneratedMessage {
     ..aOM<FileDirectAccess>(2, 'fileDirectAccess', subBuilder: FileDirectAccess.create)
     ..aOS(3, 'fileName')
     ..e<FileFormat>(4, 'fileFormat', $pb.PbFieldType.OE, defaultOrMaker: FileFormat.FFMT_UNKNOWN, valueOf: FileFormat.valueOf, enumValues: FileFormat.values)
-    ..e<$0.EncryptionSource>(5, 'encryptionSource', $pb.PbFieldType.OE, defaultOrMaker: $0.EncryptionSource.ESRC_NONE, valueOf: $0.EncryptionSource.valueOf, enumValues: $0.EncryptionSource.values)
+    ..e<$4.EncryptionSource>(5, 'encryptionSource', $pb.PbFieldType.OE, defaultOrMaker: $4.EncryptionSource.ESRC_NONE, valueOf: $4.EncryptionSource.valueOf, enumValues: $4.EncryptionSource.values)
     ..aInt64(6, 'storageSize')
     ..aInt64(7, 'createdAtTimestamp')
     ..aInt64(8, 'lastModifiedAtTimestamp')
@@ -273,9 +273,9 @@ class FileDescriptor extends $pb.GeneratedMessage {
   void clearFileFormat() => clearField(4);
 
   @$pb.TagNumber(5)
-  $0.EncryptionSource get encryptionSource => $_getN(4);
+  $4.EncryptionSource get encryptionSource => $_getN(4);
   @$pb.TagNumber(5)
-  set encryptionSource($0.EncryptionSource v) { setField(5, v); }
+  set encryptionSource($4.EncryptionSource v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasEncryptionSource() => $_has(4);
   @$pb.TagNumber(5)

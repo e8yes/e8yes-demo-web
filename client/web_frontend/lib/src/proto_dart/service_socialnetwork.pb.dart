@@ -5,14 +5,13 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
-import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'pagination.pb.dart' as $5;
-import 'user_profile.pb.dart' as $4;
+import 'pagination.pb.dart' as $9;
+import 'user_profile.pb.dart' as $8;
 
 class SendInvitationRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SendInvitationRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -224,7 +223,7 @@ class RejectInvitationResponse extends $pb.GeneratedMessage {
 
 class GetInvitationListRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetInvitationListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$5.Pagination>(1, 'pagination', subBuilder: $5.Pagination.create)
+    ..aOM<$9.Pagination>(1, 'pagination', subBuilder: $9.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -244,20 +243,20 @@ class GetInvitationListRequest extends $pb.GeneratedMessage {
   static GetInvitationListRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $5.Pagination get pagination => $_getN(0);
+  $9.Pagination get pagination => $_getN(0);
   @$pb.TagNumber(1)
-  set pagination($5.Pagination v) { setField(1, v); }
+  set pagination($9.Pagination v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasPagination() => $_has(0);
   @$pb.TagNumber(1)
   void clearPagination() => clearField(1);
   @$pb.TagNumber(1)
-  $5.Pagination ensurePagination() => $_ensure(0);
+  $9.Pagination ensurePagination() => $_ensure(0);
 }
 
 class GetInvitationListResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetInvitationListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$4.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $4.UserPublicProfile.create)
+    ..pc<$8.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $8.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -277,7 +276,7 @@ class GetInvitationListResponse extends $pb.GeneratedMessage {
   static GetInvitationListResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$4.UserPublicProfile> get userProfiles => $_getList(0);
+  $core.List<$8.UserPublicProfile> get userProfiles => $_getList(0);
 }
 
 class DeleteFriendRequest extends $pb.GeneratedMessage {
@@ -334,7 +333,7 @@ class DeleteFriendResponse extends $pb.GeneratedMessage {
 
 class GetFriendListRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetFriendListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$5.Pagination>(1, 'pagination', subBuilder: $5.Pagination.create)
+    ..aOM<$9.Pagination>(1, 'pagination', subBuilder: $9.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -354,20 +353,20 @@ class GetFriendListRequest extends $pb.GeneratedMessage {
   static GetFriendListRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $5.Pagination get pagination => $_getN(0);
+  $9.Pagination get pagination => $_getN(0);
   @$pb.TagNumber(1)
-  set pagination($5.Pagination v) { setField(1, v); }
+  set pagination($9.Pagination v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasPagination() => $_has(0);
   @$pb.TagNumber(1)
   void clearPagination() => clearField(1);
   @$pb.TagNumber(1)
-  $5.Pagination ensurePagination() => $_ensure(0);
+  $9.Pagination ensurePagination() => $_ensure(0);
 }
 
 class GetFriendListResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetFriendListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$4.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $4.UserPublicProfile.create)
+    ..pc<$8.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $8.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -387,40 +386,6 @@ class GetFriendListResponse extends $pb.GeneratedMessage {
   static GetFriendListResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$4.UserPublicProfile> get userProfiles => $_getList(0);
-}
-
-class SocialNetworkServiceApi {
-  $pb.RpcClient _client;
-  SocialNetworkServiceApi(this._client);
-
-  $async.Future<SendInvitationResponse> sendInvitation($pb.ClientContext ctx, SendInvitationRequest request) {
-    var emptyResponse = SendInvitationResponse();
-    return _client.invoke<SendInvitationResponse>(ctx, 'SocialNetworkService', 'SendInvitation', request, emptyResponse);
-  }
-  $async.Future<DeleteInvitationResponse> deleteInvitation($pb.ClientContext ctx, DeleteInvitationRequest request) {
-    var emptyResponse = DeleteInvitationResponse();
-    return _client.invoke<DeleteInvitationResponse>(ctx, 'SocialNetworkService', 'DeleteInvitation', request, emptyResponse);
-  }
-  $async.Future<AcceptInvitationResponse> acceptInvitation($pb.ClientContext ctx, AcceptInvitationRequest request) {
-    var emptyResponse = AcceptInvitationResponse();
-    return _client.invoke<AcceptInvitationResponse>(ctx, 'SocialNetworkService', 'AcceptInvitation', request, emptyResponse);
-  }
-  $async.Future<RejectInvitationResponse> rejectInvitation($pb.ClientContext ctx, RejectInvitationRequest request) {
-    var emptyResponse = RejectInvitationResponse();
-    return _client.invoke<RejectInvitationResponse>(ctx, 'SocialNetworkService', 'RejectInvitation', request, emptyResponse);
-  }
-  $async.Future<GetInvitationListResponse> getInvitationList($pb.ClientContext ctx, GetInvitationListRequest request) {
-    var emptyResponse = GetInvitationListResponse();
-    return _client.invoke<GetInvitationListResponse>(ctx, 'SocialNetworkService', 'GetInvitationList', request, emptyResponse);
-  }
-  $async.Future<DeleteFriendResponse> deleteFriend($pb.ClientContext ctx, DeleteFriendRequest request) {
-    var emptyResponse = DeleteFriendResponse();
-    return _client.invoke<DeleteFriendResponse>(ctx, 'SocialNetworkService', 'DeleteFriend', request, emptyResponse);
-  }
-  $async.Future<GetFriendListResponse> getFriendList($pb.ClientContext ctx, GetFriendListRequest request) {
-    var emptyResponse = GetFriendListResponse();
-    return _client.invoke<GetFriendListResponse>(ctx, 'SocialNetworkService', 'GetFriendList', request, emptyResponse);
-  }
+  $core.List<$8.UserPublicProfile> get userProfiles => $_getList(0);
 }
 

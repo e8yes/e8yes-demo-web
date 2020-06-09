@@ -5,7 +5,6 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
-import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
@@ -60,15 +59,5 @@ class Empty extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static Empty getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Empty>(create);
   static Empty _defaultInstance;
-}
-
-class SystemServiceApi {
-  $pb.RpcClient _client;
-  SystemServiceApi(this._client);
-
-  $async.Future<VersionResponse> version($pb.ClientContext ctx, Empty request) {
-    var emptyResponse = VersionResponse();
-    return _client.invoke<VersionResponse>(ctx, 'SystemService', 'Version', request, emptyResponse);
-  }
 }
 
