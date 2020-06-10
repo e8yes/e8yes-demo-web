@@ -1,2 +1,14 @@
-<label>User ID</label>
-<label>Alias</label>
+<div>
+    <label>User ID</label>
+    <label>{{profile.userId}}</label>
+</div>
+
+<div>
+    <label>Alias</label>
+    <label *ngIf="profile.alias != null">
+        {{profile.alias}}
+    </label>
+    <label *ngIf="profile.alias != null">
+        You haven't set up an alias yet.
+    </label>
+</div>
