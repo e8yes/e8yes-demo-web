@@ -41,20 +41,20 @@ UserService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channe
   , rpcmethod_PrepareNewAvatar_(UserService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
-::grpc::Status UserService::Stub::Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::e8::RegistrationReponse* response) {
+::grpc::Status UserService::Stub::Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::e8::RegistrationResponse* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Register_, context, request, response);
 }
 
-void UserService::Stub::experimental_async::Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response, std::function<void(::grpc::Status)> f) {
+void UserService::Stub::experimental_async::Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response, std::function<void(::grpc::Status)> f) {
   return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Register_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::RegistrationReponse>* UserService::Stub::AsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::RegistrationReponse>::Create(channel_.get(), cq, rpcmethod_Register_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::RegistrationResponse>* UserService::Stub::AsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::RegistrationResponse>::Create(channel_.get(), cq, rpcmethod_Register_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::RegistrationReponse>* UserService::Stub::PrepareAsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::RegistrationReponse>::Create(channel_.get(), cq, rpcmethod_Register_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::RegistrationResponse>* UserService::Stub::PrepareAsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::RegistrationResponse>::Create(channel_.get(), cq, rpcmethod_Register_, context, request, false);
 }
 
 ::grpc::Status UserService::Stub::Authorize(::grpc::ClientContext* context, const ::e8::AuthorizationRequest& request, ::e8::AuthorizationResponse* response) {
@@ -141,7 +141,7 @@ UserService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       UserService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< UserService::Service, ::e8::RegistrationRequest, ::e8::RegistrationReponse>(
+      new ::grpc::internal::RpcMethodHandler< UserService::Service, ::e8::RegistrationRequest, ::e8::RegistrationResponse>(
           std::mem_fn(&UserService::Service::Register), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       UserService_method_names[1],
@@ -173,7 +173,7 @@ UserService::Service::Service() {
 UserService::Service::~Service() {
 }
 
-::grpc::Status UserService::Service::Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response) {
+::grpc::Status UserService::Service::Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response) {
   (void) context;
   (void) request;
   (void) response;

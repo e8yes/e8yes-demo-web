@@ -54,12 +54,12 @@ class UserService final {
     virtual ~StubInterface() {}
     // *
     // Register a user to the system.
-    virtual ::grpc::Status Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::e8::RegistrationReponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationReponse>> AsyncRegister(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationReponse>>(AsyncRegisterRaw(context, request, cq));
+    virtual ::grpc::Status Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::e8::RegistrationResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationResponse>> AsyncRegister(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationResponse>>(AsyncRegisterRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationReponse>> PrepareAsyncRegister(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationReponse>>(PrepareAsyncRegisterRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationResponse>> PrepareAsyncRegister(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationResponse>>(PrepareAsyncRegisterRaw(context, request, cq));
     }
     //
     // Verify and obtain a signed token. 
@@ -111,7 +111,7 @@ class UserService final {
       virtual ~experimental_async_interface() {}
       // *
       // Register a user to the system.
-      virtual void Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response, std::function<void(::grpc::Status)>) = 0;
       //
       // Verify and obtain a signed token. 
       virtual void Authorize(::grpc::ClientContext* context, const ::e8::AuthorizationRequest* request, ::e8::AuthorizationResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -130,8 +130,8 @@ class UserService final {
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationReponse>* AsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationReponse>* PrepareAsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationResponse>* AsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::RegistrationResponse>* PrepareAsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AuthorizationResponse>* AsyncAuthorizeRaw(::grpc::ClientContext* context, const ::e8::AuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AuthorizationResponse>* PrepareAsyncAuthorizeRaw(::grpc::ClientContext* context, const ::e8::AuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetPublicProfileResponse>* AsyncGetPublicProfileRaw(::grpc::ClientContext* context, const ::e8::GetPublicProfileRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -146,12 +146,12 @@ class UserService final {
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    ::grpc::Status Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::e8::RegistrationReponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::RegistrationReponse>> AsyncRegister(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::RegistrationReponse>>(AsyncRegisterRaw(context, request, cq));
+    ::grpc::Status Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::e8::RegistrationResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::RegistrationResponse>> AsyncRegister(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::RegistrationResponse>>(AsyncRegisterRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::RegistrationReponse>> PrepareAsyncRegister(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::RegistrationReponse>>(PrepareAsyncRegisterRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::RegistrationResponse>> PrepareAsyncRegister(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::RegistrationResponse>>(PrepareAsyncRegisterRaw(context, request, cq));
     }
     ::grpc::Status Authorize(::grpc::ClientContext* context, const ::e8::AuthorizationRequest& request, ::e8::AuthorizationResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AuthorizationResponse>> AsyncAuthorize(::grpc::ClientContext* context, const ::e8::AuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
@@ -191,7 +191,7 @@ class UserService final {
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
-      void Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response, std::function<void(::grpc::Status)>) override;
+      void Register(::grpc::ClientContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response, std::function<void(::grpc::Status)>) override;
       void Authorize(::grpc::ClientContext* context, const ::e8::AuthorizationRequest* request, ::e8::AuthorizationResponse* response, std::function<void(::grpc::Status)>) override;
       void GetPublicProfile(::grpc::ClientContext* context, const ::e8::GetPublicProfileRequest* request, ::e8::GetPublicProfileResponse* response, std::function<void(::grpc::Status)>) override;
       void UpdatePublicProfile(::grpc::ClientContext* context, const ::e8::UpdatePublicProfileRequest* request, ::e8::UpdatePublicProfileResponse* response, std::function<void(::grpc::Status)>) override;
@@ -208,8 +208,8 @@ class UserService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::e8::RegistrationReponse>* AsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::RegistrationReponse>* PrepareAsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::RegistrationResponse>* AsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::RegistrationResponse>* PrepareAsyncRegisterRaw(::grpc::ClientContext* context, const ::e8::RegistrationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::AuthorizationResponse>* AsyncAuthorizeRaw(::grpc::ClientContext* context, const ::e8::AuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::AuthorizationResponse>* PrepareAsyncAuthorizeRaw(::grpc::ClientContext* context, const ::e8::AuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::GetPublicProfileResponse>* AsyncGetPublicProfileRaw(::grpc::ClientContext* context, const ::e8::GetPublicProfileRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -235,7 +235,7 @@ class UserService final {
     virtual ~Service();
     // *
     // Register a user to the system.
-    virtual ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response);
+    virtual ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response);
     //
     // Verify and obtain a signed token. 
     virtual ::grpc::Status Authorize(::grpc::ServerContext* context, const ::e8::AuthorizationRequest* request, ::e8::AuthorizationResponse* response);
@@ -264,11 +264,11 @@ class UserService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response) override {
+    ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestRegister(::grpc::ServerContext* context, ::e8::RegistrationRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::RegistrationReponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRegister(::grpc::ServerContext* context, ::e8::RegistrationRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::RegistrationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -385,7 +385,7 @@ class UserService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response) override {
+    ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -487,7 +487,7 @@ class UserService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response) override {
+    ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -602,18 +602,18 @@ class UserService final {
    public:
     WithStreamedUnaryMethod_Register() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::RegistrationRequest, ::e8::RegistrationReponse>(std::bind(&WithStreamedUnaryMethod_Register<BaseClass>::StreamedRegister, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::RegistrationRequest, ::e8::RegistrationResponse>(std::bind(&WithStreamedUnaryMethod_Register<BaseClass>::StreamedRegister, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_Register() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationReponse* response) override {
+    ::grpc::Status Register(::grpc::ServerContext* context, const ::e8::RegistrationRequest* request, ::e8::RegistrationResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedRegister(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::RegistrationRequest,::e8::RegistrationReponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedRegister(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::RegistrationRequest,::e8::RegistrationResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_Authorize : public BaseClass {

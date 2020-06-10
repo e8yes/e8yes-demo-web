@@ -70,12 +70,12 @@ extern PrepareNewAvatarRequestDefaultTypeInternal _PrepareNewAvatarRequest_defau
 class PrepareNewAvatarResponse;
 class PrepareNewAvatarResponseDefaultTypeInternal;
 extern PrepareNewAvatarResponseDefaultTypeInternal _PrepareNewAvatarResponse_default_instance_;
-class RegistrationReponse;
-class RegistrationReponseDefaultTypeInternal;
-extern RegistrationReponseDefaultTypeInternal _RegistrationReponse_default_instance_;
 class RegistrationRequest;
 class RegistrationRequestDefaultTypeInternal;
 extern RegistrationRequestDefaultTypeInternal _RegistrationRequest_default_instance_;
+class RegistrationResponse;
+class RegistrationResponseDefaultTypeInternal;
+extern RegistrationResponseDefaultTypeInternal _RegistrationResponse_default_instance_;
 class SearchUserRequest;
 class SearchUserRequestDefaultTypeInternal;
 extern SearchUserRequestDefaultTypeInternal _SearchUserRequest_default_instance_;
@@ -97,8 +97,8 @@ template<> ::e8::GetPublicProfileRequest* Arena::CreateMaybeMessage<::e8::GetPub
 template<> ::e8::GetPublicProfileResponse* Arena::CreateMaybeMessage<::e8::GetPublicProfileResponse>(Arena*);
 template<> ::e8::PrepareNewAvatarRequest* Arena::CreateMaybeMessage<::e8::PrepareNewAvatarRequest>(Arena*);
 template<> ::e8::PrepareNewAvatarResponse* Arena::CreateMaybeMessage<::e8::PrepareNewAvatarResponse>(Arena*);
-template<> ::e8::RegistrationReponse* Arena::CreateMaybeMessage<::e8::RegistrationReponse>(Arena*);
 template<> ::e8::RegistrationRequest* Arena::CreateMaybeMessage<::e8::RegistrationRequest>(Arena*);
+template<> ::e8::RegistrationResponse* Arena::CreateMaybeMessage<::e8::RegistrationResponse>(Arena*);
 template<> ::e8::SearchUserRequest* Arena::CreateMaybeMessage<::e8::SearchUserRequest>(Arena*);
 template<> ::e8::SearchUserResponse* Arena::CreateMaybeMessage<::e8::SearchUserResponse>(Arena*);
 template<> ::e8::UpdatePublicProfileRequest* Arena::CreateMaybeMessage<::e8::UpdatePublicProfileRequest>(Arena*);
@@ -107,27 +107,27 @@ template<> ::e8::UpdatePublicProfileResponse* Arena::CreateMaybeMessage<::e8::Up
 }  // namespace google
 namespace e8 {
 
-enum RegistrationReponse_RegistrationErrorType {
-  RegistrationReponse_RegistrationErrorType_RET_NoError = 0,
-  RegistrationReponse_RegistrationErrorType_RET_BadSecurityKey = 1,
-  RegistrationReponse_RegistrationErrorType_RET_BotDetected = 2,
-  RegistrationReponse_RegistrationErrorType_RegistrationReponse_RegistrationErrorType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  RegistrationReponse_RegistrationErrorType_RegistrationReponse_RegistrationErrorType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+enum RegistrationResponse_RegistrationErrorType {
+  RegistrationResponse_RegistrationErrorType_RET_NoError = 0,
+  RegistrationResponse_RegistrationErrorType_RET_BadSecurityKey = 1,
+  RegistrationResponse_RegistrationErrorType_RET_BotDetected = 2,
+  RegistrationResponse_RegistrationErrorType_RegistrationResponse_RegistrationErrorType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  RegistrationResponse_RegistrationErrorType_RegistrationResponse_RegistrationErrorType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
-bool RegistrationReponse_RegistrationErrorType_IsValid(int value);
-const RegistrationReponse_RegistrationErrorType RegistrationReponse_RegistrationErrorType_RegistrationErrorType_MIN = RegistrationReponse_RegistrationErrorType_RET_NoError;
-const RegistrationReponse_RegistrationErrorType RegistrationReponse_RegistrationErrorType_RegistrationErrorType_MAX = RegistrationReponse_RegistrationErrorType_RET_BotDetected;
-const int RegistrationReponse_RegistrationErrorType_RegistrationErrorType_ARRAYSIZE = RegistrationReponse_RegistrationErrorType_RegistrationErrorType_MAX + 1;
+bool RegistrationResponse_RegistrationErrorType_IsValid(int value);
+const RegistrationResponse_RegistrationErrorType RegistrationResponse_RegistrationErrorType_RegistrationErrorType_MIN = RegistrationResponse_RegistrationErrorType_RET_NoError;
+const RegistrationResponse_RegistrationErrorType RegistrationResponse_RegistrationErrorType_RegistrationErrorType_MAX = RegistrationResponse_RegistrationErrorType_RET_BotDetected;
+const int RegistrationResponse_RegistrationErrorType_RegistrationErrorType_ARRAYSIZE = RegistrationResponse_RegistrationErrorType_RegistrationErrorType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* RegistrationReponse_RegistrationErrorType_descriptor();
-inline const ::std::string& RegistrationReponse_RegistrationErrorType_Name(RegistrationReponse_RegistrationErrorType value) {
+const ::google::protobuf::EnumDescriptor* RegistrationResponse_RegistrationErrorType_descriptor();
+inline const ::std::string& RegistrationResponse_RegistrationErrorType_Name(RegistrationResponse_RegistrationErrorType value) {
   return ::google::protobuf::internal::NameOfEnum(
-    RegistrationReponse_RegistrationErrorType_descriptor(), value);
+    RegistrationResponse_RegistrationErrorType_descriptor(), value);
 }
-inline bool RegistrationReponse_RegistrationErrorType_Parse(
-    const ::std::string& name, RegistrationReponse_RegistrationErrorType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<RegistrationReponse_RegistrationErrorType>(
-    RegistrationReponse_RegistrationErrorType_descriptor(), name, value);
+inline bool RegistrationResponse_RegistrationErrorType_Parse(
+    const ::std::string& name, RegistrationResponse_RegistrationErrorType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<RegistrationResponse_RegistrationErrorType>(
+    RegistrationResponse_RegistrationErrorType_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -242,24 +242,24 @@ class RegistrationRequest : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
-class RegistrationReponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.RegistrationReponse) */ {
+class RegistrationResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.RegistrationResponse) */ {
  public:
-  RegistrationReponse();
-  virtual ~RegistrationReponse();
+  RegistrationResponse();
+  virtual ~RegistrationResponse();
 
-  RegistrationReponse(const RegistrationReponse& from);
+  RegistrationResponse(const RegistrationResponse& from);
 
-  inline RegistrationReponse& operator=(const RegistrationReponse& from) {
+  inline RegistrationResponse& operator=(const RegistrationResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RegistrationReponse(RegistrationReponse&& from) noexcept
-    : RegistrationReponse() {
+  RegistrationResponse(RegistrationResponse&& from) noexcept
+    : RegistrationResponse() {
     *this = ::std::move(from);
   }
 
-  inline RegistrationReponse& operator=(RegistrationReponse&& from) noexcept {
+  inline RegistrationResponse& operator=(RegistrationResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -269,34 +269,34 @@ class RegistrationReponse : public ::google::protobuf::Message /* @@protoc_inser
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const RegistrationReponse& default_instance();
+  static const RegistrationResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RegistrationReponse* internal_default_instance() {
-    return reinterpret_cast<const RegistrationReponse*>(
-               &_RegistrationReponse_default_instance_);
+  static inline const RegistrationResponse* internal_default_instance() {
+    return reinterpret_cast<const RegistrationResponse*>(
+               &_RegistrationResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  void Swap(RegistrationReponse* other);
-  friend void swap(RegistrationReponse& a, RegistrationReponse& b) {
+  void Swap(RegistrationResponse* other);
+  friend void swap(RegistrationResponse& a, RegistrationResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RegistrationReponse* New() const final {
-    return CreateMaybeMessage<RegistrationReponse>(NULL);
+  inline RegistrationResponse* New() const final {
+    return CreateMaybeMessage<RegistrationResponse>(NULL);
   }
 
-  RegistrationReponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<RegistrationReponse>(arena);
+  RegistrationResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<RegistrationResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const RegistrationReponse& from);
-  void MergeFrom(const RegistrationReponse& from);
+  void CopyFrom(const RegistrationResponse& from);
+  void MergeFrom(const RegistrationResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -313,7 +313,7 @@ class RegistrationReponse : public ::google::protobuf::Message /* @@protoc_inser
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(RegistrationReponse* other);
+  void InternalSwap(RegistrationResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -327,32 +327,32 @@ class RegistrationReponse : public ::google::protobuf::Message /* @@protoc_inser
 
   // nested types ----------------------------------------------------
 
-  typedef RegistrationReponse_RegistrationErrorType RegistrationErrorType;
+  typedef RegistrationResponse_RegistrationErrorType RegistrationErrorType;
   static const RegistrationErrorType RET_NoError =
-    RegistrationReponse_RegistrationErrorType_RET_NoError;
+    RegistrationResponse_RegistrationErrorType_RET_NoError;
   static const RegistrationErrorType RET_BadSecurityKey =
-    RegistrationReponse_RegistrationErrorType_RET_BadSecurityKey;
+    RegistrationResponse_RegistrationErrorType_RET_BadSecurityKey;
   static const RegistrationErrorType RET_BotDetected =
-    RegistrationReponse_RegistrationErrorType_RET_BotDetected;
+    RegistrationResponse_RegistrationErrorType_RET_BotDetected;
   static inline bool RegistrationErrorType_IsValid(int value) {
-    return RegistrationReponse_RegistrationErrorType_IsValid(value);
+    return RegistrationResponse_RegistrationErrorType_IsValid(value);
   }
   static const RegistrationErrorType RegistrationErrorType_MIN =
-    RegistrationReponse_RegistrationErrorType_RegistrationErrorType_MIN;
+    RegistrationResponse_RegistrationErrorType_RegistrationErrorType_MIN;
   static const RegistrationErrorType RegistrationErrorType_MAX =
-    RegistrationReponse_RegistrationErrorType_RegistrationErrorType_MAX;
+    RegistrationResponse_RegistrationErrorType_RegistrationErrorType_MAX;
   static const int RegistrationErrorType_ARRAYSIZE =
-    RegistrationReponse_RegistrationErrorType_RegistrationErrorType_ARRAYSIZE;
+    RegistrationResponse_RegistrationErrorType_RegistrationErrorType_ARRAYSIZE;
   static inline const ::google::protobuf::EnumDescriptor*
   RegistrationErrorType_descriptor() {
-    return RegistrationReponse_RegistrationErrorType_descriptor();
+    return RegistrationResponse_RegistrationErrorType_descriptor();
   }
   static inline const ::std::string& RegistrationErrorType_Name(RegistrationErrorType value) {
-    return RegistrationReponse_RegistrationErrorType_Name(value);
+    return RegistrationResponse_RegistrationErrorType_Name(value);
   }
   static inline bool RegistrationErrorType_Parse(const ::std::string& name,
       RegistrationErrorType* value) {
-    return RegistrationReponse_RegistrationErrorType_Parse(name, value);
+    return RegistrationResponse_RegistrationErrorType_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -363,13 +363,13 @@ class RegistrationReponse : public ::google::protobuf::Message /* @@protoc_inser
   ::google::protobuf::int64 user_id() const;
   void set_user_id(::google::protobuf::int64 value);
 
-  // .e8.RegistrationReponse.RegistrationErrorType error_type = 1;
+  // .e8.RegistrationResponse.RegistrationErrorType error_type = 1;
   void clear_error_type();
   static const int kErrorTypeFieldNumber = 1;
-  ::e8::RegistrationReponse_RegistrationErrorType error_type() const;
-  void set_error_type(::e8::RegistrationReponse_RegistrationErrorType value);
+  ::e8::RegistrationResponse_RegistrationErrorType error_type() const;
+  void set_error_type(::e8::RegistrationResponse_RegistrationErrorType value);
 
-  // @@protoc_insertion_point(class_scope:e8.RegistrationReponse)
+  // @@protoc_insertion_point(class_scope:e8.RegistrationResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1563,34 +1563,34 @@ inline void RegistrationRequest::set_allocated_security_key(::std::string* secur
 
 // -------------------------------------------------------------------
 
-// RegistrationReponse
+// RegistrationResponse
 
-// .e8.RegistrationReponse.RegistrationErrorType error_type = 1;
-inline void RegistrationReponse::clear_error_type() {
+// .e8.RegistrationResponse.RegistrationErrorType error_type = 1;
+inline void RegistrationResponse::clear_error_type() {
   error_type_ = 0;
 }
-inline ::e8::RegistrationReponse_RegistrationErrorType RegistrationReponse::error_type() const {
-  // @@protoc_insertion_point(field_get:e8.RegistrationReponse.error_type)
-  return static_cast< ::e8::RegistrationReponse_RegistrationErrorType >(error_type_);
+inline ::e8::RegistrationResponse_RegistrationErrorType RegistrationResponse::error_type() const {
+  // @@protoc_insertion_point(field_get:e8.RegistrationResponse.error_type)
+  return static_cast< ::e8::RegistrationResponse_RegistrationErrorType >(error_type_);
 }
-inline void RegistrationReponse::set_error_type(::e8::RegistrationReponse_RegistrationErrorType value) {
+inline void RegistrationResponse::set_error_type(::e8::RegistrationResponse_RegistrationErrorType value) {
   
   error_type_ = value;
-  // @@protoc_insertion_point(field_set:e8.RegistrationReponse.error_type)
+  // @@protoc_insertion_point(field_set:e8.RegistrationResponse.error_type)
 }
 
 // int64 user_id = 3;
-inline void RegistrationReponse::clear_user_id() {
+inline void RegistrationResponse::clear_user_id() {
   user_id_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 RegistrationReponse::user_id() const {
-  // @@protoc_insertion_point(field_get:e8.RegistrationReponse.user_id)
+inline ::google::protobuf::int64 RegistrationResponse::user_id() const {
+  // @@protoc_insertion_point(field_get:e8.RegistrationResponse.user_id)
   return user_id_;
 }
-inline void RegistrationReponse::set_user_id(::google::protobuf::int64 value) {
+inline void RegistrationResponse::set_user_id(::google::protobuf::int64 value) {
   
   user_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.RegistrationReponse.user_id)
+  // @@protoc_insertion_point(field_set:e8.RegistrationResponse.user_id)
 }
 
 // -------------------------------------------------------------------
@@ -2206,10 +2206,10 @@ inline void PrepareNewAvatarResponse::set_allocated_avatar_readwrite_access(::e8
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::e8::RegistrationReponse_RegistrationErrorType> : ::std::true_type {};
+template <> struct is_proto_enum< ::e8::RegistrationResponse_RegistrationErrorType> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::e8::RegistrationReponse_RegistrationErrorType>() {
-  return ::e8::RegistrationReponse_RegistrationErrorType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::e8::RegistrationResponse_RegistrationErrorType>() {
+  return ::e8::RegistrationResponse_RegistrationErrorType_descriptor();
 }
 
 }  // namespace protobuf

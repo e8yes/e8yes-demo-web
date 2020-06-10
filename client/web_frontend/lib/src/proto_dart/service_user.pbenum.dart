@@ -9,20 +9,20 @@
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class RegistrationReponse_RegistrationErrorType extends $pb.ProtobufEnum {
-  static const RegistrationReponse_RegistrationErrorType RET_NoError = RegistrationReponse_RegistrationErrorType._(0, 'RET_NoError');
-  static const RegistrationReponse_RegistrationErrorType RET_BadSecurityKey = RegistrationReponse_RegistrationErrorType._(1, 'RET_BadSecurityKey');
-  static const RegistrationReponse_RegistrationErrorType RET_BotDetected = RegistrationReponse_RegistrationErrorType._(2, 'RET_BotDetected');
+class RegistrationResponse_RegistrationErrorType extends $pb.ProtobufEnum {
+  static const RegistrationResponse_RegistrationErrorType RET_NoError = RegistrationResponse_RegistrationErrorType._(0, 'RET_NoError');
+  static const RegistrationResponse_RegistrationErrorType RET_BadSecurityKey = RegistrationResponse_RegistrationErrorType._(1, 'RET_BadSecurityKey');
+  static const RegistrationResponse_RegistrationErrorType RET_BotDetected = RegistrationResponse_RegistrationErrorType._(2, 'RET_BotDetected');
 
-  static const $core.List<RegistrationReponse_RegistrationErrorType> values = <RegistrationReponse_RegistrationErrorType> [
+  static const $core.List<RegistrationResponse_RegistrationErrorType> values = <RegistrationResponse_RegistrationErrorType> [
     RET_NoError,
     RET_BadSecurityKey,
     RET_BotDetected,
   ];
 
-  static final $core.Map<$core.int, RegistrationReponse_RegistrationErrorType> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static RegistrationReponse_RegistrationErrorType valueOf($core.int value) => _byValue[value];
+  static final $core.Map<$core.int, RegistrationResponse_RegistrationErrorType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static RegistrationResponse_RegistrationErrorType valueOf($core.int value) => _byValue[value];
 
-  const RegistrationReponse_RegistrationErrorType._($core.int v, $core.String n) : super(v, n);
+  const RegistrationResponse_RegistrationErrorType._($core.int v, $core.String n) : super(v, n);
 }
 

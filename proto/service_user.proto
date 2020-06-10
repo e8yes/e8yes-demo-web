@@ -29,7 +29,7 @@ message RegistrationRequest {
     bytes security_key = 1;
 }
 
-message RegistrationReponse {
+message RegistrationResponse {
     enum RegistrationErrorType {
         RET_NoError = 0;
         RET_BadSecurityKey = 1;
@@ -101,7 +101,7 @@ service UserService {
   /**
    * Register a user to the system.
    */
-  rpc Register (RegistrationRequest) returns (RegistrationReponse);
+  rpc Register (RegistrationRequest) returns (RegistrationResponse);
   
   /*
    * Verify and obtain a signed token. 

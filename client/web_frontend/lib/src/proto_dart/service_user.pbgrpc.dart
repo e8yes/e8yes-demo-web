@@ -15,11 +15,11 @@ export 'service_user.pb.dart';
 
 class UserServiceClient extends $grpc.Client {
   static final _$register =
-      $grpc.ClientMethod<$0.RegistrationRequest, $0.RegistrationReponse>(
+      $grpc.ClientMethod<$0.RegistrationRequest, $0.RegistrationResponse>(
           '/e8.UserService/Register',
           ($0.RegistrationRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $0.RegistrationReponse.fromBuffer(value));
+              $0.RegistrationResponse.fromBuffer(value));
   static final _$authorize =
       $grpc.ClientMethod<$0.AuthorizationRequest, $0.AuthorizationResponse>(
           '/e8.UserService/Authorize',
@@ -54,7 +54,7 @@ class UserServiceClient extends $grpc.Client {
   UserServiceClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
 
-  $grpc.ResponseFuture<$0.RegistrationReponse> register(
+  $grpc.ResponseFuture<$0.RegistrationResponse> register(
       $0.RegistrationRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(_$register, $async.Stream.fromIterable([request]),
@@ -111,14 +111,14 @@ abstract class UserServiceBase extends $grpc.Service {
 
   UserServiceBase() {
     $addMethod(
-        $grpc.ServiceMethod<$0.RegistrationRequest, $0.RegistrationReponse>(
+        $grpc.ServiceMethod<$0.RegistrationRequest, $0.RegistrationResponse>(
             'Register',
             register_Pre,
             false,
             false,
             ($core.List<$core.int> value) =>
                 $0.RegistrationRequest.fromBuffer(value),
-            ($0.RegistrationReponse value) => value.writeToBuffer()));
+            ($0.RegistrationResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.AuthorizationRequest, $0.AuthorizationResponse>(
             'Authorize',
@@ -164,7 +164,7 @@ abstract class UserServiceBase extends $grpc.Service {
         ($0.PrepareNewAvatarResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.RegistrationReponse> register_Pre($grpc.ServiceCall call,
+  $async.Future<$0.RegistrationResponse> register_Pre($grpc.ServiceCall call,
       $async.Future<$0.RegistrationRequest> request) async {
     return register(call, await request);
   }
@@ -197,7 +197,7 @@ abstract class UserServiceBase extends $grpc.Service {
     return prepareNewAvatar(call, await request);
   }
 
-  $async.Future<$0.RegistrationReponse> register(
+  $async.Future<$0.RegistrationResponse> register(
       $grpc.ServiceCall call, $0.RegistrationRequest request);
   $async.Future<$0.AuthorizationResponse> authorize(
       $grpc.ServiceCall call, $0.AuthorizationRequest request);

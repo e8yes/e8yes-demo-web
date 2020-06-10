@@ -12,16 +12,16 @@ const RegistrationRequest$json = const {
   ],
 };
 
-const RegistrationReponse$json = const {
-  '1': 'RegistrationReponse',
+const RegistrationResponse$json = const {
+  '1': 'RegistrationResponse',
   '2': const [
-    const {'1': 'error_type', '3': 1, '4': 1, '5': 14, '6': '.e8.RegistrationReponse.RegistrationErrorType', '10': 'errorType'},
+    const {'1': 'error_type', '3': 1, '4': 1, '5': 14, '6': '.e8.RegistrationResponse.RegistrationErrorType', '10': 'errorType'},
     const {'1': 'user_id', '3': 3, '4': 1, '5': 3, '10': 'userId'},
   ],
-  '4': const [RegistrationReponse_RegistrationErrorType$json],
+  '4': const [RegistrationResponse_RegistrationErrorType$json],
 };
 
-const RegistrationReponse_RegistrationErrorType$json = const {
+const RegistrationResponse_RegistrationErrorType$json = const {
   '1': 'RegistrationErrorType',
   '2': const [
     const {'1': 'RET_NoError', '2': 0},

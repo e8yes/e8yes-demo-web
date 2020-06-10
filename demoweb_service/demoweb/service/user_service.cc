@@ -35,7 +35,7 @@ namespace e8 {
 
 grpc::Status UserServiceImpl::Register(grpc::ServerContext * /*context*/,
                                        RegistrationRequest const *request,
-                                       RegistrationReponse *response) {
+                                       RegistrationResponse *response) {
 
     std::optional<UserEntity> user =
         CreateBaselineUser(request->security_key(),
@@ -47,12 +47,12 @@ grpc::Status UserServiceImpl::Register(grpc::ServerContext * /*context*/,
     }
 
     response->set_user_id(user.value().id.value().value());
-    response->set_error_type(RegistrationReponse::RET_NoError);
+    response->set_error_type(RegistrationResponse::RET_NoError);
 
     return grpc::Status::OK;
 }
 
-grpc::Status UserServiceImpl::Authorize(grpc::ServerContext *context,
+grpc::Status UserServiceImpl::Authorize(grpc::ServerContext * /*context*/,
                                         AuthorizationRequest const *request,
                                         AuthorizationResponse *response) {
     std::optional<UserEntity> user =

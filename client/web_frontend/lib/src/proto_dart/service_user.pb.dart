@@ -52,32 +52,32 @@ class RegistrationRequest extends $pb.GeneratedMessage {
   void clearSecurityKey() => clearField(1);
 }
 
-class RegistrationReponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('RegistrationReponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..e<RegistrationReponse_RegistrationErrorType>(1, 'errorType', $pb.PbFieldType.OE, defaultOrMaker: RegistrationReponse_RegistrationErrorType.RET_NoError, valueOf: RegistrationReponse_RegistrationErrorType.valueOf, enumValues: RegistrationReponse_RegistrationErrorType.values)
+class RegistrationResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('RegistrationResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..e<RegistrationResponse_RegistrationErrorType>(1, 'errorType', $pb.PbFieldType.OE, defaultOrMaker: RegistrationResponse_RegistrationErrorType.RET_NoError, valueOf: RegistrationResponse_RegistrationErrorType.valueOf, enumValues: RegistrationResponse_RegistrationErrorType.values)
     ..aInt64(3, 'userId')
     ..hasRequiredFields = false
   ;
 
-  RegistrationReponse._() : super();
-  factory RegistrationReponse() => create();
-  factory RegistrationReponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory RegistrationReponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  RegistrationReponse clone() => RegistrationReponse()..mergeFromMessage(this);
-  RegistrationReponse copyWith(void Function(RegistrationReponse) updates) => super.copyWith((message) => updates(message as RegistrationReponse));
+  RegistrationResponse._() : super();
+  factory RegistrationResponse() => create();
+  factory RegistrationResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RegistrationResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  RegistrationResponse clone() => RegistrationResponse()..mergeFromMessage(this);
+  RegistrationResponse copyWith(void Function(RegistrationResponse) updates) => super.copyWith((message) => updates(message as RegistrationResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static RegistrationReponse create() => RegistrationReponse._();
-  RegistrationReponse createEmptyInstance() => create();
-  static $pb.PbList<RegistrationReponse> createRepeated() => $pb.PbList<RegistrationReponse>();
+  static RegistrationResponse create() => RegistrationResponse._();
+  RegistrationResponse createEmptyInstance() => create();
+  static $pb.PbList<RegistrationResponse> createRepeated() => $pb.PbList<RegistrationResponse>();
   @$core.pragma('dart2js:noInline')
-  static RegistrationReponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RegistrationReponse>(create);
-  static RegistrationReponse _defaultInstance;
+  static RegistrationResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RegistrationResponse>(create);
+  static RegistrationResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  RegistrationReponse_RegistrationErrorType get errorType => $_getN(0);
+  RegistrationResponse_RegistrationErrorType get errorType => $_getN(0);
   @$pb.TagNumber(1)
-  set errorType(RegistrationReponse_RegistrationErrorType v) { setField(1, v); }
+  set errorType(RegistrationResponse_RegistrationErrorType v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasErrorType() => $_has(0);
   @$pb.TagNumber(1)

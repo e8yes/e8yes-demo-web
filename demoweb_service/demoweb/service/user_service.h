@@ -34,7 +34,7 @@ class UserServiceImpl : public UserService::Service {
     ~UserServiceImpl() override = default;
 
     grpc::Status Register(grpc::ServerContext *context, RegistrationRequest const *request,
-                          RegistrationReponse *response) override;
+                          RegistrationResponse *response) override;
 
     grpc::Status Authorize(grpc::ServerContext *context, AuthorizationRequest const *request,
                            AuthorizationResponse *response) override;
