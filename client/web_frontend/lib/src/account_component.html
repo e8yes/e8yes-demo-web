@@ -8,7 +8,7 @@
 </div>
 
 <div *ngIf="displaySignedInUi()">
-    <button (click)="onClickAccountSummaryTag()">{{accountSummaryTag}}</button>
+    <button (click)="onClickAccountSummaryTag()">{{accountInfo.accountSummaryTag}}</button>
     <div *ngIf="displayAccountProfileComponent">
         <profile></profile>
     </div>

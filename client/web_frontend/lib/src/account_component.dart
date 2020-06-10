@@ -1,4 +1,6 @@
 import 'package:angular/angular.dart';
+import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
+import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/user_service_interface.dart';
 
 import 'profile_component.dart';
@@ -10,6 +12,33 @@ enum AccountState {
   SIGNED_IN,
 }
 
+class AccountInfo {
+  AccountState accountState =  AccountState.ACCOUNTLESS;
+  String accountSummaryTag = "";
+  UserPublicProfile profile = null;
+
+  void _updateAccountSummaryTag(UserPublicProfile profile) {
+    if (profile.hasAlias()) {
+      accountSummaryTag = profile.alias;
+    } else {
+      accountSummaryTag = profile.userId.toString();
+    }
+  }
+
+  void setSignedInStateAndGrabProfile(var userId, 
+                                      UserServiceInterface service) {
+    GetPublicProfileRequest req = GetPublicProfileRequest();
+    req.userId = (NullableInt64()..value = userId);
+    service
+      .getPublicProfile(req)
+      .then((GetPublicProfileResponse res) {
+        _updateAccountSummaryTag(res.profile);
+        profile = res.profile;
+        accountState = AccountState.SIGNED_IN;
+      });
+  }
+}
+
 @Component(
   selector: "account",
   templateUrl: "account_component.html",
@@ -18,22 +47,21 @@ enum AccountState {
                SyncAccountComponent],
 )
 class AccountComponent {
-  AccountState accountState =  AccountState.ACCOUNTLESS;
-  String accountSummaryTag = "Davis Wen";
+  AccountInfo accountInfo = AccountInfo();
 
   bool displaySyncAccountComponent = false;
   bool displayAccountProfileComponent = false;
 
-  final UserServiceInterface user_service_;
+  final UserServiceInterface _user_service;
 
-  AccountComponent(this.user_service_);
+  AccountComponent(this._user_service);
 
   bool displayAccountlessUi() {
-    return accountState == AccountState.ACCOUNTLESS;
+    return accountInfo.accountState == AccountState.ACCOUNTLESS;
   }
 
   bool displaySignedInUi() {
-    return accountState == AccountState.SIGNED_IN;
+    return accountInfo.accountState == AccountState.SIGNED_IN;
   }
 
   void onClickSyncAccount() {
@@ -46,10 +74,11 @@ class AccountComponent {
 
   void onClickSignUp() {
     RegistrationRequest req = RegistrationRequest();
-    user_service_
+    req.securityKey = [1, 2, 3];
+    _user_service
       .register(req)
       .then((RegistrationResponse res) {
-        accountState = AccountState.SIGNED_IN;
+        accountInfo.setSignedInStateAndGrabProfile(res.userId, _user_service);
       });
   }
 }
