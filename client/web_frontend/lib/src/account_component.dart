@@ -1,4 +1,6 @@
 import 'package:angular/angular.dart';
+import 'package:fixnum/fixnum.dart';
+
 import 'package:demoweb_app/src/context.dart';
 import 'package:demoweb_app/src/profile_component.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
@@ -27,7 +29,7 @@ class AccountInfo {
   }
 
   void setSignedInStateAndGrabProfile(
-      var userId, UserServiceInterface service) {
+      Int64 userId, UserServiceInterface service) {
     GetPublicProfileRequest req = GetPublicProfileRequest();
     req.userId = (NullableInt64()..value = userId);
     service.getPublicProfile(req).then((GetPublicProfileResponse res) {
@@ -51,7 +53,20 @@ class AccountComponent {
 
   final UserServiceInterface _user_service;
 
-  AccountComponent(this._user_service);
+  AccountComponent(this._user_service) {
+    if (identityStorage.userId != null) {
+      assert(identityStorage.securityKey != null);
+      _user_service
+          .authorize(AuthorizationRequest()
+            ..userId = identityStorage.userId
+            ..securityKey = identityStorage.securityKey)
+          .then((AuthorizationResponse res) {
+        print(res.signedIdentity);
+        accountInfo.setSignedInStateAndGrabProfile(
+            identityStorage.userId, _user_service);
+      });
+    }
+  }
 
   bool displayAccountlessUi() {
     return accountInfo.accountState == AccountState.ACCOUNTLESS;
@@ -70,10 +85,16 @@ class AccountComponent {
   }
 
   void onClickSignUp() {
-    RegistrationRequest req = RegistrationRequest();
-    req.securityKey = generateSecurityKey(kSecurityKeyLength);
-    _user_service.register(req).then((RegistrationResponse res) {
+    List<int> securityKey = generateSecurityKey(kSecurityKeyLength);
+
+    _user_service
+        .register(RegistrationRequest()..securityKey = securityKey)
+        .then((RegistrationResponse res) {
       accountInfo.setSignedInStateAndGrabProfile(res.userId, _user_service);
+
+      identityStorage.userId = res.userId;
+      identityStorage.securityKey = securityKey;
+      identityStorage.save();
     });
   }
 }
