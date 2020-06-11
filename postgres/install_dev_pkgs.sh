@@ -7,3 +7,6 @@ apt install -y postgresql-12-citus-9.3
 echo "Launching postgres cluster..."
 systemctl start postgresql
 
+echo "Installing posgres C++ client library..."
+apt install -y libpqxx-dev
+
