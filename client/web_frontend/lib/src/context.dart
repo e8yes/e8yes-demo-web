@@ -5,3 +5,5 @@ Uri demowebServiceUri = Uri.parse("http://localhost:8000");
 
 ConnectionManagerInterface demowebServiceConnections = 
   ImmediateConnection(demowebServiceUri);
+
+const int kSecurityKeyLength = 128;

@@ -1,11 +1,12 @@
 import 'package:angular/angular.dart';
+import 'package:demoweb_app/src/context.dart';
+import 'package:demoweb_app/src/profile_component.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
+import "package:demoweb_app/src/proto_dart/service_user.pb.dart";
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
+import 'package:demoweb_app/src/security_key_generator.dart';
+import 'package:demoweb_app/src/sync_account_component.dart';
 import 'package:demoweb_app/src/user_service_interface.dart';
-
-import 'profile_component.dart';
-import 'sync_account_component.dart';
-import "proto_dart/service_user.pb.dart";
 
 enum AccountState {
   ACCOUNTLESS,
@@ -13,7 +14,7 @@ enum AccountState {
 }
 
 class AccountInfo {
-  AccountState accountState =  AccountState.ACCOUNTLESS;
+  AccountState accountState = AccountState.ACCOUNTLESS;
   String accountSummaryTag = "";
   UserPublicProfile profile = null;
 
@@ -25,26 +26,22 @@ class AccountInfo {
     }
   }
 
-  void setSignedInStateAndGrabProfile(var userId, 
-                                      UserServiceInterface service) {
+  void setSignedInStateAndGrabProfile(
+      var userId, UserServiceInterface service) {
     GetPublicProfileRequest req = GetPublicProfileRequest();
     req.userId = (NullableInt64()..value = userId);
-    service
-      .getPublicProfile(req)
-      .then((GetPublicProfileResponse res) {
-        _updateAccountSummaryTag(res.profile);
-        profile = res.profile;
-        accountState = AccountState.SIGNED_IN;
-      });
+    service.getPublicProfile(req).then((GetPublicProfileResponse res) {
+      _updateAccountSummaryTag(res.profile);
+      profile = res.profile;
+      accountState = AccountState.SIGNED_IN;
+    });
   }
 }
 
 @Component(
   selector: "account",
   templateUrl: "account_component.html",
-  directives: [coreDirectives, 
-               ProfileComponent,
-               SyncAccountComponent],
+  directives: [coreDirectives, ProfileComponent, SyncAccountComponent],
 )
 class AccountComponent {
   AccountInfo accountInfo = AccountInfo();
@@ -74,11 +71,9 @@ class AccountComponent {
 
   void onClickSignUp() {
     RegistrationRequest req = RegistrationRequest();
-    req.securityKey = [1, 2, 3];
-    _user_service
-      .register(req)
-      .then((RegistrationResponse res) {
-        accountInfo.setSignedInStateAndGrabProfile(res.userId, _user_service);
-      });
+    req.securityKey = generateSecurityKey(kSecurityKeyLength);
+    _user_service.register(req).then((RegistrationResponse res) {
+      accountInfo.setSignedInStateAndGrabProfile(res.userId, _user_service);
+    });
   }
 }
