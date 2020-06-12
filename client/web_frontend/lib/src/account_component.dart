@@ -17,23 +17,13 @@ enum AccountState {
 
 class AccountInfo {
   AccountState accountState = AccountState.ACCOUNTLESS;
-  String accountSummaryTag = "";
   UserPublicProfile profile = null;
-
-  void _updateAccountSummaryTag(UserPublicProfile profile) {
-    if (profile.hasAlias()) {
-      accountSummaryTag = profile.alias;
-    } else {
-      accountSummaryTag = profile.userId.toString();
-    }
-  }
 
   void setSignedInStateAndGrabProfile(
       Int64 userId, UserServiceInterface service) {
     GetPublicProfileRequest req = GetPublicProfileRequest();
     req.userId = (NullableInt64()..value = userId);
     service.getPublicProfile(req).then((GetPublicProfileResponse res) {
-      _updateAccountSummaryTag(res.profile);
       profile = res.profile;
       accountState = AccountState.SIGNED_IN;
     });
@@ -56,15 +46,8 @@ class AccountComponent {
   AccountComponent(this._user_service) {
     if (identityStorage.userId != null) {
       assert(identityStorage.securityKey != null);
-      _user_service
-          .authorize(AuthorizationRequest()
-            ..userId = identityStorage.userId
-            ..securityKey = identityStorage.securityKey)
-          .then((AuthorizationResponse res) {
-        print(res.signedIdentity);
-        accountInfo.setSignedInStateAndGrabProfile(
-            identityStorage.userId, _user_service);
-      });
+      accountInfo.setSignedInStateAndGrabProfile(
+          identityStorage.userId, _user_service);
     }
   }
 
@@ -80,7 +63,7 @@ class AccountComponent {
     displaySyncAccountComponent = !displaySyncAccountComponent;
   }
 
-  void onClickAccountSummaryTag() {
+  void onClickAccount() {
     displayAccountProfileComponent = !displayAccountProfileComponent;
   }
 
