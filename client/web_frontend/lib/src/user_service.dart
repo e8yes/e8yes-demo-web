@@ -1,12 +1,11 @@
 import "dart:async";
 import 'dart:convert';
-
-import 'package:demoweb_app/src/context.dart';
 import 'package:grpc/grpc_web.dart';
 
-import "user_service_interface.dart";
-import "proto_dart/service_user.pb.dart";
-import "proto_dart/service_user.pbgrpc.dart";
+import 'package:demoweb_app/src/context.dart';
+import "package:demoweb_app/src/user_service_interface.dart";
+import "package:demoweb_app/src/proto_dart/service_user.pb.dart";
+import "package:demoweb_app/src/proto_dart/service_user.pbgrpc.dart";
 
 class UserServiceImpl implements UserServiceInterface {
   final JsonEncoder _jsonEncoder = JsonEncoder();
@@ -16,15 +15,6 @@ class UserServiceImpl implements UserServiceInterface {
     GrpcWebClientChannel channel = demowebServiceConnections.take();
     RegistrationResponse res =
         await UserServiceClient(channel).register(request);
-    demowebServiceConnections.put(channel);
-    return res;
-  }
-
-  @override
-  Future<AuthorizationResponse> authorize(AuthorizationRequest request) async {
-    GrpcWebClientChannel channel = demowebServiceConnections.take();
-    AuthorizationResponse res =
-        await UserServiceClient(channel).authorize(request);
     demowebServiceConnections.put(channel);
     return res;
   }
