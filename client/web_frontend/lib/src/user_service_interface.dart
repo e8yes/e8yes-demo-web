@@ -6,10 +6,10 @@ abstract class UserServiceInterface {
   Future<RegistrationResponse> register(RegistrationRequest request);
   Future<AuthorizationResponse> authorize(AuthorizationRequest request);
   Future<GetPublicProfileResponse> getPublicProfile(
-    GetPublicProfileRequest request);
+      GetPublicProfileRequest request);
   Future<UpdatePublicProfileResponse> updatePublicProfile(
-    UpdatePublicProfileRequest request);
+      UpdatePublicProfileRequest request, List<int> signature);
   Future<SearchUserResponse> search(SearchUserRequest request);
   Future<PrepareNewAvatarResponse> prepareNewAvatar(
-    PrepareNewAvatarRequest request);
+      PrepareNewAvatarRequest request, List<int> signature);
 }

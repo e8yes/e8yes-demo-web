@@ -10,6 +10,6 @@
 <div *ngIf="displaySignedInUi()">
     <button (click)="onClickAccountSummaryTag()">{{accountInfo.accountSummaryTag}}</button>
     <div *ngIf="displayAccountProfileComponent">
-        <profile [profile]="accountInfo.profile"></profile>
+        <profile [profile]="accountInfo.profile" [editable]="true"></profile>
     </div>
 </div>

@@ -1,14 +1,32 @@
-<div>
-    <label>User ID</label>
-    <label>{{profile.userId}}</label>
+<div *ngIf="!editMode">
+    <div>
+        <label>User ID</label>
+        <label>{{profile.userId}}</label>
+    </div>
+    <div>
+        <label>Alias</label>
+        <label *ngIf="profile.alias != null">
+            {{profile.alias}}
+        </label>
+        <label *ngIf="profile.alias != null">
+            You haven't set up an alias yet.
+        </label>
+    </div>
+    <div>
+        <button (click)="onClickEdit" *ngIf="editable">Edit</button>
+    </div>
 </div>
 
-<div>
-    <label>Alias</label>
-    <label *ngIf="profile.alias != null">
-        {{profile.alias}}
-    </label>
-    <label *ngIf="profile.alias != null">
-        You haven't set up an alias yet.
-    </label>
+<div *ngIf="editMode">
+    <div>
+        <label>User ID</label>
+        <label>{{profile.userId}}</label>
+    </div>
+    <div>
+        <label>Alias</label>
+        <input [(ngModel)]="profile.alias" placeholder="alias" />
+    </div>
+    <div>
+        <button (click)="onClickConfirm" *ngIf="editable">Confirm</button>
+    </div>
 </div>
