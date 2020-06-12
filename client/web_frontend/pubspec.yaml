@@ -16,3 +16,4 @@ dependencies:
 dev_dependencies:
   build_runner: ^1.5.1
   build_web_compilers: ^2.1.0
+  sass_builder: ^2.1.3

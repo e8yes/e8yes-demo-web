@@ -33,7 +33,7 @@ class AccountInfo {
 @Component(
   selector: "account",
   templateUrl: "account_component.html",
-  styleUrls: ["account_component.css"],
+  styleUrls: ["navigation_component.css"],
   directives: [coreDirectives, ProfileComponent, SyncAccountComponent],
 )
 class AccountComponent {

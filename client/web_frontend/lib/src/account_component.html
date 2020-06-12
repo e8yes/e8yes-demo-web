@@ -1,36 +1,35 @@
-<section>
-    <aside>
-        <header>
-            Menu
-        </header>
-    
-        <nav *ngIf="displayAccountlessUi()">
-            <button (click)="onClickAccount()">
-                Account (not signed in)
-            </button>
+<li *ngIf="displayAccountlessUi()" class="sidebar-li">
+    <a (click)="onClickAccount()" class="sidebar-button">
+        Account (not signed in)
+    </a>
+    <ul *ngIf="displayAccountProfileComponent" class="sidebar-ul">
+        <li class="sidebar-li">
+            <a (click)="onClickSyncAccount()" class="sidebar-button">
+                Sync Account
+            </a>
+            <div *ngIf="displaySyncAccountComponent">
+                <sync-account></sync-account>
+            </div>
+        </li>
         
-            <ul *ngIf="displayAccountProfileComponent">
-                <li>
-                    <button (click)="onClickSyncAccount()">Sync Account</button>
-                    <div *ngIf="displaySyncAccountComponent">
-                        <sync-account></sync-account>
-                    </div>
-                </li>
-                
-                <li>
-                    <button (click)="onClickSignUp()">Sign Up</button>
-                </li>
-            </ul>
-        </nav>
-    </aside>
-</section>
+        <li class="sidebar-li">
+            <a (click)="onClickSignUp()" class="sidebar-button">
+                Sign Up
+            </a>
+        </li>
+    </ul>
+</li>
 
-
-<div *ngIf="displaySignedInUi()">
-    <button (click)="onClickAccount()">
+<li *ngIf="displaySignedInUi()" class="sidebar-li">
+    <a (click)="onClickAccount()" class="sidebar-button">
         Account (signed in)
-    </button>
-    <div *ngIf="displayAccountProfileComponent">
-        <profile [profile]="accountInfo.profile" [editable]="true"></profile>
-    </div>
-</div>
+    </a>
+    <ul *ngIf="displayAccountProfileComponent" class="sidebar-ul">
+        <li class="sidebar-li">
+            <profile [profile]="accountInfo.profile" [editable]="true">
+            </profile>
+        </li>
+    </ul>
+</li>
+
+

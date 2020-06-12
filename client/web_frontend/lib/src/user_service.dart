@@ -1,4 +1,5 @@
 import "dart:async";
+import 'dart:convert';
 
 import 'package:demoweb_app/src/context.dart';
 import 'package:grpc/grpc_web.dart';
@@ -8,6 +9,8 @@ import "proto_dart/service_user.pb.dart";
 import "proto_dart/service_user.pbgrpc.dart";
 
 class UserServiceImpl implements UserServiceInterface {
+  final JsonEncoder _jsonEncoder = JsonEncoder();
+
   @override
   Future<RegistrationResponse> register(RegistrationRequest request) async {
     GrpcWebClientChannel channel = demowebServiceConnections.take();
@@ -38,10 +41,12 @@ class UserServiceImpl implements UserServiceInterface {
 
   @override
   Future<UpdatePublicProfileResponse> updatePublicProfile(
-      UpdatePublicProfileRequest request, List<int> signature) async {
+      UpdatePublicProfileRequest request, List<int> signedIdentity) async {
     GrpcWebClientChannel channel = demowebServiceConnections.take();
-    UpdatePublicProfileResponse res =
-        await UserServiceClient(channel).updatePublicProfile(request);
+    UpdatePublicProfileResponse res = await UserServiceClient(channel)
+        .updatePublicProfile(request,
+            options: CallOptions(
+                metadata: {'a-bin': _jsonEncoder.convert(signedIdentity)}));
     demowebServiceConnections.put(channel);
     return res;
   }
@@ -56,10 +61,12 @@ class UserServiceImpl implements UserServiceInterface {
 
   @override
   Future<PrepareNewAvatarResponse> prepareNewAvatar(
-      PrepareNewAvatarRequest request, List<int> signature) async {
+      PrepareNewAvatarRequest request, List<int> signedIdentity) async {
     GrpcWebClientChannel channel = demowebServiceConnections.take();
-    PrepareNewAvatarResponse res =
-        await UserServiceClient(channel).prepareNewAvatar(request);
+    PrepareNewAvatarResponse res = await UserServiceClient(channel)
+        .prepareNewAvatar(request,
+            options: CallOptions(
+                metadata: {'a-bin': _jsonEncoder.convert(signedIdentity)}));
     demowebServiceConnections.put(channel);
     return res;
   }

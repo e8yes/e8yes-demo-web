@@ -40,4 +40,8 @@ class ProfileComponent {
       editMode = false;
     });
   }
+
+  void onClickCancel() {
+    editMode = false;
+  }
 }

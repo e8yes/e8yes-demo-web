@@ -1,0 +1,59 @@
+/* -------------
+Sidebar
+----------------*/
+.sidebar {
+  position: absolute;
+  width: 17em;
+  height: 100%;
+  top: 0;
+  overflow:hidden;
+  background-color: #19222a;
+  /*-webkit-transform: translateZ(0);*/
+  visibility: visible;
+  /*-webkit-backface-visibility: hidden;*/
+}
+  
+.sidebar-header {
+  background-color: #09f;
+  width: 100%;
+  display:block;
+  padding: 0.75em	1em;
+  font-family: sans-serif;
+  color: #19222a;
+}
+
+.sidebar-nav {
+  position: fixed;
+  background-color: #19222a;
+  height: 100%;
+  font-weight: 400; 
+  font-size: 1.2em;
+  overflow: auto;
+  padding-bottom: 6em;
+  z-index: 9;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sidebar-ul {
+  list-style:none;
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.siderbar-li{
+  margin-left: 0;
+  padding-left: 0;
+  display: inline-block;
+  width: 100%;
+}
+
+.sidebar-button {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.75em;
+  padding: 1.05em	1em;
+  position: relative;
+  display: block;
+  background-color: #19222a;
+}
