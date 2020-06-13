@@ -1,10 +1,10 @@
-<li *ngIf="displayAccountlessUi()" class="sidebar-li">
-    <a (click)="onClickAccount()" class="sidebar-button">
+<li *ngIf="displayAccountlessUi()" class="nav-item">
+    <a (click)="onClickAccount()" class="nav-link">
         Account (not signed in)
     </a>
-    <ul *ngIf="displayAccountProfileComponent" class="sidebar-ul">
-        <li class="sidebar-li">
-            <a (click)="onClickSyncAccount()" class="sidebar-button">
+    <ul *ngIf="displayAccountProfileComponent" class="nav navbar-nav">
+        <li class="nav-item">
+            <a (click)="onClickSyncAccount()" class="nav-link">
                 Sync Account
             </a>
             <div *ngIf="displaySyncAccountComponent">
@@ -12,20 +12,20 @@
             </div>
         </li>
         
-        <li class="sidebar-li">
-            <a (click)="onClickSignUp()" class="sidebar-button">
+        <li class="nav-item">
+            <a (click)="onClickSignUp()" class="nav-link">
                 Sign Up
             </a>
         </li>
     </ul>
 </li>
 
-<li *ngIf="displaySignedInUi()" class="sidebar-li">
-    <a (click)="onClickAccount()" class="sidebar-button">
+<li *ngIf="displaySignedInUi()" class="nav-item">
+    <a (click)="onClickAccount()" class="nav-link">
         Account (signed in)
     </a>
-    <ul *ngIf="displayAccountProfileComponent" class="sidebar-ul">
-        <li class="sidebar-li">
+    <ul *ngIf="displayAccountProfileComponent" class="nav navbar-nav">
+        <li class="nav-item">
             <profile [profile]="accountInfo.profile" [editable]="true">
             </profile>
         </li>

@@ -81,6 +81,8 @@ class AccountComponent {
     _user_service
         .register(RegistrationRequest()..securityKey = securityKey)
         .then((RegistrationResponse res) {
+      credentialStorage
+          .authorize(_auth_service, res.userId, securityKey);
       accountInfo.setSignedInStateAndGrabProfile(res.userId, _user_service);
 
       identityStorage.userId = res.userId;
