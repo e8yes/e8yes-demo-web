@@ -5,9 +5,7 @@
   top: 0;
   overflow:hidden;
   background-color: #19222a;
-  /*-webkit-transform: translateZ(0);*/
   visibility: visible;
-  /*-webkit-backface-visibility: hidden;*/
 }
 
 .sidebar-header {
@@ -48,6 +46,7 @@
 
 .sidebar-button {
   color: rgba(255,255,255,0.9);
+  width: 100%;
   font-size: 0.75em;
   padding: 1.05em	1em;
   position: relative;

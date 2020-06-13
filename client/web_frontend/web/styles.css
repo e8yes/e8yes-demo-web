@@ -13,7 +13,10 @@ h2, h3 {
   font-weight: lighter;
 }
 body {
-  margin: 2em;
+  margin: 0em;
+}
+div {
+  font: 1em sans-serif;
 }
 body, input[text], button {
   color: #888;

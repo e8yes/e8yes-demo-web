@@ -10,6 +10,7 @@ import 'package:demoweb_app/src/user_service_interface.dart';
   selector: 'app',
   templateUrl: 'app_component.html',
   directives: [NavigationComponent],
+  styleUrls: ["main.css"],
   providers: [
     ClassProvider(UserServiceInterface, useClass: UserServiceImpl),
     ClassProvider(AuthorizationServiceInterface, useClass: AuthorizationServiceImpl),
