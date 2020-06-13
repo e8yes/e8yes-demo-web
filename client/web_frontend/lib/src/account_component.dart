@@ -49,10 +49,13 @@ class AccountComponent {
   AccountComponent(this._user_service, this._auth_service) {
     if (identityStorage.userId != null) {
       assert(identityStorage.securityKey != null);
-      credentialStorage.authorize(
-          _auth_service, identityStorage.userId, identityStorage.securityKey);
-      accountInfo.setSignedInStateAndGrabProfile(
-          identityStorage.userId, _user_service);
+      credentialStorage
+          .authorize(_auth_service, identityStorage.userId,
+              identityStorage.securityKey)
+          .then((AuthorizationResponse res) {
+        accountInfo.setSignedInStateAndGrabProfile(
+            identityStorage.userId, _user_service);
+      });
     }
   }
 
