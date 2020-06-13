@@ -1,4 +1,5 @@
 import 'package:angular/angular.dart';
+import 'package:demoweb_app/src/authorization_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
 
 import 'package:demoweb_app/src/context.dart';
@@ -43,10 +44,13 @@ class AccountComponent {
   bool displayAccountProfileComponent = false;
 
   final UserServiceInterface _user_service;
+  final AuthorizationServiceInterface _auth_service;
 
-  AccountComponent(this._user_service) {
+  AccountComponent(this._user_service, this._auth_service) {
     if (identityStorage.userId != null) {
       assert(identityStorage.securityKey != null);
+      credentialStorage.authorize(
+          _auth_service, identityStorage.userId, identityStorage.securityKey);
       accountInfo.setSignedInStateAndGrabProfile(
           identityStorage.userId, _user_service);
     }

@@ -1,24 +1,28 @@
-import 'dart:convert';
-
+import 'dart:async';
+import 'package:demoweb_app/src/authorization_service_interface.dart';
+import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:webstorage/webstorage.dart';
 
 class CredentialStorage {
   final SessionStorage _sessionStorage = SessionStorage();
-  final JsonEncoder _jsonEncoder = JsonEncoder();
-  final JsonDecoder _jsonDecoder = JsonDecoder();
 
-  void saveSignature(List<int> signature) {
-    _sessionStorage.set("sig", _jsonEncoder.convert(signature));
+  Future<AuthorizationResponse> authorize(
+      AuthorizationServiceInterface auth_service,
+      Int64 userId,
+      List<int> securityKey) async {
+    return auth_service
+        .authorize(AuthorizationRequest()
+          ..userId = userId
+          ..securityKey = securityKey)
+        .then((AuthorizationResponse res) {
+      _sessionStorage.set(
+          "sig", res.signedIdentity.signature);
+      return res;
+    });
   }
 
-  List<int> loadSignature() {
-    String sigJson = _sessionStorage.get("sig");
-    if (sigJson != null) {
-      List<dynamic> it = _jsonDecoder.convert(sigJson);
-      List<int> signature = List<int>.from(it);
-      return signature;
-    } else {
-      return null;
-    }
+  String loadSignature() {
+    return _sessionStorage.get("sig");
   }
 }

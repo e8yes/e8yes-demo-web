@@ -7,7 +7,7 @@ abstract class UserServiceInterface {
   Future<GetPublicProfileResponse> getPublicProfile(
       GetPublicProfileRequest request);
   Future<UpdatePublicProfileResponse> updatePublicProfile(
-      UpdatePublicProfileRequest request, List<int> signature);
+      UpdatePublicProfileRequest request, String signature);
   Future<SearchUserResponse> search(SearchUserRequest request);
   Future<PrepareNewAvatarResponse> prepareNewAvatar(
       PrepareNewAvatarRequest request, List<int> signature);

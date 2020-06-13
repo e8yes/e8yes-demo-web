@@ -26,5 +26,5 @@ message Identity {
 }
 
 message IdentitySignature {
-    bytes signature = 1;
+    string signature = 1;
 }

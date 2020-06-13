@@ -57,7 +57,7 @@ class Identity extends $pb.GeneratedMessage {
 
 class IdentitySignature extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('IdentitySignature', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'signature', $pb.PbFieldType.OY)
+    ..aOS(1, 'signature')
     ..hasRequiredFields = false
   ;
 
@@ -77,9 +77,9 @@ class IdentitySignature extends $pb.GeneratedMessage {
   static IdentitySignature _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get signature => $_getN(0);
+  $core.String get signature => $_getSZ(0);
   @$pb.TagNumber(1)
-  set signature($core.List<$core.int> v) { $_setBytes(0, v); }
+  set signature($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSignature() => $_has(0);
   @$pb.TagNumber(1)

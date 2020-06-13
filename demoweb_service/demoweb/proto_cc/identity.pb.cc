@@ -117,7 +117,7 @@ void AddDescriptorsImpl() {
       "\n\016identity.proto\022\002e8\"J\n\010Identity\022\030\n\020expi"
       "ry_timestamp\030\001 \001(\003\022\017\n\007user_id\030\002 \001(\003\022\023\n\013g"
       "roup_names\030\003 \003(\t\"&\n\021IdentitySignature\022\021\n"
-      "\tsignature\030\001 \001(\014b\006proto3"
+      "\tsignature\030\001 \001(\tb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
       descriptor, 144);
@@ -526,12 +526,16 @@ bool IdentitySignature::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bytes signature = 1;
+      // string signature = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_signature()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->signature().data(), static_cast<int>(this->signature().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "e8.IdentitySignature.signature"));
         } else {
           goto handle_unusual;
         }
@@ -564,9 +568,13 @@ void IdentitySignature::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes signature = 1;
+  // string signature = 1;
   if (this->signature().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->signature().data(), static_cast<int>(this->signature().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.IdentitySignature.signature");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->signature(), output);
   }
 
@@ -584,10 +592,14 @@ void IdentitySignature::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes signature = 1;
+  // string signature = 1;
   if (this->signature().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->signature().data(), static_cast<int>(this->signature().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.IdentitySignature.signature");
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->signature(), target);
   }
 
@@ -608,10 +620,10 @@ size_t IdentitySignature::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // bytes signature = 1;
+  // string signature = 1;
   if (this->signature().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::BytesSize(
+      ::google::protobuf::internal::WireFormatLite::StringSize(
         this->signature());
   }
 

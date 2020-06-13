@@ -1,6 +1,3 @@
-/* -------------
-Sidebar
-----------------*/
 .sidebar {
   position: absolute;
   width: 17em;
@@ -12,7 +9,7 @@ Sidebar
   visibility: visible;
   /*-webkit-backface-visibility: hidden;*/
 }
-  
+
 .sidebar-header {
   background-color: #09f;
   width: 100%;

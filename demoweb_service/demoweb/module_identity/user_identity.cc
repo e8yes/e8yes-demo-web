@@ -31,6 +31,7 @@
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/sign_message.h"
+#include "third_party/base64/base64.h"
 
 namespace e8 {
 namespace {
@@ -119,7 +120,8 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
     KeyGeneratorInterface::Key key_pair =
         key_gen->KeyOf(kEncrypter, KeyGeneratorInterface::RSA_4096_BITS);
 
-    return SignMessage(identity_bytes, key_pair.key);
+    std::string raw_bytes = SignMessage(identity_bytes, key_pair.key);
+    return base64_encode(raw_bytes);
 }
 
 std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_identity,
@@ -128,8 +130,10 @@ std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_iden
         key_gen->KeyOf(kEncrypter, KeyGeneratorInterface::RSA_4096_BITS);
     assert(key_pair.public_key.has_value());
 
+    std::string raw_bytes = base64_decode(signed_identity);
+
     std::optional<std::string> decoded_bytes =
-        DecodeSignedMessage(signed_identity, key_pair.public_key.value());
+        DecodeSignedMessage(raw_bytes, key_pair.public_key.value());
     if (!decoded_bytes.has_value()) {
         return std::nullopt;
     }

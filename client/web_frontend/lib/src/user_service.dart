@@ -31,12 +31,12 @@ class UserServiceImpl implements UserServiceInterface {
 
   @override
   Future<UpdatePublicProfileResponse> updatePublicProfile(
-      UpdatePublicProfileRequest request, List<int> signedIdentity) async {
+      UpdatePublicProfileRequest request, String signature) async {
     GrpcWebClientChannel channel = demowebServiceConnections.take();
     UpdatePublicProfileResponse res = await UserServiceClient(channel)
         .updatePublicProfile(request,
             options: CallOptions(
-                metadata: {'a-bin': _jsonEncoder.convert(signedIdentity)}));
+                metadata: {'a': signature}));
     demowebServiceConnections.put(channel);
     return res;
   }

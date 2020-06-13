@@ -1,5 +1,6 @@
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
+import 'package:demoweb_app/src/context.dart';
 import 'package:webstorage/webstorage.dart';
 
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
@@ -30,12 +31,13 @@ class ProfileComponent {
   }
 
   void onClickConfirm() {
-    SessionStorage sessionStorage = SessionStorage();
-
     UpdatePublicProfileRequest req = UpdatePublicProfileRequest();
     req.alias = (NullableString()..value = profile.alias);
+    
+    String signature = credentialStorage.loadSignature();
+
     _user_service
-        .updatePublicProfile(req, null)
+        .updatePublicProfile(req, signature)
         .then((UpdatePublicProfileResponse res) {
       editMode = false;
     });

@@ -283,7 +283,7 @@ class IdentitySignature : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // bytes signature = 1;
+  // string signature = 1;
   void clear_signature();
   static const int kSignatureFieldNumber = 1;
   const ::std::string& signature() const;
@@ -292,7 +292,7 @@ class IdentitySignature : public ::google::protobuf::Message /* @@protoc_inserti
   void set_signature(::std::string&& value);
   #endif
   void set_signature(const char* value);
-  void set_signature(const void* value, size_t size);
+  void set_signature(const char* value, size_t size);
   ::std::string* mutable_signature();
   ::std::string* release_signature();
   void set_allocated_signature(::std::string* signature);
@@ -417,7 +417,7 @@ Identity::mutable_group_names() {
 
 // IdentitySignature
 
-// bytes signature = 1;
+// string signature = 1;
 inline void IdentitySignature::clear_signature() {
   signature_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -444,7 +444,7 @@ inline void IdentitySignature::set_signature(const char* value) {
   signature_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:e8.IdentitySignature.signature)
 }
-inline void IdentitySignature::set_signature(const void* value, size_t size) {
+inline void IdentitySignature::set_signature(const char* value, size_t size) {
   
   signature_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));

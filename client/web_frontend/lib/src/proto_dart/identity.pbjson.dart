@@ -17,7 +17,7 @@ const Identity$json = const {
 const IdentitySignature$json = const {
   '1': 'IdentitySignature',
   '2': const [
-    const {'1': 'signature', '3': 1, '4': 1, '5': 12, '10': 'signature'},
+    const {'1': 'signature', '3': 1, '4': 1, '5': 9, '10': 'signature'},
   ],
 };
 
