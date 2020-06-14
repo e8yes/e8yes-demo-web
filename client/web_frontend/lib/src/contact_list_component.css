@@ -1,6 +1,6 @@
 .searchbar{
     margin-top: 1em;
-    margin-bottom: 2em;
+    margin-bottom: 2px;
     margin-left: 1em;
     margin-right: 3em;
     width: 90%;
@@ -8,4 +8,18 @@
     background-color: #353b48;
     border-radius: 8px;
     padding: 10px;
+}
+
+.stack-search-list {
+    z-index: 9;
+    opacity: 0.8;
+    width: 90%;
+    margin-top: 0;
+    margin-left: 1em;
+}
+
+.contact-list {
+    position: absolute;
+    margin-top: 2em;
+    margin-left: 1em;
 }

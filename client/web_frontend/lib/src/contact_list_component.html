@@ -7,7 +7,11 @@
            placeholder="Search contact.." />
 </div>
 
-<ul class="list-group">
+<div class="contact-list ">
+    My contacts
+</div>
+
+<ul class="list-group stack-search-list">
     <li *ngFor="let profile of profiles"
         [class.selected]="profile === selectedUser"
         (click)="onSelectSearchedContact(profile)"
