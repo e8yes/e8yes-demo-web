@@ -17,10 +17,7 @@ class AccountComponent implements OnActivate {
   final UserServiceInterface _user_service;
   Int64 currentUserId;
 
-  AccountComponent(this._user_service) {
-    currentUserId = identityStorage.loadUserId();
-    accountInfo.setSignedInStateAndGrabProfile(currentUserId, _user_service);
-  }
+  AccountComponent(this._user_service);
 
   @override
   void onActivate(_, RouterState current) async {
@@ -33,7 +30,7 @@ class AccountComponent implements OnActivate {
     accountInfo.setSignedInStateAndGrabProfile(currentUserId, _user_service);
   }
 
-  bool editable() {
+  bool owner() {
     return currentUserId == identityStorage.loadUserId();
   }
 }
