@@ -13,3 +13,5 @@ IdentityStorage identityStorage = IdentityStorage();
 CredentialStorage credentialStorage = CredentialStorage();
 
 const int kSecurityKeyLength = 128;
+
+const String kIdPathVariable = "id";
