@@ -21,9 +21,9 @@
 #include <tuple>
 #include <vector>
 
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module_identity/retrieve_user.h"
-#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
@@ -55,12 +55,12 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &user_id_prefix,
                                    ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     query.query_piece(TableNames::AUser());
-    query.query_piece(" u WHERE TRUE");
+    query.query_piece(" u WHERE FALSE");
 
     SqlStr user_id_prefix_ph_value("", "");
     if (user_id_prefix.has_value()) {
         SqlQueryBuilder::Placeholder<SqlStr> user_id_prefix_ph;
-        query.query_piece(" AND u.id_str LIKE ").placeholder(&user_id_prefix_ph);
+        query.query_piece(" OR u.id_str LIKE ").placeholder(&user_id_prefix_ph);
 
         *user_id_prefix_ph_value.value_ptr() = std::to_string(user_id_prefix.value()) + "%";
         query.set_value_to_placeholder(user_id_prefix_ph, &user_id_prefix_ph_value);
@@ -69,7 +69,7 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &user_id_prefix,
     SqlStr alias_prefix_ph_value("", "");
     if (alias_prefix.has_value()) {
         SqlQueryBuilder::Placeholder<SqlStr> alias_prefix_ph;
-        query.query_piece(" AND u.alias LIKE ").placeholder(&alias_prefix_ph);
+        query.query_piece(" OR u.alias LIKE ").placeholder(&alias_prefix_ph);
 
         *alias_prefix_ph_value.value_ptr() = alias_prefix.value() + "%";
         query.set_value_to_placeholder(alias_prefix_ph, &alias_prefix_ph_value);
