@@ -10,6 +10,7 @@ import 'package:demoweb_app/src/user_service_interface.dart';
 @Component(
   selector: 'profile',
   templateUrl: 'profile_component.html',
+  styleUrls: ["profile_component.css"],
   directives: [coreDirectives, formDirectives],
 )
 class ProfileComponent {

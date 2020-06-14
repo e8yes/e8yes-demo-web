@@ -13,7 +13,7 @@ import 'package:demoweb_app/src/user_service_interface.dart';
   selector: 'app',
   templateUrl: 'app_component.html',
   directives: [routerDirectives, NavigationComponent],
-  styleUrls: ["main.css"],
+  styleUrls: ["app_component.css"],
   providers: [
     ClassProvider(UserServiceInterface, useClass: UserServiceImpl),
     ClassProvider(AuthorizationServiceInterface, useClass: AuthorizationServiceImpl),

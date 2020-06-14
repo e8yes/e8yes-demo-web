@@ -1,33 +1,57 @@
 <div *ngIf="!editMode">
-    <div>
-        <label>User ID</label>
-        <label>{{profile.userId}}</label>
+    <div class="account-info">
+        <span>
+            <label class="col-form-label">User ID</label>
+        </span>
+        <span>
+            <label class="col-form-label">{{profile.userId}}</label>
+        </span>
     </div>
+    
     <div>
-        <label>Alias</label>
-        <label *ngIf="profile.alias != null">
+        <label class="col-form-label">Alias</label>
+        <label class="col-form-label" 
+               *ngIf="profile.alias != null">
             {{profile.alias}}
         </label>
-        <label *ngIf="profile.alias == null">
+        <label class="col-form-label" 
+               *ngIf="profile.alias == null">
             You haven't set up an alias yet.
         </label>
     </div>
     <div>
-        <button (click)="onClickEdit" *ngIf="editable">Edit</button>
+        <button class="btn" 
+                (click)="onClickEdit" 
+                *ngIf="editable">
+            Edit
+        </button>
     </div>
 </div>
 
 <div *ngIf="editMode">
     <div>
-        <label>User ID</label>
-        <label>{{profile.userId}}</label>
+        <label class="col-form-label">User ID</label>
+        <label class="col-form-label">{{profile.userId}}</label>
     </div>
     <div>
-        <label>Alias</label>
-        <input [(ngModel)]="profile.alias" placeholder="alias" />
+        <span>
+            <label class="col-form-label">Alias</label>
+        </span>
+        <span>
+            <input [(ngModel)]="profile.alias" 
+                   placeholder="alias" />
+        </span>
     </div>
     <div>
-        <button (click)="onClickConfirm" *ngIf="editable">Confirm</button>
-        <button (click)="onClickCancel" *ngIf="editable">Canel</button>
+        <button class="btn" 
+                (click)="onClickConfirm" 
+                *ngIf="editable">
+                Confirm
+        </button>
+        <button class="btn" 
+                (click)="onClickCancel" 
+                *ngIf="editable">
+                Cancel
+        </button>
     </div>
 </div>
