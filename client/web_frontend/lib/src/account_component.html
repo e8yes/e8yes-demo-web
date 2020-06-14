@@ -2,5 +2,6 @@
 <profile *ngIf="accountInfo.profile != null" 
             [profile]="accountInfo.profile"
             [editable]="owner()"></profile>
-
-            
+<button *ngIf="!owner()" 
+        (click)="onClickAddContact"
+        class="btn">Add Contact</button>

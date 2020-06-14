@@ -33,4 +33,7 @@ class AccountComponent implements OnActivate {
   bool owner() {
     return currentUserId == identityStorage.loadUserId();
   }
+
+  void onClickAddContact() {
+  }
 }
