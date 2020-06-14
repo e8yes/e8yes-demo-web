@@ -1,6 +1,10 @@
 <aside class="sidebar">
     <div class="navbar-header">
-        <a class="navbar-brand" bref="#">e8yes Demos</a>
+        <a [routerLink]="RoutePaths.demoList.toUrl()" 
+           [routerLinkActive]="'active'"
+           class="navbar-brand" bref="#">
+            e8yes Demos
+        </a>
     </div>
 
     <nav class="navbar navbar-default">
@@ -28,7 +32,14 @@
                    class="nav-link">
                     Account (signed in)
                 </a>
-            </li>            
+            </li>
+            <li class="nav-item">
+                <a [routerLink]="RoutePaths.demoList.toUrl()" 
+                   [routerLinkActive]="'active'"
+                   class="nav-link">
+                   Demos
+                </a>
+            </li>
         </ul>
     </nav>
 </aside>
