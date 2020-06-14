@@ -1,1 +1,20 @@
 <h1>Contacts</h1>
+
+<div>
+    <input #searchBox
+           (input)="onKeyDownSearchContact(searchBox.value)"
+           class="searchbar"
+           placeholder="Search contact.." />
+</div>
+
+<ul class="list-group">
+    <li *ngFor="let profile of profiles"
+        [class.selected]="profile === selectedUser"
+        (click)="onSelectSearchedContact(profile)"
+        class="list-group-item">
+      <span>{{profile.userId}}</span>
+      <span *ngIf="profile.alias != null">
+          ({{profile.alias}})
+      </span>
+    </li>
+</ul>

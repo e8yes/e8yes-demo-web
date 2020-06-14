@@ -1,7 +1,6 @@
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:demoweb_app/src/context.dart';
-import 'package:webstorage/webstorage.dart';
 
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
