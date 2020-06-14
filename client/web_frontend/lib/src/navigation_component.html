@@ -33,7 +33,7 @@
                     Account (signed in)
                 </a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="!displayAccountlessUi()" class="nav-item">
                 <a [routerLink]="RoutePaths.contactList.toUrl()" 
                    [routerLinkActive]="'active'"
                    class="nav-link">
@@ -47,7 +47,7 @@
                    Demos
                 </a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="!displayAccountlessUi()" class="nav-item">
                 <a [routerLink]="RoutePaths.womenChat.toUrl()" 
                    [routerLinkActive]="'active'"
                    class="nav-link">
