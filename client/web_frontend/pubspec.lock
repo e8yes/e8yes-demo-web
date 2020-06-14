@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  angular_router:
+    dependency: "direct main"
+    description:
+      name: angular_router
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0-alpha+22"
   archive:
     dependency: transitive
     description:
