@@ -22,6 +22,9 @@
 namespace protobuf_file_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_file_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_FileTokenAccess;
 }  // namespace protobuf_file_2eproto
+namespace protobuf_nullable_5fprimitives_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableString;
+}  // namespace protobuf_nullable_5fprimitives_2eproto
 namespace e8 {
 class UserPublicProfileDefaultTypeInternal {
  public:
@@ -41,8 +44,9 @@ static void InitDefaultsUserPublicProfile() {
   ::e8::UserPublicProfile::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_UserPublicProfile =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsUserPublicProfile}, {
+::google::protobuf::internal::SCCInfo<2> scc_info_UserPublicProfile =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsUserPublicProfile}, {
+      &protobuf_nullable_5fprimitives_2eproto::scc_info_NullableString.base,
       &protobuf_file_2eproto::scc_info_FileTokenAccess.base,}};
 
 void InitDefaults() {
@@ -91,18 +95,20 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\022user_profile.proto\022\002e8\032\nfile.proto\"\245\001\n"
-      "\021UserPublicProfile\022\017\n\007user_id\030\001 \001(\003\022\r\n\005a"
-      "lias\030\002 \001(\t\0223\n\026avatar_readonly_access\030\003 \001"
-      "(\0132\023.e8.FileTokenAccess\022;\n\036avatar_previe"
-      "w_readonly_access\030\004 \001(\0132\023.e8.FileTokenAc"
-      "cessb\006proto3"
+      "\n\022user_profile.proto\022\002e8\032\nfile.proto\032\031nu"
+      "llable_primitives.proto\"\271\001\n\021UserPublicPr"
+      "ofile\022\017\n\007user_id\030\001 \001(\003\022!\n\005alias\030\002 \001(\0132\022."
+      "e8.NullableString\0223\n\026avatar_readonly_acc"
+      "ess\030\003 \001(\0132\023.e8.FileTokenAccess\022;\n\036avatar"
+      "_preview_readonly_access\030\004 \001(\0132\023.e8.File"
+      "TokenAccessb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 212);
+      descriptor, 259);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user_profile.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
+  ::protobuf_nullable_5fprimitives_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
@@ -121,10 +127,18 @@ namespace e8 {
 // ===================================================================
 
 void UserPublicProfile::InitAsDefaultInstance() {
+  ::e8::_UserPublicProfile_default_instance_._instance.get_mutable()->alias_ = const_cast< ::e8::NullableString*>(
+      ::e8::NullableString::internal_default_instance());
   ::e8::_UserPublicProfile_default_instance_._instance.get_mutable()->avatar_readonly_access_ = const_cast< ::e8::FileTokenAccess*>(
       ::e8::FileTokenAccess::internal_default_instance());
   ::e8::_UserPublicProfile_default_instance_._instance.get_mutable()->avatar_preview_readonly_access_ = const_cast< ::e8::FileTokenAccess*>(
       ::e8::FileTokenAccess::internal_default_instance());
+}
+void UserPublicProfile::clear_alias() {
+  if (GetArenaNoVirtual() == NULL && alias_ != NULL) {
+    delete alias_;
+  }
+  alias_ = NULL;
 }
 void UserPublicProfile::clear_avatar_readonly_access() {
   if (GetArenaNoVirtual() == NULL && avatar_readonly_access_ != NULL) {
@@ -156,9 +170,10 @@ UserPublicProfile::UserPublicProfile(const UserPublicProfile& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  alias_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.alias().size() > 0) {
-    alias_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.alias_);
+  if (from.has_alias()) {
+    alias_ = new ::e8::NullableString(*from.alias_);
+  } else {
+    alias_ = NULL;
   }
   if (from.has_avatar_readonly_access()) {
     avatar_readonly_access_ = new ::e8::FileTokenAccess(*from.avatar_readonly_access_);
@@ -175,10 +190,9 @@ UserPublicProfile::UserPublicProfile(const UserPublicProfile& from)
 }
 
 void UserPublicProfile::SharedCtor() {
-  alias_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&avatar_readonly_access_, 0, static_cast<size_t>(
+  ::memset(&alias_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&user_id_) -
-      reinterpret_cast<char*>(&avatar_readonly_access_)) + sizeof(user_id_));
+      reinterpret_cast<char*>(&alias_)) + sizeof(user_id_));
 }
 
 UserPublicProfile::~UserPublicProfile() {
@@ -187,7 +201,7 @@ UserPublicProfile::~UserPublicProfile() {
 }
 
 void UserPublicProfile::SharedDtor() {
-  alias_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete alias_;
   if (this != internal_default_instance()) delete avatar_readonly_access_;
   if (this != internal_default_instance()) delete avatar_preview_readonly_access_;
 }
@@ -212,7 +226,10 @@ void UserPublicProfile::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  alias_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && alias_ != NULL) {
+    delete alias_;
+  }
+  alias_ = NULL;
   if (GetArenaNoVirtual() == NULL && avatar_readonly_access_ != NULL) {
     delete avatar_readonly_access_;
   }
@@ -249,16 +266,12 @@ bool UserPublicProfile::MergePartialFromCodedStream(
         break;
       }
 
-      // string alias = 2;
+      // .e8.NullableString alias = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_alias()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->alias().data(), static_cast<int>(this->alias().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "e8.UserPublicProfile.alias"));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_alias()));
         } else {
           goto handle_unusual;
         }
@@ -320,14 +333,10 @@ void UserPublicProfile::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->user_id(), output);
   }
 
-  // string alias = 2;
-  if (this->alias().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->alias().data(), static_cast<int>(this->alias().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.UserPublicProfile.alias");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->alias(), output);
+  // .e8.NullableString alias = 2;
+  if (this->has_alias()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->_internal_alias(), output);
   }
 
   // .e8.FileTokenAccess avatar_readonly_access = 3;
@@ -361,15 +370,11 @@ void UserPublicProfile::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->user_id(), target);
   }
 
-  // string alias = 2;
-  if (this->alias().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->alias().data(), static_cast<int>(this->alias().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.UserPublicProfile.alias");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->alias(), target);
+  // .e8.NullableString alias = 2;
+  if (this->has_alias()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        2, this->_internal_alias(), deterministic, target);
   }
 
   // .e8.FileTokenAccess avatar_readonly_access = 3;
@@ -403,11 +408,11 @@ size_t UserPublicProfile::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string alias = 2;
-  if (this->alias().size() > 0) {
+  // .e8.NullableString alias = 2;
+  if (this->has_alias()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->alias());
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *alias_);
   }
 
   // .e8.FileTokenAccess avatar_readonly_access = 3;
@@ -458,9 +463,8 @@ void UserPublicProfile::MergeFrom(const UserPublicProfile& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.alias().size() > 0) {
-
-    alias_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.alias_);
+  if (from.has_alias()) {
+    mutable_alias()->::e8::NullableString::MergeFrom(from.alias());
   }
   if (from.has_avatar_readonly_access()) {
     mutable_avatar_readonly_access()->::e8::FileTokenAccess::MergeFrom(from.avatar_readonly_access());
@@ -497,8 +501,7 @@ void UserPublicProfile::Swap(UserPublicProfile* other) {
 }
 void UserPublicProfile::InternalSwap(UserPublicProfile* other) {
   using std::swap;
-  alias_.Swap(&other->alias_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  swap(alias_, other->alias_);
   swap(avatar_readonly_access_, other->avatar_readonly_access_);
   swap(avatar_preview_readonly_access_, other->avatar_preview_readonly_access_);
   swap(user_id_, other->user_id_);

@@ -33,4 +33,9 @@ class IdentityStorage {
   bool hasIdentity() {
     return loadUserId() != null;
   }
+
+  void clear() {
+    _storage.remove("userId");
+    _storage.remove("securityKey");
+  }
 }

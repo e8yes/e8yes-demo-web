@@ -20,10 +20,11 @@ syntax = "proto3";
 package e8;
 
 import "file.proto";
+import "nullable_primitives.proto";
 
 message UserPublicProfile {
     int64 user_id = 1;
-    string alias = 2;
+    NullableString alias = 2;
     FileTokenAccess avatar_readonly_access = 3;
     FileTokenAccess avatar_preview_readonly_access = 4;
 }

@@ -31,6 +31,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
 #include "file.pb.h"
+#include "nullable_primitives.pb.h"
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_user_5fprofile_2eproto 
 
@@ -147,19 +148,17 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // string alias = 2;
+  // .e8.NullableString alias = 2;
+  bool has_alias() const;
   void clear_alias();
   static const int kAliasFieldNumber = 2;
-  const ::std::string& alias() const;
-  void set_alias(const ::std::string& value);
-  #if LANG_CXX11
-  void set_alias(::std::string&& value);
-  #endif
-  void set_alias(const char* value);
-  void set_alias(const char* value, size_t size);
-  ::std::string* mutable_alias();
-  ::std::string* release_alias();
-  void set_allocated_alias(::std::string* alias);
+  private:
+  const ::e8::NullableString& _internal_alias() const;
+  public:
+  const ::e8::NullableString& alias() const;
+  ::e8::NullableString* release_alias();
+  ::e8::NullableString* mutable_alias();
+  void set_allocated_alias(::e8::NullableString* alias);
 
   // .e8.FileTokenAccess avatar_readonly_access = 3;
   bool has_avatar_readonly_access() const;
@@ -195,7 +194,7 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr alias_;
+  ::e8::NullableString* alias_;
   ::e8::FileTokenAccess* avatar_readonly_access_;
   ::e8::FileTokenAccess* avatar_preview_readonly_access_;
   ::google::protobuf::int64 user_id_;
@@ -227,56 +226,51 @@ inline void UserPublicProfile::set_user_id(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:e8.UserPublicProfile.user_id)
 }
 
-// string alias = 2;
-inline void UserPublicProfile::clear_alias() {
-  alias_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// .e8.NullableString alias = 2;
+inline bool UserPublicProfile::has_alias() const {
+  return this != internal_default_instance() && alias_ != NULL;
 }
-inline const ::std::string& UserPublicProfile::alias() const {
+inline const ::e8::NullableString& UserPublicProfile::_internal_alias() const {
+  return *alias_;
+}
+inline const ::e8::NullableString& UserPublicProfile::alias() const {
+  const ::e8::NullableString* p = alias_;
   // @@protoc_insertion_point(field_get:e8.UserPublicProfile.alias)
-  return alias_.GetNoArena();
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
+      &::e8::_NullableString_default_instance_);
 }
-inline void UserPublicProfile::set_alias(const ::std::string& value) {
-  
-  alias_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.UserPublicProfile.alias)
-}
-#if LANG_CXX11
-inline void UserPublicProfile::set_alias(::std::string&& value) {
-  
-  alias_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.UserPublicProfile.alias)
-}
-#endif
-inline void UserPublicProfile::set_alias(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  alias_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.UserPublicProfile.alias)
-}
-inline void UserPublicProfile::set_alias(const char* value, size_t size) {
-  
-  alias_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.UserPublicProfile.alias)
-}
-inline ::std::string* UserPublicProfile::mutable_alias() {
-  
-  // @@protoc_insertion_point(field_mutable:e8.UserPublicProfile.alias)
-  return alias_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* UserPublicProfile::release_alias() {
+inline ::e8::NullableString* UserPublicProfile::release_alias() {
   // @@protoc_insertion_point(field_release:e8.UserPublicProfile.alias)
   
-  return alias_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::e8::NullableString* temp = alias_;
+  alias_ = NULL;
+  return temp;
 }
-inline void UserPublicProfile::set_allocated_alias(::std::string* alias) {
-  if (alias != NULL) {
+inline ::e8::NullableString* UserPublicProfile::mutable_alias() {
+  
+  if (alias_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
+    alias_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.UserPublicProfile.alias)
+  return alias_;
+}
+inline void UserPublicProfile::set_allocated_alias(::e8::NullableString* alias) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(alias_);
+  }
+  if (alias) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      alias = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, alias, submessage_arena);
+    }
     
   } else {
     
   }
-  alias_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), alias);
+  alias_ = alias;
   // @@protoc_insertion_point(field_set_allocated:e8.UserPublicProfile.alias)
 }
 

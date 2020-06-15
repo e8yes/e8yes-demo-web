@@ -16,15 +16,17 @@ import 'package:demoweb_app/src/user_service_interface.dart';
 class ProfileComponent {
   @Input()
   UserPublicProfile profile;
-
   @Input()
   bool editable;
-
   bool editMode = false;
-
+  String newAlias;
   final UserServiceInterface _user_service;
 
   ProfileComponent(this._user_service);
+
+  bool hasAlias(UserPublicProfile profile) {
+    return profile.hasAlias() && profile.alias.value.isNotEmpty;
+  }
 
   void onClickEdit() {
     editMode = true;
@@ -32,7 +34,10 @@ class ProfileComponent {
 
   void onClickConfirm() {
     UpdatePublicProfileRequest req = UpdatePublicProfileRequest();
-    req.alias = (NullableString()..value = profile.alias);
+    if (newAlias != null) {
+      profile.alias = (NullableString()..value = newAlias);
+    }
+    req.alias = profile.alias;
     
     String signature = credentialStorage.loadSignature();
 

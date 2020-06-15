@@ -27,7 +27,9 @@ class AccountComponent implements OnActivate {
     } else {
       currentUserId = identityStorage.loadUserId();
     }
-    accountInfo.setSignedInStateAndGrabProfile(currentUserId, _user_service);
+    if (currentUserId != null) {
+      accountInfo.setSignedInStateAndGrabProfile(currentUserId, _user_service);
+    }
   }
 
   bool owner() {

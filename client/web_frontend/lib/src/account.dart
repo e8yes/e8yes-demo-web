@@ -43,6 +43,8 @@ void signIn(AccountInfo accountInfo, UserServiceInterface user_service,
       }
       accountInfo.setSignedInStateAndGrabProfile(userId, user_service);
       return res;
+    }).catchError((_) {
+      identityStorage.clear();
     });
   }
 }

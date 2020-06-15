@@ -63,9 +63,7 @@ std::string AllocateNewAvatarLocation(std::string const &user_id_str, FileFormat
 
 bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
                    ConnectionReservoirInterface *db_conns) {
-    if (alias.has_value()) {
-        *user->alias.value_ptr() = alias.value();
-    }
+    *user->alias.value_ptr() = alias;
 
     int num_rows_updated = Update(*user, TableNames::AUser(), /*override=*/true, db_conns);
     if (num_rows_updated == 0) {
@@ -82,7 +80,7 @@ UserPublicProfile BuildPublicProfile(UserEntity const &user, KeyGeneratorInterfa
     profile.set_user_id(user.id.value().value());
 
     if (user.alias.value().has_value()) {
-        profile.set_alias(user.alias.value().value());
+        profile.mutable_alias()->set_value(user.alias.value().value());
     }
 
     if (user.avatar_path.value().has_value()) {

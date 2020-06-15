@@ -11,11 +11,11 @@
     <div>
         <label class="col-form-label">Alias</label>
         <label class="col-form-label" 
-               *ngIf="profile.alias != null">
-            {{profile.alias}}
+               *ngIf="hasAlias(profile)">
+            {{profile.alias.value}}
         </label>
         <label class="col-form-label" 
-               *ngIf="profile.alias == null">
+               *ngIf="!hasAlias(profile)">
             You haven't set up an alias yet.
         </label>
     </div>
@@ -38,7 +38,11 @@
             <label class="col-form-label">Alias</label>
         </span>
         <span>
-            <input [(ngModel)]="profile.alias" 
+            <input *ngIf="hasAlias(profile)"
+                   [(ngModel)]="profile.alias.value" 
+                   placeholder="alias" />
+            <input *ngIf="!hasAlias(profile)"
+                   [(ngModel)]="newAlias" 
                    placeholder="alias" />
         </span>
     </div>
