@@ -13,6 +13,90 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'pagination.pb.dart' as $9;
 import 'user_profile.pb.dart' as $8;
 
+import 'user_relation.pbenum.dart' as $10;
+
+class GetUserRelationRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aInt64(1, 'targetUserId')
+    ..hasRequiredFields = false
+  ;
+
+  GetUserRelationRequest._() : super();
+  factory GetUserRelationRequest() => create();
+  factory GetUserRelationRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetUserRelationRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetUserRelationRequest clone() => GetUserRelationRequest()..mergeFromMessage(this);
+  GetUserRelationRequest copyWith(void Function(GetUserRelationRequest) updates) => super.copyWith((message) => updates(message as GetUserRelationRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetUserRelationRequest create() => GetUserRelationRequest._();
+  GetUserRelationRequest createEmptyInstance() => create();
+  static $pb.PbList<GetUserRelationRequest> createRepeated() => $pb.PbList<GetUserRelationRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetUserRelationRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetUserRelationRequest>(create);
+  static GetUserRelationRequest _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get targetUserId => $_getI64(0);
+  @$pb.TagNumber(1)
+  set targetUserId($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTargetUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTargetUserId() => clearField(1);
+}
+
+class GetUserRelationResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aInt64(1, 'sourceUserId')
+    ..aInt64(2, 'targetUserId')
+    ..e<$10.UserRelation>(3, 'userRelation', $pb.PbFieldType.OE, defaultOrMaker: $10.UserRelation.URL_UNRELATED, valueOf: $10.UserRelation.valueOf, enumValues: $10.UserRelation.values)
+    ..hasRequiredFields = false
+  ;
+
+  GetUserRelationResponse._() : super();
+  factory GetUserRelationResponse() => create();
+  factory GetUserRelationResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetUserRelationResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetUserRelationResponse clone() => GetUserRelationResponse()..mergeFromMessage(this);
+  GetUserRelationResponse copyWith(void Function(GetUserRelationResponse) updates) => super.copyWith((message) => updates(message as GetUserRelationResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetUserRelationResponse create() => GetUserRelationResponse._();
+  GetUserRelationResponse createEmptyInstance() => create();
+  static $pb.PbList<GetUserRelationResponse> createRepeated() => $pb.PbList<GetUserRelationResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetUserRelationResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetUserRelationResponse>(create);
+  static GetUserRelationResponse _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get sourceUserId => $_getI64(0);
+  @$pb.TagNumber(1)
+  set sourceUserId($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSourceUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSourceUserId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get targetUserId => $_getI64(1);
+  @$pb.TagNumber(2)
+  set targetUserId($fixnum.Int64 v) { $_setInt64(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTargetUserId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTargetUserId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $10.UserRelation get userRelation => $_getN(2);
+  @$pb.TagNumber(3)
+  set userRelation($10.UserRelation v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasUserRelation() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearUserRelation() => clearField(3);
+}
+
 class SendInvitationRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SendInvitationRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'inviteeUserId')
@@ -279,78 +363,78 @@ class GetInvitationListResponse extends $pb.GeneratedMessage {
   $core.List<$8.UserPublicProfile> get userProfiles => $_getList(0);
 }
 
-class DeleteFriendRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeleteFriendRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aInt64(1, 'friendUserId')
+class DeleteContactRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeleteContactRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aInt64(1, 'deletedContactUserId')
     ..hasRequiredFields = false
   ;
 
-  DeleteFriendRequest._() : super();
-  factory DeleteFriendRequest() => create();
-  factory DeleteFriendRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DeleteFriendRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  DeleteFriendRequest clone() => DeleteFriendRequest()..mergeFromMessage(this);
-  DeleteFriendRequest copyWith(void Function(DeleteFriendRequest) updates) => super.copyWith((message) => updates(message as DeleteFriendRequest));
+  DeleteContactRequest._() : super();
+  factory DeleteContactRequest() => create();
+  factory DeleteContactRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DeleteContactRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  DeleteContactRequest clone() => DeleteContactRequest()..mergeFromMessage(this);
+  DeleteContactRequest copyWith(void Function(DeleteContactRequest) updates) => super.copyWith((message) => updates(message as DeleteContactRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static DeleteFriendRequest create() => DeleteFriendRequest._();
-  DeleteFriendRequest createEmptyInstance() => create();
-  static $pb.PbList<DeleteFriendRequest> createRepeated() => $pb.PbList<DeleteFriendRequest>();
+  static DeleteContactRequest create() => DeleteContactRequest._();
+  DeleteContactRequest createEmptyInstance() => create();
+  static $pb.PbList<DeleteContactRequest> createRepeated() => $pb.PbList<DeleteContactRequest>();
   @$core.pragma('dart2js:noInline')
-  static DeleteFriendRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteFriendRequest>(create);
-  static DeleteFriendRequest _defaultInstance;
+  static DeleteContactRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteContactRequest>(create);
+  static DeleteContactRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get friendUserId => $_getI64(0);
+  $fixnum.Int64 get deletedContactUserId => $_getI64(0);
   @$pb.TagNumber(1)
-  set friendUserId($fixnum.Int64 v) { $_setInt64(0, v); }
+  set deletedContactUserId($fixnum.Int64 v) { $_setInt64(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasFriendUserId() => $_has(0);
+  $core.bool hasDeletedContactUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFriendUserId() => clearField(1);
+  void clearDeletedContactUserId() => clearField(1);
 }
 
-class DeleteFriendResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeleteFriendResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class DeleteContactResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeleteContactResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
-  DeleteFriendResponse._() : super();
-  factory DeleteFriendResponse() => create();
-  factory DeleteFriendResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DeleteFriendResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  DeleteFriendResponse clone() => DeleteFriendResponse()..mergeFromMessage(this);
-  DeleteFriendResponse copyWith(void Function(DeleteFriendResponse) updates) => super.copyWith((message) => updates(message as DeleteFriendResponse));
+  DeleteContactResponse._() : super();
+  factory DeleteContactResponse() => create();
+  factory DeleteContactResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DeleteContactResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  DeleteContactResponse clone() => DeleteContactResponse()..mergeFromMessage(this);
+  DeleteContactResponse copyWith(void Function(DeleteContactResponse) updates) => super.copyWith((message) => updates(message as DeleteContactResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static DeleteFriendResponse create() => DeleteFriendResponse._();
-  DeleteFriendResponse createEmptyInstance() => create();
-  static $pb.PbList<DeleteFriendResponse> createRepeated() => $pb.PbList<DeleteFriendResponse>();
+  static DeleteContactResponse create() => DeleteContactResponse._();
+  DeleteContactResponse createEmptyInstance() => create();
+  static $pb.PbList<DeleteContactResponse> createRepeated() => $pb.PbList<DeleteContactResponse>();
   @$core.pragma('dart2js:noInline')
-  static DeleteFriendResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteFriendResponse>(create);
-  static DeleteFriendResponse _defaultInstance;
+  static DeleteContactResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteContactResponse>(create);
+  static DeleteContactResponse _defaultInstance;
 }
 
-class GetFriendListRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetFriendListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class GetContactListRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetContactListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<$9.Pagination>(1, 'pagination', subBuilder: $9.Pagination.create)
     ..hasRequiredFields = false
   ;
 
-  GetFriendListRequest._() : super();
-  factory GetFriendListRequest() => create();
-  factory GetFriendListRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetFriendListRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetFriendListRequest clone() => GetFriendListRequest()..mergeFromMessage(this);
-  GetFriendListRequest copyWith(void Function(GetFriendListRequest) updates) => super.copyWith((message) => updates(message as GetFriendListRequest));
+  GetContactListRequest._() : super();
+  factory GetContactListRequest() => create();
+  factory GetContactListRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetContactListRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetContactListRequest clone() => GetContactListRequest()..mergeFromMessage(this);
+  GetContactListRequest copyWith(void Function(GetContactListRequest) updates) => super.copyWith((message) => updates(message as GetContactListRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetFriendListRequest create() => GetFriendListRequest._();
-  GetFriendListRequest createEmptyInstance() => create();
-  static $pb.PbList<GetFriendListRequest> createRepeated() => $pb.PbList<GetFriendListRequest>();
+  static GetContactListRequest create() => GetContactListRequest._();
+  GetContactListRequest createEmptyInstance() => create();
+  static $pb.PbList<GetContactListRequest> createRepeated() => $pb.PbList<GetContactListRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetFriendListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetFriendListRequest>(create);
-  static GetFriendListRequest _defaultInstance;
+  static GetContactListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetContactListRequest>(create);
+  static GetContactListRequest _defaultInstance;
 
   @$pb.TagNumber(1)
   $9.Pagination get pagination => $_getN(0);
@@ -364,26 +448,26 @@ class GetFriendListRequest extends $pb.GeneratedMessage {
   $9.Pagination ensurePagination() => $_ensure(0);
 }
 
-class GetFriendListResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetFriendListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class GetContactListResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetContactListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..pc<$8.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $8.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
-  GetFriendListResponse._() : super();
-  factory GetFriendListResponse() => create();
-  factory GetFriendListResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetFriendListResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetFriendListResponse clone() => GetFriendListResponse()..mergeFromMessage(this);
-  GetFriendListResponse copyWith(void Function(GetFriendListResponse) updates) => super.copyWith((message) => updates(message as GetFriendListResponse));
+  GetContactListResponse._() : super();
+  factory GetContactListResponse() => create();
+  factory GetContactListResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetContactListResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetContactListResponse clone() => GetContactListResponse()..mergeFromMessage(this);
+  GetContactListResponse copyWith(void Function(GetContactListResponse) updates) => super.copyWith((message) => updates(message as GetContactListResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetFriendListResponse create() => GetFriendListResponse._();
-  GetFriendListResponse createEmptyInstance() => create();
-  static $pb.PbList<GetFriendListResponse> createRepeated() => $pb.PbList<GetFriendListResponse>();
+  static GetContactListResponse create() => GetContactListResponse._();
+  GetContactListResponse createEmptyInstance() => create();
+  static $pb.PbList<GetContactListResponse> createRepeated() => $pb.PbList<GetContactListResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetFriendListResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetFriendListResponse>(create);
-  static GetFriendListResponse _defaultInstance;
+  static GetContactListResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetContactListResponse>(create);
+  static GetContactListResponse _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.List<$8.UserPublicProfile> get userProfiles => $_getList(0);

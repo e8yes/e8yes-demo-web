@@ -27,6 +27,7 @@
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/environment/prod_environment_context.h"
 #include "demoweb_service/demoweb/service/file_service.h"
+#include "demoweb_service/demoweb/service/social_network_service.h"
 #include "demoweb_service/demoweb/service/user_service.h"
 
 namespace {
@@ -41,6 +42,7 @@ static int const kDefaultPort = 50051;
 
 static e8::UserServiceImpl gUserService;
 static e8::FileServiceImpl gFileService;
+static e8::SocialNetworkServiceImpl gSocialNetworkService;
 
 std::optional<std::string> ScanFlag(int argc, char *argv[], std::string const &flag) {
     std::string expected_flag_prefix = "--" + flag + "=";
@@ -98,6 +100,7 @@ int main(int argc, char *argv[]) {
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     builder.RegisterService(&gUserService);
     builder.RegisterService(&gFileService);
+    builder.RegisterService(&gSocialNetworkService);
 
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;

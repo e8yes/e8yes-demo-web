@@ -18,13 +18,14 @@
 namespace e8 {
 
 static const char* SocialNetworkService_method_names[] = {
+  "/e8.SocialNetworkService/GetUserRelation",
   "/e8.SocialNetworkService/SendInvitation",
   "/e8.SocialNetworkService/DeleteInvitation",
   "/e8.SocialNetworkService/AcceptInvitation",
   "/e8.SocialNetworkService/RejectInvitation",
   "/e8.SocialNetworkService/GetInvitationList",
-  "/e8.SocialNetworkService/DeleteFriend",
-  "/e8.SocialNetworkService/GetFriendList",
+  "/e8.SocialNetworkService/DeleteContact",
+  "/e8.SocialNetworkService/GetContactList",
 };
 
 std::unique_ptr< SocialNetworkService::Stub> SocialNetworkService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -34,14 +35,31 @@ std::unique_ptr< SocialNetworkService::Stub> SocialNetworkService::NewStub(const
 }
 
 SocialNetworkService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_SendInvitation_(SocialNetworkService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DeleteInvitation_(SocialNetworkService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_AcceptInvitation_(SocialNetworkService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_RejectInvitation_(SocialNetworkService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetInvitationList_(SocialNetworkService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DeleteFriend_(SocialNetworkService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetFriendList_(SocialNetworkService_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_GetUserRelation_(SocialNetworkService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SendInvitation_(SocialNetworkService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DeleteInvitation_(SocialNetworkService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_AcceptInvitation_(SocialNetworkService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RejectInvitation_(SocialNetworkService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetInvitationList_(SocialNetworkService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DeleteContact_(SocialNetworkService_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetContactList_(SocialNetworkService_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
+
+::grpc::Status SocialNetworkService::Stub::GetUserRelation(::grpc::ClientContext* context, const ::e8::GetUserRelationRequest& request, ::e8::GetUserRelationResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetUserRelation_, context, request, response);
+}
+
+void SocialNetworkService::Stub::experimental_async::GetUserRelation(::grpc::ClientContext* context, const ::e8::GetUserRelationRequest* request, ::e8::GetUserRelationResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetUserRelation_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::GetUserRelationResponse>* SocialNetworkService::Stub::AsyncGetUserRelationRaw(::grpc::ClientContext* context, const ::e8::GetUserRelationRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetUserRelationResponse>::Create(channel_.get(), cq, rpcmethod_GetUserRelation_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::GetUserRelationResponse>* SocialNetworkService::Stub::PrepareAsyncGetUserRelationRaw(::grpc::ClientContext* context, const ::e8::GetUserRelationRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetUserRelationResponse>::Create(channel_.get(), cq, rpcmethod_GetUserRelation_, context, request, false);
+}
 
 ::grpc::Status SocialNetworkService::Stub::SendInvitation(::grpc::ClientContext* context, const ::e8::SendInvitationRequest& request, ::e8::SendInvitationResponse* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SendInvitation_, context, request, response);
@@ -123,77 +141,89 @@ void SocialNetworkService::Stub::experimental_async::GetInvitationList(::grpc::C
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetInvitationListResponse>::Create(channel_.get(), cq, rpcmethod_GetInvitationList_, context, request, false);
 }
 
-::grpc::Status SocialNetworkService::Stub::DeleteFriend(::grpc::ClientContext* context, const ::e8::DeleteFriendRequest& request, ::e8::DeleteFriendResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_DeleteFriend_, context, request, response);
+::grpc::Status SocialNetworkService::Stub::DeleteContact(::grpc::ClientContext* context, const ::e8::DeleteContactRequest& request, ::e8::DeleteContactResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_DeleteContact_, context, request, response);
 }
 
-void SocialNetworkService::Stub::experimental_async::DeleteFriend(::grpc::ClientContext* context, const ::e8::DeleteFriendRequest* request, ::e8::DeleteFriendResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_DeleteFriend_, context, request, response, std::move(f));
+void SocialNetworkService::Stub::experimental_async::DeleteContact(::grpc::ClientContext* context, const ::e8::DeleteContactRequest* request, ::e8::DeleteContactResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_DeleteContact_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::DeleteFriendResponse>* SocialNetworkService::Stub::AsyncDeleteFriendRaw(::grpc::ClientContext* context, const ::e8::DeleteFriendRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeleteFriendResponse>::Create(channel_.get(), cq, rpcmethod_DeleteFriend_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::DeleteContactResponse>* SocialNetworkService::Stub::AsyncDeleteContactRaw(::grpc::ClientContext* context, const ::e8::DeleteContactRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeleteContactResponse>::Create(channel_.get(), cq, rpcmethod_DeleteContact_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::DeleteFriendResponse>* SocialNetworkService::Stub::PrepareAsyncDeleteFriendRaw(::grpc::ClientContext* context, const ::e8::DeleteFriendRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeleteFriendResponse>::Create(channel_.get(), cq, rpcmethod_DeleteFriend_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::DeleteContactResponse>* SocialNetworkService::Stub::PrepareAsyncDeleteContactRaw(::grpc::ClientContext* context, const ::e8::DeleteContactRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeleteContactResponse>::Create(channel_.get(), cq, rpcmethod_DeleteContact_, context, request, false);
 }
 
-::grpc::Status SocialNetworkService::Stub::GetFriendList(::grpc::ClientContext* context, const ::e8::GetFriendListRequest& request, ::e8::GetFriendListResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetFriendList_, context, request, response);
+::grpc::Status SocialNetworkService::Stub::GetContactList(::grpc::ClientContext* context, const ::e8::GetContactListRequest& request, ::e8::GetContactListResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetContactList_, context, request, response);
 }
 
-void SocialNetworkService::Stub::experimental_async::GetFriendList(::grpc::ClientContext* context, const ::e8::GetFriendListRequest* request, ::e8::GetFriendListResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetFriendList_, context, request, response, std::move(f));
+void SocialNetworkService::Stub::experimental_async::GetContactList(::grpc::ClientContext* context, const ::e8::GetContactListRequest* request, ::e8::GetContactListResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetContactList_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetFriendListResponse>* SocialNetworkService::Stub::AsyncGetFriendListRaw(::grpc::ClientContext* context, const ::e8::GetFriendListRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetFriendListResponse>::Create(channel_.get(), cq, rpcmethod_GetFriendList_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::GetContactListResponse>* SocialNetworkService::Stub::AsyncGetContactListRaw(::grpc::ClientContext* context, const ::e8::GetContactListRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetContactListResponse>::Create(channel_.get(), cq, rpcmethod_GetContactList_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetFriendListResponse>* SocialNetworkService::Stub::PrepareAsyncGetFriendListRaw(::grpc::ClientContext* context, const ::e8::GetFriendListRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetFriendListResponse>::Create(channel_.get(), cq, rpcmethod_GetFriendList_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::GetContactListResponse>* SocialNetworkService::Stub::PrepareAsyncGetContactListRaw(::grpc::ClientContext* context, const ::e8::GetContactListRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetContactListResponse>::Create(channel_.get(), cq, rpcmethod_GetContactList_, context, request, false);
 }
 
 SocialNetworkService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       SocialNetworkService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::GetUserRelationRequest, ::e8::GetUserRelationResponse>(
+          std::mem_fn(&SocialNetworkService::Service::GetUserRelation), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      SocialNetworkService_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::SendInvitationRequest, ::e8::SendInvitationResponse>(
           std::mem_fn(&SocialNetworkService::Service::SendInvitation), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      SocialNetworkService_method_names[1],
+      SocialNetworkService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::DeleteInvitationRequest, ::e8::DeleteInvitationResponse>(
           std::mem_fn(&SocialNetworkService::Service::DeleteInvitation), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      SocialNetworkService_method_names[2],
+      SocialNetworkService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::AcceptInvitationRequest, ::e8::AcceptInvitationResponse>(
           std::mem_fn(&SocialNetworkService::Service::AcceptInvitation), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      SocialNetworkService_method_names[3],
+      SocialNetworkService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::RejectInvitationRequest, ::e8::RejectInvitationResponse>(
           std::mem_fn(&SocialNetworkService::Service::RejectInvitation), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      SocialNetworkService_method_names[4],
+      SocialNetworkService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::GetInvitationListRequest, ::e8::GetInvitationListResponse>(
           std::mem_fn(&SocialNetworkService::Service::GetInvitationList), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      SocialNetworkService_method_names[5],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::DeleteFriendRequest, ::e8::DeleteFriendResponse>(
-          std::mem_fn(&SocialNetworkService::Service::DeleteFriend), this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
       SocialNetworkService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::GetFriendListRequest, ::e8::GetFriendListResponse>(
-          std::mem_fn(&SocialNetworkService::Service::GetFriendList), this)));
+      new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::DeleteContactRequest, ::e8::DeleteContactResponse>(
+          std::mem_fn(&SocialNetworkService::Service::DeleteContact), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      SocialNetworkService_method_names[7],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::GetContactListRequest, ::e8::GetContactListResponse>(
+          std::mem_fn(&SocialNetworkService::Service::GetContactList), this)));
 }
 
 SocialNetworkService::Service::~Service() {
+}
+
+::grpc::Status SocialNetworkService::Service::GetUserRelation(::grpc::ServerContext* context, const ::e8::GetUserRelationRequest* request, ::e8::GetUserRelationResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
 ::grpc::Status SocialNetworkService::Service::SendInvitation(::grpc::ServerContext* context, const ::e8::SendInvitationRequest* request, ::e8::SendInvitationResponse* response) {
@@ -231,14 +261,14 @@ SocialNetworkService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status SocialNetworkService::Service::DeleteFriend(::grpc::ServerContext* context, const ::e8::DeleteFriendRequest* request, ::e8::DeleteFriendResponse* response) {
+::grpc::Status SocialNetworkService::Service::DeleteContact(::grpc::ServerContext* context, const ::e8::DeleteContactRequest* request, ::e8::DeleteContactResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status SocialNetworkService::Service::GetFriendList(::grpc::ServerContext* context, const ::e8::GetFriendListRequest* request, ::e8::GetFriendListResponse* response) {
+::grpc::Status SocialNetworkService::Service::GetContactList(::grpc::ServerContext* context, const ::e8::GetContactListRequest* request, ::e8::GetContactListResponse* response) {
   (void) context;
   (void) request;
   (void) response;

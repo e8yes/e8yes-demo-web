@@ -21,6 +21,18 @@ package e8;
 
 import "pagination.proto";
 import "user_profile.proto";
+import "user_relation.proto";
+
+message GetUserRelationRequest {
+    // Source user is the logged in user.
+    int64 target_user_id = 1;
+}
+
+message GetUserRelationResponse {
+    int64 source_user_id = 1;
+    int64 target_user_id = 2;
+    UserRelation user_relation = 3;
+}
 
 message SendInvitationRequest {
     int64 invitee_user_id = 1;
@@ -59,55 +71,59 @@ message GetInvitationListResponse {
 }
 
 
-message DeleteFriendRequest {
-    int64 friend_user_id = 1;
+message DeleteContactRequest {
+    int64 deleted_contact_user_id = 1;
 }
 
-message DeleteFriendResponse {}
+message DeleteContactResponse {}
 
 
-message GetFriendListRequest {
+message GetContactListRequest {
     Pagination pagination = 1;
 }
 
-message GetFriendListResponse {
+message GetContactListResponse {
     repeated UserPublicProfile user_profiles = 1;
 }
 
 service SocialNetworkService {
     /**
-     * Send a friend request invitation to another user and the logged-in user is the inviter.
+     * Get the directed relation between the logged-in user and some other user.
+     */
+    rpc GetUserRelation(GetUserRelationRequest) returns (GetUserRelationResponse);
+
+    /**
+     * Send an invitation to another user where the logged-in user is the inviter.
      */
     rpc SendInvitation (SendInvitationRequest) returns (SendInvitationResponse);
-    
+
     /**
-     * Delete invitation previously sent where the logged-in user is inviter.
+     * Delete an invitation previously sent where the logged-in user is inviter.
      */
     rpc DeleteInvitation (DeleteInvitationRequest) returns (DeleteInvitationResponse);
-    
+
     /**
      * Accept an invitation to establish friend relation where the logged-in user is the invitee.
      */
     rpc AcceptInvitation (AcceptInvitationRequest) returns (AcceptInvitationResponse);
-    
+
     /**
      * Reject an invitation where the logged-in user is the invitee.
      */
     rpc RejectInvitation (RejectInvitationRequest) returns (RejectInvitationResponse);
-    
+
     /**
-     * Get the friend invitation list where the logged-in user is the invitee.
+     * Get the invitation list where the logged-in user is the invitee.
      */
     rpc GetInvitationList (GetInvitationListRequest) returns (GetInvitationListResponse);
-    
+
     /**
-     * Delete a friend relation for the logged-in user.
+     * Delete a contact relation for the logged-in user.
      */
-    rpc DeleteFriend (DeleteFriendRequest) returns (DeleteFriendResponse);
-    
-    
+    rpc DeleteContact (DeleteContactRequest) returns (DeleteContactResponse);
+
     /**
-     * Get the friend list of the logged-in user.
+     * Get the contact list of the logged-in user.
      */
-    rpc GetFriendList (GetFriendListRequest) returns (GetFriendListResponse);
+    rpc GetContactList (GetContactListRequest) returns (GetContactListResponse);
 }

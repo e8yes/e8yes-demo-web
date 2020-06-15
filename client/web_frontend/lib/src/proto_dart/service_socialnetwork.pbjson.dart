@@ -5,6 +5,22 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
+const GetUserRelationRequest$json = const {
+  '1': 'GetUserRelationRequest',
+  '2': const [
+    const {'1': 'target_user_id', '3': 1, '4': 1, '5': 3, '10': 'targetUserId'},
+  ],
+};
+
+const GetUserRelationResponse$json = const {
+  '1': 'GetUserRelationResponse',
+  '2': const [
+    const {'1': 'source_user_id', '3': 1, '4': 1, '5': 3, '10': 'sourceUserId'},
+    const {'1': 'target_user_id', '3': 2, '4': 1, '5': 3, '10': 'targetUserId'},
+    const {'1': 'user_relation', '3': 3, '4': 1, '5': 14, '6': '.UserRelation', '10': 'userRelation'},
+  ],
+};
+
 const SendInvitationRequest$json = const {
   '1': 'SendInvitationRequest',
   '2': const [
@@ -63,26 +79,26 @@ const GetInvitationListResponse$json = const {
   ],
 };
 
-const DeleteFriendRequest$json = const {
-  '1': 'DeleteFriendRequest',
+const DeleteContactRequest$json = const {
+  '1': 'DeleteContactRequest',
   '2': const [
-    const {'1': 'friend_user_id', '3': 1, '4': 1, '5': 3, '10': 'friendUserId'},
+    const {'1': 'deleted_contact_user_id', '3': 1, '4': 1, '5': 3, '10': 'deletedContactUserId'},
   ],
 };
 
-const DeleteFriendResponse$json = const {
-  '1': 'DeleteFriendResponse',
+const DeleteContactResponse$json = const {
+  '1': 'DeleteContactResponse',
 };
 
-const GetFriendListRequest$json = const {
-  '1': 'GetFriendListRequest',
+const GetContactListRequest$json = const {
+  '1': 'GetContactListRequest',
   '2': const [
     const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
   ],
 };
 
-const GetFriendListResponse$json = const {
-  '1': 'GetFriendListResponse',
+const GetContactListResponse$json = const {
+  '1': 'GetContactListResponse',
   '2': const [
     const {'1': 'user_profiles', '3': 1, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'userProfiles'},
   ],
