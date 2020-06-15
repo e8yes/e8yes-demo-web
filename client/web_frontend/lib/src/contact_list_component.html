@@ -17,8 +17,11 @@
         (click)="onSelectSearchedContact(profile)"
         class="list-group-item">
       <span>{{profile.userId}}</span>
-      <span *ngIf="profile.alias != null">
-          ({{profile.alias}})
+      <span *ngIf="profile.hasAlias()">
+          ({{profile.alias.value}})
       </span>
+      <span *ngIf="!profile.hasAlias()">
+        (no alias)
+    </span>
     </li>
 </ul>
