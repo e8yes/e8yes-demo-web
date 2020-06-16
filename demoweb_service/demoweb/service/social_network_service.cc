@@ -15,6 +15,40 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
+#include <grpcpp/grpcpp.h>
+#include <optional>
+#include <unordered_map>
+
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/environment/environment_context_interface.h"
+#include "demoweb_service/demoweb/module_socialnetwork/retrieve_contact.h"
+#include "demoweb_service/demoweb/proto_cc/identity.pb.h"
+#include "demoweb_service/demoweb/proto_cc/service_socialnetwork.grpc.pb.h"
+#include "demoweb_service/demoweb/proto_cc/service_socialnetwork.pb.h"
+#include "demoweb_service/demoweb/service/service_util.h"
 #include "demoweb_service/demoweb/service/social_network_service.h"
 
-namespace e8 {}
+namespace e8 {
+
+grpc::Status SocialNetworkServiceImpl::GetUserRelations(grpc::ServerContext *context,
+                                                        GetUserRelationsRequest const *request,
+                                                        GetUserRelationsResponse *response) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!status.ok()) {
+        return status;
+    }
+
+    std::unordered_map<UserId, UserRelations> relations =
+        GetUsersRelations(identity.value().user_id(), {request->target_user_id()},
+                          CurrentEnvironment()->DemowebDatabase());
+    assert(relations.size() == 1);
+
+    UserRelations result = relations.begin()->second;
+    *response->mutable_user_relation() = {result.begin(), result.end()};
+
+    return grpc::Status::OK;
+}
+
+} // namespace e8

@@ -28,6 +28,10 @@ class SocialNetworkServiceImpl : public SocialNetworkService::Service {
   public:
     SocialNetworkServiceImpl() = default;
     ~SocialNetworkServiceImpl() override = default;
+
+    grpc::Status GetUserRelations(grpc::ServerContext *context,
+                                  GetUserRelationsRequest const *request,
+                                  GetUserRelationsResponse *response) override;
 };
 
 } // namespace e8
