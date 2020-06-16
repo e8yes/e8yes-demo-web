@@ -20,6 +20,7 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/module_rbac/file_access_validator.h"
@@ -31,8 +32,8 @@
 namespace e8 {
 
 /**
- * @brief UpdateProfile Update a user's profile. See below for what parameters a user's profile
- * have.
+ * @brief UpdateProfile Update a user's profile. See class UserPublicProfile for what parameters are
+ * considered public profile.
  *
  * @param user Table entity of the user whose profile needs to be updated. The content of this
  * entity will be updated with the specified parameters after the function call.
@@ -44,14 +45,20 @@ bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
                    ConnectionReservoirInterface *db_conns);
 
 /**
- * @brief BuildPublicProfile Extract public profile info from raw database entities.Public profile
- * includes a user's alias and a read only avatar path.
+ * @brief BuildPublicProfiles Extract public profile info from raw database entities and generate
+ * profile info relative to the viewer.
  *
- * @param user User to extract public profile from.
+ * @param viewer_id viewer of the public profile to build relative to. If this parameter isn't
+ * provided, user relation will not be fetched.
+ * @param users A list of user to extract public profile from.
  * @param key_gen Key generator for signing the avatar path.
+ * @param db_conns Connections to the DemoWeb DB server.
  * @return The extracted public profile.
  */
-UserPublicProfile BuildPublicProfile(UserEntity const &user, KeyGeneratorInterface *key_gen);
+std::vector<UserPublicProfile> BuildPublicProfiles(std::optional<UserId> viewer_id,
+                                                   std::vector<UserEntity> const &users,
+                                                   KeyGeneratorInterface *key_gen,
+                                                   ConnectionReservoirInterface *db_conns);
 
 /**
  * @brief The AvatarSetup struct Contains the user entity updated with the new avatar path and a

@@ -19,6 +19,7 @@
 #define SERVICE_UTIL_H
 
 #include <grpcpp/grpcpp.h>
+#include <optional>
 
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
@@ -29,10 +30,11 @@ namespace e8 {
  * @brief ExtractIdentityFromContext Utility function to validate and decode user identity from the
  * server context.
  *
- * @return The status of the extraction. If there is no error, the extracted identity will be
- * written to the identity argument. Otherwise, the value in the identity argument is undefined.
+ * @status The status of the extraction (nullable). If there is no error, the extracted identity
+ * will be returned. Otherwise, a nullopt will be returned.
  */
-grpc::Status ExtractIdentityFromContext(grpc::ServerContext const &context, Identity *identity);
+std::optional<Identity> ExtractIdentityFromContext(grpc::ServerContext const &context,
+                                                   grpc::Status *status);
 
 /**
  * @brief ValidatePagination Validate the parameters of a pagination object.

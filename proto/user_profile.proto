@@ -21,10 +21,12 @@ package e8;
 
 import "file.proto";
 import "nullable_primitives.proto";
+import "user_relation.proto";
 
 message UserPublicProfile {
     int64 user_id = 1;
     NullableString alias = 2;
     FileTokenAccess avatar_readonly_access = 3;
     FileTokenAccess avatar_preview_readonly_access = 4;
+    repeated UserRelation relations = 5;
 }

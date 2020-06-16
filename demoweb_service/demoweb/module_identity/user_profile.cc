@@ -20,6 +20,8 @@
 #include <optional>
 #include <regex>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/file_metadata_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
@@ -29,8 +31,10 @@
 #include "demoweb_service/demoweb/module_file/file_util.h"
 #include "demoweb_service/demoweb/module_identity/user_profile.h"
 #include "demoweb_service/demoweb/module_rbac/file_access_validator.h"
+#include "demoweb_service/demoweb/module_socialnetwork/retrieve_contact.h"
 #include "demoweb_service/demoweb/proto_cc/file.pb.h"
 #include "demoweb_service/demoweb/proto_cc/user_profile.pb.h"
+#include "demoweb_service/demoweb/proto_cc/user_relation.pb.h"
 #include "keygen/key_generator_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_runner.h"
@@ -59,25 +63,11 @@ std::string AllocateNewAvatarLocation(std::string const &user_id_str, FileFormat
     return avatar_dir_path + std::to_string(counter) + "." + suffix.value();
 }
 
-} // namespace profile_internal
-
-bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
-                   ConnectionReservoirInterface *db_conns) {
-    *user->alias.value_ptr() = alias;
-
-    int num_rows_updated = Update(*user, TableNames::AUser(), /*override=*/true, db_conns);
-    if (num_rows_updated == 0) {
-        return false;
-    }
-
-    assert(num_rows_updated == 1);
-
-    return true;
-}
-
-UserPublicProfile BuildPublicProfile(UserEntity const &user, KeyGeneratorInterface *key_gen) {
+UserPublicProfile BuildPublicProfile(UserEntity const &user, std::vector<UserRelation> relations,
+                                     KeyGeneratorInterface *key_gen) {
     UserPublicProfile profile;
     profile.set_user_id(user.id.value().value());
+    *profile.mutable_relations() = {relations.begin(), relations.end()};
 
     if (user.alias.value().has_value()) {
         profile.mutable_alias()->set_value(user.alias.value().value());
@@ -102,6 +92,53 @@ UserPublicProfile BuildPublicProfile(UserEntity const &user, KeyGeneratorInterfa
     }
 
     return profile;
+}
+
+} // namespace profile_internal
+
+bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
+                   ConnectionReservoirInterface *db_conns) {
+    *user->alias.value_ptr() = alias;
+
+    int num_rows_updated = Update(*user, TableNames::AUser(), /*override=*/true, db_conns);
+    if (num_rows_updated == 0) {
+        return false;
+    }
+
+    assert(num_rows_updated == 1);
+
+    return true;
+}
+
+std::vector<UserPublicProfile> BuildPublicProfiles(std::optional<UserId> viewer_id,
+                                                   std::vector<UserEntity> const &users,
+                                                   KeyGeneratorInterface *key_gen,
+                                                   ConnectionReservoirInterface *db_conns) {
+    std::vector<UserId> target_user_ids;
+    for (auto const &user : users) {
+        target_user_ids.push_back(user.id.value().value());
+    }
+
+    std::vector<UserPublicProfile> profiles;
+
+    if (viewer_id.has_value()) {
+        std::unordered_map<UserId, UserRelations> users_relations =
+            GetUsersRelations(viewer_id.value(), target_user_ids, db_conns);
+
+        for (auto const &user : users) {
+            UserPublicProfile profile = profile_internal::BuildPublicProfile(
+                user, users_relations[user.id.value().value()], key_gen);
+            profiles.push_back(profile);
+        }
+    } else {
+        for (auto const &user : users) {
+            UserPublicProfile profile =
+                profile_internal::BuildPublicProfile(user, UserRelations(), key_gen);
+            profiles.push_back(profile);
+        }
+    }
+
+    return profiles;
 }
 
 AvatarSetup SetUpNewProfileAvatar(UserEntity const &user, FileFormat file_format,

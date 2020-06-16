@@ -65,6 +65,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, alias_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, avatar_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, avatar_preview_readonly_access_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, relations_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::UserPublicProfile)},
@@ -96,19 +97,21 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\022user_profile.proto\022\002e8\032\nfile.proto\032\031nu"
-      "llable_primitives.proto\"\271\001\n\021UserPublicPr"
-      "ofile\022\017\n\007user_id\030\001 \001(\003\022!\n\005alias\030\002 \001(\0132\022."
-      "e8.NullableString\0223\n\026avatar_readonly_acc"
-      "ess\030\003 \001(\0132\023.e8.FileTokenAccess\022;\n\036avatar"
-      "_preview_readonly_access\030\004 \001(\0132\023.e8.File"
-      "TokenAccessb\006proto3"
+      "llable_primitives.proto\032\023user_relation.p"
+      "roto\"\333\001\n\021UserPublicProfile\022\017\n\007user_id\030\001 "
+      "\001(\003\022!\n\005alias\030\002 \001(\0132\022.e8.NullableString\0223"
+      "\n\026avatar_readonly_access\030\003 \001(\0132\023.e8.File"
+      "TokenAccess\022;\n\036avatar_preview_readonly_a"
+      "ccess\030\004 \001(\0132\023.e8.FileTokenAccess\022 \n\trela"
+      "tions\030\005 \003(\0162\r.UserRelationb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 259);
+      descriptor, 314);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user_profile.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
   ::protobuf_nullable_5fprimitives_2eproto::AddDescriptors();
+  ::protobuf_user_5frelation_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
@@ -157,6 +160,7 @@ const int UserPublicProfile::kUserIdFieldNumber;
 const int UserPublicProfile::kAliasFieldNumber;
 const int UserPublicProfile::kAvatarReadonlyAccessFieldNumber;
 const int UserPublicProfile::kAvatarPreviewReadonlyAccessFieldNumber;
+const int UserPublicProfile::kRelationsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 UserPublicProfile::UserPublicProfile()
@@ -168,7 +172,8 @@ UserPublicProfile::UserPublicProfile()
 }
 UserPublicProfile::UserPublicProfile(const UserPublicProfile& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
+      _internal_metadata_(NULL),
+      relations_(from.relations_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_alias()) {
     alias_ = new ::e8::NullableString(*from.alias_);
@@ -226,6 +231,7 @@ void UserPublicProfile::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  relations_.Clear();
   if (GetArenaNoVirtual() == NULL && alias_ != NULL) {
     delete alias_;
   }
@@ -302,6 +308,35 @@ bool UserPublicProfile::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated .UserRelation relations = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+          ::google::protobuf::uint32 length;
+          DO_(input->ReadVarint32(&length));
+          ::google::protobuf::io::CodedInputStream::Limit limit = input->PushLimit(static_cast<int>(length));
+          while (input->BytesUntilLimit() > 0) {
+            int value;
+            DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+            add_relations(static_cast< ::UserRelation >(value));
+          }
+          input->PopLimit(limit);
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          add_relations(static_cast< ::UserRelation >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -351,6 +386,20 @@ void UserPublicProfile::SerializeWithCachedSizes(
       4, this->_internal_avatar_preview_readonly_access(), output);
   }
 
+  // repeated .UserRelation relations = 5;
+  if (this->relations_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(
+      5,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      output);
+    output->WriteVarint32(
+        static_cast< ::google::protobuf::uint32>(_relations_cached_byte_size_));
+  }
+  for (int i = 0, n = this->relations_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnumNoTag(
+      this->relations(i), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -391,6 +440,18 @@ void UserPublicProfile::SerializeWithCachedSizes(
         4, this->_internal_avatar_preview_readonly_access(), deterministic, target);
   }
 
+  // repeated .UserRelation relations = 5;
+  if (this->relations_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      5,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(      static_cast< ::google::protobuf::uint32>(
+            _relations_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumNoTagToArray(
+      this->relations_, target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -408,6 +469,25 @@ size_t UserPublicProfile::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // repeated .UserRelation relations = 5;
+  {
+    size_t data_size = 0;
+    unsigned int count = static_cast<unsigned int>(this->relations_size());for (unsigned int i = 0; i < count; i++) {
+      data_size += ::google::protobuf::internal::WireFormatLite::EnumSize(
+        this->relations(static_cast<int>(i)));
+    }
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _relations_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
   // .e8.NullableString alias = 2;
   if (this->has_alias()) {
     total_size += 1 +
@@ -463,6 +543,7 @@ void UserPublicProfile::MergeFrom(const UserPublicProfile& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  relations_.MergeFrom(from.relations_);
   if (from.has_alias()) {
     mutable_alias()->::e8::NullableString::MergeFrom(from.alias());
   }
@@ -501,6 +582,7 @@ void UserPublicProfile::Swap(UserPublicProfile* other) {
 }
 void UserPublicProfile::InternalSwap(UserPublicProfile* other) {
   using std::swap;
+  relations_.InternalSwap(&other->relations_);
   swap(alias_, other->alias_);
   swap(avatar_readonly_access_, other->avatar_readonly_access_);
   swap(avatar_preview_readonly_access_, other->avatar_preview_readonly_access_);
