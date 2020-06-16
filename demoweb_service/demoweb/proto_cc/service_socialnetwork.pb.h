@@ -79,12 +79,12 @@ extern GetInvitationListRequestDefaultTypeInternal _GetInvitationListRequest_def
 class GetInvitationListResponse;
 class GetInvitationListResponseDefaultTypeInternal;
 extern GetInvitationListResponseDefaultTypeInternal _GetInvitationListResponse_default_instance_;
-class GetUserRelationRequest;
-class GetUserRelationRequestDefaultTypeInternal;
-extern GetUserRelationRequestDefaultTypeInternal _GetUserRelationRequest_default_instance_;
-class GetUserRelationResponse;
-class GetUserRelationResponseDefaultTypeInternal;
-extern GetUserRelationResponseDefaultTypeInternal _GetUserRelationResponse_default_instance_;
+class GetUserRelationsRequest;
+class GetUserRelationsRequestDefaultTypeInternal;
+extern GetUserRelationsRequestDefaultTypeInternal _GetUserRelationsRequest_default_instance_;
+class GetUserRelationsResponse;
+class GetUserRelationsResponseDefaultTypeInternal;
+extern GetUserRelationsResponseDefaultTypeInternal _GetUserRelationsResponse_default_instance_;
 class RejectInvitationRequest;
 class RejectInvitationRequestDefaultTypeInternal;
 extern RejectInvitationRequestDefaultTypeInternal _RejectInvitationRequest_default_instance_;
@@ -110,8 +110,8 @@ template<> ::e8::GetContactListRequest* Arena::CreateMaybeMessage<::e8::GetConta
 template<> ::e8::GetContactListResponse* Arena::CreateMaybeMessage<::e8::GetContactListResponse>(Arena*);
 template<> ::e8::GetInvitationListRequest* Arena::CreateMaybeMessage<::e8::GetInvitationListRequest>(Arena*);
 template<> ::e8::GetInvitationListResponse* Arena::CreateMaybeMessage<::e8::GetInvitationListResponse>(Arena*);
-template<> ::e8::GetUserRelationRequest* Arena::CreateMaybeMessage<::e8::GetUserRelationRequest>(Arena*);
-template<> ::e8::GetUserRelationResponse* Arena::CreateMaybeMessage<::e8::GetUserRelationResponse>(Arena*);
+template<> ::e8::GetUserRelationsRequest* Arena::CreateMaybeMessage<::e8::GetUserRelationsRequest>(Arena*);
+template<> ::e8::GetUserRelationsResponse* Arena::CreateMaybeMessage<::e8::GetUserRelationsResponse>(Arena*);
 template<> ::e8::RejectInvitationRequest* Arena::CreateMaybeMessage<::e8::RejectInvitationRequest>(Arena*);
 template<> ::e8::RejectInvitationResponse* Arena::CreateMaybeMessage<::e8::RejectInvitationResponse>(Arena*);
 template<> ::e8::SendInvitationRequest* Arena::CreateMaybeMessage<::e8::SendInvitationRequest>(Arena*);
@@ -122,24 +122,24 @@ namespace e8 {
 
 // ===================================================================
 
-class GetUserRelationRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetUserRelationRequest) */ {
+class GetUserRelationsRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetUserRelationsRequest) */ {
  public:
-  GetUserRelationRequest();
-  virtual ~GetUserRelationRequest();
+  GetUserRelationsRequest();
+  virtual ~GetUserRelationsRequest();
 
-  GetUserRelationRequest(const GetUserRelationRequest& from);
+  GetUserRelationsRequest(const GetUserRelationsRequest& from);
 
-  inline GetUserRelationRequest& operator=(const GetUserRelationRequest& from) {
+  inline GetUserRelationsRequest& operator=(const GetUserRelationsRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  GetUserRelationRequest(GetUserRelationRequest&& from) noexcept
-    : GetUserRelationRequest() {
+  GetUserRelationsRequest(GetUserRelationsRequest&& from) noexcept
+    : GetUserRelationsRequest() {
     *this = ::std::move(from);
   }
 
-  inline GetUserRelationRequest& operator=(GetUserRelationRequest&& from) noexcept {
+  inline GetUserRelationsRequest& operator=(GetUserRelationsRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -149,34 +149,34 @@ class GetUserRelationRequest : public ::google::protobuf::Message /* @@protoc_in
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetUserRelationRequest& default_instance();
+  static const GetUserRelationsRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetUserRelationRequest* internal_default_instance() {
-    return reinterpret_cast<const GetUserRelationRequest*>(
-               &_GetUserRelationRequest_default_instance_);
+  static inline const GetUserRelationsRequest* internal_default_instance() {
+    return reinterpret_cast<const GetUserRelationsRequest*>(
+               &_GetUserRelationsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  void Swap(GetUserRelationRequest* other);
-  friend void swap(GetUserRelationRequest& a, GetUserRelationRequest& b) {
+  void Swap(GetUserRelationsRequest* other);
+  friend void swap(GetUserRelationsRequest& a, GetUserRelationsRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetUserRelationRequest* New() const final {
-    return CreateMaybeMessage<GetUserRelationRequest>(NULL);
+  inline GetUserRelationsRequest* New() const final {
+    return CreateMaybeMessage<GetUserRelationsRequest>(NULL);
   }
 
-  GetUserRelationRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetUserRelationRequest>(arena);
+  GetUserRelationsRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetUserRelationsRequest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetUserRelationRequest& from);
-  void MergeFrom(const GetUserRelationRequest& from);
+  void CopyFrom(const GetUserRelationsRequest& from);
+  void MergeFrom(const GetUserRelationsRequest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -193,7 +193,7 @@ class GetUserRelationRequest : public ::google::protobuf::Message /* @@protoc_in
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetUserRelationRequest* other);
+  void InternalSwap(GetUserRelationsRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -215,7 +215,7 @@ class GetUserRelationRequest : public ::google::protobuf::Message /* @@protoc_in
   ::google::protobuf::int64 target_user_id() const;
   void set_target_user_id(::google::protobuf::int64 value);
 
-  // @@protoc_insertion_point(class_scope:e8.GetUserRelationRequest)
+  // @@protoc_insertion_point(class_scope:e8.GetUserRelationsRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -225,24 +225,24 @@ class GetUserRelationRequest : public ::google::protobuf::Message /* @@protoc_in
 };
 // -------------------------------------------------------------------
 
-class GetUserRelationResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetUserRelationResponse) */ {
+class GetUserRelationsResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetUserRelationsResponse) */ {
  public:
-  GetUserRelationResponse();
-  virtual ~GetUserRelationResponse();
+  GetUserRelationsResponse();
+  virtual ~GetUserRelationsResponse();
 
-  GetUserRelationResponse(const GetUserRelationResponse& from);
+  GetUserRelationsResponse(const GetUserRelationsResponse& from);
 
-  inline GetUserRelationResponse& operator=(const GetUserRelationResponse& from) {
+  inline GetUserRelationsResponse& operator=(const GetUserRelationsResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  GetUserRelationResponse(GetUserRelationResponse&& from) noexcept
-    : GetUserRelationResponse() {
+  GetUserRelationsResponse(GetUserRelationsResponse&& from) noexcept
+    : GetUserRelationsResponse() {
     *this = ::std::move(from);
   }
 
-  inline GetUserRelationResponse& operator=(GetUserRelationResponse&& from) noexcept {
+  inline GetUserRelationsResponse& operator=(GetUserRelationsResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -252,34 +252,34 @@ class GetUserRelationResponse : public ::google::protobuf::Message /* @@protoc_i
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetUserRelationResponse& default_instance();
+  static const GetUserRelationsResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetUserRelationResponse* internal_default_instance() {
-    return reinterpret_cast<const GetUserRelationResponse*>(
-               &_GetUserRelationResponse_default_instance_);
+  static inline const GetUserRelationsResponse* internal_default_instance() {
+    return reinterpret_cast<const GetUserRelationsResponse*>(
+               &_GetUserRelationsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  void Swap(GetUserRelationResponse* other);
-  friend void swap(GetUserRelationResponse& a, GetUserRelationResponse& b) {
+  void Swap(GetUserRelationsResponse* other);
+  friend void swap(GetUserRelationsResponse& a, GetUserRelationsResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetUserRelationResponse* New() const final {
-    return CreateMaybeMessage<GetUserRelationResponse>(NULL);
+  inline GetUserRelationsResponse* New() const final {
+    return CreateMaybeMessage<GetUserRelationsResponse>(NULL);
   }
 
-  GetUserRelationResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetUserRelationResponse>(arena);
+  GetUserRelationsResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetUserRelationsResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetUserRelationResponse& from);
-  void MergeFrom(const GetUserRelationResponse& from);
+  void CopyFrom(const GetUserRelationsResponse& from);
+  void MergeFrom(const GetUserRelationsResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -296,7 +296,7 @@ class GetUserRelationResponse : public ::google::protobuf::Message /* @@protoc_i
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetUserRelationResponse* other);
+  void InternalSwap(GetUserRelationsResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -312,6 +312,16 @@ class GetUserRelationResponse : public ::google::protobuf::Message /* @@protoc_i
 
   // accessors -------------------------------------------------------
 
+  // repeated .UserRelation user_relation = 3;
+  int user_relation_size() const;
+  void clear_user_relation();
+  static const int kUserRelationFieldNumber = 3;
+  ::UserRelation user_relation(int index) const;
+  void set_user_relation(int index, ::UserRelation value);
+  void add_user_relation(::UserRelation value);
+  const ::google::protobuf::RepeatedField<int>& user_relation() const;
+  ::google::protobuf::RepeatedField<int>* mutable_user_relation();
+
   // int64 source_user_id = 1;
   void clear_source_user_id();
   static const int kSourceUserIdFieldNumber = 1;
@@ -324,19 +334,14 @@ class GetUserRelationResponse : public ::google::protobuf::Message /* @@protoc_i
   ::google::protobuf::int64 target_user_id() const;
   void set_target_user_id(::google::protobuf::int64 value);
 
-  // .UserRelation user_relation = 3;
-  void clear_user_relation();
-  static const int kUserRelationFieldNumber = 3;
-  ::UserRelation user_relation() const;
-  void set_user_relation(::UserRelation value);
-
-  // @@protoc_insertion_point(class_scope:e8.GetUserRelationResponse)
+  // @@protoc_insertion_point(class_scope:e8.GetUserRelationsResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField<int> user_relation_;
+  mutable int _user_relation_cached_byte_size_;
   ::google::protobuf::int64 source_user_id_;
   ::google::protobuf::int64 target_user_id_;
-  int user_relation_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
@@ -1780,66 +1785,82 @@ class GetContactListResponse : public ::google::protobuf::Message /* @@protoc_in
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// GetUserRelationRequest
+// GetUserRelationsRequest
 
 // int64 target_user_id = 1;
-inline void GetUserRelationRequest::clear_target_user_id() {
+inline void GetUserRelationsRequest::clear_target_user_id() {
   target_user_id_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 GetUserRelationRequest::target_user_id() const {
-  // @@protoc_insertion_point(field_get:e8.GetUserRelationRequest.target_user_id)
+inline ::google::protobuf::int64 GetUserRelationsRequest::target_user_id() const {
+  // @@protoc_insertion_point(field_get:e8.GetUserRelationsRequest.target_user_id)
   return target_user_id_;
 }
-inline void GetUserRelationRequest::set_target_user_id(::google::protobuf::int64 value) {
+inline void GetUserRelationsRequest::set_target_user_id(::google::protobuf::int64 value) {
   
   target_user_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.GetUserRelationRequest.target_user_id)
+  // @@protoc_insertion_point(field_set:e8.GetUserRelationsRequest.target_user_id)
 }
 
 // -------------------------------------------------------------------
 
-// GetUserRelationResponse
+// GetUserRelationsResponse
 
 // int64 source_user_id = 1;
-inline void GetUserRelationResponse::clear_source_user_id() {
+inline void GetUserRelationsResponse::clear_source_user_id() {
   source_user_id_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 GetUserRelationResponse::source_user_id() const {
-  // @@protoc_insertion_point(field_get:e8.GetUserRelationResponse.source_user_id)
+inline ::google::protobuf::int64 GetUserRelationsResponse::source_user_id() const {
+  // @@protoc_insertion_point(field_get:e8.GetUserRelationsResponse.source_user_id)
   return source_user_id_;
 }
-inline void GetUserRelationResponse::set_source_user_id(::google::protobuf::int64 value) {
+inline void GetUserRelationsResponse::set_source_user_id(::google::protobuf::int64 value) {
   
   source_user_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.GetUserRelationResponse.source_user_id)
+  // @@protoc_insertion_point(field_set:e8.GetUserRelationsResponse.source_user_id)
 }
 
 // int64 target_user_id = 2;
-inline void GetUserRelationResponse::clear_target_user_id() {
+inline void GetUserRelationsResponse::clear_target_user_id() {
   target_user_id_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 GetUserRelationResponse::target_user_id() const {
-  // @@protoc_insertion_point(field_get:e8.GetUserRelationResponse.target_user_id)
+inline ::google::protobuf::int64 GetUserRelationsResponse::target_user_id() const {
+  // @@protoc_insertion_point(field_get:e8.GetUserRelationsResponse.target_user_id)
   return target_user_id_;
 }
-inline void GetUserRelationResponse::set_target_user_id(::google::protobuf::int64 value) {
+inline void GetUserRelationsResponse::set_target_user_id(::google::protobuf::int64 value) {
   
   target_user_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.GetUserRelationResponse.target_user_id)
+  // @@protoc_insertion_point(field_set:e8.GetUserRelationsResponse.target_user_id)
 }
 
-// .UserRelation user_relation = 3;
-inline void GetUserRelationResponse::clear_user_relation() {
-  user_relation_ = 0;
+// repeated .UserRelation user_relation = 3;
+inline int GetUserRelationsResponse::user_relation_size() const {
+  return user_relation_.size();
 }
-inline ::UserRelation GetUserRelationResponse::user_relation() const {
-  // @@protoc_insertion_point(field_get:e8.GetUserRelationResponse.user_relation)
-  return static_cast< ::UserRelation >(user_relation_);
+inline void GetUserRelationsResponse::clear_user_relation() {
+  user_relation_.Clear();
 }
-inline void GetUserRelationResponse::set_user_relation(::UserRelation value) {
-  
-  user_relation_ = value;
-  // @@protoc_insertion_point(field_set:e8.GetUserRelationResponse.user_relation)
+inline ::UserRelation GetUserRelationsResponse::user_relation(int index) const {
+  // @@protoc_insertion_point(field_get:e8.GetUserRelationsResponse.user_relation)
+  return static_cast< ::UserRelation >(user_relation_.Get(index));
+}
+inline void GetUserRelationsResponse::set_user_relation(int index, ::UserRelation value) {
+  user_relation_.Set(index, value);
+  // @@protoc_insertion_point(field_set:e8.GetUserRelationsResponse.user_relation)
+}
+inline void GetUserRelationsResponse::add_user_relation(::UserRelation value) {
+  user_relation_.Add(value);
+  // @@protoc_insertion_point(field_add:e8.GetUserRelationsResponse.user_relation)
+}
+inline const ::google::protobuf::RepeatedField<int>&
+GetUserRelationsResponse::user_relation() const {
+  // @@protoc_insertion_point(field_list:e8.GetUserRelationsResponse.user_relation)
+  return user_relation_;
+}
+inline ::google::protobuf::RepeatedField<int>*
+GetUserRelationsResponse::mutable_user_relation() {
+  // @@protoc_insertion_point(field_mutable_list:e8.GetUserRelationsResponse.user_relation)
+  return &user_relation_;
 }
 
 // -------------------------------------------------------------------

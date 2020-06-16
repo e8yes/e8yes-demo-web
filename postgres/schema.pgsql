@@ -90,27 +90,15 @@ CREATE INDEX IF NOT EXISTS idx_auser_id_str ON auser USING btree (id_str);
 CREATE INDEX IF NOT EXISTS idx_auser_alias ON auser USING btree (alias);
 
 
-/* Friend invitations */
-CREATE TABLE IF NOT EXISTS friend_invitation (
-    inviter_user_id BIGINT NOT NULL,
-    invitee_user_id BIGINT NOT NULL,
-    status INT NOT NULL DEFAULT 0,
+/* Directed contact relations */
+CREATE TABLE IF NOT EXISTS contact_relation (
+    src_user_id BIGINT NOT NULL,
+    dst_user_id BIGINT NOT NULL,
+    relation INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (inviter_user_id, invitee_user_id),
-    FOREIGN KEY (inviter_user_id) REFERENCES auser (id) ON DELETE CASCADE,
-    FOREIGN KEY (invitee_user_id) REFERENCES auser (id) ON DELETE CASCADE
-);
-
-
-/* Friendship */
-CREATE TABLE IF NOT EXISTS friend (
-    /* We requires that user0_id < user1_id. */
-    user0_id BIGINT NOT NULL,
-    user1_id BIGINT NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user0_id, user1_id),
-    FOREIGN KEY (user0_id) REFERENCES auser (id) ON DELETE CASCADE,
-    FOREIGN KEY (user1_id) REFERENCES auser (id) ON DELETE CASCADE
+    PRIMARY KEY (src_user_id, dst_user_id, relation),
+    FOREIGN KEY (src_user_id) REFERENCES auser (id) ON DELETE CASCADE,
+    FOREIGN KEY (dst_user_id) REFERENCES auser (id) ON DELETE CASCADE
 );
 
 

@@ -15,26 +15,26 @@ import 'user_profile.pb.dart' as $8;
 
 import 'user_relation.pbenum.dart' as $10;
 
-class GetUserRelationRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class GetUserRelationsRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'targetUserId')
     ..hasRequiredFields = false
   ;
 
-  GetUserRelationRequest._() : super();
-  factory GetUserRelationRequest() => create();
-  factory GetUserRelationRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetUserRelationRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetUserRelationRequest clone() => GetUserRelationRequest()..mergeFromMessage(this);
-  GetUserRelationRequest copyWith(void Function(GetUserRelationRequest) updates) => super.copyWith((message) => updates(message as GetUserRelationRequest));
+  GetUserRelationsRequest._() : super();
+  factory GetUserRelationsRequest() => create();
+  factory GetUserRelationsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetUserRelationsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetUserRelationsRequest clone() => GetUserRelationsRequest()..mergeFromMessage(this);
+  GetUserRelationsRequest copyWith(void Function(GetUserRelationsRequest) updates) => super.copyWith((message) => updates(message as GetUserRelationsRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetUserRelationRequest create() => GetUserRelationRequest._();
-  GetUserRelationRequest createEmptyInstance() => create();
-  static $pb.PbList<GetUserRelationRequest> createRepeated() => $pb.PbList<GetUserRelationRequest>();
+  static GetUserRelationsRequest create() => GetUserRelationsRequest._();
+  GetUserRelationsRequest createEmptyInstance() => create();
+  static $pb.PbList<GetUserRelationsRequest> createRepeated() => $pb.PbList<GetUserRelationsRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetUserRelationRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetUserRelationRequest>(create);
-  static GetUserRelationRequest _defaultInstance;
+  static GetUserRelationsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetUserRelationsRequest>(create);
+  static GetUserRelationsRequest _defaultInstance;
 
   @$pb.TagNumber(1)
   $fixnum.Int64 get targetUserId => $_getI64(0);
@@ -46,28 +46,28 @@ class GetUserRelationRequest extends $pb.GeneratedMessage {
   void clearTargetUserId() => clearField(1);
 }
 
-class GetUserRelationResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class GetUserRelationsResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationsResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'sourceUserId')
     ..aInt64(2, 'targetUserId')
-    ..e<$10.UserRelation>(3, 'userRelation', $pb.PbFieldType.OE, defaultOrMaker: $10.UserRelation.URL_UNRELATED, valueOf: $10.UserRelation.valueOf, enumValues: $10.UserRelation.values)
+    ..pc<$10.UserRelation>(3, 'userRelation', $pb.PbFieldType.PE, valueOf: $10.UserRelation.valueOf, enumValues: $10.UserRelation.values)
     ..hasRequiredFields = false
   ;
 
-  GetUserRelationResponse._() : super();
-  factory GetUserRelationResponse() => create();
-  factory GetUserRelationResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetUserRelationResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetUserRelationResponse clone() => GetUserRelationResponse()..mergeFromMessage(this);
-  GetUserRelationResponse copyWith(void Function(GetUserRelationResponse) updates) => super.copyWith((message) => updates(message as GetUserRelationResponse));
+  GetUserRelationsResponse._() : super();
+  factory GetUserRelationsResponse() => create();
+  factory GetUserRelationsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetUserRelationsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetUserRelationsResponse clone() => GetUserRelationsResponse()..mergeFromMessage(this);
+  GetUserRelationsResponse copyWith(void Function(GetUserRelationsResponse) updates) => super.copyWith((message) => updates(message as GetUserRelationsResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetUserRelationResponse create() => GetUserRelationResponse._();
-  GetUserRelationResponse createEmptyInstance() => create();
-  static $pb.PbList<GetUserRelationResponse> createRepeated() => $pb.PbList<GetUserRelationResponse>();
+  static GetUserRelationsResponse create() => GetUserRelationsResponse._();
+  GetUserRelationsResponse createEmptyInstance() => create();
+  static $pb.PbList<GetUserRelationsResponse> createRepeated() => $pb.PbList<GetUserRelationsResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetUserRelationResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetUserRelationResponse>(create);
-  static GetUserRelationResponse _defaultInstance;
+  static GetUserRelationsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetUserRelationsResponse>(create);
+  static GetUserRelationsResponse _defaultInstance;
 
   @$pb.TagNumber(1)
   $fixnum.Int64 get sourceUserId => $_getI64(0);
@@ -88,13 +88,7 @@ class GetUserRelationResponse extends $pb.GeneratedMessage {
   void clearTargetUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $10.UserRelation get userRelation => $_getN(2);
-  @$pb.TagNumber(3)
-  set userRelation($10.UserRelation v) { setField(3, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasUserRelation() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearUserRelation() => clearField(3);
+  $core.List<$10.UserRelation> get userRelation => $_getList(2);
 }
 
 class SendInvitationRequest extends $pb.GeneratedMessage {

@@ -5,19 +5,19 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
-const GetUserRelationRequest$json = const {
-  '1': 'GetUserRelationRequest',
+const GetUserRelationsRequest$json = const {
+  '1': 'GetUserRelationsRequest',
   '2': const [
     const {'1': 'target_user_id', '3': 1, '4': 1, '5': 3, '10': 'targetUserId'},
   ],
 };
 
-const GetUserRelationResponse$json = const {
-  '1': 'GetUserRelationResponse',
+const GetUserRelationsResponse$json = const {
+  '1': 'GetUserRelationsResponse',
   '2': const [
     const {'1': 'source_user_id', '3': 1, '4': 1, '5': 3, '10': 'sourceUserId'},
     const {'1': 'target_user_id', '3': 2, '4': 1, '5': 3, '10': 'targetUserId'},
-    const {'1': 'user_relation', '3': 3, '4': 1, '5': 14, '6': '.UserRelation', '10': 'userRelation'},
+    const {'1': 'user_relation', '3': 3, '4': 3, '5': 14, '6': '.UserRelation', '10': 'userRelation'},
   ],
 };
 

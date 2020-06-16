@@ -23,15 +23,15 @@ import "pagination.proto";
 import "user_profile.proto";
 import "user_relation.proto";
 
-message GetUserRelationRequest {
+message GetUserRelationsRequest {
     // Source user is the logged in user.
     int64 target_user_id = 1;
 }
 
-message GetUserRelationResponse {
+message GetUserRelationsResponse {
     int64 source_user_id = 1;
     int64 target_user_id = 2;
-    UserRelation user_relation = 3;
+    repeated UserRelation user_relation = 3;
 }
 
 message SendInvitationRequest {
@@ -90,7 +90,7 @@ service SocialNetworkService {
     /**
      * Get the directed relation between the logged-in user and some other user.
      */
-    rpc GetUserRelation(GetUserRelationRequest) returns (GetUserRelationResponse);
+    rpc GetUserRelations(GetUserRelationsRequest) returns (GetUserRelationsResponse);
 
     /**
      * Send an invitation to another user where the logged-in user is the inviter.

@@ -14,12 +14,12 @@ import 'service_socialnetwork.pb.dart' as $3;
 export 'service_socialnetwork.pb.dart';
 
 class SocialNetworkServiceClient extends $grpc.Client {
-  static final _$getUserRelation =
-      $grpc.ClientMethod<$3.GetUserRelationRequest, $3.GetUserRelationResponse>(
-          '/e8.SocialNetworkService/GetUserRelation',
-          ($3.GetUserRelationRequest value) => value.writeToBuffer(),
-          ($core.List<$core.int> value) =>
-              $3.GetUserRelationResponse.fromBuffer(value));
+  static final _$getUserRelations = $grpc.ClientMethod<
+          $3.GetUserRelationsRequest, $3.GetUserRelationsResponse>(
+      '/e8.SocialNetworkService/GetUserRelations',
+      ($3.GetUserRelationsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $3.GetUserRelationsResponse.fromBuffer(value));
   static final _$sendInvitation =
       $grpc.ClientMethod<$3.SendInvitationRequest, $3.SendInvitationResponse>(
           '/e8.SocialNetworkService/SendInvitation',
@@ -67,11 +67,11 @@ class SocialNetworkServiceClient extends $grpc.Client {
       {$grpc.CallOptions options})
       : super(channel, options: options);
 
-  $grpc.ResponseFuture<$3.GetUserRelationResponse> getUserRelation(
-      $3.GetUserRelationRequest request,
+  $grpc.ResponseFuture<$3.GetUserRelationsResponse> getUserRelations(
+      $3.GetUserRelationsRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
-        _$getUserRelation, $async.Stream.fromIterable([request]),
+        _$getUserRelations, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -144,15 +144,15 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
   $core.String get $name => 'e8.SocialNetworkService';
 
   SocialNetworkServiceBase() {
-    $addMethod($grpc.ServiceMethod<$3.GetUserRelationRequest,
-            $3.GetUserRelationResponse>(
-        'GetUserRelation',
-        getUserRelation_Pre,
+    $addMethod($grpc.ServiceMethod<$3.GetUserRelationsRequest,
+            $3.GetUserRelationsResponse>(
+        'GetUserRelations',
+        getUserRelations_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $3.GetUserRelationRequest.fromBuffer(value),
-        ($3.GetUserRelationResponse value) => value.writeToBuffer()));
+            $3.GetUserRelationsRequest.fromBuffer(value),
+        ($3.GetUserRelationsResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.SendInvitationRequest,
             $3.SendInvitationResponse>(
         'SendInvitation',
@@ -218,10 +218,10 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
         ($3.GetContactListResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$3.GetUserRelationResponse> getUserRelation_Pre(
+  $async.Future<$3.GetUserRelationsResponse> getUserRelations_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$3.GetUserRelationRequest> request) async {
-    return getUserRelation(call, await request);
+      $async.Future<$3.GetUserRelationsRequest> request) async {
+    return getUserRelations(call, await request);
   }
 
   $async.Future<$3.SendInvitationResponse> sendInvitation_Pre(
@@ -266,8 +266,8 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
     return getContactList(call, await request);
   }
 
-  $async.Future<$3.GetUserRelationResponse> getUserRelation(
-      $grpc.ServiceCall call, $3.GetUserRelationRequest request);
+  $async.Future<$3.GetUserRelationsResponse> getUserRelations(
+      $grpc.ServiceCall call, $3.GetUserRelationsRequest request);
   $async.Future<$3.SendInvitationResponse> sendInvitation(
       $grpc.ServiceCall call, $3.SendInvitationRequest request);
   $async.Future<$3.DeleteInvitationResponse> deleteInvitation(
