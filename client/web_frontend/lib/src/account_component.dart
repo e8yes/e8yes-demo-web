@@ -1,9 +1,14 @@
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:demoweb_app/src/account.dart';
 import 'package:demoweb_app/src/context.dart';
 import 'package:demoweb_app/src/profile_component.dart';
+import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
+import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pbgrpc.dart';
+import 'package:demoweb_app/src/proto_dart/service_user.pbgrpc.dart';
+import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
+import 'package:demoweb_app/src/proto_dart/user_relation.pb.dart';
 import 'package:demoweb_app/src/routes.dart';
+import 'package:demoweb_app/src/socialnetwork_service_interface.dart';
 import 'package:demoweb_app/src/user_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
 
@@ -13,30 +18,59 @@ import 'package:fixnum/fixnum.dart';
   directives: [coreDirectives, ProfileComponent],
 )
 class AccountComponent implements OnActivate {
-  AccountInfo accountInfo = AccountInfo();
-  final UserServiceInterface _user_service;
-  Int64 currentUserId;
+  UserPublicProfile profile = UserPublicProfile();
 
-  AccountComponent(this._user_service);
+  final UserServiceInterface _user_service;
+  final SocialNetworkServiceInterface _social_network_service;
+  Int64 _accountUserId;
+
+  AccountComponent(this._user_service, this._social_network_service);
+
+  void _fetchAccountProfile(Int64 accountUserId) {
+    String viewerSignature = credentialStorage.loadSignature();
+      GetPublicProfileRequest req = GetPublicProfileRequest();
+      req.userId = accountUserId;
+      _user_service
+          .getPublicProfile(req, viewerSignature)
+          .then((GetPublicProfileResponse res) {
+        profile = res.profile;
+        print(profile.relations);
+      });
+  }
 
   @override
   void onActivate(_, RouterState current) async {
     final userId = getIdPathVariable(current.parameters);
     if (userId != null) {
-      currentUserId = userId;
+      _accountUserId = userId;
     } else {
-      currentUserId = identityStorage.loadUserId();
+      _accountUserId = identityStorage.loadUserId();
     }
-    if (currentUserId != null) {
-      String viewerSignature = credentialStorage.loadSignature();
-      accountInfo.setSignedInStateAndGrabProfile(
-          currentUserId, viewerSignature, _user_service);
+    if (_accountUserId != null) {
+      _fetchAccountProfile(_accountUserId);
     }
   }
 
   bool owner() {
-    return currentUserId == identityStorage.loadUserId();
+    return _accountUserId == identityStorage.loadUserId();
   }
 
-  void onClickAddContact() {}
+  bool addContactMode() {
+    return !owner() && profile.relations.isEmpty;
+  }
+
+  bool invitationPendingMode() {
+    return !owner() &&
+        profile.relations.contains(UserRelation.URL_INVITATION_SENT);
+  }
+
+  void onClickAddContact() {
+    SendInvitationRequest req = SendInvitationRequest();
+    req.inviteeUserId = _accountUserId;
+    String viewerSignature = credentialStorage.loadSignature();
+    _social_network_service.sendInvitation(req, viewerSignature)
+    .then((SendInvitationResponse res) {
+      _fetchAccountProfile(_accountUserId);
+    });
+  }
 }

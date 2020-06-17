@@ -20,7 +20,7 @@ class AccountInfo {
   void setSignedInStateAndGrabProfile(
       Int64 userId, String signature, UserServiceInterface service) {
     GetPublicProfileRequest req = GetPublicProfileRequest();
-    req.userId = (NullableInt64()..value = userId);
+    req.userId = userId;
     service
         .getPublicProfile(req, signature)
         .then((GetPublicProfileResponse res) {

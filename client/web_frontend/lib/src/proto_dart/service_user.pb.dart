@@ -11,8 +11,8 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'identity.pb.dart' as $8;
-import 'nullable_primitives.pb.dart' as $5;
 import 'user_profile.pb.dart' as $9;
+import 'nullable_primitives.pb.dart' as $5;
 import 'pagination.pb.dart' as $10;
 import 'file.pb.dart' as $6;
 
@@ -169,7 +169,7 @@ class AuthorizationResponse extends $pb.GeneratedMessage {
 
 class GetPublicProfileRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetPublicProfileRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$5.NullableInt64>(1, 'userId', subBuilder: $5.NullableInt64.create)
+    ..aInt64(1, 'userId')
     ..hasRequiredFields = false
   ;
 
@@ -189,15 +189,13 @@ class GetPublicProfileRequest extends $pb.GeneratedMessage {
   static GetPublicProfileRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $5.NullableInt64 get userId => $_getN(0);
+  $fixnum.Int64 get userId => $_getI64(0);
   @$pb.TagNumber(1)
-  set userId($5.NullableInt64 v) { setField(1, v); }
+  set userId($fixnum.Int64 v) { $_setInt64(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
   void clearUserId() => clearField(1);
-  @$pb.TagNumber(1)
-  $5.NullableInt64 ensureUserId() => $_ensure(0);
 }
 
 class GetPublicProfileResponse extends $pb.GeneratedMessage {

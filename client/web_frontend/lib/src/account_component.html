@@ -1,7 +1,10 @@
 <h1>Account</h1>
-<profile *ngIf="accountInfo.profile != null" 
-            [profile]="accountInfo.profile"
-            [editable]="owner()"></profile>
-<button *ngIf="!owner()" 
-        (click)="onClickAddContact"
-        class="btn">Add Contact</button>
+<profile [profile]="profile" [editable]="owner()"></profile>
+
+<button *ngIf="addContactMode()" (click)="onClickAddContact" class="btn">Add
+  Contact</button>
+
+<div *ngIf="invitationPendingMode()">
+  <label class="col-form-label">Invitation has already been sent</label>
+  <button (click)="onClickAddContact" class="btn">Re-send Invitation</button>
+</div>

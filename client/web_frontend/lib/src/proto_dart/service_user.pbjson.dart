@@ -48,7 +48,7 @@ const AuthorizationResponse$json = const {
 const GetPublicProfileRequest$json = const {
   '1': 'GetPublicProfileRequest',
   '2': const [
-    const {'1': 'user_id', '3': 1, '4': 1, '5': 11, '6': '.e8.NullableInt64', '10': 'userId'},
+    const {'1': 'user_id', '3': 1, '4': 1, '5': 3, '10': 'userId'},
   ],
 };
 
