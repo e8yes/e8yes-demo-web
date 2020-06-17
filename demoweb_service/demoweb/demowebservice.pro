@@ -36,6 +36,7 @@ HEADERS += \
     constant/demoweb_database.h \
     environment/host_id.h \
     environment/prod_environment_context.h \
+    module_socialnetwork/contact_invitation.h \
     module_socialnetwork/retrieve_contact.h \
     proto_cc/encryption_source.grpc.pb.h \
     proto_cc/encryption_source.pb.h \
@@ -85,6 +86,7 @@ SOURCES += \
     module_file/file_io.cc \
     module_file/file_metadata.cc \
     module_rbac/file_access_validator.cc \
+    module_socialnetwork/contact_invitation.cc \
     module_socialnetwork/retrieve_contact.cc \
     proto_cc/encryption_source.grpc.pb.cc \
     proto_cc/encryption_source.pb.cc \

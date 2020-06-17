@@ -15,28 +15,25 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOCIAL_NETWORK_SERVICE_H
-#define SOCIAL_NETWORK_SERVICE_H
+#ifndef CONTACT_INVITATION_H
+#define CONTACT_INVITATION_H
 
-#include <grpcpp/grpcpp.h>
-
-#include "demoweb_service/demoweb/proto_cc/service_socialnetwork.grpc.pb.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
 
-class SocialNetworkServiceImpl : public SocialNetworkService::Service {
-  public:
-    SocialNetworkServiceImpl() = default;
-    ~SocialNetworkServiceImpl() override = default;
-
-    grpc::Status GetUserRelations(grpc::ServerContext *context,
-                                  GetUserRelationsRequest const *request,
-                                  GetUserRelationsResponse *response) override;
-
-    grpc::Status SendInvitation(grpc::ServerContext *context, SendInvitationRequest const *request,
-                                SendInvitationResponse *response) override;
-};
+/**
+ * @brief SendInvitation Update the invitation request and recipient list and send out an invitation
+ * message. TODO: need to send out a message to the recipient.
+ * @param send_message_anyway Send message even if a message has already been sent before if this
+ * parameter is set to true.
+ * @return true if it an invitation has not been sent before or it hasn't been accepted, otherwise,
+ * false.
+ */
+bool SendInvitation(UserId src_user_id, UserId dst_user_id, bool send_message_anyway,
+                    ConnectionReservoirInterface *conns);
 
 } // namespace e8
 
-#endif // SOCIAL_NETWORK_SERVICE_H
+#endif // CONTACT_INVITATION_H
