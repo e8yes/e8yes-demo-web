@@ -45,15 +45,16 @@ class ContactListComponent {
     pagination.pageNumber = 0;
     req.pagination = pagination;
 
-    Future<SearchUserResponse> currentSearchFuture = _user_service.search(req);
+    String viewerSignature = credentialStorage.loadSignature();
+    Future<SearchUserResponse> currentSearchFuture =
+        _user_service.search(req, viewerSignature);
     _searchSync.takeLatestFuture(currentSearchFuture, (SearchUserResponse res) {
       profiles = res.userProfiles;
     });
   }
 
   String _accountDetailsUrl(Int64 userId) {
-    return RoutePaths.account
-        .toUrl(parameters: {kIdPathVariable: "$userId"});
+    return RoutePaths.account.toUrl(parameters: {kIdPathVariable: "$userId"});
   }
 
   void onSelectSearchedContact(UserPublicProfile userProfile) {

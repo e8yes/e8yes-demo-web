@@ -18,10 +18,12 @@ class AccountInfo {
   UserPublicProfile profile = null;
 
   void setSignedInStateAndGrabProfile(
-      Int64 userId, UserServiceInterface service) {
+      Int64 userId, String signature, UserServiceInterface service) {
     GetPublicProfileRequest req = GetPublicProfileRequest();
     req.userId = (NullableInt64()..value = userId);
-    service.getPublicProfile(req).then((GetPublicProfileResponse res) {
+    service
+        .getPublicProfile(req, signature)
+        .then((GetPublicProfileResponse res) {
       profile = res.profile;
       accountState = AccountState.SIGNED_IN;
     });
@@ -41,7 +43,8 @@ void signIn(AccountInfo accountInfo, UserServiceInterface user_service,
       if (accountInfo == null) {
         return res;
       }
-      accountInfo.setSignedInStateAndGrabProfile(userId, user_service);
+      accountInfo.setSignedInStateAndGrabProfile(
+          userId, res.signedIdentity.signature, user_service);
       return res;
     }).catchError((_) {
       identityStorage.clear();
@@ -55,11 +58,16 @@ void signUp(AccountInfo accountInfo, UserServiceInterface user_service,
 
   user_service
       .register(RegistrationRequest()..securityKey = securityKey)
-      .then((RegistrationResponse res) {
-    credentialStorage.authorize(auth_service, res.userId, securityKey);
-    if (accountInfo != null) {
-      accountInfo.setSignedInStateAndGrabProfile(res.userId, user_service);
-    }
-    identityStorage.save(res.userId, securityKey);
+      .then((RegistrationResponse regRes) {
+    identityStorage.save(regRes.userId, securityKey);
+
+    credentialStorage
+        .authorize(auth_service, regRes.userId, securityKey)
+        .then((AuthorizationResponse authRes) {
+      if (accountInfo != null) {
+        accountInfo.setSignedInStateAndGrabProfile(
+            regRes.userId, authRes.signedIdentity.signature, user_service);
+      }
+    });
   });
 }

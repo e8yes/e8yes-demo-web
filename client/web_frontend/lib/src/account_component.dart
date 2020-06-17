@@ -28,7 +28,9 @@ class AccountComponent implements OnActivate {
       currentUserId = identityStorage.loadUserId();
     }
     if (currentUserId != null) {
-      accountInfo.setSignedInStateAndGrabProfile(currentUserId, _user_service);
+      String viewerSignature = credentialStorage.loadSignature();
+      accountInfo.setSignedInStateAndGrabProfile(
+          currentUserId, viewerSignature, _user_service);
     }
   }
 
@@ -36,6 +38,5 @@ class AccountComponent implements OnActivate {
     return currentUserId == identityStorage.loadUserId();
   }
 
-  void onClickAddContact() {
-  }
+  void onClickAddContact() {}
 }
