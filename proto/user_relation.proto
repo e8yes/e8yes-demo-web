@@ -17,16 +17,12 @@
 
 syntax = "proto3";
 
-package e8;
-
-import "file.proto";
-import "nullable_primitives.proto";
-import "user_relation.proto";
-
-message UserPublicProfile {
-    int64 user_id = 1;
-    NullableString alias = 2;
-    FileTokenAccess avatar_readonly_access = 3;
-    FileTokenAccess avatar_preview_readonly_access = 4;
-    repeated UserRelation relations = 5;
+// Directed relation between two users.
+enum UserRelation {
+    URL_UNRELATED = 0;
+    URL_INVITATION_SENT = 1;
+    URL_INVITATION_RECEIVED = 2;
+    URL_CONTACT = 3;
+    URL_BLOCKING = 4;
+    URL_BLOCKED = 5;
 }

@@ -10,10 +10,10 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'identity.pb.dart' as $7;
+import 'identity.pb.dart' as $8;
 import 'nullable_primitives.pb.dart' as $5;
-import 'user_profile.pb.dart' as $8;
-import 'pagination.pb.dart' as $9;
+import 'user_profile.pb.dart' as $9;
+import 'pagination.pb.dart' as $10;
 import 'file.pb.dart' as $6;
 
 import 'service_user.pbenum.dart';
@@ -136,7 +136,7 @@ class AuthorizationRequest extends $pb.GeneratedMessage {
 
 class AuthorizationResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('AuthorizationResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$7.IdentitySignature>(1, 'signedIdentity', subBuilder: $7.IdentitySignature.create)
+    ..aOM<$8.IdentitySignature>(1, 'signedIdentity', subBuilder: $8.IdentitySignature.create)
     ..hasRequiredFields = false
   ;
 
@@ -156,15 +156,15 @@ class AuthorizationResponse extends $pb.GeneratedMessage {
   static AuthorizationResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $7.IdentitySignature get signedIdentity => $_getN(0);
+  $8.IdentitySignature get signedIdentity => $_getN(0);
   @$pb.TagNumber(1)
-  set signedIdentity($7.IdentitySignature v) { setField(1, v); }
+  set signedIdentity($8.IdentitySignature v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasSignedIdentity() => $_has(0);
   @$pb.TagNumber(1)
   void clearSignedIdentity() => clearField(1);
   @$pb.TagNumber(1)
-  $7.IdentitySignature ensureSignedIdentity() => $_ensure(0);
+  $8.IdentitySignature ensureSignedIdentity() => $_ensure(0);
 }
 
 class GetPublicProfileRequest extends $pb.GeneratedMessage {
@@ -202,7 +202,7 @@ class GetPublicProfileRequest extends $pb.GeneratedMessage {
 
 class GetPublicProfileResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetPublicProfileResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$8.UserPublicProfile>(1, 'profile', subBuilder: $8.UserPublicProfile.create)
+    ..aOM<$9.UserPublicProfile>(1, 'profile', subBuilder: $9.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -222,15 +222,15 @@ class GetPublicProfileResponse extends $pb.GeneratedMessage {
   static GetPublicProfileResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $8.UserPublicProfile get profile => $_getN(0);
+  $9.UserPublicProfile get profile => $_getN(0);
   @$pb.TagNumber(1)
-  set profile($8.UserPublicProfile v) { setField(1, v); }
+  set profile($9.UserPublicProfile v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasProfile() => $_has(0);
   @$pb.TagNumber(1)
   void clearProfile() => clearField(1);
   @$pb.TagNumber(1)
-  $8.UserPublicProfile ensureProfile() => $_ensure(0);
+  $9.UserPublicProfile ensureProfile() => $_ensure(0);
 }
 
 class UpdatePublicProfileRequest extends $pb.GeneratedMessage {
@@ -268,7 +268,7 @@ class UpdatePublicProfileRequest extends $pb.GeneratedMessage {
 
 class UpdatePublicProfileResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UpdatePublicProfileResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$8.UserPublicProfile>(1, 'profile', subBuilder: $8.UserPublicProfile.create)
+    ..aOM<$9.UserPublicProfile>(1, 'profile', subBuilder: $9.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -288,22 +288,22 @@ class UpdatePublicProfileResponse extends $pb.GeneratedMessage {
   static UpdatePublicProfileResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $8.UserPublicProfile get profile => $_getN(0);
+  $9.UserPublicProfile get profile => $_getN(0);
   @$pb.TagNumber(1)
-  set profile($8.UserPublicProfile v) { setField(1, v); }
+  set profile($9.UserPublicProfile v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasProfile() => $_has(0);
   @$pb.TagNumber(1)
   void clearProfile() => clearField(1);
   @$pb.TagNumber(1)
-  $8.UserPublicProfile ensureProfile() => $_ensure(0);
+  $9.UserPublicProfile ensureProfile() => $_ensure(0);
 }
 
 class SearchUserRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchUserRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<$5.NullableString>(1, 'alias', subBuilder: $5.NullableString.create)
     ..aOM<$5.NullableInt64>(2, 'userId', subBuilder: $5.NullableInt64.create)
-    ..aOM<$9.Pagination>(3, 'pagination', subBuilder: $9.Pagination.create)
+    ..aOM<$10.Pagination>(3, 'pagination', subBuilder: $10.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -345,20 +345,20 @@ class SearchUserRequest extends $pb.GeneratedMessage {
   $5.NullableInt64 ensureUserId() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $9.Pagination get pagination => $_getN(2);
+  $10.Pagination get pagination => $_getN(2);
   @$pb.TagNumber(3)
-  set pagination($9.Pagination v) { setField(3, v); }
+  set pagination($10.Pagination v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasPagination() => $_has(2);
   @$pb.TagNumber(3)
   void clearPagination() => clearField(3);
   @$pb.TagNumber(3)
-  $9.Pagination ensurePagination() => $_ensure(2);
+  $10.Pagination ensurePagination() => $_ensure(2);
 }
 
 class SearchUserResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchUserResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$8.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $8.UserPublicProfile.create)
+    ..pc<$9.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $9.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -378,7 +378,7 @@ class SearchUserResponse extends $pb.GeneratedMessage {
   static SearchUserResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$8.UserPublicProfile> get userProfiles => $_getList(0);
+  $core.List<$9.UserPublicProfile> get userProfiles => $_getList(0);
 }
 
 class PrepareNewAvatarRequest extends $pb.GeneratedMessage {

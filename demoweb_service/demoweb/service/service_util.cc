@@ -16,6 +16,7 @@
  */
 
 #include <grpcpp/grpcpp.h>
+#include <optional>
 #include <string>
 
 #include "demoweb_service/demoweb/constant/context_key.h"
@@ -27,23 +28,31 @@
 
 namespace e8 {
 
-grpc::Status ExtractIdentityFromContext(grpc::ServerContext const &context, Identity *identity) {
+std::optional<Identity> ExtractIdentityFromContext(grpc::ServerContext const &context,
+                                                   grpc::Status *status) {
     auto context_it = context.client_metadata().find(kAuthorizationKey);
     if (context_it == context.client_metadata().end()) {
-        return grpc::Status(grpc::StatusCode::UNAUTHENTICATED, "Expect a signed identity.");
+        if (status != nullptr) {
+            *status = grpc::Status(grpc::StatusCode::UNAUTHENTICATED, "Expect a signed identity.");
+        }
+        return std::nullopt;
     }
 
     std::optional<Identity> identity_optional =
         ValidateSignedIdentity(std::string(context_it->second.data(), context_it->second.size()),
                                CurrentEnvironment()->KeyGen());
     if (!identity_optional.has_value()) {
-        return grpc::Status(grpc::StatusCode::UNAUTHENTICATED,
-                            "Failed to decode the signed identity.");
+        if (status != nullptr) {
+            *status = grpc::Status(grpc::StatusCode::UNAUTHENTICATED,
+                                   "Failed to decode the signed identity.");
+        }
+        return std::nullopt;
     }
 
-    *identity = identity_optional.value();
-
-    return grpc::Status::OK;
+    if (status != nullptr) {
+        *status = grpc::Status::OK;
+    }
+    return identity_optional;
 }
 
 grpc::Status ValidatePagination(Pagination const &pagination, unsigned result_per_page_limit) {

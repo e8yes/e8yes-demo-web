@@ -51,6 +51,11 @@ class SqlQueryBuilder {
     template <typename Type> class Placeholder {
       public:
         std::vector<ConnectionInterface::QueryParams::SlotId> param_slots;
+
+        /**
+         * @brief Clear reset the placeholder.
+         */
+        void Clear() { param_slots.clear(); }
     };
 
     /**

@@ -13,12 +13,15 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'nullable_primitives.pb.dart' as $5;
 import 'file.pb.dart' as $6;
 
+import 'user_relation.pbenum.dart' as $7;
+
 class UserPublicProfile extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UserPublicProfile', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'userId')
     ..aOM<$5.NullableString>(2, 'alias', subBuilder: $5.NullableString.create)
     ..aOM<$6.FileTokenAccess>(3, 'avatarReadonlyAccess', subBuilder: $6.FileTokenAccess.create)
     ..aOM<$6.FileTokenAccess>(4, 'avatarPreviewReadonlyAccess', subBuilder: $6.FileTokenAccess.create)
+    ..pc<$7.UserRelation>(5, 'relations', $pb.PbFieldType.PE, valueOf: $7.UserRelation.valueOf, enumValues: $7.UserRelation.values)
     ..hasRequiredFields = false
   ;
 
@@ -78,5 +81,8 @@ class UserPublicProfile extends $pb.GeneratedMessage {
   void clearAvatarPreviewReadonlyAccess() => clearField(4);
   @$pb.TagNumber(4)
   $6.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $core.List<$7.UserRelation> get relations => $_getList(4);
 }
 

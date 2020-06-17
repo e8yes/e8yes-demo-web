@@ -79,17 +79,19 @@ grpc::Status UserServiceImpl::Authorize(grpc::ServerContext * /*context*/,
 grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
                                                GetPublicProfileRequest const *request,
                                                GetPublicProfileResponse *response) {
+    std::optional<Identity> identity;
+
     UserId user_id;
     if (request->has_user_id()) {
         user_id = request->user_id().value();
     } else {
-        Identity identity;
-        grpc::Status status = ExtractIdentityFromContext(*context, &identity);
+        grpc::Status status;
+        identity = ExtractIdentityFromContext(*context, &status);
         if (!status.ok()) {
             return status;
         }
 
-        user_id = identity.user_id();
+        user_id = identity.value().user_id();
     }
 
     std::optional<UserEntity> user = RetrieveUser(user_id, CurrentEnvironment()->DemowebDatabase());
@@ -98,7 +100,18 @@ grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
                             "User ID=" + std::to_string(user_id) + " doesn't exist.");
     }
 
-    *response->mutable_profile() = BuildPublicProfile(user.value(), CurrentEnvironment()->KeyGen());
+    std::vector<UserPublicProfile> profiles;
+    if (identity.has_value()) {
+        profiles = BuildPublicProfiles(identity.value().user_id(), {user.value()},
+                                       CurrentEnvironment()->KeyGen(),
+                                       CurrentEnvironment()->DemowebDatabase());
+    } else {
+        profiles = BuildPublicProfiles(std::optional<UserId>(), {user.value()},
+                                       CurrentEnvironment()->KeyGen(),
+                                       CurrentEnvironment()->DemowebDatabase());
+    }
+    assert(profiles.size() == 1);
+    *response->mutable_profile() = profiles[0];
 
     return grpc::Status::OK;
 }
@@ -106,12 +119,12 @@ grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
 grpc::Status UserServiceImpl::UpdatePublicProfile(grpc::ServerContext *context,
                                                   UpdatePublicProfileRequest const *request,
                                                   UpdatePublicProfileResponse *response) {
-    Identity identity;
-    grpc::Status status = ExtractIdentityFromContext(*context, &identity);
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
     if (!status.ok()) {
         return status;
     }
-    UserId user_id = identity.user_id();
+    UserId user_id = identity.value().user_id();
 
     std::optional<UserEntity> user = RetrieveUser(user_id, CurrentEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
@@ -123,13 +136,16 @@ grpc::Status UserServiceImpl::UpdatePublicProfile(grpc::ServerContext *context,
         request->has_alias() ? std::optional<std::string>(request->alias().value()) : std::nullopt;
     UpdateProfile(alias, &user.value(), CurrentEnvironment()->DemowebDatabase());
 
-    *response->mutable_profile() = BuildPublicProfile(user.value(), CurrentEnvironment()->KeyGen());
+    std::vector<UserPublicProfile> profiles =
+        BuildPublicProfiles(user_id, {user.value()}, CurrentEnvironment()->KeyGen(),
+                            CurrentEnvironment()->DemowebDatabase());
+    assert(profiles.size() == 1);
+    *response->mutable_profile() = profiles[0];
 
     return grpc::Status::OK;
 }
 
-grpc::Status UserServiceImpl::Search(grpc::ServerContext * /*context*/,
-                                     SearchUserRequest const *request,
+grpc::Status UserServiceImpl::Search(grpc::ServerContext *context, SearchUserRequest const *request,
                                      SearchUserResponse *response) {
     grpc::Status status = ValidatePagination(request->pagination(), kResultPerPageLimit);
     if (!status.ok()) {
@@ -141,29 +157,37 @@ grpc::Status UserServiceImpl::Search(grpc::ServerContext * /*context*/,
     std::optional<std::string> alias_prefix =
         request->has_alias() ? std::optional<std::string>(request->alias().value()) : std::nullopt;
 
-    std::vector<UserEntity> results =
+    std::vector<UserEntity> user_entities =
         SearchUser(user_id_prefix, alias_prefix, request->pagination(),
                    CurrentEnvironment()->DemowebDatabase());
 
-    response->mutable_user_profiles()->Reserve(results.size());
-    for (auto const &user : results) {
-        *response->add_user_profiles() = BuildPublicProfile(user, CurrentEnvironment()->KeyGen());
+    std::vector<UserPublicProfile> profiles;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, nullptr);
+    if (identity.has_value()) {
+        profiles = BuildPublicProfiles(identity.value().user_id(), user_entities,
+                                       CurrentEnvironment()->KeyGen(),
+                                       CurrentEnvironment()->DemowebDatabase());
+    } else {
+        profiles = BuildPublicProfiles(std::optional<UserId>(), user_entities,
+                                       CurrentEnvironment()->KeyGen(),
+                                       CurrentEnvironment()->DemowebDatabase());
     }
 
+    *response->mutable_user_profiles() = {profiles.begin(), profiles.end()};
     return grpc::Status::OK;
 }
 
 grpc::Status UserServiceImpl::PrepareNewAvatar(grpc::ServerContext *context,
                                                PrepareNewAvatarRequest const *request,
                                                PrepareNewAvatarResponse *response) {
-    Identity identity;
-    grpc::Status status = ExtractIdentityFromContext(*context, &identity);
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
     if (!status.ok()) {
         return status;
     }
 
     std::optional<UserEntity> user =
-        RetrieveUser(identity.user_id(), CurrentEnvironment()->DemowebDatabase());
+        RetrieveUser(identity.value().user_id(), CurrentEnvironment()->DemowebDatabase());
     assert(user.has_value());
 
     if (!AcceptableProfileAvatarFileFormat(request->file_format())) {

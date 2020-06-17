@@ -34,8 +34,7 @@ struct TableNames {
     static std::string EmailSet() { return "email_set"; }
     static std::string UserGroup() { return "user_group"; }
     static std::string UserGroupHasFile() { return "user_group_has_file"; }
-    static std::string FriendInvitation() { return "friend_invitation"; }
-    static std::string Friend() { return "friend"; }
+    static std::string ContactRelation() { return "contact_relation"; }
     static std::string MessageChannel() { return "messaging_channel"; }
     static std::string MessagingChannelHasUser() { return "messaging_channel_has_user"; }
     static std::string Message() { return "message"; }

@@ -1,27 +1,73 @@
 <h1>Contacts</h1>
 
 <div>
-    <input #searchBox
-           (input)="onKeyDownSearchContact(searchBox.value)"
-           class="searchbar"
-           placeholder="Search contact.." />
+  <input #searchBox (input)="onKeyDownSearchContact(searchBox.value)"
+    class="searchbar" placeholder="Search contact.." />
 </div>
 
 <div class="contact-list ">
-    My contacts
+  My contacts
 </div>
 
 <ul class="list-group stack-search-list">
-    <li *ngFor="let profile of profiles"
-        [class.selected]="profile === selectedUser"
-        (click)="onSelectSearchedContact(profile)"
-        class="list-group-item">
-      <span>{{profile.userId}}</span>
-      <span *ngIf="profile.hasAlias()">
-          ({{profile.alias.value}})
-      </span>
-      <span *ngIf="!profile.hasAlias()">
-        (no alias)
+  <li *ngFor="let profile of profiles"
+    [class.selected]="profile === selectedUser"
+    (click)="onSelectSearchedContact(profile)" class="list-group-item">
+    <span>{{profile.userId}}</span>
+    <span *ngIf="profile.hasAlias()">
+      ({{profile.alias.value}})
     </span>
-    </li>
+    <span *ngIf="!profile.hasAlias()">
+      (no alias)
+    </span>
+
+    <span *ngIf="invitationPending(profile.relations)"
+      class="user-relation-status">
+      <svg class="bi bi-forward" width="1em" height="1em" viewBox="0 0 16 16"
+        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+          d="M9.502 5.513a.144.144 0 0 0-.202.134V6.65a.5.5 0 0 1-.5.5H2.5v2.9h6.3a.5.5 0 0 1 .5.5v1.003c0 .108.11.176.202.134l3.984-2.933a.51.51 0 0 1 .042-.028.147.147 0 0 0 0-.252.51.51 0 0 1-.042-.028L9.502 5.513zM8.3 5.647a1.144 1.144 0 0 1 1.767-.96l3.994 2.94a1.147 1.147 0 0 1 0 1.946l-3.994 2.94a1.144 1.144 0 0 1-1.767-.96v-.503H2a.5.5 0 0 1-.5-.5v-3.9a.5.5 0 0 1 .5-.5h6.3v-.503z" />
+      </svg>
+    </span>
+
+    <span *ngIf="invitationReceived(profile.relations)"
+      class="user-relation-status">
+      <svg class="bi bi-envelope" width="1em" height="1em" viewBox="0 0 16 16"
+        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+          d="M14 3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z" />
+        <path
+          d="M.05 3.555C.017 3.698 0 3.847 0 4v.697l5.803 3.546L0 11.801V12c0 .306.069.596.192.856l6.57-4.027L8 9.586l1.239-.757 6.57 4.027c.122-.26.191-.55.191-.856v-.2l-5.803-3.557L16 4.697V4c0-.153-.017-.302-.05-.445L8 8.414.05 3.555z" />
+      </svg>
+    </span>
+
+    <span *ngIf="contact(profile.relations)" class="user-relation-status">
+      <svg class="bi bi-people" width="1em" height="1em" viewBox="0 0 16 16"
+        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+          d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.995-.944v-.002.002zM7.022 13h7.956a.274.274 0 0 0 .014-.002l.008-.002c-.002-.264-.167-1.03-.76-1.72C13.688 10.629 12.718 10 11 10c-1.717 0-2.687.63-3.24 1.276-.593.69-.759 1.457-.76 1.72a1.05 1.05 0 0 0 .022.004zm7.973.056v-.002.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10c-1.668.02-2.615.64-3.16 1.276C1.163 11.97 1 12.739 1 13h3c0-1.045.323-2.086.92-3zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+      </svg>
+    </span>
+
+    <span *ngIf="blocked(profile.relations)" class="user-relation-status">
+      <svg class="bi bi-dash-circle" width="1em" height="1em"
+        viewBox="0 0 16 16" fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+          d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+        <path fill-rule="evenodd"
+          d="M3.5 8a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.5-.5z" />
+      </svg>
+    </span>
+
+    <span *ngIf="blocking(profile.relations)" class="user-relation-status">
+      <svg class="bi bi-bootstrap" width="1em" height="1em" viewBox="0 0 16 16"
+        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+          d="M12 1H4a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3zM4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4z" />
+        <path fill-rule="evenodd"
+          d="M8.537 12H5.062V3.545h3.399c1.587 0 2.543.809 2.543 2.11 0 .884-.65 1.675-1.483 1.816v.1c1.143.117 1.904.931 1.904 2.033 0 1.488-1.084 2.396-2.888 2.396zM6.375 4.658v2.467h1.558c1.16 0 1.764-.428 1.764-1.23 0-.78-.569-1.237-1.541-1.237H6.375zm1.898 6.229H6.375V8.162h1.822c1.236 0 1.887.463 1.887 1.348 0 .896-.627 1.377-1.811 1.377z" />
+      </svg>
+    </span>
+  </li>
 </ul>

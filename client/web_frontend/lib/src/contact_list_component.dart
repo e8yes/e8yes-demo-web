@@ -8,6 +8,7 @@ import 'package:demoweb_app/src/proto_dart/pagination.pbserver.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
+import 'package:demoweb_app/src/proto_dart/user_relation.pb.dart';
 import 'package:demoweb_app/src/route_paths.dart';
 import 'package:demoweb_app/src/sync_search_result.dart';
 import 'package:demoweb_app/src/user_service_interface.dart';
@@ -57,5 +58,29 @@ class ContactListComponent {
 
   void onSelectSearchedContact(UserPublicProfile userProfile) {
     _router.navigate(_accountDetailsUrl(userProfile.userId));
+  }
+
+  bool unrelated(List<UserRelation> relations) {
+    return relations.isEmpty;
+  }
+
+  bool invitationPending(List<UserRelation> relations) {
+    return relations.contains(UserRelation.URL_INVITATION_SENT);
+  }
+
+  bool invitationReceived(List<UserRelation> relations) {
+    return relations.contains(UserRelation.URL_INVITATION_RECEIVED);
+  }
+
+  bool contact(List<UserRelation> relations) {
+    return relations.contains(UserRelation.URL_CONTACT);
+  }
+
+  bool blocked(List<UserRelation> relations) {
+    return relations.contains(UserRelation.URL_BLOCKED);
+  }
+
+  bool blocking(List<UserRelation> relations) {
+    return relations.contains(UserRelation.URL_BLOCKING);
   }
 }

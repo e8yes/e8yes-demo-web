@@ -14,6 +14,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 HEADERS += \
+    common_entity/contact_relation_entity.h \
     common_entity/file_metadata_entity.h \
     common_entity/user_entity.h \
     common_entity/user_group_entity.h \
@@ -35,6 +36,8 @@ HEADERS += \
     constant/demoweb_database.h \
     environment/host_id.h \
     environment/prod_environment_context.h \
+    module_socialnetwork/contact_invitation.h \
+    module_socialnetwork/retrieve_contact.h \
     proto_cc/encryption_source.grpc.pb.h \
     proto_cc/encryption_source.pb.h \
     proto_cc/file.grpc.pb.h \
@@ -59,10 +62,14 @@ HEADERS += \
     proto_cc/service_user.pb.h \
     proto_cc/user_profile.grpc.pb.h \
     proto_cc/user_profile.pb.h \
+    proto_cc/user_relation.grpc.pb.h \
+    proto_cc/user_relation.pb.h \
     service/file_service.h \
     service/service_util.h \
+    service/social_network_service.h \
     service/user_service.h
 SOURCES += \
+    common_entity/contact_relation_entity.cc \
     common_entity/file_metadata_entity.cc \
     common_entity/user_entity.cc \
     common_entity/user_group_entity.cc \
@@ -79,6 +86,8 @@ SOURCES += \
     module_file/file_io.cc \
     module_file/file_metadata.cc \
     module_rbac/file_access_validator.cc \
+    module_socialnetwork/contact_invitation.cc \
+    module_socialnetwork/retrieve_contact.cc \
     proto_cc/encryption_source.grpc.pb.cc \
     proto_cc/encryption_source.pb.cc \
     proto_cc/file.grpc.pb.cc \
@@ -103,8 +112,11 @@ SOURCES += \
     proto_cc/service_user.pb.cc \
     proto_cc/user_profile.grpc.pb.cc \
     proto_cc/user_profile.pb.cc \
+    proto_cc/user_relation.grpc.pb.cc \
+    proto_cc/user_relation.pb.cc \
     service/file_service.cc \
     service/service_util.cc \
+    service/social_network_service.cc \
     service/user_service.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
