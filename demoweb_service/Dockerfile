@@ -5,7 +5,7 @@ WORKDIR /home
 
 EXPOSE 50051
 
-ENV LD_LIBRARY_PATH="./bin"
+ENV LD_LIBRARY_PATH="./bin/"
 
 CMD ["./bin/demowebmain", \
      "--port=50051", \
