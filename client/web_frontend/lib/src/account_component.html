@@ -6,5 +6,22 @@
 
 <div *ngIf="invitationPendingMode()">
   <label class="col-form-label">Invitation has already been sent</label>
-  <button (click)="onClickAddContact" class="btn">Re-send Invitation</button>
+  <div>
+    <button (click)="onClickAddContact" class="btn">Re-send Invitation</button>
+  </div>
+</div>
+
+<div *ngIf="invitaitonRecievedMode()">
+  <label class="col-form-label">This person wants to be one of your
+    contacts.</label>
+  <div>
+    <button (click)="onClickConfirmContact" class="btn">Confirm</button>
+    <button (click)="onClickRejectContact" class="btn">Reject</button>
+  </div>
+</div>
+
+<div *ngIf="contactMode()">
+  <div>
+    <button (click)="onClickDeleteContact" class="btn">Remove from Contacts</button>
+  </div>
 </div>

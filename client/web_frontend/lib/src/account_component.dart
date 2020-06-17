@@ -51,6 +51,25 @@ class AccountComponent implements OnActivate {
     }
   }
 
+  void onClickAddContact() {
+    SendInvitationRequest req = SendInvitationRequest();
+    req.inviteeUserId = _accountUserId;
+    String viewerSignature = credentialStorage.loadSignature();
+    _social_network_service.sendInvitation(req, viewerSignature)
+    .then((SendInvitationResponse res) {
+      _fetchAccountProfile(_accountUserId);
+    });
+  }
+
+  void onClickConfirmContact() {
+  }
+
+  void onClickRejectContact() {
+  }
+
+  void onClickDeleteContact() {
+  }
+
   bool owner() {
     return _accountUserId == identityStorage.loadUserId();
   }
@@ -64,13 +83,13 @@ class AccountComponent implements OnActivate {
         profile.relations.contains(UserRelation.URL_INVITATION_SENT);
   }
 
-  void onClickAddContact() {
-    SendInvitationRequest req = SendInvitationRequest();
-    req.inviteeUserId = _accountUserId;
-    String viewerSignature = credentialStorage.loadSignature();
-    _social_network_service.sendInvitation(req, viewerSignature)
-    .then((SendInvitationResponse res) {
-      _fetchAccountProfile(_accountUserId);
-    });
+  bool invitaitonRecievedMode() {
+    return !owner() &&
+        profile.relations.contains(UserRelation.URL_INVITATION_RECEIVED);
+  }
+
+  bool contactMode() {
+    return !owner() &&
+        profile.relations.contains(UserRelation.URL_CONTACT);
   }
 }
