@@ -1,9 +1,7 @@
+import 'package:demoweb_app/src/connection_manager_interface.dart';
 import 'package:grpc/src/client/web_channel.dart';
 
-import "connection_manager_interface.dart";
-
 class ConnectionPool implements ConnectionManagerInterface {
-
   static const int _POOL_SIZE = 10;
 
   final Uri _uri;

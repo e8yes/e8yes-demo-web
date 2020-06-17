@@ -6,6 +6,8 @@ import 'package:demoweb_app/src/authorization_service_interface.dart';
 import 'package:demoweb_app/src/navigation_component.dart';
 import 'package:demoweb_app/src/route_paths.dart';
 import 'package:demoweb_app/src/routes.dart';
+import 'package:demoweb_app/src/socialnetwork_service.dart';
+import 'package:demoweb_app/src/socialnetwork_service_interface.dart';
 import 'package:demoweb_app/src/user_service.dart';
 import 'package:demoweb_app/src/user_service_interface.dart';
 
@@ -16,12 +18,14 @@ import 'package:demoweb_app/src/user_service_interface.dart';
   styleUrls: ["app_component.css"],
   providers: [
     ClassProvider(UserServiceInterface, useClass: UserServiceImpl),
-    ClassProvider(AuthorizationServiceInterface, useClass: AuthorizationServiceImpl),
+    ClassProvider(AuthorizationServiceInterface,
+        useClass: AuthorizationServiceImpl),
+    ClassProvider(SocialNetworkServiceInterface,
+        useClass: SocialNetworkServiceImpl),
   ],
   exports: [RoutePaths, Routes],
 )
 class AppComponent {
-
   final UserServiceInterface _user_service;
   final AuthorizationServiceInterface _auth_service;
 
