@@ -79,25 +79,13 @@ grpc::Status UserServiceImpl::Authorize(grpc::ServerContext * /*context*/,
 grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
                                                GetPublicProfileRequest const *request,
                                                GetPublicProfileResponse *response) {
-    std::optional<Identity> identity;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, nullptr);
 
-    UserId user_id;
-    if (request->has_user_id()) {
-        user_id = request->user_id().value();
-    } else {
-        grpc::Status status;
-        identity = ExtractIdentityFromContext(*context, &status);
-        if (!status.ok()) {
-            return status;
-        }
-
-        user_id = identity.value().user_id();
-    }
-
-    std::optional<UserEntity> user = RetrieveUser(user_id, CurrentEnvironment()->DemowebDatabase());
+    std::optional<UserEntity> user =
+        RetrieveUser(request->user_id(), CurrentEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
         return grpc::Status(grpc::StatusCode::NOT_FOUND,
-                            "User ID=" + std::to_string(user_id) + " doesn't exist.");
+                            "User ID=" + std::to_string(request->user_id()) + " doesn't exist.");
     }
 
     std::vector<UserPublicProfile> profiles;

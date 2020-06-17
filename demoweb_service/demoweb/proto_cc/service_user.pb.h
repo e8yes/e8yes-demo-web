@@ -694,23 +694,17 @@ class GetPublicProfileRequest : public ::google::protobuf::Message /* @@protoc_i
 
   // accessors -------------------------------------------------------
 
-  // .e8.NullableInt64 user_id = 1;
-  bool has_user_id() const;
+  // int64 user_id = 1;
   void clear_user_id();
   static const int kUserIdFieldNumber = 1;
-  private:
-  const ::e8::NullableInt64& _internal_user_id() const;
-  public:
-  const ::e8::NullableInt64& user_id() const;
-  ::e8::NullableInt64* release_user_id();
-  ::e8::NullableInt64* mutable_user_id();
-  void set_allocated_user_id(::e8::NullableInt64* user_id);
+  ::google::protobuf::int64 user_id() const;
+  void set_user_id(::google::protobuf::int64 value);
 
   // @@protoc_insertion_point(class_scope:e8.GetPublicProfileRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::e8::NullableInt64* user_id_;
+  ::google::protobuf::int64 user_id_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fuser_2eproto::TableStruct;
 };
@@ -1720,52 +1714,18 @@ inline void AuthorizationResponse::set_allocated_signed_identity(::e8::IdentityS
 
 // GetPublicProfileRequest
 
-// .e8.NullableInt64 user_id = 1;
-inline bool GetPublicProfileRequest::has_user_id() const {
-  return this != internal_default_instance() && user_id_ != NULL;
+// int64 user_id = 1;
+inline void GetPublicProfileRequest::clear_user_id() {
+  user_id_ = GOOGLE_LONGLONG(0);
 }
-inline const ::e8::NullableInt64& GetPublicProfileRequest::_internal_user_id() const {
-  return *user_id_;
-}
-inline const ::e8::NullableInt64& GetPublicProfileRequest::user_id() const {
-  const ::e8::NullableInt64* p = user_id_;
+inline ::google::protobuf::int64 GetPublicProfileRequest::user_id() const {
   // @@protoc_insertion_point(field_get:e8.GetPublicProfileRequest.user_id)
-  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableInt64*>(
-      &::e8::_NullableInt64_default_instance_);
-}
-inline ::e8::NullableInt64* GetPublicProfileRequest::release_user_id() {
-  // @@protoc_insertion_point(field_release:e8.GetPublicProfileRequest.user_id)
-  
-  ::e8::NullableInt64* temp = user_id_;
-  user_id_ = NULL;
-  return temp;
-}
-inline ::e8::NullableInt64* GetPublicProfileRequest::mutable_user_id() {
-  
-  if (user_id_ == NULL) {
-    auto* p = CreateMaybeMessage<::e8::NullableInt64>(GetArenaNoVirtual());
-    user_id_ = p;
-  }
-  // @@protoc_insertion_point(field_mutable:e8.GetPublicProfileRequest.user_id)
   return user_id_;
 }
-inline void GetPublicProfileRequest::set_allocated_user_id(::e8::NullableInt64* user_id) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete reinterpret_cast< ::google::protobuf::MessageLite*>(user_id_);
-  }
-  if (user_id) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      user_id = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, user_id, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  user_id_ = user_id;
-  // @@protoc_insertion_point(field_set_allocated:e8.GetPublicProfileRequest.user_id)
+inline void GetPublicProfileRequest::set_user_id(::google::protobuf::int64 value) {
+  
+  user_id_ = value;
+  // @@protoc_insertion_point(field_set:e8.GetPublicProfileRequest.user_id)
 }
 
 // -------------------------------------------------------------------

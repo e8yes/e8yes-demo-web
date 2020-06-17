@@ -47,6 +47,8 @@ grpc::Status SocialNetworkServiceImpl::GetUserRelations(grpc::ServerContext *con
     assert(relations.size() == 1);
 
     UserRelations result = relations.begin()->second;
+    response->set_source_user_id(identity.value().user_id());
+    response->set_target_user_id(request->target_user_id());
     *response->mutable_user_relation() = {result.begin(), result.end()};
 
     return grpc::Status::OK;

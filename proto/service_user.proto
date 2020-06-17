@@ -51,9 +51,8 @@ message AuthorizationResponse {
 
 
 message GetPublicProfileRequest {
-    // Optional. If this field isn't provided, it will fetch the public profile
-    // of the logged-in user.
-    NullableInt64 user_id = 1;
+    // ID of the user to be retrieved public profile from.
+    int64 user_id = 1;
 }
 
 message GetPublicProfileResponse {
