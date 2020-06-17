@@ -5,6 +5,10 @@ from script.refresh_host_keys import RefreshHostKeys
 from script.run_bash_script import RunSingleCommandInNode
 from script.host_ip import GetHostIp
 
+def PushPostgresSchema(postgres_node: NodeConfig):
+  RunSingleCommandInNode(node=deployment_node, 
+                         command="cd postgres && ./push_schema.sh")
+
 def BuildImages(git_repo: str, deployment_node: NodeConfig):
   RunSingleCommandInNode(node=deployment_node, 
                          command="git clone {0} demoweb_src"\
@@ -54,6 +58,10 @@ if __name__ == "__main__":
 
   print("Building from source " + git_repo + " in " + str(deployment_node))
   BuildImages(git_repo=git_repo, deployment_node=deployment_node)
+
+  print("Pushing postgres schemas...")
+  postgres_node = node_configs[cluster_config.postgres_citus_master]
+  PushPostgresSchema(postgres_node)
 
   print("Prepare nodes for docker registry")
   for node_config in node_configs.values():

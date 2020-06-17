@@ -28,3 +28,10 @@ RUN mkdir -p build
 WORKDIR /home/build
 RUN qmake ../demoweb_src/e8.pro
 RUN make -j `nproc --all`
+
+# Copy out the binaries.
+WORKDIR /home
+RUN mkdir -p bin
+RUN find build -name *.so -exec cp -f {} ./bin \;
+RUN find build -name *.1 -exec cp -f {} ./bin \;
+RUN find build -name *main -exec cp -f {} ./bin \;

@@ -1,9 +1,8 @@
 #!/bin/bash
 
-POSTGRESQL_VERSION=12
-
-# Kill existing connections and ensures that the database server is started.
-sudo pg_ctlcluster $POSTGRESQL_VERSION main restart
+# Ensure that the postgres db engine is started.
+sudo pg_ctlcluster 11 main start
+sudo pg_ctlcluster 12 main start
 
 set +e # The database might have already existed, but that's fine.
 echo "CREATE DATABASE demoweb WITH TEMPLATE = template0 ENCODING = 'UTF8';" | sudo -u postgres psql postgres

@@ -69,6 +69,10 @@ if __name__ == "__main__":
     print("Installing packages for node", node_name, node_config)
     InstallPackagesForNode(node_config=node_config, 
                            script_file_path="script/install_pkgs_for_node.sh")
+  
+  postgres_node = node_configs[cluster_config.postgres_citus_master]
+  InstallPackagesForNode(node_config=postgres_node, 
+                         script_file_path="script/install_pkgs_for_db_node.sh")
 
   kube_master_node = node_configs[cluster_config.kubernetes_master]
   print("Setting up a kubernetes master node at", kube_master_node)
