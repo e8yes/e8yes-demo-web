@@ -22,6 +22,7 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
+#include "demoweb_service/demoweb/module_socialnetwork/contact_invitation.h"
 #include "demoweb_service/demoweb/module_socialnetwork/retrieve_contact.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "demoweb_service/demoweb/proto_cc/service_socialnetwork.grpc.pb.h"
@@ -47,6 +48,21 @@ grpc::Status SocialNetworkServiceImpl::GetUserRelations(grpc::ServerContext *con
 
     UserRelations result = relations.begin()->second;
     *response->mutable_user_relation() = {result.begin(), result.end()};
+
+    return grpc::Status::OK;
+}
+
+grpc::Status SocialNetworkServiceImpl::SendInvitation(grpc::ServerContext *context,
+                                                      SendInvitationRequest const *request,
+                                                      SendInvitationResponse * /*response*/) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!status.ok()) {
+        return status;
+    }
+
+    ::e8::SendInvitation(identity.value().user_id(), request->invitee_user_id(),
+                         /*send_message_anyway=*/true, CurrentEnvironment()->DemowebDatabase());
 
     return grpc::Status::OK;
 }

@@ -29,7 +29,7 @@
 
 namespace e8 {
 
-bool SendInvitation(UserId src_user_id, UserId dst_user_id, bool /*send_message_anyway*/,
+bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_anyway*/,
                     ConnectionReservoirInterface *conns) {
     bool status = true;
 
@@ -37,8 +37,8 @@ bool SendInvitation(UserId src_user_id, UserId dst_user_id, bool /*send_message_
     std::time(&timestamp);
 
     ContactRelationEntity forward_relation;
-    *forward_relation.src_user_id.value_ptr() = src_user_id;
-    *forward_relation.dst_user_id.value_ptr() = dst_user_id;
+    *forward_relation.src_user_id.value_ptr() = inviter_id;
+    *forward_relation.dst_user_id.value_ptr() = invitee_id;
     *forward_relation.relation.value_ptr() = URL_INVITATION_SENT;
     *forward_relation.created_at.value_ptr() = timestamp;
 
@@ -50,8 +50,8 @@ bool SendInvitation(UserId src_user_id, UserId dst_user_id, bool /*send_message_
     assert(updated_rows == 1);
 
     ContactRelationEntity backward_relation;
-    *backward_relation.src_user_id.value_ptr() = dst_user_id;
-    *backward_relation.dst_user_id.value_ptr() = src_user_id;
+    *backward_relation.src_user_id.value_ptr() = invitee_id;
+    *backward_relation.dst_user_id.value_ptr() = inviter_id;
     *backward_relation.relation.value_ptr() = URL_INVITATION_RECEIVED;
     *backward_relation.created_at.value_ptr() = timestamp;
     Update(backward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);

@@ -26,12 +26,13 @@ namespace e8 {
 /**
  * @brief SendInvitation Update the invitation request and recipient list and send out an invitation
  * message. TODO: need to send out a message to the recipient.
+ *
  * @param send_message_anyway Send message even if a message has already been sent before if this
  * parameter is set to true.
  * @return true if it an invitation has not been sent before or it hasn't been accepted, otherwise,
  * false.
  */
-bool SendInvitation(UserId src_user_id, UserId dst_user_id, bool send_message_anyway,
+bool SendInvitation(UserId inviter_user_id, UserId invitee_user_id, bool send_message_anyway,
                     ConnectionReservoirInterface *conns);
 
 } // namespace e8
