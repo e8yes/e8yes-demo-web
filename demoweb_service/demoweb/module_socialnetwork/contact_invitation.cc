@@ -15,7 +15,6 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cassert>
 #include <cstdint>
 #include <ctime>
 
@@ -47,7 +46,6 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_an
     if (updated_rows == 0) {
         status = false;
     }
-    assert(updated_rows == 1);
 
     ContactRelationEntity backward_relation;
     *backward_relation.src_user_id.value_ptr() = invitee_id;
