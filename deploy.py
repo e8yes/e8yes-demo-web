@@ -6,8 +6,24 @@ from script.run_bash_script import RunSingleCommandInNode
 from script.host_ip import GetHostIp
 
 def PushPostgresSchema(postgres_node: NodeConfig):
-  RunSingleCommandInNode(node=deployment_node, 
-                         command="cd postgres && ./push_schema.sh")
+  RunSingleCommandInNode(node=postgres_node, 
+                         command="sudo pg_ctlcluster 11 main start")
+  RunSingleCommandInNode(
+    node=postgres_node,
+    command="echo \"CREATE DATABASE demoweb WITH TEMPLATE = template0 ENCODING = 'UTF8';\" | sudo -u postgres psql postgres")
+  RunSingleCommandInNode(
+    node=postgres_node,
+    command="echo \"ALTER DATABASE demoweb OWNER TO postgres;\" | sudo -u postgres psql demoweb")
+  RunSingleCommandInNode(
+    node=postgres_node,
+    command="echo \"ALTER USER postgres WITH PASSWORD 'password';\" | sudo -u postgres psql demoweb")
+  
+  with open("./postgres/schema.pgsql", "r") as schema_file:
+    schema_file_data = schema_file.read()
+    RunSingleCommandInNode(
+      node=postgres_node,
+      command="echo \"{0}\" | sudo -u postgres psql demoweb"
+        .format(schema_file_data))
 
 def BuildImages(git_repo: str, deployment_node: NodeConfig):
   RunSingleCommandInNode(node=deployment_node, 
