@@ -3,7 +3,9 @@ FROM demoweb_dev_env:latest
 # Run the service.
 WORKDIR /home
 
-EXPOSE 50051 
+EXPOSE 50051
+
+ENV LD_LIBRARY_PATH="./bin/"
 
 CMD ["./bin/demowebmain", \
      "--port=50051", \
