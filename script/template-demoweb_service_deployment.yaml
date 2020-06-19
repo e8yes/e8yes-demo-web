@@ -7,7 +7,7 @@ spec:
   ports:
     - port: 50051 
       targetPort: 50051
-      nodePort: 50061
+      nodePort: 30031
   selector:
     app: demoweb-service-app
 ---
