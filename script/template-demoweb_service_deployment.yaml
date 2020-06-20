@@ -1,3 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: demoweb-service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: demoweb-service
+          servicePort: 80
+---
 apiVersion: v1
 kind: Service 
 metadata:
@@ -5,9 +21,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 50051 
-      targetPort: 50051
-      nodePort: 30031
+    - port: 80
+      targetPort: 80
   selector:
     app: demoweb-service-app
 ---
@@ -27,6 +42,7 @@ spec:
     spec:
       containers:
       - name: demoweb-service-container
-        image: DEMOWEB_SERVICE_IMAGE
+        # image: DEMOWEB_SERVICE_IMAGE
+        image: nginx:1.14.2
         ports:
-        - containerPort: 50051
+        - containerPort: 80
