@@ -2,28 +2,16 @@ from script.parse_node_config import NodeConfig
 from script.parse_node_config import ClusterConfig
 from script.parse_node_config import ReadNodeConfig
 from script.refresh_host_keys import RefreshHostKeys
+from script.run_bash_script import UploadScriptToNode
+from script.run_bash_script import RunScriptInNode
 from script.run_bash_script import RunSingleCommandInNode
 from script.host_ip import GetHostIp
 
 def PushPostgresSchema(postgres_node: NodeConfig):
-  RunSingleCommandInNode(node=postgres_node, 
-                         command="sudo pg_ctlcluster 11 main start")
-  RunSingleCommandInNode(
-    node=postgres_node,
-    command="echo \"CREATE DATABASE demoweb WITH TEMPLATE = template0 ENCODING = 'UTF8';\" | sudo -u postgres psql postgres")
-  RunSingleCommandInNode(
-    node=postgres_node,
-    command="echo \"ALTER DATABASE demoweb OWNER TO postgres;\" | sudo -u postgres psql demoweb")
-  RunSingleCommandInNode(
-    node=postgres_node,
-    command="echo \"ALTER USER postgres WITH PASSWORD 'password';\" | sudo -u postgres psql demoweb")
-  
-  with open("./postgres/schema.pgsql", "r") as schema_file:
-    schema_file_data = schema_file.read()
-    RunSingleCommandInNode(
-      node=postgres_node,
-      command="echo \"{0}\" | sudo -u postgres psql demoweb"
-        .format(schema_file_data))
+  UploadScriptToNode(node=postgres_node, 
+                     script_file_path="./postgres/schema.pgsql")
+  RunScriptInNode(node=postgres_node,
+                  script_file_path="./postgres/push_schema.sh")
 
 def BuildImages(git_repo: str, deployment_node: NodeConfig):
   RunSingleCommandInNode(node=deployment_node, 
@@ -69,15 +57,15 @@ if __name__ == "__main__":
   print("Refreshing host keys...")
   RefreshHostKeys(node_configs.values())
 
+  print("Pushing postgres schemas...")
+  postgres_node = node_configs[cluster_config.postgres_citus_master]
+  PushPostgresSchema(postgres_node)
+
   deployment_node = node_configs[cluster_config.deployment_master]
   git_repo = cluster_config.git_repo
 
   print("Building from source " + git_repo + " in " + str(deployment_node))
   BuildImages(git_repo=git_repo, deployment_node=deployment_node)
-
-  print("Pushing postgres schemas...")
-  postgres_node = node_configs[cluster_config.postgres_citus_master]
-  PushPostgresSchema(postgres_node)
 
   print("Prepare nodes for docker registry")
   for node_config in node_configs.values():
