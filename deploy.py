@@ -11,7 +11,7 @@ from script.code_repo import CODE_REPO_LOCATION
 
 
 def PushPostgresSchema(postgres_node: NodeConfig):
-  RunSingleCommandInNode(node=deployment_node, 
+  RunSingleCommandInNode(node=postgres_node, 
                          command="cd {0}/postgres && ./push_schema.sh"
                           .format(CODE_REPO_LOCATION))
 
@@ -54,7 +54,7 @@ if __name__ == "__main__":
   RefreshHostKeys(node_configs.values())
 
   print("Synchronizing code repository...")
-  SyncCodeRepoInOperationalNodes(cluster_config)
+  SyncCodeRepoInOperationalNodes(cluster_config, node_configs)
 
   print("Pushing postgres schemas...")
   postgres_node = node_configs[cluster_config.postgres_citus_master]
