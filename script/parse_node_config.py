@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict
 import json
 
 class NodeConfig:
@@ -33,7 +33,7 @@ class ClusterConfig:
                          ",git_repo=" + self.git_repo + \
                          "}"
 
-def ReadNodeConfig(config_file_path: str) -> List[NodeConfig]:
+def ReadNodeConfig(config_file_path: str) -> Dict[str, NodeConfig]:
   with open(config_file_path, "r") as config_file:
     content = config_file.read()
 

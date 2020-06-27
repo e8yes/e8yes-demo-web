@@ -27,7 +27,6 @@ spec:
     spec:
       containers:
       - name: demoweb-service-container
-        # image: DEMOWEB_SERVICE_IMAGE
-        image: nginx:1.14.2
+        image: {{demoweb_service_image}}
         ports:
         - containerPort: 80
