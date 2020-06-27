@@ -7,7 +7,6 @@ from script.run_bash_script import RunScriptInNode
 from script.run_bash_script import RunSingleCommandInNode
 from script.run_bash_script import ToSingleLineString
 from script.refresh_host_keys import RefreshHostKeys
-from script.host_ip import GetHostIp
 
 def InstallPackagesForNode(node_config: NodeConfig, script_file_path: str):
   RunScriptInNode(node=node_config, script_file_path=script_file_path)
@@ -45,9 +44,8 @@ def SetUpKubernetesWorkerNode(worker_node_config: NodeConfig,
   # Reset node and join it to the master node.
   RunSingleCommandInNode(node=worker_node_config, 
                          command="echo y | sudo kubeadm reset")
-  master_node_ip = GetHostIp(location=master_node_config.location)
   join_command="sudo kubeadm join {0}:6443 --token={1} --certificate-key={2} --discovery-token-unsafe-skip-ca-verification"\
-    .format(master_node_ip, token, certificate)
+    .format(master_node_config.location, token, certificate)
   RunSingleCommandInNode(node=worker_node_config, command=join_command)
 
 def SetUpKubernetesMasterNodeCni(master_node_config: NodeConfig):
@@ -96,4 +94,3 @@ if __name__ == "__main__":
   deployment_node = node_configs[cluster_config.deployment_master]
   print("Setting up docker image registry on ", deployment_node)
   SetUpDockerRegistry(deployment_node_config=deployment_node)
-

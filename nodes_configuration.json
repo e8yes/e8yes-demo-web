@@ -3,38 +3,44 @@
         {
             "name": "pi1",
             "user": "pi",
-            "location": "pi1.local",
-            "ssh_password": "raspberry"
+            "location": "192.168.1.201",
+            "ssh_password": "1111"
         },
         {
             "name": "pi2",
             "user": "pi",
-            "location": "pi2.local",
-            "ssh_password": "raspberry"
+            "location": "192.168.1.202",
+            "ssh_password": "1111"
         },
         {
             "name": "pi3",
             "user": "pi",
-            "location": "pi3.local",
-            "ssh_password": "raspberry"
+            "location": "192.168.1.203",
+            "ssh_password": "1111"
         },
         {
             "name": "pi4",
             "user": "pi",
-            "location": "pi4.local",
-            "ssh_password": "raspberry"
+            "location": "192.168.1.204",
+            "ssh_password": "1111"
         },
         {
             "name": "pi5",
             "user": "pi",
-            "location": "pi5.local",
-            "ssh_password": "raspberry"
+            "location": "192.168.1.205",
+            "ssh_password": "1111"
+        },
+        {
+            "name": "pi6",
+            "user": "pi",
+            "location": "192.168.1.206",
+            "ssh_password": "1111"
         }
     ],
     "cluster": {
-        "kubernetes_master": "pi1",
+        "kubernetes_master": "pi2",
         "postgres_citus_master": "pi3",
-        "deployment_master": "pi2"
+        "deployment_master": "pi6"
     },
     "git_repo": "https://github.com/e8yes/e8yes-demo-web.git"
 }

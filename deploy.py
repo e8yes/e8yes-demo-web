@@ -5,7 +5,6 @@ from script.refresh_host_keys import RefreshHostKeys
 from script.run_bash_script import UploadScriptToNode
 from script.run_bash_script import RunScriptInNode
 from script.run_bash_script import RunSingleCommandInNode
-from script.host_ip import GetHostIp
 from script.code_repo import SyncCodeRepoInOperationalNodes
 from script.code_repo import CODE_REPO_LOCATION
 
@@ -18,12 +17,11 @@ def PushPostgresSchema(postgres_node: NodeConfig):
 def BuildImages(git_repo: str, deployment_node: NodeConfig):
   RunSingleCommandInNode(node=deployment_node, 
                          command="cd {0}/script && ./build.sh {1}"\
-                          .format(CODE_REPO_LOCATION,
-                                  GetHostIp(deployment_node.location)))
+                          .format(CODE_REPO_LOCATION, deployment_node.location))
 
 def PrepareNodeForDockerRegistry(node: NodeConfig, deployment_node: NodeConfig):
   update_daemon_config_cmd = "echo '{{ \"insecure-registries\":[\"{0}:5000\"] }}' | sudo tee /etc/docker/daemon.json"\
-                           .format(GetHostIp(deployment_node.location))
+                           .format(deployment_node.location)
   RunSingleCommandInNode(node=node, command=update_daemon_config_cmd)
   RunSingleCommandInNode(node=node, command="sudo systemctl restart docker")
 
@@ -31,7 +29,7 @@ def PrepareNodeForDockerRegistry(node: NodeConfig, deployment_node: NodeConfig):
 def PushToDockerRegistry(deployment_node: NodeConfig):
   RunSingleCommandInNode(node=deployment_node, 
                          command="sudo docker push {0}:5000/demowebservice"\
-                           .format(GetHostIp(deployment_node.location)))
+                           .format(deployment_node.location))
 
 def DeployImages(kube_master_node: NodeConfig, deployment_node: NodeConfig):
   with open("./script/template-demoweb_service_deployment.yaml", "r") as demoweb_service_deployment_template:
@@ -39,7 +37,7 @@ def DeployImages(kube_master_node: NodeConfig, deployment_node: NodeConfig):
     # TODO: Refactor this to a more re-usable construct.
     deployment_config = template.replace(\
       "DEMOWEB_SERVICE_IMAGE", 
-      "{0}:5000/demowebservice".format(GetHostIp(deployment_node.location)))
+      "{0}:5000/demowebservice".format(deployment_node.location))
     write_config_file_cmd = "echo -e \"{0}\" > {1}/script/demoweb_service_deployment.yaml"\
       .format(deployment_config, CODE_REPO_LOCATION)
     RunSingleCommandInNode(node=kube_master_node, command=write_config_file_cmd)
