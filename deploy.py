@@ -49,7 +49,7 @@ def DeployImages(kube_master_node: NodeConfig,
 
 if __name__ == "__main__":
   node_configs, cluster_config = ReadNodeConfig(
-    config_file_path="nodes_configuration.json")
+    config_file_path="source_of_truths.json")
 
   instantiator = TemplateInstantiator(cluster_config, node_configs)
 

@@ -58,7 +58,7 @@ def SetUpDockerRegistry(deployment_node_config: NodeConfig):
 
 if __name__ == "__main__":
   node_configs, cluster_config = ReadNodeConfig(
-    config_file_path="nodes_configuration.json")
+    config_file_path="source_of_truths.json")
 
   print("Refreshing host keys...")
   RefreshHostKeys(node_configs.values())
