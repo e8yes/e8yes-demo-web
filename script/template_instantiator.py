@@ -6,14 +6,36 @@ from script.config import NodeConfig
 from script.run_bash_script import RunSingleCommandInNode
 
 def BuildVars(cluster_config: ClusterConfig,
-              node_configs: Dict[str, NodeConfig]) -> Dict[str, str]:
+              node_configs: Dict[str, NodeConfig],
+              build_targets: List[BuildTarget]) -> Dict[str, str]:
   result = dict()
+  
   result["{{kubernetes_master_location}}"] = \
     node_configs[cluster_config.kubernetes_master].location
+  
   result["{{postgres_citus_master_location}}"] = \
     node_configs[cluster_config.postgres_citus_master].location
+  result["{{postgres_citus_master_port}}"] = \
+    cluster_config.postgres_citus_master_port
+  result["{{postgres_citus_master_user}}"] = \
+    cluster_config.postgres_citus_master_user
+  result["{{postgres_citus_master_password}}"] = \
+    cluster_config.postgres_citus_master_password
+
   result["{{deployment_master_location}}"] = \
     node_configs[cluster_config.deployment_master].location
+  
+  deployment_registry_prefix = "{0}:{1}/"\
+    .format(node_configs[cluster_config.deployment_master].location,
+            cluster_config.deployment_image_registry_port)
+
+  for build_target in build_targets:
+    if not build_target.pushable:
+      continue
+    build_target_var_key = "{{" + build_target.name + "_image}}"
+    build_target_var_val = deployment_registry_prefix + build_target.name
+    result[build_target_var_key] = build_target_var_val
+
   return result
 
 def ReplaceVarNamesWithValues(content: str, vars: Dict[str, str]) -> str:
@@ -26,7 +48,7 @@ class TemplateInstantiator:
                 cluster_config: ClusterConfig,
                 node_configs: Dict[str, NodeConfig],
                 build_targets: List[BuildTarget]):
-    self.vars_ = BuildVars(cluster_config, node_configs)
+    self.vars_ = BuildVars(cluster_config, node_configs, build_targets)
   
   def __ReadTemplateFile(self, 
                          template_file_path: str, 
