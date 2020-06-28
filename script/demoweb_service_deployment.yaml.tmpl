@@ -40,10 +40,10 @@ spec:
     spec:
       containers:
       - name: demoweb-service-container
-        image: {{demoweb_service_image}}
+        image: {{demoweb_service_image}}:latest
         ports:
         - containerPort: 50051
       - name: demoweb-reverse-proxy-container
-        image: {{demoweb_reverse_proxy_image}}
+        image: {{demoweb_reverse_proxy_image}}:latest
         ports:
         - containerPort: 8080
