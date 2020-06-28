@@ -20,7 +20,8 @@ def PushPostgresSchema(postgres_node: NodeConfig):
 def DeployImages(kube_master_node: NodeConfig, 
                  instantiator: TemplateInstantiator):
   deployment_template_file_path = \
-    "{0}/script/demoweb_service_deployment.yaml.tmpl"
+    "{0}/script/demoweb_service_deployment.yaml.tmpl"\
+    .format(CODE_REPO_LOCATION)
   deployment_config_file_path = instantiator.Instantiate(
     template_file_path=deployment_template_file_path,
     target_node=kube_master_node)
