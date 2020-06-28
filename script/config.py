@@ -1,4 +1,6 @@
 from typing import Dict
+from typing import List
+from typing import Tuple
 import json
 
 class NodeConfig:
@@ -20,20 +22,36 @@ class ClusterConfig:
                kubernetes_master: str, 
                postgres_citus_master: str,
                deployment_master: str,
+               deployment_image_registry_port: str,
                git_repo: str):
     self.kubernetes_master = kubernetes_master
     self.postgres_citus_master = postgres_citus_master
     self.deployment_master = deployment_master
+    self.deployment_image_registry_port = deployment_image_registry_port
     self.git_repo = git_repo
 
   def __repr__(self):
     return "ClusterConfig={kubernetes_master=" + self.kubernetes_master + \
                          ",postgres_citus_master=" + self.postgres_citus_master + \
                          ",deployment_master=" + self.deployment_master + \
+                         ",deployment_image_registry_port=" + \
+                            self.deployment_image_registry_port + \
                          ",git_repo=" + self.git_repo + \
                          "}"
 
-def ReadNodeConfig(config_file_path: str) -> Dict[str, NodeConfig]:
+class BuildTarget:
+  def __init__(self, name: str, docker_template: str):
+    self.name = name
+    self.docker_template = docker_template
+  
+  def __repr__(self):
+    return "BuildTarget={name=" + self.name + \
+                       ",docker_template=" + self.docker_template + \
+                       "}"
+
+def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
+                                                       ClusterConfig,
+                                                       List[BuildTarget]]:
   with open(config_file_path, "r") as config_file:
     content = config_file.read()
 
@@ -53,7 +71,11 @@ def ReadNodeConfig(config_file_path: str) -> Dict[str, NodeConfig]:
     kubernetes_master=json_cluster_config["kubernetes_master"],
     postgres_citus_master=json_cluster_config["postgres_citus_master"],
     deployment_master=json_cluster_config["deployment_master"],
-    git_repo=json_obj["git_repo"])
+    deployment_image_registry_port=\
+      json_cluster_config["deployment_image_registry_port"],
+    git_repo=json_cluster_config["git_repo"])
 
-  return node_configs, cluster_config
+  build_targets = list()
+
+  return node_configs, cluster_config, build_targets
 

@@ -1,6 +1,6 @@
 from typing import List
-from script.parse_node_config import ClusterConfig
-from script.parse_node_config import NodeConfig
+from script.config import ClusterConfig
+from script.config import NodeConfig
 from script.run_bash_script import RunSingleCommandInNode
 
 CODE_REPO_LOCATION = "demoweb_src"

@@ -40,7 +40,18 @@
     "cluster": {
         "kubernetes_master": "pi2",
         "postgres_citus_master": "pi3",
-        "deployment_master": "pi6"
+        "deployment_master": "pi6",
+        "deployment_image_registry_port": "5000",
+        "git_repo": "https://github.com/e8yes/e8yes-demo-web.git"
     },
-    "git_repo": "https://github.com/e8yes/e8yes-demo-web.git"
+    "build_targets": [
+        {
+            "name": "demoweb_base_env",
+            "docker_template": "./Dockerfile.tmpl"
+        },
+        {
+            "name": "demoweb_service",
+            "docker_template": "demoweb_service/Dockerfile.tmpl"
+        }
+    ]
 }

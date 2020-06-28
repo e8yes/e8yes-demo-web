@@ -2,7 +2,7 @@ import os
 import subprocess
 from pathlib import Path
 from typing import List
-from script.parse_node_config import NodeConfig
+from script.config import NodeConfig
 
 def RefreshHostKeys(nodes: List[NodeConfig]):
   known_hosts_path = str(Path.home()) + "/.ssh/known_hosts"

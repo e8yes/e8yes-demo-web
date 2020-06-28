@@ -1,7 +1,7 @@
 import subprocess
 from os.path import basename
 
-from script.parse_node_config import NodeConfig
+from script.config import NodeConfig
 
 def RunSingleCommandInNode(node: NodeConfig,
                            command: str,

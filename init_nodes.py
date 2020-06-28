@@ -1,8 +1,8 @@
 import subprocess
 
-from script.parse_node_config import NodeConfig
-from script.parse_node_config import ClusterConfig
-from script.parse_node_config import ReadNodeConfig
+from script.config import NodeConfig
+from script.config import ClusterConfig
+from script.config import LoadSourceOfTruths
 from script.run_bash_script import RunScriptInNode
 from script.run_bash_script import RunSingleCommandInNode
 from script.run_bash_script import ToSingleLineString
@@ -57,7 +57,7 @@ def SetUpDockerRegistry(deployment_node_config: NodeConfig):
                          command="sudo docker run -d -p 5000:5000 --name registry registry:latest")
 
 if __name__ == "__main__":
-  node_configs, cluster_config = ReadNodeConfig(
+  node_configs, cluster_config, _ = LoadSourceOfTruths(
     config_file_path="source_of_truths.json")
 
   print("Refreshing host keys...")

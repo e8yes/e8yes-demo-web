@@ -1,6 +1,6 @@
-from script.parse_node_config import NodeConfig
-from script.parse_node_config import ClusterConfig
-from script.parse_node_config import ReadNodeConfig
+from script.config import NodeConfig
+from script.config import ClusterConfig
+from script.config import LoadSourceOfTruths
 from script.refresh_host_keys import RefreshHostKeys
 from script.run_bash_script import UploadScriptToNode
 from script.run_bash_script import RunScriptInNode
@@ -48,10 +48,12 @@ def DeployImages(kube_master_node: NodeConfig,
                            command="kubectl apply -f demoweb_src/script/demoweb_service_deployment.yaml")
 
 if __name__ == "__main__":
-  node_configs, cluster_config = ReadNodeConfig(
+  node_configs, cluster_config, build_targets = LoadSourceOfTruths(
     config_file_path="source_of_truths.json")
 
-  instantiator = TemplateInstantiator(cluster_config, node_configs)
+  instantiator = TemplateInstantiator(cluster_config, 
+                                      node_configs,
+                                      build_targets)
 
   print("Refreshing host keys...")
   RefreshHostKeys(node_configs.values())

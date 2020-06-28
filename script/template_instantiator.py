@@ -1,6 +1,8 @@
 from typing import Dict
-from script.parse_node_config import ClusterConfig
-from script.parse_node_config import NodeConfig
+from typing import List
+from script.config import BuildTarget
+from script.config import ClusterConfig
+from script.config import NodeConfig
 from script.run_bash_script import RunSingleCommandInNode
 
 def BuildVars(cluster_config: ClusterConfig,
@@ -22,7 +24,8 @@ def ReplaceVarNamesWithValues(content: str, vars: Dict[str, str]) -> str:
 class TemplateInstantiator:
   def __init__(self,
                 cluster_config: ClusterConfig,
-                node_configs: Dict[str, NodeConfig]):
+                node_configs: Dict[str, NodeConfig],
+                build_targets: List[BuildTarget]):
     self.vars_ = BuildVars(cluster_config, node_configs)
   
   def __ReadTemplateFile(self, 
