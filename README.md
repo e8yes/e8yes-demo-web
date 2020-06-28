@@ -1,5 +1,8 @@
 # Service Location
-Deployed at HTTP2 api.e8yes.org:50051
+Deployed at HTTP/2 api.e8yes.org:30051; HTTP/1.4 api.e8yes.org:30080
+
+## Raspberry PI cluster
+![Alt text](images/pi_cluster.jpg?raw=true "PI cluster")
 
 ## Setup Requirements
 - OS: Debian Linux Distros
