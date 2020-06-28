@@ -47,8 +47,8 @@ if __name__ == "__main__":
   postgres_node = node_configs[cluster_config.postgres_citus_master]
   PushPostgresSchema(postgres_node)
 
-  print("Building targets in " + str(deployment_node))
   deployment_node = node_configs[cluster_config.deployment_master]
+  print("Building targets in " + str(deployment_node))
   BuildAndPushTargetImages(
     targets=build_targets,
     instantiator=instantiator,

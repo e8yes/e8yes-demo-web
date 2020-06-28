@@ -63,7 +63,7 @@ class TemplateInstantiator:
                          target_node: NodeConfig):
     if target_node is None:
       with open(template_file_path, "r") as template_file:
-        return template_file.read()
+        return template_file.read().decode("utf-8")
       assert(False)
     else:
       content = RunSingleCommandInNode(
@@ -71,7 +71,7 @@ class TemplateInstantiator:
         command="cat {0}".format(template_file_path), 
         retrieve_output=True)
       assert(content)
-      return content
+      return content.decode("utf-8")
   
   def __WriteInstantiatedFile(self,
                               content: str,
@@ -94,11 +94,12 @@ class TemplateInstantiator:
     instantiated_file_path = template_file_path.replace(".tmpl", "")
     assert(instantiated_file_path != template_file_path)
 
-    content = self.__ReadTemplateFile(template_file_path, target_node)
-    instantiated = ReplaceVarNamesWithValues(content, self.vars_)
-    self.__WriteInstantiatedFile(instantiated, 
-                                 instantiated_file_path,
-                                 target_node)
+    content = self.__ReadTemplateFile(template_file_path=template_file_path, 
+                                      target_node=target_node)
+    instantiated = ReplaceVarNamesWithValues(content=content, vars=self.vars_)
+    self.__WriteInstantiatedFile(content=instantiated, 
+                                 instantiated_file_path=instantiated_file_path,
+                                 target_node=target_node)
 
     return instantiated_file_path
 

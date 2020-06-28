@@ -1,4 +1,5 @@
 from typing import List
+from os.path import dirname
 from script.config import BuildTarget
 from script.config import NodeConfig
 from script.run_bash_script import RunSingleCommandInNode
@@ -18,14 +19,18 @@ def BuildAndPushTargetImages(targets: List[BuildTarget],
       template_file_path=template_file_path,
       target_node=deployment_node)
 
-    target_image_name = BuildTargetImageName(
-      deployment_node=deployment_node,
-      docker_registry_port=docker_registry_port,
-      target=target)
-    RunSingleCommandInNode(
-      node=deployment_node,
-      command="cd {0} sudo docker build -t={1}"
-        .format(docker_file_path, target_image_name))
+    target_image_name = None
+    if not target.pushable:
+      target_image_name = target.name
+    else:
+      target_image_name = BuildTargetImageName(
+        deployment_node=deployment_node,
+        docker_registry_port=docker_registry_port,
+        target=target)
+
+    build_cmd ="sudo docker build -t=\"{0}\" {1}"\
+        .format(target_image_name, dirname(docker_file_path))
+    RunSingleCommandInNode(node=deployment_node, command=build_cmd)
     
     if target.pushable:
       RunSingleCommandInNode(
