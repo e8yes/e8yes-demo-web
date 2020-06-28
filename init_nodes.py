@@ -11,6 +11,14 @@ from script.refresh_host_keys import RefreshHostKeys
 def InstallPackagesForNode(node_config: NodeConfig, script_file_path: str):
   RunScriptInNode(node=node_config, script_file_path=script_file_path)
 
+def ClearDockerImages(node: NodeConfig):
+  RunSingleCommandInNode(
+    node=node, command="sudo docker stop `sudo docker ps -a -q`")
+  RunSingleCommandInNode(
+    node=node, command="sudo docker rm --force `sudo docker ps -a -q`")
+  RunSingleCommandInNode(
+    node=node, command="sudo docker rmi --force `sudo docker images -q`")                         
+
 def SetUpKubernetesMasterNode(master_node_config: NodeConfig):
   # Generate token and certificate.
   token = ToSingleLineString(
@@ -25,7 +33,7 @@ def SetUpKubernetesMasterNode(master_node_config: NodeConfig):
   # Reset node and initialize it to a master node.
   RunSingleCommandInNode(node=master_node_config, 
                          command="echo y | sudo kubeadm reset")
-  init_command="sudo kubeadm init --pod-network-cidr=\"192.168.0.0/16\" --token={0} --certificate-key={1}"\
+  init_command="sudo kubeadm init --token={0} --certificate-key={1}"\
     .format(token, certificate)
   RunSingleCommandInNode(node=master_node_config, command=init_command)
   RunSingleCommandInNode(node=master_node_config, 
@@ -52,9 +60,21 @@ def SetUpKubernetesMasterNodeCni(master_node_config: NodeConfig):
   RunSingleCommandInNode(node=master_node_config, 
                          command="kubectl apply -f \"https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\\n')\"")
 
-def SetUpDockerRegistry(deployment_node_config: NodeConfig):
-  RunSingleCommandInNode(node=deployment_node_config, 
-                         command="sudo docker run -d -p 5000:5000 --name registry registry:latest")
+def SetUpDockerRegistry(deployment_node_config: NodeConfig,
+                        docker_registry_port: str):
+  RunSingleCommandInNode(
+    node=deployment_node_config, 
+    command="sudo docker run -d -p {0}:{0} --name registry registry:latest"
+      .format(docker_registry_port))
+
+def PrepareNodeForDockerRegistry(node: NodeConfig, 
+                                 deployment_node: NodeConfig,
+                                 docker_registry_port: str):
+  update_daemon_config_cmd = \
+    "echo '{{ \"insecure-registries\":[\"{0}:{1}\"] }}' | sudo tee /etc/docker/daemon.json"\
+      .format(deployment_node.location, docker_registry_port)
+  RunSingleCommandInNode(node=node, command=update_daemon_config_cmd)
+  RunSingleCommandInNode(node=node, command="sudo systemctl restart docker")
 
 if __name__ == "__main__":
   node_configs, cluster_config, _ = LoadSourceOfTruths(
@@ -71,6 +91,10 @@ if __name__ == "__main__":
   postgres_node = node_configs[cluster_config.postgres_citus_master]
   InstallPackagesForNode(node_config=postgres_node, 
                          script_file_path="script/install_pkgs_for_db_node.sh")
+  
+  for node_name, node_config in node_configs.items():
+    print("Clearing docker images for node", node_name, node_config)
+    ClearDockerImages(node=node_config)
 
   kube_master_node = node_configs[cluster_config.kubernetes_master]
   print("Setting up a kubernetes master node at", kube_master_node)
@@ -93,4 +117,14 @@ if __name__ == "__main__":
 
   deployment_node = node_configs[cluster_config.deployment_master]
   print("Setting up docker image registry on ", deployment_node)
-  SetUpDockerRegistry(deployment_node_config=deployment_node)
+  SetUpDockerRegistry(
+    deployment_node_config=deployment_node,
+    docker_registry_port=cluster_config.deployment_image_registry_port)
+
+  print("Preparing nodes for docker registry")
+  for node_config in node_configs.values():
+    print("Preparing", node_config, "for docker registry")
+    PrepareNodeForDockerRegistry(
+      node=node_config,
+      deployment_node=deployment_node,
+      docker_registry_port=cluster_config.deployment_image_registry_port)

@@ -5,8 +5,21 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 50051
+      targetPort: 50051
+      nodePort: 30051
+  selector:
+    app: demoweb-service-app
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: demoweb-reverse-proxy
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
       nodePort: 30080
   selector:
     app: demoweb-service-app
@@ -29,4 +42,8 @@ spec:
       - name: demoweb-service-container
         image: {{demoweb_service_image}}
         ports:
-        - containerPort: 80
+        - containerPort: 50051
+      - name: demoweb-reverse-proxy-container
+        image: {{demoweb_reverse_proxy_image}}
+        ports:
+        - containerPort: 8080

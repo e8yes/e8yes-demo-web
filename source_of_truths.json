@@ -50,7 +50,7 @@
     "build_targets": [
         {
             "name": "demoweb_base_env",
-            "docker_template": "./Dockerfile.tmpl",
+            "docker_template": "Dockerfile.tmpl",
             "pushable": false
         },
         {

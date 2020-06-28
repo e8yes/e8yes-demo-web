@@ -1,7 +1,7 @@
 FROM ubuntu:19.10
 
 # Install required packages.
-WORKDIR /home/demoweb_src
+WORKDIR /home
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 RUN apt install -y haveged
@@ -13,11 +13,20 @@ RUN apt install -y protobuf-compiler
 RUN apt install -y libgrpc++-dev
 RUN apt install -y libcrypto++-dev
 RUN apt install -y libcrypt2-dev
+RUN apt install -y golang-go
+RUN apt install -y go-dep
 RUN apt install -y qt5-default
+
+# Install grpc web proxy
+ENV GOPATH=/home/go
+RUN git clone https://github.com/improbable-eng/grpc-web.git \
+              ./go/src/github.com/improbable-eng/grpc-web
+WORKDIR /home/go/src/github.com/improbable-eng/grpc-web
+RUN dep ensure
+RUN go install ./go/grpcwebproxy
 
 # Copy source code.
 WORKDIR /home
-
 RUN mkdir -p demoweb_src
 ADD . /home/demoweb_src
 RUN ls -lh

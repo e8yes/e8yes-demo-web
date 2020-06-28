@@ -21,18 +21,31 @@ class ClusterConfig:
   def __init__(self, 
                kubernetes_master: str, 
                postgres_citus_master: str,
+               postgres_citus_master_port: str,
+               postgres_citus_master_user: str,
+               postgres_citus_master_password: str,
                deployment_master: str,
                deployment_image_registry_port: str,
                git_repo: str):
     self.kubernetes_master = kubernetes_master
     self.postgres_citus_master = postgres_citus_master
+    self.postgres_citus_master_port = postgres_citus_master_port
+    self.postgres_citus_master_user = postgres_citus_master_user
+    self.postgres_citus_master_password = postgres_citus_master_password
     self.deployment_master = deployment_master
     self.deployment_image_registry_port = deployment_image_registry_port
     self.git_repo = git_repo
 
   def __repr__(self):
     return "ClusterConfig={kubernetes_master=" + self.kubernetes_master + \
-                         ",postgres_citus_master=" + self.postgres_citus_master + \
+                         ",postgres_citus_master=" + \
+                            self.postgres_citus_master + \
+                         ",postgres_citus_master_port" + \
+                            self.postgres_citus_master_port + \
+                         ",postgres_citus_master_user" + \
+                            self.postgres_citus_master_user + \
+                         ",postgres_citus_master_password=" + \
+                            self.postgres_citus_master_password + \
                          ",deployment_master=" + self.deployment_master + \
                          ",deployment_image_registry_port=" + \
                             self.deployment_image_registry_port + \
@@ -40,13 +53,18 @@ class ClusterConfig:
                          "}"
 
 class BuildTarget:
-  def __init__(self, name: str, docker_template: str):
+  def __init__(self, 
+               name: str, 
+               docker_template: str,
+               pushable: bool):
     self.name = name
     self.docker_template = docker_template
+    self.pushable = pushable
   
   def __repr__(self):
     return "BuildTarget={name=" + self.name + \
                        ",docker_template=" + self.docker_template + \
+                       ",pushable=" + str(self.pushable) + \
                        "}"
 
 def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
@@ -56,8 +74,8 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
     content = config_file.read()
 
   json_obj = json.loads(content)
-  json_nodes_config = json_obj["nodes"]
 
+  json_nodes_config = json_obj["nodes"]
   node_configs: Dict[str, NodeConfig] = dict()
   for json_node_config in json_nodes_config:
     node_configs[json_node_config["name"]] = \
@@ -70,12 +88,24 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
   cluster_config = ClusterConfig(
     kubernetes_master=json_cluster_config["kubernetes_master"],
     postgres_citus_master=json_cluster_config["postgres_citus_master"],
+    postgres_citus_master_port=\
+      json_cluster_config["postgres_citus_master_port"],
+    postgres_citus_master_user=\
+      json_cluster_config["postgres_citus_master_user"],
+    postgres_citus_master_password=\
+      json_cluster_config["postgres_citus_master_password"],
     deployment_master=json_cluster_config["deployment_master"],
     deployment_image_registry_port=\
       json_cluster_config["deployment_image_registry_port"],
     git_repo=json_cluster_config["git_repo"])
 
-  build_targets = list()
+  json_build_targets = json_obj["build_targets"]
+  build_targets: List[BuildTarget] = list()
+  for json_build_target in json_build_targets:
+    build_targets.append(
+      BuildTarget(name=json_build_target["name"],
+                  docker_template=json_build_target["docker_template"],
+                  pushable=bool(json_build_target["pushable"])))
 
   return node_configs, cluster_config, build_targets
 

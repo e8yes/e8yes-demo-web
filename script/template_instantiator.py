@@ -5,6 +5,13 @@ from script.config import ClusterConfig
 from script.config import NodeConfig
 from script.run_bash_script import RunSingleCommandInNode
 
+def BuildTargetImageName(deployment_node: NodeConfig,
+                         docker_registry_port: str,
+                         target: BuildTarget) -> str:
+  return "{0}:{1}/{2}".format(
+    deployment_node.location, docker_registry_port, target.name)
+
+
 def BuildVars(cluster_config: ClusterConfig,
               node_configs: Dict[str, NodeConfig],
               build_targets: List[BuildTarget]) -> Dict[str, str]:
@@ -24,16 +31,17 @@ def BuildVars(cluster_config: ClusterConfig,
 
   result["{{deployment_master_location}}"] = \
     node_configs[cluster_config.deployment_master].location
-  
-  deployment_registry_prefix = "{0}:{1}/"\
-    .format(node_configs[cluster_config.deployment_master].location,
-            cluster_config.deployment_image_registry_port)
 
   for build_target in build_targets:
     if not build_target.pushable:
       continue
+
     build_target_var_key = "{{" + build_target.name + "_image}}"
-    build_target_var_val = deployment_registry_prefix + build_target.name
+    build_target_var_val = BuildTargetImageName(
+      deployment_node=node_configs[cluster_config.deployment_master],
+      docker_registry_port=cluster_config.deployment_image_registry_port,
+      target=build_target)
+
     result[build_target_var_key] = build_target_var_val
 
   return result
