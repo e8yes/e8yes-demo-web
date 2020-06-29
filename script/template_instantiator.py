@@ -83,10 +83,11 @@ class TemplateInstantiator:
         return
       assert(True)
     else:
+      escaped_content = content.replace("\"", "\\\"")
       RunSingleCommandInNode(
         node=target_node, 
         command="echo -e \"{0}\" > {1}"
-          .format(content, instantiated_file_path))
+          .format(escaped_content, instantiated_file_path))
 
   def Instantiate(self, 
                   template_file_path: str,
