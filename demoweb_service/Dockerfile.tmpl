@@ -3,6 +3,7 @@ FROM demoweb_base_env:latest
 # Run the service.
 WORKDIR /home
 
+EXPOSE 8000
 EXPOSE 50051
 
 ENV LD_LIBRARY_PATH="./bin/"
@@ -12,5 +13,6 @@ CMD ["./bin/demowebmain", \
      "--demoweb_db_host_name={{postgres_citus_master_location}}", \
      "--demoweb_db_port={{postgres_citus_master_port}}", \
      "--demoweb_db_user_name={{postgres_citus_master_user}}", \
-     "--demoweb_db_password={{postgres_citus_master_password}}"]
+     "--demoweb_db_password={{postgres_citus_master_password}}", \
+     "--grpc_web_proxy=true"]
 

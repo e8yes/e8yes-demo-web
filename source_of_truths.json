@@ -57,11 +57,6 @@
             "name": "demoweb_service",
             "docker_template": "demoweb_service/Dockerfile.tmpl",
             "pushable": true
-        },
-        {
-            "name": "demoweb_reverse_proxy",
-            "docker_template": "third_party/grpcwebproxy/Dockerfile.tmpl",
-            "pushable": true
         }
     ]
 }

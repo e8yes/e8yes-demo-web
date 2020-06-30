@@ -16,6 +16,7 @@
  */
 
 #include <cassert>
+#include <cstdlib>
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
@@ -104,6 +105,13 @@ int main(int argc, char *argv[]) {
 
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;
+
+    // Run GRPC web proxy.
+    std::optional<std::string> grpc_web_proxy = ScanFlag(argc, argv, "grpc_web_proxy");
+    if (grpc_web_proxy.has_value() && grpc_web_proxy.value() == "true") {
+        std::system("~/go/bin/grpcwebproxy --backend_addr=localhost:50051 --run_tls_server=false "
+                    "--server_http_debug_port=8000 --allow_all_origins &");
+    }
 
     server->Wait();
 

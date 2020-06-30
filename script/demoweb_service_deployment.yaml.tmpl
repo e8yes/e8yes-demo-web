@@ -18,8 +18,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 8000
+      targetPort: 8000
       nodePort: 30080
   selector:
     app: demoweb-service-app
@@ -29,7 +29,7 @@ kind: Deployment
 metadata:
   name: demoweb-service-app
 spec:
-  replicas: 10
+  replicas: 8
   selector:
     matchLabels:
       app: demoweb-service-app
@@ -43,7 +43,4 @@ spec:
         image: {{demoweb_service_image}}:latest
         ports:
         - containerPort: 50051
-      - name: demoweb-reverse-proxy-container
-        image: {{demoweb_reverse_proxy_image}}:latest
-        ports:
-        - containerPort: 8080
+        - containerPort: 8000
