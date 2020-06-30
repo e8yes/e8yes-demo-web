@@ -5,6 +5,7 @@ from script.config import ClusterConfig
 from script.config import LoadSourceOfTruths
 from script.run_bash_script import RunScriptInNode
 from script.run_bash_script import RunSingleCommandInNode
+from script.run_bash_script import UploadScriptToNode
 from script.run_bash_script import ToSingleLineString
 from script.refresh_host_keys import RefreshHostKeys
 
@@ -76,6 +77,26 @@ def PrepareNodeForDockerRegistry(node: NodeConfig,
   RunSingleCommandInNode(node=node, command=update_daemon_config_cmd)
   RunSingleCommandInNode(node=node, command="sudo systemctl restart docker")
 
+def SetUpPostgresMasterNode(postgres_master: NodeConfig):
+  InstallPackagesForNode(node_config=postgres_node, 
+                         script_file_path="script/install_pkgs_for_db_node.sh")
+  
+  UploadScriptToNode(node=postgres_master,
+                     script_file_path="script/pg_hba.conf")
+  UploadScriptToNode(node=postgres_master,
+                     script_file_path="script/postgresql.conf")
+  RunSingleCommandInNode(node=postgres_master,
+                         command="sudo mv pg_hba.conf /etc/postgresql/11/main/pg_hba.conf")
+  RunSingleCommandInNode(node=postgres_master,
+                         command="sudo mv postgresql.conf /etc/postgresql/11/main/postgresql.conf")
+  RunSingleCommandInNode(node=postgres_master,
+                         command="sudo chown root /etc/postgresql/11/main/pg_hba.conf")
+  RunSingleCommandInNode(node=postgres_master,
+                         command="sudo chown root /etc/postgresql/11/main/postgresql.conf")
+
+  RunSingleCommandInNode(node=postgres_master,
+                         command="sudo systemctl restart postgresql")
+
 if __name__ == "__main__":
   node_configs, cluster_config, _ = LoadSourceOfTruths(
     config_file_path="source_of_truths.json")
@@ -88,9 +109,9 @@ if __name__ == "__main__":
     InstallPackagesForNode(node_config=node_config, 
                            script_file_path="script/install_pkgs_for_node.sh")
   
+  print("Setting up postgres master...")
   postgres_node = node_configs[cluster_config.postgres_citus_master]
-  InstallPackagesForNode(node_config=postgres_node, 
-                         script_file_path="script/install_pkgs_for_db_node.sh")
+  SetUpPostgresMasterNode(postgres_master=postgres_node)
   
   for node_name, node_config in node_configs.items():
     print("Clearing docker images for node", node_name, node_config)
