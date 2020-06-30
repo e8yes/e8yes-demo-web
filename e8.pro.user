@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2020-06-30T09:26:32. -->
+<!-- Written by QtCreator 4.11.0, 2020-06-30T10:12:48. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -287,7 +287,7 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb/demowebmain.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb/demowebmain.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments">--demoweb_db_host_name=localhost --demoweb_db_port=5432 --demoweb_db_user_name=postgres --demoweb_db_password=password --grpc_web_proxy=true</value>
+    <value type="QString" key="RunConfiguration.Arguments">--demoweb_db_host_name=localhost --demoweb_db_port=5432 --demoweb_db_user_name=postgres --demoweb_db_password=password --grpc_web_proxy=~/go/bin/grpcwebproxy</value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>

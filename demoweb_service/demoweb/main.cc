@@ -108,9 +108,11 @@ int main(int argc, char *argv[]) {
 
     // Run GRPC web proxy.
     std::optional<std::string> grpc_web_proxy = ScanFlag(argc, argv, "grpc_web_proxy");
-    if (grpc_web_proxy.has_value() && grpc_web_proxy.value() == "true") {
-        std::system("~/go/bin/grpcwebproxy --backend_addr=localhost:50051 --run_tls_server=false "
-                    "--server_http_debug_port=8000 --allow_all_origins &");
+    if (grpc_web_proxy.has_value()) {
+        std::string cmd = grpc_web_proxy.value() +
+                          " --backend_addr=localhost:50051 --run_tls_server=false "
+                          "--server_http_debug_port=8000 --allow_all_origins &";
+        std::system(cmd.c_str());
     }
 
     server->Wait();
