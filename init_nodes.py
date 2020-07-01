@@ -56,6 +56,10 @@ def SetUpPostgresMasterNode(postgres_master: NodeConfig):
   RunSingleCommandInNode(node=postgres_master,
                          command="sudo systemctl restart postgresql")
 
+def SetUpLoadBalancerNode(load_balancer: NodeConfig):
+  InstallPackagesForNode(node_config=load_balancer, 
+                         script_file_path="script/install_pkgs_for_load_balancer_node.sh")
+
 if __name__ == "__main__":
   node_configs, cluster_config, _ = LoadSourceOfTruths(
     config_file_path="source_of_truths.json")
@@ -68,7 +72,11 @@ if __name__ == "__main__":
     InstallPackagesForNode(node_config=node_config, 
                            script_file_path="script/install_pkgs_for_node.sh")
   
-  print("Setting up postgres master...")
+  print("Setting up the load balancer...")
+  load_balancer_node = node_configs[cluster_config.load_balancer]
+  SetUpLoadBalancerNode(load_balancer=load_balancer_node)
+
+  print("Setting up the postgres master...")
   postgres_node = node_configs[cluster_config.postgres_citus_master]
   SetUpPostgresMasterNode(postgres_master=postgres_node)
   
