@@ -22,9 +22,11 @@ def DeployImages(deployment_node: NodeConfig,
         deployment_node=deployment_node,
         docker_registry_port=docker_registry_port,
         target=target)
+      print("Pulling image", image_name, "in node", node)
       RunSingleCommandInNode(
         node=node,
         command="sudo docker pull {0}:latest".format(image_name))
+      print("Running image", image_name, "in node", node)
       RunSingleCommandInNode(
         node=node,
         command="sudo docker run {0} -d -t {1}:latest"
