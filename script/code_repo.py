@@ -19,9 +19,5 @@ def SyncCodeRepo(git_repo: str, node: NodeConfig):
 
 def SyncCodeRepoInOperationalNodes(cluster_config: ClusterConfig,
                                    node_configs: List[NodeConfig]):
-  SyncCodeRepo(git_repo=cluster_config.git_repo,
-               node=node_configs[cluster_config.kubernetes_master])
-  SyncCodeRepo(git_repo=cluster_config.git_repo,
-               node=node_configs[cluster_config.deployment_master])
-  SyncCodeRepo(git_repo=cluster_config.git_repo,
-               node=node_configs[cluster_config.postgres_citus_master])
+  for node in node_configs:
+    SyncCodeRepo(git_repo=cluster_config.git_repo, node=node)

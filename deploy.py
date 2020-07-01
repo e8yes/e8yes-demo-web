@@ -9,26 +9,13 @@ from script.code_repo import SyncCodeRepoInOperationalNodes
 from script.code_repo import CODE_REPO_LOCATION
 from script.template_instantiator import TemplateInstantiator
 from script.build_images import BuildAndPushTargetImages
-
+from script.deploy_images import DeployImages
 
 
 def PushPostgresSchema(postgres_node: NodeConfig):
   RunSingleCommandInNode(node=postgres_node, 
                          command="cd {0}/postgres && ./push_schema.sh"
                           .format(CODE_REPO_LOCATION))
-
-def DeployImages(kube_master_node: NodeConfig, 
-                 instantiator: TemplateInstantiator):
-  deployment_template_file_path = \
-    "{0}/script/demoweb_service_deployment.yaml.tmpl"\
-    .format(CODE_REPO_LOCATION)
-  deployment_config_file_path = instantiator.Instantiate(
-    template_file_path=deployment_template_file_path,
-    target_node=kube_master_node)
-
-  RunSingleCommandInNode(
-    node=kube_master_node, 
-    command="kubectl apply -f {0}".format(deployment_config_file_path))
 
 if __name__ == "__main__":
   node_configs, cluster_config, build_targets = LoadSourceOfTruths(
@@ -42,7 +29,7 @@ if __name__ == "__main__":
   RefreshHostKeys(node_configs.values())
 
   print("Synchronizing code repository...")
-  SyncCodeRepoInOperationalNodes(cluster_config, node_configs)
+  SyncCodeRepoInOperationalNodes(cluster_config, node_configs.values())
 
   print("Pushing postgres schemas...")
   postgres_node = node_configs[cluster_config.postgres_citus_master]
@@ -57,7 +44,8 @@ if __name__ == "__main__":
     deployment_node=deployment_node,
     docker_registry_port=cluster_config.deployment_image_registry_port)
 
-  print("Deploy image")
-  kube_master_node = node_configs[cluster_config.kubernetes_master]
-  DeployImages(kube_master_node=kube_master_node,
-               instantiator=instantiator)
+  print("Deploy images")
+  DeployImages(deployment_node=deployment_node,
+               docker_registry_port=cluster_config.deployment_image_registry_port,
+               targets=build_targets,
+               nodes=node_configs.values())

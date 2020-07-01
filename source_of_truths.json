@@ -38,25 +38,27 @@
         }
     ],
     "cluster": {
-        "kubernetes_master": "pi2",
+        "load_balancer": "pi2",
         "postgres_citus_master": "pi3",
         "postgres_citus_master_port": "5432",
         "postgres_citus_master_user": "postgres",
         "postgres_citus_master_password": "password",
         "deployment_master": "pi6",
-        "deployment_image_registry_port": "5000",
+        "deployment_image_registry_port": 5000,
         "git_repo": "https://github.com/e8yes/e8yes-demo-web.git"
     },
     "build_targets": [
         {
             "name": "demoweb_base_env",
             "docker_template": "Dockerfile.tmpl",
-            "pushable": false
+            "pushable": false,
+            "open_ports": []
         },
         {
             "name": "demoweb_service",
             "docker_template": "demoweb_service/Dockerfile.tmpl",
-            "pushable": true
+            "pushable": true,
+            "open_ports": [50051, 8000]
         }
     ]
 }

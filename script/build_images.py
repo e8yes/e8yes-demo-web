@@ -11,7 +11,7 @@ def BuildAndPushTargetImages(targets: List[BuildTarget],
                              instantiator: TemplateInstantiator,
                              code_repo_base_path: str,
                              deployment_node: NodeConfig,
-                             docker_registry_port: str):
+                             docker_registry_port: int):
   for target in targets:
     template_file_path = "{0}/{1}".format(code_repo_base_path, 
                                           target.docker_template)

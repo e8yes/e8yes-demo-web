@@ -6,7 +6,7 @@ from script.config import NodeConfig
 from script.run_bash_script import RunSingleCommandInNode
 
 def BuildTargetImageName(deployment_node: NodeConfig,
-                         docker_registry_port: str,
+                         docker_registry_port: int,
                          target: BuildTarget) -> str:
   return "{0}:{1}/{2}".format(
     deployment_node.location, docker_registry_port, target.name)
@@ -17,8 +17,8 @@ def BuildVars(cluster_config: ClusterConfig,
               build_targets: List[BuildTarget]) -> Dict[str, str]:
   result = dict()
   
-  result["{{kubernetes_master_location}}"] = \
-    node_configs[cluster_config.kubernetes_master].location
+  result["{{load_balancer_location}}"] = \
+    node_configs[cluster_config.load_balancer].location
   
   result["{{postgres_citus_master_location}}"] = \
     node_configs[cluster_config.postgres_citus_master].location

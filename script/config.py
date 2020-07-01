@@ -19,15 +19,15 @@ class NodeConfig:
 
 class ClusterConfig:
   def __init__(self, 
-               kubernetes_master: str, 
+               load_balancer: str, 
                postgres_citus_master: str,
-               postgres_citus_master_port: str,
+               postgres_citus_master_port: int,
                postgres_citus_master_user: str,
                postgres_citus_master_password: str,
                deployment_master: str,
                deployment_image_registry_port: str,
                git_repo: str):
-    self.kubernetes_master = kubernetes_master
+    self.load_balancer = load_balancer
     self.postgres_citus_master = postgres_citus_master
     self.postgres_citus_master_port = postgres_citus_master_port
     self.postgres_citus_master_user = postgres_citus_master_user
@@ -37,11 +37,11 @@ class ClusterConfig:
     self.git_repo = git_repo
 
   def __repr__(self):
-    return "ClusterConfig={kubernetes_master=" + self.kubernetes_master + \
+    return "ClusterConfig={load_balancer=" + self.load_balancer + \
                          ",postgres_citus_master=" + \
                             self.postgres_citus_master + \
                          ",postgres_citus_master_port" + \
-                            self.postgres_citus_master_port + \
+                            str(self.postgres_citus_master_port) + \
                          ",postgres_citus_master_user" + \
                             self.postgres_citus_master_user + \
                          ",postgres_citus_master_password=" + \
@@ -56,10 +56,12 @@ class BuildTarget:
   def __init__(self, 
                name: str, 
                docker_template: str,
-               pushable: bool):
+               pushable: bool,
+               open_ports: List[int]):
     self.name = name
     self.docker_template = docker_template
     self.pushable = pushable
+    self.open_ports = open_ports
   
   def __repr__(self):
     return "BuildTarget={name=" + self.name + \
@@ -86,7 +88,7 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
 
   json_cluster_config = json_obj["cluster"]
   cluster_config = ClusterConfig(
-    kubernetes_master=json_cluster_config["kubernetes_master"],
+    load_balancer=json_cluster_config["load_balancer"],
     postgres_citus_master=json_cluster_config["postgres_citus_master"],
     postgres_citus_master_port=\
       json_cluster_config["postgres_citus_master_port"],
@@ -105,7 +107,8 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
     build_targets.append(
       BuildTarget(name=json_build_target["name"],
                   docker_template=json_build_target["docker_template"],
-                  pushable=bool(json_build_target["pushable"])))
+                  pushable=bool(json_build_target["pushable"]),
+                  open_ports=json_build_target["open_ports"]))
 
   return node_configs, cluster_config, build_targets
 
