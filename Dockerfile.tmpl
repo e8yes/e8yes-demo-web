@@ -4,6 +4,8 @@ FROM ubuntu:19.10
 WORKDIR /home
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
+RUN apt upgrade -y
+RUN apt install -y curl
 RUN apt install -y haveged
 RUN apt install -y build-essential
 RUN apt install -y git
@@ -17,6 +19,8 @@ RUN apt install -y libcrypt2-dev
 RUN apt install -y golang-go
 RUN apt install -y go-dep
 RUN apt install -y qt5-default
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt install -y nodejs
 
 # Install grpc web proxy
 ENV GOPATH=/home/go
