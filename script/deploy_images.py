@@ -2,6 +2,7 @@ from typing import List
 from script.config import NodeConfig
 from script.config import BuildTarget
 from script.run_bash_script import RunSingleCommandInNode
+from script.run_bash_script import ToSingleLineString
 from script.template_instantiator import BuildTargetImageName
 
 def PortPublishingCommandArgs(ports: List[int]) -> str:
@@ -22,10 +23,32 @@ def DeployImages(deployment_node: NodeConfig,
         deployment_node=deployment_node,
         docker_registry_port=docker_registry_port,
         target=target)
+
+      print("Checking running image", image_name, "in node", node)
+      container_id = ToSingleLineString(
+        RunSingleCommandInNode(
+          node=node,
+          command="sudo docker ps -a -q --filter ancestor={0} --format=\"{{.ID}}\""
+            .format(image_name),
+          retrieve_output=True))
+      if container_id:
+        print("Stopping the container", container_id, "that runs the image", image_name)
+        RunSingleCommandInNode(
+          node=node,
+          command="sudo docker stop {0}".format(container_id))
+        
+        print("Removing the container", container_id)
+        RunSingleCommandInNode(
+          node=node,
+          command="sudo docker rm {0}".format(container_id))
+      else:
+        print("The image", image_name, " is not running.")
+
       print("Pulling image", image_name, "in node", node)
       RunSingleCommandInNode(
         node=node,
         command="sudo docker pull {0}:latest".format(image_name))
+
       print("Running image", image_name, "in node", node)
       RunSingleCommandInNode(
         node=node,
