@@ -1,4 +1,4 @@
 #!/bin/bash
 
-apt install -y libcrypto++-dev
+sudo apt install -y libcrypto++-dev
 
