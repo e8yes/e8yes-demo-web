@@ -23,6 +23,11 @@ def DeployImages(deployment_node: NodeConfig,
         deployment_node=deployment_node,
         docker_registry_port=docker_registry_port,
         target=target)
+      
+      print("Pulling image", image_name, "in node", node)
+      RunSingleCommandInNode(
+        node=node,
+        command="sudo docker pull {0}:latest".format(image_name))
 
       print("Checking running image", image_name, "in node", node)
       container_id = ToSingleLineString(
@@ -32,10 +37,10 @@ def DeployImages(deployment_node: NodeConfig,
             .format(image_name),
           retrieve_output=True))
       if container_id:
-        print("Stopping the container", container_id, "that runs the image", image_name)
+        print("Killing the container", container_id, "that runs the image", image_name)
         RunSingleCommandInNode(
           node=node,
-          command="sudo docker stop {0}".format(container_id))
+          command="sudo docker kill {0}".format(container_id))
         
         print("Removing the container", container_id)
         RunSingleCommandInNode(
@@ -43,11 +48,6 @@ def DeployImages(deployment_node: NodeConfig,
           command="sudo docker rm {0}".format(container_id))
       else:
         print("The image", image_name, " is not running.")
-
-      print("Pulling image", image_name, "in node", node)
-      RunSingleCommandInNode(
-        node=node,
-        command="sudo docker pull {0}:latest".format(image_name))
 
       print("Running image", image_name, "in node", node)
       RunSingleCommandInNode(
