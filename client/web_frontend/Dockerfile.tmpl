@@ -3,8 +3,10 @@ FROM demoweb_base_env:latest
 WORKDIR /home
 
 RUN cp -r ./demoweb_src/client/web_frontend/build/* /var/www/html
+RUN cp ./demoweb_src/script/nginx_default.conf /etc/nginx/sites-available/default
+RUN systemctl restart nginx
 
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+EXPOSE 8443
 
 ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]

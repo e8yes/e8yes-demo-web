@@ -64,7 +64,7 @@
             "name": "demoweb_frontend_web",
             "docker_template": "client/web_frontend/Dockerfile.tmpl",
             "pushable": true,
-            "open_ports": [80]
+            "open_ports": [8080, 8443]
         }
     ]
 }
