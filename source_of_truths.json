@@ -59,6 +59,12 @@
             "docker_template": "demoweb_service/Dockerfile.tmpl",
             "pushable": true,
             "open_ports": [50051, 8000]
+        },
+        {
+            "name": "demoweb_frontend_web",
+            "docker_template": "client/web_frontend/Dockerfile.tmpl",
+            "pushable": true,
+            "open_ports": [80]
         }
     ]
 }

@@ -1,0 +1,10 @@
+FROM demoweb_base_env:latest
+
+WORKDIR /home
+
+RUN cp -r ./demoweb_src/client/web_frontend/build/* /var/www/html
+
+EXPOSE 80
+EXPOSE 443
+
+ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]
