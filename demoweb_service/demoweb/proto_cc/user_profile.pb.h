@@ -149,13 +149,13 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // repeated .UserRelation relations = 5;
+  // repeated .e8.UserRelation relations = 5;
   int relations_size() const;
   void clear_relations();
   static const int kRelationsFieldNumber = 5;
-  ::UserRelation relations(int index) const;
-  void set_relations(int index, ::UserRelation value);
-  void add_relations(::UserRelation value);
+  ::e8::UserRelation relations(int index) const;
+  void set_relations(int index, ::e8::UserRelation value);
+  void add_relations(::e8::UserRelation value);
   const ::google::protobuf::RepeatedField<int>& relations() const;
   ::google::protobuf::RepeatedField<int>* mutable_relations();
 
@@ -383,22 +383,22 @@ inline void UserPublicProfile::set_allocated_avatar_preview_readonly_access(::e8
   // @@protoc_insertion_point(field_set_allocated:e8.UserPublicProfile.avatar_preview_readonly_access)
 }
 
-// repeated .UserRelation relations = 5;
+// repeated .e8.UserRelation relations = 5;
 inline int UserPublicProfile::relations_size() const {
   return relations_.size();
 }
 inline void UserPublicProfile::clear_relations() {
   relations_.Clear();
 }
-inline ::UserRelation UserPublicProfile::relations(int index) const {
+inline ::e8::UserRelation UserPublicProfile::relations(int index) const {
   // @@protoc_insertion_point(field_get:e8.UserPublicProfile.relations)
-  return static_cast< ::UserRelation >(relations_.Get(index));
+  return static_cast< ::e8::UserRelation >(relations_.Get(index));
 }
-inline void UserPublicProfile::set_relations(int index, ::UserRelation value) {
+inline void UserPublicProfile::set_relations(int index, ::e8::UserRelation value) {
   relations_.Set(index, value);
   // @@protoc_insertion_point(field_set:e8.UserPublicProfile.relations)
 }
-inline void UserPublicProfile::add_relations(::UserRelation value) {
+inline void UserPublicProfile::add_relations(::e8::UserRelation value) {
   relations_.Add(value);
   // @@protoc_insertion_point(field_add:e8.UserPublicProfile.relations)
 }

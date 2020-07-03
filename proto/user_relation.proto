@@ -17,6 +17,8 @@
 
 syntax = "proto3";
 
+package e8;
+
 // Directed relation between two users.
 enum UserRelation {
     URL_UNRELATED = 0;

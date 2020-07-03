@@ -311,13 +311,13 @@ class GetUserRelationsResponse : public ::google::protobuf::Message /* @@protoc_
 
   // accessors -------------------------------------------------------
 
-  // repeated .UserRelation user_relation = 3;
+  // repeated .e8.UserRelation user_relation = 3;
   int user_relation_size() const;
   void clear_user_relation();
   static const int kUserRelationFieldNumber = 3;
-  ::UserRelation user_relation(int index) const;
-  void set_user_relation(int index, ::UserRelation value);
-  void add_user_relation(::UserRelation value);
+  ::e8::UserRelation user_relation(int index) const;
+  void set_user_relation(int index, ::e8::UserRelation value);
+  void add_user_relation(::e8::UserRelation value);
   const ::google::protobuf::RepeatedField<int>& user_relation() const;
   ::google::protobuf::RepeatedField<int>* mutable_user_relation();
 
@@ -1806,22 +1806,22 @@ inline void GetUserRelationsResponse::set_target_user_id(::google::protobuf::int
   // @@protoc_insertion_point(field_set:e8.GetUserRelationsResponse.target_user_id)
 }
 
-// repeated .UserRelation user_relation = 3;
+// repeated .e8.UserRelation user_relation = 3;
 inline int GetUserRelationsResponse::user_relation_size() const {
   return user_relation_.size();
 }
 inline void GetUserRelationsResponse::clear_user_relation() {
   user_relation_.Clear();
 }
-inline ::UserRelation GetUserRelationsResponse::user_relation(int index) const {
+inline ::e8::UserRelation GetUserRelationsResponse::user_relation(int index) const {
   // @@protoc_insertion_point(field_get:e8.GetUserRelationsResponse.user_relation)
-  return static_cast< ::UserRelation >(user_relation_.Get(index));
+  return static_cast< ::e8::UserRelation >(user_relation_.Get(index));
 }
-inline void GetUserRelationsResponse::set_user_relation(int index, ::UserRelation value) {
+inline void GetUserRelationsResponse::set_user_relation(int index, ::e8::UserRelation value) {
   user_relation_.Set(index, value);
   // @@protoc_insertion_point(field_set:e8.GetUserRelationsResponse.user_relation)
 }
-inline void GetUserRelationsResponse::add_user_relation(::UserRelation value) {
+inline void GetUserRelationsResponse::add_user_relation(::e8::UserRelation value) {
   user_relation_.Add(value);
   // @@protoc_insertion_point(field_add:e8.GetUserRelationsResponse.user_relation)
 }

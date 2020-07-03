@@ -17,7 +17,7 @@ const GetUserRelationsResponse$json = const {
   '2': const [
     const {'1': 'source_user_id', '3': 1, '4': 1, '5': 3, '10': 'sourceUserId'},
     const {'1': 'target_user_id', '3': 2, '4': 1, '5': 3, '10': 'targetUserId'},
-    const {'1': 'user_relation', '3': 3, '4': 3, '5': 14, '6': '.UserRelation', '10': 'userRelation'},
+    const {'1': 'user_relation', '3': 3, '4': 3, '5': 14, '6': '.e8.UserRelation', '10': 'userRelation'},
   ],
 };
 

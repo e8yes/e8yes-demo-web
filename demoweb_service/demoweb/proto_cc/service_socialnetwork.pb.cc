@@ -507,44 +507,44 @@ void AddDescriptorsImpl() {
       "\n\033service_socialnetwork.proto\022\002e8\032\022user_"
       "profile.proto\032\023user_relation.proto\"1\n\027Ge"
       "tUserRelationsRequest\022\026\n\016target_user_id\030"
-      "\001 \001(\003\"p\n\030GetUserRelationsResponse\022\026\n\016sou"
+      "\001 \001(\003\"s\n\030GetUserRelationsResponse\022\026\n\016sou"
       "rce_user_id\030\001 \001(\003\022\026\n\016target_user_id\030\002 \001("
-      "\003\022$\n\ruser_relation\030\003 \003(\0162\r.UserRelation\""
-      "0\n\025SendInvitationRequest\022\027\n\017invitee_user"
-      "_id\030\001 \001(\003\"\030\n\026SendInvitationResponse\"2\n\027D"
-      "eleteInvitationRequest\022\027\n\017invitee_user_i"
-      "d\030\001 \001(\003\"\032\n\030DeleteInvitationResponse\"2\n\027A"
-      "cceptInvitationRequest\022\027\n\017inviter_user_i"
-      "d\030\001 \001(\003\"\032\n\030AcceptInvitationResponse\"2\n\027R"
-      "ejectInvitationRequest\022\027\n\017inviter_user_i"
-      "d\030\001 \001(\003\"\032\n\030RejectInvitationResponse\"\032\n\030G"
-      "etInvitationListRequest\"I\n\031GetInvitation"
-      "ListResponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8"
-      ".UserPublicProfile\"7\n\024DeleteContactReque"
-      "st\022\037\n\027deleted_contact_user_id\030\001 \001(\003\"\027\n\025D"
-      "eleteContactResponse\"\027\n\025GetContactListRe"
-      "quest\"F\n\026GetContactListResponse\022,\n\ruser_"
-      "profiles\030\001 \003(\0132\025.e8.UserPublicProfile2\374\004"
-      "\n\024SocialNetworkService\022M\n\020GetUserRelatio"
-      "ns\022\033.e8.GetUserRelationsRequest\032\034.e8.Get"
-      "UserRelationsResponse\022G\n\016SendInvitation\022"
-      "\031.e8.SendInvitationRequest\032\032.e8.SendInvi"
-      "tationResponse\022M\n\020DeleteInvitation\022\033.e8."
-      "DeleteInvitationRequest\032\034.e8.DeleteInvit"
-      "ationResponse\022M\n\020AcceptInvitation\022\033.e8.A"
-      "cceptInvitationRequest\032\034.e8.AcceptInvita"
-      "tionResponse\022M\n\020RejectInvitation\022\033.e8.Re"
-      "jectInvitationRequest\032\034.e8.RejectInvitat"
-      "ionResponse\022P\n\021GetInvitationList\022\034.e8.Ge"
-      "tInvitationListRequest\032\035.e8.GetInvitatio"
-      "nListResponse\022D\n\rDeleteContact\022\030.e8.Dele"
-      "teContactRequest\032\031.e8.DeleteContactRespo"
-      "nse\022G\n\016GetContactList\022\031.e8.GetContactLis"
-      "tRequest\032\032.e8.GetContactListResponseb\006pr"
-      "oto3"
+      "\003\022\'\n\ruser_relation\030\003 \003(\0162\020.e8.UserRelati"
+      "on\"0\n\025SendInvitationRequest\022\027\n\017invitee_u"
+      "ser_id\030\001 \001(\003\"\030\n\026SendInvitationResponse\"2"
+      "\n\027DeleteInvitationRequest\022\027\n\017invitee_use"
+      "r_id\030\001 \001(\003\"\032\n\030DeleteInvitationResponse\"2"
+      "\n\027AcceptInvitationRequest\022\027\n\017inviter_use"
+      "r_id\030\001 \001(\003\"\032\n\030AcceptInvitationResponse\"2"
+      "\n\027RejectInvitationRequest\022\027\n\017inviter_use"
+      "r_id\030\001 \001(\003\"\032\n\030RejectInvitationResponse\"\032"
+      "\n\030GetInvitationListRequest\"I\n\031GetInvitat"
+      "ionListResponse\022,\n\ruser_profiles\030\001 \003(\0132\025"
+      ".e8.UserPublicProfile\"7\n\024DeleteContactRe"
+      "quest\022\037\n\027deleted_contact_user_id\030\001 \001(\003\"\027"
+      "\n\025DeleteContactResponse\"\027\n\025GetContactLis"
+      "tRequest\"F\n\026GetContactListResponse\022,\n\rus"
+      "er_profiles\030\001 \003(\0132\025.e8.UserPublicProfile"
+      "2\374\004\n\024SocialNetworkService\022M\n\020GetUserRela"
+      "tions\022\033.e8.GetUserRelationsRequest\032\034.e8."
+      "GetUserRelationsResponse\022G\n\016SendInvitati"
+      "on\022\031.e8.SendInvitationRequest\032\032.e8.SendI"
+      "nvitationResponse\022M\n\020DeleteInvitation\022\033."
+      "e8.DeleteInvitationRequest\032\034.e8.DeleteIn"
+      "vitationResponse\022M\n\020AcceptInvitation\022\033.e"
+      "8.AcceptInvitationRequest\032\034.e8.AcceptInv"
+      "itationResponse\022M\n\020RejectInvitation\022\033.e8"
+      ".RejectInvitationRequest\032\034.e8.RejectInvi"
+      "tationResponse\022P\n\021GetInvitationList\022\034.e8"
+      ".GetInvitationListRequest\032\035.e8.GetInvita"
+      "tionListResponse\022D\n\rDeleteContact\022\030.e8.D"
+      "eleteContactRequest\032\031.e8.DeleteContactRe"
+      "sponse\022G\n\016GetContactList\022\031.e8.GetContact"
+      "ListRequest\032\032.e8.GetContactListResponseb"
+      "\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1484);
+      descriptor, 1487);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_socialnetwork.proto", &protobuf_RegisterTypes);
   ::protobuf_user_5fprofile_2eproto::AddDescriptors();
@@ -894,7 +894,7 @@ bool GetUserRelationsResponse::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .UserRelation user_relation = 3;
+      // repeated .e8.UserRelation user_relation = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
@@ -906,7 +906,7 @@ bool GetUserRelationsResponse::MergePartialFromCodedStream(
             DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-            add_user_relation(static_cast< ::UserRelation >(value));
+            add_user_relation(static_cast< ::e8::UserRelation >(value));
           }
           input->PopLimit(limit);
         } else if (
@@ -916,7 +916,7 @@ bool GetUserRelationsResponse::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          add_user_relation(static_cast< ::UserRelation >(value));
+          add_user_relation(static_cast< ::e8::UserRelation >(value));
         } else {
           goto handle_unusual;
         }
@@ -959,7 +959,7 @@ void GetUserRelationsResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->target_user_id(), output);
   }
 
-  // repeated .UserRelation user_relation = 3;
+  // repeated .e8.UserRelation user_relation = 3;
   if (this->user_relation_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(
       3,
@@ -997,7 +997,7 @@ void GetUserRelationsResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->target_user_id(), target);
   }
 
-  // repeated .UserRelation user_relation = 3;
+  // repeated .e8.UserRelation user_relation = 3;
   if (this->user_relation_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       3,
@@ -1026,7 +1026,7 @@ size_t GetUserRelationsResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .UserRelation user_relation = 3;
+  // repeated .e8.UserRelation user_relation = 3;
   {
     size_t data_size = 0;
     unsigned int count = static_cast<unsigned int>(this->user_relation_size());for (unsigned int i = 0; i < count; i++) {

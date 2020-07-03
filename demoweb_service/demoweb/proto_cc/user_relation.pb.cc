@@ -19,6 +19,8 @@
 #endif
 // @@protoc_insertion_point(includes)
 
+namespace e8 {
+}  // namespace e8
 namespace protobuf_user_5frelation_2eproto {
 void InitDefaults() {
 }
@@ -48,14 +50,14 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\023user_relation.proto*\213\001\n\014UserRelation\022\021"
-      "\n\rURL_UNRELATED\020\000\022\027\n\023URL_INVITATION_SENT"
-      "\020\001\022\033\n\027URL_INVITATION_RECEIVED\020\002\022\017\n\013URL_C"
-      "ONTACT\020\003\022\020\n\014URL_BLOCKING\020\004\022\017\n\013URL_BLOCKE"
-      "D\020\005b\006proto3"
+      "\n\023user_relation.proto\022\002e8*\213\001\n\014UserRelati"
+      "on\022\021\n\rURL_UNRELATED\020\000\022\027\n\023URL_INVITATION_"
+      "SENT\020\001\022\033\n\027URL_INVITATION_RECEIVED\020\002\022\017\n\013U"
+      "RL_CONTACT\020\003\022\020\n\014URL_BLOCKING\020\004\022\017\n\013URL_BL"
+      "OCKED\020\005b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 171);
+      descriptor, 175);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user_relation.proto", &protobuf_RegisterTypes);
 }
@@ -71,6 +73,7 @@ struct StaticDescriptorInitializer {
   }
 } static_descriptor_initializer;
 }  // namespace protobuf_user_5frelation_2eproto
+namespace e8 {
 const ::google::protobuf::EnumDescriptor* UserRelation_descriptor() {
   protobuf_user_5frelation_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_user_5frelation_2eproto::file_level_enum_descriptors[0];
@@ -91,6 +94,7 @@ bool UserRelation_IsValid(int value) {
 
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace e8
 namespace google {
 namespace protobuf {
 }  // namespace protobuf

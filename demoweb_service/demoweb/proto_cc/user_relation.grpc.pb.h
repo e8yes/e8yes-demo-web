@@ -42,5 +42,9 @@ class ServerCompletionQueue;
 class ServerContext;
 }  // namespace grpc
 
+namespace e8 {
+
+}  // namespace e8
+
 
 #endif  // GRPC_user_5frelation_2eproto__INCLUDED

@@ -44,6 +44,9 @@ struct TableStruct {
 };
 void AddDescriptors();
 }  // namespace protobuf_user_5frelation_2eproto
+namespace e8 {
+}  // namespace e8
+namespace e8 {
 
 enum UserRelation {
   URL_UNRELATED = 0,
@@ -88,14 +91,15 @@ inline bool UserRelation_Parse(
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace e8
 
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::UserRelation> : ::std::true_type {};
+template <> struct is_proto_enum< ::e8::UserRelation> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::UserRelation>() {
-  return ::UserRelation_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::e8::UserRelation>() {
+  return ::e8::UserRelation_descriptor();
 }
 
 }  // namespace protobuf
