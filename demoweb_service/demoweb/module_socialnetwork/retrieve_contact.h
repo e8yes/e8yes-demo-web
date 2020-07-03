@@ -37,6 +37,14 @@ using UserRelations = std::vector<UserRelation>;
 std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_id,
                                                             std::vector<UserId> target_user_ids,
                                                             ConnectionReservoirInterface *conns);
+
+/**
+ * @brief GetRelatedUsers Retrieve a list of users who satisfy the directed relation constraint
+ * starting from the source user.
+ */
+std::vector<UserEntity> GetRelatedUsers(UserId source_user_id, UserRelation relation,
+                                        ConnectionReservoirInterface *conns);
+
 } // namespace e8
 
 #endif // RETRIEVE_CONTACT_H

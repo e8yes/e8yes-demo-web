@@ -22,11 +22,14 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
+#include "demoweb_service/demoweb/module_identity/user_profile.h"
 #include "demoweb_service/demoweb/module_socialnetwork/contact_invitation.h"
 #include "demoweb_service/demoweb/module_socialnetwork/retrieve_contact.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "demoweb_service/demoweb/proto_cc/service_socialnetwork.grpc.pb.h"
 #include "demoweb_service/demoweb/proto_cc/service_socialnetwork.pb.h"
+#include "demoweb_service/demoweb/proto_cc/user_profile.pb.h"
+#include "demoweb_service/demoweb/proto_cc/user_relation.pb.h"
 #include "demoweb_service/demoweb/service/service_util.h"
 #include "demoweb_service/demoweb/service/social_network_service.h"
 
@@ -65,6 +68,28 @@ grpc::Status SocialNetworkServiceImpl::SendInvitation(grpc::ServerContext *conte
 
     ::e8::SendInvitation(identity.value().user_id(), request->invitee_user_id(),
                          /*send_message_anyway=*/true, CurrentEnvironment()->DemowebDatabase());
+
+    return grpc::Status::OK;
+}
+
+grpc::Status
+SocialNetworkServiceImpl::GetInvitationList(grpc::ServerContext *context,
+                                            GetInvitationListRequest const * /*request*/,
+                                            GetInvitationListResponse *response) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!status.ok()) {
+        return status;
+    }
+
+    std::vector<UserEntity> inviters =
+        GetRelatedUsers(identity.value().user_id(), UserRelation::URL_INVITATION_RECEIVED,
+                        CurrentEnvironment()->DemowebDatabase());
+    std::vector<UserPublicProfile> inviter_profiles =
+        BuildPublicProfiles(identity.value().user_id(), inviters, CurrentEnvironment()->KeyGen(),
+                            CurrentEnvironment()->DemowebDatabase());
+
+    *response->mutable_user_profiles() = {inviter_profiles.begin(), inviter_profiles.end()};
 
     return grpc::Status::OK;
 }

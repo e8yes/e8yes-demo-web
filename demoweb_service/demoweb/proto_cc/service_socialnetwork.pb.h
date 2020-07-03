@@ -30,7 +30,6 @@
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
-#include "pagination.pb.h"
 #include "user_profile.pb.h"
 #include "user_relation.pb.h"
 // @@protoc_insertion_point(includes)
@@ -1230,23 +1229,10 @@ class GetInvitationListRequest : public ::google::protobuf::Message /* @@protoc_
 
   // accessors -------------------------------------------------------
 
-  // .e8.Pagination pagination = 1;
-  bool has_pagination() const;
-  void clear_pagination();
-  static const int kPaginationFieldNumber = 1;
-  private:
-  const ::e8::Pagination& _internal_pagination() const;
-  public:
-  const ::e8::Pagination& pagination() const;
-  ::e8::Pagination* release_pagination();
-  ::e8::Pagination* mutable_pagination();
-  void set_allocated_pagination(::e8::Pagination* pagination);
-
   // @@protoc_insertion_point(class_scope:e8.GetInvitationListRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::e8::Pagination* pagination_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
@@ -1647,23 +1633,10 @@ class GetContactListRequest : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
-  // .e8.Pagination pagination = 1;
-  bool has_pagination() const;
-  void clear_pagination();
-  static const int kPaginationFieldNumber = 1;
-  private:
-  const ::e8::Pagination& _internal_pagination() const;
-  public:
-  const ::e8::Pagination& pagination() const;
-  ::e8::Pagination* release_pagination();
-  ::e8::Pagination* mutable_pagination();
-  void set_allocated_pagination(::e8::Pagination* pagination);
-
   // @@protoc_insertion_point(class_scope:e8.GetContactListRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::e8::Pagination* pagination_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
@@ -1955,54 +1928,6 @@ inline void RejectInvitationRequest::set_inviter_user_id(::google::protobuf::int
 
 // GetInvitationListRequest
 
-// .e8.Pagination pagination = 1;
-inline bool GetInvitationListRequest::has_pagination() const {
-  return this != internal_default_instance() && pagination_ != NULL;
-}
-inline const ::e8::Pagination& GetInvitationListRequest::_internal_pagination() const {
-  return *pagination_;
-}
-inline const ::e8::Pagination& GetInvitationListRequest::pagination() const {
-  const ::e8::Pagination* p = pagination_;
-  // @@protoc_insertion_point(field_get:e8.GetInvitationListRequest.pagination)
-  return p != NULL ? *p : *reinterpret_cast<const ::e8::Pagination*>(
-      &::e8::_Pagination_default_instance_);
-}
-inline ::e8::Pagination* GetInvitationListRequest::release_pagination() {
-  // @@protoc_insertion_point(field_release:e8.GetInvitationListRequest.pagination)
-  
-  ::e8::Pagination* temp = pagination_;
-  pagination_ = NULL;
-  return temp;
-}
-inline ::e8::Pagination* GetInvitationListRequest::mutable_pagination() {
-  
-  if (pagination_ == NULL) {
-    auto* p = CreateMaybeMessage<::e8::Pagination>(GetArenaNoVirtual());
-    pagination_ = p;
-  }
-  // @@protoc_insertion_point(field_mutable:e8.GetInvitationListRequest.pagination)
-  return pagination_;
-}
-inline void GetInvitationListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete reinterpret_cast< ::google::protobuf::MessageLite*>(pagination_);
-  }
-  if (pagination) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      pagination = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, pagination, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  pagination_ = pagination;
-  // @@protoc_insertion_point(field_set_allocated:e8.GetInvitationListRequest.pagination)
-}
-
 // -------------------------------------------------------------------
 
 // GetInvitationListResponse
@@ -2059,54 +1984,6 @@ inline void DeleteContactRequest::set_deleted_contact_user_id(::google::protobuf
 // -------------------------------------------------------------------
 
 // GetContactListRequest
-
-// .e8.Pagination pagination = 1;
-inline bool GetContactListRequest::has_pagination() const {
-  return this != internal_default_instance() && pagination_ != NULL;
-}
-inline const ::e8::Pagination& GetContactListRequest::_internal_pagination() const {
-  return *pagination_;
-}
-inline const ::e8::Pagination& GetContactListRequest::pagination() const {
-  const ::e8::Pagination* p = pagination_;
-  // @@protoc_insertion_point(field_get:e8.GetContactListRequest.pagination)
-  return p != NULL ? *p : *reinterpret_cast<const ::e8::Pagination*>(
-      &::e8::_Pagination_default_instance_);
-}
-inline ::e8::Pagination* GetContactListRequest::release_pagination() {
-  // @@protoc_insertion_point(field_release:e8.GetContactListRequest.pagination)
-  
-  ::e8::Pagination* temp = pagination_;
-  pagination_ = NULL;
-  return temp;
-}
-inline ::e8::Pagination* GetContactListRequest::mutable_pagination() {
-  
-  if (pagination_ == NULL) {
-    auto* p = CreateMaybeMessage<::e8::Pagination>(GetArenaNoVirtual());
-    pagination_ = p;
-  }
-  // @@protoc_insertion_point(field_mutable:e8.GetContactListRequest.pagination)
-  return pagination_;
-}
-inline void GetContactListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete reinterpret_cast< ::google::protobuf::MessageLite*>(pagination_);
-  }
-  if (pagination) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      pagination = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, pagination, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  pagination_ = pagination;
-  // @@protoc_insertion_point(field_set_allocated:e8.GetContactListRequest.pagination)
-}
 
 // -------------------------------------------------------------------
 

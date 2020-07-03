@@ -10,7 +10,6 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'pagination.pb.dart' as $10;
 import 'user_profile.pb.dart' as $9;
 
 import 'user_relation.pbenum.dart' as $7;
@@ -301,7 +300,6 @@ class RejectInvitationResponse extends $pb.GeneratedMessage {
 
 class GetInvitationListRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetInvitationListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$10.Pagination>(1, 'pagination', subBuilder: $10.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -319,17 +317,6 @@ class GetInvitationListRequest extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static GetInvitationListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetInvitationListRequest>(create);
   static GetInvitationListRequest _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $10.Pagination get pagination => $_getN(0);
-  @$pb.TagNumber(1)
-  set pagination($10.Pagination v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasPagination() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPagination() => clearField(1);
-  @$pb.TagNumber(1)
-  $10.Pagination ensurePagination() => $_ensure(0);
 }
 
 class GetInvitationListResponse extends $pb.GeneratedMessage {
@@ -411,7 +398,6 @@ class DeleteContactResponse extends $pb.GeneratedMessage {
 
 class GetContactListRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetContactListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$10.Pagination>(1, 'pagination', subBuilder: $10.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -429,17 +415,6 @@ class GetContactListRequest extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static GetContactListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetContactListRequest>(create);
   static GetContactListRequest _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $10.Pagination get pagination => $_getN(0);
-  @$pb.TagNumber(1)
-  set pagination($10.Pagination v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasPagination() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPagination() => clearField(1);
-  @$pb.TagNumber(1)
-  $10.Pagination ensurePagination() => $_ensure(0);
 }
 
 class GetContactListResponse extends $pb.GeneratedMessage {

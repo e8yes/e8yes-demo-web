@@ -82,4 +82,33 @@ std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_i
     return ParseAllRelations(result_set);
 }
 
+std::vector<UserEntity> GetRelatedUsers(UserId source_user_id, UserRelation relation,
+                                        ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder::Placeholder<SqlLong> source_user_id_ph;
+    SqlQueryBuilder::Placeholder<SqlInt> relation_ph;
+    SqlLong source_user_id_ph_value(source_user_id);
+    SqlInt relation_ph_value(relation);
+
+    SqlQueryBuilder query;
+    query.query_piece(TableNames::AUser())
+        .query_piece(" u JOIN ")
+        .query_piece(TableNames::ContactRelation())
+        .query_piece(" cr ON u.id = cr.dst_user_id ")
+        .query_piece(" WHERE cr.src_user_id=")
+        .placeholder(&source_user_id_ph)
+        .query_piece(" AND cr.relation=")
+        .placeholder(&relation_ph);
+
+    query.set_value_to_placeholder(source_user_id_ph, &source_user_id_ph_value);
+    query.set_value_to_placeholder(relation_ph, &relation_ph_value);
+
+    std::vector<std::tuple<UserEntity>> result_set = Query<UserEntity>(query, {"u"}, conns);
+
+    std::vector<UserEntity> users(result_set.size());
+    for (unsigned i = 0; i < result_set.size(); i++) {
+        users[i] = std::get<0>(result_set[i]);
+    }
+    return users;
+}
+
 } // namespace e8

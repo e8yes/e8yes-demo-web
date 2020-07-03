@@ -19,7 +19,6 @@ syntax = "proto3";
 
 package e8;
 
-import "pagination.proto";
 import "user_profile.proto";
 import "user_relation.proto";
 
@@ -63,7 +62,6 @@ message RejectInvitationResponse {}
 
 
 message GetInvitationListRequest {
-    Pagination pagination = 1;
 }
 
 message GetInvitationListResponse {
@@ -79,7 +77,6 @@ message DeleteContactResponse {}
 
 
 message GetContactListRequest {
-    Pagination pagination = 1;
 }
 
 message GetContactListResponse {

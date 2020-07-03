@@ -19,9 +19,6 @@
 #endif
 // @@protoc_insertion_point(includes)
 
-namespace protobuf_pagination_2eproto {
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_pagination_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Pagination;
-}  // namespace protobuf_pagination_2eproto
 namespace protobuf_user_5fprofile_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_user_5fprofile_2eproto ::google::protobuf::internal::SCCInfo<2> scc_info_UserPublicProfile;
 }  // namespace protobuf_user_5fprofile_2eproto
@@ -259,9 +256,8 @@ static void InitDefaultsGetInvitationListRequest() {
   ::e8::GetInvitationListRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_GetInvitationListRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetInvitationListRequest}, {
-      &protobuf_pagination_2eproto::scc_info_Pagination.base,}};
+::google::protobuf::internal::SCCInfo<0> scc_info_GetInvitationListRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetInvitationListRequest}, {}};
 
 static void InitDefaultsGetInvitationListResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -317,9 +313,8 @@ static void InitDefaultsGetContactListRequest() {
   ::e8::GetContactListRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_GetContactListRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetContactListRequest}, {
-      &protobuf_pagination_2eproto::scc_info_Pagination.base,}};
+::google::protobuf::internal::SCCInfo<0> scc_info_GetContactListRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetContactListRequest}, {}};
 
 static void InitDefaultsGetContactListResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -421,7 +416,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetInvitationListRequest, pagination_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetInvitationListResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -444,7 +438,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetContactListRequest, pagination_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetContactListResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -464,11 +457,11 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 47, -1, sizeof(::e8::RejectInvitationRequest)},
   { 53, -1, sizeof(::e8::RejectInvitationResponse)},
   { 58, -1, sizeof(::e8::GetInvitationListRequest)},
-  { 64, -1, sizeof(::e8::GetInvitationListResponse)},
-  { 70, -1, sizeof(::e8::DeleteContactRequest)},
-  { 76, -1, sizeof(::e8::DeleteContactResponse)},
-  { 81, -1, sizeof(::e8::GetContactListRequest)},
-  { 87, -1, sizeof(::e8::GetContactListResponse)},
+  { 63, -1, sizeof(::e8::GetInvitationListResponse)},
+  { 69, -1, sizeof(::e8::DeleteContactRequest)},
+  { 75, -1, sizeof(::e8::DeleteContactResponse)},
+  { 80, -1, sizeof(::e8::GetContactListRequest)},
+  { 85, -1, sizeof(::e8::GetContactListResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -511,52 +504,49 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\033service_socialnetwork.proto\022\002e8\032\020pagin"
-      "ation.proto\032\022user_profile.proto\032\023user_re"
-      "lation.proto\"1\n\027GetUserRelationsRequest\022"
-      "\026\n\016target_user_id\030\001 \001(\003\"p\n\030GetUserRelati"
-      "onsResponse\022\026\n\016source_user_id\030\001 \001(\003\022\026\n\016t"
-      "arget_user_id\030\002 \001(\003\022$\n\ruser_relation\030\003 \003"
-      "(\0162\r.UserRelation\"0\n\025SendInvitationReque"
-      "st\022\027\n\017invitee_user_id\030\001 \001(\003\"\030\n\026SendInvit"
-      "ationResponse\"2\n\027DeleteInvitationRequest"
-      "\022\027\n\017invitee_user_id\030\001 \001(\003\"\032\n\030DeleteInvit"
-      "ationResponse\"2\n\027AcceptInvitationRequest"
-      "\022\027\n\017inviter_user_id\030\001 \001(\003\"\032\n\030AcceptInvit"
-      "ationResponse\"2\n\027RejectInvitationRequest"
-      "\022\027\n\017inviter_user_id\030\001 \001(\003\"\032\n\030RejectInvit"
-      "ationResponse\">\n\030GetInvitationListReques"
-      "t\022\"\n\npagination\030\001 \001(\0132\016.e8.Pagination\"I\n"
-      "\031GetInvitationListResponse\022,\n\ruser_profi"
-      "les\030\001 \003(\0132\025.e8.UserPublicProfile\"7\n\024Dele"
-      "teContactRequest\022\037\n\027deleted_contact_user"
-      "_id\030\001 \001(\003\"\027\n\025DeleteContactResponse\";\n\025Ge"
-      "tContactListRequest\022\"\n\npagination\030\001 \001(\0132"
-      "\016.e8.Pagination\"F\n\026GetContactListRespons"
-      "e\022,\n\ruser_profiles\030\001 \003(\0132\025.e8.UserPublic"
-      "Profile2\374\004\n\024SocialNetworkService\022M\n\020GetU"
-      "serRelations\022\033.e8.GetUserRelationsReques"
-      "t\032\034.e8.GetUserRelationsResponse\022G\n\016SendI"
-      "nvitation\022\031.e8.SendInvitationRequest\032\032.e"
-      "8.SendInvitationResponse\022M\n\020DeleteInvita"
-      "tion\022\033.e8.DeleteInvitationRequest\032\034.e8.D"
-      "eleteInvitationResponse\022M\n\020AcceptInvitat"
-      "ion\022\033.e8.AcceptInvitationRequest\032\034.e8.Ac"
-      "ceptInvitationResponse\022M\n\020RejectInvitati"
-      "on\022\033.e8.RejectInvitationRequest\032\034.e8.Rej"
-      "ectInvitationResponse\022P\n\021GetInvitationLi"
-      "st\022\034.e8.GetInvitationListRequest\032\035.e8.Ge"
-      "tInvitationListResponse\022D\n\rDeleteContact"
-      "\022\030.e8.DeleteContactRequest\032\031.e8.DeleteCo"
-      "ntactResponse\022G\n\016GetContactList\022\031.e8.Get"
-      "ContactListRequest\032\032.e8.GetContactListRe"
-      "sponseb\006proto3"
+      "\n\033service_socialnetwork.proto\022\002e8\032\022user_"
+      "profile.proto\032\023user_relation.proto\"1\n\027Ge"
+      "tUserRelationsRequest\022\026\n\016target_user_id\030"
+      "\001 \001(\003\"p\n\030GetUserRelationsResponse\022\026\n\016sou"
+      "rce_user_id\030\001 \001(\003\022\026\n\016target_user_id\030\002 \001("
+      "\003\022$\n\ruser_relation\030\003 \003(\0162\r.UserRelation\""
+      "0\n\025SendInvitationRequest\022\027\n\017invitee_user"
+      "_id\030\001 \001(\003\"\030\n\026SendInvitationResponse\"2\n\027D"
+      "eleteInvitationRequest\022\027\n\017invitee_user_i"
+      "d\030\001 \001(\003\"\032\n\030DeleteInvitationResponse\"2\n\027A"
+      "cceptInvitationRequest\022\027\n\017inviter_user_i"
+      "d\030\001 \001(\003\"\032\n\030AcceptInvitationResponse\"2\n\027R"
+      "ejectInvitationRequest\022\027\n\017inviter_user_i"
+      "d\030\001 \001(\003\"\032\n\030RejectInvitationResponse\"\032\n\030G"
+      "etInvitationListRequest\"I\n\031GetInvitation"
+      "ListResponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8"
+      ".UserPublicProfile\"7\n\024DeleteContactReque"
+      "st\022\037\n\027deleted_contact_user_id\030\001 \001(\003\"\027\n\025D"
+      "eleteContactResponse\"\027\n\025GetContactListRe"
+      "quest\"F\n\026GetContactListResponse\022,\n\ruser_"
+      "profiles\030\001 \003(\0132\025.e8.UserPublicProfile2\374\004"
+      "\n\024SocialNetworkService\022M\n\020GetUserRelatio"
+      "ns\022\033.e8.GetUserRelationsRequest\032\034.e8.Get"
+      "UserRelationsResponse\022G\n\016SendInvitation\022"
+      "\031.e8.SendInvitationRequest\032\032.e8.SendInvi"
+      "tationResponse\022M\n\020DeleteInvitation\022\033.e8."
+      "DeleteInvitationRequest\032\034.e8.DeleteInvit"
+      "ationResponse\022M\n\020AcceptInvitation\022\033.e8.A"
+      "cceptInvitationRequest\032\034.e8.AcceptInvita"
+      "tionResponse\022M\n\020RejectInvitation\022\033.e8.Re"
+      "jectInvitationRequest\032\034.e8.RejectInvitat"
+      "ionResponse\022P\n\021GetInvitationList\022\034.e8.Ge"
+      "tInvitationListRequest\032\035.e8.GetInvitatio"
+      "nListResponse\022D\n\rDeleteContact\022\030.e8.Dele"
+      "teContactRequest\032\031.e8.DeleteContactRespo"
+      "nse\022G\n\016GetContactList\022\031.e8.GetContactLis"
+      "tRequest\032\032.e8.GetContactListResponseb\006pr"
+      "oto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1574);
+      descriptor, 1484);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_socialnetwork.proto", &protobuf_RegisterTypes);
-  ::protobuf_pagination_2eproto::AddDescriptors();
   ::protobuf_user_5fprofile_2eproto::AddDescriptors();
   ::protobuf_user_5frelation_2eproto::AddDescriptors();
 }
@@ -2752,17 +2742,8 @@ void RejectInvitationResponse::InternalSwap(RejectInvitationResponse* other) {
 // ===================================================================
 
 void GetInvitationListRequest::InitAsDefaultInstance() {
-  ::e8::_GetInvitationListRequest_default_instance_._instance.get_mutable()->pagination_ = const_cast< ::e8::Pagination*>(
-      ::e8::Pagination::internal_default_instance());
-}
-void GetInvitationListRequest::clear_pagination() {
-  if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
-    delete pagination_;
-  }
-  pagination_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GetInvitationListRequest::kPaginationFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 GetInvitationListRequest::GetInvitationListRequest()
@@ -2776,16 +2757,10 @@ GetInvitationListRequest::GetInvitationListRequest(const GetInvitationListReques
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_pagination()) {
-    pagination_ = new ::e8::Pagination(*from.pagination_);
-  } else {
-    pagination_ = NULL;
-  }
   // @@protoc_insertion_point(copy_constructor:e8.GetInvitationListRequest)
 }
 
 void GetInvitationListRequest::SharedCtor() {
-  pagination_ = NULL;
 }
 
 GetInvitationListRequest::~GetInvitationListRequest() {
@@ -2794,7 +2769,6 @@ GetInvitationListRequest::~GetInvitationListRequest() {
 }
 
 void GetInvitationListRequest::SharedDtor() {
-  if (this != internal_default_instance()) delete pagination_;
 }
 
 void GetInvitationListRequest::SetCachedSize(int size) const {
@@ -2817,10 +2791,6 @@ void GetInvitationListRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
-    delete pagination_;
-  }
-  pagination_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -2833,29 +2803,12 @@ bool GetInvitationListRequest::MergePartialFromCodedStream(
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .e8.Pagination pagination = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_pagination()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
     }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:e8.GetInvitationListRequest)
@@ -2872,12 +2825,6 @@ void GetInvitationListRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.Pagination pagination = 1;
-  if (this->has_pagination()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->_internal_pagination(), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2891,13 +2838,6 @@ void GetInvitationListRequest::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:e8.GetInvitationListRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
-
-  // .e8.Pagination pagination = 1;
-  if (this->has_pagination()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->_internal_pagination(), deterministic, target);
-  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -2916,13 +2856,6 @@ size_t GetInvitationListRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .e8.Pagination pagination = 1;
-  if (this->has_pagination()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *pagination_);
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -2950,9 +2883,6 @@ void GetInvitationListRequest::MergeFrom(const GetInvitationListRequest& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_pagination()) {
-    mutable_pagination()->::e8::Pagination::MergeFrom(from.pagination());
-  }
 }
 
 void GetInvitationListRequest::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2979,7 +2909,6 @@ void GetInvitationListRequest::Swap(GetInvitationListRequest* other) {
 }
 void GetInvitationListRequest::InternalSwap(GetInvitationListRequest* other) {
   using std::swap;
-  swap(pagination_, other->pagination_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
@@ -3626,17 +3555,8 @@ void DeleteContactResponse::InternalSwap(DeleteContactResponse* other) {
 // ===================================================================
 
 void GetContactListRequest::InitAsDefaultInstance() {
-  ::e8::_GetContactListRequest_default_instance_._instance.get_mutable()->pagination_ = const_cast< ::e8::Pagination*>(
-      ::e8::Pagination::internal_default_instance());
-}
-void GetContactListRequest::clear_pagination() {
-  if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
-    delete pagination_;
-  }
-  pagination_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GetContactListRequest::kPaginationFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 GetContactListRequest::GetContactListRequest()
@@ -3650,16 +3570,10 @@ GetContactListRequest::GetContactListRequest(const GetContactListRequest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_pagination()) {
-    pagination_ = new ::e8::Pagination(*from.pagination_);
-  } else {
-    pagination_ = NULL;
-  }
   // @@protoc_insertion_point(copy_constructor:e8.GetContactListRequest)
 }
 
 void GetContactListRequest::SharedCtor() {
-  pagination_ = NULL;
 }
 
 GetContactListRequest::~GetContactListRequest() {
@@ -3668,7 +3582,6 @@ GetContactListRequest::~GetContactListRequest() {
 }
 
 void GetContactListRequest::SharedDtor() {
-  if (this != internal_default_instance()) delete pagination_;
 }
 
 void GetContactListRequest::SetCachedSize(int size) const {
@@ -3691,10 +3604,6 @@ void GetContactListRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
-    delete pagination_;
-  }
-  pagination_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -3707,29 +3616,12 @@ bool GetContactListRequest::MergePartialFromCodedStream(
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .e8.Pagination pagination = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_pagination()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
     }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:e8.GetContactListRequest)
@@ -3746,12 +3638,6 @@ void GetContactListRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.Pagination pagination = 1;
-  if (this->has_pagination()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->_internal_pagination(), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -3765,13 +3651,6 @@ void GetContactListRequest::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:e8.GetContactListRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
-
-  // .e8.Pagination pagination = 1;
-  if (this->has_pagination()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->_internal_pagination(), deterministic, target);
-  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -3790,13 +3669,6 @@ size_t GetContactListRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .e8.Pagination pagination = 1;
-  if (this->has_pagination()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *pagination_);
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -3824,9 +3696,6 @@ void GetContactListRequest::MergeFrom(const GetContactListRequest& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_pagination()) {
-    mutable_pagination()->::e8::Pagination::MergeFrom(from.pagination());
-  }
 }
 
 void GetContactListRequest::CopyFrom(const ::google::protobuf::Message& from) {
@@ -3853,7 +3722,6 @@ void GetContactListRequest::Swap(GetContactListRequest* other) {
 }
 void GetContactListRequest::InternalSwap(GetContactListRequest* other) {
   using std::swap;
-  swap(pagination_, other->pagination_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
