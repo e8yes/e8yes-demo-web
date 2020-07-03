@@ -1,5 +1,5 @@
 import subprocess
-
+from typing import List
 from script.config import NodeConfig
 from script.config import ClusterConfig
 from script.config import LoadSourceOfTruths
@@ -8,6 +8,7 @@ from script.run_bash_script import RunSingleCommandInNode
 from script.run_bash_script import UploadScriptToNode
 from script.run_bash_script import ToSingleLineString
 from script.refresh_host_keys import RefreshHostKeys
+from script.template_instantiator import TemplateInstantiator
 
 def InstallPackagesForNode(node_config: NodeConfig, script_file_path: str):
   RunScriptInNode(node=node_config, script_file_path=script_file_path)
@@ -37,7 +38,7 @@ def PrepareNodeForDockerRegistry(node: NodeConfig,
   RunSingleCommandInNode(node=node, command="sudo systemctl restart docker")
 
 def SetUpPostgresMasterNode(postgres_master: NodeConfig):
-  InstallPackagesForNode(node_config=postgres_node, 
+  InstallPackagesForNode(node_config=postgres_master, 
                          script_file_path="script/install_pkgs_for_db_node.sh")
   
   UploadScriptToNode(node=postgres_master,
@@ -56,13 +57,49 @@ def SetUpPostgresMasterNode(postgres_master: NodeConfig):
   RunSingleCommandInNode(node=postgres_master,
                          command="sudo systemctl restart postgresql")
 
-def SetUpLoadBalancerNode(load_balancer: NodeConfig):
+def DefineNginxCluster(cluster_nodes: List[NodeConfig], port: int):
+  defn = ""
+  for node in cluster_nodes:
+    defn += "server {0}:{1};\n\t\t".format(node.location, port)
+  return defn[:-3]
+
+
+def SetUpLoadBalancerNode(load_balancer: NodeConfig,
+                          cluster_nodes: List[NodeConfig],
+                          instantiator: TemplateInstantiator):
   InstallPackagesForNode(node_config=load_balancer, 
                          script_file_path="script/install_pkgs_for_load_balancer_node.sh")
 
+  web_frontend_cluster = DefineNginxCluster(cluster_nodes=cluster_nodes, port=8080)
+  grpcweb_cluster = DefineNginxCluster(cluster_nodes=cluster_nodes, port=8000)
+  instantiator.AddVar("{{demoweb_web_frontend_cluster}}", web_frontend_cluster)
+  instantiator.AddVar("{{demoweb_grpcweb_service_cluster}}", grpcweb_cluster)
+
+  instantiator.Instantiate(template_file_path="script/nginx.conf.tmpl", 
+                           target_node=None)
+  
+  UploadScriptToNode(node=load_balancer,
+                     script_file_path="script/nginx.conf")
+  RunSingleCommandInNode(node=load_balancer,
+                         command="sudo mv nginx.conf /etc/nginx/nginx.conf")     
+  subprocess.call(["rm", "script/nginx.conf"])       
+
+  UploadScriptToNode(node=load_balancer,
+                     script_file_path="script/nginx_default.conf")
+  RunSingleCommandInNode(node=load_balancer,
+                         command="sudo mv nginx_default.conf /etc/nginx/sites-available/default")
+
+  RunSingleCommandInNode(node=load_balancer,
+                         command="sudo systemctl restart nginx")
+  
+
 if __name__ == "__main__":
-  node_configs, cluster_config, _ = LoadSourceOfTruths(
+  node_configs, cluster_config, build_targets = LoadSourceOfTruths(
     config_file_path="source_of_truths.json")
+  
+  instantiator = TemplateInstantiator(cluster_config, 
+                                      node_configs,
+                                      build_targets)
 
   print("Refreshing host keys...")
   RefreshHostKeys(node_configs.values())
@@ -74,7 +111,9 @@ if __name__ == "__main__":
   
   print("Setting up the load balancer...")
   load_balancer_node = node_configs[cluster_config.load_balancer]
-  SetUpLoadBalancerNode(load_balancer=load_balancer_node)
+  SetUpLoadBalancerNode(load_balancer=load_balancer_node,
+                        cluster_nodes=node_configs.values(),
+                        instantiator=instantiator)
 
   print("Setting up the postgres master...")
   postgres_node = node_configs[cluster_config.postgres_citus_master]

@@ -58,12 +58,15 @@ class TemplateInstantiator:
                 build_targets: List[BuildTarget]):
     self.vars_ = BuildVars(cluster_config, node_configs, build_targets)
   
+  def AddVar(self, name: str, value: str) -> None:
+    self.vars_[name] = value
+
   def __ReadTemplateFile(self, 
                          template_file_path: str, 
                          target_node: NodeConfig):
     if target_node is None:
       with open(template_file_path, "r") as template_file:
-        return template_file.read().decode("utf-8")
+        return template_file.read()
       assert(False)
     else:
       content = RunSingleCommandInNode(
