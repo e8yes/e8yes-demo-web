@@ -22,7 +22,7 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
-#include "demoweb_service/demoweb/module_identity/user_profile.h"
+#include "demoweb_service/demoweb/module_profile/user_profile.h"
 #include "demoweb_service/demoweb/module_socialnetwork/contact_invitation.h"
 #include "demoweb_service/demoweb/module_socialnetwork/retrieve_contact.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"

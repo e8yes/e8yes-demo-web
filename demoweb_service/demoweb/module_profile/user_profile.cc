@@ -29,7 +29,7 @@
 #include "demoweb_service/demoweb/constant/file_path.h"
 #include "demoweb_service/demoweb/module_file/file_metadata.h"
 #include "demoweb_service/demoweb/module_file/file_util.h"
-#include "demoweb_service/demoweb/module_identity/user_profile.h"
+#include "demoweb_service/demoweb/module_profile/user_profile.h"
 #include "demoweb_service/demoweb/module_rbac/file_access_validator.h"
 #include "demoweb_service/demoweb/module_socialnetwork/retrieve_contact.h"
 #include "demoweb_service/demoweb/proto_cc/file.pb.h"

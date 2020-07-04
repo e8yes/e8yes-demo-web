@@ -26,7 +26,7 @@ HEADERS += \
     module_identity/create_user.h \
     module_identity/retrieve_user.h \
     module_identity/user_identity.h \
-    module_identity/user_profile.h \
+    module_profile/user_profile.h \
     module_file/file_io.h \
     module_file/file_metadata.h \
     module_rbac/file_access_validator.h \
@@ -82,7 +82,7 @@ SOURCES += \
     environment/host_id.cc \
     environment/prod_environment_context.cc \
     module_identity/user_identity.cc \
-    module_identity/user_profile.cc \
+    module_profile/user_profile.cc \
     module_file/file_io.cc \
     module_file/file_metadata.cc \
     module_rbac/file_access_validator.cc \

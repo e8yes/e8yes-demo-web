@@ -27,7 +27,7 @@
 #include "demoweb_service/demoweb/module_identity/create_user.h"
 #include "demoweb_service/demoweb/module_identity/retrieve_user.h"
 #include "demoweb_service/demoweb/module_identity/user_identity.h"
-#include "demoweb_service/demoweb/module_identity/user_profile.h"
+#include "demoweb_service/demoweb/module_profile/user_profile.h"
 #include "demoweb_service/demoweb/service/service_util.h"
 #include "demoweb_service/demoweb/service/user_service.h"
 
