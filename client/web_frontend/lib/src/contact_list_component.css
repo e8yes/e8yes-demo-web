@@ -20,8 +20,14 @@
 
 .contact-list {
     position: absolute;
+    width: 90%;
     margin-top: 2em;
     margin-left: 1em;
+}
+
+.section {
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .user-relation-status {

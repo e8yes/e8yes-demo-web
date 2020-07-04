@@ -27,4 +27,14 @@ class SocialNetworkServiceImpl implements SocialNetworkServiceInterface {
     demowebServiceConnections.put(channel);
     return res;
   }
+
+  Future<GetInvitationListResponse> getInvitationList(
+      GetInvitationListRequest request, String signature) async {
+    GrpcWebClientChannel channel = demowebServiceConnections.take();
+    GetInvitationListResponse res = await SocialNetworkServiceClient(channel)
+        .getInvitationList(request,
+            options: CallOptions(metadata: {'a': signature}));
+    demowebServiceConnections.put(channel);
+    return res;
+  }
 }

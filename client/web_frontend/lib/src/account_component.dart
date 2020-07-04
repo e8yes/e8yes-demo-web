@@ -2,7 +2,6 @@ import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:demoweb_app/src/context.dart';
 import 'package:demoweb_app/src/profile_component.dart';
-import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pbgrpc.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pbgrpc.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
@@ -28,14 +27,13 @@ class AccountComponent implements OnActivate {
 
   void _fetchAccountProfile(Int64 accountUserId) {
     String viewerSignature = credentialStorage.loadSignature();
-      GetPublicProfileRequest req = GetPublicProfileRequest();
-      req.userId = accountUserId;
-      _user_service
-          .getPublicProfile(req, viewerSignature)
-          .then((GetPublicProfileResponse res) {
-        profile = res.profile;
-        print(profile.relations);
-      });
+    GetPublicProfileRequest req = GetPublicProfileRequest();
+    req.userId = accountUserId;
+    _user_service
+        .getPublicProfile(req, viewerSignature)
+        .then((GetPublicProfileResponse res) {
+      profile = res.profile;
+    });
   }
 
   @override
@@ -55,20 +53,18 @@ class AccountComponent implements OnActivate {
     SendInvitationRequest req = SendInvitationRequest();
     req.inviteeUserId = _accountUserId;
     String viewerSignature = credentialStorage.loadSignature();
-    _social_network_service.sendInvitation(req, viewerSignature)
-    .then((SendInvitationResponse res) {
+    _social_network_service
+        .sendInvitation(req, viewerSignature)
+        .then((SendInvitationResponse res) {
       _fetchAccountProfile(_accountUserId);
     });
   }
 
-  void onClickConfirmContact() {
-  }
+  void onClickConfirmContact() {}
 
-  void onClickRejectContact() {
-  }
+  void onClickRejectContact() {}
 
-  void onClickDeleteContact() {
-  }
+  void onClickDeleteContact() {}
 
   bool owner() {
     return _accountUserId == identityStorage.loadUserId();
@@ -89,7 +85,6 @@ class AccountComponent implements OnActivate {
   }
 
   bool contactMode() {
-    return !owner() &&
-        profile.relations.contains(UserRelation.URL_CONTACT);
+    return !owner() && profile.relations.contains(UserRelation.URL_CONTACT);
   }
 }

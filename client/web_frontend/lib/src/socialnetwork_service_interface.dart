@@ -8,4 +8,7 @@ abstract class SocialNetworkServiceInterface {
 
   Future<SendInvitationResponse> sendInvitation(
       SendInvitationRequest request, String signature);
+
+  Future<GetInvitationListResponse> getInvitationList(
+      GetInvitationListRequest request, String signature);
 }

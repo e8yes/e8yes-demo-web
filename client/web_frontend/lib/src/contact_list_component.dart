@@ -6,10 +6,12 @@ import 'package:angular_router/angular_router.dart';
 import 'package:demoweb_app/src/context.dart';
 import 'package:demoweb_app/src/proto_dart/pagination.pbserver.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
+import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_relation.pb.dart';
 import 'package:demoweb_app/src/route_paths.dart';
+import 'package:demoweb_app/src/socialnetwork_service_interface.dart';
 import 'package:demoweb_app/src/sync_search_result.dart';
 import 'package:demoweb_app/src/user_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
@@ -20,18 +22,31 @@ import 'package:fixnum/fixnum.dart';
   styleUrls: ["contact_list_component.css"],
   directives: [coreDirectives, formDirectives],
 )
-class ContactListComponent {
-  List<UserPublicProfile> profiles = List<UserPublicProfile>();
-  UserPublicProfile selectedUser;
+class ContactListComponent implements OnActivate {
+  List<UserPublicProfile> searchedProfiles = List<UserPublicProfile>();
+  List<UserPublicProfile> inviterProfiles = List<UserPublicProfile>();
+  List<UserPublicProfile> contactProfiles = List<UserPublicProfile>();
 
   static const int _kResultPerPage = 20;
   final UserServiceInterface _user_service;
+  final SocialNetworkServiceInterface _social_network_service;
   final Router _router;
 
   SearchResultSync<SearchUserResponse> _searchSync =
       SearchResultSync<SearchUserResponse>();
 
-  ContactListComponent(this._user_service, this._router);
+  ContactListComponent(
+      this._user_service, this._social_network_service, this._router);
+
+  @override
+  void onActivate(_, RouterState current) async {
+    _social_network_service
+        .getInvitationList(
+            GetInvitationListRequest(), credentialStorage.loadSignature())
+        .then((GetInvitationListResponse res) {
+      inviterProfiles = res.userProfiles;
+    });
+  }
 
   void onKeyDownSearchContact(String searchInput) {
     SearchUserRequest req = SearchUserRequest();
@@ -49,7 +64,7 @@ class ContactListComponent {
     Future<SearchUserResponse> currentSearchFuture =
         _user_service.search(req, viewerSignature);
     _searchSync.takeLatestFuture(currentSearchFuture, (SearchUserResponse res) {
-      profiles = res.userProfiles;
+      searchedProfiles = res.userProfiles;
     });
   }
 
@@ -57,7 +72,7 @@ class ContactListComponent {
     return RoutePaths.account.toUrl(parameters: {kIdPathVariable: "$userId"});
   }
 
-  void onSelectSearchedContact(UserPublicProfile userProfile) {
+  void onSelectUserDetails(UserPublicProfile userProfile) {
     _router.navigate(_accountDetailsUrl(userProfile.userId));
   }
 

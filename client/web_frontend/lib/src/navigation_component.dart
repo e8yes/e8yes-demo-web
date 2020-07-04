@@ -26,8 +26,7 @@ class NavigationComponent {
     return !identityStorage.hasIdentity();
   }
 
-  void onClickSyncAccount() {
-  }
+  void onClickSyncAccount() {}
 
   void onClickAccount() {
     expandAccountMenu = !expandAccountMenu;

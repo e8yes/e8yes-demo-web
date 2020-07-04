@@ -6,13 +6,34 @@
 </div>
 
 <div class="contact-list ">
-  My contacts
+  <div *ngIf="!inviterProfiles.isEmpty" class="section">
+    <h4>Invitations</h4>
+    <ul class="list-group">
+      <li *ngFor="let profile of inviterProfiles"
+          (click)="onSelectUserDetails(profile)"
+          class="list-group-item">
+        <span>{{profile.userId}}</span>
+        <span *ngIf="profile.hasAlias()">
+          ({{profile.alias.value}})
+        </span>
+        <span *ngIf="!profile.hasAlias()">
+          (no alias)
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="section">
+    <h4>Contacts</h4>
+    <label *ngIf="contactProfiles.isEmpty" class="col-form-label">
+      You don't have any contact.
+    </label>
+  </div>
 </div>
 
 <ul class="list-group stack-search-list">
-  <li *ngFor="let profile of profiles"
-    [class.selected]="profile === selectedUser"
-    (click)="onSelectSearchedContact(profile)" class="list-group-item">
+  <li *ngFor="let profile of searchedProfiles"
+      (click)="onSelectUserDetails(profile)"
+      class="list-group-item">
     <span>{{profile.userId}}</span>
     <span *ngIf="profile.hasAlias()">
       ({{profile.alias.value}})
