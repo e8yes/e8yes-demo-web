@@ -50,11 +50,13 @@ class ContactListComponent implements OnActivate {
 
   void onKeyDownSearchContact(String searchInput) {
     SearchUserRequest req = SearchUserRequest();
-    req.alias = (NullableString()..value = searchInput);
-    try {
-      Int64 userIdSearchPrefix = Int64.parseInt(searchInput);
-      req.userId = (NullableInt64()..value = userIdSearchPrefix);
-    } catch (err) {}
+    if (searchInput.isNotEmpty) {
+      req.alias = (NullableString()..value = searchInput);
+      try {
+        Int64 userIdSearchPrefix = Int64.parseInt(searchInput);
+        req.userId = (NullableInt64()..value = userIdSearchPrefix);
+      } catch (err) {}
+    }
     Pagination pagination = Pagination();
     pagination.resultPerPage = _kResultPerPage;
     pagination.pageNumber = 0;
