@@ -201,6 +201,12 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::int64 user_id() const;
   void set_user_id(::google::protobuf::int64 value);
 
+  // int64 join_at = 6;
+  void clear_join_at();
+  static const int kJoinAtFieldNumber = 6;
+  ::google::protobuf::int64 join_at() const;
+  void set_join_at(::google::protobuf::int64 value);
+
   // @@protoc_insertion_point(class_scope:e8.UserPublicProfile)
  private:
 
@@ -211,6 +217,7 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
   ::e8::FileTokenAccess* avatar_readonly_access_;
   ::e8::FileTokenAccess* avatar_preview_readonly_access_;
   ::google::protobuf::int64 user_id_;
+  ::google::protobuf::int64 join_at_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_user_5fprofile_2eproto::TableStruct;
 };
@@ -411,6 +418,20 @@ inline ::google::protobuf::RepeatedField<int>*
 UserPublicProfile::mutable_relations() {
   // @@protoc_insertion_point(field_mutable_list:e8.UserPublicProfile.relations)
   return &relations_;
+}
+
+// int64 join_at = 6;
+inline void UserPublicProfile::clear_join_at() {
+  join_at_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 UserPublicProfile::join_at() const {
+  // @@protoc_insertion_point(field_get:e8.UserPublicProfile.join_at)
+  return join_at_;
+}
+inline void UserPublicProfile::set_join_at(::google::protobuf::int64 value) {
+  
+  join_at_ = value;
+  // @@protoc_insertion_point(field_set:e8.UserPublicProfile.join_at)
 }
 
 #ifdef __GNUC__

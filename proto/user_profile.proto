@@ -29,4 +29,5 @@ message UserPublicProfile {
     FileTokenAccess avatar_readonly_access = 3;
     FileTokenAccess avatar_preview_readonly_access = 4;
     repeated UserRelation relations = 5;
+    int64 join_at = 6;
 }

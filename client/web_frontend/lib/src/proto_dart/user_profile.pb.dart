@@ -22,6 +22,7 @@ class UserPublicProfile extends $pb.GeneratedMessage {
     ..aOM<$6.FileTokenAccess>(3, 'avatarReadonlyAccess', subBuilder: $6.FileTokenAccess.create)
     ..aOM<$6.FileTokenAccess>(4, 'avatarPreviewReadonlyAccess', subBuilder: $6.FileTokenAccess.create)
     ..pc<$7.UserRelation>(5, 'relations', $pb.PbFieldType.PE, valueOf: $7.UserRelation.valueOf, enumValues: $7.UserRelation.values)
+    ..aInt64(6, 'joinAt')
     ..hasRequiredFields = false
   ;
 
@@ -84,5 +85,14 @@ class UserPublicProfile extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(5)
   $core.List<$7.UserRelation> get relations => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $fixnum.Int64 get joinAt => $_getI64(5);
+  @$pb.TagNumber(6)
+  set joinAt($fixnum.Int64 v) { $_setInt64(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasJoinAt() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearJoinAt() => clearField(6);
 }
 

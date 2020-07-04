@@ -67,6 +67,8 @@ UserPublicProfile BuildPublicProfile(UserEntity const &user, std::vector<UserRel
                                      KeyGeneratorInterface *key_gen) {
     UserPublicProfile profile;
     profile.set_user_id(user.id.value().value());
+    assert(user.created_at.value().has_value());
+    profile.set_join_at(user.created_at.value().value());
     *profile.mutable_relations() = {relations.begin(), relations.end()};
 
     if (user.alias.value().has_value()) {

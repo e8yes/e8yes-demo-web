@@ -66,6 +66,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, avatar_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, avatar_preview_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, relations_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, join_at_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::UserPublicProfile)},
@@ -98,15 +99,16 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\022user_profile.proto\022\002e8\032\nfile.proto\032\031nu"
       "llable_primitives.proto\032\023user_relation.p"
-      "roto\"\336\001\n\021UserPublicProfile\022\017\n\007user_id\030\001 "
+      "roto\"\357\001\n\021UserPublicProfile\022\017\n\007user_id\030\001 "
       "\001(\003\022!\n\005alias\030\002 \001(\0132\022.e8.NullableString\0223"
       "\n\026avatar_readonly_access\030\003 \001(\0132\023.e8.File"
       "TokenAccess\022;\n\036avatar_preview_readonly_a"
       "ccess\030\004 \001(\0132\023.e8.FileTokenAccess\022#\n\trela"
-      "tions\030\005 \003(\0162\020.e8.UserRelationb\006proto3"
+      "tions\030\005 \003(\0162\020.e8.UserRelation\022\017\n\007join_at"
+      "\030\006 \001(\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 317);
+      descriptor, 334);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user_profile.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -161,6 +163,7 @@ const int UserPublicProfile::kAliasFieldNumber;
 const int UserPublicProfile::kAvatarReadonlyAccessFieldNumber;
 const int UserPublicProfile::kAvatarPreviewReadonlyAccessFieldNumber;
 const int UserPublicProfile::kRelationsFieldNumber;
+const int UserPublicProfile::kJoinAtFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 UserPublicProfile::UserPublicProfile()
@@ -190,14 +193,16 @@ UserPublicProfile::UserPublicProfile(const UserPublicProfile& from)
   } else {
     avatar_preview_readonly_access_ = NULL;
   }
-  user_id_ = from.user_id_;
+  ::memcpy(&user_id_, &from.user_id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&join_at_) -
+    reinterpret_cast<char*>(&user_id_)) + sizeof(join_at_));
   // @@protoc_insertion_point(copy_constructor:e8.UserPublicProfile)
 }
 
 void UserPublicProfile::SharedCtor() {
   ::memset(&alias_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&user_id_) -
-      reinterpret_cast<char*>(&alias_)) + sizeof(user_id_));
+      reinterpret_cast<char*>(&join_at_) -
+      reinterpret_cast<char*>(&alias_)) + sizeof(join_at_));
 }
 
 UserPublicProfile::~UserPublicProfile() {
@@ -244,7 +249,9 @@ void UserPublicProfile::Clear() {
     delete avatar_preview_readonly_access_;
   }
   avatar_preview_readonly_access_ = NULL;
-  user_id_ = GOOGLE_LONGLONG(0);
+  ::memset(&user_id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&join_at_) -
+      reinterpret_cast<char*>(&user_id_)) + sizeof(join_at_));
   _internal_metadata_.Clear();
 }
 
@@ -337,6 +344,20 @@ bool UserPublicProfile::MergePartialFromCodedStream(
         break;
       }
 
+      // int64 join_at = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &join_at_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -400,6 +421,11 @@ void UserPublicProfile::SerializeWithCachedSizes(
       this->relations(i), output);
   }
 
+  // int64 join_at = 6;
+  if (this->join_at() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->join_at(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -450,6 +476,11 @@ void UserPublicProfile::SerializeWithCachedSizes(
             _relations_cached_byte_size_), target);
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumNoTagToArray(
       this->relations_, target);
+  }
+
+  // int64 join_at = 6;
+  if (this->join_at() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->join_at(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -516,6 +547,13 @@ size_t UserPublicProfile::ByteSizeLong() const {
         this->user_id());
   }
 
+  // int64 join_at = 6;
+  if (this->join_at() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->join_at());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -556,6 +594,9 @@ void UserPublicProfile::MergeFrom(const UserPublicProfile& from) {
   if (from.user_id() != 0) {
     set_user_id(from.user_id());
   }
+  if (from.join_at() != 0) {
+    set_join_at(from.join_at());
+  }
 }
 
 void UserPublicProfile::CopyFrom(const ::google::protobuf::Message& from) {
@@ -587,6 +628,7 @@ void UserPublicProfile::InternalSwap(UserPublicProfile* other) {
   swap(avatar_readonly_access_, other->avatar_readonly_access_);
   swap(avatar_preview_readonly_access_, other->avatar_preview_readonly_access_);
   swap(user_id_, other->user_id_);
+  swap(join_at_, other->join_at_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
