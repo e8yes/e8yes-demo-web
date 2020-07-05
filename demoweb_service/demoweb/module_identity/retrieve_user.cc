@@ -49,13 +49,23 @@ std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterf
     return std::get<0>(results[0]);
 }
 
-std::vector<UserEntity> SearchUser(std::optional<UserId> const &user_id_prefix,
+std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
+                                   std::optional<UserId> const &user_id_prefix,
                                    std::optional<std::string> const &alias_prefix,
                                    Pagination const &pagination,
                                    ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     query.query_piece(TableNames::AUser());
-    query.query_piece(" u WHERE FALSE");
+    query.query_piece(" u");
+
+    if (viewer_id.has_value()) {
+        query.query_piece(" LEFT JOIN ");
+        query.query_piece(TableNames::ContactRelation());
+        query.query_piece(" cr ON cr.src_user_id=" + std::to_string(*viewer_id));
+        query.query_piece(" AND cr.dst_user_id=u.id");
+    }
+
+    query.query_piece(" WHERE FALSE");
 
     SqlStr user_id_prefix_ph_value("", "");
     if (user_id_prefix.has_value()) {
@@ -75,7 +85,11 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &user_id_prefix,
         query.set_value_to_placeholder(alias_prefix_ph, &alias_prefix_ph_value);
     }
 
-    query.query_piece(" ORDER BY u.id ASC");
+    if (viewer_id.has_value()) {
+        query.query_piece(" ORDER BY cr.last_interaction_at DESC, u.alias ASC, u.id ASC");
+    } else {
+        query.query_piece(" ORDER BY u.alias ASC, u.id ASC");
+    }
 
     SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
     SqlQueryBuilder::Placeholder<SqlInt> offset_ph;

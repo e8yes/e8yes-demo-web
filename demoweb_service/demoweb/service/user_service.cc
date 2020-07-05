@@ -140,26 +140,23 @@ grpc::Status UserServiceImpl::Search(grpc::ServerContext *context, SearchUserReq
         return status;
     }
 
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!status.ok()) {
+        return status;
+    }
+
     std::optional<UserId> user_id_prefix =
         request->has_user_id() ? std::optional<UserId>(request->user_id().value()) : std::nullopt;
     std::optional<std::string> alias_prefix =
         request->has_alias() ? std::optional<std::string>(request->alias().value()) : std::nullopt;
 
     std::vector<UserEntity> user_entities =
-        SearchUser(user_id_prefix, alias_prefix, request->pagination(),
+        SearchUser(identity.value().user_id(), user_id_prefix, alias_prefix, request->pagination(),
                    CurrentEnvironment()->DemowebDatabase());
 
-    std::vector<UserPublicProfile> profiles;
-    std::optional<Identity> identity = ExtractIdentityFromContext(*context, nullptr);
-    if (identity.has_value()) {
-        profiles = BuildPublicProfiles(identity.value().user_id(), user_entities,
-                                       CurrentEnvironment()->KeyGen(),
-                                       CurrentEnvironment()->DemowebDatabase());
-    } else {
-        profiles = BuildPublicProfiles(std::optional<UserId>(), user_entities,
-                                       CurrentEnvironment()->KeyGen(),
-                                       CurrentEnvironment()->DemowebDatabase());
-    }
+    std::vector<UserPublicProfile> profiles =
+        BuildPublicProfiles(identity->user_id(), user_entities, CurrentEnvironment()->KeyGen(),
+                            CurrentEnvironment()->DemowebDatabase());
 
     *response->mutable_user_profiles() = {profiles.begin(), profiles.end()};
     return grpc::Status::OK;
