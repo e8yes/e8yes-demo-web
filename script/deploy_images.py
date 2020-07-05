@@ -16,6 +16,23 @@ def DeployImages(deployment_node: NodeConfig,
                  targets: List[BuildTarget], 
                  nodes: List[NodeConfig]) -> None:
   for node in nodes:
+    print("Killing running containers...")
+    RunSingleCommandInNode(
+      node=node,
+      command="sudo docker kill `sudo docker container ls -q -a`")
+
+    print("Removing running containers...")
+    RunSingleCommandInNode(
+      node=node,
+      command="sudo docker rm `sudo docker container ls -q -a`")
+    
+    # Starting the registry back. TODO: Avoid this hack.
+    if node.name == deployment_node.name:
+      RunSingleCommandInNode(
+        node=node, 
+        command="sudo docker run -d -p {0}:{0} --restart=always --name=registry registry:latest"
+          .format(docker_registry_port))
+
     for target in targets:
       if not target.pushable:
         continue
@@ -28,23 +45,6 @@ def DeployImages(deployment_node: NodeConfig,
       RunSingleCommandInNode(
         node=node,
         command="sudo docker pull {0}:latest".format(image_name))
-      
-      print("Killing running containers...")
-      RunSingleCommandInNode(
-        node=node,
-        command="sudo docker kill `sudo docker container ls -q -a`")
-
-      print("Removing running containers...")
-      RunSingleCommandInNode(
-        node=node,
-        command="sudo docker rm `sudo docker container ls -q -a`")
-      
-      # Starting the registry back. TODO: Avoid this hack.
-      if node.name == deployment_node.name:
-          RunSingleCommandInNode(
-            node=node, 
-            command="sudo docker run -d -p {0}:{0} --restart=always --name=registry registry:latest"
-              .format(docker_registry_port))
 
       print("Running image", image_name, "in node", node)
       RunSingleCommandInNode(
