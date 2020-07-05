@@ -20,21 +20,56 @@
 // @@protoc_insertion_point(includes)
 
 namespace e8 {
+class UserRelationRecordDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<UserRelationRecord>
+      _instance;
+} _UserRelationRecord_default_instance_;
 }  // namespace e8
 namespace protobuf_user_5frelation_2eproto {
-void InitDefaults() {
+static void InitDefaultsUserRelationRecord() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_UserRelationRecord_default_instance_;
+    new (ptr) ::e8::UserRelationRecord();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::e8::UserRelationRecord::InitAsDefaultInstance();
 }
 
+::google::protobuf::internal::SCCInfo<0> scc_info_UserRelationRecord =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsUserRelationRecord}, {}};
+
+void InitDefaults() {
+  ::google::protobuf::internal::InitSCC(&scc_info_UserRelationRecord.base);
+}
+
+::google::protobuf::Metadata file_level_metadata[1];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
-const ::google::protobuf::uint32 TableStruct::offsets[1] = {};
-static const ::google::protobuf::internal::MigrationSchema* schemas = NULL;
-static const ::google::protobuf::Message* const* file_default_instances = NULL;
+
+const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserRelationRecord, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserRelationRecord, relation_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserRelationRecord, created_at_),
+};
+static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  { 0, -1, sizeof(::e8::UserRelationRecord)},
+};
+
+static ::google::protobuf::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_UserRelationRecord_default_instance_),
+};
 
 void protobuf_AssignDescriptors() {
   AddDescriptors();
   AssignDescriptors(
       "user_relation.proto", schemas, file_default_instances, TableStruct::offsets,
-      NULL, file_level_enum_descriptors, NULL);
+      file_level_metadata, file_level_enum_descriptors, NULL);
 }
 
 void protobuf_AssignDescriptorsOnce() {
@@ -45,19 +80,22 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\023user_relation.proto\022\002e8*\213\001\n\014UserRelati"
-      "on\022\021\n\rURL_UNRELATED\020\000\022\027\n\023URL_INVITATION_"
-      "SENT\020\001\022\033\n\027URL_INVITATION_RECEIVED\020\002\022\017\n\013U"
-      "RL_CONTACT\020\003\022\020\n\014URL_BLOCKING\020\004\022\017\n\013URL_BL"
-      "OCKED\020\005b\006proto3"
+      "\n\023user_relation.proto\022\002e8\"L\n\022UserRelatio"
+      "nRecord\022\"\n\010relation\030\001 \001(\0162\020.e8.UserRelat"
+      "ion\022\022\n\ncreated_at\030\002 \001(\003*\213\001\n\014UserRelation"
+      "\022\021\n\rURL_UNRELATED\020\000\022\027\n\023URL_INVITATION_SE"
+      "NT\020\001\022\033\n\027URL_INVITATION_RECEIVED\020\002\022\017\n\013URL"
+      "_CONTACT\020\003\022\020\n\014URL_BLOCKING\020\004\022\017\n\013URL_BLOC"
+      "KED\020\005b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 175);
+      descriptor, 253);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user_relation.proto", &protobuf_RegisterTypes);
 }
@@ -93,10 +131,280 @@ bool UserRelation_IsValid(int value) {
 }
 
 
+// ===================================================================
+
+void UserRelationRecord::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int UserRelationRecord::kRelationFieldNumber;
+const int UserRelationRecord::kCreatedAtFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+UserRelationRecord::UserRelationRecord()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_user_5frelation_2eproto::scc_info_UserRelationRecord.base);
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:e8.UserRelationRecord)
+}
+UserRelationRecord::UserRelationRecord(const UserRelationRecord& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&created_at_, &from.created_at_,
+    static_cast<size_t>(reinterpret_cast<char*>(&relation_) -
+    reinterpret_cast<char*>(&created_at_)) + sizeof(relation_));
+  // @@protoc_insertion_point(copy_constructor:e8.UserRelationRecord)
+}
+
+void UserRelationRecord::SharedCtor() {
+  ::memset(&created_at_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&relation_) -
+      reinterpret_cast<char*>(&created_at_)) + sizeof(relation_));
+}
+
+UserRelationRecord::~UserRelationRecord() {
+  // @@protoc_insertion_point(destructor:e8.UserRelationRecord)
+  SharedDtor();
+}
+
+void UserRelationRecord::SharedDtor() {
+}
+
+void UserRelationRecord::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ::google::protobuf::Descriptor* UserRelationRecord::descriptor() {
+  ::protobuf_user_5frelation_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_user_5frelation_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const UserRelationRecord& UserRelationRecord::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_user_5frelation_2eproto::scc_info_UserRelationRecord.base);
+  return *internal_default_instance();
+}
+
+
+void UserRelationRecord::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.UserRelationRecord)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&created_at_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&relation_) -
+      reinterpret_cast<char*>(&created_at_)) + sizeof(relation_));
+  _internal_metadata_.Clear();
+}
+
+bool UserRelationRecord::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:e8.UserRelationRecord)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .e8.UserRelation relation = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_relation(static_cast< ::e8::UserRelation >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 created_at = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &created_at_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:e8.UserRelationRecord)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:e8.UserRelationRecord)
+  return false;
+#undef DO_
+}
+
+void UserRelationRecord::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:e8.UserRelationRecord)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .e8.UserRelation relation = 1;
+  if (this->relation() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->relation(), output);
+  }
+
+  // int64 created_at = 2;
+  if (this->created_at() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->created_at(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:e8.UserRelationRecord)
+}
+
+::google::protobuf::uint8* UserRelationRecord::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:e8.UserRelationRecord)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .e8.UserRelation relation = 1;
+  if (this->relation() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->relation(), target);
+  }
+
+  // int64 created_at = 2;
+  if (this->created_at() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->created_at(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:e8.UserRelationRecord)
+  return target;
+}
+
+size_t UserRelationRecord::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.UserRelationRecord)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // int64 created_at = 2;
+  if (this->created_at() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->created_at());
+  }
+
+  // .e8.UserRelation relation = 1;
+  if (this->relation() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->relation());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void UserRelationRecord::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.UserRelationRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  const UserRelationRecord* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const UserRelationRecord>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.UserRelationRecord)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.UserRelationRecord)
+    MergeFrom(*source);
+  }
+}
+
+void UserRelationRecord::MergeFrom(const UserRelationRecord& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.UserRelationRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.created_at() != 0) {
+    set_created_at(from.created_at());
+  }
+  if (from.relation() != 0) {
+    set_relation(from.relation());
+  }
+}
+
+void UserRelationRecord::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.UserRelationRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void UserRelationRecord::CopyFrom(const UserRelationRecord& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.UserRelationRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UserRelationRecord::IsInitialized() const {
+  return true;
+}
+
+void UserRelationRecord::Swap(UserRelationRecord* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void UserRelationRecord::InternalSwap(UserRelationRecord* other) {
+  using std::swap;
+  swap(created_at_, other->created_at_);
+  swap(relation_, other->relation_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+}
+
+::google::protobuf::Metadata UserRelationRecord::GetMetadata() const {
+  protobuf_user_5frelation_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_user_5frelation_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace e8
 namespace google {
 namespace protobuf {
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::UserRelationRecord* Arena::CreateMaybeMessage< ::e8::UserRelationRecord >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::UserRelationRecord >(arena);
+}
 }  // namespace protobuf
 }  // namespace google
 

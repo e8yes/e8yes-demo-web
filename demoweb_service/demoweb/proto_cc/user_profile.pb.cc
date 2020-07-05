@@ -25,6 +25,9 @@ extern PROTOBUF_INTERNAL_EXPORT_protobuf_file_2eproto ::google::protobuf::intern
 namespace protobuf_nullable_5fprimitives_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableString;
 }  // namespace protobuf_nullable_5fprimitives_2eproto
+namespace protobuf_user_5frelation_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_user_5frelation_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_UserRelationRecord;
+}  // namespace protobuf_user_5frelation_2eproto
 namespace e8 {
 class UserPublicProfileDefaultTypeInternal {
  public:
@@ -44,10 +47,11 @@ static void InitDefaultsUserPublicProfile() {
   ::e8::UserPublicProfile::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<2> scc_info_UserPublicProfile =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsUserPublicProfile}, {
+::google::protobuf::internal::SCCInfo<3> scc_info_UserPublicProfile =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 3, InitDefaultsUserPublicProfile}, {
       &protobuf_nullable_5fprimitives_2eproto::scc_info_NullableString.base,
-      &protobuf_file_2eproto::scc_info_FileTokenAccess.base,}};
+      &protobuf_file_2eproto::scc_info_FileTokenAccess.base,
+      &protobuf_user_5frelation_2eproto::scc_info_UserRelationRecord.base,}};
 
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_UserPublicProfile.base);
@@ -99,16 +103,16 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\022user_profile.proto\022\002e8\032\nfile.proto\032\031nu"
       "llable_primitives.proto\032\023user_relation.p"
-      "roto\"\357\001\n\021UserPublicProfile\022\017\n\007user_id\030\001 "
+      "roto\"\365\001\n\021UserPublicProfile\022\017\n\007user_id\030\001 "
       "\001(\003\022!\n\005alias\030\002 \001(\0132\022.e8.NullableString\0223"
       "\n\026avatar_readonly_access\030\003 \001(\0132\023.e8.File"
       "TokenAccess\022;\n\036avatar_preview_readonly_a"
-      "ccess\030\004 \001(\0132\023.e8.FileTokenAccess\022#\n\trela"
-      "tions\030\005 \003(\0162\020.e8.UserRelation\022\017\n\007join_at"
-      "\030\006 \001(\003b\006proto3"
+      "ccess\030\004 \001(\0132\023.e8.FileTokenAccess\022)\n\trela"
+      "tions\030\005 \003(\0132\026.e8.UserRelationRecord\022\017\n\007j"
+      "oin_at\030\006 \001(\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 334);
+      descriptor, 340);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user_profile.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -156,6 +160,9 @@ void UserPublicProfile::clear_avatar_preview_readonly_access() {
     delete avatar_preview_readonly_access_;
   }
   avatar_preview_readonly_access_ = NULL;
+}
+void UserPublicProfile::clear_relations() {
+  relations_.Clear();
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int UserPublicProfile::kUserIdFieldNumber;
@@ -315,29 +322,12 @@ bool UserPublicProfile::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .e8.UserRelation relations = 5;
+      // repeated .e8.UserRelationRecord relations = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
-          ::google::protobuf::uint32 length;
-          DO_(input->ReadVarint32(&length));
-          ::google::protobuf::io::CodedInputStream::Limit limit = input->PushLimit(static_cast<int>(length));
-          while (input->BytesUntilLimit() > 0) {
-            int value;
-            DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-            add_relations(static_cast< ::e8::UserRelation >(value));
-          }
-          input->PopLimit(limit);
-        } else if (
-            static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          add_relations(static_cast< ::e8::UserRelation >(value));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+                input, add_relations()));
         } else {
           goto handle_unusual;
         }
@@ -407,18 +397,13 @@ void UserPublicProfile::SerializeWithCachedSizes(
       4, this->_internal_avatar_preview_readonly_access(), output);
   }
 
-  // repeated .e8.UserRelation relations = 5;
-  if (this->relations_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(
+  // repeated .e8.UserRelationRecord relations = 5;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->relations_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       5,
-      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      this->relations(static_cast<int>(i)),
       output);
-    output->WriteVarint32(
-        static_cast< ::google::protobuf::uint32>(_relations_cached_byte_size_));
-  }
-  for (int i = 0, n = this->relations_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnumNoTag(
-      this->relations(i), output);
   }
 
   // int64 join_at = 6;
@@ -466,16 +451,12 @@ void UserPublicProfile::SerializeWithCachedSizes(
         4, this->_internal_avatar_preview_readonly_access(), deterministic, target);
   }
 
-  // repeated .e8.UserRelation relations = 5;
-  if (this->relations_size() > 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      5,
-      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
-      target);
-    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(      static_cast< ::google::protobuf::uint32>(
-            _relations_cached_byte_size_), target);
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumNoTagToArray(
-      this->relations_, target);
+  // repeated .e8.UserRelationRecord relations = 5;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->relations_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        5, this->relations(static_cast<int>(i)), deterministic, target);
   }
 
   // int64 join_at = 6;
@@ -500,23 +481,15 @@ size_t UserPublicProfile::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.UserRelation relations = 5;
+  // repeated .e8.UserRelationRecord relations = 5;
   {
-    size_t data_size = 0;
-    unsigned int count = static_cast<unsigned int>(this->relations_size());for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::EnumSize(
-        this->relations(static_cast<int>(i)));
+    unsigned int count = static_cast<unsigned int>(this->relations_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->relations(static_cast<int>(i)));
     }
-    if (data_size > 0) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-            static_cast< ::google::protobuf::int32>(data_size));
-    }
-    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
-    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-    _relations_cached_byte_size_ = cached_size;
-    GOOGLE_SAFE_CONCURRENT_WRITES_END();
-    total_size += data_size;
   }
 
   // .e8.NullableString alias = 2;
@@ -623,7 +596,7 @@ void UserPublicProfile::Swap(UserPublicProfile* other) {
 }
 void UserPublicProfile::InternalSwap(UserPublicProfile* other) {
   using std::swap;
-  relations_.InternalSwap(&other->relations_);
+  CastToBase(&relations_)->InternalSwap(CastToBase(&other->relations_));
   swap(alias_, other->alias_);
   swap(avatar_readonly_access_, other->avatar_readonly_access_);
   swap(avatar_preview_readonly_access_, other->avatar_preview_readonly_access_);

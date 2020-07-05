@@ -12,7 +12,7 @@ const UserPublicProfile$json = const {
     const {'1': 'alias', '3': 2, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'alias'},
     const {'1': 'avatar_readonly_access', '3': 3, '4': 1, '5': 11, '6': '.e8.FileTokenAccess', '10': 'avatarReadonlyAccess'},
     const {'1': 'avatar_preview_readonly_access', '3': 4, '4': 1, '5': 11, '6': '.e8.FileTokenAccess', '10': 'avatarPreviewReadonlyAccess'},
-    const {'1': 'relations', '3': 5, '4': 3, '5': 14, '6': '.e8.UserRelation', '10': 'relations'},
+    const {'1': 'relations', '3': 5, '4': 3, '5': 11, '6': '.e8.UserRelationRecord', '10': 'relations'},
     const {'1': 'join_at', '3': 6, '4': 1, '5': 3, '10': 'joinAt'},
   ],
 };

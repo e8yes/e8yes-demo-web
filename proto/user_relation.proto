@@ -19,7 +19,7 @@ syntax = "proto3";
 
 package e8;
 
-// Directed relation between two users.
+// Possible directed relation between two users.
 enum UserRelation {
     URL_UNRELATED = 0;
     URL_INVITATION_SENT = 1;
@@ -27,4 +27,9 @@ enum UserRelation {
     URL_CONTACT = 3;
     URL_BLOCKING = 4;
     URL_BLOCKED = 5;
+}
+
+message UserRelationRecord {
+    UserRelation relation = 1;
+    int64 created_at = 2;   // Timestamp (second).
 }

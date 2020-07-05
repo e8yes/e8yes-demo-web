@@ -149,15 +149,17 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.UserRelation relations = 5;
+  // repeated .e8.UserRelationRecord relations = 5;
   int relations_size() const;
   void clear_relations();
   static const int kRelationsFieldNumber = 5;
-  ::e8::UserRelation relations(int index) const;
-  void set_relations(int index, ::e8::UserRelation value);
-  void add_relations(::e8::UserRelation value);
-  const ::google::protobuf::RepeatedField<int>& relations() const;
-  ::google::protobuf::RepeatedField<int>* mutable_relations();
+  ::e8::UserRelationRecord* mutable_relations(int index);
+  ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >*
+      mutable_relations();
+  const ::e8::UserRelationRecord& relations(int index) const;
+  ::e8::UserRelationRecord* add_relations();
+  const ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >&
+      relations() const;
 
   // .e8.NullableString alias = 2;
   bool has_alias() const;
@@ -211,8 +213,7 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedField<int> relations_;
-  mutable int _relations_cached_byte_size_;
+  ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord > relations_;
   ::e8::NullableString* alias_;
   ::e8::FileTokenAccess* avatar_readonly_access_;
   ::e8::FileTokenAccess* avatar_preview_readonly_access_;
@@ -390,34 +391,31 @@ inline void UserPublicProfile::set_allocated_avatar_preview_readonly_access(::e8
   // @@protoc_insertion_point(field_set_allocated:e8.UserPublicProfile.avatar_preview_readonly_access)
 }
 
-// repeated .e8.UserRelation relations = 5;
+// repeated .e8.UserRelationRecord relations = 5;
 inline int UserPublicProfile::relations_size() const {
   return relations_.size();
 }
-inline void UserPublicProfile::clear_relations() {
-  relations_.Clear();
+inline ::e8::UserRelationRecord* UserPublicProfile::mutable_relations(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.UserPublicProfile.relations)
+  return relations_.Mutable(index);
 }
-inline ::e8::UserRelation UserPublicProfile::relations(int index) const {
-  // @@protoc_insertion_point(field_get:e8.UserPublicProfile.relations)
-  return static_cast< ::e8::UserRelation >(relations_.Get(index));
-}
-inline void UserPublicProfile::set_relations(int index, ::e8::UserRelation value) {
-  relations_.Set(index, value);
-  // @@protoc_insertion_point(field_set:e8.UserPublicProfile.relations)
-}
-inline void UserPublicProfile::add_relations(::e8::UserRelation value) {
-  relations_.Add(value);
-  // @@protoc_insertion_point(field_add:e8.UserPublicProfile.relations)
-}
-inline const ::google::protobuf::RepeatedField<int>&
-UserPublicProfile::relations() const {
-  // @@protoc_insertion_point(field_list:e8.UserPublicProfile.relations)
-  return relations_;
-}
-inline ::google::protobuf::RepeatedField<int>*
+inline ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >*
 UserPublicProfile::mutable_relations() {
   // @@protoc_insertion_point(field_mutable_list:e8.UserPublicProfile.relations)
   return &relations_;
+}
+inline const ::e8::UserRelationRecord& UserPublicProfile::relations(int index) const {
+  // @@protoc_insertion_point(field_get:e8.UserPublicProfile.relations)
+  return relations_.Get(index);
+}
+inline ::e8::UserRelationRecord* UserPublicProfile::add_relations() {
+  // @@protoc_insertion_point(field_add:e8.UserPublicProfile.relations)
+  return relations_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >&
+UserPublicProfile::relations() const {
+  // @@protoc_insertion_point(field_list:e8.UserPublicProfile.relations)
+  return relations_;
 }
 
 // int64 join_at = 6;

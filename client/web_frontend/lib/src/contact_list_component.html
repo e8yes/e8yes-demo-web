@@ -19,6 +19,12 @@
         <span *ngIf="!profile.hasAlias()">
           (no alias)
         </span>
+        <span>{{
+          relationJoinDateString(
+            extractRelation(profile.relations, 
+                            UserRelation.URL_INVITATION_RECEIVED))
+              }}
+        </span>
       </li>
     </ul>
   </div>

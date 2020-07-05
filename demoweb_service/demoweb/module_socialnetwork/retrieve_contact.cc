@@ -15,6 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
+#include <cassert>
 #include <tuple>
 #include <unordered_map>
 #include <vector>
@@ -40,14 +42,24 @@ ParseAllRelations(std::vector<std::tuple<ContactRelationEntity>> const &result_s
     for (const auto &entry : result_set) {
         ContactRelationEntity const &entity = std::get<0>(entry);
 
-        UserId target_user_id = entity.dst_user_id.value().value();
-        UserRelation relation_type = static_cast<UserRelation>(entity.relation.value().value());
+        UserRelationRecord relation;
+        relation.set_relation(static_cast<UserRelation>(entity.relation.value().value()));
+        assert(entity.created_at.value().has_value());
+        relation.set_created_at(entity.created_at.value().value());
 
+        UserId target_user_id = entity.dst_user_id.value().value();
         auto it = result.find(target_user_id);
         if (it == result.end()) {
             it = result.insert(std::make_pair(target_user_id, UserRelations())).first;
         }
-        it->second.push_back(relation_type);
+        it->second.push_back(relation);
+    }
+
+    for (auto &entry : result) {
+        std::sort(entry.second.begin(), entry.second.end(),
+                  [](UserRelationRecord const &a, UserRelationRecord const &b) {
+                      return a.created_at() > b.created_at();
+                  });
     }
 
     return result;
@@ -82,12 +94,20 @@ std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_i
     return ParseAllRelations(result_set);
 }
 
-std::vector<UserEntity> GetRelatedUsers(UserId source_user_id, UserRelation relation,
+std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
+                                        std::vector<UserRelation> const &relations,
+                                        std::optional<Pagination> const &pagination,
                                         ConnectionReservoirInterface *conns) {
     SqlQueryBuilder::Placeholder<SqlLong> source_user_id_ph;
-    SqlQueryBuilder::Placeholder<SqlInt> relation_ph;
+    SqlQueryBuilder::Placeholder<SqlIntArr> relations_ph;
+    SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
+    SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
+
     SqlLong source_user_id_ph_value(source_user_id);
-    SqlInt relation_ph_value(relation);
+    SqlIntArr relations_ph_value(/*field_name=*/"");
+    *relations_ph_value.value_ptr() = {relations.begin(), relations.end()};
+    SqlInt limit_ph_value(/*field_name=*/"");
+    SqlInt offset_ph_value(/*field_name=*/"");
 
     SqlQueryBuilder query;
     query.query_piece(TableNames::AUser())
@@ -96,12 +116,23 @@ std::vector<UserEntity> GetRelatedUsers(UserId source_user_id, UserRelation rela
         .query_piece(" cr ON u.id = cr.dst_user_id ")
         .query_piece(" WHERE cr.src_user_id=")
         .placeholder(&source_user_id_ph)
-        .query_piece(" AND cr.relation=")
-        .placeholder(&relation_ph)
-        .query_piece(" ORDER BY cr.created_at DESC");
+        .query_piece(" AND cr.relation=ANY(")
+        .placeholder(&relations_ph)
+        .query_piece(") ORDER BY cr.created_at DESC");
 
     query.set_value_to_placeholder(source_user_id_ph, &source_user_id_ph_value);
-    query.set_value_to_placeholder(relation_ph, &relation_ph_value);
+    query.set_value_to_placeholder(relations_ph, &relations_ph_value);
+
+    if (pagination.has_value()) {
+        query.query_piece(" LIMIT ").placeholder(&limit_ph);
+        query.query_piece(" OFFSET ").placeholder(&offset_ph);
+
+        *limit_ph_value.value_ptr() = pagination->result_per_page();
+        *offset_ph_value.value_ptr() = pagination->page_number() * pagination->result_per_page();
+
+        query.set_value_to_placeholder(limit_ph, &limit_ph_value);
+        query.set_value_to_placeholder(offset_ph, &offset_ph_value);
+    }
 
     std::vector<std::tuple<UserEntity>> result_set = Query<UserEntity>(query, {"u"}, conns);
 

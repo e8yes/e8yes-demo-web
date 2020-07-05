@@ -63,7 +63,7 @@ std::string AllocateNewAvatarLocation(std::string const &user_id_str, FileFormat
     return avatar_dir_path + std::to_string(counter) + "." + suffix.value();
 }
 
-UserPublicProfile BuildPublicProfile(UserEntity const &user, std::vector<UserRelation> relations,
+UserPublicProfile BuildPublicProfile(UserEntity const &user, UserRelations const &relations,
                                      KeyGeneratorInterface *key_gen) {
     UserPublicProfile profile;
     profile.set_user_id(user.id.value().value());

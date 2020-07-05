@@ -26,9 +26,11 @@
 #include <google/protobuf/generated_message_util.h>
 #include <google/protobuf/inlined_string_field.h>
 #include <google/protobuf/metadata.h>
+#include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_reflection.h>
+#include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_user_5frelation_2eproto 
 
@@ -45,7 +47,15 @@ struct TableStruct {
 void AddDescriptors();
 }  // namespace protobuf_user_5frelation_2eproto
 namespace e8 {
+class UserRelationRecord;
+class UserRelationRecordDefaultTypeInternal;
+extern UserRelationRecordDefaultTypeInternal _UserRelationRecord_default_instance_;
 }  // namespace e8
+namespace google {
+namespace protobuf {
+template<> ::e8::UserRelationRecord* Arena::CreateMaybeMessage<::e8::UserRelationRecord>(Arena*);
+}  // namespace protobuf
+}  // namespace google
 namespace e8 {
 
 enum UserRelation {
@@ -75,7 +85,114 @@ inline bool UserRelation_Parse(
 }
 // ===================================================================
 
+class UserRelationRecord : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.UserRelationRecord) */ {
+ public:
+  UserRelationRecord();
+  virtual ~UserRelationRecord();
 
+  UserRelationRecord(const UserRelationRecord& from);
+
+  inline UserRelationRecord& operator=(const UserRelationRecord& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  UserRelationRecord(UserRelationRecord&& from) noexcept
+    : UserRelationRecord() {
+    *this = ::std::move(from);
+  }
+
+  inline UserRelationRecord& operator=(UserRelationRecord&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UserRelationRecord& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UserRelationRecord* internal_default_instance() {
+    return reinterpret_cast<const UserRelationRecord*>(
+               &_UserRelationRecord_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  void Swap(UserRelationRecord* other);
+  friend void swap(UserRelationRecord& a, UserRelationRecord& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UserRelationRecord* New() const final {
+    return CreateMaybeMessage<UserRelationRecord>(NULL);
+  }
+
+  UserRelationRecord* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<UserRelationRecord>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const UserRelationRecord& from);
+  void MergeFrom(const UserRelationRecord& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UserRelationRecord* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int64 created_at = 2;
+  void clear_created_at();
+  static const int kCreatedAtFieldNumber = 2;
+  ::google::protobuf::int64 created_at() const;
+  void set_created_at(::google::protobuf::int64 value);
+
+  // .e8.UserRelation relation = 1;
+  void clear_relation();
+  static const int kRelationFieldNumber = 1;
+  ::e8::UserRelation relation() const;
+  void set_relation(::e8::UserRelation value);
+
+  // @@protoc_insertion_point(class_scope:e8.UserRelationRecord)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int64 created_at_;
+  int relation_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_user_5frelation_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -85,6 +202,36 @@ inline bool UserRelation_Parse(
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// UserRelationRecord
+
+// .e8.UserRelation relation = 1;
+inline void UserRelationRecord::clear_relation() {
+  relation_ = 0;
+}
+inline ::e8::UserRelation UserRelationRecord::relation() const {
+  // @@protoc_insertion_point(field_get:e8.UserRelationRecord.relation)
+  return static_cast< ::e8::UserRelation >(relation_);
+}
+inline void UserRelationRecord::set_relation(::e8::UserRelation value) {
+  
+  relation_ = value;
+  // @@protoc_insertion_point(field_set:e8.UserRelationRecord.relation)
+}
+
+// int64 created_at = 2;
+inline void UserRelationRecord::clear_created_at() {
+  created_at_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 UserRelationRecord::created_at() const {
+  // @@protoc_insertion_point(field_get:e8.UserRelationRecord.created_at)
+  return created_at_;
+}
+inline void UserRelationRecord::set_created_at(::google::protobuf::int64 value) {
+  
+  created_at_ = value;
+  // @@protoc_insertion_point(field_set:e8.UserRelationRecord.created_at)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__

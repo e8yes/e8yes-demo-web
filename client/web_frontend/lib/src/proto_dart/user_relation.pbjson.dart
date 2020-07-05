@@ -17,3 +17,11 @@ const UserRelation$json = const {
   ],
 };
 
+const UserRelationRecord$json = const {
+  '1': 'UserRelationRecord',
+  '2': const [
+    const {'1': 'relation', '3': 1, '4': 1, '5': 14, '6': '.e8.UserRelation', '10': 'relation'},
+    const {'1': 'created_at', '3': 2, '4': 1, '5': 3, '10': 'createdAt'},
+  ],
+};
+

@@ -21,6 +21,7 @@ package e8;
 
 import "user_profile.proto";
 import "user_relation.proto";
+import "pagination.proto";
 
 message GetUserRelationsRequest {
     // Source user is the logged in user.
@@ -30,7 +31,7 @@ message GetUserRelationsRequest {
 message GetUserRelationsResponse {
     int64 source_user_id = 1;
     int64 target_user_id = 2;
-    repeated UserRelation user_relation = 3;
+    repeated UserRelationRecord user_relations = 3;
 }
 
 message SendInvitationRequest {
@@ -62,6 +63,7 @@ message RejectInvitationResponse {}
 
 
 message GetInvitationListRequest {
+    Pagination pagination = 1;
 }
 
 message GetInvitationListResponse {
@@ -77,6 +79,7 @@ message DeleteContactResponse {}
 
 
 message GetContactListRequest {
+    Pagination pagination = 1;
 }
 
 message GetContactListResponse {

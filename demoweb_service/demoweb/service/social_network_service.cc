@@ -19,8 +19,10 @@
 #include <grpcpp/grpcpp.h>
 #include <optional>
 #include <unordered_map>
+#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/constant/pagination.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module_profile/user_profile.h"
 #include "demoweb_service/demoweb/module_socialnetwork/contact_invitation.h"
@@ -52,7 +54,7 @@ grpc::Status SocialNetworkServiceImpl::GetUserRelations(grpc::ServerContext *con
     UserRelations result = relations.begin()->second;
     response->set_source_user_id(identity.value().user_id());
     response->set_target_user_id(request->target_user_id());
-    *response->mutable_user_relation() = {result.begin(), result.end()};
+    *response->mutable_user_relations() = {result.begin(), result.end()};
 
     return grpc::Status::OK;
 }
@@ -72,19 +74,24 @@ grpc::Status SocialNetworkServiceImpl::SendInvitation(grpc::ServerContext *conte
     return grpc::Status::OK;
 }
 
-grpc::Status
-SocialNetworkServiceImpl::GetInvitationList(grpc::ServerContext *context,
-                                            GetInvitationListRequest const * /*request*/,
-                                            GetInvitationListResponse *response) {
+grpc::Status SocialNetworkServiceImpl::GetInvitationList(grpc::ServerContext *context,
+                                                         GetInvitationListRequest const *request,
+                                                         GetInvitationListResponse *response) {
     grpc::Status status;
     std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
     if (!status.ok()) {
         return status;
     }
 
+    status = ValidatePagination(request->pagination(), kResultPerPageLimit);
+    if (!status.ok()) {
+        return status;
+    }
+
     std::vector<UserEntity> inviters =
-        GetRelatedUsers(identity.value().user_id(), UserRelation::URL_INVITATION_RECEIVED,
-                        CurrentEnvironment()->DemowebDatabase());
+        GetRelatedUsers(identity.value().user_id(),
+                        std::vector<UserRelation>{UserRelation::URL_INVITATION_RECEIVED},
+                        request->pagination(), CurrentEnvironment()->DemowebDatabase());
     std::vector<UserPublicProfile> inviter_profiles =
         BuildPublicProfiles(identity.value().user_id(), inviters, CurrentEnvironment()->KeyGen(),
                             CurrentEnvironment()->DemowebDatabase());

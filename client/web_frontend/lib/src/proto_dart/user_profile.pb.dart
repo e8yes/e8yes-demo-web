@@ -12,8 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'nullable_primitives.pb.dart' as $5;
 import 'file.pb.dart' as $6;
-
-import 'user_relation.pbenum.dart' as $7;
+import 'user_relation.pb.dart' as $7;
 
 class UserPublicProfile extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UserPublicProfile', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -21,7 +20,7 @@ class UserPublicProfile extends $pb.GeneratedMessage {
     ..aOM<$5.NullableString>(2, 'alias', subBuilder: $5.NullableString.create)
     ..aOM<$6.FileTokenAccess>(3, 'avatarReadonlyAccess', subBuilder: $6.FileTokenAccess.create)
     ..aOM<$6.FileTokenAccess>(4, 'avatarPreviewReadonlyAccess', subBuilder: $6.FileTokenAccess.create)
-    ..pc<$7.UserRelation>(5, 'relations', $pb.PbFieldType.PE, valueOf: $7.UserRelation.valueOf, enumValues: $7.UserRelation.values)
+    ..pc<$7.UserRelationRecord>(5, 'relations', $pb.PbFieldType.PM, subBuilder: $7.UserRelationRecord.create)
     ..aInt64(6, 'joinAt')
     ..hasRequiredFields = false
   ;
@@ -84,7 +83,7 @@ class UserPublicProfile extends $pb.GeneratedMessage {
   $6.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $core.List<$7.UserRelation> get relations => $_getList(4);
+  $core.List<$7.UserRelationRecord> get relations => $_getList(4);
 
   @$pb.TagNumber(6)
   $fixnum.Int64 get joinAt => $_getI64(5);

@@ -17,7 +17,7 @@ const GetUserRelationsResponse$json = const {
   '2': const [
     const {'1': 'source_user_id', '3': 1, '4': 1, '5': 3, '10': 'sourceUserId'},
     const {'1': 'target_user_id', '3': 2, '4': 1, '5': 3, '10': 'targetUserId'},
-    const {'1': 'user_relation', '3': 3, '4': 3, '5': 14, '6': '.e8.UserRelation', '10': 'userRelation'},
+    const {'1': 'user_relations', '3': 3, '4': 3, '5': 11, '6': '.e8.UserRelationRecord', '10': 'userRelations'},
   ],
 };
 
@@ -67,6 +67,9 @@ const RejectInvitationResponse$json = const {
 
 const GetInvitationListRequest$json = const {
   '1': 'GetInvitationListRequest',
+  '2': const [
+    const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
+  ],
 };
 
 const GetInvitationListResponse$json = const {
@@ -89,6 +92,9 @@ const DeleteContactResponse$json = const {
 
 const GetContactListRequest$json = const {
   '1': 'GetContactListRequest',
+  '2': const [
+    const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
+  ],
 };
 
 const GetContactListResponse$json = const {

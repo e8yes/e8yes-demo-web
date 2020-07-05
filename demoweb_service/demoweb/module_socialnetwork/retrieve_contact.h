@@ -18,20 +18,23 @@
 #ifndef RETRIEVE_CONTACT_H
 #define RETRIEVE_CONTACT_H
 
+#include <optional>
 #include <unordered_map>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "demoweb_service/demoweb/proto_cc/user_relation.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
 
-using UserRelations = std::vector<UserRelation>;
+using UserRelations = std::vector<UserRelationRecord>;
 
 /**
  * @brief GetUsersRelation Get all the directed user relations between the source user and a list of
- * target users.
+ * target users. The list of relation is per target user is ordered by creation timestamp in
+ * descending order.
  * @return A map containing pairs of (target_user_id, relation_set).
  */
 std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_id,
@@ -40,10 +43,13 @@ std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_i
 
 /**
  * @brief GetRelatedUsers Retrieve a list of users who satisfy the directed relation constraint
- * starting from the source user. The result is sorted based on the creation date of the relation in
- * descending order.
+ * starting from the source user. That is, the user must possess at least one of the relations to
+ * present in the returned result. The result is sorted based on the creation date of the relation
+ * in descending order.
  */
-std::vector<UserEntity> GetRelatedUsers(UserId source_user_id, UserRelation relation,
+std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
+                                        std::vector<UserRelation> const &relations,
+                                        std::optional<Pagination> const &pagination,
                                         ConnectionReservoirInterface *conns);
 
 } // namespace e8

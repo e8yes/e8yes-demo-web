@@ -33,7 +33,7 @@ namespace protobuf_pagination_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_pagination_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Pagination;
 }  // namespace protobuf_pagination_2eproto
 namespace protobuf_user_5fprofile_2eproto {
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_user_5fprofile_2eproto ::google::protobuf::internal::SCCInfo<2> scc_info_UserPublicProfile;
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_user_5fprofile_2eproto ::google::protobuf::internal::SCCInfo<3> scc_info_UserPublicProfile;
 }  // namespace protobuf_user_5fprofile_2eproto
 namespace e8 {
 class RegistrationRequestDefaultTypeInternal {

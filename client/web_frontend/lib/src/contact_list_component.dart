@@ -17,17 +17,22 @@ import 'package:demoweb_app/src/user_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
 
 @Component(
-  selector: "contact-list",
-  templateUrl: "contact_list_component.html",
-  styleUrls: ["contact_list_component.css"],
-  directives: [coreDirectives, formDirectives],
-)
+    selector: "contact-list",
+    templateUrl: "contact_list_component.html",
+    styleUrls: ["contact_list_component.css"],
+    directives: [coreDirectives, formDirectives],
+    exports: [UserRelation])
 class ContactListComponent implements OnActivate {
   List<UserPublicProfile> searchedProfiles = List<UserPublicProfile>();
   List<UserPublicProfile> inviterProfiles = List<UserPublicProfile>();
   List<UserPublicProfile> contactProfiles = List<UserPublicProfile>();
 
   static const int _kResultPerPage = 20;
+
+  Pagination searchPagination = Pagination()..resultPerPage = _kResultPerPage;
+  Pagination inviterPagination = Pagination()..resultPerPage = _kResultPerPage;
+  Pagination contactPagination = Pagination()..resultPerPage = _kResultPerPage;
+
   final UserServiceInterface _user_service;
   final SocialNetworkServiceInterface _social_network_service;
   final Router _router;
@@ -42,7 +47,8 @@ class ContactListComponent implements OnActivate {
   void onActivate(_, RouterState current) async {
     _social_network_service
         .getInvitationList(
-            GetInvitationListRequest(), credentialStorage.loadSignature())
+            GetInvitationListRequest()..pagination = inviterPagination,
+            credentialStorage.loadSignature())
         .then((GetInvitationListResponse res) {
       inviterProfiles = res.userProfiles;
     });
@@ -57,10 +63,7 @@ class ContactListComponent implements OnActivate {
         req.userId = (NullableInt64()..value = userIdSearchPrefix);
       } catch (err) {}
     }
-    Pagination pagination = Pagination();
-    pagination.resultPerPage = _kResultPerPage;
-    pagination.pageNumber = 0;
-    req.pagination = pagination;
+    req.pagination = searchPagination;
 
     String viewerSignature = credentialStorage.loadSignature();
     Future<SearchUserResponse> currentSearchFuture =
@@ -78,27 +81,70 @@ class ContactListComponent implements OnActivate {
     _router.navigate(_accountDetailsUrl(userProfile.userId));
   }
 
-  bool unrelated(List<UserRelation> relations) {
+  UserRelationRecord extractRelation(
+      List<UserRelationRecord> relations, UserRelation expected) {
+    return relations.firstWhere(
+        (UserRelationRecord relation) => relation.relation == expected);
+  }
+
+  String relationJoinDateString(UserRelationRecord relation) {
+    return DateTime.fromMillisecondsSinceEpoch(
+            relation.createdAt.toInt() * 1000)
+        .toLocal()
+        .toString();
+  }
+
+  bool unrelated(List<UserRelationRecord> relations) {
     return relations.isEmpty;
   }
 
-  bool invitationPending(List<UserRelation> relations) {
-    return relations.contains(UserRelation.URL_INVITATION_SENT);
+  bool invitationPending(List<UserRelationRecord> relations) {
+    try {
+      relations.firstWhere((UserRelationRecord relation) =>
+          relation.relation == UserRelation.URL_INVITATION_SENT);
+      return true;
+    } catch (StateError) {
+      return false;
+    }
   }
 
-  bool invitationReceived(List<UserRelation> relations) {
-    return relations.contains(UserRelation.URL_INVITATION_RECEIVED);
+  bool invitationReceived(List<UserRelationRecord> relations) {
+    try {
+      relations.firstWhere((UserRelationRecord relation) =>
+          relation.relation == UserRelation.URL_INVITATION_RECEIVED);
+      return true;
+    } catch (StateError) {
+      return false;
+    }
   }
 
-  bool contact(List<UserRelation> relations) {
-    return relations.contains(UserRelation.URL_CONTACT);
+  bool contact(List<UserRelationRecord> relations) {
+    try {
+      relations.firstWhere((UserRelationRecord relation) =>
+          relation.relation == UserRelation.URL_CONTACT);
+      return true;
+    } catch (StateError) {
+      return false;
+    }
   }
 
-  bool blocked(List<UserRelation> relations) {
-    return relations.contains(UserRelation.URL_BLOCKED);
+  bool blocked(List<UserRelationRecord> relations) {
+    try {
+      relations.firstWhere((UserRelationRecord relation) =>
+          relation.relation == UserRelation.URL_BLOCKED);
+      return true;
+    } catch (StateError) {
+      return false;
+    }
   }
 
-  bool blocking(List<UserRelation> relations) {
-    return relations.contains(UserRelation.URL_BLOCKING);
+  bool blocking(List<UserRelationRecord> relations) {
+    try {
+      relations.firstWhere((UserRelationRecord relation) =>
+          relation.relation == UserRelation.URL_BLOCKING);
+      return true;
+    } catch (StateError) {
+      return false;
+    }
   }
 }

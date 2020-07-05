@@ -32,6 +32,7 @@
 #include <google/protobuf/unknown_field_set.h>
 #include "user_profile.pb.h"
 #include "user_relation.pb.h"
+#include "pagination.pb.h"
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_service_5fsocialnetwork_2eproto 
 
@@ -311,15 +312,17 @@ class GetUserRelationsResponse : public ::google::protobuf::Message /* @@protoc_
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.UserRelation user_relation = 3;
-  int user_relation_size() const;
-  void clear_user_relation();
-  static const int kUserRelationFieldNumber = 3;
-  ::e8::UserRelation user_relation(int index) const;
-  void set_user_relation(int index, ::e8::UserRelation value);
-  void add_user_relation(::e8::UserRelation value);
-  const ::google::protobuf::RepeatedField<int>& user_relation() const;
-  ::google::protobuf::RepeatedField<int>* mutable_user_relation();
+  // repeated .e8.UserRelationRecord user_relations = 3;
+  int user_relations_size() const;
+  void clear_user_relations();
+  static const int kUserRelationsFieldNumber = 3;
+  ::e8::UserRelationRecord* mutable_user_relations(int index);
+  ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >*
+      mutable_user_relations();
+  const ::e8::UserRelationRecord& user_relations(int index) const;
+  ::e8::UserRelationRecord* add_user_relations();
+  const ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >&
+      user_relations() const;
 
   // int64 source_user_id = 1;
   void clear_source_user_id();
@@ -337,8 +340,7 @@ class GetUserRelationsResponse : public ::google::protobuf::Message /* @@protoc_
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedField<int> user_relation_;
-  mutable int _user_relation_cached_byte_size_;
+  ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord > user_relations_;
   ::google::protobuf::int64 source_user_id_;
   ::google::protobuf::int64 target_user_id_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -1229,10 +1231,23 @@ class GetInvitationListRequest : public ::google::protobuf::Message /* @@protoc_
 
   // accessors -------------------------------------------------------
 
+  // .e8.Pagination pagination = 1;
+  bool has_pagination() const;
+  void clear_pagination();
+  static const int kPaginationFieldNumber = 1;
+  private:
+  const ::e8::Pagination& _internal_pagination() const;
+  public:
+  const ::e8::Pagination& pagination() const;
+  ::e8::Pagination* release_pagination();
+  ::e8::Pagination* mutable_pagination();
+  void set_allocated_pagination(::e8::Pagination* pagination);
+
   // @@protoc_insertion_point(class_scope:e8.GetInvitationListRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::e8::Pagination* pagination_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
@@ -1633,10 +1648,23 @@ class GetContactListRequest : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
+  // .e8.Pagination pagination = 1;
+  bool has_pagination() const;
+  void clear_pagination();
+  static const int kPaginationFieldNumber = 1;
+  private:
+  const ::e8::Pagination& _internal_pagination() const;
+  public:
+  const ::e8::Pagination& pagination() const;
+  ::e8::Pagination* release_pagination();
+  ::e8::Pagination* mutable_pagination();
+  void set_allocated_pagination(::e8::Pagination* pagination);
+
   // @@protoc_insertion_point(class_scope:e8.GetContactListRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::e8::Pagination* pagination_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
@@ -1806,34 +1834,31 @@ inline void GetUserRelationsResponse::set_target_user_id(::google::protobuf::int
   // @@protoc_insertion_point(field_set:e8.GetUserRelationsResponse.target_user_id)
 }
 
-// repeated .e8.UserRelation user_relation = 3;
-inline int GetUserRelationsResponse::user_relation_size() const {
-  return user_relation_.size();
+// repeated .e8.UserRelationRecord user_relations = 3;
+inline int GetUserRelationsResponse::user_relations_size() const {
+  return user_relations_.size();
 }
-inline void GetUserRelationsResponse::clear_user_relation() {
-  user_relation_.Clear();
+inline ::e8::UserRelationRecord* GetUserRelationsResponse::mutable_user_relations(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.GetUserRelationsResponse.user_relations)
+  return user_relations_.Mutable(index);
 }
-inline ::e8::UserRelation GetUserRelationsResponse::user_relation(int index) const {
-  // @@protoc_insertion_point(field_get:e8.GetUserRelationsResponse.user_relation)
-  return static_cast< ::e8::UserRelation >(user_relation_.Get(index));
+inline ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >*
+GetUserRelationsResponse::mutable_user_relations() {
+  // @@protoc_insertion_point(field_mutable_list:e8.GetUserRelationsResponse.user_relations)
+  return &user_relations_;
 }
-inline void GetUserRelationsResponse::set_user_relation(int index, ::e8::UserRelation value) {
-  user_relation_.Set(index, value);
-  // @@protoc_insertion_point(field_set:e8.GetUserRelationsResponse.user_relation)
+inline const ::e8::UserRelationRecord& GetUserRelationsResponse::user_relations(int index) const {
+  // @@protoc_insertion_point(field_get:e8.GetUserRelationsResponse.user_relations)
+  return user_relations_.Get(index);
 }
-inline void GetUserRelationsResponse::add_user_relation(::e8::UserRelation value) {
-  user_relation_.Add(value);
-  // @@protoc_insertion_point(field_add:e8.GetUserRelationsResponse.user_relation)
+inline ::e8::UserRelationRecord* GetUserRelationsResponse::add_user_relations() {
+  // @@protoc_insertion_point(field_add:e8.GetUserRelationsResponse.user_relations)
+  return user_relations_.Add();
 }
-inline const ::google::protobuf::RepeatedField<int>&
-GetUserRelationsResponse::user_relation() const {
-  // @@protoc_insertion_point(field_list:e8.GetUserRelationsResponse.user_relation)
-  return user_relation_;
-}
-inline ::google::protobuf::RepeatedField<int>*
-GetUserRelationsResponse::mutable_user_relation() {
-  // @@protoc_insertion_point(field_mutable_list:e8.GetUserRelationsResponse.user_relation)
-  return &user_relation_;
+inline const ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >&
+GetUserRelationsResponse::user_relations() const {
+  // @@protoc_insertion_point(field_list:e8.GetUserRelationsResponse.user_relations)
+  return user_relations_;
 }
 
 // -------------------------------------------------------------------
@@ -1928,6 +1953,54 @@ inline void RejectInvitationRequest::set_inviter_user_id(::google::protobuf::int
 
 // GetInvitationListRequest
 
+// .e8.Pagination pagination = 1;
+inline bool GetInvitationListRequest::has_pagination() const {
+  return this != internal_default_instance() && pagination_ != NULL;
+}
+inline const ::e8::Pagination& GetInvitationListRequest::_internal_pagination() const {
+  return *pagination_;
+}
+inline const ::e8::Pagination& GetInvitationListRequest::pagination() const {
+  const ::e8::Pagination* p = pagination_;
+  // @@protoc_insertion_point(field_get:e8.GetInvitationListRequest.pagination)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::Pagination*>(
+      &::e8::_Pagination_default_instance_);
+}
+inline ::e8::Pagination* GetInvitationListRequest::release_pagination() {
+  // @@protoc_insertion_point(field_release:e8.GetInvitationListRequest.pagination)
+  
+  ::e8::Pagination* temp = pagination_;
+  pagination_ = NULL;
+  return temp;
+}
+inline ::e8::Pagination* GetInvitationListRequest::mutable_pagination() {
+  
+  if (pagination_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::Pagination>(GetArenaNoVirtual());
+    pagination_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.GetInvitationListRequest.pagination)
+  return pagination_;
+}
+inline void GetInvitationListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(pagination_);
+  }
+  if (pagination) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      pagination = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, pagination, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  pagination_ = pagination;
+  // @@protoc_insertion_point(field_set_allocated:e8.GetInvitationListRequest.pagination)
+}
+
 // -------------------------------------------------------------------
 
 // GetInvitationListResponse
@@ -1984,6 +2057,54 @@ inline void DeleteContactRequest::set_deleted_contact_user_id(::google::protobuf
 // -------------------------------------------------------------------
 
 // GetContactListRequest
+
+// .e8.Pagination pagination = 1;
+inline bool GetContactListRequest::has_pagination() const {
+  return this != internal_default_instance() && pagination_ != NULL;
+}
+inline const ::e8::Pagination& GetContactListRequest::_internal_pagination() const {
+  return *pagination_;
+}
+inline const ::e8::Pagination& GetContactListRequest::pagination() const {
+  const ::e8::Pagination* p = pagination_;
+  // @@protoc_insertion_point(field_get:e8.GetContactListRequest.pagination)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::Pagination*>(
+      &::e8::_Pagination_default_instance_);
+}
+inline ::e8::Pagination* GetContactListRequest::release_pagination() {
+  // @@protoc_insertion_point(field_release:e8.GetContactListRequest.pagination)
+  
+  ::e8::Pagination* temp = pagination_;
+  pagination_ = NULL;
+  return temp;
+}
+inline ::e8::Pagination* GetContactListRequest::mutable_pagination() {
+  
+  if (pagination_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::Pagination>(GetArenaNoVirtual());
+    pagination_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.GetContactListRequest.pagination)
+  return pagination_;
+}
+inline void GetContactListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(pagination_);
+  }
+  if (pagination) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      pagination = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, pagination, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  pagination_ = pagination;
+  // @@protoc_insertion_point(field_set_allocated:e8.GetContactListRequest.pagination)
+}
 
 // -------------------------------------------------------------------
 
