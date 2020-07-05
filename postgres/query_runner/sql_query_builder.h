@@ -17,6 +17,7 @@
 #ifndef SQL_QUERY_BUILDER_H
 #define SQL_QUERY_BUILDER_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -79,7 +80,8 @@ class SqlQueryBuilder {
      * @param val Pointer to the value to be assigned.
      */
     template <typename Type>
-    void SetValueToPlaceholder(Placeholder<Type> const &holder, SqlPrimitiveInterface const *val) {
+    void SetValueToPlaceholder(Placeholder<Type> const &holder,
+                               std::shared_ptr<SqlPrimitiveInterface> const &val) {
         for (auto slot : holder.param_slots) {
             params_.SetParam(slot, val);
         }

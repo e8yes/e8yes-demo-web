@@ -102,10 +102,8 @@ class OnFetch {
             .QueryPiece("AND kp.key_type=")
             .Holder(&key_type);
 
-        SqlStr encrypter_value = SqlStr(key_user.encrypter, "");
-        SqlInt key_type_value = SqlInt(key_user.key_type);
-        query.SetValueToPlaceholder(encrypter, &encrypter_value);
-        query.SetValueToPlaceholder(key_type, &key_type_value);
+        query.SetValueToPlaceholder(encrypter, std::make_shared<SqlStr>(key_user.encrypter, ""));
+        query.SetValueToPlaceholder(key_type, std::make_shared<SqlInt>(key_user.key_type));
 
         std::vector<std::tuple<KeyPersistenceEntity>> key_persistence =
             Query<KeyPersistenceEntity>(query, {"kp"}, reservoir_);

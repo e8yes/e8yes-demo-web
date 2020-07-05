@@ -15,11 +15,25 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cstdint>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "postgres/query_runner/connection/connection_interface.h"
+#include "postgres/query_runner/reflection/sql_primitive_interface.h"
+#include "postgres/query_runner/resultset/result_set_interface.h"
 
 namespace e8 {
 
-void ConnectionInterface::QueryParams::SetParam(SlotId slot, SqlPrimitiveInterface const *val) {
+void ConnectionInterface::QueryParams::SetParam(SlotId slot,
+                                                std::shared_ptr<SqlPrimitiveInterface> const &val) {
+    params_.insert(std::make_pair(slot, val.get()));
+    value_storage_.push_back(std::move(val));
+}
+
+void ConnectionInterface::QueryParams::SetParamPtr(SlotId slot, SqlPrimitiveInterface const *val) {
     params_.insert(std::make_pair(slot, val));
 }
 
@@ -32,7 +46,10 @@ SqlPrimitiveInterface const *ConnectionInterface::QueryParams::GetParam(SlotId s
     }
 }
 
-void ConnectionInterface::QueryParams::Clear() { params_.clear(); }
+void ConnectionInterface::QueryParams::Clear() {
+    params_.clear();
+    value_storage_.clear();
+}
 
 size_t ConnectionInterface::QueryParams::NumSlots() const { return params_.size(); }
 

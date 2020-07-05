@@ -22,6 +22,7 @@
 #include <map>
 #include <memory> // IWYU pragma: keep
 #include <string>
+#include <vector>
 
 #include "postgres/query_runner/reflection/sql_primitive_interface.h"
 #include "postgres/query_runner/resultset/result_set_interface.h"
@@ -62,7 +63,13 @@ class ConnectionInterface {
          * @param position Position to set value to.
          * @param val Pointer to the value to set.
          */
-        void SetParam(SlotId slot, SqlPrimitiveInterface const *val);
+        void SetParam(SlotId slot, std::shared_ptr<SqlPrimitiveInterface> const &val);
+
+        /**
+         * @brief SetParamPtr Similar to the above, but the caller manages the life cycle of the
+         * value.
+         */
+        void SetParamPtr(SlotId slot, SqlPrimitiveInterface const *val);
 
         /**
          * @brief Get the value set to the position-th placeholder.
@@ -95,6 +102,7 @@ class ConnectionInterface {
 
       private:
         std::map<SlotId, SqlPrimitiveInterface const *> params_;
+        std::vector<std::shared_ptr<SqlPrimitiveInterface>> value_storage_;
         SlotId next_slot_id_ = 0;
     };
 

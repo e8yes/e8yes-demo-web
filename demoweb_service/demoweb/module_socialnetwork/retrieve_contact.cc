@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <memory>
 #include <tuple>
 #include <unordered_map>
 #include <vector>
@@ -70,13 +71,12 @@ ParseAllRelations(std::vector<std::tuple<ContactRelationEntity>> const &result_s
 std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_id,
                                                             std::vector<UserId> target_user_ids,
                                                             ConnectionReservoirInterface *conns) {
-    SqlQueryBuilder::Placeholder<SqlLong> source_user_id_ph;
-    SqlQueryBuilder::Placeholder<SqlLongArr> target_user_ids_ph;
-    SqlLong source_user_id_ph_value(source_user_id);
-    SqlLongArr target_user_ids_ph_value(target_user_ids);
-
     // Check contact relation.
     SqlQueryBuilder query;
+
+    SqlQueryBuilder::Placeholder<SqlLong> source_user_id_ph;
+    SqlQueryBuilder::Placeholder<SqlLongArr> target_user_ids_ph;
+
     query.QueryPiece(TableNames::ContactRelation())
         .QueryPiece(" cr")
         .QueryPiece(" WHERE cr.src_user_id=")
@@ -85,8 +85,8 @@ std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_i
         .Holder(&target_user_ids_ph)
         .QueryPiece(")");
 
-    query.SetValueToPlaceholder(source_user_id_ph, &source_user_id_ph_value);
-    query.SetValueToPlaceholder(target_user_ids_ph, &target_user_ids_ph_value);
+    query.SetValueToPlaceholder(source_user_id_ph, std::make_shared<SqlLong>(source_user_id));
+    query.SetValueToPlaceholder(target_user_ids_ph, std::make_shared<SqlLongArr>(target_user_ids));
 
     std::vector<std::tuple<ContactRelationEntity>> result_set =
         Query<ContactRelationEntity>(query, {"cr"}, conns);
@@ -98,18 +98,18 @@ std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
                                         std::vector<UserRelation> const &relations,
                                         std::optional<Pagination> const &pagination,
                                         ConnectionReservoirInterface *conns) {
-    SqlQueryBuilder::Placeholder<SqlLong> source_user_id_ph;
-    SqlQueryBuilder::Placeholder<SqlIntArr> relations_ph;
-    SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
-    SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
-
-    SqlLong source_user_id_ph_value(source_user_id);
     SqlIntArr relations_ph_value(/*field_name=*/"");
     *relations_ph_value.ValuePtr() = {relations.begin(), relations.end()};
     SqlInt limit_ph_value(/*field_name=*/"");
     SqlInt offset_ph_value(/*field_name=*/"");
 
     SqlQueryBuilder query;
+
+    SqlQueryBuilder::Placeholder<SqlLong> source_user_id_ph;
+    SqlQueryBuilder::Placeholder<SqlIntArr> relations_ph;
+    SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
+    SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
+
     query.QueryPiece(TableNames::AUser())
         .QueryPiece(" u JOIN ")
         .QueryPiece(TableNames::ContactRelation())
@@ -120,18 +120,19 @@ std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
         .Holder(&relations_ph)
         .QueryPiece(") ORDER BY cr.last_interaction_at DESC");
 
-    query.SetValueToPlaceholder(source_user_id_ph, &source_user_id_ph_value);
-    query.SetValueToPlaceholder(relations_ph, &relations_ph_value);
+    query.SetValueToPlaceholder(source_user_id_ph, std::make_shared<SqlLong>(source_user_id));
+    query.SetValueToPlaceholder(relations_ph, std::make_shared<SqlIntArr>(std::vector<int>{
+                                                  relations.begin(), relations.end()}));
 
     if (pagination.has_value()) {
         query.QueryPiece(" LIMIT ").Holder(&limit_ph);
         query.QueryPiece(" OFFSET ").Holder(&offset_ph);
 
-        *limit_ph_value.ValuePtr() = pagination->result_per_page();
-        *offset_ph_value.ValuePtr() = pagination->page_number() * pagination->result_per_page();
-
-        query.SetValueToPlaceholder(limit_ph, &limit_ph_value);
-        query.SetValueToPlaceholder(offset_ph, &offset_ph_value);
+        query.SetValueToPlaceholder(limit_ph,
+                                    std::make_shared<SqlInt>(pagination->result_per_page()));
+        query.SetValueToPlaceholder(
+            offset_ph,
+            std::make_shared<SqlInt>(pagination->page_number() * pagination->result_per_page()));
     }
 
     std::vector<std::tuple<UserEntity>> result_set = Query<UserEntity>(query, {"u"}, conns);

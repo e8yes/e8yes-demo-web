@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include <ctime>
+#include <memory>
 
 #include "demoweb_service/demoweb/common_entity/contact_relation_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
@@ -66,10 +67,6 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
     SqlQueryBuilder::Placeholder<SqlLong> inviter_id_ph;
     SqlQueryBuilder::Placeholder<SqlInt> foward_relation_ph;
     SqlQueryBuilder::Placeholder<SqlInt> backward_relation_ph;
-    SqlLong invitee_user_id_ph_value(invitee_id);
-    SqlLong inviter_user_id_ph_value(inviter_id);
-    SqlInt foward_relation_ph_value(UserRelation::URL_INVITATION_SENT);
-    SqlInt backward_relation_ph_value(UserRelation::URL_INVITATION_RECEIVED);
 
     SqlQueryBuilder query;
     query.QueryPiece("WHERE (src_user_id=")
@@ -86,10 +83,12 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
         .Holder(&backward_relation_ph)
         .QueryPiece(")");
 
-    query.SetValueToPlaceholder(invitee_id_ph, &invitee_user_id_ph_value);
-    query.SetValueToPlaceholder(inviter_id_ph, &inviter_user_id_ph_value);
-    query.SetValueToPlaceholder(foward_relation_ph, &foward_relation_ph_value);
-    query.SetValueToPlaceholder(backward_relation_ph, &backward_relation_ph_value);
+    query.SetValueToPlaceholder(invitee_id_ph, std::make_shared<SqlLong>(invitee_id));
+    query.SetValueToPlaceholder(inviter_id_ph, std::make_shared<SqlLong>(inviter_id));
+    query.SetValueToPlaceholder(foward_relation_ph,
+                                std::make_shared<SqlInt>(UserRelation::URL_INVITATION_SENT));
+    query.SetValueToPlaceholder(backward_relation_ph,
+                                std::make_shared<SqlInt>(UserRelation::URL_INVITATION_RECEIVED));
 
     uint64_t num_deleted = Delete(TableNames::ContactRelation(), query, conns);
     if (num_deleted != 2) {

@@ -71,12 +71,12 @@ ConnectionInterface::QueryParams ConstructQueryParams(SqlEntityInterface const &
     ConnectionInterface::QueryParams params;
     unsigned i = 0;
     for (i = 0; i < fields.size(); i++) {
-        params.SetParam(i, fields[i]);
+        params.SetParamPtr(i, fields[i]);
     }
 
     if (with_upsert) {
         for (unsigned j = 0; j < fields.size(); i++, j++) {
-            params.SetParam(i, fields[j]);
+            params.SetParamPtr(i, fields[j]);
         }
     }
 

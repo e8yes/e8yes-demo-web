@@ -18,6 +18,7 @@
 #include <QtTest>
 #include <cstdint>
 #include <ctime>
+#include <memory>
 #include <optional>
 
 #include "postgres/query_runner/connection/connection_interface.h"
@@ -55,33 +56,32 @@ void sql_query_builder_test::build_parameterized_query_test() {
         .QueryPiece(" AND im.blockId!=")
         .Holder(&user_id);
 
-    QVERIFY(builder.PsqlQuery() ==
-            "Security s JOIN Image im ON s.id=im.securityId AND s.userId=$1 "
-            "WHERE im.date>=$2 AND im.date<$3 AND im.blockId!=$4");
+    QVERIFY(builder.PsqlQuery() == "Security s JOIN Image im ON s.id=im.securityId AND s.userId=$1 "
+                                   "WHERE im.date>=$2 AND im.date<$3 AND im.blockId!=$4");
 
-    e8::SqlInt user_id_value(1);
-    e8::SqlTimestamp begin_timestamp_value(100);
-    e8::SqlTimestamp end_timestamp_value(101);
-    builder.SetValueToPlaceholder(user_id, &user_id_value);
-    builder.SetValueToPlaceholder(begin_timestamp, &begin_timestamp_value);
-    builder.SetValueToPlaceholder(end_timestamp, &end_timestamp_value);
+    auto user_id_value = std::make_shared<e8::SqlInt>(1);
+    auto begin_timestamp_value = std::make_shared<e8::SqlTimestamp>(100);
+    auto end_timestamp_value = std::make_shared<e8::SqlTimestamp>(101);
+    builder.SetValueToPlaceholder(user_id, user_id_value);
+    builder.SetValueToPlaceholder(begin_timestamp, begin_timestamp_value);
+    builder.SetValueToPlaceholder(end_timestamp, end_timestamp_value);
 
     e8::ConnectionInterface::QueryParams const &params = builder.QueryParams();
     QVERIFY(params.Parameters().size() == 4);
-    QVERIFY(*params.GetParam(1) == user_id_value);
-    QVERIFY(*params.GetParam(2) == begin_timestamp_value);
-    QVERIFY(*params.GetParam(3) == end_timestamp_value);
-    QVERIFY(*params.GetParam(4) == user_id_value);
+    QVERIFY(*params.GetParam(1) == *user_id_value);
+    QVERIFY(*params.GetParam(2) == *begin_timestamp_value);
+    QVERIFY(*params.GetParam(3) == *end_timestamp_value);
+    QVERIFY(*params.GetParam(4) == *user_id_value);
 
-    e8::SqlInt updated_user_id_value(2);
-    builder.SetValueToPlaceholder(user_id, &updated_user_id_value);
+    auto updated_user_id_value = std::make_shared<e8::SqlInt>(2);
+    builder.SetValueToPlaceholder(user_id, updated_user_id_value);
 
     e8::ConnectionInterface::QueryParams const &updated_params = builder.QueryParams();
     QVERIFY(updated_params.Parameters().size() == 4);
-    QVERIFY(*updated_params.GetParam(1) == user_id_value);
-    QVERIFY(*updated_params.GetParam(2) == begin_timestamp_value);
-    QVERIFY(*updated_params.GetParam(3) == end_timestamp_value);
-    QVERIFY(*updated_params.GetParam(4) == user_id_value);
+    QVERIFY(*updated_params.GetParam(1) == *user_id_value);
+    QVERIFY(*updated_params.GetParam(2) == *begin_timestamp_value);
+    QVERIFY(*updated_params.GetParam(3) == *end_timestamp_value);
+    QVERIFY(*updated_params.GetParam(4) == *user_id_value);
 }
 
 QTEST_APPLESS_MAIN(sql_query_builder_test)

@@ -17,6 +17,7 @@
 
 #include <cassert>
 #include <ctime>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -148,12 +149,11 @@ bool ValidateDirectFileAccess(Identity const &viewer, std::string const &file_pa
         return false;
     }
 
-    SqlStrArr viewer_participated_groups_value(
-        std::vector<std::string>({viewer.group_names().begin(), viewer.group_names().end()}));
-    SqlStr file_path_value(file_path, "");
     query.SetValueToPlaceholder(viewer_participated_groups_ph,
-                                   &viewer_participated_groups_value);
-    query.SetValueToPlaceholder(file_path_ph, &file_path_value);
+                                std::make_shared<SqlStrArr>(std::vector<std::string>(
+                                    {viewer.group_names().begin(), viewer.group_names().end()})));
+    query.SetValueToPlaceholder(file_path_ph,
+                                std::make_shared<SqlStr>(file_path, /*field_name=*/""));
 
     bool has_access = Exists(query, db_conns);
     return has_access;
