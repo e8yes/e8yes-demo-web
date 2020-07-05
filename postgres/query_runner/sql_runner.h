@@ -57,10 +57,10 @@ std::vector<std::tuple<EntityType, Others...>>
 Query(SqlQueryBuilder const &query, std::initializer_list<std::string> const &entity_aliases,
       ConnectionReservoirInterface *reservoir) {
     std::string select_query =
-        CompleteSelectQuery<EntityType, Others...>(query.psql_query(), entity_aliases);
+        CompleteSelectQuery<EntityType, Others...>(query.PsqlQuery(), entity_aliases);
 
     ConnectionInterface *conn = reservoir->Take();
-    std::unique_ptr<ResultSetInterface> rs = conn->run_query(select_query, query.query_params());
+    std::unique_ptr<ResultSetInterface> rs = conn->RunQuery(select_query, query.QueryParams());
 
     std::vector<std::tuple<EntityType, Others...>> results =
         ToEntityTuples<EntityType, Others...>(rs.get());

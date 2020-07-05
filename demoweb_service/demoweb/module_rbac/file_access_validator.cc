@@ -97,21 +97,21 @@ void AddDirectFileAccessForUserGroup(std::string const &file_path,
                                      UserGroupEntity const &user_group, FileAccessMode access_mode,
                                      ConnectionReservoirInterface *db_conns) {
     UserGroupHasFileEntity file_group;
-    *file_group.group_name.value_ptr() = user_group.group_name.value();
-    *file_group.file_path.value_ptr() = file_path;
+    *file_group.group_name.ValuePtr() = user_group.group_name.Value();
+    *file_group.file_path.ValuePtr() = file_path;
 
     switch (access_mode) {
     case FAM_READ:
-        *file_group.can_read.value_ptr() = true;
-        *file_group.can_write.value_ptr() = false;
+        *file_group.can_read.ValuePtr() = true;
+        *file_group.can_write.ValuePtr() = false;
         break;
     case FAM_WRITE:
-        *file_group.can_read.value_ptr() = false;
-        *file_group.can_write.value_ptr() = true;
+        *file_group.can_read.ValuePtr() = false;
+        *file_group.can_write.ValuePtr() = true;
         break;
     case FAM_READWRITE:
-        *file_group.can_read.value_ptr() = true;
-        *file_group.can_write.value_ptr() = true;
+        *file_group.can_read.ValuePtr() = true;
+        *file_group.can_write.ValuePtr() = true;
         break;
     default:
         return;
@@ -127,22 +127,22 @@ bool ValidateDirectFileAccess(Identity const &viewer, std::string const &file_pa
     SqlQueryBuilder::Placeholder<SqlStrArr> viewer_participated_groups_ph;
     SqlQueryBuilder::Placeholder<SqlStr> file_path_ph;
     SqlQueryBuilder query;
-    query.query_piece(TableNames::UserGroupHasFile())
-        .query_piece(" WHERE file_path=")
-        .placeholder(&file_path_ph)
-        .query_piece(" AND group_name=ANY(")
-        .placeholder(&viewer_participated_groups_ph)
-        .query_piece(")");
+    query.QueryPiece(TableNames::UserGroupHasFile())
+        .QueryPiece(" WHERE file_path=")
+        .Holder(&file_path_ph)
+        .QueryPiece(" AND group_name=ANY(")
+        .Holder(&viewer_participated_groups_ph)
+        .QueryPiece(")");
 
     switch (access_mode) {
     case FAM_READ:
-        query.query_piece(" AND can_read=TRUE");
+        query.QueryPiece(" AND can_read=TRUE");
         break;
     case FAM_WRITE:
-        query.query_piece(" AND can_write=TRUE");
+        query.QueryPiece(" AND can_write=TRUE");
         break;
     case FAM_READWRITE:
-        query.query_piece(" AND can_read=TRUE AND can_write=TRUE");
+        query.QueryPiece(" AND can_read=TRUE AND can_write=TRUE");
         break;
     default:
         return false;
@@ -151,9 +151,9 @@ bool ValidateDirectFileAccess(Identity const &viewer, std::string const &file_pa
     SqlStrArr viewer_participated_groups_value(
         std::vector<std::string>({viewer.group_names().begin(), viewer.group_names().end()}));
     SqlStr file_path_value(file_path, "");
-    query.set_value_to_placeholder(viewer_participated_groups_ph,
+    query.SetValueToPlaceholder(viewer_participated_groups_ph,
                                    &viewer_participated_groups_value);
-    query.set_value_to_placeholder(file_path_ph, &file_path_value);
+    query.SetValueToPlaceholder(file_path_ph, &file_path_value);
 
     bool has_access = Exists(query, db_conns);
     return has_access;

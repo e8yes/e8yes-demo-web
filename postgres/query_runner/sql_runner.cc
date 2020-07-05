@@ -48,7 +48,7 @@ uint64_t Update(SqlEntityInterface const &entity, std::string const &table_name,
 
     ConnectionInterface *conn = reservoir->Take();
     uint64_t numRowsUpdated =
-        conn->run_update(query_and_params.query, query_and_params.query_params);
+        conn->RunUpdate(query_and_params.query, query_and_params.query_params);
     reservoir->Put(conn);
 
     return numRowsUpdated;
@@ -56,22 +56,22 @@ uint64_t Update(SqlEntityInterface const &entity, std::string const &table_name,
 
 uint64_t Delete(std::string const &table_name, SqlQueryBuilder const &query,
                 ConnectionReservoirInterface *reservoir) {
-    std::string completed_query = "DELETE FROM " + table_name + " " + query.psql_query();
+    std::string completed_query = "DELETE FROM " + table_name + " " + query.PsqlQuery();
 
     ConnectionInterface *conn = reservoir->Take();
-    uint64_t numRowsUpdated = conn->run_update(completed_query, query.query_params());
+    uint64_t numRowsUpdated = conn->RunUpdate(completed_query, query.QueryParams());
     reservoir->Put(conn);
 
     return numRowsUpdated;
 }
 
 bool Exists(SqlQueryBuilder const &query, ConnectionReservoirInterface *reservoir) {
-    std::string exists_query = "SELECT TRUE FROM " + query.psql_query();
+    std::string exists_query = "SELECT TRUE FROM " + query.PsqlQuery();
 
     ConnectionInterface *conn = reservoir->Take();
 
-    std::unique_ptr<ResultSetInterface> rs = conn->run_query(exists_query, query.query_params());
-    bool exists = rs->has_next();
+    std::unique_ptr<ResultSetInterface> rs = conn->RunQuery(exists_query, query.QueryParams());
+    bool exists = rs->HasNext();
 
     reservoir->Put(conn);
 
@@ -83,14 +83,14 @@ std::unordered_set<std::string> Tables(ConnectionReservoirInterface *reservoir) 
     std::string reflection_query =
         "SELECT tb.table_name FROM information_schema.tables tb WHERE tb.table_schema='public'";
     std::unique_ptr<ResultSetInterface> rs =
-        conn->run_query(reflection_query, ConnectionInterface::QueryParams());
+        conn->RunQuery(reflection_query, ConnectionInterface::QueryParams());
 
     std::unordered_set<std::string> table_names;
     SqlStr table_name("table_name");
-    for (; rs->has_next(); rs->next()) {
-        rs->set_field(0, &table_name);
-        assert(table_name.value().has_value());
-        table_names.insert(table_name.value().value());
+    for (; rs->HasNext(); rs->Next()) {
+        rs->SetField(0, &table_name);
+        assert(table_name.Value().has_value());
+        table_names.insert(table_name.Value().value());
     }
 
     reservoir->Put(conn);
@@ -102,15 +102,15 @@ void SendHeartBeat(ConnectionReservoirInterface *reservoir) {
     ConnectionInterface *conn = reservoir->Take();
 
     std::unique_ptr<ResultSetInterface> rs =
-        conn->run_query("SELECT 1", ConnectionInterface::QueryParams());
+        conn->RunQuery("SELECT 1", ConnectionInterface::QueryParams());
 
-    if (!rs->has_next()) {
+    if (!rs->HasNext()) {
         throw std::ios_base::failure("Heart beat results in an empty result set.");
     }
 
     SqlInt one("heart_beat");
-    rs->set_field(0, &one);
-    if (!one.value().has_value() || one.value().value() != 1) {
+    rs->SetField(0, &one);
+    if (!one.Value().has_value() || one.Value().value() != 1) {
         throw std::system_error();
     }
 
@@ -130,22 +130,22 @@ int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reserv
     ConnectionInterface *conn = reservoir->Take();
 
     std::unique_ptr<ResultSetInterface> rs =
-        conn->run_query("SELECT nextval('" + seq_table + "')", ConnectionInterface::QueryParams());
-    assert(rs->has_next());
+        conn->RunQuery("SELECT nextval('" + seq_table + "')", ConnectionInterface::QueryParams());
+    assert(rs->HasNext());
 
     SqlLong id("id");
-    rs->set_field(0, &id);
-    assert(id.value().has_value());
+    rs->SetField(0, &id);
+    assert(id.Value().has_value());
 
     reservoir->Put(conn);
 
-    return id.value().value();
+    return id.Value().value();
 }
 
 void ClearAllTables(ConnectionReservoirInterface *reservoir) {
     std::unordered_set<std::string> table_names = Tables(reservoir);
     SqlQueryBuilder constraint;
-    constraint.query_piece("CASCADE");
+    constraint.QueryPiece("CASCADE");
     for (std::string const &tb_name : table_names) {
         Delete(tb_name, constraint, reservoir);
     }

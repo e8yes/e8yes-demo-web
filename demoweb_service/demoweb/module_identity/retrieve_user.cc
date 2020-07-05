@@ -35,10 +35,10 @@ namespace e8 {
 std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     SqlQueryBuilder::Placeholder<SqlLong> user_id_ph;
-    query.query_piece(TableNames::AUser()).query_piece(" u WHERE u.id=").placeholder(&user_id_ph);
+    query.QueryPiece(TableNames::AUser()).QueryPiece(" u WHERE u.id=").Holder(&user_id_ph);
 
     SqlLong user_id_ph_value(user_id);
-    query.set_value_to_placeholder(user_id_ph, &user_id_ph_value);
+    query.SetValueToPlaceholder(user_id_ph, &user_id_ph_value);
 
     std::vector<std::tuple<UserEntity>> results = Query<UserEntity>(query, {"u"}, db_conns);
     if (results.empty()) {
@@ -55,53 +55,53 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
                                    Pagination const &pagination,
                                    ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
-    query.query_piece(TableNames::AUser());
-    query.query_piece(" u");
+    query.QueryPiece(TableNames::AUser());
+    query.QueryPiece(" u");
 
     if (viewer_id.has_value()) {
-        query.query_piece(" LEFT JOIN ");
-        query.query_piece(TableNames::ContactRelation());
-        query.query_piece(" cr ON cr.src_user_id=" + std::to_string(*viewer_id));
-        query.query_piece(" AND cr.dst_user_id=u.id");
+        query.QueryPiece(" LEFT JOIN ");
+        query.QueryPiece(TableNames::ContactRelation());
+        query.QueryPiece(" cr ON cr.src_user_id=" + std::to_string(*viewer_id));
+        query.QueryPiece(" AND cr.dst_user_id=u.id");
     }
 
-    query.query_piece(" WHERE FALSE");
+    query.QueryPiece(" WHERE FALSE");
 
     SqlStr user_id_prefix_ph_value("", "");
     if (user_id_prefix.has_value()) {
         SqlQueryBuilder::Placeholder<SqlStr> user_id_prefix_ph;
-        query.query_piece(" OR u.id_str LIKE ").placeholder(&user_id_prefix_ph);
+        query.QueryPiece(" OR u.id_str LIKE ").Holder(&user_id_prefix_ph);
 
-        *user_id_prefix_ph_value.value_ptr() = std::to_string(user_id_prefix.value()) + "%";
-        query.set_value_to_placeholder(user_id_prefix_ph, &user_id_prefix_ph_value);
+        *user_id_prefix_ph_value.ValuePtr() = std::to_string(user_id_prefix.value()) + "%";
+        query.SetValueToPlaceholder(user_id_prefix_ph, &user_id_prefix_ph_value);
     }
 
     SqlStr alias_prefix_ph_value("", "");
     if (alias_prefix.has_value()) {
         SqlQueryBuilder::Placeholder<SqlStr> alias_prefix_ph;
-        query.query_piece(" OR u.alias LIKE ").placeholder(&alias_prefix_ph);
+        query.QueryPiece(" OR u.alias LIKE ").Holder(&alias_prefix_ph);
 
-        *alias_prefix_ph_value.value_ptr() = alias_prefix.value() + "%";
-        query.set_value_to_placeholder(alias_prefix_ph, &alias_prefix_ph_value);
+        *alias_prefix_ph_value.ValuePtr() = alias_prefix.value() + "%";
+        query.SetValueToPlaceholder(alias_prefix_ph, &alias_prefix_ph_value);
     }
 
     if (viewer_id.has_value()) {
-        query.query_piece(" ORDER BY cr.last_interaction_at DESC, u.alias ASC, u.id ASC");
+        query.QueryPiece(" ORDER BY cr.last_interaction_at DESC, u.alias ASC, u.id ASC");
     } else {
-        query.query_piece(" ORDER BY u.alias ASC, u.id ASC");
+        query.QueryPiece(" ORDER BY u.alias ASC, u.id ASC");
     }
 
     SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
     SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
-    query.query_piece(" LIMIT ")
-        .placeholder(&limit_ph)
-        .query_piece(" OFFSET ")
-        .placeholder(&offset_ph);
+    query.QueryPiece(" LIMIT ")
+        .Holder(&limit_ph)
+        .QueryPiece(" OFFSET ")
+        .Holder(&offset_ph);
 
     SqlInt limit_ph_value(pagination.result_per_page());
     SqlInt offset_ph_value(pagination.page_number() * pagination.result_per_page());
-    query.set_value_to_placeholder(limit_ph, &limit_ph_value);
-    query.set_value_to_placeholder(offset_ph, &offset_ph_value);
+    query.SetValueToPlaceholder(limit_ph, &limit_ph_value);
+    query.SetValueToPlaceholder(offset_ph, &offset_ph_value);
 
     std::vector<std::tuple<UserEntity>> query_results = Query<UserEntity>(query, {"u"}, db_conns);
     std::vector<UserEntity> results(query_results.size());

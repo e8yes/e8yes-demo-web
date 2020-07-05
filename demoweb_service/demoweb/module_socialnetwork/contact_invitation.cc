@@ -36,11 +36,11 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_an
     std::time(&timestamp);
 
     ContactRelationEntity forward_relation;
-    *forward_relation.src_user_id.value_ptr() = inviter_id;
-    *forward_relation.dst_user_id.value_ptr() = invitee_id;
-    *forward_relation.relation.value_ptr() = URL_INVITATION_SENT;
-    *forward_relation.created_at.value_ptr() = timestamp;
-    *forward_relation.last_interaction_at.value_ptr() = timestamp;
+    *forward_relation.src_user_id.ValuePtr() = inviter_id;
+    *forward_relation.dst_user_id.ValuePtr() = invitee_id;
+    *forward_relation.relation.ValuePtr() = URL_INVITATION_SENT;
+    *forward_relation.created_at.ValuePtr() = timestamp;
+    *forward_relation.last_interaction_at.ValuePtr() = timestamp;
 
     int64_t updated_rows =
         Update(forward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
@@ -49,11 +49,11 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_an
     }
 
     ContactRelationEntity backward_relation;
-    *backward_relation.src_user_id.value_ptr() = invitee_id;
-    *backward_relation.dst_user_id.value_ptr() = inviter_id;
-    *backward_relation.relation.value_ptr() = URL_INVITATION_RECEIVED;
-    *backward_relation.created_at.value_ptr() = timestamp;
-    *backward_relation.last_interaction_at.value_ptr() = timestamp;
+    *backward_relation.src_user_id.ValuePtr() = invitee_id;
+    *backward_relation.dst_user_id.ValuePtr() = inviter_id;
+    *backward_relation.relation.ValuePtr() = URL_INVITATION_RECEIVED;
+    *backward_relation.created_at.ValuePtr() = timestamp;
+    *backward_relation.last_interaction_at.ValuePtr() = timestamp;
 
     Update(backward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
 
@@ -72,24 +72,24 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
     SqlInt backward_relation_ph_value(UserRelation::URL_INVITATION_RECEIVED);
 
     SqlQueryBuilder query;
-    query.query_piece("WHERE (src_user_id=")
-        .placeholder(&inviter_id_ph)
-        .query_piece(" AND dst_user_id=")
-        .placeholder(&invitee_id_ph)
-        .query_piece(" AND relation=")
-        .placeholder(&foward_relation_ph)
-        .query_piece(") OR (src_user_id=")
-        .placeholder(&invitee_id_ph)
-        .query_piece(" AND dst_user_id=")
-        .placeholder(&inviter_id_ph)
-        .query_piece(" AND relation=")
-        .placeholder(&backward_relation_ph)
-        .query_piece(")");
+    query.QueryPiece("WHERE (src_user_id=")
+        .Holder(&inviter_id_ph)
+        .QueryPiece(" AND dst_user_id=")
+        .Holder(&invitee_id_ph)
+        .QueryPiece(" AND relation=")
+        .Holder(&foward_relation_ph)
+        .QueryPiece(") OR (src_user_id=")
+        .Holder(&invitee_id_ph)
+        .QueryPiece(" AND dst_user_id=")
+        .Holder(&inviter_id_ph)
+        .QueryPiece(" AND relation=")
+        .Holder(&backward_relation_ph)
+        .QueryPiece(")");
 
-    query.set_value_to_placeholder(invitee_id_ph, &invitee_user_id_ph_value);
-    query.set_value_to_placeholder(inviter_id_ph, &inviter_user_id_ph_value);
-    query.set_value_to_placeholder(foward_relation_ph, &foward_relation_ph_value);
-    query.set_value_to_placeholder(backward_relation_ph, &backward_relation_ph_value);
+    query.SetValueToPlaceholder(invitee_id_ph, &invitee_user_id_ph_value);
+    query.SetValueToPlaceholder(inviter_id_ph, &inviter_user_id_ph_value);
+    query.SetValueToPlaceholder(foward_relation_ph, &foward_relation_ph_value);
+    query.SetValueToPlaceholder(backward_relation_ph, &backward_relation_ph_value);
 
     uint64_t num_deleted = Delete(TableNames::ContactRelation(), query, conns);
     if (num_deleted != 2) {
@@ -101,29 +101,29 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
 
     if (accept) {
         ContactRelationEntity forward_relation;
-        *forward_relation.src_user_id.value_ptr() = inviter_id;
-        *forward_relation.dst_user_id.value_ptr() = invitee_id;
-        *forward_relation.relation.value_ptr() = URL_CONTACT;
-        *forward_relation.created_at.value_ptr() = timestamp;
-        *forward_relation.last_interaction_at.value_ptr() = timestamp;
+        *forward_relation.src_user_id.ValuePtr() = inviter_id;
+        *forward_relation.dst_user_id.ValuePtr() = invitee_id;
+        *forward_relation.relation.ValuePtr() = URL_CONTACT;
+        *forward_relation.created_at.ValuePtr() = timestamp;
+        *forward_relation.last_interaction_at.ValuePtr() = timestamp;
 
         Update(forward_relation, TableNames::ContactRelation(), /*replace=*/true, conns);
 
         ContactRelationEntity backward_relation;
-        *backward_relation.src_user_id.value_ptr() = invitee_id;
-        *backward_relation.dst_user_id.value_ptr() = inviter_id;
-        *backward_relation.relation.value_ptr() = URL_CONTACT;
-        *backward_relation.created_at.value_ptr() = timestamp;
-        *backward_relation.last_interaction_at.value_ptr() = timestamp;
+        *backward_relation.src_user_id.ValuePtr() = invitee_id;
+        *backward_relation.dst_user_id.ValuePtr() = inviter_id;
+        *backward_relation.relation.ValuePtr() = URL_CONTACT;
+        *backward_relation.created_at.ValuePtr() = timestamp;
+        *backward_relation.last_interaction_at.ValuePtr() = timestamp;
 
         Update(backward_relation, TableNames::ContactRelation(), /*replace=*/true, conns);
     } else {
         ContactRelationEntity rejection_relation;
-        *rejection_relation.src_user_id.value_ptr() = inviter_id;
-        *rejection_relation.dst_user_id.value_ptr() = invitee_id;
-        *rejection_relation.relation.value_ptr() = URL_INVITATION_REJECTED;
-        *rejection_relation.created_at.value_ptr() = timestamp;
-        *rejection_relation.last_interaction_at.value_ptr() = timestamp;
+        *rejection_relation.src_user_id.ValuePtr() = inviter_id;
+        *rejection_relation.dst_user_id.ValuePtr() = invitee_id;
+        *rejection_relation.relation.ValuePtr() = URL_INVITATION_REJECTED;
+        *rejection_relation.created_at.ValuePtr() = timestamp;
+        *rejection_relation.last_interaction_at.ValuePtr() = timestamp;
 
         Update(rejection_relation, TableNames::ContactRelation(), /*replace=*/true, conns);
     }

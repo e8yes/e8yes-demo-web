@@ -46,7 +46,7 @@ grpc::Status UserServiceImpl::Register(grpc::ServerContext * /*context*/,
                             "User ID conflicts when it shouldn't happen");
     }
 
-    response->set_user_id(user.value().id.value().value());
+    response->set_user_id(*user->id.Value());
     response->set_error_type(RegistrationResponse::RET_NoError);
 
     return grpc::Status::OK;

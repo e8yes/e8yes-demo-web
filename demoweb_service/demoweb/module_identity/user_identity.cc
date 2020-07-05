@@ -93,10 +93,10 @@ std::optional<SecurityKeyHash> DigestSecurityKey(std::string const &security_key
 
 std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string const &security_key,
                                            KeyGeneratorInterface *key_gen) {
-    assert(user.id.value().has_value());
-    assert(user.security_key_hash.value().has_value());
+    assert(user.id.Value().has_value());
+    assert(user.security_key_hash.Value().has_value());
     auto [settings, ground_truth_key_hash] =
-        ParseSecurityKeyHash(user.security_key_hash.value().value());
+        ParseSecurityKeyHash(user.security_key_hash.Value().value());
 
     crypt_data data;
     char *hash = crypt_r(security_key.c_str(), settings.c_str(), &data);
@@ -106,9 +106,9 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
     }
 
     Identity identity;
-    identity.set_user_id(user.id.value().value());
-    *identity.mutable_group_names() = {user.group_names.value().begin(),
-                                       user.group_names.value().end()};
+    identity.set_user_id(user.id.Value().value());
+    *identity.mutable_group_names() = {user.group_names.Value().begin(),
+                                       user.group_names.Value().end()};
     std::time_t cur_timestamp;
     std::time(&cur_timestamp);
     identity.set_expiry_timestamp(cur_timestamp + kIdentityValidDurationSecs);

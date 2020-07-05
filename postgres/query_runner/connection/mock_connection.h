@@ -42,8 +42,8 @@ class MockConnection : public ConnectionInterface {
      * Repeated call of this function will override the previous setting. The program will fail, if
      * the query result is not set before calling the below run_query() function.
      */
-    void set_query_result(ParameterizedQuery const &query, QueryParams const &params,
-                          MockResultSet const &result);
+    void SetQueryResult(ParameterizedQuery const &query, QueryParams const &params,
+                        MockResultSet const &result);
 
     /**
      * @brief set_update_result Set the number of rows affected by the corresponding update query
@@ -51,20 +51,20 @@ class MockConnection : public ConnectionInterface {
      * program will fail, if the query result is not set before calling the below run_update()
      * function.
      */
-    void set_update_result(ParameterizedQuery const &query, QueryParams const &params,
-                           uint64_t const &num_rows_affected);
+    void SetUpdateResult(ParameterizedQuery const &query, QueryParams const &params,
+                         uint64_t const &num_rows_affected);
 
     /**
      * @brief set_closed The the close state of this connection. Marking it closed will affect the
      * result of is_closed().
      * @param closed The new state of the this connection.
      */
-    void set_closed(bool closed);
+    void SetClosed(bool closed);
 
-    std::unique_ptr<ResultSetInterface> run_query(ParameterizedQuery const &query,
-                                                  QueryParams const &params) override;
-    uint64_t run_update(ParameterizedQuery const &query, QueryParams const &params) override;
-    bool is_closed() const override;
+    std::unique_ptr<ResultSetInterface> RunQuery(ParameterizedQuery const &query,
+                                                 QueryParams const &params) override;
+    uint64_t RunUpdate(ParameterizedQuery const &query, QueryParams const &params) override;
+    bool IsClosed() const override;
 
   private:
     struct MockQuerySetting {

@@ -37,13 +37,13 @@ namespace e8 {
  */
 class SqlBool : public SqlPrimitiveInterface {
   public:
-    explicit SqlBool(std::string const &field_name);
-    explicit SqlBool(bool value, std::string const &field_name);
+    explicit SqlBool(std::string const &FieldName);
+    explicit SqlBool(bool Value, std::string const &FieldName);
     ~SqlBool() override;
     SqlBool(SqlBool const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -55,12 +55,12 @@ class SqlBool : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ boolean value.
      */
-    std::optional<bool> const &value() const;
+    std::optional<bool> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::optional<bool> *value_ptr();
+    std::optional<bool> *ValuePtr();
 
   private:
     std::optional<bool> value_;
@@ -74,13 +74,13 @@ class SqlBool : public SqlPrimitiveInterface {
  */
 class SqlInt : public SqlPrimitiveInterface {
   public:
-    explicit SqlInt(std::string const &field_name);
-    explicit SqlInt(int32_t value, std::string const &field_name = "");
+    explicit SqlInt(std::string const &FieldName);
+    explicit SqlInt(int32_t Value, std::string const &FieldName = "");
     ~SqlInt() override;
     SqlInt(SqlInt const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -92,12 +92,12 @@ class SqlInt : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ 32-bit integer.
      */
-    std::optional<int32_t> const &value() const;
+    std::optional<int32_t> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::optional<int32_t> *value_ptr();
+    std::optional<int32_t> *ValuePtr();
 
   private:
     std::optional<int32_t> value_;
@@ -111,13 +111,13 @@ class SqlInt : public SqlPrimitiveInterface {
  */
 class SqlLong : public SqlPrimitiveInterface {
   public:
-    explicit SqlLong(std::string const &field_name);
-    explicit SqlLong(int64_t value, std::string const &field_name = "");
+    explicit SqlLong(std::string const &FieldName);
+    explicit SqlLong(int64_t Value, std::string const &FieldName = "");
     ~SqlLong() override;
     SqlLong(SqlLong const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -129,12 +129,12 @@ class SqlLong : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ 64-bit integer.
      */
-    std::optional<int64_t> const &value() const;
+    std::optional<int64_t> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::optional<int64_t> *value_ptr();
+    std::optional<int64_t> *ValuePtr();
 
   private:
     std::optional<int64_t> value_;
@@ -148,13 +148,13 @@ class SqlLong : public SqlPrimitiveInterface {
  */
 class SqlFloat : public SqlPrimitiveInterface {
   public:
-    explicit SqlFloat(std::string const &field_name);
-    explicit SqlFloat(float value, std::string const &field_name = "");
+    explicit SqlFloat(std::string const &FieldName);
+    explicit SqlFloat(float Value, std::string const &FieldName = "");
     ~SqlFloat() override;
     SqlFloat(SqlFloat const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -166,12 +166,12 @@ class SqlFloat : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ single-precision float.
      */
-    std::optional<float> const &value() const;
+    std::optional<float> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::optional<float> *value_ptr();
+    std::optional<float> *ValuePtr();
 
   private:
     std::optional<float> value_;
@@ -185,13 +185,13 @@ class SqlFloat : public SqlPrimitiveInterface {
  */
 class SqlDouble : public SqlPrimitiveInterface {
   public:
-    explicit SqlDouble(std::string const &field_name);
-    explicit SqlDouble(double value, std::string const &field_name = "");
+    explicit SqlDouble(std::string const &FieldName);
+    explicit SqlDouble(double Value, std::string const &FieldName = "");
     ~SqlDouble() override;
     SqlDouble(SqlDouble const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -203,12 +203,12 @@ class SqlDouble : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ double-precision float.
      */
-    std::optional<double> const &value() const;
+    std::optional<double> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::optional<double> *value_ptr();
+    std::optional<double> *ValuePtr();
 
   private:
     std::optional<double> value_;
@@ -222,13 +222,13 @@ class SqlDouble : public SqlPrimitiveInterface {
  */
 class SqlStr : public SqlPrimitiveInterface {
   public:
-    explicit SqlStr(std::string const &field_name);
-    SqlStr(std::string const &value, std::string const &field_name);
+    explicit SqlStr(std::string const &FieldName);
+    SqlStr(std::string const &Value, std::string const &FieldName);
     ~SqlStr() override;
     SqlStr(SqlStr const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -240,12 +240,12 @@ class SqlStr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ string.
      */
-    std::optional<std::string> const &value() const;
+    std::optional<std::string> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::optional<std::string> *value_ptr();
+    std::optional<std::string> *ValuePtr();
 
   private:
     std::optional<std::string> value_;
@@ -259,13 +259,13 @@ class SqlStr : public SqlPrimitiveInterface {
  */
 class SqlTimestamp : public SqlPrimitiveInterface {
   public:
-    explicit SqlTimestamp(std::string const &field_name);
-    explicit SqlTimestamp(std::time_t value, std::string const &field_name = "");
+    explicit SqlTimestamp(std::string const &FieldName);
+    explicit SqlTimestamp(std::time_t Value, std::string const &FieldName = "");
     ~SqlTimestamp() override;
     SqlTimestamp(SqlTimestamp const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -277,12 +277,12 @@ class SqlTimestamp : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ time.
      */
-    std::optional<std::time_t> const &value() const;
+    std::optional<std::time_t> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::optional<std::time_t> *value_ptr();
+    std::optional<std::time_t> *ValuePtr();
 
   private:
     std::optional<std::time_t> value_;
@@ -297,13 +297,13 @@ class SqlTimestamp : public SqlPrimitiveInterface {
  */
 class SqlBoolArr : public SqlPrimitiveInterface {
   public:
-    explicit SqlBoolArr(std::string const &field_name);
-    explicit SqlBoolArr(std::vector<bool> const &value, std::string const &field_name = "");
+    explicit SqlBoolArr(std::string const &FieldName);
+    explicit SqlBoolArr(std::vector<bool> const &Value, std::string const &FieldName = "");
     ~SqlBoolArr() override;
     SqlBoolArr(SqlBoolArr const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -315,12 +315,12 @@ class SqlBoolArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ boolean array.
      */
-    std::vector<bool> const &value() const;
+    std::vector<bool> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<bool> *value_ptr();
+    std::vector<bool> *ValuePtr();
 
   private:
     std::vector<bool> value_;
@@ -335,13 +335,13 @@ class SqlBoolArr : public SqlPrimitiveInterface {
  */
 class SqlIntArr : public SqlPrimitiveInterface {
   public:
-    explicit SqlIntArr(std::string const &field_name);
-    explicit SqlIntArr(std::vector<int32_t> const &value, std::string const &field_name = "");
+    explicit SqlIntArr(std::string const &FieldName);
+    explicit SqlIntArr(std::vector<int32_t> const &Value, std::string const &FieldName = "");
     ~SqlIntArr() override;
     SqlIntArr(SqlIntArr const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -353,12 +353,12 @@ class SqlIntArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ 32-bit integer array.
      */
-    std::vector<int32_t> const &value() const;
+    std::vector<int32_t> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<int32_t> *value_ptr();
+    std::vector<int32_t> *ValuePtr();
 
   private:
     std::vector<int32_t> value_;
@@ -373,13 +373,13 @@ class SqlIntArr : public SqlPrimitiveInterface {
  */
 class SqlLongArr : public SqlPrimitiveInterface {
   public:
-    explicit SqlLongArr(std::string const &field_name);
-    explicit SqlLongArr(std::vector<int64_t> const &value, std::string const &field_name = "");
+    explicit SqlLongArr(std::string const &FieldName);
+    explicit SqlLongArr(std::vector<int64_t> const &Value, std::string const &FieldName = "");
     ~SqlLongArr() override;
     SqlLongArr(SqlLongArr const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -391,12 +391,12 @@ class SqlLongArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ 64-bit integer array.
      */
-    std::vector<int64_t> const &value() const;
+    std::vector<int64_t> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<int64_t> *value_ptr();
+    std::vector<int64_t> *ValuePtr();
 
   private:
     std::vector<int64_t> value_;
@@ -411,13 +411,13 @@ class SqlLongArr : public SqlPrimitiveInterface {
  */
 class SqlFloatArr : public SqlPrimitiveInterface {
   public:
-    explicit SqlFloatArr(std::string const &field_name);
-    explicit SqlFloatArr(std::vector<float> const &value, std::string const &field_name = "");
+    explicit SqlFloatArr(std::string const &FieldName);
+    explicit SqlFloatArr(std::vector<float> const &Value, std::string const &FieldName = "");
     ~SqlFloatArr() override;
     SqlFloatArr(SqlFloatArr const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -429,12 +429,12 @@ class SqlFloatArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ single-precision float array.
      */
-    std::vector<float> const &value() const;
+    std::vector<float> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<float> *value_ptr();
+    std::vector<float> *ValuePtr();
 
   private:
     std::vector<float> value_;
@@ -449,13 +449,13 @@ class SqlFloatArr : public SqlPrimitiveInterface {
  */
 class SqlDoubleArr : public SqlPrimitiveInterface {
   public:
-    explicit SqlDoubleArr(std::string const &field_name);
-    explicit SqlDoubleArr(std::vector<double> const &value, std::string const &field_name = "");
+    explicit SqlDoubleArr(std::string const &FieldName);
+    explicit SqlDoubleArr(std::vector<double> const &Value, std::string const &FieldName = "");
     ~SqlDoubleArr() override;
     SqlDoubleArr(SqlDoubleArr const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -467,12 +467,12 @@ class SqlDoubleArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ double-precision float array.
      */
-    std::vector<double> const &value() const;
+    std::vector<double> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<double> *value_ptr();
+    std::vector<double> *ValuePtr();
 
   private:
     std::vector<double> value_;
@@ -487,13 +487,13 @@ class SqlDoubleArr : public SqlPrimitiveInterface {
  */
 class SqlStrArr : public SqlPrimitiveInterface {
   public:
-    explicit SqlStrArr(std::string const &field_name);
-    explicit SqlStrArr(std::vector<std::string> const &value, std::string const &field_name = "");
+    explicit SqlStrArr(std::string const &FieldName);
+    explicit SqlStrArr(std::vector<std::string> const &Value, std::string const &FieldName = "");
     ~SqlStrArr() override;
     SqlStrArr(SqlStrArr const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -505,12 +505,12 @@ class SqlStrArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ string array.
      */
-    std::vector<std::string> const &value() const;
+    std::vector<std::string> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<std::string> *value_ptr();
+    std::vector<std::string> *ValuePtr();
 
   private:
     std::vector<std::string> value_;
@@ -525,14 +525,14 @@ class SqlStrArr : public SqlPrimitiveInterface {
  */
 class SqlTimestampArr : public SqlPrimitiveInterface {
   public:
-    explicit SqlTimestampArr(std::string const &field_name);
-    explicit SqlTimestampArr(std::vector<std::time_t> const &value,
-                             std::string const &field_name = "");
+    explicit SqlTimestampArr(std::string const &FieldName);
+    explicit SqlTimestampArr(std::vector<std::time_t> const &Value,
+                             std::string const &FieldName = "");
     ~SqlTimestampArr() override;
     SqlTimestampArr(SqlTimestampArr const &) = default;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -544,12 +544,12 @@ class SqlTimestampArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ timestamp array.
      */
-    std::vector<std::time_t> const &value() const;
+    std::vector<std::time_t> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<std::time_t> *value_ptr();
+    std::vector<std::time_t> *ValuePtr();
 
   private:
     std::vector<std::time_t> value_;
@@ -564,13 +564,13 @@ class SqlTimestampArr : public SqlPrimitiveInterface {
  */
 class SqlByteArr : public SqlPrimitiveInterface {
   public:
-    explicit SqlByteArr(std::string const &field_name);
-    explicit SqlByteArr(std::string const &value, std::string const &field_name);
+    explicit SqlByteArr(std::string const &FieldName);
+    explicit SqlByteArr(std::string const &Value, std::string const &FieldName);
     SqlByteArr(SqlByteArr const &) = default;
     ~SqlByteArr() override;
 
-    void export_to_invocation(pqxx::prepare::invocation *invocation) const override;
-    void import_from_field(pqxx::field const &field) override;
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
 
     SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
     bool operator==(SqlPrimitiveInterface const &rhs) const override;
@@ -582,12 +582,12 @@ class SqlByteArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ byte array.
      */
-    std::string const &value() const;
+    std::string const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::string *value_ptr();
+    std::string *ValuePtr();
 
   private:
     std::string value_;

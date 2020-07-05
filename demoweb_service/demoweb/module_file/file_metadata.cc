@@ -69,20 +69,20 @@ std::optional<FileMetadataEntity> AttachMetadataForFile(std::string const &file_
                                                         EncryptionSource encryption_source,
                                                         ConnectionReservoirInterface *db_conns) {
     FileMetadataEntity file;
-    *file.path.value_ptr() = file_path;
-    *file.storage_size.value_ptr() = file_size;
+    *file.path.ValuePtr() = file_path;
+    *file.storage_size.ValuePtr() = file_size;
 
     std::optional<FileFormat> format = DetectFileFormat(file_path);
     if (!format.has_value()) {
         return std::nullopt;
     }
-    *file.format.value_ptr() = format.value();
-    *file.encryption_key_source.value_ptr() = encryption_source;
+    *file.format.ValuePtr() = format.value();
+    *file.encryption_key_source.ValuePtr() = encryption_source;
 
     time_t timestamp;
     std::time(&timestamp);
-    *file.created_at.value_ptr() = timestamp;
-    *file.last_modified_at.value_ptr() = timestamp;
+    *file.created_at.ValuePtr() = timestamp;
+    *file.last_modified_at.ValuePtr() = timestamp;
 
     uint64_t num_rows_affected =
         Update(file, TableNames::FileMetadata(), /*replace=*/true, db_conns);

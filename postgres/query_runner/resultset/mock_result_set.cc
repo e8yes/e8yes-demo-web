@@ -8,16 +8,16 @@ namespace e8 {
 
 MockResultSet::MockResultSet(unsigned num_cells) : num_cells_(num_cells) {}
 
-void MockResultSet::add_record(Record const &record) { records_.push_back(record); }
+void MockResultSet::AddRecord(Record const &record) { records_.push_back(record); }
 
-void MockResultSet::next() {
+void MockResultSet::Next() {
     assert(cur_record_ < records_.size());
     ++cur_record_;
 }
 
-bool MockResultSet::has_next() const { return cur_record_ < records_.size(); }
+bool MockResultSet::HasNext() const { return cur_record_ < records_.size(); }
 
-void MockResultSet::set_field(unsigned i, SqlPrimitiveInterface *field) {
+void MockResultSet::SetField(unsigned i, SqlPrimitiveInterface *field) {
     assert(i < num_cells_);
     Record const &record = records_[cur_record_];
 

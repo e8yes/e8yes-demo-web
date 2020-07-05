@@ -36,9 +36,9 @@ class PqResultSet : public ResultSetInterface {
     ~PqResultSet() override = default;
     PqResultSet(PqResultSet const &) = delete;
 
-    void next() override;
-    bool has_next() const override;
-    void set_field(unsigned i, SqlPrimitiveInterface *field) override;
+    void Next() override;
+    bool HasNext() const override;
+    void SetField(unsigned i, SqlPrimitiveInterface *field) override;
 
   private:
     pqxx::result rs_;

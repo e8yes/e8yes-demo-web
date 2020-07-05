@@ -63,12 +63,12 @@ class CreditCard : public e8::SqlEntityInterface {
 
 void data_collection_test::test_to_entity_tuple() {
     e8::MockResultSet rs(/*num_cells=*/5);
-    rs.add_record(e8::MockResultSet::Record{// User record.
-                                            std::make_shared<e8::SqlInt>(1, "id"),
-                                            std::make_shared<e8::SqlStr>("user1", "user_name"),
-                                            // Credit card record.
-                                            nullptr, nullptr, nullptr});
-    rs.add_record(e8::MockResultSet::Record{
+    rs.AddRecord(e8::MockResultSet::Record{// User record.
+                                           std::make_shared<e8::SqlInt>(1, "id"),
+                                           std::make_shared<e8::SqlStr>("user1", "user_name"),
+                                           // Credit card record.
+                                           nullptr, nullptr, nullptr});
+    rs.AddRecord(e8::MockResultSet::Record{
         // User record.
         std::make_shared<e8::SqlInt>(2, "id"), std::make_shared<e8::SqlStr>("user2", "user_name"),
         // Credit card record.
@@ -79,17 +79,17 @@ void data_collection_test::test_to_entity_tuple() {
 
     QVERIFY(results.size() == 2);
 
-    QVERIFY(std::get<0>(results[0]).id.value() == std::optional<int32_t>(1));
-    QVERIFY(std::get<0>(results[0]).user_name.value() == std::optional<std::string>("user1"));
-    QVERIFY(!std::get<1>(results[0]).id.value().has_value());
-    QVERIFY(!std::get<1>(results[0]).user_id.value().has_value());
-    QVERIFY(!std::get<1>(results[0]).card_number.value().has_value());
+    QVERIFY(std::get<0>(results[0]).id.Value() == std::optional<int32_t>(1));
+    QVERIFY(std::get<0>(results[0]).user_name.Value() == std::optional<std::string>("user1"));
+    QVERIFY(!std::get<1>(results[0]).id.Value().has_value());
+    QVERIFY(!std::get<1>(results[0]).user_id.Value().has_value());
+    QVERIFY(!std::get<1>(results[0]).card_number.Value().has_value());
 
-    QVERIFY(std::get<0>(results[1]).id.value() == std::optional<int32_t>(2));
-    QVERIFY(std::get<0>(results[1]).user_name.value() == std::optional<std::string>("user2"));
-    QVERIFY(std::get<1>(results[1]).id.value() == std::optional<int32_t>(101));
-    QVERIFY(std::get<1>(results[1]).user_id.value() == std::optional<int32_t>(2));
-    QVERIFY(std::get<1>(results[1]).card_number.value() ==
+    QVERIFY(std::get<0>(results[1]).id.Value() == std::optional<int32_t>(2));
+    QVERIFY(std::get<0>(results[1]).user_name.Value() == std::optional<std::string>("user2"));
+    QVERIFY(std::get<1>(results[1]).id.Value() == std::optional<int32_t>(101));
+    QVERIFY(std::get<1>(results[1]).user_id.Value() == std::optional<int32_t>(2));
+    QVERIFY(std::get<1>(results[1]).card_number.Value() ==
             std::optional<std::string>("1010101002"));
 }
 

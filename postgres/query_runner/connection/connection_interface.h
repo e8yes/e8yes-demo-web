@@ -54,7 +54,7 @@ class ConnectionInterface {
         /**
          * @brief Clear all the parameter values.
          */
-        void clear();
+        void Clear();
 
         /**
          * @brief Set value to the position-th parameter placeholder.
@@ -62,7 +62,7 @@ class ConnectionInterface {
          * @param position Position to set value to.
          * @param val Pointer to the value to set.
          */
-        void set_param(SlotId slot, SqlPrimitiveInterface const *val);
+        void SetParam(SlotId slot, SqlPrimitiveInterface const *val);
 
         /**
          * @brief Get the value set to the position-th placeholder.
@@ -70,28 +70,28 @@ class ConnectionInterface {
          * @param position Position to read from.
          * @return The value if it exists. Otherwise null.
          */
-        SqlPrimitiveInterface const *get_param(SlotId slot) const;
+        SqlPrimitiveInterface const *GetParam(SlotId slot) const;
 
         /**
          * @brief Get the number of placeholders that are assigned a value of.
          *
          * @return The number of placeholders.
          */
-        size_t num_slots() const;
+        size_t NumSlots() const;
 
         /**
          * @brief allocate_slot Allocate a new parameter slot.
          *
          * @return ID of the parameter slot.
          */
-        SlotId allocate_slot();
+        SlotId AllocateSlot();
 
         /**
          * @brief params Returns the internally allocated parameters.
          *
          * @return Slot parameters.
          */
-        std::map<SlotId, SqlPrimitiveInterface const *> const &parameters() const;
+        std::map<SlotId, SqlPrimitiveInterface const *> const &Parameters() const;
 
       private:
         std::map<SlotId, SqlPrimitiveInterface const *> params_;
@@ -105,8 +105,8 @@ class ConnectionInterface {
      * @param params Parameters for the query.
      * @return Query's result set.
      */
-    virtual std::unique_ptr<ResultSetInterface> run_query(ParameterizedQuery const &query,
-                                                          QueryParams const &params) = 0;
+    virtual std::unique_ptr<ResultSetInterface> RunQuery(ParameterizedQuery const &query,
+                                                         QueryParams const &params) = 0;
 
     /**
      * @brief Run a parameterized update query.
@@ -115,7 +115,7 @@ class ConnectionInterface {
      * @param params Parameters for the query.
      * @return The number of rows updated by the query.
      */
-    virtual uint64_t run_update(ParameterizedQuery const &query, QueryParams const &params) = 0;
+    virtual uint64_t RunUpdate(ParameterizedQuery const &query, QueryParams const &params) = 0;
 
     /**
      * @brief Check if the connection is closed
@@ -123,7 +123,7 @@ class ConnectionInterface {
      * @throws java.sql.SQLException
      * @return true if it is closed.
      */
-    virtual bool is_closed() const = 0;
+    virtual bool IsClosed() const = 0;
 };
 
 } // namespace e8

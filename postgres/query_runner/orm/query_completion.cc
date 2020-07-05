@@ -27,16 +27,16 @@ namespace {
 
 std::string ConstructInsertQuery(std::string const &table_name, SqlEntityInterface const &entity,
                                  bool with_upsert) {
-    std::vector<SqlPrimitiveInterface *> const &fields = entity.fields();
+    std::vector<SqlPrimitiveInterface *> const &fields = entity.Fields();
     assert(!fields.empty());
 
     std::string query = "INSERT INTO ";
     query += table_name;
     query += "(";
-    query += fields[0]->field_name();
+    query += fields[0]->FieldName();
     for (unsigned i = 1; i < fields.size(); i++) {
         query += ',';
-        query += fields[i]->field_name();
+        query += fields[i]->FieldName();
     }
 
     query += ")VALUES($1";
@@ -50,11 +50,11 @@ std::string ConstructInsertQuery(std::string const &table_name, SqlEntityInterfa
         // Update record on primary key conflict.
         query += "ON CONFLICT ON CONSTRAINT ";
         query += table_name + "_pkey DO UPDATE SET ";
-        query += fields[0]->field_name() + "=$" + std::to_string(i + 1);
+        query += fields[0]->FieldName() + "=$" + std::to_string(i + 1);
         i++;
         for (unsigned j = 1; j < fields.size(); j++, i++) {
             query += ',';
-            query += fields[j]->field_name() + "=$" + std::to_string(i + 1);
+            query += fields[j]->FieldName() + "=$" + std::to_string(i + 1);
         }
     } else {
         query += "ON CONFLICT DO NOTHING";
@@ -65,18 +65,18 @@ std::string ConstructInsertQuery(std::string const &table_name, SqlEntityInterfa
 
 ConnectionInterface::QueryParams ConstructQueryParams(SqlEntityInterface const &entity,
                                                       bool with_upsert) {
-    std::vector<SqlPrimitiveInterface *> const &fields = entity.fields();
+    std::vector<SqlPrimitiveInterface *> const &fields = entity.Fields();
     assert(!fields.empty());
 
     ConnectionInterface::QueryParams params;
     unsigned i = 0;
     for (i = 0; i < fields.size(); i++) {
-        params.set_param(i, fields[i]);
+        params.SetParam(i, fields[i]);
     }
 
     if (with_upsert) {
         for (unsigned j = 0; j < fields.size(); i++, j++) {
-            params.set_param(i, fields[j]);
+            params.SetParam(i, fields[j]);
         }
     }
 

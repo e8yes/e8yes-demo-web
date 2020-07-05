@@ -41,7 +41,7 @@ class SqlQueryBuilder {
      * @param piece Query string piece
      * @return The current builder.
      */
-    SqlQueryBuilder &query_piece(std::string const &piece);
+    SqlQueryBuilder &QueryPiece(std::string const &piece);
 
     /**
      * @brief Represents a variable placeholder
@@ -64,8 +64,8 @@ class SqlQueryBuilder {
      * @param holder Variable placeholder
      * @return The current builder.
      */
-    template <typename Type> SqlQueryBuilder &placeholder(Placeholder<Type> *holder) {
-        ConnectionInterface::QueryParams::SlotId slot_id = params_.allocate_slot();
+    template <typename Type> SqlQueryBuilder &Holder(Placeholder<Type> *holder) {
+        ConnectionInterface::QueryParams::SlotId slot_id = params_.AllocateSlot();
         holder->param_slots.push_back(slot_id);
         query_ += "$" + std::to_string(slot_id);
         return *this;
@@ -79,10 +79,9 @@ class SqlQueryBuilder {
      * @param val Pointer to the value to be assigned.
      */
     template <typename Type>
-    void set_value_to_placeholder(Placeholder<Type> const &holder,
-                                  SqlPrimitiveInterface const *val) {
+    void SetValueToPlaceholder(Placeholder<Type> const &holder, SqlPrimitiveInterface const *val) {
         for (auto slot : holder.param_slots) {
-            params_.set_param(slot, val);
+            params_.SetParam(slot, val);
         }
     }
 
@@ -91,14 +90,14 @@ class SqlQueryBuilder {
      *
      * @return postgres-compliant query
      */
-    std::string const &psql_query() const;
+    std::string const &PsqlQuery() const;
 
     /**
      * @brief Export the assigned query parameters.
      *
      * @return The assigned query parameters
      */
-    ConnectionInterface::QueryParams const &query_params() const;
+    ConnectionInterface::QueryParams const &QueryParams() const;
 
   private:
     std::string query_;

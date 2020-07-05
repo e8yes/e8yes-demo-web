@@ -43,11 +43,11 @@ ParseAllRelations(std::vector<std::tuple<ContactRelationEntity>> const &result_s
         ContactRelationEntity const &entity = std::get<0>(entry);
 
         UserRelationRecord relation;
-        relation.set_relation(static_cast<UserRelation>(entity.relation.value().value()));
-        assert(entity.created_at.value().has_value());
-        relation.set_created_at(entity.created_at.value().value());
+        relation.set_relation(static_cast<UserRelation>(entity.relation.Value().value()));
+        assert(entity.created_at.Value().has_value());
+        relation.set_created_at(entity.created_at.Value().value());
 
-        UserId target_user_id = entity.dst_user_id.value().value();
+        UserId target_user_id = entity.dst_user_id.Value().value();
         auto it = result.find(target_user_id);
         if (it == result.end()) {
             it = result.insert(std::make_pair(target_user_id, UserRelations())).first;
@@ -77,16 +77,16 @@ std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_i
 
     // Check contact relation.
     SqlQueryBuilder query;
-    query.query_piece(TableNames::ContactRelation())
-        .query_piece(" cr")
-        .query_piece(" WHERE cr.src_user_id=")
-        .placeholder(&source_user_id_ph)
-        .query_piece(" AND cr.dst_user_id=ANY(")
-        .placeholder(&target_user_ids_ph)
-        .query_piece(")");
+    query.QueryPiece(TableNames::ContactRelation())
+        .QueryPiece(" cr")
+        .QueryPiece(" WHERE cr.src_user_id=")
+        .Holder(&source_user_id_ph)
+        .QueryPiece(" AND cr.dst_user_id=ANY(")
+        .Holder(&target_user_ids_ph)
+        .QueryPiece(")");
 
-    query.set_value_to_placeholder(source_user_id_ph, &source_user_id_ph_value);
-    query.set_value_to_placeholder(target_user_ids_ph, &target_user_ids_ph_value);
+    query.SetValueToPlaceholder(source_user_id_ph, &source_user_id_ph_value);
+    query.SetValueToPlaceholder(target_user_ids_ph, &target_user_ids_ph_value);
 
     std::vector<std::tuple<ContactRelationEntity>> result_set =
         Query<ContactRelationEntity>(query, {"cr"}, conns);
@@ -105,33 +105,33 @@ std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
 
     SqlLong source_user_id_ph_value(source_user_id);
     SqlIntArr relations_ph_value(/*field_name=*/"");
-    *relations_ph_value.value_ptr() = {relations.begin(), relations.end()};
+    *relations_ph_value.ValuePtr() = {relations.begin(), relations.end()};
     SqlInt limit_ph_value(/*field_name=*/"");
     SqlInt offset_ph_value(/*field_name=*/"");
 
     SqlQueryBuilder query;
-    query.query_piece(TableNames::AUser())
-        .query_piece(" u JOIN ")
-        .query_piece(TableNames::ContactRelation())
-        .query_piece(" cr ON u.id = cr.dst_user_id ")
-        .query_piece(" WHERE cr.src_user_id=")
-        .placeholder(&source_user_id_ph)
-        .query_piece(" AND cr.relation=ANY(")
-        .placeholder(&relations_ph)
-        .query_piece(") ORDER BY cr.last_interaction_at DESC");
+    query.QueryPiece(TableNames::AUser())
+        .QueryPiece(" u JOIN ")
+        .QueryPiece(TableNames::ContactRelation())
+        .QueryPiece(" cr ON u.id = cr.dst_user_id ")
+        .QueryPiece(" WHERE cr.src_user_id=")
+        .Holder(&source_user_id_ph)
+        .QueryPiece(" AND cr.relation=ANY(")
+        .Holder(&relations_ph)
+        .QueryPiece(") ORDER BY cr.last_interaction_at DESC");
 
-    query.set_value_to_placeholder(source_user_id_ph, &source_user_id_ph_value);
-    query.set_value_to_placeholder(relations_ph, &relations_ph_value);
+    query.SetValueToPlaceholder(source_user_id_ph, &source_user_id_ph_value);
+    query.SetValueToPlaceholder(relations_ph, &relations_ph_value);
 
     if (pagination.has_value()) {
-        query.query_piece(" LIMIT ").placeholder(&limit_ph);
-        query.query_piece(" OFFSET ").placeholder(&offset_ph);
+        query.QueryPiece(" LIMIT ").Holder(&limit_ph);
+        query.QueryPiece(" OFFSET ").Holder(&offset_ph);
 
-        *limit_ph_value.value_ptr() = pagination->result_per_page();
-        *offset_ph_value.value_ptr() = pagination->page_number() * pagination->result_per_page();
+        *limit_ph_value.ValuePtr() = pagination->result_per_page();
+        *offset_ph_value.ValuePtr() = pagination->page_number() * pagination->result_per_page();
 
-        query.set_value_to_placeholder(limit_ph, &limit_ph_value);
-        query.set_value_to_placeholder(offset_ph, &offset_ph_value);
+        query.SetValueToPlaceholder(limit_ph, &limit_ph_value);
+        query.SetValueToPlaceholder(offset_ph, &offset_ph_value);
     }
 
     std::vector<std::tuple<UserEntity>> result_set = Query<UserEntity>(query, {"u"}, conns);

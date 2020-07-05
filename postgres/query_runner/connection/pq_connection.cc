@@ -88,16 +88,16 @@ PqConnection::PqConnection(std::string const &host_name, int port, std::string c
 
 PqConnection::~PqConnection() {}
 
-std::unique_ptr<ResultSetInterface> PqConnection::run_query(ParameterizedQuery const &query,
-                                                            QueryParams const &params) {
+std::unique_ptr<ResultSetInterface> PqConnection::RunQuery(ParameterizedQuery const &query,
+                                                           QueryParams const &params) {
     std::optional<StatementId> id = impl_->statement_cache.Fetch(query);
     assert(id.has_value());
 
     pqxx::work query_work(*impl_->conn);
     pqxx::prepare::invocation invocation = query_work.prepared(std::to_string(id.value()));
-    for (auto const &[slot_id, param] : params.parameters()) {
+    for (auto const &[slot_id, param] : params.Parameters()) {
         // slot_ids are iterated in ascending order which ensures the correct order of the export.
-        param->export_to_invocation(&invocation);
+        param->ExportToInvocation(&invocation);
     }
 
     auto rs = std::make_unique<PqResultSet>(invocation.exec());
@@ -106,14 +106,14 @@ std::unique_ptr<ResultSetInterface> PqConnection::run_query(ParameterizedQuery c
     return rs;
 }
 
-uint64_t PqConnection::run_update(ParameterizedQuery const &query, QueryParams const &params) {
+uint64_t PqConnection::RunUpdate(ParameterizedQuery const &query, QueryParams const &params) {
     std::optional<StatementId> id = impl_->statement_cache.Fetch(query);
     assert(id.has_value());
 
     pqxx::work update_work(*impl_->conn);
     pqxx::prepare::invocation invocation = update_work.prepared(std::to_string(id.value()));
-    for (auto const &[slot_id, param] : params.parameters()) {
-        param->export_to_invocation(&invocation);
+    for (auto const &[slot_id, param] : params.Parameters()) {
+        param->ExportToInvocation(&invocation);
     }
 
     pqxx::result rs = invocation.exec();
@@ -122,6 +122,6 @@ uint64_t PqConnection::run_update(ParameterizedQuery const &query, QueryParams c
     return rs.affected_rows();
 }
 
-bool PqConnection::is_closed() const { return !impl_->conn->is_open(); }
+bool PqConnection::IsClosed() const { return !impl_->conn->is_open(); }
 
 } // namespace e8

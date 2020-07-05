@@ -26,6 +26,6 @@ SqlPrimitiveInterface::SqlPrimitiveInterface(std::string const &field_name)
 
 SqlPrimitiveInterface::~SqlPrimitiveInterface() {}
 
-std::string const &SqlPrimitiveInterface::field_name() const { return field_name_; }
+std::string const &SqlPrimitiveInterface::FieldName() const { return field_name_; }
 
 } // namespace e8

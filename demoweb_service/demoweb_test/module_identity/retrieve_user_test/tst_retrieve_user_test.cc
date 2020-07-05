@@ -84,8 +84,8 @@ void retrieve_user_test::search_user_by_id_prefix_test() {
                        /*user_id_prefix=*/123L,
                        /*alias_prefix=*/std::nullopt, pagination, db_conns);
     QVERIFY(page0.size() == 2);
-    QVERIFY(page0[0].id.value().value() == 12300L);
-    QVERIFY(page0[1].id.value().value() == 12301L);
+    QVERIFY(page0[0].id.Value().value() == 12300L);
+    QVERIFY(page0[1].id.Value().value() == 12301L);
 
     pagination.set_page_number(1);
     pagination.set_result_per_page(2);
@@ -94,8 +94,8 @@ void retrieve_user_test::search_user_by_id_prefix_test() {
                        /*user_id_prefix=*/123L,
                        /*alias_prefix=*/std::nullopt, pagination, db_conns);
     QVERIFY(page1.size() == 2);
-    QVERIFY(page1[0].id.value().value() == 12302L);
-    QVERIFY(page1[1].id.value().value() == 12303L);
+    QVERIFY(page1[0].id.Value().value() == 12302L);
+    QVERIFY(page1[1].id.Value().value() == 12303L);
 
     pagination.set_page_number(2);
     pagination.set_result_per_page(2);
@@ -143,8 +143,8 @@ void retrieve_user_test::search_user_by_id_alias_test() {
                        /*user_id_prefix=*/std::nullopt,
                        /*alias_prefix=*/"John", pagination, db_conns);
     QVERIFY(page0.size() == 2);
-    QVERIFY(page0[0].id.value().value() == 1L);
-    QVERIFY(page0[1].id.value().value() == 2L);
+    QVERIFY(page0[0].id.Value().value() == 1L);
+    QVERIFY(page0[1].id.Value().value() == 2L);
 
     pagination.set_page_number(1);
     pagination.set_result_per_page(2);
@@ -153,8 +153,8 @@ void retrieve_user_test::search_user_by_id_alias_test() {
                        /*user_id_prefix=*/std::nullopt,
                        /*alias_prefix=*/"John", pagination, db_conns);
     QVERIFY(page1.size() == 2);
-    QVERIFY(page1[0].id.value().value() == 3L);
-    QVERIFY(page1[1].id.value().value() == 4L);
+    QVERIFY(page1[0].id.Value().value() == 3L);
+    QVERIFY(page1[1].id.Value().value() == 4L);
 
     pagination.set_page_number(2);
     pagination.set_result_per_page(2);

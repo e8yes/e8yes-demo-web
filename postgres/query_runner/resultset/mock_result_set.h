@@ -30,11 +30,11 @@ class MockResultSet : public ResultSetInterface {
      * before calling the ResultSetInterface functions.
      * @param record A record to be appended to the result set.
      */
-    void add_record(Record const &record);
+    void AddRecord(Record const &record);
 
-    void next() override;
-    bool has_next() const override;
-    void set_field(unsigned i, SqlPrimitiveInterface *field) override;
+    void Next() override;
+    bool HasNext() const override;
+    void SetField(unsigned i, SqlPrimitiveInterface *field) override;
 
   private:
     std::vector<Record> records_;

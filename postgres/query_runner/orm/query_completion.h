@@ -37,12 +37,12 @@ CompleteSelectList(std::initializer_list<std::string>::const_iterator const &ent
     std::string const fully_qualified_prefix = *entity_alias_it + ".";
 
     EntityType extracted_entity_fields;
-    std::vector<SqlPrimitiveInterface *> const &fields = extracted_entity_fields.fields();
+    std::vector<SqlPrimitiveInterface *> const &fields = extracted_entity_fields.Fields();
 
-    std::string select_list = fully_qualified_prefix + fields[0]->field_name();
+    std::string select_list = fully_qualified_prefix + fields[0]->FieldName();
     for (unsigned i = 1; i < fields.size(); i++) {
         assert(fields[i] != nullptr);
-        select_list += "," + fully_qualified_prefix + fields[i]->field_name();
+        select_list += "," + fully_qualified_prefix + fields[i]->FieldName();
     }
     return select_list;
 }

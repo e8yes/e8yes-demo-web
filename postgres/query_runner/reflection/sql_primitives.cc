@@ -113,7 +113,7 @@ SqlBool::SqlBool(bool value, std::string const &field_name)
 
 SqlBool::~SqlBool() {}
 
-void SqlBool::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlBool::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     if (value_.has_value()) {
         (*invocation)(value_.value());
     } else {
@@ -121,7 +121,7 @@ void SqlBool::export_to_invocation(pqxx::prepare::invocation *invocation) const 
     }
 }
 
-void SqlBool::import_from_field(pqxx::field const &field) {
+void SqlBool::ImportFromField(pqxx::field const &field) {
     if (field.is_null()) {
         value_ = std::nullopt;
     } else {
@@ -154,9 +154,9 @@ bool SqlBool::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_.value() < other.value_.value();
 }
 
-std::optional<bool> const &SqlBool::value() const { return value_; }
+std::optional<bool> const &SqlBool::Value() const { return value_; }
 
-std::optional<bool> *SqlBool::value_ptr() { return &value_; }
+std::optional<bool> *SqlBool::ValuePtr() { return &value_; }
 
 SqlInt::SqlInt(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -165,7 +165,7 @@ SqlInt::SqlInt(int32_t value, std::string const &field_name)
 
 SqlInt::~SqlInt() {}
 
-void SqlInt::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlInt::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     if (value_.has_value()) {
         (*invocation)(value_.value());
     } else {
@@ -173,7 +173,7 @@ void SqlInt::export_to_invocation(pqxx::prepare::invocation *invocation) const {
     }
 }
 
-void SqlInt::import_from_field(pqxx::field const &field) {
+void SqlInt::ImportFromField(pqxx::field const &field) {
     if (field.is_null()) {
         value_ = std::nullopt;
     } else {
@@ -206,9 +206,9 @@ bool SqlInt::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_.value() < other.value_.value();
 }
 
-std::optional<int32_t> const &SqlInt::value() const { return value_; }
+std::optional<int32_t> const &SqlInt::Value() const { return value_; }
 
-std::optional<int32_t> *SqlInt::value_ptr() { return &value_; }
+std::optional<int32_t> *SqlInt::ValuePtr() { return &value_; }
 
 SqlLong::SqlLong(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -217,7 +217,7 @@ SqlLong::SqlLong(int64_t value, std::string const &field_name)
 
 SqlLong::~SqlLong() {}
 
-void SqlLong::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlLong::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     if (value_.has_value()) {
         (*invocation)(value_.value());
     } else {
@@ -225,7 +225,7 @@ void SqlLong::export_to_invocation(pqxx::prepare::invocation *invocation) const 
     }
 }
 
-void SqlLong::import_from_field(pqxx::field const &field) {
+void SqlLong::ImportFromField(pqxx::field const &field) {
     if (field.is_null()) {
         value_ = std::nullopt;
     } else {
@@ -258,9 +258,9 @@ bool SqlLong::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_.value() < other.value_.value();
 }
 
-std::optional<int64_t> const &SqlLong::value() const { return value_; }
+std::optional<int64_t> const &SqlLong::Value() const { return value_; }
 
-std::optional<int64_t> *SqlLong::value_ptr() { return &value_; }
+std::optional<int64_t> *SqlLong::ValuePtr() { return &value_; }
 
 SqlFloat::SqlFloat(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -269,7 +269,7 @@ SqlFloat::SqlFloat(float value, std::string const &field_name)
 
 SqlFloat::~SqlFloat() {}
 
-void SqlFloat::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlFloat::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     if (value_.has_value()) {
         (*invocation)(value_.value());
     } else {
@@ -277,7 +277,7 @@ void SqlFloat::export_to_invocation(pqxx::prepare::invocation *invocation) const
     }
 }
 
-void SqlFloat::import_from_field(pqxx::field const &field) {
+void SqlFloat::ImportFromField(pqxx::field const &field) {
     if (field.is_null()) {
         value_ = std::nullopt;
     } else {
@@ -310,9 +310,9 @@ bool SqlFloat::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_.value() < other.value_.value();
 }
 
-std::optional<float> const &SqlFloat::value() const { return value_; }
+std::optional<float> const &SqlFloat::Value() const { return value_; }
 
-std::optional<float> *SqlFloat::value_ptr() { return &value_; }
+std::optional<float> *SqlFloat::ValuePtr() { return &value_; }
 
 SqlDouble::SqlDouble(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -321,7 +321,7 @@ SqlDouble::SqlDouble(double value, std::string const &field_name)
 
 SqlDouble::~SqlDouble() {}
 
-void SqlDouble::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlDouble::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     if (value_.has_value()) {
         (*invocation)(value_.value());
     } else {
@@ -329,7 +329,7 @@ void SqlDouble::export_to_invocation(pqxx::prepare::invocation *invocation) cons
     }
 }
 
-void SqlDouble::import_from_field(pqxx::field const &field) {
+void SqlDouble::ImportFromField(pqxx::field const &field) {
     if (field.is_null()) {
         value_ = std::nullopt;
     } else {
@@ -362,9 +362,9 @@ bool SqlDouble::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_.value() < other.value_.value();
 }
 
-std::optional<double> const &SqlDouble::value() const { return value_; }
+std::optional<double> const &SqlDouble::Value() const { return value_; }
 
-std::optional<double> *SqlDouble::value_ptr() { return &value_; }
+std::optional<double> *SqlDouble::ValuePtr() { return &value_; }
 
 SqlStr::SqlStr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -373,7 +373,7 @@ SqlStr::SqlStr(std::string const &value, std::string const &field_name)
 
 SqlStr::~SqlStr() {}
 
-void SqlStr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlStr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     if (value_.has_value()) {
         (*invocation)(value_.value());
     } else {
@@ -381,7 +381,7 @@ void SqlStr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
     }
 }
 
-void SqlStr::import_from_field(pqxx::field const &field) {
+void SqlStr::ImportFromField(pqxx::field const &field) {
     if (field.is_null()) {
         value_ = std::nullopt;
     } else {
@@ -414,9 +414,9 @@ bool SqlStr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_.value() < other.value_.value();
 }
 
-std::optional<std::string> const &SqlStr::value() const { return value_; }
+std::optional<std::string> const &SqlStr::Value() const { return value_; }
 
-std::optional<std::string> *SqlStr::value_ptr() { return &value_; }
+std::optional<std::string> *SqlStr::ValuePtr() { return &value_; }
 
 SqlTimestamp::SqlTimestamp(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -425,7 +425,7 @@ SqlTimestamp::SqlTimestamp(std::time_t value, std::string const &field_name)
 
 SqlTimestamp::~SqlTimestamp() {}
 
-void SqlTimestamp::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlTimestamp::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     if (value_.has_value()) {
         std::string timestamp_str = timestamp_to_string(value_.value());
         (*invocation)(timestamp_str);
@@ -434,7 +434,7 @@ void SqlTimestamp::export_to_invocation(pqxx::prepare::invocation *invocation) c
     }
 }
 
-void SqlTimestamp::import_from_field(pqxx::field const &field) {
+void SqlTimestamp::ImportFromField(pqxx::field const &field) {
     if (field.is_null()) {
         value_ = std::nullopt;
     } else {
@@ -468,9 +468,9 @@ bool SqlTimestamp::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_.value() < other.value_.value();
 }
 
-std::optional<std::time_t> const &SqlTimestamp::value() const { return value_; }
+std::optional<std::time_t> const &SqlTimestamp::Value() const { return value_; }
 
-std::optional<std::time_t> *SqlTimestamp::value_ptr() { return &value_; }
+std::optional<std::time_t> *SqlTimestamp::ValuePtr() { return &value_; }
 
 SqlBoolArr::SqlBoolArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -479,11 +479,11 @@ SqlBoolArr::SqlBoolArr(std::vector<bool> const &value, std::string const &field_
 
 SqlBoolArr::~SqlBoolArr() {}
 
-void SqlBoolArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlBoolArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     (*invocation)(ArrayToPsqlString(value_));
 }
 
-void SqlBoolArr::import_from_field(pqxx::field const &field) {
+void SqlBoolArr::ImportFromField(pqxx::field const &field) {
     value_.clear();
 
     if (!field.is_null()) {
@@ -514,9 +514,9 @@ bool SqlBoolArr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_ < other.value_;
 }
 
-std::vector<bool> const &SqlBoolArr::value() const { return value_; }
+std::vector<bool> const &SqlBoolArr::Value() const { return value_; }
 
-std::vector<bool> *SqlBoolArr::value_ptr() { return &value_; }
+std::vector<bool> *SqlBoolArr::ValuePtr() { return &value_; }
 
 SqlIntArr::SqlIntArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -525,11 +525,11 @@ SqlIntArr::SqlIntArr(std::vector<int32_t> const &value, std::string const &field
 
 SqlIntArr::~SqlIntArr() {}
 
-void SqlIntArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlIntArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     (*invocation)(ArrayToPsqlString(value_));
 }
 
-void SqlIntArr::import_from_field(pqxx::field const &field) {
+void SqlIntArr::ImportFromField(pqxx::field const &field) {
     value_.clear();
 
     if (!field.is_null()) {
@@ -560,9 +560,9 @@ bool SqlIntArr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_ < other.value_;
 }
 
-std::vector<int32_t> const &SqlIntArr::value() const { return value_; }
+std::vector<int32_t> const &SqlIntArr::Value() const { return value_; }
 
-std::vector<int32_t> *SqlIntArr::value_ptr() { return &value_; }
+std::vector<int32_t> *SqlIntArr::ValuePtr() { return &value_; }
 
 SqlLongArr::SqlLongArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -571,11 +571,11 @@ SqlLongArr::SqlLongArr(std::vector<int64_t> const &value, std::string const &fie
 
 SqlLongArr::~SqlLongArr() {}
 
-void SqlLongArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlLongArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     (*invocation)(ArrayToPsqlString(value_));
 }
 
-void SqlLongArr::import_from_field(pqxx::field const &field) {
+void SqlLongArr::ImportFromField(pqxx::field const &field) {
     value_.clear();
 
     if (!field.is_null()) {
@@ -606,9 +606,9 @@ bool SqlLongArr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_ < other.value_;
 }
 
-std::vector<int64_t> const &SqlLongArr::value() const { return value_; }
+std::vector<int64_t> const &SqlLongArr::Value() const { return value_; }
 
-std::vector<int64_t> *SqlLongArr::value_ptr() { return &value_; }
+std::vector<int64_t> *SqlLongArr::ValuePtr() { return &value_; }
 
 SqlFloatArr::SqlFloatArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -617,11 +617,11 @@ SqlFloatArr::SqlFloatArr(std::vector<float> const &value, std::string const &fie
 
 SqlFloatArr::~SqlFloatArr() {}
 
-void SqlFloatArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlFloatArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     (*invocation)(ArrayToPsqlString(value_));
 }
 
-void SqlFloatArr::import_from_field(pqxx::field const &field) {
+void SqlFloatArr::ImportFromField(pqxx::field const &field) {
     value_.clear();
 
     if (!field.is_null()) {
@@ -652,9 +652,9 @@ bool SqlFloatArr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_ < other.value_;
 }
 
-std::vector<float> const &SqlFloatArr::value() const { return value_; }
+std::vector<float> const &SqlFloatArr::Value() const { return value_; }
 
-std::vector<float> *SqlFloatArr::value_ptr() { return &value_; }
+std::vector<float> *SqlFloatArr::ValuePtr() { return &value_; }
 
 SqlDoubleArr::SqlDoubleArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -663,11 +663,11 @@ SqlDoubleArr::SqlDoubleArr(std::vector<double> const &value, std::string const &
 
 SqlDoubleArr::~SqlDoubleArr() {}
 
-void SqlDoubleArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlDoubleArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     (*invocation)(ArrayToPsqlString(value_));
 }
 
-void SqlDoubleArr::import_from_field(pqxx::field const &field) {
+void SqlDoubleArr::ImportFromField(pqxx::field const &field) {
     value_.clear();
 
     if (!field.is_null()) {
@@ -698,9 +698,9 @@ bool SqlDoubleArr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_ < other.value_;
 }
 
-std::vector<double> const &SqlDoubleArr::value() const { return value_; }
+std::vector<double> const &SqlDoubleArr::Value() const { return value_; }
 
-std::vector<double> *SqlDoubleArr::value_ptr() { return &value_; }
+std::vector<double> *SqlDoubleArr::ValuePtr() { return &value_; }
 
 SqlStrArr::SqlStrArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -709,11 +709,11 @@ SqlStrArr::SqlStrArr(std::vector<std::string> const &value, std::string const &f
 
 SqlStrArr::~SqlStrArr() {}
 
-void SqlStrArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlStrArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     (*invocation)(ArrayToPsqlString(value_));
 }
 
-void SqlStrArr::import_from_field(pqxx::field const &field) {
+void SqlStrArr::ImportFromField(pqxx::field const &field) {
     value_.clear();
 
     if (!field.is_null()) {
@@ -744,9 +744,9 @@ bool SqlStrArr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_ < other.value_;
 }
 
-std::vector<std::string> const &SqlStrArr::value() const { return value_; }
+std::vector<std::string> const &SqlStrArr::Value() const { return value_; }
 
-std::vector<std::string> *SqlStrArr::value_ptr() { return &value_; }
+std::vector<std::string> *SqlStrArr::ValuePtr() { return &value_; }
 
 SqlTimestampArr::SqlTimestampArr(std::string const &field_name)
     : SqlPrimitiveInterface(field_name) {}
@@ -757,11 +757,11 @@ SqlTimestampArr::SqlTimestampArr(std::vector<std::time_t> const &value,
 
 SqlTimestampArr::~SqlTimestampArr() {}
 
-void SqlTimestampArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlTimestampArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     (*invocation)(ArrayToPsqlString<std::time_t, /*timestamp=*/true>(value_));
 }
 
-void SqlTimestampArr::import_from_field(pqxx::field const &field) {
+void SqlTimestampArr::ImportFromField(pqxx::field const &field) {
     value_.clear();
 
     if (!field.is_null()) {
@@ -792,9 +792,9 @@ bool SqlTimestampArr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_ < other.value_;
 }
 
-std::vector<std::time_t> const &SqlTimestampArr::value() const { return value_; }
+std::vector<std::time_t> const &SqlTimestampArr::Value() const { return value_; }
 
-std::vector<std::time_t> *SqlTimestampArr::value_ptr() { return &value_; }
+std::vector<std::time_t> *SqlTimestampArr::ValuePtr() { return &value_; }
 
 SqlByteArr::SqlByteArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -803,12 +803,12 @@ SqlByteArr::SqlByteArr(std::string const &value, std::string const &field_name)
 
 SqlByteArr::~SqlByteArr() {}
 
-void SqlByteArr::export_to_invocation(pqxx::prepare::invocation *invocation) const {
+void SqlByteArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
     pqxx::binarystring blob(value_.data(), value_.size());
     (*invocation)(blob);
 }
 
-void SqlByteArr::import_from_field(pqxx::field const &field) {
+void SqlByteArr::ImportFromField(pqxx::field const &field) {
     pqxx::binarystring blob(field);
     uint8_t const *ptr = blob.data();
     size_t size = blob.size();
@@ -840,8 +840,8 @@ SqlByteArr &SqlByteArr::operator=(SqlByteArr const &rhs) {
     return *this;
 }
 
-std::string const &SqlByteArr::value() const { return value_; }
+std::string const &SqlByteArr::Value() const { return value_; }
 
-std::string *SqlByteArr::value_ptr() { return &value_; }
+std::string *SqlByteArr::ValuePtr() { return &value_; }
 
 } // namespace e8

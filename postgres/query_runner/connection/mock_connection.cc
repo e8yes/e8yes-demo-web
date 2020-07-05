@@ -30,7 +30,7 @@ MockConnection::MockQuerySetting::MockQuerySetting(ParameterizedQuery const &que
     : query(query), params(params), result(result) {}
 
 bool MockConnection::MockQuerySetting::operator==(MockQuerySetting const &rhs) const {
-    return query == rhs.query && params.parameters() == rhs.params.parameters();
+    return query == rhs.query && params.Parameters() == rhs.params.Parameters();
 }
 
 MockConnection::MockUpdateSetting::MockUpdateSetting(ParameterizedQuery const &query,
@@ -39,10 +39,10 @@ MockConnection::MockUpdateSetting::MockUpdateSetting(ParameterizedQuery const &q
     : query(query), params(params), num_rows_affected(num_rows_affected) {}
 
 bool MockConnection::MockUpdateSetting::operator==(MockUpdateSetting const &rhs) const {
-    return query == rhs.query && params.parameters() == rhs.params.parameters();
+    return query == rhs.query && params.Parameters() == rhs.params.Parameters();
 }
 
-void MockConnection::set_query_result(ParameterizedQuery const &query, QueryParams const &params,
+void MockConnection::SetQueryResult(ParameterizedQuery const &query, QueryParams const &params,
                                       MockResultSet const &result) {
     MockQuerySetting setting(query, params, result);
 
@@ -54,7 +54,7 @@ void MockConnection::set_query_result(ParameterizedQuery const &query, QueryPara
     }
 }
 
-void MockConnection::set_update_result(ParameterizedQuery const &query, QueryParams const &params,
+void MockConnection::SetUpdateResult(ParameterizedQuery const &query, QueryParams const &params,
                                        uint64_t const &num_rows_affected) {
     MockUpdateSetting setting(query, params, num_rows_affected);
 
@@ -66,31 +66,31 @@ void MockConnection::set_update_result(ParameterizedQuery const &query, QueryPar
     }
 }
 
-void MockConnection::set_closed(bool closed) { closed_ = closed; }
+void MockConnection::SetClosed(bool closed) { closed_ = closed; }
 
-std::unique_ptr<ResultSetInterface> MockConnection::run_query(ParameterizedQuery const &query,
+std::unique_ptr<ResultSetInterface> MockConnection::RunQuery(ParameterizedQuery const &query,
                                                               QueryParams const &params) {
     auto it = std::find_if(mock_query_results_.begin(), mock_query_results_.end(),
                            [&query, &params](MockQuerySetting const &setting) {
                                return query == setting.query &&
-                                      params.parameters() == setting.params.parameters();
+                                      params.Parameters() == setting.params.Parameters();
                            });
     assert(it != mock_query_results_.end());
 
     return std::make_unique<MockResultSet>(it->result);
 }
 
-uint64_t MockConnection::run_update(ParameterizedQuery const &query, QueryParams const &params) {
+uint64_t MockConnection::RunUpdate(ParameterizedQuery const &query, QueryParams const &params) {
     auto it = std::find_if(mock_update_results_.begin(), mock_update_results_.end(),
                            [&query, &params](MockUpdateSetting const &setting) {
                                return query == setting.query &&
-                                      params.parameters() == setting.params.parameters();
+                                      params.Parameters() == setting.params.Parameters();
                            });
     assert(it != mock_update_results_.end());
 
     return it->num_rows_affected;
 }
 
-bool MockConnection::is_closed() const { return closed_; }
+bool MockConnection::IsClosed() const { return closed_; }
 
 } // namespace e8

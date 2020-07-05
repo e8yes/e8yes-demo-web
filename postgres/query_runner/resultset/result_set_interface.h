@@ -34,7 +34,7 @@ class ResultSetInterface {
     /**
      * @brief Move cursor to the next record if possible.
      */
-    virtual void next() = 0;
+    virtual void Next() = 0;
 
     /**
      * @brief Check if the cursor reaches the end of the result set.
@@ -42,7 +42,7 @@ class ResultSetInterface {
      * @return false when the cursor has moved to the end of the result set. Otherwise, it returns
      *     true.
      */
-    virtual bool has_next() const = 0;
+    virtual bool HasNext() const = 0;
 
     /**
      * @brief Set the value of the ith cell at the current row cursor position to the record's
@@ -51,7 +51,7 @@ class ResultSetInterface {
      * @param i The i-th(zero-offset) cell to pull value from.
      * @param field The field to assign value to.
      */
-    virtual void set_field(unsigned i, SqlPrimitiveInterface *field) = 0;
+    virtual void SetField(unsigned i, SqlPrimitiveInterface *field) = 0;
 };
 
 } // namespace e8

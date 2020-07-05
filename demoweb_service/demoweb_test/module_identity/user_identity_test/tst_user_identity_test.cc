@@ -52,11 +52,11 @@ void user_identity_test::successful_sign_and_parse_test() {
     std::string security_key = "abdcd2";
 
     e8::UserEntity user;
-    *user.id.value_ptr() = 1L;
-    *user.id_str.value_ptr() = "1";
-    user.group_names.value_ptr()->push_back("group1");
-    *user.security_key_hash.value_ptr() = e8::DigestSecurityKey(security_key).value();
-    *user.active_level.value_ptr() = 0;
+    *user.id.ValuePtr() = 1L;
+    *user.id_str.ValuePtr() = "1";
+    user.group_names.ValuePtr()->push_back("group1");
+    *user.security_key_hash.ValuePtr() = e8::DigestSecurityKey(security_key).value();
+    *user.active_level.ValuePtr() = 0;
 
     std::optional<e8::SignedIdentity> signed_id =
         e8::SignIdentity(user, security_key, env.KeyGen());
@@ -76,11 +76,11 @@ void user_identity_test::access_denied_test() {
     std::string security_key = "abdcd2";
 
     e8::UserEntity user;
-    *user.id.value_ptr() = 1L;
-    *user.id_str.value_ptr() = "1";
-    user.group_names.value_ptr()->push_back("group1");
-    *user.security_key_hash.value_ptr() = e8::DigestSecurityKey(security_key).value();
-    *user.active_level.value_ptr() = 0;
+    *user.id.ValuePtr() = 1L;
+    *user.id_str.ValuePtr() = "1";
+    user.group_names.ValuePtr()->push_back("group1");
+    *user.security_key_hash.ValuePtr() = e8::DigestSecurityKey(security_key).value();
+    *user.active_level.ValuePtr() = 0;
 
     std::string wrong_security_key = "abdcd3";
     std::optional<e8::SignedIdentity> signed_id =

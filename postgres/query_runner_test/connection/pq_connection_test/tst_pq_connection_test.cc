@@ -48,7 +48,7 @@ void pq_connection_test::connection_state_test() {
         /*db_name=*/"demoweb",
         /*user_name=*/"postgres",
         /*password=*/"password");
-    QVERIFY(!conn.is_closed());
+    QVERIFY(!conn.IsClosed());
 }
 
 void pq_connection_test::update_and_query_test() {
@@ -61,22 +61,22 @@ void pq_connection_test::update_and_query_test() {
 
     // Prepares table.
     std::string drop_table_stmt = "DROP TABLE IF EXISTS PqConnectionTest";
-    conn.run_update(drop_table_stmt, e8::ConnectionInterface::QueryParams());
+    conn.RunUpdate(drop_table_stmt, e8::ConnectionInterface::QueryParams());
 
     std::string createTableStmt = "CREATE TABLE PqConnectionTest("
                                   " id BIGINT NOT NULL,"
                                   " test_name CHARACTER VARYING NOT NULL,"
                                   " PRIMARY KEY (id))";
-    conn.run_update(createTableStmt, e8::ConnectionInterface::QueryParams());
+    conn.RunUpdate(createTableStmt, e8::ConnectionInterface::QueryParams());
 
     // Insert test records.
     std::string insert_stmt = "INSERT INTO PqConnectionTest(id, test_name) VALUES ($1, $2)";
     e8::ConnectionInterface::QueryParams insertion_params;
     e8::SqlLong id_param(1L);
     e8::SqlStr str_param("test_string", "");
-    insertion_params.set_param(1, &id_param);
-    insertion_params.set_param(2, &str_param);
-    uint64_t num_rows_affected = conn.run_update(insert_stmt, insertion_params);
+    insertion_params.SetParam(1, &id_param);
+    insertion_params.SetParam(2, &str_param);
+    uint64_t num_rows_affected = conn.RunUpdate(insert_stmt, insertion_params);
 
     QVERIFY(num_rows_affected == 1);
 
@@ -84,24 +84,24 @@ void pq_connection_test::update_and_query_test() {
     std::string query_stmt = "SELECT * FROM PqConnectionTest WHERE id=$1";
     e8::ConnectionInterface::QueryParams query_params;
     e8::SqlLong id_query_param(1L);
-    query_params.set_param(1, &id_query_param);
+    query_params.SetParam(1, &id_query_param);
 
-    std::unique_ptr<e8::ResultSetInterface> rs = conn.run_query(query_stmt, query_params);
-    QVERIFY(rs->has_next());
+    std::unique_ptr<e8::ResultSetInterface> rs = conn.RunQuery(query_stmt, query_params);
+    QVERIFY(rs->HasNext());
 
     e8::SqlLong id_field("id");
     e8::SqlStr test_name_field("test_name");
-    rs->set_field(0, &id_field);
-    rs->set_field(1, &test_name_field);
+    rs->SetField(0, &id_field);
+    rs->SetField(1, &test_name_field);
 
-    QVERIFY(id_field.value() == std::optional<int64_t>(1L));
-    QVERIFY(test_name_field.value() == std::optional<std::string>("test_string"));
+    QVERIFY(id_field.Value() == std::optional<int64_t>(1L));
+    QVERIFY(test_name_field.Value() == std::optional<std::string>("test_string"));
 
-    rs->next();
-    QVERIFY(!rs->has_next());
+    rs->Next();
+    QVERIFY(!rs->HasNext());
 
     // Clean up.
-    conn.run_update(drop_table_stmt, e8::ConnectionInterface::QueryParams());
+    conn.RunUpdate(drop_table_stmt, e8::ConnectionInterface::QueryParams());
 }
 
 QTEST_APPLESS_MAIN(pq_connection_test)

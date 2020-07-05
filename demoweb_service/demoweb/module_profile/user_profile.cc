@@ -66,24 +66,24 @@ std::string AllocateNewAvatarLocation(std::string const &user_id_str, FileFormat
 UserPublicProfile BuildPublicProfile(UserEntity const &user, UserRelations const &relations,
                                      KeyGeneratorInterface *key_gen) {
     UserPublicProfile profile;
-    profile.set_user_id(user.id.value().value());
-    assert(user.created_at.value().has_value());
-    profile.set_join_at(user.created_at.value().value());
+    profile.set_user_id(user.id.Value().value());
+    assert(user.created_at.Value().has_value());
+    profile.set_join_at(user.created_at.Value().value());
     *profile.mutable_relations() = {relations.begin(), relations.end()};
 
-    if (user.alias.value().has_value()) {
-        profile.mutable_alias()->set_value(user.alias.value().value());
+    if (user.alias.Value().has_value()) {
+        profile.mutable_alias()->set_value(user.alias.Value().value());
     }
 
-    if (user.avatar_path.value().has_value()) {
+    if (user.avatar_path.Value().has_value()) {
         FileAccessToken avatar_path_token =
-            SignFileAccessToken(user.id.value().value(), user.avatar_path.value().value(),
+            SignFileAccessToken(user.id.Value().value(), user.avatar_path.Value().value(),
                                 FileAccessMode::FAM_READ, key_gen);
         profile.mutable_avatar_readonly_access()->set_access_token(avatar_path_token);
 
-        if (user.avatar_preview_path.value().has_value()) {
+        if (user.avatar_preview_path.Value().has_value()) {
             FileAccessToken avatar_preview_path_token = SignFileAccessToken(
-                user.id.value().value(), user.avatar_preview_path.value().value(),
+                user.id.Value().value(), user.avatar_preview_path.Value().value(),
                 FileAccessMode::FAM_READ, key_gen);
             profile.mutable_avatar_preview_readonly_access()->set_access_token(
                 avatar_preview_path_token);
@@ -100,7 +100,7 @@ UserPublicProfile BuildPublicProfile(UserEntity const &user, UserRelations const
 
 bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
                    ConnectionReservoirInterface *db_conns) {
-    *user->alias.value_ptr() = alias;
+    *user->alias.ValuePtr() = alias;
 
     int num_rows_updated = Update(*user, TableNames::AUser(), /*override=*/true, db_conns);
     if (num_rows_updated == 0) {
@@ -118,7 +118,7 @@ std::vector<UserPublicProfile> BuildPublicProfiles(std::optional<UserId> viewer_
                                                    ConnectionReservoirInterface *db_conns) {
     std::vector<UserId> target_user_ids;
     for (auto const &user : users) {
-        target_user_ids.push_back(user.id.value().value());
+        target_user_ids.push_back(user.id.Value().value());
     }
 
     std::vector<UserPublicProfile> profiles;
@@ -129,7 +129,7 @@ std::vector<UserPublicProfile> BuildPublicProfiles(std::optional<UserId> viewer_
 
         for (auto const &user : users) {
             UserPublicProfile profile = profile_internal::BuildPublicProfile(
-                user, users_relations[user.id.value().value()], key_gen);
+                user, users_relations[user.id.Value().value()], key_gen);
             profiles.push_back(profile);
         }
     } else {
@@ -147,20 +147,20 @@ AvatarSetup SetUpNewProfileAvatar(UserEntity const &user, FileFormat file_format
                                   KeyGeneratorInterface *key_gen,
                                   ConnectionReservoirInterface *db_conns) {
     std::string location = profile_internal::AllocateNewAvatarLocation(
-        user.id_str.value().value(), file_format, user.avatar_path.value());
+        user.id_str.Value().value(), file_format, user.avatar_path.Value());
     std::optional<FileMetadataEntity> avatar_file =
         AttachMetadataForFile(location, /*file_size=*/0, EncryptionSource::ESRC_NONE, db_conns);
     assert(avatar_file.has_value());
-    assert(avatar_file.value().path.value().value() == location);
+    assert(*avatar_file.value().path.Value() == location);
 
     // Assign the avatar file record to the user.
     UserEntity updated_user = user;
-    *updated_user.avatar_path.value_ptr() = location;
+    *updated_user.avatar_path.ValuePtr() = location;
     uint64_t num_rows = Update(updated_user, TableNames::AUser(), /*replace=*/true, db_conns);
     assert(num_rows == 1);
 
     // Sign an access token.
-    FileAccessToken access_token = SignFileAccessToken(user.id.value().value(), location,
+    FileAccessToken access_token = SignFileAccessToken(user.id.Value().value(), location,
                                                        FileAccessMode::FAM_READWRITE, key_gen);
 
     AvatarSetup result;

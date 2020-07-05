@@ -84,8 +84,8 @@ void pq_result_set_test::insert_and_retrieve_test() {
                                     "   timestamp_array_field TIMESTAMP WITHOUT TIME ZONE[], "
                                     "   string_array_field CHARACTER VARYING[] "
                                     ")";
-    conn.run_update(drop_table_stmt, e8::ConnectionInterface::QueryParams());
-    conn.run_update(create_table_stmt, e8::ConnectionInterface::QueryParams());
+    conn.RunUpdate(drop_table_stmt, e8::ConnectionInterface::QueryParams());
+    conn.RunUpdate(create_table_stmt, e8::ConnectionInterface::QueryParams());
 
     std::string insert_record_stmt =
         "INSERT INTO PqResultSetTestTable ("
@@ -121,50 +121,50 @@ void pq_result_set_test::insert_and_retrieve_test() {
         "   ARRAY['string_value0', 'string_value1'] "
         ")";
     uint64_t num_rows_inserted =
-        conn.run_update(insert_record_stmt, e8::ConnectionInterface::QueryParams());
+        conn.RunUpdate(insert_record_stmt, e8::ConnectionInterface::QueryParams());
     QVERIFY(num_rows_inserted == 1);
 
     std::string query_stmt = "SELECT * FROM PqResultSetTestTable";
     std::unique_ptr<e8::ResultSetInterface> rs =
-        conn.run_query(query_stmt, e8::ConnectionInterface::QueryParams());
-    QVERIFY(rs->has_next());
+        conn.RunQuery(query_stmt, e8::ConnectionInterface::QueryParams());
+    QVERIFY(rs->HasNext());
 
     Record record;
-    rs->set_field(0, &record.int_field);
-    rs->set_field(1, &record.long_field);
-    rs->set_field(2, &record.bool_field);
-    rs->set_field(3, &record.float_field);
-    rs->set_field(4, &record.double_field);
-    rs->set_field(5, &record.timestamp_field);
-    rs->set_field(6, &record.string_field);
-    rs->set_field(7, &record.int_array_field);
-    rs->set_field(8, &record.long_array_field);
-    rs->set_field(9, &record.bool_array_field);
-    rs->set_field(10, &record.float_array_field);
-    rs->set_field(11, &record.double_array_field);
-    rs->set_field(12, &record.timestamp_array_field);
-    rs->set_field(13, &record.string_array_field);
+    rs->SetField(0, &record.int_field);
+    rs->SetField(1, &record.long_field);
+    rs->SetField(2, &record.bool_field);
+    rs->SetField(3, &record.float_field);
+    rs->SetField(4, &record.double_field);
+    rs->SetField(5, &record.timestamp_field);
+    rs->SetField(6, &record.string_field);
+    rs->SetField(7, &record.int_array_field);
+    rs->SetField(8, &record.long_array_field);
+    rs->SetField(9, &record.bool_array_field);
+    rs->SetField(10, &record.float_array_field);
+    rs->SetField(11, &record.double_array_field);
+    rs->SetField(12, &record.timestamp_array_field);
+    rs->SetField(13, &record.string_array_field);
 
-    QVERIFY(record.int_field.value() == 10);
-    QVERIFY(record.long_field.value() == 100);
-    QVERIFY(record.bool_field.value() == true);
-    QVERIFY(record.float_field.value() == 0.5f);
-    QVERIFY(record.double_field.value() == 0.25);
-    QVERIFY(record.timestamp_field.value() == 111);
-    QVERIFY(record.string_field.value() == "string_value");
-    QVERIFY(record.int_array_field.value() == std::vector<int32_t>({10, 11}));
-    QVERIFY(record.long_array_field.value() == std::vector<int64_t>({100, 101}));
-    QVERIFY(record.bool_array_field.value() == std::vector<bool>({true, false}));
-    QVERIFY(record.float_array_field.value() == std::vector<float>({0.5f, 1.5f}));
-    QVERIFY(record.double_array_field.value() == std::vector<double>({0.25, 1.25}));
-    QVERIFY(record.timestamp_array_field.value() == std::vector<std::time_t>({111, 112}));
-    QVERIFY(record.string_array_field.value() ==
+    QVERIFY(record.int_field.Value() == 10);
+    QVERIFY(record.long_field.Value() == 100);
+    QVERIFY(record.bool_field.Value() == true);
+    QVERIFY(record.float_field.Value() == 0.5f);
+    QVERIFY(record.double_field.Value() == 0.25);
+    QVERIFY(record.timestamp_field.Value() == 111);
+    QVERIFY(record.string_field.Value() == "string_value");
+    QVERIFY(record.int_array_field.Value() == std::vector<int32_t>({10, 11}));
+    QVERIFY(record.long_array_field.Value() == std::vector<int64_t>({100, 101}));
+    QVERIFY(record.bool_array_field.Value() == std::vector<bool>({true, false}));
+    QVERIFY(record.float_array_field.Value() == std::vector<float>({0.5f, 1.5f}));
+    QVERIFY(record.double_array_field.Value() == std::vector<double>({0.25, 1.25}));
+    QVERIFY(record.timestamp_array_field.Value() == std::vector<std::time_t>({111, 112}));
+    QVERIFY(record.string_array_field.Value() ==
             std::vector<std::string>({"string_value0", "string_value1"}));
 
-    rs->next();
-    QVERIFY(!rs->has_next());
+    rs->Next();
+    QVERIFY(!rs->HasNext());
 
-    conn.run_update(drop_table_stmt, e8::ConnectionInterface::QueryParams());
+    conn.RunUpdate(drop_table_stmt, e8::ConnectionInterface::QueryParams());
 }
 
 QTEST_APPLESS_MAIN(pq_result_set_test)

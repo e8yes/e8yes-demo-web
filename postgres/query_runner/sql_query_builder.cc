@@ -21,13 +21,13 @@
 
 namespace e8 {
 
-SqlQueryBuilder &SqlQueryBuilder::query_piece(std::string const &piece) {
+SqlQueryBuilder &SqlQueryBuilder::QueryPiece(std::string const &piece) {
     query_ += piece;
     return *this;
 }
 
-std::string const &SqlQueryBuilder::psql_query() const { return query_; }
+std::string const &SqlQueryBuilder::PsqlQuery() const { return query_; }
 
-ConnectionInterface::QueryParams const &SqlQueryBuilder::query_params() const { return params_; }
+ConnectionInterface::QueryParams const &SqlQueryBuilder::QueryParams() const { return params_; }
 
 } // namespace e8

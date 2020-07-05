@@ -96,16 +96,16 @@ class OnFetch {
         SqlQueryBuilder query;
         SqlQueryBuilder::Placeholder<SqlStr> encrypter;
         SqlQueryBuilder::Placeholder<SqlInt> key_type;
-        query.query_piece(kKeyPersistenceTableName)
-            .query_piece(" kp WHERE kp.encrypter=")
-            .placeholder(&encrypter)
-            .query_piece("AND kp.key_type=")
-            .placeholder(&key_type);
+        query.QueryPiece(kKeyPersistenceTableName)
+            .QueryPiece(" kp WHERE kp.encrypter=")
+            .Holder(&encrypter)
+            .QueryPiece("AND kp.key_type=")
+            .Holder(&key_type);
 
         SqlStr encrypter_value = SqlStr(key_user.encrypter, "");
         SqlInt key_type_value = SqlInt(key_user.key_type);
-        query.set_value_to_placeholder(encrypter, &encrypter_value);
-        query.set_value_to_placeholder(key_type, &key_type_value);
+        query.SetValueToPlaceholder(encrypter, &encrypter_value);
+        query.SetValueToPlaceholder(key_type, &key_type_value);
 
         std::vector<std::tuple<KeyPersistenceEntity>> key_persistence =
             Query<KeyPersistenceEntity>(query, {"kp"}, reservoir_);
@@ -116,9 +116,9 @@ class OnFetch {
 
         KeyPersistenceEntity const &entity = std::get<0>(key_persistence[0]);
         KeyGeneratorInterface::Key key;
-        assert(!entity.crypto_key.value().empty());
-        key.key = entity.crypto_key.value();
-        key.public_key = entity.crypto_public_key.value();
+        assert(!entity.crypto_key.Value().empty());
+        key.key = entity.crypto_key.Value();
+        key.public_key = entity.crypto_public_key.Value();
 
         return std::optional<KeyGeneratorInterface::Key>(key);
     }
@@ -203,11 +203,11 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateKey(KeyUser const &k
     }
 
     KeyPersistenceEntity key_persistence;
-    *key_persistence.encrypter.value_ptr() = key_user.encrypter;
-    *key_persistence.key_type.value_ptr() = key_user.key_type;
-    *key_persistence.crypto_key.value_ptr() = key.key;
+    *key_persistence.encrypter.ValuePtr() = key_user.encrypter;
+    *key_persistence.key_type.ValuePtr() = key_user.key_type;
+    *key_persistence.crypto_key.ValuePtr() = key.key;
     if (key.public_key.has_value()) {
-        *key_persistence.crypto_public_key.value_ptr() = key.public_key.value();
+        *key_persistence.crypto_public_key.ValuePtr() = key.public_key.value();
     }
 
     uint64_t num_rows_updated =

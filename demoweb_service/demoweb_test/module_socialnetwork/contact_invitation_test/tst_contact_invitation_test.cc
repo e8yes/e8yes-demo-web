@@ -38,23 +38,23 @@ void contact_invitation_test::send_invitation_store_test() {
         e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/2,
                        env.CurrentHostId(), env.DemowebDatabase());
 
-    bool result = e8::SendInvitation(user1->id.value().value(), user2->id.value().value(),
+    bool result = e8::SendInvitation(*user1->id.Value(), *user2->id.Value(),
                                      /*send_message_anyway=*/false, env.DemowebDatabase());
     QVERIFY(result);
 
     e8::SqlQueryBuilder forward_query;
-    forward_query.query_piece(e8::TableNames::ContactRelation())
-        .query_piece(" cr ")
-        .query_piece("WHERE cr.src_user_id=1 AND cr.dst_user_id=2 AND cr.relation=" +
-                     std::to_string(e8::UserRelation::URL_INVITATION_SENT));
+    forward_query.QueryPiece(e8::TableNames::ContactRelation())
+        .QueryPiece(" cr ")
+        .QueryPiece("WHERE cr.src_user_id=1 AND cr.dst_user_id=2 AND cr.relation=" +
+                    std::to_string(e8::UserRelation::URL_INVITATION_SENT));
     result = e8::Exists(forward_query, env.DemowebDatabase());
     QVERIFY(result);
 
     e8::SqlQueryBuilder backward_query;
-    backward_query.query_piece(e8::TableNames::ContactRelation())
-        .query_piece(" cr ")
-        .query_piece("WHERE cr.src_user_id=2 AND cr.dst_user_id=1 AND cr.relation=" +
-                     std::to_string(e8::UserRelation::URL_INVITATION_RECEIVED));
+    backward_query.QueryPiece(e8::TableNames::ContactRelation())
+        .QueryPiece(" cr ")
+        .QueryPiece("WHERE cr.src_user_id=2 AND cr.dst_user_id=1 AND cr.relation=" +
+                    std::to_string(e8::UserRelation::URL_INVITATION_RECEIVED));
     result = e8::Exists(backward_query, env.DemowebDatabase());
     QVERIFY(result);
 }
@@ -69,26 +69,26 @@ void contact_invitation_test::process_invitation_accept_test() {
         e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/2,
                        env.CurrentHostId(), env.DemowebDatabase());
 
-    e8::SendInvitation(user1->id.value().value(), user2->id.value().value(),
+    e8::SendInvitation(*user1->id.Value(), *user2->id.Value(),
                        /*send_message_anyway=*/false, env.DemowebDatabase());
 
-    bool result = e8::ProcessInvitation(*user2->id.value(), *user1->id.value(), /*accept=*/true,
+    bool result = e8::ProcessInvitation(*user2->id.Value(), *user1->id.Value(), /*accept=*/true,
                                         env.DemowebDatabase());
     QVERIFY(result);
 
     e8::SqlQueryBuilder forward_query;
-    forward_query.query_piece(e8::TableNames::ContactRelation())
-        .query_piece(" cr ")
-        .query_piece("WHERE cr.src_user_id=1 AND cr.dst_user_id=2 AND cr.relation=" +
-                     std::to_string(e8::UserRelation::URL_CONTACT));
+    forward_query.QueryPiece(e8::TableNames::ContactRelation())
+        .QueryPiece(" cr ")
+        .QueryPiece("WHERE cr.src_user_id=1 AND cr.dst_user_id=2 AND cr.relation=" +
+                    std::to_string(e8::UserRelation::URL_CONTACT));
     result = e8::Exists(forward_query, env.DemowebDatabase());
     QVERIFY(result);
 
     e8::SqlQueryBuilder backward_query;
-    backward_query.query_piece(e8::TableNames::ContactRelation())
-        .query_piece(" cr ")
-        .query_piece("WHERE cr.src_user_id=2 AND cr.dst_user_id=1 AND cr.relation=" +
-                     std::to_string(e8::UserRelation::URL_CONTACT));
+    backward_query.QueryPiece(e8::TableNames::ContactRelation())
+        .QueryPiece(" cr ")
+        .QueryPiece("WHERE cr.src_user_id=2 AND cr.dst_user_id=1 AND cr.relation=" +
+                    std::to_string(e8::UserRelation::URL_CONTACT));
     result = e8::Exists(backward_query, env.DemowebDatabase());
     QVERIFY(result);
 }

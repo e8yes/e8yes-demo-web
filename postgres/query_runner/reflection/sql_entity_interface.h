@@ -45,19 +45,19 @@ class SqlEntityInterface {
      * reflection.
      * @param fields The primitive fields the entity contains (that it is interested in).
      */
-    SqlEntityInterface(std::initializer_list<SqlPrimitiveInterface *> const &fields);
+    SqlEntityInterface(std::initializer_list<SqlPrimitiveInterface *> const &Fields);
     SqlEntityInterface(SqlEntityInterface const &) = delete;
 
     /**
      * @brief nested_fields The nested fields this entity contains.
      * @return The nested fields
      */
-    std::vector<SqlPrimitiveInterface *> const &fields();
+    std::vector<SqlPrimitiveInterface *> const &Fields();
 
     /**
      * @brief fields Constant version of the above function.
      */
-    std::vector<SqlPrimitiveInterface *> const &fields() const;
+    std::vector<SqlPrimitiveInterface *> const &Fields() const;
 
   private:
     std::vector<SqlPrimitiveInterface *> const fields_;

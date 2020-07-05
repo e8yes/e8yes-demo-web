@@ -19,11 +19,11 @@
 
 namespace e8 {
 
-void ConnectionInterface::QueryParams::set_param(SlotId slot, SqlPrimitiveInterface const *val) {
+void ConnectionInterface::QueryParams::SetParam(SlotId slot, SqlPrimitiveInterface const *val) {
     params_.insert(std::make_pair(slot, val));
 }
 
-SqlPrimitiveInterface const *ConnectionInterface::QueryParams::get_param(SlotId slot) const {
+SqlPrimitiveInterface const *ConnectionInterface::QueryParams::GetParam(SlotId slot) const {
     auto it = params_.find(slot);
     if (it != params_.end()) {
         return it->second;
@@ -32,16 +32,16 @@ SqlPrimitiveInterface const *ConnectionInterface::QueryParams::get_param(SlotId 
     }
 }
 
-void ConnectionInterface::QueryParams::clear() { params_.clear(); }
+void ConnectionInterface::QueryParams::Clear() { params_.clear(); }
 
-size_t ConnectionInterface::QueryParams::num_slots() const { return params_.size(); }
+size_t ConnectionInterface::QueryParams::NumSlots() const { return params_.size(); }
 
-ConnectionInterface::QueryParams::SlotId ConnectionInterface::QueryParams::allocate_slot() {
+ConnectionInterface::QueryParams::SlotId ConnectionInterface::QueryParams::AllocateSlot() {
     return ++next_slot_id_;
 }
 
 std::map<ConnectionInterface::QueryParams::SlotId, SqlPrimitiveInterface const *> const &
-ConnectionInterface::QueryParams::parameters() const {
+ConnectionInterface::QueryParams::Parameters() const {
     return params_;
 }
 

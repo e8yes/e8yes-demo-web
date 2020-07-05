@@ -33,7 +33,7 @@ class SqlPrimitiveInterface {
      * @brief SqlPrimitiveInterface Construct an SQL primitive field with field name reflection.
      * @param field_name The name of this primitive field.
      */
-    SqlPrimitiveInterface(std::string const &field_name);
+    SqlPrimitiveInterface(std::string const &FieldName);
     virtual ~SqlPrimitiveInterface();
 
     SqlPrimitiveInterface(SqlPrimitiveInterface const &) = default;
@@ -42,21 +42,21 @@ class SqlPrimitiveInterface {
      * @brief field_name The name of this primitive field for reflection use.
      * @return The field name.
      */
-    std::string const &field_name() const;
+    std::string const &FieldName() const;
 
     /**
      * Export value to an SQL invocatin.
      *
      * @param invocatin SQL invocation to export to.
      */
-    virtual void export_to_invocation(pqxx::prepare::invocation *invocation) const = 0;
+    virtual void ExportToInvocation(pqxx::prepare::invocation *invocation) const = 0;
 
     /**
      * Import from an SQL field and internally converts to a C++ value.
      *
      * @param field SQL field to import from.
      */
-    virtual void import_from_field(pqxx::field const &field) = 0;
+    virtual void ImportFromField(pqxx::field const &field) = 0;
 
     /**
      * Implementation of this operator is required.

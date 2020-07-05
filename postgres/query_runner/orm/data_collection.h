@@ -30,9 +30,9 @@ namespace data_collection_internal {
 
 template <typename EntityType>
 void SetRecordsToEntities(ResultSetInterface *rs, unsigned *base_record_idx, EntityType &&entity) {
-    std::vector<SqlPrimitiveInterface *> const &fields = entity.fields();
+    std::vector<SqlPrimitiveInterface *> const &fields = entity.Fields();
     for (unsigned i = 0; i < fields.size(); i++) {
-        rs->set_field(*base_record_idx + i, fields[i]);
+        rs->SetField(*base_record_idx + i, fields[i]);
     }
     *base_record_idx += fields.size();
 }
@@ -54,7 +54,7 @@ void SetRecordsToEntities(ResultSetInterface *rs, unsigned *base_record_idx, Ent
 template <typename EntityType, typename... Others>
 std::vector<std::tuple<EntityType, Others...>> ToEntityTuples(ResultSetInterface *rs) {
     std::vector<std::tuple<EntityType, Others...>> records;
-    for (; rs->has_next(); rs->next()) {
+    for (; rs->HasNext(); rs->Next()) {
         std::tuple<EntityType, Others...> entity_tuple;
 
         unsigned base_record_idx = 0;

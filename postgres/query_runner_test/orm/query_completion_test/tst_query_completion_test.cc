@@ -67,32 +67,32 @@ void query_completion_test::select_query_completion_test() {
 
 void query_completion_test::generate_insert_query_test() {
     User user;
-    *user.id.value_ptr() = 1;
-    *user.user_name.value_ptr() = "user0";
+    *user.id.ValuePtr() = 1;
+    *user.user_name.ValuePtr() = "user0";
 
     e8::InsertQueryAndParams query_and_params =
         e8::GenerateInsertQuery(/*table_name=*/"AUser", user, /*with_upsert=*/false);
     QVERIFY(query_and_params.query ==
             "INSERT INTO AUser(id,user_name)VALUES($1,$2)ON CONFLICT DO NOTHING");
 
-    QVERIFY(*query_and_params.query_params.get_param(0) == user.id);
-    QVERIFY(*query_and_params.query_params.get_param(1) == user.user_name);
+    QVERIFY(*query_and_params.query_params.GetParam(0) == user.id);
+    QVERIFY(*query_and_params.query_params.GetParam(1) == user.user_name);
 }
 
 void query_completion_test::generate_upsert_query_test() {
     User user;
-    *user.id.value_ptr() = 1;
-    *user.user_name.value_ptr() = "user0";
+    *user.id.ValuePtr() = 1;
+    *user.user_name.ValuePtr() = "user0";
 
     e8::InsertQueryAndParams query_and_params =
         e8::GenerateInsertQuery(/*table_name=*/"AUser", user, /*with_upsert=*/true);
     QVERIFY(query_and_params.query == "INSERT INTO AUser(id,user_name)VALUES($1,$2)ON CONFLICT ON "
                                       "CONSTRAINT AUser_pkey DO UPDATE SET id=$3,user_name=$4");
 
-    QVERIFY(*query_and_params.query_params.get_param(0) == user.id);
-    QVERIFY(*query_and_params.query_params.get_param(1) == user.user_name);
-    QVERIFY(*query_and_params.query_params.get_param(2) == user.id);
-    QVERIFY(*query_and_params.query_params.get_param(3) == user.user_name);
+    QVERIFY(*query_and_params.query_params.GetParam(0) == user.id);
+    QVERIFY(*query_and_params.query_params.GetParam(1) == user.user_name);
+    QVERIFY(*query_and_params.query_params.GetParam(2) == user.id);
+    QVERIFY(*query_and_params.query_params.GetParam(3) == user.user_name);
 }
 
 QTEST_APPLESS_MAIN(query_completion_test)

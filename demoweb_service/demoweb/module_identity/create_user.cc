@@ -40,19 +40,19 @@ std::optional<UserEntity> CreateUser(std::string const &security_key,
     }
 
     UserEntity user;
-    *user.id.value_ptr() = user_id.value();
-    *user.id_str.value_ptr() = std::to_string(user_id.value());
+    *user.id.ValuePtr() = user_id.value();
+    *user.id_str.ValuePtr() = std::to_string(user_id.value());
 
     // Stores a irreversibly hashed security key.
     std::optional<SecurityKeyHash> security_hash = DigestSecurityKey(security_key);
     assert(security_hash.has_value());
-    *user.security_key_hash.value_ptr() = security_hash.value();
-    *user.group_names.value_ptr() = user_group_names;
-    *user.active_level.value_ptr() = 0;
+    *user.security_key_hash.ValuePtr() = security_hash.value();
+    *user.group_names.ValuePtr() = user_group_names;
+    *user.active_level.ValuePtr() = 0;
 
     time_t timestamp;
     std::time(&timestamp);
-    *user.created_at.value_ptr() = timestamp;
+    *user.created_at.ValuePtr() = timestamp;
 
     uint64_t num_rows_affected = Update(user, TableNames::AUser(), /*overrdie=*/false, db_conn);
     if (num_rows_affected == 0) {

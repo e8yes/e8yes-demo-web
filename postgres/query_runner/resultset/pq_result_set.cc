@@ -25,12 +25,12 @@ namespace e8 {
 
 PqResultSet::PqResultSet(pqxx::result const &rs) : rs_(rs) { it_ = rs_.begin(); }
 
-void PqResultSet::next() { ++it_; }
+void PqResultSet::Next() { ++it_; }
 
-bool PqResultSet::has_next() const { return it_ != rs_.end(); }
+bool PqResultSet::HasNext() const { return it_ != rs_.end(); }
 
-void PqResultSet::set_field(unsigned i, SqlPrimitiveInterface *field) {
-    field->import_from_field((*it_)[i]);
+void PqResultSet::SetField(unsigned i, SqlPrimitiveInterface *field) {
+    field->ImportFromField((*it_)[i]);
 }
 
 } // namespace e8

@@ -53,22 +53,22 @@ void create_user_test::create_baseline_user_test() {
 
     e8::UserEntity user = user_opt.value();
 
-    QVERIFY(user.id.value().has_value());
-    QVERIFY(user.id_str.value().has_value());
-    QVERIFY(user.id.value().has_value());
-    QVERIFY(user.security_key_hash.value().has_value());
-    QVERIFY(!user.security_key_hash.value().value().empty());
-    QVERIFY(!user.alias.value().has_value());
-    QVERIFY(!user.avatar_path.value().has_value());
-    QVERIFY(user.emails.value().empty());
-    QVERIFY(user.created_at.value().has_value());
+    QVERIFY(user.id.Value().has_value());
+    QVERIFY(user.id_str.Value().has_value());
+    QVERIFY(user.id.Value().has_value());
+    QVERIFY(user.security_key_hash.Value().has_value());
+    QVERIFY(!user.security_key_hash.Value().value().empty());
+    QVERIFY(!user.alias.Value().has_value());
+    QVERIFY(!user.avatar_path.Value().has_value());
+    QVERIFY(user.emails.Value().empty());
+    QVERIFY(user.created_at.Value().has_value());
     std::time_t current_timestamp;
     std::time(&current_timestamp);
-    QVERIFY(current_timestamp - user.created_at.value().value() < 2);
-    QVERIFY(user.active_level.value().has_value());
-    QVERIFY(user.active_level.value().value() == 0);
-    QVERIFY(user.group_names.value().size() == 1);
-    QVERIFY(user.group_names.value()[0] ==
+    QVERIFY(current_timestamp - user.created_at.Value().value() < 2);
+    QVERIFY(user.active_level.Value().has_value());
+    QVERIFY(user.active_level.Value().value() == 0);
+    QVERIFY(user.group_names.Value().size() == 1);
+    QVERIFY(user.group_names.Value()[0] ==
             e8::kSystemUserGroupStrings[e8::SystemUserGroup::BASELINE_USER_GROUP]);
 }
 
