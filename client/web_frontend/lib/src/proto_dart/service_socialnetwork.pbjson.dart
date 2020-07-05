@@ -65,20 +65,6 @@ const RejectInvitationResponse$json = const {
   '1': 'RejectInvitationResponse',
 };
 
-const GetInvitationListRequest$json = const {
-  '1': 'GetInvitationListRequest',
-  '2': const [
-    const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
-  ],
-};
-
-const GetInvitationListResponse$json = const {
-  '1': 'GetInvitationListResponse',
-  '2': const [
-    const {'1': 'user_profiles', '3': 1, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'userProfiles'},
-  ],
-};
-
 const DeleteContactRequest$json = const {
   '1': 'DeleteContactRequest',
   '2': const [
@@ -90,15 +76,16 @@ const DeleteContactResponse$json = const {
   '1': 'DeleteContactResponse',
 };
 
-const GetContactListRequest$json = const {
-  '1': 'GetContactListRequest',
+const GetRelatedUserListRequest$json = const {
+  '1': 'GetRelatedUserListRequest',
   '2': const [
     const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
+    const {'1': 'relation_filter', '3': 2, '4': 3, '5': 14, '6': '.e8.UserRelation', '10': 'relationFilter'},
   ],
 };
 
-const GetContactListResponse$json = const {
-  '1': 'GetContactListResponse',
+const GetRelatedUserListResponse$json = const {
+  '1': 'GetRelatedUserListResponse',
   '2': const [
     const {'1': 'user_profiles', '3': 1, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'userProfiles'},
   ],

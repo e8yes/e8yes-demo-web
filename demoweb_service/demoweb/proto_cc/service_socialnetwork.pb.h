@@ -41,7 +41,7 @@ namespace protobuf_service_5fsocialnetwork_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[16];
+  static const ::google::protobuf::internal::ParseTable schema[14];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -67,18 +67,12 @@ extern DeleteInvitationRequestDefaultTypeInternal _DeleteInvitationRequest_defau
 class DeleteInvitationResponse;
 class DeleteInvitationResponseDefaultTypeInternal;
 extern DeleteInvitationResponseDefaultTypeInternal _DeleteInvitationResponse_default_instance_;
-class GetContactListRequest;
-class GetContactListRequestDefaultTypeInternal;
-extern GetContactListRequestDefaultTypeInternal _GetContactListRequest_default_instance_;
-class GetContactListResponse;
-class GetContactListResponseDefaultTypeInternal;
-extern GetContactListResponseDefaultTypeInternal _GetContactListResponse_default_instance_;
-class GetInvitationListRequest;
-class GetInvitationListRequestDefaultTypeInternal;
-extern GetInvitationListRequestDefaultTypeInternal _GetInvitationListRequest_default_instance_;
-class GetInvitationListResponse;
-class GetInvitationListResponseDefaultTypeInternal;
-extern GetInvitationListResponseDefaultTypeInternal _GetInvitationListResponse_default_instance_;
+class GetRelatedUserListRequest;
+class GetRelatedUserListRequestDefaultTypeInternal;
+extern GetRelatedUserListRequestDefaultTypeInternal _GetRelatedUserListRequest_default_instance_;
+class GetRelatedUserListResponse;
+class GetRelatedUserListResponseDefaultTypeInternal;
+extern GetRelatedUserListResponseDefaultTypeInternal _GetRelatedUserListResponse_default_instance_;
 class GetUserRelationsRequest;
 class GetUserRelationsRequestDefaultTypeInternal;
 extern GetUserRelationsRequestDefaultTypeInternal _GetUserRelationsRequest_default_instance_;
@@ -106,10 +100,8 @@ template<> ::e8::DeleteContactRequest* Arena::CreateMaybeMessage<::e8::DeleteCon
 template<> ::e8::DeleteContactResponse* Arena::CreateMaybeMessage<::e8::DeleteContactResponse>(Arena*);
 template<> ::e8::DeleteInvitationRequest* Arena::CreateMaybeMessage<::e8::DeleteInvitationRequest>(Arena*);
 template<> ::e8::DeleteInvitationResponse* Arena::CreateMaybeMessage<::e8::DeleteInvitationResponse>(Arena*);
-template<> ::e8::GetContactListRequest* Arena::CreateMaybeMessage<::e8::GetContactListRequest>(Arena*);
-template<> ::e8::GetContactListResponse* Arena::CreateMaybeMessage<::e8::GetContactListResponse>(Arena*);
-template<> ::e8::GetInvitationListRequest* Arena::CreateMaybeMessage<::e8::GetInvitationListRequest>(Arena*);
-template<> ::e8::GetInvitationListResponse* Arena::CreateMaybeMessage<::e8::GetInvitationListResponse>(Arena*);
+template<> ::e8::GetRelatedUserListRequest* Arena::CreateMaybeMessage<::e8::GetRelatedUserListRequest>(Arena*);
+template<> ::e8::GetRelatedUserListResponse* Arena::CreateMaybeMessage<::e8::GetRelatedUserListResponse>(Arena*);
 template<> ::e8::GetUserRelationsRequest* Arena::CreateMaybeMessage<::e8::GetUserRelationsRequest>(Arena*);
 template<> ::e8::GetUserRelationsResponse* Arena::CreateMaybeMessage<::e8::GetUserRelationsResponse>(Arena*);
 template<> ::e8::RejectInvitationRequest* Arena::CreateMaybeMessage<::e8::RejectInvitationRequest>(Arena*);
@@ -1144,224 +1136,6 @@ class RejectInvitationResponse : public ::google::protobuf::Message /* @@protoc_
 };
 // -------------------------------------------------------------------
 
-class GetInvitationListRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetInvitationListRequest) */ {
- public:
-  GetInvitationListRequest();
-  virtual ~GetInvitationListRequest();
-
-  GetInvitationListRequest(const GetInvitationListRequest& from);
-
-  inline GetInvitationListRequest& operator=(const GetInvitationListRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  GetInvitationListRequest(GetInvitationListRequest&& from) noexcept
-    : GetInvitationListRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline GetInvitationListRequest& operator=(GetInvitationListRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const GetInvitationListRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetInvitationListRequest* internal_default_instance() {
-    return reinterpret_cast<const GetInvitationListRequest*>(
-               &_GetInvitationListRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    10;
-
-  void Swap(GetInvitationListRequest* other);
-  friend void swap(GetInvitationListRequest& a, GetInvitationListRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline GetInvitationListRequest* New() const final {
-    return CreateMaybeMessage<GetInvitationListRequest>(NULL);
-  }
-
-  GetInvitationListRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetInvitationListRequest>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetInvitationListRequest& from);
-  void MergeFrom(const GetInvitationListRequest& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(GetInvitationListRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // .e8.Pagination pagination = 1;
-  bool has_pagination() const;
-  void clear_pagination();
-  static const int kPaginationFieldNumber = 1;
-  private:
-  const ::e8::Pagination& _internal_pagination() const;
-  public:
-  const ::e8::Pagination& pagination() const;
-  ::e8::Pagination* release_pagination();
-  ::e8::Pagination* mutable_pagination();
-  void set_allocated_pagination(::e8::Pagination* pagination);
-
-  // @@protoc_insertion_point(class_scope:e8.GetInvitationListRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::e8::Pagination* pagination_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class GetInvitationListResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetInvitationListResponse) */ {
- public:
-  GetInvitationListResponse();
-  virtual ~GetInvitationListResponse();
-
-  GetInvitationListResponse(const GetInvitationListResponse& from);
-
-  inline GetInvitationListResponse& operator=(const GetInvitationListResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  GetInvitationListResponse(GetInvitationListResponse&& from) noexcept
-    : GetInvitationListResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline GetInvitationListResponse& operator=(GetInvitationListResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const GetInvitationListResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetInvitationListResponse* internal_default_instance() {
-    return reinterpret_cast<const GetInvitationListResponse*>(
-               &_GetInvitationListResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    11;
-
-  void Swap(GetInvitationListResponse* other);
-  friend void swap(GetInvitationListResponse& a, GetInvitationListResponse& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline GetInvitationListResponse* New() const final {
-    return CreateMaybeMessage<GetInvitationListResponse>(NULL);
-  }
-
-  GetInvitationListResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetInvitationListResponse>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetInvitationListResponse& from);
-  void MergeFrom(const GetInvitationListResponse& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(GetInvitationListResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated .e8.UserPublicProfile user_profiles = 1;
-  int user_profiles_size() const;
-  void clear_user_profiles();
-  static const int kUserProfilesFieldNumber = 1;
-  ::e8::UserPublicProfile* mutable_user_profiles(int index);
-  ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >*
-      mutable_user_profiles();
-  const ::e8::UserPublicProfile& user_profiles(int index) const;
-  ::e8::UserPublicProfile* add_user_profiles();
-  const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
-      user_profiles() const;
-
-  // @@protoc_insertion_point(class_scope:e8.GetInvitationListResponse)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile > user_profiles_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class DeleteContactRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.DeleteContactRequest) */ {
  public:
   DeleteContactRequest();
@@ -1397,7 +1171,7 @@ class DeleteContactRequest : public ::google::protobuf::Message /* @@protoc_inse
                &_DeleteContactRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    10;
 
   void Swap(DeleteContactRequest* other);
   friend void swap(DeleteContactRequest& a, DeleteContactRequest& b) {
@@ -1500,7 +1274,7 @@ class DeleteContactResponse : public ::google::protobuf::Message /* @@protoc_ins
                &_DeleteContactResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    11;
 
   void Swap(DeleteContactResponse* other);
   friend void swap(DeleteContactResponse& a, DeleteContactResponse& b) {
@@ -1561,24 +1335,24 @@ class DeleteContactResponse : public ::google::protobuf::Message /* @@protoc_ins
 };
 // -------------------------------------------------------------------
 
-class GetContactListRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetContactListRequest) */ {
+class GetRelatedUserListRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetRelatedUserListRequest) */ {
  public:
-  GetContactListRequest();
-  virtual ~GetContactListRequest();
+  GetRelatedUserListRequest();
+  virtual ~GetRelatedUserListRequest();
 
-  GetContactListRequest(const GetContactListRequest& from);
+  GetRelatedUserListRequest(const GetRelatedUserListRequest& from);
 
-  inline GetContactListRequest& operator=(const GetContactListRequest& from) {
+  inline GetRelatedUserListRequest& operator=(const GetRelatedUserListRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  GetContactListRequest(GetContactListRequest&& from) noexcept
-    : GetContactListRequest() {
+  GetRelatedUserListRequest(GetRelatedUserListRequest&& from) noexcept
+    : GetRelatedUserListRequest() {
     *this = ::std::move(from);
   }
 
-  inline GetContactListRequest& operator=(GetContactListRequest&& from) noexcept {
+  inline GetRelatedUserListRequest& operator=(GetRelatedUserListRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1588,34 +1362,34 @@ class GetContactListRequest : public ::google::protobuf::Message /* @@protoc_ins
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetContactListRequest& default_instance();
+  static const GetRelatedUserListRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetContactListRequest* internal_default_instance() {
-    return reinterpret_cast<const GetContactListRequest*>(
-               &_GetContactListRequest_default_instance_);
+  static inline const GetRelatedUserListRequest* internal_default_instance() {
+    return reinterpret_cast<const GetRelatedUserListRequest*>(
+               &_GetRelatedUserListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    12;
 
-  void Swap(GetContactListRequest* other);
-  friend void swap(GetContactListRequest& a, GetContactListRequest& b) {
+  void Swap(GetRelatedUserListRequest* other);
+  friend void swap(GetRelatedUserListRequest& a, GetRelatedUserListRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetContactListRequest* New() const final {
-    return CreateMaybeMessage<GetContactListRequest>(NULL);
+  inline GetRelatedUserListRequest* New() const final {
+    return CreateMaybeMessage<GetRelatedUserListRequest>(NULL);
   }
 
-  GetContactListRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetContactListRequest>(arena);
+  GetRelatedUserListRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetRelatedUserListRequest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetContactListRequest& from);
-  void MergeFrom(const GetContactListRequest& from);
+  void CopyFrom(const GetRelatedUserListRequest& from);
+  void MergeFrom(const GetRelatedUserListRequest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -1632,7 +1406,7 @@ class GetContactListRequest : public ::google::protobuf::Message /* @@protoc_ins
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetContactListRequest* other);
+  void InternalSwap(GetRelatedUserListRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1648,6 +1422,16 @@ class GetContactListRequest : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
+  // repeated .e8.UserRelation relation_filter = 2;
+  int relation_filter_size() const;
+  void clear_relation_filter();
+  static const int kRelationFilterFieldNumber = 2;
+  ::e8::UserRelation relation_filter(int index) const;
+  void set_relation_filter(int index, ::e8::UserRelation value);
+  void add_relation_filter(::e8::UserRelation value);
+  const ::google::protobuf::RepeatedField<int>& relation_filter() const;
+  ::google::protobuf::RepeatedField<int>* mutable_relation_filter();
+
   // .e8.Pagination pagination = 1;
   bool has_pagination() const;
   void clear_pagination();
@@ -1660,34 +1444,36 @@ class GetContactListRequest : public ::google::protobuf::Message /* @@protoc_ins
   ::e8::Pagination* mutable_pagination();
   void set_allocated_pagination(::e8::Pagination* pagination);
 
-  // @@protoc_insertion_point(class_scope:e8.GetContactListRequest)
+  // @@protoc_insertion_point(class_scope:e8.GetRelatedUserListRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField<int> relation_filter_;
+  mutable int _relation_filter_cached_byte_size_;
   ::e8::Pagination* pagination_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class GetContactListResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetContactListResponse) */ {
+class GetRelatedUserListResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetRelatedUserListResponse) */ {
  public:
-  GetContactListResponse();
-  virtual ~GetContactListResponse();
+  GetRelatedUserListResponse();
+  virtual ~GetRelatedUserListResponse();
 
-  GetContactListResponse(const GetContactListResponse& from);
+  GetRelatedUserListResponse(const GetRelatedUserListResponse& from);
 
-  inline GetContactListResponse& operator=(const GetContactListResponse& from) {
+  inline GetRelatedUserListResponse& operator=(const GetRelatedUserListResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  GetContactListResponse(GetContactListResponse&& from) noexcept
-    : GetContactListResponse() {
+  GetRelatedUserListResponse(GetRelatedUserListResponse&& from) noexcept
+    : GetRelatedUserListResponse() {
     *this = ::std::move(from);
   }
 
-  inline GetContactListResponse& operator=(GetContactListResponse&& from) noexcept {
+  inline GetRelatedUserListResponse& operator=(GetRelatedUserListResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1697,34 +1483,34 @@ class GetContactListResponse : public ::google::protobuf::Message /* @@protoc_in
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetContactListResponse& default_instance();
+  static const GetRelatedUserListResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetContactListResponse* internal_default_instance() {
-    return reinterpret_cast<const GetContactListResponse*>(
-               &_GetContactListResponse_default_instance_);
+  static inline const GetRelatedUserListResponse* internal_default_instance() {
+    return reinterpret_cast<const GetRelatedUserListResponse*>(
+               &_GetRelatedUserListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    13;
 
-  void Swap(GetContactListResponse* other);
-  friend void swap(GetContactListResponse& a, GetContactListResponse& b) {
+  void Swap(GetRelatedUserListResponse* other);
+  friend void swap(GetRelatedUserListResponse& a, GetRelatedUserListResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetContactListResponse* New() const final {
-    return CreateMaybeMessage<GetContactListResponse>(NULL);
+  inline GetRelatedUserListResponse* New() const final {
+    return CreateMaybeMessage<GetRelatedUserListResponse>(NULL);
   }
 
-  GetContactListResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetContactListResponse>(arena);
+  GetRelatedUserListResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetRelatedUserListResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetContactListResponse& from);
-  void MergeFrom(const GetContactListResponse& from);
+  void CopyFrom(const GetRelatedUserListResponse& from);
+  void MergeFrom(const GetRelatedUserListResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -1741,7 +1527,7 @@ class GetContactListResponse : public ::google::protobuf::Message /* @@protoc_in
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetContactListResponse* other);
+  void InternalSwap(GetRelatedUserListResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1769,7 +1555,7 @@ class GetContactListResponse : public ::google::protobuf::Message /* @@protoc_in
   const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
       user_profiles() const;
 
-  // @@protoc_insertion_point(class_scope:e8.GetContactListResponse)
+  // @@protoc_insertion_point(class_scope:e8.GetRelatedUserListResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1951,89 +1737,6 @@ inline void RejectInvitationRequest::set_inviter_user_id(::google::protobuf::int
 
 // -------------------------------------------------------------------
 
-// GetInvitationListRequest
-
-// .e8.Pagination pagination = 1;
-inline bool GetInvitationListRequest::has_pagination() const {
-  return this != internal_default_instance() && pagination_ != NULL;
-}
-inline const ::e8::Pagination& GetInvitationListRequest::_internal_pagination() const {
-  return *pagination_;
-}
-inline const ::e8::Pagination& GetInvitationListRequest::pagination() const {
-  const ::e8::Pagination* p = pagination_;
-  // @@protoc_insertion_point(field_get:e8.GetInvitationListRequest.pagination)
-  return p != NULL ? *p : *reinterpret_cast<const ::e8::Pagination*>(
-      &::e8::_Pagination_default_instance_);
-}
-inline ::e8::Pagination* GetInvitationListRequest::release_pagination() {
-  // @@protoc_insertion_point(field_release:e8.GetInvitationListRequest.pagination)
-  
-  ::e8::Pagination* temp = pagination_;
-  pagination_ = NULL;
-  return temp;
-}
-inline ::e8::Pagination* GetInvitationListRequest::mutable_pagination() {
-  
-  if (pagination_ == NULL) {
-    auto* p = CreateMaybeMessage<::e8::Pagination>(GetArenaNoVirtual());
-    pagination_ = p;
-  }
-  // @@protoc_insertion_point(field_mutable:e8.GetInvitationListRequest.pagination)
-  return pagination_;
-}
-inline void GetInvitationListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete reinterpret_cast< ::google::protobuf::MessageLite*>(pagination_);
-  }
-  if (pagination) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      pagination = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, pagination, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  pagination_ = pagination;
-  // @@protoc_insertion_point(field_set_allocated:e8.GetInvitationListRequest.pagination)
-}
-
-// -------------------------------------------------------------------
-
-// GetInvitationListResponse
-
-// repeated .e8.UserPublicProfile user_profiles = 1;
-inline int GetInvitationListResponse::user_profiles_size() const {
-  return user_profiles_.size();
-}
-inline ::e8::UserPublicProfile* GetInvitationListResponse::mutable_user_profiles(int index) {
-  // @@protoc_insertion_point(field_mutable:e8.GetInvitationListResponse.user_profiles)
-  return user_profiles_.Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >*
-GetInvitationListResponse::mutable_user_profiles() {
-  // @@protoc_insertion_point(field_mutable_list:e8.GetInvitationListResponse.user_profiles)
-  return &user_profiles_;
-}
-inline const ::e8::UserPublicProfile& GetInvitationListResponse::user_profiles(int index) const {
-  // @@protoc_insertion_point(field_get:e8.GetInvitationListResponse.user_profiles)
-  return user_profiles_.Get(index);
-}
-inline ::e8::UserPublicProfile* GetInvitationListResponse::add_user_profiles() {
-  // @@protoc_insertion_point(field_add:e8.GetInvitationListResponse.user_profiles)
-  return user_profiles_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
-GetInvitationListResponse::user_profiles() const {
-  // @@protoc_insertion_point(field_list:e8.GetInvitationListResponse.user_profiles)
-  return user_profiles_;
-}
-
-// -------------------------------------------------------------------
-
 // DeleteContactRequest
 
 // int64 deleted_contact_user_id = 1;
@@ -2056,38 +1759,38 @@ inline void DeleteContactRequest::set_deleted_contact_user_id(::google::protobuf
 
 // -------------------------------------------------------------------
 
-// GetContactListRequest
+// GetRelatedUserListRequest
 
 // .e8.Pagination pagination = 1;
-inline bool GetContactListRequest::has_pagination() const {
+inline bool GetRelatedUserListRequest::has_pagination() const {
   return this != internal_default_instance() && pagination_ != NULL;
 }
-inline const ::e8::Pagination& GetContactListRequest::_internal_pagination() const {
+inline const ::e8::Pagination& GetRelatedUserListRequest::_internal_pagination() const {
   return *pagination_;
 }
-inline const ::e8::Pagination& GetContactListRequest::pagination() const {
+inline const ::e8::Pagination& GetRelatedUserListRequest::pagination() const {
   const ::e8::Pagination* p = pagination_;
-  // @@protoc_insertion_point(field_get:e8.GetContactListRequest.pagination)
+  // @@protoc_insertion_point(field_get:e8.GetRelatedUserListRequest.pagination)
   return p != NULL ? *p : *reinterpret_cast<const ::e8::Pagination*>(
       &::e8::_Pagination_default_instance_);
 }
-inline ::e8::Pagination* GetContactListRequest::release_pagination() {
-  // @@protoc_insertion_point(field_release:e8.GetContactListRequest.pagination)
+inline ::e8::Pagination* GetRelatedUserListRequest::release_pagination() {
+  // @@protoc_insertion_point(field_release:e8.GetRelatedUserListRequest.pagination)
   
   ::e8::Pagination* temp = pagination_;
   pagination_ = NULL;
   return temp;
 }
-inline ::e8::Pagination* GetContactListRequest::mutable_pagination() {
+inline ::e8::Pagination* GetRelatedUserListRequest::mutable_pagination() {
   
   if (pagination_ == NULL) {
     auto* p = CreateMaybeMessage<::e8::Pagination>(GetArenaNoVirtual());
     pagination_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:e8.GetContactListRequest.pagination)
+  // @@protoc_insertion_point(field_mutable:e8.GetRelatedUserListRequest.pagination)
   return pagination_;
 }
-inline void GetContactListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
+inline void GetRelatedUserListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete reinterpret_cast< ::google::protobuf::MessageLite*>(pagination_);
@@ -2103,47 +1806,73 @@ inline void GetContactListRequest::set_allocated_pagination(::e8::Pagination* pa
     
   }
   pagination_ = pagination;
-  // @@protoc_insertion_point(field_set_allocated:e8.GetContactListRequest.pagination)
+  // @@protoc_insertion_point(field_set_allocated:e8.GetRelatedUserListRequest.pagination)
+}
+
+// repeated .e8.UserRelation relation_filter = 2;
+inline int GetRelatedUserListRequest::relation_filter_size() const {
+  return relation_filter_.size();
+}
+inline void GetRelatedUserListRequest::clear_relation_filter() {
+  relation_filter_.Clear();
+}
+inline ::e8::UserRelation GetRelatedUserListRequest::relation_filter(int index) const {
+  // @@protoc_insertion_point(field_get:e8.GetRelatedUserListRequest.relation_filter)
+  return static_cast< ::e8::UserRelation >(relation_filter_.Get(index));
+}
+inline void GetRelatedUserListRequest::set_relation_filter(int index, ::e8::UserRelation value) {
+  relation_filter_.Set(index, value);
+  // @@protoc_insertion_point(field_set:e8.GetRelatedUserListRequest.relation_filter)
+}
+inline void GetRelatedUserListRequest::add_relation_filter(::e8::UserRelation value) {
+  relation_filter_.Add(value);
+  // @@protoc_insertion_point(field_add:e8.GetRelatedUserListRequest.relation_filter)
+}
+inline const ::google::protobuf::RepeatedField<int>&
+GetRelatedUserListRequest::relation_filter() const {
+  // @@protoc_insertion_point(field_list:e8.GetRelatedUserListRequest.relation_filter)
+  return relation_filter_;
+}
+inline ::google::protobuf::RepeatedField<int>*
+GetRelatedUserListRequest::mutable_relation_filter() {
+  // @@protoc_insertion_point(field_mutable_list:e8.GetRelatedUserListRequest.relation_filter)
+  return &relation_filter_;
 }
 
 // -------------------------------------------------------------------
 
-// GetContactListResponse
+// GetRelatedUserListResponse
 
 // repeated .e8.UserPublicProfile user_profiles = 1;
-inline int GetContactListResponse::user_profiles_size() const {
+inline int GetRelatedUserListResponse::user_profiles_size() const {
   return user_profiles_.size();
 }
-inline ::e8::UserPublicProfile* GetContactListResponse::mutable_user_profiles(int index) {
-  // @@protoc_insertion_point(field_mutable:e8.GetContactListResponse.user_profiles)
+inline ::e8::UserPublicProfile* GetRelatedUserListResponse::mutable_user_profiles(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.GetRelatedUserListResponse.user_profiles)
   return user_profiles_.Mutable(index);
 }
 inline ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >*
-GetContactListResponse::mutable_user_profiles() {
-  // @@protoc_insertion_point(field_mutable_list:e8.GetContactListResponse.user_profiles)
+GetRelatedUserListResponse::mutable_user_profiles() {
+  // @@protoc_insertion_point(field_mutable_list:e8.GetRelatedUserListResponse.user_profiles)
   return &user_profiles_;
 }
-inline const ::e8::UserPublicProfile& GetContactListResponse::user_profiles(int index) const {
-  // @@protoc_insertion_point(field_get:e8.GetContactListResponse.user_profiles)
+inline const ::e8::UserPublicProfile& GetRelatedUserListResponse::user_profiles(int index) const {
+  // @@protoc_insertion_point(field_get:e8.GetRelatedUserListResponse.user_profiles)
   return user_profiles_.Get(index);
 }
-inline ::e8::UserPublicProfile* GetContactListResponse::add_user_profiles() {
-  // @@protoc_insertion_point(field_add:e8.GetContactListResponse.user_profiles)
+inline ::e8::UserPublicProfile* GetRelatedUserListResponse::add_user_profiles() {
+  // @@protoc_insertion_point(field_add:e8.GetRelatedUserListResponse.user_profiles)
   return user_profiles_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
-GetContactListResponse::user_profiles() const {
-  // @@protoc_insertion_point(field_list:e8.GetContactListResponse.user_profiles)
+GetRelatedUserListResponse::user_profiles() const {
+  // @@protoc_insertion_point(field_list:e8.GetRelatedUserListResponse.user_profiles)
   return user_profiles_;
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

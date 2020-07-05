@@ -14,6 +14,8 @@ import 'user_relation.pb.dart' as $7;
 import 'pagination.pb.dart' as $10;
 import 'user_profile.pb.dart' as $9;
 
+import 'user_relation.pbenum.dart' as $7;
+
 class GetUserRelationsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'targetUserId')
@@ -298,64 +300,6 @@ class RejectInvitationResponse extends $pb.GeneratedMessage {
   static RejectInvitationResponse _defaultInstance;
 }
 
-class GetInvitationListRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetInvitationListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$10.Pagination>(1, 'pagination', subBuilder: $10.Pagination.create)
-    ..hasRequiredFields = false
-  ;
-
-  GetInvitationListRequest._() : super();
-  factory GetInvitationListRequest() => create();
-  factory GetInvitationListRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetInvitationListRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetInvitationListRequest clone() => GetInvitationListRequest()..mergeFromMessage(this);
-  GetInvitationListRequest copyWith(void Function(GetInvitationListRequest) updates) => super.copyWith((message) => updates(message as GetInvitationListRequest));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static GetInvitationListRequest create() => GetInvitationListRequest._();
-  GetInvitationListRequest createEmptyInstance() => create();
-  static $pb.PbList<GetInvitationListRequest> createRepeated() => $pb.PbList<GetInvitationListRequest>();
-  @$core.pragma('dart2js:noInline')
-  static GetInvitationListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetInvitationListRequest>(create);
-  static GetInvitationListRequest _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $10.Pagination get pagination => $_getN(0);
-  @$pb.TagNumber(1)
-  set pagination($10.Pagination v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasPagination() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPagination() => clearField(1);
-  @$pb.TagNumber(1)
-  $10.Pagination ensurePagination() => $_ensure(0);
-}
-
-class GetInvitationListResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetInvitationListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$9.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $9.UserPublicProfile.create)
-    ..hasRequiredFields = false
-  ;
-
-  GetInvitationListResponse._() : super();
-  factory GetInvitationListResponse() => create();
-  factory GetInvitationListResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetInvitationListResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetInvitationListResponse clone() => GetInvitationListResponse()..mergeFromMessage(this);
-  GetInvitationListResponse copyWith(void Function(GetInvitationListResponse) updates) => super.copyWith((message) => updates(message as GetInvitationListResponse));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static GetInvitationListResponse create() => GetInvitationListResponse._();
-  GetInvitationListResponse createEmptyInstance() => create();
-  static $pb.PbList<GetInvitationListResponse> createRepeated() => $pb.PbList<GetInvitationListResponse>();
-  @$core.pragma('dart2js:noInline')
-  static GetInvitationListResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetInvitationListResponse>(create);
-  static GetInvitationListResponse _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.List<$9.UserPublicProfile> get userProfiles => $_getList(0);
-}
-
 class DeleteContactRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeleteContactRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'deletedContactUserId')
@@ -408,26 +352,27 @@ class DeleteContactResponse extends $pb.GeneratedMessage {
   static DeleteContactResponse _defaultInstance;
 }
 
-class GetContactListRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetContactListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class GetRelatedUserListRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetRelatedUserListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<$10.Pagination>(1, 'pagination', subBuilder: $10.Pagination.create)
+    ..pc<$7.UserRelation>(2, 'relationFilter', $pb.PbFieldType.PE, valueOf: $7.UserRelation.valueOf, enumValues: $7.UserRelation.values)
     ..hasRequiredFields = false
   ;
 
-  GetContactListRequest._() : super();
-  factory GetContactListRequest() => create();
-  factory GetContactListRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetContactListRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetContactListRequest clone() => GetContactListRequest()..mergeFromMessage(this);
-  GetContactListRequest copyWith(void Function(GetContactListRequest) updates) => super.copyWith((message) => updates(message as GetContactListRequest));
+  GetRelatedUserListRequest._() : super();
+  factory GetRelatedUserListRequest() => create();
+  factory GetRelatedUserListRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetRelatedUserListRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetRelatedUserListRequest clone() => GetRelatedUserListRequest()..mergeFromMessage(this);
+  GetRelatedUserListRequest copyWith(void Function(GetRelatedUserListRequest) updates) => super.copyWith((message) => updates(message as GetRelatedUserListRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetContactListRequest create() => GetContactListRequest._();
-  GetContactListRequest createEmptyInstance() => create();
-  static $pb.PbList<GetContactListRequest> createRepeated() => $pb.PbList<GetContactListRequest>();
+  static GetRelatedUserListRequest create() => GetRelatedUserListRequest._();
+  GetRelatedUserListRequest createEmptyInstance() => create();
+  static $pb.PbList<GetRelatedUserListRequest> createRepeated() => $pb.PbList<GetRelatedUserListRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetContactListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetContactListRequest>(create);
-  static GetContactListRequest _defaultInstance;
+  static GetRelatedUserListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetRelatedUserListRequest>(create);
+  static GetRelatedUserListRequest _defaultInstance;
 
   @$pb.TagNumber(1)
   $10.Pagination get pagination => $_getN(0);
@@ -439,28 +384,31 @@ class GetContactListRequest extends $pb.GeneratedMessage {
   void clearPagination() => clearField(1);
   @$pb.TagNumber(1)
   $10.Pagination ensurePagination() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.List<$7.UserRelation> get relationFilter => $_getList(1);
 }
 
-class GetContactListResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetContactListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class GetRelatedUserListResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetRelatedUserListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..pc<$9.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $9.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
-  GetContactListResponse._() : super();
-  factory GetContactListResponse() => create();
-  factory GetContactListResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetContactListResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetContactListResponse clone() => GetContactListResponse()..mergeFromMessage(this);
-  GetContactListResponse copyWith(void Function(GetContactListResponse) updates) => super.copyWith((message) => updates(message as GetContactListResponse));
+  GetRelatedUserListResponse._() : super();
+  factory GetRelatedUserListResponse() => create();
+  factory GetRelatedUserListResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetRelatedUserListResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetRelatedUserListResponse clone() => GetRelatedUserListResponse()..mergeFromMessage(this);
+  GetRelatedUserListResponse copyWith(void Function(GetRelatedUserListResponse) updates) => super.copyWith((message) => updates(message as GetRelatedUserListResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetContactListResponse create() => GetContactListResponse._();
-  GetContactListResponse createEmptyInstance() => create();
-  static $pb.PbList<GetContactListResponse> createRepeated() => $pb.PbList<GetContactListResponse>();
+  static GetRelatedUserListResponse create() => GetRelatedUserListResponse._();
+  GetRelatedUserListResponse createEmptyInstance() => create();
+  static $pb.PbList<GetRelatedUserListResponse> createRepeated() => $pb.PbList<GetRelatedUserListResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetContactListResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetContactListResponse>(create);
-  static GetContactListResponse _defaultInstance;
+  static GetRelatedUserListResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetRelatedUserListResponse>(create);
+  static GetRelatedUserListResponse _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.List<$9.UserPublicProfile> get userProfiles => $_getList(0);

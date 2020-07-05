@@ -74,9 +74,9 @@ grpc::Status SocialNetworkServiceImpl::SendInvitation(grpc::ServerContext *conte
     return grpc::Status::OK;
 }
 
-grpc::Status SocialNetworkServiceImpl::GetInvitationList(grpc::ServerContext *context,
-                                                         GetInvitationListRequest const *request,
-                                                         GetInvitationListResponse *response) {
+grpc::Status SocialNetworkServiceImpl::GetRelatedUserList(grpc::ServerContext *context,
+                                                          GetRelatedUserListRequest const *request,
+                                                          GetRelatedUserListResponse *response) {
     grpc::Status status;
     std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
     if (!status.ok()) {
@@ -88,10 +88,13 @@ grpc::Status SocialNetworkServiceImpl::GetInvitationList(grpc::ServerContext *co
         return status;
     }
 
+    std::vector<UserRelation> relation_filter(request->relation_filter_size());
+    for (int i = 0; i < request->relation_filter_size(); i++) {
+        relation_filter[i] = request->relation_filter(i);
+    }
     std::vector<UserEntity> inviters =
-        GetRelatedUsers(identity.value().user_id(),
-                        std::vector<UserRelation>{UserRelation::URL_INVITATION_RECEIVED},
-                        request->pagination(), CurrentEnvironment()->DemowebDatabase());
+        GetRelatedUsers(identity.value().user_id(), relation_filter, request->pagination(),
+                        CurrentEnvironment()->DemowebDatabase());
     std::vector<UserPublicProfile> inviter_profiles =
         BuildPublicProfiles(identity.value().user_id(), inviters, CurrentEnvironment()->KeyGen(),
                             CurrentEnvironment()->DemowebDatabase());

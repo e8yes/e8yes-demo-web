@@ -62,15 +62,6 @@ message RejectInvitationRequest {
 message RejectInvitationResponse {}
 
 
-message GetInvitationListRequest {
-    Pagination pagination = 1;
-}
-
-message GetInvitationListResponse {
-    repeated UserPublicProfile user_profiles = 1;
-}
-
-
 message DeleteContactRequest {
     int64 deleted_contact_user_id = 1;
 }
@@ -78,11 +69,12 @@ message DeleteContactRequest {
 message DeleteContactResponse {}
 
 
-message GetContactListRequest {
+message GetRelatedUserListRequest {
     Pagination pagination = 1;
+    repeated UserRelation relation_filter = 2;
 }
 
-message GetContactListResponse {
+message GetRelatedUserListResponse {
     repeated UserPublicProfile user_profiles = 1;
 }
 
@@ -113,17 +105,14 @@ service SocialNetworkService {
     rpc RejectInvitation (RejectInvitationRequest) returns (RejectInvitationResponse);
 
     /**
-     * Get the invitation list where the logged-in user is the invitee.
-     */
-    rpc GetInvitationList (GetInvitationListRequest) returns (GetInvitationListResponse);
-
-    /**
      * Delete a contact relation for the logged-in user.
      */
     rpc DeleteContact (DeleteContactRequest) returns (DeleteContactResponse);
 
     /**
-     * Get the contact list of the logged-in user.
+     * Get the a list of user related to the logged-in user. The type of relation
+     * is specified by the constraints in the request. 
      */
-    rpc GetContactList (GetContactListRequest) returns (GetContactListResponse);
+    rpc GetRelatedUserList (GetRelatedUserListRequest) returns 
+        (GetRelatedUserListResponse);
 }

@@ -33,6 +33,23 @@
     <label *ngIf="contactProfiles.isEmpty" class="col-form-label">
       You don't have any contact.
     </label>
+    <li *ngFor="let profile of contactProfiles"
+          (click)="onSelectUserDetails(profile)"
+          class="list-group-item">
+        <span>{{profile.userId}}</span>
+        <span *ngIf="profile.hasAlias()">
+          ({{profile.alias.value}})
+        </span>
+        <span *ngIf="!profile.hasAlias()">
+          (no alias)
+        </span>
+        <span>{{
+          relationJoinDateString(
+            extractRelation(profile.relations, 
+                            UserRelation.URL_CONTACT))
+              }}
+        </span>
+      </li>
   </div>
 </div>
 

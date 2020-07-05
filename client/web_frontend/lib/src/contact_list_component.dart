@@ -46,11 +46,23 @@ class ContactListComponent implements OnActivate {
   @override
   void onActivate(_, RouterState current) async {
     _social_network_service
-        .getInvitationList(
-            GetInvitationListRequest()..pagination = inviterPagination,
+        .getRelatedUserList(
+            GetRelatedUserListRequest()
+              ..pagination = inviterPagination
+              ..relationFilter.add(UserRelation.URL_INVITATION_RECEIVED),
             credentialStorage.loadSignature())
-        .then((GetInvitationListResponse res) {
+        .then((GetRelatedUserListResponse res) {
       inviterProfiles = res.userProfiles;
+    });
+
+    _social_network_service
+        .getRelatedUserList(
+            GetRelatedUserListRequest()
+              ..pagination = inviterPagination
+              ..relationFilter.add(UserRelation.URL_CONTACT),
+            credentialStorage.loadSignature())
+        .then((GetRelatedUserListResponse res) {
+      contactProfiles = res.userProfiles;
     });
   }
 
