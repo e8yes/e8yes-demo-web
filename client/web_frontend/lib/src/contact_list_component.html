@@ -1,14 +1,19 @@
 <h1>Contacts</h1>
 
+<hr/>
+
 <div>
   <input #searchBox (input)="onKeyDownSearchContact(searchBox.value)"
     class="searchbar" placeholder="Search contact.." />
 </div>
 
 <div class="contact-list ">
-  <hr *ngIf="!inviterProfiles.isEmpty"/>
-  <div *ngIf="!inviterProfiles.isEmpty">
+  <hr/>
+  <div>
     <h4>Invitations</h4>
+    <label *ngIf="inviterProfiles.isEmpty" class="col-form-label">
+      You don't have any invitation.
+    </label>
     <ul class="list-group">
       <li *ngFor="let profile of inviterProfiles"
           (click)="onSelectUserDetails(profile)"
@@ -33,7 +38,7 @@
   <hr/>
 
   <div>
-    <h4>Accepted</h4>
+    <h4>Connected</h4>
     <label *ngIf="contactProfiles.isEmpty" class="col-form-label">
       You don't have any contact.
     </label>

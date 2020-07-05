@@ -26,11 +26,11 @@ class AccountComponent implements OnActivate {
   AccountComponent(this._user_service, this._social_network_service);
 
   void _fetchAccountProfile(Int64 accountUserId) {
-    String viewerSignature = credentialStorage.loadSignature();
     GetPublicProfileRequest req = GetPublicProfileRequest();
     req.userId = accountUserId;
+
     _user_service
-        .getPublicProfile(req, viewerSignature)
+        .getPublicProfile(req, credentialStorage.loadSignature())
         .then((GetPublicProfileResponse res) {
       profile = res.profile;
     });
@@ -52,17 +52,37 @@ class AccountComponent implements OnActivate {
   void onClickAddContact() {
     SendInvitationRequest req = SendInvitationRequest();
     req.inviteeUserId = _accountUserId;
-    String viewerSignature = credentialStorage.loadSignature();
+
     _social_network_service
-        .sendInvitation(req, viewerSignature)
+        .sendInvitation(req, credentialStorage.loadSignature())
         .then((SendInvitationResponse res) {
       _fetchAccountProfile(_accountUserId);
     });
   }
 
-  void onClickConfirmContact() {}
+  void onClickConfirmContact() {
+    ProcessInvitationRequest req = ProcessInvitationRequest()
+      ..inviterUserId = _accountUserId
+      ..accept = true;
 
-  void onClickRejectContact() {}
+    _social_network_service
+        .processInvitation(req, credentialStorage.loadSignature())
+        .then((ProcessInvitationResponse res) {
+      this._fetchAccountProfile(_accountUserId);
+    });
+  }
+
+  void onClickRejectContact() {
+    ProcessInvitationRequest req = ProcessInvitationRequest()
+      ..inviterUserId = _accountUserId
+      ..accept = false;
+
+    _social_network_service
+        .processInvitation(req, credentialStorage.loadSignature())
+        .then((ProcessInvitationResponse res) {
+      this._fetchAccountProfile(_accountUserId);
+    });
+  }
 
   void onClickDeleteContact() {}
 
