@@ -43,26 +43,16 @@ const DeleteInvitationResponse$json = const {
   '1': 'DeleteInvitationResponse',
 };
 
-const AcceptInvitationRequest$json = const {
-  '1': 'AcceptInvitationRequest',
+const ProcessInvitationRequest$json = const {
+  '1': 'ProcessInvitationRequest',
   '2': const [
     const {'1': 'inviter_user_id', '3': 1, '4': 1, '5': 3, '10': 'inviterUserId'},
+    const {'1': 'accept', '3': 2, '4': 1, '5': 8, '10': 'accept'},
   ],
 };
 
-const AcceptInvitationResponse$json = const {
-  '1': 'AcceptInvitationResponse',
-};
-
-const RejectInvitationRequest$json = const {
-  '1': 'RejectInvitationRequest',
-  '2': const [
-    const {'1': 'inviter_user_id', '3': 1, '4': 1, '5': 3, '10': 'inviterUserId'},
-  ],
-};
-
-const RejectInvitationResponse$json = const {
-  '1': 'RejectInvitationResponse',
+const ProcessInvitationResponse$json = const {
+  '1': 'ProcessInvitationResponse',
 };
 
 const DeleteContactRequest$json = const {

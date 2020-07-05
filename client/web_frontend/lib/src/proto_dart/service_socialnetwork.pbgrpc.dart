@@ -32,18 +32,12 @@ class SocialNetworkServiceClient extends $grpc.Client {
       ($3.DeleteInvitationRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
           $3.DeleteInvitationResponse.fromBuffer(value));
-  static final _$acceptInvitation = $grpc.ClientMethod<
-          $3.AcceptInvitationRequest, $3.AcceptInvitationResponse>(
-      '/e8.SocialNetworkService/AcceptInvitation',
-      ($3.AcceptInvitationRequest value) => value.writeToBuffer(),
+  static final _$processInvitation = $grpc.ClientMethod<
+          $3.ProcessInvitationRequest, $3.ProcessInvitationResponse>(
+      '/e8.SocialNetworkService/ProcessInvitation',
+      ($3.ProcessInvitationRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
-          $3.AcceptInvitationResponse.fromBuffer(value));
-  static final _$rejectInvitation = $grpc.ClientMethod<
-          $3.RejectInvitationRequest, $3.RejectInvitationResponse>(
-      '/e8.SocialNetworkService/RejectInvitation',
-      ($3.RejectInvitationRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) =>
-          $3.RejectInvitationResponse.fromBuffer(value));
+          $3.ProcessInvitationResponse.fromBuffer(value));
   static final _$deleteContact =
       $grpc.ClientMethod<$3.DeleteContactRequest, $3.DeleteContactResponse>(
           '/e8.SocialNetworkService/DeleteContact',
@@ -88,20 +82,11 @@ class SocialNetworkServiceClient extends $grpc.Client {
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$3.AcceptInvitationResponse> acceptInvitation(
-      $3.AcceptInvitationRequest request,
+  $grpc.ResponseFuture<$3.ProcessInvitationResponse> processInvitation(
+      $3.ProcessInvitationRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
-        _$acceptInvitation, $async.Stream.fromIterable([request]),
-        options: options);
-    return $grpc.ResponseFuture(call);
-  }
-
-  $grpc.ResponseFuture<$3.RejectInvitationResponse> rejectInvitation(
-      $3.RejectInvitationRequest request,
-      {$grpc.CallOptions options}) {
-    final call = $createCall(
-        _$rejectInvitation, $async.Stream.fromIterable([request]),
+        _$processInvitation, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -156,24 +141,15 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $3.DeleteInvitationRequest.fromBuffer(value),
         ($3.DeleteInvitationResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$3.AcceptInvitationRequest,
-            $3.AcceptInvitationResponse>(
-        'AcceptInvitation',
-        acceptInvitation_Pre,
+    $addMethod($grpc.ServiceMethod<$3.ProcessInvitationRequest,
+            $3.ProcessInvitationResponse>(
+        'ProcessInvitation',
+        processInvitation_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $3.AcceptInvitationRequest.fromBuffer(value),
-        ($3.AcceptInvitationResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$3.RejectInvitationRequest,
-            $3.RejectInvitationResponse>(
-        'RejectInvitation',
-        rejectInvitation_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) =>
-            $3.RejectInvitationRequest.fromBuffer(value),
-        ($3.RejectInvitationResponse value) => value.writeToBuffer()));
+            $3.ProcessInvitationRequest.fromBuffer(value),
+        ($3.ProcessInvitationResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$3.DeleteContactRequest, $3.DeleteContactResponse>(
             'DeleteContact',
@@ -212,16 +188,10 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
     return deleteInvitation(call, await request);
   }
 
-  $async.Future<$3.AcceptInvitationResponse> acceptInvitation_Pre(
+  $async.Future<$3.ProcessInvitationResponse> processInvitation_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$3.AcceptInvitationRequest> request) async {
-    return acceptInvitation(call, await request);
-  }
-
-  $async.Future<$3.RejectInvitationResponse> rejectInvitation_Pre(
-      $grpc.ServiceCall call,
-      $async.Future<$3.RejectInvitationRequest> request) async {
-    return rejectInvitation(call, await request);
+      $async.Future<$3.ProcessInvitationRequest> request) async {
+    return processInvitation(call, await request);
   }
 
   $async.Future<$3.DeleteContactResponse> deleteContact_Pre(
@@ -242,10 +212,8 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $3.SendInvitationRequest request);
   $async.Future<$3.DeleteInvitationResponse> deleteInvitation(
       $grpc.ServiceCall call, $3.DeleteInvitationRequest request);
-  $async.Future<$3.AcceptInvitationResponse> acceptInvitation(
-      $grpc.ServiceCall call, $3.AcceptInvitationRequest request);
-  $async.Future<$3.RejectInvitationResponse> rejectInvitation(
-      $grpc.ServiceCall call, $3.RejectInvitationRequest request);
+  $async.Future<$3.ProcessInvitationResponse> processInvitation(
+      $grpc.ServiceCall call, $3.ProcessInvitationRequest request);
   $async.Future<$3.DeleteContactResponse> deleteContact(
       $grpc.ServiceCall call, $3.DeleteContactRequest request);
   $async.Future<$3.GetRelatedUserListResponse> getRelatedUserList(

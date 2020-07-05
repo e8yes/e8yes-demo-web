@@ -104,4 +104,21 @@ grpc::Status SocialNetworkServiceImpl::GetRelatedUserList(grpc::ServerContext *c
     return grpc::Status::OK;
 }
 
+grpc::Status SocialNetworkServiceImpl::ProcessInvitation(grpc::ServerContext *context,
+                                                         ProcessInvitationRequest const *request,
+                                                         ProcessInvitationResponse * /*response*/) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!status.ok()) {
+        return status;
+    }
+
+    if (!e8::ProcessInvitation(identity->user_id(), request->inviter_user_id(), request->accept(),
+                               CurrentEnvironment()->DemowebDatabase())) {
+        return grpc::Status(grpc::StatusCode::FAILED_PRECONDITION, "Invitation does not exist.");
+    }
+
+    return grpc::Status::OK;
+}
+
 } // namespace e8

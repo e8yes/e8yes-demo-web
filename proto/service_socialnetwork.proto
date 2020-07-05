@@ -48,18 +48,12 @@ message DeleteInvitationRequest {
 message DeleteInvitationResponse {}
 
 
-message AcceptInvitationRequest {
+message ProcessInvitationRequest {
     int64 inviter_user_id = 1;
+    bool accept = 2;
 }
 
-message AcceptInvitationResponse {}
-
-
-message RejectInvitationRequest {
-    int64 inviter_user_id = 1;
-}
-
-message RejectInvitationResponse {}
+message ProcessInvitationResponse {}
 
 
 message DeleteContactRequest {
@@ -82,7 +76,8 @@ service SocialNetworkService {
     /**
      * Get the directed relation between the logged-in user and some other user.
      */
-    rpc GetUserRelations(GetUserRelationsRequest) returns (GetUserRelationsResponse);
+    rpc GetUserRelations(GetUserRelationsRequest) returns 
+        (GetUserRelationsResponse);
 
     /**
      * Send an invitation to another user where the logged-in user is the inviter.
@@ -92,17 +87,15 @@ service SocialNetworkService {
     /**
      * Delete an invitation previously sent where the logged-in user is inviter.
      */
-    rpc DeleteInvitation (DeleteInvitationRequest) returns (DeleteInvitationResponse);
+    rpc DeleteInvitation (DeleteInvitationRequest) returns 
+        (DeleteInvitationResponse);
 
     /**
-     * Accept an invitation to establish friend relation where the logged-in user is the invitee.
+     * Accept/reject an invitation. If accepted, it will establish the 
+     * contact relation where the logged-in user is the invitee.
      */
-    rpc AcceptInvitation (AcceptInvitationRequest) returns (AcceptInvitationResponse);
-
-    /**
-     * Reject an invitation where the logged-in user is the invitee.
-     */
-    rpc RejectInvitation (RejectInvitationRequest) returns (RejectInvitationResponse);
+    rpc ProcessInvitation (ProcessInvitationRequest) returns 
+        (ProcessInvitationResponse);
 
     /**
      * Delete a contact relation for the logged-in user.

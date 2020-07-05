@@ -62,9 +62,10 @@ enum UserRelation {
   URL_UNRELATED = 0,
   URL_INVITATION_SENT = 1,
   URL_INVITATION_RECEIVED = 2,
-  URL_CONTACT = 3,
-  URL_BLOCKING = 4,
-  URL_BLOCKED = 5,
+  URL_INVITATION_REJECTED = 3,
+  URL_CONTACT = 4,
+  URL_BLOCKING = 5,
+  URL_BLOCKED = 6,
   UserRelation_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   UserRelation_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };

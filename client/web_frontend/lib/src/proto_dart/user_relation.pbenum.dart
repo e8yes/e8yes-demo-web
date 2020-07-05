@@ -13,14 +13,16 @@ class UserRelation extends $pb.ProtobufEnum {
   static const UserRelation URL_UNRELATED = UserRelation._(0, 'URL_UNRELATED');
   static const UserRelation URL_INVITATION_SENT = UserRelation._(1, 'URL_INVITATION_SENT');
   static const UserRelation URL_INVITATION_RECEIVED = UserRelation._(2, 'URL_INVITATION_RECEIVED');
-  static const UserRelation URL_CONTACT = UserRelation._(3, 'URL_CONTACT');
-  static const UserRelation URL_BLOCKING = UserRelation._(4, 'URL_BLOCKING');
-  static const UserRelation URL_BLOCKED = UserRelation._(5, 'URL_BLOCKED');
+  static const UserRelation URL_INVITATION_REJECTED = UserRelation._(3, 'URL_INVITATION_REJECTED');
+  static const UserRelation URL_CONTACT = UserRelation._(4, 'URL_CONTACT');
+  static const UserRelation URL_BLOCKING = UserRelation._(5, 'URL_BLOCKING');
+  static const UserRelation URL_BLOCKED = UserRelation._(6, 'URL_BLOCKED');
 
   static const $core.List<UserRelation> values = <UserRelation> [
     URL_UNRELATED,
     URL_INVITATION_SENT,
     URL_INVITATION_RECEIVED,
+    URL_INVITATION_REJECTED,
     URL_CONTACT,
     URL_BLOCKING,
     URL_BLOCKED,

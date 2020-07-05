@@ -41,7 +41,7 @@ namespace protobuf_service_5fsocialnetwork_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[14];
+  static const ::google::protobuf::internal::ParseTable schema[12];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -49,12 +49,6 @@ struct TableStruct {
 void AddDescriptors();
 }  // namespace protobuf_service_5fsocialnetwork_2eproto
 namespace e8 {
-class AcceptInvitationRequest;
-class AcceptInvitationRequestDefaultTypeInternal;
-extern AcceptInvitationRequestDefaultTypeInternal _AcceptInvitationRequest_default_instance_;
-class AcceptInvitationResponse;
-class AcceptInvitationResponseDefaultTypeInternal;
-extern AcceptInvitationResponseDefaultTypeInternal _AcceptInvitationResponse_default_instance_;
 class DeleteContactRequest;
 class DeleteContactRequestDefaultTypeInternal;
 extern DeleteContactRequestDefaultTypeInternal _DeleteContactRequest_default_instance_;
@@ -79,12 +73,12 @@ extern GetUserRelationsRequestDefaultTypeInternal _GetUserRelationsRequest_defau
 class GetUserRelationsResponse;
 class GetUserRelationsResponseDefaultTypeInternal;
 extern GetUserRelationsResponseDefaultTypeInternal _GetUserRelationsResponse_default_instance_;
-class RejectInvitationRequest;
-class RejectInvitationRequestDefaultTypeInternal;
-extern RejectInvitationRequestDefaultTypeInternal _RejectInvitationRequest_default_instance_;
-class RejectInvitationResponse;
-class RejectInvitationResponseDefaultTypeInternal;
-extern RejectInvitationResponseDefaultTypeInternal _RejectInvitationResponse_default_instance_;
+class ProcessInvitationRequest;
+class ProcessInvitationRequestDefaultTypeInternal;
+extern ProcessInvitationRequestDefaultTypeInternal _ProcessInvitationRequest_default_instance_;
+class ProcessInvitationResponse;
+class ProcessInvitationResponseDefaultTypeInternal;
+extern ProcessInvitationResponseDefaultTypeInternal _ProcessInvitationResponse_default_instance_;
 class SendInvitationRequest;
 class SendInvitationRequestDefaultTypeInternal;
 extern SendInvitationRequestDefaultTypeInternal _SendInvitationRequest_default_instance_;
@@ -94,8 +88,6 @@ extern SendInvitationResponseDefaultTypeInternal _SendInvitationResponse_default
 }  // namespace e8
 namespace google {
 namespace protobuf {
-template<> ::e8::AcceptInvitationRequest* Arena::CreateMaybeMessage<::e8::AcceptInvitationRequest>(Arena*);
-template<> ::e8::AcceptInvitationResponse* Arena::CreateMaybeMessage<::e8::AcceptInvitationResponse>(Arena*);
 template<> ::e8::DeleteContactRequest* Arena::CreateMaybeMessage<::e8::DeleteContactRequest>(Arena*);
 template<> ::e8::DeleteContactResponse* Arena::CreateMaybeMessage<::e8::DeleteContactResponse>(Arena*);
 template<> ::e8::DeleteInvitationRequest* Arena::CreateMaybeMessage<::e8::DeleteInvitationRequest>(Arena*);
@@ -104,8 +96,8 @@ template<> ::e8::GetRelatedUserListRequest* Arena::CreateMaybeMessage<::e8::GetR
 template<> ::e8::GetRelatedUserListResponse* Arena::CreateMaybeMessage<::e8::GetRelatedUserListResponse>(Arena*);
 template<> ::e8::GetUserRelationsRequest* Arena::CreateMaybeMessage<::e8::GetUserRelationsRequest>(Arena*);
 template<> ::e8::GetUserRelationsResponse* Arena::CreateMaybeMessage<::e8::GetUserRelationsResponse>(Arena*);
-template<> ::e8::RejectInvitationRequest* Arena::CreateMaybeMessage<::e8::RejectInvitationRequest>(Arena*);
-template<> ::e8::RejectInvitationResponse* Arena::CreateMaybeMessage<::e8::RejectInvitationResponse>(Arena*);
+template<> ::e8::ProcessInvitationRequest* Arena::CreateMaybeMessage<::e8::ProcessInvitationRequest>(Arena*);
+template<> ::e8::ProcessInvitationResponse* Arena::CreateMaybeMessage<::e8::ProcessInvitationResponse>(Arena*);
 template<> ::e8::SendInvitationRequest* Arena::CreateMaybeMessage<::e8::SendInvitationRequest>(Arena*);
 template<> ::e8::SendInvitationResponse* Arena::CreateMaybeMessage<::e8::SendInvitationResponse>(Arena*);
 }  // namespace protobuf
@@ -738,24 +730,24 @@ class DeleteInvitationResponse : public ::google::protobuf::Message /* @@protoc_
 };
 // -------------------------------------------------------------------
 
-class AcceptInvitationRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AcceptInvitationRequest) */ {
+class ProcessInvitationRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.ProcessInvitationRequest) */ {
  public:
-  AcceptInvitationRequest();
-  virtual ~AcceptInvitationRequest();
+  ProcessInvitationRequest();
+  virtual ~ProcessInvitationRequest();
 
-  AcceptInvitationRequest(const AcceptInvitationRequest& from);
+  ProcessInvitationRequest(const ProcessInvitationRequest& from);
 
-  inline AcceptInvitationRequest& operator=(const AcceptInvitationRequest& from) {
+  inline ProcessInvitationRequest& operator=(const ProcessInvitationRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  AcceptInvitationRequest(AcceptInvitationRequest&& from) noexcept
-    : AcceptInvitationRequest() {
+  ProcessInvitationRequest(ProcessInvitationRequest&& from) noexcept
+    : ProcessInvitationRequest() {
     *this = ::std::move(from);
   }
 
-  inline AcceptInvitationRequest& operator=(AcceptInvitationRequest&& from) noexcept {
+  inline ProcessInvitationRequest& operator=(ProcessInvitationRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -765,34 +757,34 @@ class AcceptInvitationRequest : public ::google::protobuf::Message /* @@protoc_i
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const AcceptInvitationRequest& default_instance();
+  static const ProcessInvitationRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const AcceptInvitationRequest* internal_default_instance() {
-    return reinterpret_cast<const AcceptInvitationRequest*>(
-               &_AcceptInvitationRequest_default_instance_);
+  static inline const ProcessInvitationRequest* internal_default_instance() {
+    return reinterpret_cast<const ProcessInvitationRequest*>(
+               &_ProcessInvitationRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     6;
 
-  void Swap(AcceptInvitationRequest* other);
-  friend void swap(AcceptInvitationRequest& a, AcceptInvitationRequest& b) {
+  void Swap(ProcessInvitationRequest* other);
+  friend void swap(ProcessInvitationRequest& a, ProcessInvitationRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline AcceptInvitationRequest* New() const final {
-    return CreateMaybeMessage<AcceptInvitationRequest>(NULL);
+  inline ProcessInvitationRequest* New() const final {
+    return CreateMaybeMessage<ProcessInvitationRequest>(NULL);
   }
 
-  AcceptInvitationRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<AcceptInvitationRequest>(arena);
+  ProcessInvitationRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ProcessInvitationRequest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const AcceptInvitationRequest& from);
-  void MergeFrom(const AcceptInvitationRequest& from);
+  void CopyFrom(const ProcessInvitationRequest& from);
+  void MergeFrom(const ProcessInvitationRequest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -809,7 +801,7 @@ class AcceptInvitationRequest : public ::google::protobuf::Message /* @@protoc_i
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(AcceptInvitationRequest* other);
+  void InternalSwap(ProcessInvitationRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -831,34 +823,41 @@ class AcceptInvitationRequest : public ::google::protobuf::Message /* @@protoc_i
   ::google::protobuf::int64 inviter_user_id() const;
   void set_inviter_user_id(::google::protobuf::int64 value);
 
-  // @@protoc_insertion_point(class_scope:e8.AcceptInvitationRequest)
+  // bool accept = 2;
+  void clear_accept();
+  static const int kAcceptFieldNumber = 2;
+  bool accept() const;
+  void set_accept(bool value);
+
+  // @@protoc_insertion_point(class_scope:e8.ProcessInvitationRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int64 inviter_user_id_;
+  bool accept_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class AcceptInvitationResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AcceptInvitationResponse) */ {
+class ProcessInvitationResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.ProcessInvitationResponse) */ {
  public:
-  AcceptInvitationResponse();
-  virtual ~AcceptInvitationResponse();
+  ProcessInvitationResponse();
+  virtual ~ProcessInvitationResponse();
 
-  AcceptInvitationResponse(const AcceptInvitationResponse& from);
+  ProcessInvitationResponse(const ProcessInvitationResponse& from);
 
-  inline AcceptInvitationResponse& operator=(const AcceptInvitationResponse& from) {
+  inline ProcessInvitationResponse& operator=(const ProcessInvitationResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  AcceptInvitationResponse(AcceptInvitationResponse&& from) noexcept
-    : AcceptInvitationResponse() {
+  ProcessInvitationResponse(ProcessInvitationResponse&& from) noexcept
+    : ProcessInvitationResponse() {
     *this = ::std::move(from);
   }
 
-  inline AcceptInvitationResponse& operator=(AcceptInvitationResponse&& from) noexcept {
+  inline ProcessInvitationResponse& operator=(ProcessInvitationResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -868,34 +867,34 @@ class AcceptInvitationResponse : public ::google::protobuf::Message /* @@protoc_
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const AcceptInvitationResponse& default_instance();
+  static const ProcessInvitationResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const AcceptInvitationResponse* internal_default_instance() {
-    return reinterpret_cast<const AcceptInvitationResponse*>(
-               &_AcceptInvitationResponse_default_instance_);
+  static inline const ProcessInvitationResponse* internal_default_instance() {
+    return reinterpret_cast<const ProcessInvitationResponse*>(
+               &_ProcessInvitationResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     7;
 
-  void Swap(AcceptInvitationResponse* other);
-  friend void swap(AcceptInvitationResponse& a, AcceptInvitationResponse& b) {
+  void Swap(ProcessInvitationResponse* other);
+  friend void swap(ProcessInvitationResponse& a, ProcessInvitationResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline AcceptInvitationResponse* New() const final {
-    return CreateMaybeMessage<AcceptInvitationResponse>(NULL);
+  inline ProcessInvitationResponse* New() const final {
+    return CreateMaybeMessage<ProcessInvitationResponse>(NULL);
   }
 
-  AcceptInvitationResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<AcceptInvitationResponse>(arena);
+  ProcessInvitationResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ProcessInvitationResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const AcceptInvitationResponse& from);
-  void MergeFrom(const AcceptInvitationResponse& from);
+  void CopyFrom(const ProcessInvitationResponse& from);
+  void MergeFrom(const ProcessInvitationResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -912,7 +911,7 @@ class AcceptInvitationResponse : public ::google::protobuf::Message /* @@protoc_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(AcceptInvitationResponse* other);
+  void InternalSwap(ProcessInvitationResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -928,206 +927,7 @@ class AcceptInvitationResponse : public ::google::protobuf::Message /* @@protoc_
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:e8.AcceptInvitationResponse)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class RejectInvitationRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.RejectInvitationRequest) */ {
- public:
-  RejectInvitationRequest();
-  virtual ~RejectInvitationRequest();
-
-  RejectInvitationRequest(const RejectInvitationRequest& from);
-
-  inline RejectInvitationRequest& operator=(const RejectInvitationRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RejectInvitationRequest(RejectInvitationRequest&& from) noexcept
-    : RejectInvitationRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline RejectInvitationRequest& operator=(RejectInvitationRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const RejectInvitationRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RejectInvitationRequest* internal_default_instance() {
-    return reinterpret_cast<const RejectInvitationRequest*>(
-               &_RejectInvitationRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    8;
-
-  void Swap(RejectInvitationRequest* other);
-  friend void swap(RejectInvitationRequest& a, RejectInvitationRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RejectInvitationRequest* New() const final {
-    return CreateMaybeMessage<RejectInvitationRequest>(NULL);
-  }
-
-  RejectInvitationRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<RejectInvitationRequest>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const RejectInvitationRequest& from);
-  void MergeFrom(const RejectInvitationRequest& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(RejectInvitationRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // int64 inviter_user_id = 1;
-  void clear_inviter_user_id();
-  static const int kInviterUserIdFieldNumber = 1;
-  ::google::protobuf::int64 inviter_user_id() const;
-  void set_inviter_user_id(::google::protobuf::int64 value);
-
-  // @@protoc_insertion_point(class_scope:e8.RejectInvitationRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::int64 inviter_user_id_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class RejectInvitationResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.RejectInvitationResponse) */ {
- public:
-  RejectInvitationResponse();
-  virtual ~RejectInvitationResponse();
-
-  RejectInvitationResponse(const RejectInvitationResponse& from);
-
-  inline RejectInvitationResponse& operator=(const RejectInvitationResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  RejectInvitationResponse(RejectInvitationResponse&& from) noexcept
-    : RejectInvitationResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline RejectInvitationResponse& operator=(RejectInvitationResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const RejectInvitationResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RejectInvitationResponse* internal_default_instance() {
-    return reinterpret_cast<const RejectInvitationResponse*>(
-               &_RejectInvitationResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    9;
-
-  void Swap(RejectInvitationResponse* other);
-  friend void swap(RejectInvitationResponse& a, RejectInvitationResponse& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline RejectInvitationResponse* New() const final {
-    return CreateMaybeMessage<RejectInvitationResponse>(NULL);
-  }
-
-  RejectInvitationResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<RejectInvitationResponse>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const RejectInvitationResponse& from);
-  void MergeFrom(const RejectInvitationResponse& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(RejectInvitationResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:e8.RejectInvitationResponse)
+  // @@protoc_insertion_point(class_scope:e8.ProcessInvitationResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1171,7 +971,7 @@ class DeleteContactRequest : public ::google::protobuf::Message /* @@protoc_inse
                &_DeleteContactRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    8;
 
   void Swap(DeleteContactRequest* other);
   friend void swap(DeleteContactRequest& a, DeleteContactRequest& b) {
@@ -1274,7 +1074,7 @@ class DeleteContactResponse : public ::google::protobuf::Message /* @@protoc_ins
                &_DeleteContactResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    9;
 
   void Swap(DeleteContactResponse* other);
   friend void swap(DeleteContactResponse& a, DeleteContactResponse& b) {
@@ -1370,7 +1170,7 @@ class GetRelatedUserListRequest : public ::google::protobuf::Message /* @@protoc
                &_GetRelatedUserListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    10;
 
   void Swap(GetRelatedUserListRequest* other);
   friend void swap(GetRelatedUserListRequest& a, GetRelatedUserListRequest& b) {
@@ -1491,7 +1291,7 @@ class GetRelatedUserListResponse : public ::google::protobuf::Message /* @@proto
                &_GetRelatedUserListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    11;
 
   void Swap(GetRelatedUserListResponse* other);
   friend void swap(GetRelatedUserListResponse& a, GetRelatedUserListResponse& b) {
@@ -1693,47 +1493,39 @@ inline void DeleteInvitationRequest::set_invitee_user_id(::google::protobuf::int
 
 // -------------------------------------------------------------------
 
-// AcceptInvitationRequest
+// ProcessInvitationRequest
 
 // int64 inviter_user_id = 1;
-inline void AcceptInvitationRequest::clear_inviter_user_id() {
+inline void ProcessInvitationRequest::clear_inviter_user_id() {
   inviter_user_id_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 AcceptInvitationRequest::inviter_user_id() const {
-  // @@protoc_insertion_point(field_get:e8.AcceptInvitationRequest.inviter_user_id)
+inline ::google::protobuf::int64 ProcessInvitationRequest::inviter_user_id() const {
+  // @@protoc_insertion_point(field_get:e8.ProcessInvitationRequest.inviter_user_id)
   return inviter_user_id_;
 }
-inline void AcceptInvitationRequest::set_inviter_user_id(::google::protobuf::int64 value) {
+inline void ProcessInvitationRequest::set_inviter_user_id(::google::protobuf::int64 value) {
   
   inviter_user_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.AcceptInvitationRequest.inviter_user_id)
+  // @@protoc_insertion_point(field_set:e8.ProcessInvitationRequest.inviter_user_id)
 }
 
-// -------------------------------------------------------------------
-
-// AcceptInvitationResponse
-
-// -------------------------------------------------------------------
-
-// RejectInvitationRequest
-
-// int64 inviter_user_id = 1;
-inline void RejectInvitationRequest::clear_inviter_user_id() {
-  inviter_user_id_ = GOOGLE_LONGLONG(0);
+// bool accept = 2;
+inline void ProcessInvitationRequest::clear_accept() {
+  accept_ = false;
 }
-inline ::google::protobuf::int64 RejectInvitationRequest::inviter_user_id() const {
-  // @@protoc_insertion_point(field_get:e8.RejectInvitationRequest.inviter_user_id)
-  return inviter_user_id_;
+inline bool ProcessInvitationRequest::accept() const {
+  // @@protoc_insertion_point(field_get:e8.ProcessInvitationRequest.accept)
+  return accept_;
 }
-inline void RejectInvitationRequest::set_inviter_user_id(::google::protobuf::int64 value) {
+inline void ProcessInvitationRequest::set_accept(bool value) {
   
-  inviter_user_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.RejectInvitationRequest.inviter_user_id)
+  accept_ = value;
+  // @@protoc_insertion_point(field_set:e8.ProcessInvitationRequest.accept)
 }
 
 // -------------------------------------------------------------------
 
-// RejectInvitationResponse
+// ProcessInvitationResponse
 
 // -------------------------------------------------------------------
 
@@ -1873,10 +1665,6 @@ GetRelatedUserListResponse::user_profiles() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

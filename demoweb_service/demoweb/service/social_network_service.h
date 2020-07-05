@@ -39,6 +39,10 @@ class SocialNetworkServiceImpl : public SocialNetworkService::Service {
     grpc::Status GetRelatedUserList(grpc::ServerContext *context,
                                     GetRelatedUserListRequest const *request,
                                     GetRelatedUserListResponse *response) override;
+
+    grpc::Status ProcessInvitation(grpc::ServerContext *context,
+                                   ProcessInvitationRequest const *request,
+                                   ProcessInvitationResponse *response) override;
 };
 
 } // namespace e8

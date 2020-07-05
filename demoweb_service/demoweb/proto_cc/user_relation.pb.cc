@@ -88,14 +88,15 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\023user_relation.proto\022\002e8\"L\n\022UserRelatio"
       "nRecord\022\"\n\010relation\030\001 \001(\0162\020.e8.UserRelat"
-      "ion\022\022\n\ncreated_at\030\002 \001(\003*\213\001\n\014UserRelation"
+      "ion\022\022\n\ncreated_at\030\002 \001(\003*\250\001\n\014UserRelation"
       "\022\021\n\rURL_UNRELATED\020\000\022\027\n\023URL_INVITATION_SE"
-      "NT\020\001\022\033\n\027URL_INVITATION_RECEIVED\020\002\022\017\n\013URL"
-      "_CONTACT\020\003\022\020\n\014URL_BLOCKING\020\004\022\017\n\013URL_BLOC"
-      "KED\020\005b\006proto3"
+      "NT\020\001\022\033\n\027URL_INVITATION_RECEIVED\020\002\022\033\n\027URL"
+      "_INVITATION_REJECTED\020\003\022\017\n\013URL_CONTACT\020\004\022"
+      "\020\n\014URL_BLOCKING\020\005\022\017\n\013URL_BLOCKED\020\006b\006prot"
+      "o3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 253);
+      descriptor, 282);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user_relation.proto", &protobuf_RegisterTypes);
 }
@@ -124,6 +125,7 @@ bool UserRelation_IsValid(int value) {
     case 3:
     case 4:
     case 5:
+    case 6:
       return true;
     default:
       return false;

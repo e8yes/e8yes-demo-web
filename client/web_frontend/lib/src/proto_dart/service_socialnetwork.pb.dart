@@ -196,26 +196,27 @@ class DeleteInvitationResponse extends $pb.GeneratedMessage {
   static DeleteInvitationResponse _defaultInstance;
 }
 
-class AcceptInvitationRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AcceptInvitationRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class ProcessInvitationRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ProcessInvitationRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'inviterUserId')
+    ..aOB(2, 'accept')
     ..hasRequiredFields = false
   ;
 
-  AcceptInvitationRequest._() : super();
-  factory AcceptInvitationRequest() => create();
-  factory AcceptInvitationRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AcceptInvitationRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  AcceptInvitationRequest clone() => AcceptInvitationRequest()..mergeFromMessage(this);
-  AcceptInvitationRequest copyWith(void Function(AcceptInvitationRequest) updates) => super.copyWith((message) => updates(message as AcceptInvitationRequest));
+  ProcessInvitationRequest._() : super();
+  factory ProcessInvitationRequest() => create();
+  factory ProcessInvitationRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ProcessInvitationRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ProcessInvitationRequest clone() => ProcessInvitationRequest()..mergeFromMessage(this);
+  ProcessInvitationRequest copyWith(void Function(ProcessInvitationRequest) updates) => super.copyWith((message) => updates(message as ProcessInvitationRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static AcceptInvitationRequest create() => AcceptInvitationRequest._();
-  AcceptInvitationRequest createEmptyInstance() => create();
-  static $pb.PbList<AcceptInvitationRequest> createRepeated() => $pb.PbList<AcceptInvitationRequest>();
+  static ProcessInvitationRequest create() => ProcessInvitationRequest._();
+  ProcessInvitationRequest createEmptyInstance() => create();
+  static $pb.PbList<ProcessInvitationRequest> createRepeated() => $pb.PbList<ProcessInvitationRequest>();
   @$core.pragma('dart2js:noInline')
-  static AcceptInvitationRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AcceptInvitationRequest>(create);
-  static AcceptInvitationRequest _defaultInstance;
+  static ProcessInvitationRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ProcessInvitationRequest>(create);
+  static ProcessInvitationRequest _defaultInstance;
 
   @$pb.TagNumber(1)
   $fixnum.Int64 get inviterUserId => $_getI64(0);
@@ -225,79 +226,36 @@ class AcceptInvitationRequest extends $pb.GeneratedMessage {
   $core.bool hasInviterUserId() => $_has(0);
   @$pb.TagNumber(1)
   void clearInviterUserId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get accept => $_getBF(1);
+  @$pb.TagNumber(2)
+  set accept($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasAccept() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAccept() => clearField(2);
 }
 
-class AcceptInvitationResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AcceptInvitationResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class ProcessInvitationResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ProcessInvitationResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
-  AcceptInvitationResponse._() : super();
-  factory AcceptInvitationResponse() => create();
-  factory AcceptInvitationResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AcceptInvitationResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  AcceptInvitationResponse clone() => AcceptInvitationResponse()..mergeFromMessage(this);
-  AcceptInvitationResponse copyWith(void Function(AcceptInvitationResponse) updates) => super.copyWith((message) => updates(message as AcceptInvitationResponse));
+  ProcessInvitationResponse._() : super();
+  factory ProcessInvitationResponse() => create();
+  factory ProcessInvitationResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ProcessInvitationResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ProcessInvitationResponse clone() => ProcessInvitationResponse()..mergeFromMessage(this);
+  ProcessInvitationResponse copyWith(void Function(ProcessInvitationResponse) updates) => super.copyWith((message) => updates(message as ProcessInvitationResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static AcceptInvitationResponse create() => AcceptInvitationResponse._();
-  AcceptInvitationResponse createEmptyInstance() => create();
-  static $pb.PbList<AcceptInvitationResponse> createRepeated() => $pb.PbList<AcceptInvitationResponse>();
+  static ProcessInvitationResponse create() => ProcessInvitationResponse._();
+  ProcessInvitationResponse createEmptyInstance() => create();
+  static $pb.PbList<ProcessInvitationResponse> createRepeated() => $pb.PbList<ProcessInvitationResponse>();
   @$core.pragma('dart2js:noInline')
-  static AcceptInvitationResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AcceptInvitationResponse>(create);
-  static AcceptInvitationResponse _defaultInstance;
-}
-
-class RejectInvitationRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('RejectInvitationRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aInt64(1, 'inviterUserId')
-    ..hasRequiredFields = false
-  ;
-
-  RejectInvitationRequest._() : super();
-  factory RejectInvitationRequest() => create();
-  factory RejectInvitationRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory RejectInvitationRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  RejectInvitationRequest clone() => RejectInvitationRequest()..mergeFromMessage(this);
-  RejectInvitationRequest copyWith(void Function(RejectInvitationRequest) updates) => super.copyWith((message) => updates(message as RejectInvitationRequest));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static RejectInvitationRequest create() => RejectInvitationRequest._();
-  RejectInvitationRequest createEmptyInstance() => create();
-  static $pb.PbList<RejectInvitationRequest> createRepeated() => $pb.PbList<RejectInvitationRequest>();
-  @$core.pragma('dart2js:noInline')
-  static RejectInvitationRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RejectInvitationRequest>(create);
-  static RejectInvitationRequest _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $fixnum.Int64 get inviterUserId => $_getI64(0);
-  @$pb.TagNumber(1)
-  set inviterUserId($fixnum.Int64 v) { $_setInt64(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasInviterUserId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearInviterUserId() => clearField(1);
-}
-
-class RejectInvitationResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('RejectInvitationResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..hasRequiredFields = false
-  ;
-
-  RejectInvitationResponse._() : super();
-  factory RejectInvitationResponse() => create();
-  factory RejectInvitationResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory RejectInvitationResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  RejectInvitationResponse clone() => RejectInvitationResponse()..mergeFromMessage(this);
-  RejectInvitationResponse copyWith(void Function(RejectInvitationResponse) updates) => super.copyWith((message) => updates(message as RejectInvitationResponse));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static RejectInvitationResponse create() => RejectInvitationResponse._();
-  RejectInvitationResponse createEmptyInstance() => create();
-  static $pb.PbList<RejectInvitationResponse> createRepeated() => $pb.PbList<RejectInvitationResponse>();
-  @$core.pragma('dart2js:noInline')
-  static RejectInvitationResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RejectInvitationResponse>(create);
-  static RejectInvitationResponse _defaultInstance;
+  static ProcessInvitationResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ProcessInvitationResponse>(create);
+  static ProcessInvitationResponse _defaultInstance;
 }
 
 class DeleteContactRequest extends $pb.GeneratedMessage {

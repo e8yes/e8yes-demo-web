@@ -32,8 +32,17 @@ namespace e8 {
  * @return true if it an invitation has not been sent before or it hasn't been accepted, otherwise,
  * false.
  */
-bool SendInvitation(UserId inviter_user_id, UserId invitee_user_id, bool send_message_anyway,
+bool SendInvitation(UserId inviter_id, UserId invitee_id, bool send_message_anyway,
                     ConnectionReservoirInterface *conns);
+
+/**
+ * @brief ProcessInvitation Accepts or rejects an invitation. If accepted, the invitation will be
+ * removed and a contact relation will be established between the invitee and inviter. Otherwise,
+ * the invitation will be removed and an invitation rejection relation will be established instead.
+ * @return false if the invitation can't be found.
+ */
+bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
+                       ConnectionReservoirInterface *conns);
 
 } // namespace e8
 

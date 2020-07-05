@@ -11,9 +11,10 @@ const UserRelation$json = const {
     const {'1': 'URL_UNRELATED', '2': 0},
     const {'1': 'URL_INVITATION_SENT', '2': 1},
     const {'1': 'URL_INVITATION_RECEIVED', '2': 2},
-    const {'1': 'URL_CONTACT', '2': 3},
-    const {'1': 'URL_BLOCKING', '2': 4},
-    const {'1': 'URL_BLOCKED', '2': 5},
+    const {'1': 'URL_INVITATION_REJECTED', '2': 3},
+    const {'1': 'URL_CONTACT', '2': 4},
+    const {'1': 'URL_BLOCKING', '2': 5},
+    const {'1': 'URL_BLOCKED', '2': 6},
   ],
 };
 
