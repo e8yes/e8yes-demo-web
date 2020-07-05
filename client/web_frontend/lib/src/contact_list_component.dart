@@ -111,52 +111,27 @@ class ContactListComponent implements OnActivate {
   }
 
   bool invitationPending(List<UserRelationRecord> relations) {
-    try {
-      relations.firstWhere((UserRelationRecord relation) =>
-          relation.relation == UserRelation.URL_INVITATION_SENT);
-      return true;
-    } catch (StateError) {
-      return false;
-    }
+    return relations.any((UserRelationRecord relation) =>
+        relation.relation == UserRelation.URL_INVITATION_SENT);
   }
 
   bool invitationReceived(List<UserRelationRecord> relations) {
-    try {
-      relations.firstWhere((UserRelationRecord relation) =>
-          relation.relation == UserRelation.URL_INVITATION_RECEIVED);
-      return true;
-    } catch (StateError) {
-      return false;
-    }
+    return relations.any((UserRelationRecord relation) =>
+        relation.relation == UserRelation.URL_INVITATION_RECEIVED);
   }
 
   bool contact(List<UserRelationRecord> relations) {
-    try {
-      relations.firstWhere((UserRelationRecord relation) =>
-          relation.relation == UserRelation.URL_CONTACT);
-      return true;
-    } catch (StateError) {
-      return false;
-    }
+    return relations.any((UserRelationRecord relation) =>
+        relation.relation == UserRelation.URL_CONTACT);
   }
 
   bool blocked(List<UserRelationRecord> relations) {
-    try {
-      relations.firstWhere((UserRelationRecord relation) =>
-          relation.relation == UserRelation.URL_BLOCKED);
-      return true;
-    } catch (StateError) {
-      return false;
-    }
+    return relations.any((UserRelationRecord relation) =>
+        relation.relation == UserRelation.URL_BLOCKED);
   }
 
   bool blocking(List<UserRelationRecord> relations) {
-    try {
-      relations.firstWhere((UserRelationRecord relation) =>
-          relation.relation == UserRelation.URL_BLOCKING);
-      return true;
-    } catch (StateError) {
-      return false;
-    }
+    return relations.any((UserRelationRecord relation) =>
+        relation.relation == UserRelation.URL_BLOCKING);
   }
 }

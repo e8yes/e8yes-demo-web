@@ -76,15 +76,19 @@ class AccountComponent implements OnActivate {
 
   bool invitationPendingMode() {
     return !owner() &&
-        profile.relations.contains(UserRelation.URL_INVITATION_SENT);
+        profile.relations.any((UserRelationRecord relation) =>
+            relation.relation == UserRelation.URL_INVITATION_SENT);
   }
 
   bool invitaitonRecievedMode() {
     return !owner() &&
-        profile.relations.contains(UserRelation.URL_INVITATION_RECEIVED);
+        profile.relations.any((UserRelationRecord relation) =>
+            relation.relation == UserRelation.URL_INVITATION_RECEIVED);
   }
 
   bool contactMode() {
-    return !owner() && profile.relations.contains(UserRelation.URL_CONTACT);
+    return !owner() &&
+        profile.relations.any((UserRelationRecord relation) =>
+            relation.relation == UserRelation.URL_CONTACT);
   }
 }
