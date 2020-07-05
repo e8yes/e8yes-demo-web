@@ -6,7 +6,8 @@
 </div>
 
 <div class="contact-list ">
-  <div *ngIf="!inviterProfiles.isEmpty" class="section">
+  <hr *ngIf="!inviterProfiles.isEmpty"/>
+  <div *ngIf="!inviterProfiles.isEmpty">
     <h4>Invitations</h4>
     <ul class="list-group">
       <li *ngFor="let profile of inviterProfiles"
@@ -28,8 +29,11 @@
       </li>
     </ul>
   </div>
-  <div class="section">
-    <h4>Contacts</h4>
+
+  <hr/>
+
+  <div>
+    <h4>Accepted</h4>
     <label *ngIf="contactProfiles.isEmpty" class="col-form-label">
       You don't have any contact.
     </label>
