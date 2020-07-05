@@ -22,7 +22,8 @@
 namespace e8 {
 
 ContactRelationEntity::ContactRelationEntity()
-    : SqlEntityInterface({&src_user_id, &dst_user_id, &relation, &created_at}) {}
+    : SqlEntityInterface(
+          {&src_user_id, &dst_user_id, &relation, &created_at, &last_interaction_at}) {}
 
 ContactRelationEntity::ContactRelationEntity(ContactRelationEntity const &other)
     : ContactRelationEntity() {
@@ -30,6 +31,7 @@ ContactRelationEntity::ContactRelationEntity(ContactRelationEntity const &other)
     dst_user_id = other.dst_user_id;
     relation = other.relation;
     created_at = other.created_at;
+    last_interaction_at = other.last_interaction_at;
 }
 
 ContactRelationEntity &ContactRelationEntity::operator=(ContactRelationEntity const &other) {
@@ -37,6 +39,7 @@ ContactRelationEntity &ContactRelationEntity::operator=(ContactRelationEntity co
     dst_user_id = other.dst_user_id;
     relation = other.relation;
     created_at = other.created_at;
+    last_interaction_at = other.last_interaction_at;
     return *this;
 }
 

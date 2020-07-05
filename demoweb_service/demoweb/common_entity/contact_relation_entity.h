@@ -39,6 +39,7 @@ class ContactRelationEntity : public SqlEntityInterface {
     SqlLong dst_user_id = SqlLong("dst_user_id");
     SqlInt relation = SqlInt("relation");
     SqlTimestamp created_at = SqlTimestamp("created_at");
+    SqlTimestamp last_interaction_at = SqlTimestamp("last_interaction_at");
 };
 
 } // namespace e8

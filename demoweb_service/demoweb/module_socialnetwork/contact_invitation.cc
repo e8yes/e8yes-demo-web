@@ -40,6 +40,7 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_an
     *forward_relation.dst_user_id.value_ptr() = invitee_id;
     *forward_relation.relation.value_ptr() = URL_INVITATION_SENT;
     *forward_relation.created_at.value_ptr() = timestamp;
+    *forward_relation.last_interaction_at.value_ptr() = timestamp;
 
     int64_t updated_rows =
         Update(forward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
@@ -52,6 +53,8 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_an
     *backward_relation.dst_user_id.value_ptr() = inviter_id;
     *backward_relation.relation.value_ptr() = URL_INVITATION_RECEIVED;
     *backward_relation.created_at.value_ptr() = timestamp;
+    *backward_relation.last_interaction_at.value_ptr() = timestamp;
+
     Update(backward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
 
     return status;
@@ -102,6 +105,7 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
         *forward_relation.dst_user_id.value_ptr() = invitee_id;
         *forward_relation.relation.value_ptr() = URL_CONTACT;
         *forward_relation.created_at.value_ptr() = timestamp;
+        *forward_relation.last_interaction_at.value_ptr() = timestamp;
 
         Update(forward_relation, TableNames::ContactRelation(), /*replace=*/true, conns);
 
@@ -110,6 +114,7 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
         *backward_relation.dst_user_id.value_ptr() = inviter_id;
         *backward_relation.relation.value_ptr() = URL_CONTACT;
         *backward_relation.created_at.value_ptr() = timestamp;
+        *backward_relation.last_interaction_at.value_ptr() = timestamp;
 
         Update(backward_relation, TableNames::ContactRelation(), /*replace=*/true, conns);
     } else {
@@ -118,6 +123,7 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
         *rejection_relation.dst_user_id.value_ptr() = invitee_id;
         *rejection_relation.relation.value_ptr() = URL_INVITATION_REJECTED;
         *rejection_relation.created_at.value_ptr() = timestamp;
+        *rejection_relation.last_interaction_at.value_ptr() = timestamp;
 
         Update(rejection_relation, TableNames::ContactRelation(), /*replace=*/true, conns);
     }

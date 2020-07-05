@@ -44,8 +44,8 @@ std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_i
 /**
  * @brief GetRelatedUsers Retrieve a list of users who satisfy the directed relation constraint
  * starting from the source user. That is, the user must possess at least one of the relations to
- * present in the returned result. The result is sorted based on the creation date of the relation
- * in descending order.
+ * present in the returned result. The result is sorted based on the last interaction date of the
+ * relation in descending order.
  */
 std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
                                         std::vector<UserRelation> const &relations,

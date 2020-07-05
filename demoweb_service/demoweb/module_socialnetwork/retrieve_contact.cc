@@ -118,7 +118,7 @@ std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
         .placeholder(&source_user_id_ph)
         .query_piece(" AND cr.relation=ANY(")
         .placeholder(&relations_ph)
-        .query_piece(") ORDER BY cr.created_at DESC");
+        .query_piece(") ORDER BY cr.last_interaction_at DESC");
 
     query.set_value_to_placeholder(source_user_id_ph, &source_user_id_ph_value);
     query.set_value_to_placeholder(relations_ph, &relations_ph_value);

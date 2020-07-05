@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS contact_relation (
     dst_user_id BIGINT NOT NULL,
     relation INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     PRIMARY KEY (src_user_id, dst_user_id, relation),
     FOREIGN KEY (src_user_id) REFERENCES auser (id) ON DELETE CASCADE,
     FOREIGN KEY (dst_user_id) REFERENCES auser (id) ON DELETE CASCADE
