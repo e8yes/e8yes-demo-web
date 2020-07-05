@@ -24,29 +24,27 @@ def DeployImages(deployment_node: NodeConfig,
         docker_registry_port=docker_registry_port,
         target=target)
 
-      print("Checking running image", image_name, "in node", node)
-      container_id = RunSingleCommandInNode(
-          node=node,
-          command="sudo docker ps -a -q --filter ancestor={0}"
-            .format(image_name),
-          retrieve_output=True).decode("utf-8").replace("\n", " ")
-      if container_id:
-        print("Stopping the container", container_id, "that runs the image", image_name)
-        RunSingleCommandInNode(
-          node=node,
-          command="sudo docker stop {0}".format(container_id))
-        
-        print("Removing the container", container_id)
-        RunSingleCommandInNode(
-          node=node,
-          command="sudo docker rm {0}".format(container_id))
-      else:
-        print("The image", image_name, " is not running.")
-
       print("Pulling image", image_name, "in node", node)
       RunSingleCommandInNode(
         node=node,
         command="sudo docker pull {0}:latest".format(image_name))
+      
+      print("Killing running containers...")
+      RunSingleCommandInNode(
+        node=node,
+        command="sudo docker kill `sudo docker container ls -q -a`")
+
+      print("Removing running containers...")
+      RunSingleCommandInNode(
+        node=node,
+        command="sudo docker rm `sudo docker container ls -q -a`")
+      
+      # Starting the registry back. TODO: Avoid this hack.
+      if node.name == deployment_node.name:
+          RunSingleCommandInNode(
+            node=node, 
+            command="sudo docker run -d -p {0}:{0} --restart=always --name=registry registry:latest"
+              .format(docker_registry_port))
 
       print("Running image", image_name, "in node", node)
       RunSingleCommandInNode(
