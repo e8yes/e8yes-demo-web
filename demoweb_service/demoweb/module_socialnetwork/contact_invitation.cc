@@ -73,14 +73,15 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
         .placeholder(&inviter_id_ph)
         .query_piece(" AND dst_user_id=")
         .placeholder(&invitee_id_ph)
-        .query_piece("relation=")
+        .query_piece(" AND relation=")
         .placeholder(&foward_relation_ph)
         .query_piece(") OR (src_user_id=")
         .placeholder(&invitee_id_ph)
         .query_piece(" AND dst_user_id=")
         .placeholder(&inviter_id_ph)
         .query_piece(" AND relation=")
-        .placeholder(&backward_relation_ph);
+        .placeholder(&backward_relation_ph)
+        .query_piece(")");
 
     query.set_value_to_placeholder(invitee_id_ph, &invitee_user_id_ph_value);
     query.set_value_to_placeholder(inviter_id_ph, &inviter_user_id_ph_value);
