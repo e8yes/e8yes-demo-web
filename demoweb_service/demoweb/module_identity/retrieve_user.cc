@@ -76,14 +76,16 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
         query.QueryPiece(" OR u.id_str LIKE ").Holder(&user_id_prefix_ph);
         query.SetValueToPlaceholder(
             user_id_prefix_ph,
-            std::make_shared<SqlStr>(std::to_string(user_id_prefix.value()) + "%"));
+            std::make_shared<SqlStr>(std::to_string(user_id_prefix.value()) + "%",
+                                     /*field_name=*/""));
     }
 
     if (alias_prefix.has_value()) {
         SqlQueryBuilder::Placeholder<SqlStr> alias_prefix_ph;
         query.QueryPiece(" OR u.alias LIKE ").Holder(&alias_prefix_ph);
         query.SetValueToPlaceholder(alias_prefix_ph,
-                                    std::make_shared<SqlStr>(alias_prefix.value() + "%"));
+                                    std::make_shared<SqlStr>(alias_prefix.value() + "%",
+                                                             /*field_name=*/""));
     }
 
     if (viewer_id.has_value()) {

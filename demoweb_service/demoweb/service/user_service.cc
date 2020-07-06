@@ -151,7 +151,7 @@ grpc::Status UserServiceImpl::Search(grpc::ServerContext *context, SearchUserReq
         request->has_alias() ? std::optional<std::string>(request->alias().value()) : std::nullopt;
 
     std::vector<UserEntity> user_entities =
-        SearchUser(identity.value().user_id(), user_id_prefix, alias_prefix, request->pagination(),
+        SearchUser(identity->user_id(), user_id_prefix, alias_prefix, request->pagination(),
                    CurrentEnvironment()->DemowebDatabase());
 
     std::vector<UserPublicProfile> profiles =
