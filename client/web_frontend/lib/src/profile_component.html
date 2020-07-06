@@ -31,10 +31,10 @@
         </label>
     </div>
 
-    <div>
+    <div *ngIf="editable">
+        <br/>
         <button class="btn" 
-                (click)="onClickEdit" 
-                *ngIf="editable">
+                (click)="onClickEdit">
             Edit
         </button>
     </div>

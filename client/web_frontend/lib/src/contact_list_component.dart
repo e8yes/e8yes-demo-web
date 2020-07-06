@@ -4,6 +4,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:demoweb_app/src/context.dart';
+import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/proto_dart/pagination.pbserver.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pb.dart';
@@ -20,7 +21,7 @@ import 'package:fixnum/fixnum.dart';
     selector: "contact-list",
     templateUrl: "contact_list_component.html",
     styleUrls: ["contact_list_component.css"],
-    directives: [coreDirectives, formDirectives],
+    directives: [coreDirectives, formDirectives, FooterComponent],
     exports: [UserRelation])
 class ContactListComponent implements OnActivate {
   List<UserPublicProfile> searchedProfiles = List<UserPublicProfile>();

@@ -4,12 +4,11 @@
 
 <profile [profile]="profile" [editable]="owner()"></profile>
 
-<hr/>
-
 <div *ngIf="profile.userId != 0">
   <button *ngIf="addContactMode()" 
           (click)="onClickAddContact" 
           class="btn">
+    <hr/>
     <div *ngIf="onUpdateRelation">
       Updating...
     </div>
@@ -19,6 +18,7 @@
   </button>
   
   <div *ngIf="invitationPendingMode()">
+    <hr/>
     <label class="col-form-label">Invitation has already been sent</label>
     <div>
       <button (click)="onClickAddContact" 
@@ -34,6 +34,7 @@
   </div>
   
   <div *ngIf="invitaitonRecievedMode()">
+    <hr/>
     <label class="col-form-label">This person wants to be your contact.</label>
     <div>
       <button (click)="onClickConfirmContact" 
@@ -58,6 +59,7 @@
   </div>
   
   <div *ngIf="contactMode()">
+    <hr/>
     <div>
       <button (click)="onClickDeleteContact" 
               class="btn">
@@ -71,3 +73,5 @@
     </div>
   </div>  
 </div>
+
+<e8yes-footer></e8yes-footer>
