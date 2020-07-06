@@ -3,32 +3,26 @@
 </div>
 
 <div *ngIf="profile.userId != 0">
-    <div class="account-info">
-        <span>
-            <label class="col-form-label">User ID</label>
-        </span>
-        <span>
-            <label class="col-form-label">{{profile.userId}}</label>
-        </span>
+    <div>
+        <label class="col-form-label key-label">User ID</label>
+        <label class="col-form-label value-label">{{profile.userId}}</label>
     </div>
     
     <div *ngIf="!editMode">
-        <label class="col-form-label">Alias</label>
-        <label class="col-form-label" 
-               *ngIf="hasAlias(profile)">
+        <label class="col-form-label key-label">Alias</label>
+        <label *ngIf="hasAlias(profile)"
+               class="col-form-label value-label">
             {{profile.alias.value}}
         </label>
-        <label class="col-form-label" 
-               *ngIf="!hasAlias(profile)">
+        <label *ngIf="!hasAlias(profile)"
+               class="col-form-label value-label" >
             You haven't set up an alias yet.
         </label>
     </div>
 
     <div *ngIf="editMode">
-        <span>
-            <label class="col-form-label">Alias</label>
-        </span>
-        <span>
+        <label class="col-form-label key-label">Alias</label>
+        <span class="value-label">
             <input *ngIf="hasAlias(profile)"
                    [(ngModel)]="profile.alias.value" 
                    placeholder="alias" />
@@ -39,8 +33,8 @@
     </div>
 
     <div>
-        <label class="col-form-label">Join Date</label>
-        <label class="col-form-label" >
+        <label class="col-form-label key-label">Join Date</label>
+        <label class="col-form-label value-label" >
             {{timestampToDateString(profile.joinAt)}}
         </label>
     </div>
@@ -62,7 +56,7 @@
                     Confirm
                 </div>
                 <div *ngIf="onUpdate">
-                    Updating..
+                    Updating...
                 </div>
         </button>
         <button class="btn" 

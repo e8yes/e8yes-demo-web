@@ -1,3 +1,8 @@
-.account-info {
-    width: 90%;
+.key-label {
+    position: relative;
+}
+
+.value-label {
+    position: absolute;
+    left: 15%;
 }
