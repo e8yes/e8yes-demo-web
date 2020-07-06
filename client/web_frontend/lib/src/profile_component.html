@@ -2,7 +2,7 @@
     Loading...
 </div>
 
-<div *ngIf="!editMode && profile.userId != 0">
+<div *ngIf="profile.userId != 0">
     <div class="account-info">
         <span>
             <label class="col-form-label">User ID</label>
@@ -12,7 +12,7 @@
         </span>
     </div>
     
-    <div>
+    <div *ngIf="!editMode">
         <label class="col-form-label">Alias</label>
         <label class="col-form-label" 
                *ngIf="hasAlias(profile)">
@@ -24,29 +24,7 @@
         </label>
     </div>
 
-    <div>
-        <label class="col-form-label">Join Date</label>
-        <label class="col-form-label" >
-            {{timestampToDateString(profile.joinAt)}}
-        </label>
-    </div>
-
-    <div *ngIf="editable">
-        <br/>
-        <button class="btn" 
-                (click)="onClickEdit">
-            Edit
-        </button>
-    </div>
-</div>
-
-<div *ngIf="editMode && profile.userId != 0">
-    <div>
-        <label class="col-form-label">User ID</label>
-        <label class="col-form-label">{{profile.userId}}</label>
-    </div>
-
-    <div>
+    <div *ngIf="editMode">
         <span>
             <label class="col-form-label">Alias</label>
         </span>
@@ -67,7 +45,16 @@
         </label>
     </div>
 
-    <div>
+    <div *ngIf="editable && !editMode">
+        <br/>
+        <button class="btn" 
+                (click)="onClickEdit">
+            Edit
+        </button>
+    </div>
+
+    <div *ngIf="editMode">
+        <br/>
         <button class="btn" 
                 (click)="onClickConfirm" 
                 *ngIf="editable">
