@@ -1,4 +1,8 @@
-<div *ngIf="!editMode">
+<div *ngIf="profile.userId == 0">
+    Loading...
+</div>
+
+<div *ngIf="!editMode && profile.userId != 0">
     <div class="account-info">
         <span>
             <label class="col-form-label">User ID</label>
@@ -36,7 +40,7 @@
     </div>
 </div>
 
-<div *ngIf="editMode">
+<div *ngIf="editMode && profile.userId != 0">
     <div>
         <label class="col-form-label">User ID</label>
         <label class="col-form-label">{{profile.userId}}</label>
@@ -67,7 +71,12 @@
         <button class="btn" 
                 (click)="onClickConfirm" 
                 *ngIf="editable">
-                Confirm
+                <div *ngIf="!onUpdate">
+                    Confirm
+                </div>
+                <div *ngIf="onUpdate">
+                    Updating..
+                </div>
         </button>
         <button class="btn" 
                 (click)="onClickCancel" 

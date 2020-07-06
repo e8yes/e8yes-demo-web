@@ -4,26 +4,70 @@
 
 <profile [profile]="profile" [editable]="owner()"></profile>
 
-<button *ngIf="addContactMode()" (click)="onClickAddContact" class="btn">Add
-  Contact</button>
+<hr/>
 
-<div *ngIf="invitationPendingMode()">
-  <label class="col-form-label">Invitation has already been sent</label>
-  <div>
-    <button (click)="onClickAddContact" class="btn">Re-send Invitation</button>
+<div *ngIf="profile.userId != 0">
+  <button *ngIf="addContactMode()" 
+          (click)="onClickAddContact" 
+          class="btn">
+    <div *ngIf="onUpdateRelation">
+      Updating...
+    </div>
+    <div *ngIf="!onUpdateRelation">
+      Add Contact
+    </div>
+  </button>
+  
+  <div *ngIf="invitationPendingMode()">
+    <label class="col-form-label">Invitation has already been sent</label>
+    <div>
+      <button (click)="onClickAddContact" 
+              class="btn">
+        <div *ngIf="onUpdateRelation">
+          Updating...
+        </div>
+        <div *ngIf="!onUpdateRelation">
+          Re-send Invitation
+        </div>
+      </button>
+    </div>
   </div>
-</div>
-
-<div *ngIf="invitaitonRecievedMode()">
-  <label class="col-form-label">This person wants to be your contact.</label>
-  <div>
-    <button (click)="onClickConfirmContact" class="btn">Confirm</button>
-    <button (click)="onClickRejectContact" class="btn">Reject</button>
+  
+  <div *ngIf="invitaitonRecievedMode()">
+    <label class="col-form-label">This person wants to be your contact.</label>
+    <div>
+      <button (click)="onClickConfirmContact" 
+              class="btn">
+        <div *ngIf="onUpdateRelation">
+          Updating...
+        </div>
+        <div *ngIf="!onUpdateRelation">
+          Confirm
+        </div>
+      </button>
+      <button (click)="onClickRejectContact" 
+              class="btn">
+        <div *ngIf="onUpdateRelation">
+          Updating...
+        </div>
+        <div *ngIf="!onUpdateRelation">
+          Reject
+        </div>
+      </button>
+    </div>
   </div>
-</div>
-
-<div *ngIf="contactMode()">
-  <div>
-    <button (click)="onClickDeleteContact" class="btn">Remove from Contacts</button>
-  </div>
+  
+  <div *ngIf="contactMode()">
+    <div>
+      <button (click)="onClickDeleteContact" 
+              class="btn">
+        <div *ngIf="onUpdateRelation">
+          Updating...
+        </div>
+        <div *ngIf="!onUpdateRelation">
+          Remove from Contacts
+        </div>
+      </button>
+    </div>
+  </div>  
 </div>

@@ -33,6 +33,10 @@ class ContactListComponent implements OnActivate {
   Pagination inviterPagination = Pagination()..resultPerPage = _kResultPerPage;
   Pagination contactPagination = Pagination()..resultPerPage = _kResultPerPage;
 
+  bool onLoadingSearchedProfiles = false;
+  bool onLoadingInviterProfiles = false;
+  bool onLoadingContactProfiles = false;
+
   final UserServiceInterface _user_service;
   final SocialNetworkServiceInterface _social_network_service;
   final Router _router;
@@ -45,6 +49,7 @@ class ContactListComponent implements OnActivate {
 
   @override
   void onActivate(_, RouterState current) async {
+    onLoadingInviterProfiles = true;
     _social_network_service
         .getRelatedUserList(
             GetRelatedUserListRequest()
@@ -53,8 +58,10 @@ class ContactListComponent implements OnActivate {
             credentialStorage.loadSignature())
         .then((GetRelatedUserListResponse res) {
       inviterProfiles = res.userProfiles;
+      onLoadingInviterProfiles = false;
     });
 
+    onLoadingContactProfiles = true;
     _social_network_service
         .getRelatedUserList(
             GetRelatedUserListRequest()
@@ -63,6 +70,7 @@ class ContactListComponent implements OnActivate {
             credentialStorage.loadSignature())
         .then((GetRelatedUserListResponse res) {
       contactProfiles = res.userProfiles;
+      onLoadingContactProfiles = false;
     });
   }
 
@@ -77,11 +85,12 @@ class ContactListComponent implements OnActivate {
     }
     req.pagination = searchPagination;
 
-    String viewerSignature = credentialStorage.loadSignature();
+    onLoadingSearchedProfiles = true;
     Future<SearchUserResponse> currentSearchFuture =
-        _user_service.search(req, viewerSignature);
+        _user_service.search(req, credentialStorage.loadSignature());
     _searchSync.takeLatestFuture(currentSearchFuture, (SearchUserResponse res) {
       searchedProfiles = res.userProfiles;
+      onLoadingSearchedProfiles = false;
     });
   }
 

@@ -18,6 +18,7 @@ import 'package:fixnum/fixnum.dart';
 )
 class AccountComponent implements OnActivate {
   UserPublicProfile profile = UserPublicProfile();
+  bool onUpdateRelation = false;
 
   final UserServiceInterface _user_service;
   final SocialNetworkServiceInterface _social_network_service;
@@ -53,10 +54,14 @@ class AccountComponent implements OnActivate {
     SendInvitationRequest req = SendInvitationRequest();
     req.inviteeUserId = _accountUserId;
 
+    onUpdateRelation = true;
+
     _social_network_service
         .sendInvitation(req, credentialStorage.loadSignature())
         .then((SendInvitationResponse res) {
       _fetchAccountProfile(_accountUserId);
+
+      onUpdateRelation = false;
     });
   }
 
@@ -65,10 +70,14 @@ class AccountComponent implements OnActivate {
       ..inviterUserId = _accountUserId
       ..accept = true;
 
+    onUpdateRelation = true;
+
     _social_network_service
         .processInvitation(req, credentialStorage.loadSignature())
         .then((ProcessInvitationResponse res) {
       this._fetchAccountProfile(_accountUserId);
+
+      onUpdateRelation = false;
     });
   }
 
@@ -77,10 +86,14 @@ class AccountComponent implements OnActivate {
       ..inviterUserId = _accountUserId
       ..accept = false;
 
+    onUpdateRelation = true;
+
     _social_network_service
         .processInvitation(req, credentialStorage.loadSignature())
         .then((ProcessInvitationResponse res) {
       this._fetchAccountProfile(_accountUserId);
+
+      onUpdateRelation = false;
     });
   }
 

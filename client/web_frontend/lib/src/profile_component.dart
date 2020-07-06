@@ -19,6 +19,7 @@ class ProfileComponent {
   @Input()
   bool editable;
   bool editMode = false;
+  bool onUpdate = false;
   String newAlias;
   final UserServiceInterface _user_service;
 
@@ -45,11 +46,11 @@ class ProfileComponent {
     }
     req.alias = profile.alias;
 
-    String signature = credentialStorage.loadSignature();
-
+    onUpdate = true;
     _user_service
-        .updatePublicProfile(req, signature)
+        .updatePublicProfile(req, credentialStorage.loadSignature())
         .then((UpdatePublicProfileResponse res) {
+      onUpdate = false;
       editMode = false;
     });
   }
