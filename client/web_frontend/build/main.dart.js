@@ -13036,65 +13036,64 @@ k.t(g)
 t=T.b_(i,g)
 k.u(t,"navbar-header")
 k.I(t)
-s=T.E(i,t,"img")
-T.b0(s,"height","28")
-T.b0(s,"src","e8yes_logo_bw_unfilled.png")
-T.b0(s,"style","margin-left: 1em; margin-bottom: 0.15em;")
-T.b0(s,"width","28")
-k.t(s)
-T.u(t," ")
-r=u.k
-q=r.a(T.E(i,t,"a"))
-k.fy=q
-T.b0(q,"bref","#")
+s=u.k
+r=s.a(T.E(i,t,"a"))
+k.fy=r
+T.b0(r,"bref","#")
 k.u(k.fy,"navbar-brand")
 k.I(k.fy)
-q=k.d
-p=k.e.z
-o=u.i
-n=u.F
-m=G.jQ(o.a(q.a_(C.h,p)),n.a(q.a_(C.q,p)),null,k.fy)
-k.f=new G.ea(m)
-m=k.fy
-l=o.a(q.a_(C.h,p))
-k.r=new O.du(m,l)
-T.u(k.fy,"e8yes")
-m=u.b
-k.r.scR(H.p([k.f.e],m))
+r=k.d
+q=k.e.z
+p=u.i
+o=u.F
+n=G.jQ(p.a(r.a_(C.h,q)),o.a(r.a_(C.q,q)),null,k.fy)
+k.f=new G.ea(n)
+n=k.fy
+m=p.a(r.a_(C.h,q))
+k.r=new O.du(n,m)
+l=T.E(i,k.fy,"img")
+T.b0(l,"height","40")
+T.b0(l,"src","e8yes_logo_blurred.png")
+T.b0(l,"style","margin-left: 1em; margin-right: 0.5em;")
+T.b0(l,"width","40")
+k.t(l)
+T.u(k.fy," e8yes")
+n=u.b
+k.r.scR(H.p([k.f.e],n))
 g=h.a(T.E(i,g,"nav"))
 k.u(g,"navbar navbar-default")
 k.t(g)
 g=h.a(T.E(i,g,"ul"))
 k.u(g,"nav navbar-nav expand")
 k.I(g)
-l=k.x=new V.I(8,k,T.N(g))
-k.y=new K.O(new D.L(l,L.CN()),l)
-l=k.z=new V.I(9,k,T.N(g))
-k.Q=new K.O(new D.L(l,L.CP()),l)
-l=k.ch=new V.I(10,k,T.N(g))
-k.cx=new K.O(new D.L(l,L.CQ()),l)
+m=k.x=new V.I(7,k,T.N(g))
+k.y=new K.O(new D.L(m,L.CN()),m)
+m=k.z=new V.I(8,k,T.N(g))
+k.Q=new K.O(new D.L(m,L.CP()),m)
+m=k.ch=new V.I(9,k,T.N(g))
+k.cx=new K.O(new D.L(m,L.CQ()),m)
 h=h.a(T.E(i,g,"li"))
 k.u(h,"nav-item")
 k.t(h)
-h=r.a(T.E(i,h,"a"))
+h=s.a(T.E(i,h,"a"))
 k.go=h
 k.u(h,"nav-link")
 k.I(k.go)
-h=G.jQ(o.a(q.a_(C.h,p)),n.a(q.a_(C.q,p)),null,k.go)
+h=G.jQ(p.a(r.a_(C.h,q)),o.a(r.a_(C.q,q)),null,k.go)
 k.cy=new G.ea(h)
 h=k.go
-p=o.a(q.a_(C.h,p))
-k.db=new O.du(h,p)
+q=p.a(r.a_(C.h,q))
+k.db=new O.du(h,q)
 T.u(k.go,"Demos")
-k.db.scR(H.p([k.cy.e],m))
-h=k.dx=new V.I(14,k,T.N(g))
+k.db.scR(H.p([k.cy.e],n))
+h=k.dx=new V.I(13,k,T.N(g))
 k.dy=new K.O(new D.L(h,L.CR()),h)
 h=k.fy
 g=k.f.e
-r=u.B
-q=u.V;(h&&C.r).aL(h,"click",k.au(g.gcU(g),r,q))
+s=u.B
+r=u.V;(h&&C.r).aL(h,"click",k.au(g.gcU(g),s,r))
 g=k.go
-h=k.cy.e;(g&&C.r).aL(g,"click",k.au(h.gcU(h),r,q))
+h=k.cy.e;(g&&C.r).aL(g,"click",k.au(h.gcU(h),s,r))
 k.bi()},
 L:function(){var t,s=this,r=s.b,q=s.e.cx===0,p=$.tC(),o=p.aS(0),n=s.fr
 if(n!==o){n=s.f.e
@@ -16198,7 +16197,7 @@ $.DC=[".searchbar._ngcontent-%ID%{margin-top:1em;margin-bottom:2px;margin-left:1
 $.vM=null
 $.vN=null
 $.vO=null
-$.DI=[".sidebar._ngcontent-%ID%{position:fixed;width:16em;height:100%;top:0;overflow:hidden;background-color:#19222a;visibility:visible}.expand._ngcontent-%ID%{width:100%}"]
+$.DI=[".sidebar._ngcontent-%ID%{position:fixed;width:16em;height:100%;top:0;overflow:hidden;background-color:black;visibility:visible}.expand._ngcontent-%ID%{width:100%}"]
 $.vP=null
 $.DH=[".account-info._ngcontent-%ID%{width:90%}"]
 $.vQ=null
