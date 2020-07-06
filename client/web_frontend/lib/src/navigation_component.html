@@ -15,7 +15,15 @@
         <ul class="nav navbar-nav expand">
             <li *ngIf="displayAccountlessUi()" class="nav-item">
                 <a (click)="onClickAccount()" class="nav-link">
-                    Account
+                    <svg width="1.2em" 
+                         height="1.2em" 
+                         viewBox="0 0 16 16" 
+                         class="bi bi-person" 
+                         fill="white" 
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    </svg>
+                    <span style="margin-left: 0.5em">Account</span>
                 </a>
                 <ul *ngIf="expandAccountMenu" class="nav navbar-nav">
                     <li class="nav-item">
@@ -34,28 +42,63 @@
                 <a [routerLink]="RoutePaths.account.toUrl()" 
                    [routerLinkActive]="'active'"
                    class="nav-link">
-                    Account
+                    <svg width="1.2em" 
+                         height="1.2em" 
+                         viewBox="0 0 16 16" 
+                         class="bi bi-person" 
+                         fill="white" 
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    </svg>
+                    <span style="margin-left: 0.5em">Account</span>
                 </a>
             </li>
             <li *ngIf="!displayAccountlessUi()" class="nav-item">
                 <a [routerLink]="RoutePaths.contactList.toUrl()" 
                    [routerLinkActive]="'active'"
                    class="nav-link">
-                   Contacts
+                    <svg width="1.2em" 
+                         height="1.2em" 
+                         viewBox="0 0 16 16" 
+                         class="bi bi-people" 
+                         fill="currentColor" 
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.995-.944v-.002.002zM7.022 13h7.956a.274.274 0 0 0 .014-.002l.008-.002c-.002-.264-.167-1.03-.76-1.72C13.688 10.629 12.718 10 11 10c-1.717 0-2.687.63-3.24 1.276-.593.69-.759 1.457-.76 1.72a1.05 1.05 0 0 0 .022.004zm7.973.056v-.002.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10c-1.668.02-2.615.64-3.16 1.276C1.163 11.97 1 12.739 1 13h3c0-1.045.323-2.086.92-3zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                    </svg>
+                   <span style="margin-left: 0.5em">Contacts</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a [routerLink]="RoutePaths.demoList.toUrl()" 
                    [routerLinkActive]="'active'"
                    class="nav-link">
-                   Demos
+                   <svg width="1.2em" 
+                        height="1.2em" 
+                        viewBox="0 0 16 16" 
+                        class="bi bi-camera-reels" 
+                        fill="white" 
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M2.667 7C2.022 7 1.5 7.522 1.5 8.167v5.666c0 .645.522 1.167 1.167 1.167h6.666c.645 0 1.167-.522 1.167-1.167V8.167C10.5 7.522 9.978 7 9.333 7H2.667zM.5 8.167C.5 6.97 1.47 6 2.667 6h6.666c1.197 0 2.167.97 2.167 2.167v5.666C11.5 15.03 10.53 16 9.333 16H2.667A2.167 2.167 0 0 1 .5 13.833V8.167z"/>
+                        <path fill-rule="evenodd" d="M11.25 9.15l2.768-1.605a.318.318 0 0 1 .482.263v6.384c0 .228-.26.393-.482.264l-2.767-1.605-.502.865 2.767 1.605c.859.498 1.984-.095 1.984-1.129V7.808c0-1.033-1.125-1.626-1.984-1.128L10.75 8.285l.502.865zM3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        <path fill-rule="evenodd" d="M9 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    </svg>
+                   <span style="margin-left: 0.5em">Demos</span>
                 </a>
             </li>
             <li *ngIf="!displayAccountlessUi()" class="nav-item">
                 <a [routerLink]="RoutePaths.womenChat.toUrl()" 
                    [routerLinkActive]="'active'"
                    class="nav-link">
-                   WMChat
+                   <svg width="1.2em" 
+                        height="1.2em"
+                        viewBox="0 0 16 16" 
+                        class="bi bi-chat-dots" 
+                        fill="white" 
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/>
+                        <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                    <span style="margin-left: 0.5em">WMChat</span>
                 </a>
             </li>
         </ul>
