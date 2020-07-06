@@ -15,14 +15,14 @@
   <hr/>
 
   <div>
-    <h4>Invitations</h4>
+    <h4>Incoming</h4>
     <div *ngIf="onLoadingInviterProfiles" class="section">
       Loading...
     </div>
 
     <label *ngIf="inviterProfiles.isEmpty && !onLoadingInviterProfiles" 
            class="col-form-label section">
-      You don't have any invitation.
+      You don't have any incoming invitation.
     </label>
     
     <ul class="list-group section">
@@ -49,7 +49,41 @@
   <hr/>
 
   <div>
-    <h4>Connections</h4>
+    <h4>Pending</h4>
+    <div *ngIf="onLoadingInviteeProfiles" class="section">
+      Loading...
+    </div>
+
+    <label *ngIf="inviteeProfiles.isEmpty && !onLoadingInviteeProfiles" 
+           class="col-form-label section">
+      You don't have any pending invitation.
+    </label>
+    
+    <ul class="list-group section">
+      <li *ngFor="let profile of inviteeProfiles"
+          (click)="onSelectUserDetails(profile)"
+          class="list-group-item">
+        <span>{{profile.userId}}</span>
+        <span *ngIf="profile.hasAlias()">
+          ({{profile.alias.value}})
+        </span>
+        <span *ngIf="!profile.hasAlias()">
+          (no alias)
+        </span>
+        <span>{{
+          relationJoinDateString(
+            extractRelation(profile.relations, 
+                            UserRelation.URL_INVITATION_SENT))
+              }}
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <hr />
+
+  <div>
+    <h4>Committed</h4>
     <div *ngIf="onLoadingContactProfiles" class="section">
       Loading...
     </div>

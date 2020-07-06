@@ -25,16 +25,19 @@ import 'package:fixnum/fixnum.dart';
 class ContactListComponent implements OnActivate {
   List<UserPublicProfile> searchedProfiles = List<UserPublicProfile>();
   List<UserPublicProfile> inviterProfiles = List<UserPublicProfile>();
+  List<UserPublicProfile> inviteeProfiles = List<UserPublicProfile>();
   List<UserPublicProfile> contactProfiles = List<UserPublicProfile>();
 
   static const int _kResultPerPage = 20;
 
   Pagination searchPagination = Pagination()..resultPerPage = _kResultPerPage;
   Pagination inviterPagination = Pagination()..resultPerPage = _kResultPerPage;
+  Pagination inviteePagination = Pagination()..resultPerPage = _kResultPerPage;
   Pagination contactPagination = Pagination()..resultPerPage = _kResultPerPage;
 
   bool onLoadingSearchedProfiles = false;
   bool onLoadingInviterProfiles = false;
+  bool onLoadingInviteeProfiles = false;
   bool onLoadingContactProfiles = false;
 
   final UserServiceInterface _user_service;
@@ -59,6 +62,18 @@ class ContactListComponent implements OnActivate {
         .then((GetRelatedUserListResponse res) {
       inviterProfiles = res.userProfiles;
       onLoadingInviterProfiles = false;
+    });
+
+    onLoadingInviteeProfiles = true;
+    _social_network_service
+        .getRelatedUserList(
+            GetRelatedUserListRequest()
+              ..pagination = inviterPagination
+              ..relationFilter.add(UserRelation.URL_INVITATION_SENT),
+            credentialStorage.loadSignature())
+        .then((GetRelatedUserListResponse res) {
+      inviteeProfiles = res.userProfiles;
+      onLoadingInviteeProfiles = false;
     });
 
     onLoadingContactProfiles = true;
