@@ -5,18 +5,18 @@
 <profile [profile]="profile" [editable]="owner()"></profile>
 
 <div *ngIf="profile.userId != 0">
-  <button *ngIf="addContactMode()" 
-          (click)="onClickAddContact" 
-          class="btn">
+  <div *ngIf="addContactMode()" >
     <hr/>
-    <div *ngIf="onUpdateRelation">
-      Updating...
-    </div>
-    <div *ngIf="!onUpdateRelation">
-      Add Contact
-    </div>
-  </button>
-  
+    <button (click)="onClickAddContact" class="btn">
+      <div *ngIf="onUpdateRelation">
+        Updating...
+      </div>
+      <div *ngIf="!onUpdateRelation">
+        Add Contact
+      </div>
+    </button>
+  </div>
+
   <div *ngIf="invitationPendingMode()">
     <hr/>
     <label class="col-form-label">Invitation has already been sent</label>
