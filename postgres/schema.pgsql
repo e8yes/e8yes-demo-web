@@ -140,13 +140,11 @@ CREATE TABLE IF NOT EXISTS message (
     id BIGINT NOT NULL DEFAULT nextval('message_id_seq'),
     channel_id BIGINT NOT NULL,
     sender_id BIGINT NOT NULL,
-    encrypted_content CHARACTER VARYING,
-    media_file_path CHARACTER VARYING(128) NULL,
-    media_file_preview_path CHARACTER VARYING(128) NULL,
+    encrypted_content CHARACTER VARYING [],
+    media_file_path CHARACTER VARYING(128) [] NULL,
+    media_file_preview_path CHARACTER VARYING(128) [] NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (channel_id) REFERENCES messaging_channel (id) ON DELETE CASCADE,
-    FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE,
-    FOREIGN KEY (media_file_path) REFERENCES file_metadata (path) ON DELETE SET NULL,
-    FOREIGN KEY (media_file_preview_path) REFERENCES file_metadata (path) ON DELETE SET NULL
+    FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE
 );

@@ -52,37 +52,37 @@ class SystemService final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status Version(::grpc::ClientContext* context, const ::e8::Empty& request, ::e8::VersionResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>> AsyncVersion(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) {
+    virtual ::grpc::Status Version(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::e8::VersionResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>> AsyncVersion(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>>(AsyncVersionRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>> PrepareAsyncVersion(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>> PrepareAsyncVersion(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>>(PrepareAsyncVersionRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
-      virtual void Version(::grpc::ClientContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Version(::grpc::ClientContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>* AsyncVersionRaw(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>* PrepareAsyncVersionRaw(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>* AsyncVersionRaw(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::VersionResponse>* PrepareAsyncVersionRaw(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    ::grpc::Status Version(::grpc::ClientContext* context, const ::e8::Empty& request, ::e8::VersionResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>> AsyncVersion(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) {
+    ::grpc::Status Version(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::e8::VersionResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>> AsyncVersion(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>>(AsyncVersionRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>> PrepareAsyncVersion(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>> PrepareAsyncVersion(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>>(PrepareAsyncVersionRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
-      void Version(::grpc::ClientContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response, std::function<void(::grpc::Status)>) override;
+      void Version(::grpc::ClientContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -94,8 +94,8 @@ class SystemService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>* AsyncVersionRaw(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>* PrepareAsyncVersionRaw(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>* AsyncVersionRaw(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>* PrepareAsyncVersionRaw(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Version_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -104,7 +104,7 @@ class SystemService final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response);
+    virtual ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Version : public BaseClass {
@@ -118,11 +118,11 @@ class SystemService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response) override {
+    ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestVersion(::grpc::ServerContext* context, ::e8::Empty* request, ::grpc::ServerAsyncResponseWriter< ::e8::VersionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestVersion(::grpc::ServerContext* context, ::e8::VersionResquest* request, ::grpc::ServerAsyncResponseWriter< ::e8::VersionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -139,7 +139,7 @@ class SystemService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response) override {
+    ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -156,7 +156,7 @@ class SystemService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response) override {
+    ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -171,18 +171,18 @@ class SystemService final {
    public:
     WithStreamedUnaryMethod_Version() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::Empty, ::e8::VersionResponse>(std::bind(&WithStreamedUnaryMethod_Version<BaseClass>::StreamedVersion, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::VersionResquest, ::e8::VersionResponse>(std::bind(&WithStreamedUnaryMethod_Version<BaseClass>::StreamedVersion, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_Version() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response) override {
+    ::grpc::Status Version(::grpc::ServerContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedVersion(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::Empty,::e8::VersionResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedVersion(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::VersionResquest,::e8::VersionResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_Version<Service > StreamedUnaryService;
   typedef Service SplitStreamedService;

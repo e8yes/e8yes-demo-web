@@ -19,12 +19,20 @@ syntax = "proto3";
 
 package e8;
 
-message VersionResponse {
-    string version = 1;
+import "file.proto";
+
+message ChatMessageEntry {
+    int64 thread_id = 1;
+    int64 message_id = 2;
+    int64 sender_id = 3;
+    repeated string messages = 4;
+    repeated FileTokenAccess media_file_accesses = 5;
+    int64 created_at = 6;
 }
 
-message VersionResquest {}
-
-service SystemService {
-    rpc Version (VersionResquest) returns (VersionResponse);
+message ChatMessageThread {
+    int64 thread_id = 1;
+    string thread_title = 2;
+    int64 created_at = 3;
+    repeated ChatMessageEntry messages = 4;
 }

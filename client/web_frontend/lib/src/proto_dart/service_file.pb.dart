@@ -9,12 +9,12 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'file.pb.dart' as $6;
+import 'file.pb.dart' as $8;
 
 class UploadFileRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UploadFileRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$6.FileDescriptor>(1, 'fileDescriptor', subBuilder: $6.FileDescriptor.create)
-    ..aOM<$6.FileChunk>(2, 'currentChunk', subBuilder: $6.FileChunk.create)
+    ..aOM<$8.FileDescriptor>(1, 'fileDescriptor', subBuilder: $8.FileDescriptor.create)
+    ..aOM<$8.FileChunk>(2, 'currentChunk', subBuilder: $8.FileChunk.create)
     ..hasRequiredFields = false
   ;
 
@@ -34,26 +34,26 @@ class UploadFileRequest extends $pb.GeneratedMessage {
   static UploadFileRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $6.FileDescriptor get fileDescriptor => $_getN(0);
+  $8.FileDescriptor get fileDescriptor => $_getN(0);
   @$pb.TagNumber(1)
-  set fileDescriptor($6.FileDescriptor v) { setField(1, v); }
+  set fileDescriptor($8.FileDescriptor v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasFileDescriptor() => $_has(0);
   @$pb.TagNumber(1)
   void clearFileDescriptor() => clearField(1);
   @$pb.TagNumber(1)
-  $6.FileDescriptor ensureFileDescriptor() => $_ensure(0);
+  $8.FileDescriptor ensureFileDescriptor() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $6.FileChunk get currentChunk => $_getN(1);
+  $8.FileChunk get currentChunk => $_getN(1);
   @$pb.TagNumber(2)
-  set currentChunk($6.FileChunk v) { setField(2, v); }
+  set currentChunk($8.FileChunk v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasCurrentChunk() => $_has(1);
   @$pb.TagNumber(2)
   void clearCurrentChunk() => clearField(2);
   @$pb.TagNumber(2)
-  $6.FileChunk ensureCurrentChunk() => $_ensure(1);
+  $8.FileChunk ensureCurrentChunk() => $_ensure(1);
 }
 
 class UploadFileResponse extends $pb.GeneratedMessage {
@@ -79,7 +79,7 @@ class UploadFileResponse extends $pb.GeneratedMessage {
 
 class DownloadFileRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DownloadFileRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$6.FileDescriptor>(1, 'fileDescriptor', subBuilder: $6.FileDescriptor.create)
+    ..aOM<$8.FileDescriptor>(1, 'fileDescriptor', subBuilder: $8.FileDescriptor.create)
     ..hasRequiredFields = false
   ;
 
@@ -99,21 +99,21 @@ class DownloadFileRequest extends $pb.GeneratedMessage {
   static DownloadFileRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $6.FileDescriptor get fileDescriptor => $_getN(0);
+  $8.FileDescriptor get fileDescriptor => $_getN(0);
   @$pb.TagNumber(1)
-  set fileDescriptor($6.FileDescriptor v) { setField(1, v); }
+  set fileDescriptor($8.FileDescriptor v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasFileDescriptor() => $_has(0);
   @$pb.TagNumber(1)
   void clearFileDescriptor() => clearField(1);
   @$pb.TagNumber(1)
-  $6.FileDescriptor ensureFileDescriptor() => $_ensure(0);
+  $8.FileDescriptor ensureFileDescriptor() => $_ensure(0);
 }
 
 class DownloadFileResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DownloadFileResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$6.FileDescriptor>(1, 'fileDescriptor', subBuilder: $6.FileDescriptor.create)
-    ..aOM<$6.FileChunk>(2, 'currentChunk', subBuilder: $6.FileChunk.create)
+    ..aOM<$8.FileDescriptor>(1, 'fileDescriptor', subBuilder: $8.FileDescriptor.create)
+    ..aOM<$8.FileChunk>(2, 'currentChunk', subBuilder: $8.FileChunk.create)
     ..hasRequiredFields = false
   ;
 
@@ -133,25 +133,25 @@ class DownloadFileResponse extends $pb.GeneratedMessage {
   static DownloadFileResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $6.FileDescriptor get fileDescriptor => $_getN(0);
+  $8.FileDescriptor get fileDescriptor => $_getN(0);
   @$pb.TagNumber(1)
-  set fileDescriptor($6.FileDescriptor v) { setField(1, v); }
+  set fileDescriptor($8.FileDescriptor v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasFileDescriptor() => $_has(0);
   @$pb.TagNumber(1)
   void clearFileDescriptor() => clearField(1);
   @$pb.TagNumber(1)
-  $6.FileDescriptor ensureFileDescriptor() => $_ensure(0);
+  $8.FileDescriptor ensureFileDescriptor() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $6.FileChunk get currentChunk => $_getN(1);
+  $8.FileChunk get currentChunk => $_getN(1);
   @$pb.TagNumber(2)
-  set currentChunk($6.FileChunk v) { setField(2, v); }
+  set currentChunk($8.FileChunk v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasCurrentChunk() => $_has(1);
   @$pb.TagNumber(2)
   void clearCurrentChunk() => clearField(2);
   @$pb.TagNumber(2)
-  $6.FileChunk ensureCurrentChunk() => $_ensure(1);
+  $8.FileChunk ensureCurrentChunk() => $_ensure(1);
 }
 

@@ -10,17 +10,17 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'nullable_primitives.pb.dart' as $5;
-import 'file.pb.dart' as $6;
-import 'user_relation.pb.dart' as $7;
+import 'nullable_primitives.pb.dart' as $7;
+import 'file.pb.dart' as $8;
+import 'user_relation.pb.dart' as $9;
 
 class UserPublicProfile extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UserPublicProfile', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'userId')
-    ..aOM<$5.NullableString>(2, 'alias', subBuilder: $5.NullableString.create)
-    ..aOM<$6.FileTokenAccess>(3, 'avatarReadonlyAccess', subBuilder: $6.FileTokenAccess.create)
-    ..aOM<$6.FileTokenAccess>(4, 'avatarPreviewReadonlyAccess', subBuilder: $6.FileTokenAccess.create)
-    ..pc<$7.UserRelationRecord>(5, 'relations', $pb.PbFieldType.PM, subBuilder: $7.UserRelationRecord.create)
+    ..aOM<$7.NullableString>(2, 'alias', subBuilder: $7.NullableString.create)
+    ..aOM<$8.FileTokenAccess>(3, 'avatarReadonlyAccess', subBuilder: $8.FileTokenAccess.create)
+    ..aOM<$8.FileTokenAccess>(4, 'avatarPreviewReadonlyAccess', subBuilder: $8.FileTokenAccess.create)
+    ..pc<$9.UserRelationRecord>(5, 'relations', $pb.PbFieldType.PM, subBuilder: $9.UserRelationRecord.create)
     ..aInt64(6, 'joinAt')
     ..hasRequiredFields = false
   ;
@@ -50,40 +50,40 @@ class UserPublicProfile extends $pb.GeneratedMessage {
   void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $5.NullableString get alias => $_getN(1);
+  $7.NullableString get alias => $_getN(1);
   @$pb.TagNumber(2)
-  set alias($5.NullableString v) { setField(2, v); }
+  set alias($7.NullableString v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasAlias() => $_has(1);
   @$pb.TagNumber(2)
   void clearAlias() => clearField(2);
   @$pb.TagNumber(2)
-  $5.NullableString ensureAlias() => $_ensure(1);
+  $7.NullableString ensureAlias() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $6.FileTokenAccess get avatarReadonlyAccess => $_getN(2);
+  $8.FileTokenAccess get avatarReadonlyAccess => $_getN(2);
   @$pb.TagNumber(3)
-  set avatarReadonlyAccess($6.FileTokenAccess v) { setField(3, v); }
+  set avatarReadonlyAccess($8.FileTokenAccess v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasAvatarReadonlyAccess() => $_has(2);
   @$pb.TagNumber(3)
   void clearAvatarReadonlyAccess() => clearField(3);
   @$pb.TagNumber(3)
-  $6.FileTokenAccess ensureAvatarReadonlyAccess() => $_ensure(2);
+  $8.FileTokenAccess ensureAvatarReadonlyAccess() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $6.FileTokenAccess get avatarPreviewReadonlyAccess => $_getN(3);
+  $8.FileTokenAccess get avatarPreviewReadonlyAccess => $_getN(3);
   @$pb.TagNumber(4)
-  set avatarPreviewReadonlyAccess($6.FileTokenAccess v) { setField(4, v); }
+  set avatarPreviewReadonlyAccess($8.FileTokenAccess v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasAvatarPreviewReadonlyAccess() => $_has(3);
   @$pb.TagNumber(4)
   void clearAvatarPreviewReadonlyAccess() => clearField(4);
   @$pb.TagNumber(4)
-  $6.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(3);
+  $8.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $core.List<$7.UserRelationRecord> get relations => $_getList(4);
+  $core.List<$9.UserRelationRecord> get relations => $_getList(4);
 
   @$pb.TagNumber(6)
   $fixnum.Int64 get joinAt => $_getI64(5);

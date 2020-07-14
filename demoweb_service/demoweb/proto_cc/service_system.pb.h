@@ -46,17 +46,17 @@ struct TableStruct {
 void AddDescriptors();
 }  // namespace protobuf_service_5fsystem_2eproto
 namespace e8 {
-class Empty;
-class EmptyDefaultTypeInternal;
-extern EmptyDefaultTypeInternal _Empty_default_instance_;
 class VersionResponse;
 class VersionResponseDefaultTypeInternal;
 extern VersionResponseDefaultTypeInternal _VersionResponse_default_instance_;
+class VersionResquest;
+class VersionResquestDefaultTypeInternal;
+extern VersionResquestDefaultTypeInternal _VersionResquest_default_instance_;
 }  // namespace e8
 namespace google {
 namespace protobuf {
-template<> ::e8::Empty* Arena::CreateMaybeMessage<::e8::Empty>(Arena*);
 template<> ::e8::VersionResponse* Arena::CreateMaybeMessage<::e8::VersionResponse>(Arena*);
+template<> ::e8::VersionResquest* Arena::CreateMaybeMessage<::e8::VersionResquest>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace e8 {
@@ -174,24 +174,24 @@ class VersionResponse : public ::google::protobuf::Message /* @@protoc_insertion
 };
 // -------------------------------------------------------------------
 
-class Empty : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.Empty) */ {
+class VersionResquest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.VersionResquest) */ {
  public:
-  Empty();
-  virtual ~Empty();
+  VersionResquest();
+  virtual ~VersionResquest();
 
-  Empty(const Empty& from);
+  VersionResquest(const VersionResquest& from);
 
-  inline Empty& operator=(const Empty& from) {
+  inline VersionResquest& operator=(const VersionResquest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  Empty(Empty&& from) noexcept
-    : Empty() {
+  VersionResquest(VersionResquest&& from) noexcept
+    : VersionResquest() {
     *this = ::std::move(from);
   }
 
-  inline Empty& operator=(Empty&& from) noexcept {
+  inline VersionResquest& operator=(VersionResquest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -201,34 +201,34 @@ class Empty : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Empty& default_instance();
+  static const VersionResquest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Empty* internal_default_instance() {
-    return reinterpret_cast<const Empty*>(
-               &_Empty_default_instance_);
+  static inline const VersionResquest* internal_default_instance() {
+    return reinterpret_cast<const VersionResquest*>(
+               &_VersionResquest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  void Swap(Empty* other);
-  friend void swap(Empty& a, Empty& b) {
+  void Swap(VersionResquest* other);
+  friend void swap(VersionResquest& a, VersionResquest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline Empty* New() const final {
-    return CreateMaybeMessage<Empty>(NULL);
+  inline VersionResquest* New() const final {
+    return CreateMaybeMessage<VersionResquest>(NULL);
   }
 
-  Empty* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<Empty>(arena);
+  VersionResquest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<VersionResquest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const Empty& from);
-  void MergeFrom(const Empty& from);
+  void CopyFrom(const VersionResquest& from);
+  void MergeFrom(const VersionResquest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -245,7 +245,7 @@ class Empty : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Empty* other);
+  void InternalSwap(VersionResquest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -261,7 +261,7 @@ class Empty : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:e8.Empty)
+  // @@protoc_insertion_point(class_scope:e8.VersionResquest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -334,7 +334,7 @@ inline void VersionResponse::set_allocated_version(::std::string* version) {
 
 // -------------------------------------------------------------------
 
-// Empty
+// VersionResquest
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop

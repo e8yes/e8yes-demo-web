@@ -25,11 +25,11 @@ class VersionResponseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<VersionResponse>
       _instance;
 } _VersionResponse_default_instance_;
-class EmptyDefaultTypeInternal {
+class VersionResquestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Empty>
+  ::google::protobuf::internal::ExplicitlyConstructed<VersionResquest>
       _instance;
-} _Empty_default_instance_;
+} _VersionResquest_default_instance_;
 }  // namespace e8
 namespace protobuf_service_5fsystem_2eproto {
 static void InitDefaultsVersionResponse() {
@@ -46,23 +46,23 @@ static void InitDefaultsVersionResponse() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_VersionResponse =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsVersionResponse}, {}};
 
-static void InitDefaultsEmpty() {
+static void InitDefaultsVersionResquest() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_Empty_default_instance_;
-    new (ptr) ::e8::Empty();
+    void* ptr = &::e8::_VersionResquest_default_instance_;
+    new (ptr) ::e8::VersionResquest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::Empty::InitAsDefaultInstance();
+  ::e8::VersionResquest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_Empty =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsEmpty}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_VersionResquest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsVersionResquest}, {}};
 
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_VersionResponse.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Empty.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_VersionResquest.base);
 }
 
 ::google::protobuf::Metadata file_level_metadata[2];
@@ -75,19 +75,19 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::VersionResponse, version_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Empty, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::VersionResquest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::VersionResponse)},
-  { 6, -1, sizeof(::e8::Empty)},
+  { 6, -1, sizeof(::e8::VersionResquest)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_VersionResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_Empty_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_VersionResquest_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -112,12 +112,12 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\024service_system.proto\022\002e8\"\"\n\017VersionRes"
-      "ponse\022\017\n\007version\030\001 \001(\t\"\007\n\005Empty2<\n\rSyste"
-      "mService\022+\n\007Version\022\t.e8.Empty\032\023.e8.Vers"
-      "ionResponse\"\000b\006proto3"
+      "ponse\022\017\n\007version\030\001 \001(\t\"\021\n\017VersionResques"
+      "t2D\n\rSystemService\0223\n\007Version\022\023.e8.Versi"
+      "onResquest\032\023.e8.VersionResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 141);
+      descriptor, 159);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_system.proto", &protobuf_RegisterTypes);
 }
@@ -379,52 +379,52 @@ void VersionResponse::InternalSwap(VersionResponse* other) {
 
 // ===================================================================
 
-void Empty::InitAsDefaultInstance() {
+void VersionResquest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Empty::Empty()
+VersionResquest::VersionResquest()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fsystem_2eproto::scc_info_Empty.base);
+      &protobuf_service_5fsystem_2eproto::scc_info_VersionResquest.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.Empty)
+  // @@protoc_insertion_point(constructor:e8.VersionResquest)
 }
-Empty::Empty(const Empty& from)
+VersionResquest::VersionResquest(const VersionResquest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:e8.Empty)
+  // @@protoc_insertion_point(copy_constructor:e8.VersionResquest)
 }
 
-void Empty::SharedCtor() {
+void VersionResquest::SharedCtor() {
 }
 
-Empty::~Empty() {
-  // @@protoc_insertion_point(destructor:e8.Empty)
+VersionResquest::~VersionResquest() {
+  // @@protoc_insertion_point(destructor:e8.VersionResquest)
   SharedDtor();
 }
 
-void Empty::SharedDtor() {
+void VersionResquest::SharedDtor() {
 }
 
-void Empty::SetCachedSize(int size) const {
+void VersionResquest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* Empty::descriptor() {
+const ::google::protobuf::Descriptor* VersionResquest::descriptor() {
   ::protobuf_service_5fsystem_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fsystem_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const Empty& Empty::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fsystem_2eproto::scc_info_Empty.base);
+const VersionResquest& VersionResquest::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fsystem_2eproto::scc_info_VersionResquest.base);
   return *internal_default_instance();
 }
 
 
-void Empty::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.Empty)
+void VersionResquest::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.VersionResquest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -432,11 +432,11 @@ void Empty::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool Empty::MergePartialFromCodedStream(
+bool VersionResquest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.Empty)
+  // @@protoc_insertion_point(parse_start:e8.VersionResquest)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -449,17 +449,17 @@ bool Empty::MergePartialFromCodedStream(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.Empty)
+  // @@protoc_insertion_point(parse_success:e8.VersionResquest)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.Empty)
+  // @@protoc_insertion_point(parse_failure:e8.VersionResquest)
   return false;
 #undef DO_
 }
 
-void Empty::SerializeWithCachedSizes(
+void VersionResquest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.Empty)
+  // @@protoc_insertion_point(serialize_start:e8.VersionResquest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -467,13 +467,13 @@ void Empty::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.Empty)
+  // @@protoc_insertion_point(serialize_end:e8.VersionResquest)
 }
 
-::google::protobuf::uint8* Empty::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* VersionResquest::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.Empty)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.VersionResquest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -481,12 +481,12 @@ void Empty::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.Empty)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.VersionResquest)
   return target;
 }
 
-size_t Empty::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.Empty)
+size_t VersionResquest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.VersionResquest)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -499,23 +499,23 @@ size_t Empty::ByteSizeLong() const {
   return total_size;
 }
 
-void Empty::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.Empty)
+void VersionResquest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.VersionResquest)
   GOOGLE_DCHECK_NE(&from, this);
-  const Empty* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Empty>(
+  const VersionResquest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const VersionResquest>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.Empty)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.VersionResquest)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.Empty)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.VersionResquest)
     MergeFrom(*source);
   }
 }
 
-void Empty::MergeFrom(const Empty& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.Empty)
+void VersionResquest::MergeFrom(const VersionResquest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.VersionResquest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -523,34 +523,34 @@ void Empty::MergeFrom(const Empty& from) {
 
 }
 
-void Empty::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.Empty)
+void VersionResquest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.VersionResquest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Empty::CopyFrom(const Empty& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.Empty)
+void VersionResquest::CopyFrom(const VersionResquest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.VersionResquest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Empty::IsInitialized() const {
+bool VersionResquest::IsInitialized() const {
   return true;
 }
 
-void Empty::Swap(Empty* other) {
+void VersionResquest::Swap(VersionResquest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void Empty::InternalSwap(Empty* other) {
+void VersionResquest::InternalSwap(VersionResquest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata Empty::GetMetadata() const {
+::google::protobuf::Metadata VersionResquest::GetMetadata() const {
   protobuf_service_5fsystem_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fsystem_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -563,8 +563,8 @@ namespace protobuf {
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::VersionResponse* Arena::CreateMaybeMessage< ::e8::VersionResponse >(Arena* arena) {
   return Arena::CreateInternal< ::e8::VersionResponse >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::Empty* Arena::CreateMaybeMessage< ::e8::Empty >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::Empty >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::VersionResquest* Arena::CreateMaybeMessage< ::e8::VersionResquest >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::VersionResquest >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

@@ -31,19 +31,19 @@ SystemService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   : channel_(channel), rpcmethod_Version_(SystemService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
-::grpc::Status SystemService::Stub::Version(::grpc::ClientContext* context, const ::e8::Empty& request, ::e8::VersionResponse* response) {
+::grpc::Status SystemService::Stub::Version(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::e8::VersionResponse* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Version_, context, request, response);
 }
 
-void SystemService::Stub::experimental_async::Version(::grpc::ClientContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response, std::function<void(::grpc::Status)> f) {
+void SystemService::Stub::experimental_async::Version(::grpc::ClientContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response, std::function<void(::grpc::Status)> f) {
   return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Version_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>* SystemService::Stub::AsyncVersionRaw(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>* SystemService::Stub::AsyncVersionRaw(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::VersionResponse>::Create(channel_.get(), cq, rpcmethod_Version_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>* SystemService::Stub::PrepareAsyncVersionRaw(::grpc::ClientContext* context, const ::e8::Empty& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::e8::VersionResponse>* SystemService::Stub::PrepareAsyncVersionRaw(::grpc::ClientContext* context, const ::e8::VersionResquest& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::VersionResponse>::Create(channel_.get(), cq, rpcmethod_Version_, context, request, false);
 }
 
@@ -51,14 +51,14 @@ SystemService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       SystemService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< SystemService::Service, ::e8::Empty, ::e8::VersionResponse>(
+      new ::grpc::internal::RpcMethodHandler< SystemService::Service, ::e8::VersionResquest, ::e8::VersionResponse>(
           std::mem_fn(&SystemService::Service::Version), this)));
 }
 
 SystemService::Service::~Service() {
 }
 
-::grpc::Status SystemService::Service::Version(::grpc::ServerContext* context, const ::e8::Empty* request, ::e8::VersionResponse* response) {
+::grpc::Status SystemService::Service::Version(::grpc::ServerContext* context, const ::e8::VersionResquest* request, ::e8::VersionResponse* response) {
   (void) context;
   (void) request;
   (void) response;

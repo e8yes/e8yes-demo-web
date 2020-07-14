@@ -1,0 +1,108 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "pagination.proto";
+import "message_channel.proto";
+import "user_profile.proto";
+
+message CreateMessageChannelRequest {
+    bool encrypted = 1;
+    // Optional if this channel isn't encrypted.
+    string public_key = 2;
+    string title = 3;
+}
+
+message CreateMessageChannelResponse {
+    int64 channel_id = 1;
+}
+
+
+message AddMemberToMessageChannelRequest {
+    int64 channel_id = 1;
+    int64 user_id = 2;
+}
+
+message AddMemberToMessageChannelResponse {}
+
+
+message GetMessageChannelKeyRequest {
+    int64 channel_id = 1;
+    int32 timeout_secs = 2;
+}
+
+message GetMessageChannelKeyResponse {
+    string channel_key = 3;
+}
+
+
+message LeaveMessageChannelRequest {
+    int64 channel_id = 1;
+}
+
+message LeaveMessageChannelResponse {}
+
+
+message GetJoinedMessageChannelsRequest {
+    Pagination pagination = 1;
+}
+
+message GetJoinedMessageChannelsResponse {
+    repeated MessageChannel channels = 1;
+}
+
+
+message GetMessageChannelMembersRequest {
+    int64 channel_id = 1;
+}
+
+message GetMessageChannelMembersResponse {
+    repeated UserPublicProfile user_profiles = 1;
+}
+
+
+service MessageChannelService {
+    // Create a new message channel. The logged-in user will be the 
+    // administrator of this channel.
+    rpc CreateMessageChannel (CreateMessageChannelRequest) returns 
+        (CreateMessageChannelResponse);
+
+    // Add a member to the specified channel where the logged-in user is the
+    // administrator.
+    rpc AddMemberToMessageChannel (AddMemberToMessageChannelRequest) returns
+        (AddMemberToMessageChannelResponse);
+
+    // Get an encryption key of the specified channel where the logged-in
+    // user is a member.
+    rpc GetMessageChannelKey (GetMessageChannelKeyRequest) returns
+        (GetMessageChannelKeyResponse);
+
+    // Remove the logged-in user from the specified channel.
+    rpc LeaveMessageChannel (LeaveMessageChannelRequest) returns
+        (LeaveMessageChannelResponse);
+
+    // Get a list of channels that the logged-in user is a member of.
+    rpc GetJoinedMessageChannels (GetJoinedMessageChannelsRequest) returns
+        (GetJoinedMessageChannelsResponse);
+
+    // Get information about the members in the specified channel.
+    rpc GetMessageChannelMembers (GetMessageChannelMembersRequest) 
+        returns (GetMessageChannelMembersResponse);
+}

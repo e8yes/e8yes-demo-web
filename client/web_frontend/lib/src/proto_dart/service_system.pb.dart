@@ -40,24 +40,24 @@ class VersionResponse extends $pb.GeneratedMessage {
   void clearVersion() => clearField(1);
 }
 
-class Empty extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Empty', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class VersionResquest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('VersionResquest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
-  Empty._() : super();
-  factory Empty() => create();
-  factory Empty.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Empty.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  Empty clone() => Empty()..mergeFromMessage(this);
-  Empty copyWith(void Function(Empty) updates) => super.copyWith((message) => updates(message as Empty));
+  VersionResquest._() : super();
+  factory VersionResquest() => create();
+  factory VersionResquest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory VersionResquest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  VersionResquest clone() => VersionResquest()..mergeFromMessage(this);
+  VersionResquest copyWith(void Function(VersionResquest) updates) => super.copyWith((message) => updates(message as VersionResquest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static Empty create() => Empty._();
-  Empty createEmptyInstance() => create();
-  static $pb.PbList<Empty> createRepeated() => $pb.PbList<Empty>();
+  static VersionResquest create() => VersionResquest._();
+  VersionResquest createEmptyInstance() => create();
+  static $pb.PbList<VersionResquest> createRepeated() => $pb.PbList<VersionResquest>();
   @$core.pragma('dart2js:noInline')
-  static Empty getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Empty>(create);
-  static Empty _defaultInstance;
+  static VersionResquest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<VersionResquest>(create);
+  static VersionResquest _defaultInstance;
 }
 

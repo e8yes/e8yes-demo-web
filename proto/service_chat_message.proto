@@ -19,12 +19,34 @@ syntax = "proto3";
 
 package e8;
 
-message VersionResponse {
-    string version = 1;
+import "pagination.proto";
+import "chat_message.proto";
+
+message SendChatMessageRequest {
+    int64 channel_id = 1;
+    ChatMessageEntry message = 2;
 }
 
-message VersionResquest {}
+message SendChatMessageResponse {
+    ChatMessageThread updated_thread = 1;
+}
 
-service SystemService {
-    rpc Version (VersionResquest) returns (VersionResponse);
+message GetChatMessageRequest {
+    int64 channel_id = 1;
+    Pagination pagination = 2;
+}
+
+message GetChatMessageResponse {
+    repeated ChatMessageThread threads = 1;
+}
+
+service ChatMessageService {
+    // Send a chat message to the message channel where the logged-in user
+    // is the sender.
+    rpc SendChatMessage (SendChatMessageRequest) returns 
+        (SendChatMessageResponse);
+
+    // Get a history of the chat messages in the specified message channel.
+    rpc GetChatMessage (GetChatMessageRequest) returns
+        (GetChatMessageResponse);
 }

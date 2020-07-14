@@ -38,6 +38,8 @@ HEADERS += \
     environment/prod_environment_context.h \
     module_socialnetwork/contact_invitation.h \
     module_socialnetwork/retrieve_contact.h \
+    proto_cc/chat_message.grpc.pb.h \
+    proto_cc/chat_message.pb.h \
     proto_cc/encryption_source.grpc.pb.h \
     proto_cc/encryption_source.pb.h \
     proto_cc/file.grpc.pb.h \
@@ -46,14 +48,22 @@ HEADERS += \
     proto_cc/identity.pb.h \
     proto_cc/invitation_status.grpc.pb.h \
     proto_cc/invitation_status.pb.h \
+    proto_cc/message_channel.grpc.pb.h \
+    proto_cc/message_channel.pb.h \
+    proto_cc/message_type.grpc.pb.h \
+    proto_cc/message_type.pb.h \
     proto_cc/nullable_primitives.grpc.pb.h \
     proto_cc/nullable_primitives.pb.h \
     proto_cc/pagination.grpc.pb.h \
     proto_cc/pagination.pb.h \
     proto_cc/permission.grpc.pb.h \
     proto_cc/permission.pb.h \
+    proto_cc/service_chat_message.grpc.pb.h \
+    proto_cc/service_chat_message.pb.h \
     proto_cc/service_file.grpc.pb.h \
     proto_cc/service_file.pb.h \
+    proto_cc/service_message_channel.grpc.pb.h \
+    proto_cc/service_message_channel.pb.h \
     proto_cc/service_socialnetwork.grpc.pb.h \
     proto_cc/service_socialnetwork.pb.h \
     proto_cc/service_system.grpc.pb.h \
@@ -88,6 +98,8 @@ SOURCES += \
     module_rbac/file_access_validator.cc \
     module_socialnetwork/contact_invitation.cc \
     module_socialnetwork/retrieve_contact.cc \
+    proto_cc/chat_message.grpc.pb.cc \
+    proto_cc/chat_message.pb.cc \
     proto_cc/encryption_source.grpc.pb.cc \
     proto_cc/encryption_source.pb.cc \
     proto_cc/file.grpc.pb.cc \
@@ -96,14 +108,22 @@ SOURCES += \
     proto_cc/identity.pb.cc \
     proto_cc/invitation_status.grpc.pb.cc \
     proto_cc/invitation_status.pb.cc \
+    proto_cc/message_channel.grpc.pb.cc \
+    proto_cc/message_channel.pb.cc \
+    proto_cc/message_type.grpc.pb.cc \
+    proto_cc/message_type.pb.cc \
     proto_cc/nullable_primitives.grpc.pb.cc \
     proto_cc/nullable_primitives.pb.cc \
     proto_cc/pagination.grpc.pb.cc \
     proto_cc/pagination.pb.cc \
     proto_cc/permission.grpc.pb.cc \
     proto_cc/permission.pb.cc \
+    proto_cc/service_chat_message.grpc.pb.cc \
+    proto_cc/service_chat_message.pb.cc \
     proto_cc/service_file.grpc.pb.cc \
     proto_cc/service_file.pb.cc \
+    proto_cc/service_message_channel.grpc.pb.cc \
+    proto_cc/service_message_channel.pb.cc \
     proto_cc/service_socialnetwork.grpc.pb.cc \
     proto_cc/service_socialnetwork.pb.cc \
     proto_cc/service_system.grpc.pb.cc \

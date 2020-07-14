@@ -19,12 +19,9 @@ syntax = "proto3";
 
 package e8;
 
-message VersionResponse {
-    string version = 1;
-}
-
-message VersionResquest {}
-
-service SystemService {
-    rpc Version (VersionResquest) returns (VersionResponse);
+enum MessageType {
+    MST_INVALID = 0;
+    MST_NOTIFICATION = 1;
+    MST_CHAT = 2;
+    MST_ACCOUNT_DATA = 3;
 }
