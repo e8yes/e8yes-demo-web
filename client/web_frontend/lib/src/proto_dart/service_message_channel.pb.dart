@@ -17,8 +17,7 @@ import 'user_profile.pb.dart' as $11;
 class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOB(1, 'encrypted')
-    ..aOS(2, 'publicKey')
-    ..aOS(3, 'title')
+    ..aOS(2, 'title')
     ..hasRequiredFields = false
   ;
 
@@ -47,22 +46,13 @@ class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   void clearEncrypted() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get publicKey => $_getSZ(1);
+  $core.String get title => $_getSZ(1);
   @$pb.TagNumber(2)
-  set publicKey($core.String v) { $_setString(1, v); }
+  set title($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasPublicKey() => $_has(1);
+  $core.bool hasTitle() => $_has(1);
   @$pb.TagNumber(2)
-  void clearPublicKey() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get title => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set title($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasTitle() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearTitle() => clearField(3);
+  void clearTitle() => clearField(2);
 }
 
 class CreateMessageChannelResponse extends $pb.GeneratedMessage {

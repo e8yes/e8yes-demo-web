@@ -25,9 +25,7 @@ import "user_profile.proto";
 
 message CreateMessageChannelRequest {
     bool encrypted = 1;
-    // Optional if this channel isn't encrypted.
-    string public_key = 2;
-    string title = 3;
+    string title = 2;
 }
 
 message CreateMessageChannelResponse {

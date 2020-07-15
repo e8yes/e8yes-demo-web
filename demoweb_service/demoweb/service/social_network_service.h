@@ -24,6 +24,9 @@
 
 namespace e8 {
 
+/**
+ * @brief The SocialNetworkServiceImpl class Service for user relation management.
+ */
 class SocialNetworkServiceImpl : public SocialNetworkService::Service {
   public:
     SocialNetworkServiceImpl() = default;

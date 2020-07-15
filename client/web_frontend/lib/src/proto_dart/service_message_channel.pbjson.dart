@@ -9,8 +9,7 @@ const CreateMessageChannelRequest$json = const {
   '1': 'CreateMessageChannelRequest',
   '2': const [
     const {'1': 'encrypted', '3': 1, '4': 1, '5': 8, '10': 'encrypted'},
-    const {'1': 'public_key', '3': 2, '4': 1, '5': 9, '10': 'publicKey'},
-    const {'1': 'title', '3': 3, '4': 1, '5': 9, '10': 'title'},
+    const {'1': 'title', '3': 2, '4': 1, '5': 9, '10': 'title'},
   ],
 };
 

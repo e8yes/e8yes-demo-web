@@ -193,23 +193,9 @@ class CreateMessageChannelRequest : public ::google::protobuf::Message /* @@prot
 
   // accessors -------------------------------------------------------
 
-  // string public_key = 2;
-  void clear_public_key();
-  static const int kPublicKeyFieldNumber = 2;
-  const ::std::string& public_key() const;
-  void set_public_key(const ::std::string& value);
-  #if LANG_CXX11
-  void set_public_key(::std::string&& value);
-  #endif
-  void set_public_key(const char* value);
-  void set_public_key(const char* value, size_t size);
-  ::std::string* mutable_public_key();
-  ::std::string* release_public_key();
-  void set_allocated_public_key(::std::string* public_key);
-
-  // string title = 3;
+  // string title = 2;
   void clear_title();
-  static const int kTitleFieldNumber = 3;
+  static const int kTitleFieldNumber = 2;
   const ::std::string& title() const;
   void set_title(const ::std::string& value);
   #if LANG_CXX11
@@ -231,7 +217,6 @@ class CreateMessageChannelRequest : public ::google::protobuf::Message /* @@prot
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr public_key_;
   ::google::protobuf::internal::ArenaStringPtr title_;
   bool encrypted_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -1421,60 +1406,7 @@ inline void CreateMessageChannelRequest::set_encrypted(bool value) {
   // @@protoc_insertion_point(field_set:e8.CreateMessageChannelRequest.encrypted)
 }
 
-// string public_key = 2;
-inline void CreateMessageChannelRequest::clear_public_key() {
-  public_key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& CreateMessageChannelRequest::public_key() const {
-  // @@protoc_insertion_point(field_get:e8.CreateMessageChannelRequest.public_key)
-  return public_key_.GetNoArena();
-}
-inline void CreateMessageChannelRequest::set_public_key(const ::std::string& value) {
-  
-  public_key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.CreateMessageChannelRequest.public_key)
-}
-#if LANG_CXX11
-inline void CreateMessageChannelRequest::set_public_key(::std::string&& value) {
-  
-  public_key_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.CreateMessageChannelRequest.public_key)
-}
-#endif
-inline void CreateMessageChannelRequest::set_public_key(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  public_key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.CreateMessageChannelRequest.public_key)
-}
-inline void CreateMessageChannelRequest::set_public_key(const char* value, size_t size) {
-  
-  public_key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.CreateMessageChannelRequest.public_key)
-}
-inline ::std::string* CreateMessageChannelRequest::mutable_public_key() {
-  
-  // @@protoc_insertion_point(field_mutable:e8.CreateMessageChannelRequest.public_key)
-  return public_key_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* CreateMessageChannelRequest::release_public_key() {
-  // @@protoc_insertion_point(field_release:e8.CreateMessageChannelRequest.public_key)
-  
-  return public_key_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void CreateMessageChannelRequest::set_allocated_public_key(::std::string* public_key) {
-  if (public_key != NULL) {
-    
-  } else {
-    
-  }
-  public_key_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), public_key);
-  // @@protoc_insertion_point(field_set_allocated:e8.CreateMessageChannelRequest.public_key)
-}
-
-// string title = 3;
+// string title = 2;
 inline void CreateMessageChannelRequest::clear_title() {
   title_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
