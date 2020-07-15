@@ -22,8 +22,8 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module_identity/create_user.h"
-#include "demoweb_service/demoweb/module_rbac/system_user_group.h"
+#include "demoweb_service/demoweb/module/create_user.h"
+#include "demoweb_service/demoweb/module/system_user_group.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 class create_user_test : public QObject {

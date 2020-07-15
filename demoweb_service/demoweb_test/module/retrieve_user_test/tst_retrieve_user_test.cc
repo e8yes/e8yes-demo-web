@@ -21,9 +21,9 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module_identity/create_user.h"
-#include "demoweb_service/demoweb/module_identity/retrieve_user.h"
-#include "demoweb_service/demoweb/module_profile/user_profile.h"
+#include "demoweb_service/demoweb/module/create_user.h"
+#include "demoweb_service/demoweb/module/retrieve_user.h"
+#include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 

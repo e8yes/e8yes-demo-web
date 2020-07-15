@@ -20,24 +20,24 @@ HEADERS += \
     common_entity/user_group_entity.h \
     common_entity/user_group_has_file_entity.h \
     constant/context_key.h \
+    constant/demoweb_database.h \
     constant/file_path.h \
     constant/pagination.h \
-    module_file/file_util.h \
-    module_identity/create_user.h \
-    module_identity/retrieve_user.h \
-    module_identity/user_identity.h \
-    module_profile/user_profile.h \
-    module_file/file_io.h \
-    module_file/file_metadata.h \
-    module_rbac/file_access_validator.h \
-    module_rbac/system_user_group.h \
     environment/environment_context_interface.h \
-    environment/test_environment_context.h \
-    constant/demoweb_database.h \
     environment/host_id.h \
     environment/prod_environment_context.h \
-    module_socialnetwork/contact_invitation.h \
-    module_socialnetwork/retrieve_contact.h \
+    environment/test_environment_context.h \
+    module/contact_invitation.h \
+    module/create_user.h \
+    module/file_access_validator.h \
+    module/file_io.h \
+    module/file_metadata.h \
+    module/file_util.h \
+    module/retrieve_contact.h \
+    module/retrieve_user.h \
+    module/system_user_group.h \
+    module/user_identity.h \
+    module/user_profile.h \
     proto_cc/chat_message.grpc.pb.h \
     proto_cc/chat_message.pb.h \
     proto_cc/encryption_source.grpc.pb.h \
@@ -78,26 +78,27 @@ HEADERS += \
     service/service_util.h \
     service/social_network_service.h \
     service/user_service.h
+
 SOURCES += \
     common_entity/contact_relation_entity.cc \
     common_entity/file_metadata_entity.cc \
     common_entity/user_entity.cc \
     common_entity/user_group_entity.cc \
     common_entity/user_group_has_file_entity.cc \
-    module_file/file_util.cc \
-    module_identity/create_user.cc \
-    module_identity/retrieve_user.cc \
     environment/environment_context_interface.cc \
-    environment/test_environment_context.cc \
     environment/host_id.cc \
     environment/prod_environment_context.cc \
-    module_identity/user_identity.cc \
-    module_profile/user_profile.cc \
-    module_file/file_io.cc \
-    module_file/file_metadata.cc \
-    module_rbac/file_access_validator.cc \
-    module_socialnetwork/contact_invitation.cc \
-    module_socialnetwork/retrieve_contact.cc \
+    environment/test_environment_context.cc \
+    module/contact_invitation.cc \
+    module/create_user.cc \
+    module/file_access_validator.cc \
+    module/file_io.cc \
+    module/file_metadata.cc \
+    module/file_util.cc \
+    module/retrieve_contact.cc \
+    module/retrieve_user.cc \
+    module/user_identity.cc \
+    module/user_profile.cc \
     proto_cc/chat_message.grpc.pb.cc \
     proto_cc/chat_message.pb.cc \
     proto_cc/encryption_source.grpc.pb.cc \
@@ -138,6 +139,7 @@ SOURCES += \
     service/service_util.cc \
     service/social_network_service.cc \
     service/user_service.cc
+
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 

@@ -23,7 +23,7 @@
 
 #include "demoweb_service/demoweb/common_entity/file_metadata_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
-#include "demoweb_service/demoweb/module_file/file_metadata.h"
+#include "demoweb_service/demoweb/module/file_metadata.h"
 #include "demoweb_service/demoweb/proto_cc/encryption_source.pb.h"
 #include "demoweb_service/demoweb/proto_cc/file.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"

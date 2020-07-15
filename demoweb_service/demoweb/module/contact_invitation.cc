@@ -22,7 +22,7 @@
 #include "demoweb_service/demoweb/common_entity/contact_relation_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
-#include "demoweb_service/demoweb/module_socialnetwork/contact_invitation.h"
+#include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/proto_cc/user_relation.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_runner.h"

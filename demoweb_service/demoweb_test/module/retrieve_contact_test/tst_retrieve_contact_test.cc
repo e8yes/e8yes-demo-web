@@ -21,9 +21,9 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module_identity/create_user.h"
-#include "demoweb_service/demoweb/module_socialnetwork/contact_invitation.h"
-#include "demoweb_service/demoweb/module_socialnetwork/retrieve_contact.h"
+#include "demoweb_service/demoweb/module/contact_invitation.h"
+#include "demoweb_service/demoweb/module/create_user.h"
+#include "demoweb_service/demoweb/module/retrieve_contact.h"
 #include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "demoweb_service/demoweb/proto_cc/user_relation.pb.h"
 

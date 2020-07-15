@@ -27,7 +27,7 @@
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "demoweb_service/demoweb/module_identity/user_identity.h"
+#include "demoweb_service/demoweb/module/user_identity.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/sign_message.h"

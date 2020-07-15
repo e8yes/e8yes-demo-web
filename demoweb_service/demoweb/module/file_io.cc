@@ -15,35 +15,6 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <optional>
-#include <string>
+#include "demoweb_service/demoweb/module/file_io.h"
 
-#include "demoweb_service/demoweb/module_file/file_util.h"
-#include "demoweb_service/demoweb/proto_cc/file.pb.h"
-
-namespace e8 {
-
-std::optional<std::string> FileFormatSuffix(FileFormat file_format) {
-    switch (file_format) {
-    case FFMT_UNKNOWN:
-        return std::nullopt;
-    case FFMT_AUDIO_MP3:
-        return "mp3";
-    case FFMT_AUDIO_OGG:
-        return "ogg";
-    case FFMT_IMAGE_PNG:
-        return "png";
-    case FFMT_VIDEO_GIF:
-        return "gif";
-    case FFMT_VIDEO_OGV:
-        return "ogv";
-    case FFMT_IMAGE_JPEG:
-        return "jpeg";
-    case FFMT_VIDEO_MPEG4:
-        return "mp4";
-    default:
-        return std::nullopt;
-    }
-}
-
-} // namespace e8
+namespace e8 {}

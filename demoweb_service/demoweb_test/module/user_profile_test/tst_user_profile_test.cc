@@ -18,7 +18,7 @@
 #include <QtTest>
 #include <string>
 
-#include "demoweb_service/demoweb/module_profile/user_profile.h"
+#include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/proto_cc/file.pb.h"
 
 class user_profile_test : public QObject {

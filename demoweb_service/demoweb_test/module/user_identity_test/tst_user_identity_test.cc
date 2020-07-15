@@ -21,7 +21,7 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module_identity/user_identity.h"
+#include "demoweb_service/demoweb/module/user_identity.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 
 class user_identity_test : public QObject {

@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "demoweb_service/demoweb/module_rbac/file_access_validator.h"
+#include "demoweb_service/demoweb/module/file_access_validator.h"
 #include "demoweb_service/demoweb/proto_cc/file.pb.h"
 #include "demoweb_service/demoweb/proto_cc/user_profile.pb.h"
 #include "keygen/key_generator_interface.h"

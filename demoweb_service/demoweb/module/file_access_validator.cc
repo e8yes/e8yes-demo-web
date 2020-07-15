@@ -25,7 +25,7 @@
 #include "demoweb_service/demoweb/common_entity/user_group_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_group_has_file_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
-#include "demoweb_service/demoweb/module_rbac/file_access_validator.h"
+#include "demoweb_service/demoweb/module/file_access_validator.h"
 #include "demoweb_service/demoweb/proto_cc/file.pb.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
