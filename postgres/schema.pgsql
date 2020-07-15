@@ -104,26 +104,27 @@ CREATE TABLE IF NOT EXISTS contact_relation (
 
 
 /* Messaging channel */
-CREATE SEQUENCE IF NOT EXISTS messaging_channel_id_seq
+CREATE SEQUENCE IF NOT EXISTS message_channel_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE IF NOT EXISTS messaging_channel (
-    id BIGINT NOT NULL DEFAULT nextval('messaging_channel_id_seq'),
-    channel_name CHARACTER VARYING(40),
+CREATE TABLE IF NOT EXISTS message_channel (
+    id BIGINT NOT NULL DEFAULT nextval('message_channel_id_seq'),
+    channel_name CHARACTER VARYING(40) NULL,
+    encryption_enabled BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS messaging_channel_has_user (
+CREATE TABLE IF NOT EXISTS message_channel_has_user (
     channel_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     ownership INT NOT NULL,
     PRIMARY KEY (channel_id, user_id),
-    FOREIGN KEY (channel_id) REFERENCES messaging_channel (id) ON DELETE CASCADE,
+    FOREIGN KEY (channel_id) REFERENCES message_channel (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES auser (id) ON DELETE CASCADE
 );
 
@@ -140,11 +141,11 @@ CREATE TABLE IF NOT EXISTS message (
     id BIGINT NOT NULL DEFAULT nextval('message_id_seq'),
     channel_id BIGINT NOT NULL,
     sender_id BIGINT NOT NULL,
-    encrypted_content CHARACTER VARYING [],
+    encrypted_content CHARACTER VARYING [] NULL,
     media_file_path CHARACTER VARYING(128) [] NULL,
     media_file_preview_path CHARACTER VARYING(128) [] NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (channel_id) REFERENCES messaging_channel (id) ON DELETE CASCADE,
+    FOREIGN KEY (channel_id) REFERENCES message_channel (id) ON DELETE CASCADE,
     FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE
 );

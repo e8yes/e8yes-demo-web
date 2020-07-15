@@ -50,7 +50,7 @@ std::optional<UserEntity> CreateUser(std::string const &security_key,
     *user.group_names.ValuePtr() = user_group_names;
     *user.active_level.ValuePtr() = 0;
 
-    time_t timestamp;
+    std::time_t timestamp;
     std::time(&timestamp);
     *user.created_at.ValuePtr() = timestamp;
 

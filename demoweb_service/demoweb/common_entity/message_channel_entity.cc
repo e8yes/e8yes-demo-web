@@ -22,18 +22,20 @@
 namespace e8 {
 
 MessageChannelEntity::MessageChannelEntity()
-    : SqlEntityInterface({&id, &channel_name, &created_at}) {}
+    : SqlEntityInterface({&id, &channel_name, &encryption_enabled, &created_at}) {}
 
 MessageChannelEntity::MessageChannelEntity(MessageChannelEntity const &other)
     : MessageChannelEntity() {
     id = other.id;
     channel_name = other.channel_name;
+    encryption_enabled = other.encryption_enabled;
     created_at = other.created_at;
 }
 
 MessageChannelEntity &MessageChannelEntity::operator=(MessageChannelEntity const &other) {
     id = other.id;
     channel_name = other.channel_name;
+    encryption_enabled = other.encryption_enabled;
     created_at = other.created_at;
     return *this;
 }

@@ -41,6 +41,7 @@ class MessageChannelEntity : public SqlEntityInterface {
 
     SqlLong id = SqlLong("id");
     SqlStr channel_name = SqlStr("channel_name");
+    SqlBool encryption_enabled = SqlBool("encryption_enabled");
     SqlTimestamp created_at = SqlTimestamp("created_at");
 };
 
