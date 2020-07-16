@@ -28,6 +28,7 @@
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/environment/prod_environment_context.h"
 #include "demoweb_service/demoweb/service/file_service.h"
+#include "demoweb_service/demoweb/service/message_channel_service.h"
 #include "demoweb_service/demoweb/service/social_network_service.h"
 #include "demoweb_service/demoweb/service/user_service.h"
 
@@ -44,6 +45,7 @@ static int const kDefaultPort = 50051;
 static e8::UserServiceImpl gUserService;
 static e8::FileServiceImpl gFileService;
 static e8::SocialNetworkServiceImpl gSocialNetworkService;
+static e8::MessageChannelServiceImpl gMessageChannelService;
 
 std::optional<std::string> ScanFlag(int argc, char *argv[], std::string const &flag) {
     std::string expected_flag_prefix = "--" + flag + "=";
@@ -102,6 +104,7 @@ int main(int argc, char *argv[]) {
     builder.RegisterService(&gUserService);
     builder.RegisterService(&gFileService);
     builder.RegisterService(&gSocialNetworkService);
+    builder.RegisterService(&gMessageChannelService);
 
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;
@@ -112,7 +115,8 @@ int main(int argc, char *argv[]) {
         std::string cmd = grpc_web_proxy.value() +
                           " --backend_addr=localhost:50051 --run_tls_server=false "
                           "--server_http_debug_port=8000 --allow_all_origins &";
-        std::system(cmd.c_str());
+        int _ = std::system(cmd.c_str());
+        (void)_;
     }
 
     server->Wait();

@@ -16,6 +16,8 @@ INCLUDEPATH += $$PWD/../../
 HEADERS += \
     common_entity/contact_relation_entity.h \
     common_entity/file_metadata_entity.h \
+    common_entity/message_channel_entity.h \
+    common_entity/message_channel_has_user_entity.h \
     common_entity/user_entity.h \
     common_entity/user_group_entity.h \
     common_entity/user_group_has_file_entity.h \
@@ -33,6 +35,7 @@ HEADERS += \
     module/file_io.h \
     module/file_metadata.h \
     module/file_util.h \
+    module/message_channel.h \
     module/retrieve_contact.h \
     module/retrieve_user.h \
     module/system_user_group.h \
@@ -75,6 +78,7 @@ HEADERS += \
     proto_cc/user_relation.grpc.pb.h \
     proto_cc/user_relation.pb.h \
     service/file_service.h \
+    service/message_channel_service.h \
     service/service_util.h \
     service/social_network_service.h \
     service/user_service.h
@@ -82,6 +86,8 @@ HEADERS += \
 SOURCES += \
     common_entity/contact_relation_entity.cc \
     common_entity/file_metadata_entity.cc \
+    common_entity/message_channel_entity.cc \
+    common_entity/message_channel_has_user_entity.cc \
     common_entity/user_entity.cc \
     common_entity/user_group_entity.cc \
     common_entity/user_group_has_file_entity.cc \
@@ -95,6 +101,7 @@ SOURCES += \
     module/file_io.cc \
     module/file_metadata.cc \
     module/file_util.cc \
+    module/message_channel.cc \
     module/retrieve_contact.cc \
     module/retrieve_user.cc \
     module/user_identity.cc \
@@ -136,6 +143,7 @@ SOURCES += \
     proto_cc/user_relation.grpc.pb.cc \
     proto_cc/user_relation.pb.cc \
     service/file_service.cc \
+    service/message_channel_service.cc \
     service/service_util.cc \
     service/social_network_service.cc \
     service/user_service.cc
