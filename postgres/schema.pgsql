@@ -87,13 +87,30 @@ CREATE TABLE IF NOT EXISTS auser (
     group_names CHARACTER VARYING(60) [] NULL,
     active_level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    search_terms tsvector,
     PRIMARY KEY (id),
     FOREIGN KEY (avatar_path) REFERENCES file_metadata (path) ON DELETE SET NULL,
     FOREIGN KEY (avatar_preview_path) REFERENCES file_metadata (path) ON DELETE SET NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_auser_id_str ON auser USING btree (id_str);
-CREATE INDEX IF NOT EXISTS idx_auser_alias ON auser USING btree (alias);
+DROP FUNCTION IF EXISTS update_auser_search_terms CASCADE;
+CREATE FUNCTION update_auser_search_terms() RETURNS trigger AS $$
+begin
+  new.search_terms :=
+    setweight(to_tsvector(coalesce(new.id_str,'')), 'A') ||
+    setweight(to_tsvector(coalesce(new.alias,'')), 'A') ||
+    setweight(to_tsvector(coalesce(new.biography,'')), 'B');
+  return new;
+end
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER upsert_auser
+    BEFORE INSERT OR UPDATE
+    ON auser
+    FOR EACH ROW 
+    EXECUTE PROCEDURE update_auser_search_terms();
+
+CREATE INDEX IF NOT EXISTS auser_search_terms ON auser USING gin (search_terms);
 
 
 /* Directed contact relations */
@@ -101,12 +118,31 @@ CREATE TABLE IF NOT EXISTS contact_relation (
     src_user_id BIGINT NOT NULL,
     dst_user_id BIGINT NOT NULL,
     relation INT NOT NULL DEFAULT 0,
+    description CHARACTER VARYING(4096) NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    search_terms tsvector,
     PRIMARY KEY (src_user_id, dst_user_id, relation),
     FOREIGN KEY (src_user_id) REFERENCES auser (id) ON DELETE CASCADE,
     FOREIGN KEY (dst_user_id) REFERENCES auser (id) ON DELETE CASCADE
 );
+
+DROP FUNCTION IF EXISTS update_contact_relation_search_terms CASCADE;
+CREATE FUNCTION update_contact_relation_search_terms() RETURNS trigger AS $$
+begin
+  new.search_terms :=
+    setweight(to_tsvector(coalesce(new.description,'')), 'A');
+  return new;
+end
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER upsert_contact_relation
+    BEFORE INSERT OR UPDATE
+    ON contact_relation
+    FOR EACH ROW 
+    EXECUTE PROCEDURE update_contact_relation_search_terms();
+
+CREATE INDEX IF NOT EXISTS contact_relation_search_terms ON contact_relation USING gin (search_terms);
 
 
 /* Messaging channel */
@@ -120,16 +156,37 @@ CREATE SEQUENCE IF NOT EXISTS message_channel_id_seq
 CREATE TABLE IF NOT EXISTS message_channel (
     id BIGINT NOT NULL DEFAULT nextval('message_channel_id_seq'),
     channel_name CHARACTER VARYING(40) NULL,
+    description CHARACTER VARYING(4096) NULL,
     encryption_enabled BOOLEAN NOT NULL DEFAULT FALSE,
     close_group_channel BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    search_terms tsvector,
     PRIMARY KEY (id)
 );
+
+DROP FUNCTION IF EXISTS update_message_channel_search_terms CASCADE;
+CREATE FUNCTION update_message_channel_search_terms() RETURNS trigger AS $$
+begin
+  new.search_terms :=
+    setweight(to_tsvector(coalesce(new.channel_name,'')), 'A') ||
+    setweight(to_tsvector(coalesce(new.description,'')), 'B');
+  return new;
+end
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER upsert_message_channel
+    BEFORE INSERT OR UPDATE
+    ON message_channel 
+    FOR EACH ROW 
+    EXECUTE PROCEDURE update_message_channel_search_terms();
+
+CREATE INDEX IF NOT EXISTS message_channel_search_terms ON message_channel USING gin (search_terms);
+
 
 CREATE TABLE IF NOT EXISTS message_channel_has_user (
     channel_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
-    ownership INT NOT NULL,
+    ownership INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (channel_id, user_id),
@@ -150,12 +207,30 @@ CREATE TABLE IF NOT EXISTS message (
     id BIGINT NOT NULL DEFAULT nextval('message_id_seq'),
     channel_id BIGINT NOT NULL,
     sender_id BIGINT NOT NULL,
-    encrypted_content CHARACTER VARYING [] NULL,
+    text_content CHARACTER VARYING [] NULL,
     media_file_path CHARACTER VARYING(128) [] NULL,
     media_file_preview_path CHARACTER VARYING(128) [] NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    search_terms tsvector,
     PRIMARY KEY (id),
     FOREIGN KEY (channel_id) REFERENCES message_channel (id) ON DELETE CASCADE,
     FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE
 );
+
+DROP FUNCTION IF EXISTS update_message_search_terms CASCADE;
+CREATE FUNCTION update_message_search_terms() RETURNS trigger AS $$
+begin
+  new.search_terms :=
+    setweight(to_tsvector(coalesce(new.text_content,'')), 'A');
+  return new;
+end
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER upsert_message
+    BEFORE INSERT OR UPDATE
+    ON message 
+    FOR EACH ROW 
+    EXECUTE PROCEDURE update_message_search_terms();
+
+CREATE INDEX IF NOT EXISTS message_search_terms ON message USING gin (search_terms);
