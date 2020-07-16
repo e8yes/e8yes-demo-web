@@ -73,6 +73,9 @@ message GetMessageChannelMembersRequest {
 
 message GetMessageChannelMembersResponse {
     repeated UserPublicProfile user_profiles = 1;
+    // Amend the channel user type information to the above user list,
+    // keyed by user ID.
+    map<int64, MessageChannelUserType> user_types = 2;
 }
 
 

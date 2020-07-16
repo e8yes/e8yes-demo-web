@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2020-07-14T10:12:22. -->
+<!-- Written by QtCreator 4.11.0, 2020-07-15T00:30:45. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -434,8 +434,8 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/keygen/persistent_keygen_test/persistent_keygen_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/keygen/persistent_keygen_test/persistent_keygen_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/keygen/sign_message_test/sign_message_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/keygen/sign_message_test/sign_message_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -446,7 +446,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/keygen/persistent_keygen_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/keygen/sign_message_test</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.11">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -508,8 +508,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_identity/retrieve_user_test/retrieve_user_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_identity/retrieve_user_test/retrieve_user_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">contact_invitation_test2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/contact_invitation_test/contact_invitation_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/contact_invitation_test/contact_invitation_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -520,7 +521,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module_identity/retrieve_user_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module/contact_invitation_test</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.12">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -582,8 +583,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_identity/user_identity_test/user_identity_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_identity/user_identity_test/user_identity_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">create_user_test2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/create_user_test/create_user_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/create_user_test/create_user_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -594,7 +596,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module_identity/user_identity_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module/create_user_test</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.13">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -656,8 +658,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/keygen/sign_message_test/sign_message_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/keygen/sign_message_test/sign_message_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">file_access_validator_test2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/file_access_validator_test/file_access_validator_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/file_access_validator_test/file_access_validator_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -668,7 +671,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/keygen/sign_message_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module/file_access_validator_test</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.14">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -730,8 +733,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_rbac/file_access_validator_test/file_access_validator_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_rbac/file_access_validator_test/file_access_validator_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">retrieve_contact_test2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/retrieve_contact_test/retrieve_contact_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/retrieve_contact_test/retrieve_contact_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -742,7 +746,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module_rbac/file_access_validator_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module/retrieve_contact_test</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.15">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -804,8 +808,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_socialnetwork/contact_invitation_test/contact_invitation_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_socialnetwork/contact_invitation_test/contact_invitation_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">retrieve_user_test2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/retrieve_user_test/retrieve_user_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/retrieve_user_test/retrieve_user_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -816,7 +821,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module_socialnetwork/contact_invitation_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module/retrieve_user_test</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.16">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -878,8 +883,9 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_socialnetwork/retrieve_contact_test/retrieve_contact_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_socialnetwork/retrieve_contact_test/retrieve_contact_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">user_identity_test2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/user_identity_test/user_identity_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/user_identity_test/user_identity_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -890,7 +896,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module_socialnetwork/retrieve_contact_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module/user_identity_test</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.17">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -952,9 +958,8 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">user_profile_test2</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_profile/user_profile_test/user_profile_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_profile/user_profile_test/user_profile_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/user_profile_test/user_profile_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module/user_profile_test/user_profile_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -965,7 +970,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module_profile/user_profile_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module/user_profile_test</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.2">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -1545,8 +1550,8 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_identity/create_user_test/create_user_test.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb_test/module_identity/create_user_test/create_user_test.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/keygen/persistent_keygen_test/persistent_keygen_test.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/keygen/persistent_keygen_test/persistent_keygen_test.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1557,7 +1562,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/demoweb_service/demoweb_test/module_identity/create_user_test</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Release/keygen/persistent_keygen_test</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">18</value>
   </valuemap>

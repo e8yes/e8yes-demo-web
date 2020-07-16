@@ -29,6 +29,9 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/map.h>  // IWYU pragma: export
+#include <google/protobuf/map_entry.h>
+#include <google/protobuf/map_field_inl.h>
 #include <google/protobuf/unknown_field_set.h>
 #include "pagination.pb.h"
 #include "message_channel.pb.h"
@@ -41,7 +44,7 @@ namespace protobuf_service_5fmessage_5fchannel_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[12];
+  static const ::google::protobuf::internal::ParseTable schema[13];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -79,6 +82,9 @@ extern GetMessageChannelMembersRequestDefaultTypeInternal _GetMessageChannelMemb
 class GetMessageChannelMembersResponse;
 class GetMessageChannelMembersResponseDefaultTypeInternal;
 extern GetMessageChannelMembersResponseDefaultTypeInternal _GetMessageChannelMembersResponse_default_instance_;
+class GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse;
+class GetMessageChannelMembersResponse_UserTypesEntry_DoNotUseDefaultTypeInternal;
+extern GetMessageChannelMembersResponse_UserTypesEntry_DoNotUseDefaultTypeInternal _GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse_default_instance_;
 class LeaveMessageChannelRequest;
 class LeaveMessageChannelRequestDefaultTypeInternal;
 extern LeaveMessageChannelRequestDefaultTypeInternal _LeaveMessageChannelRequest_default_instance_;
@@ -98,6 +104,7 @@ template<> ::e8::GetMessageChannelKeyRequest* Arena::CreateMaybeMessage<::e8::Ge
 template<> ::e8::GetMessageChannelKeyResponse* Arena::CreateMaybeMessage<::e8::GetMessageChannelKeyResponse>(Arena*);
 template<> ::e8::GetMessageChannelMembersRequest* Arena::CreateMaybeMessage<::e8::GetMessageChannelMembersRequest>(Arena*);
 template<> ::e8::GetMessageChannelMembersResponse* Arena::CreateMaybeMessage<::e8::GetMessageChannelMembersResponse>(Arena*);
+template<> ::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse* Arena::CreateMaybeMessage<::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse>(Arena*);
 template<> ::e8::LeaveMessageChannelRequest* Arena::CreateMaybeMessage<::e8::LeaveMessageChannelRequest>(Arena*);
 template<> ::e8::LeaveMessageChannelResponse* Arena::CreateMaybeMessage<::e8::LeaveMessageChannelResponse>(Arena*);
 }  // namespace protobuf
@@ -1274,6 +1281,27 @@ class GetMessageChannelMembersRequest : public ::google::protobuf::Message /* @@
 };
 // -------------------------------------------------------------------
 
+class GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse : public ::google::protobuf::internal::MapEntry<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse, 
+    ::google::protobuf::int64, ::e8::MessageChannelUserType,
+    ::google::protobuf::internal::WireFormatLite::TYPE_INT64,
+    ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
+    0 > {
+public:
+  typedef ::google::protobuf::internal::MapEntry<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse, 
+    ::google::protobuf::int64, ::e8::MessageChannelUserType,
+    ::google::protobuf::internal::WireFormatLite::TYPE_INT64,
+    ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
+    0 > SuperType;
+  GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse();
+  GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse(::google::protobuf::Arena* arena);
+  void MergeFrom(const GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse& other);
+  static const GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse*>(&_GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse_default_instance_); }
+  void MergeFrom(const ::google::protobuf::Message& other) final;
+  ::google::protobuf::Metadata GetMetadata() const;
+};
+
+// -------------------------------------------------------------------
+
 class GetMessageChannelMembersResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetMessageChannelMembersResponse) */ {
  public:
   GetMessageChannelMembersResponse();
@@ -1309,7 +1337,7 @@ class GetMessageChannelMembersResponse : public ::google::protobuf::Message /* @
                &_GetMessageChannelMembersResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   void Swap(GetMessageChannelMembersResponse* other);
   friend void swap(GetMessageChannelMembersResponse& a, GetMessageChannelMembersResponse& b) {
@@ -1359,6 +1387,7 @@ class GetMessageChannelMembersResponse : public ::google::protobuf::Message /* @
 
   // nested types ----------------------------------------------------
 
+
   // accessors -------------------------------------------------------
 
   // repeated .e8.UserPublicProfile user_profiles = 1;
@@ -1373,11 +1402,26 @@ class GetMessageChannelMembersResponse : public ::google::protobuf::Message /* @
   const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
       user_profiles() const;
 
+  // map<int64, .e8.MessageChannelUserType> user_types = 2;
+  int user_types_size() const;
+  void clear_user_types();
+  static const int kUserTypesFieldNumber = 2;
+  const ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >&
+      user_types() const;
+  ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >*
+      mutable_user_types();
+
   // @@protoc_insertion_point(class_scope:e8.GetMessageChannelMembersResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile > user_profiles_;
+  ::google::protobuf::internal::MapField<
+      GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse,
+      ::google::protobuf::int64, ::e8::MessageChannelUserType,
+      ::google::protobuf::internal::WireFormatLite::TYPE_INT64,
+      ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
+      0 > user_types_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
 };
@@ -1727,6 +1771,8 @@ inline void GetMessageChannelMembersRequest::set_channel_id(::google::protobuf::
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 // GetMessageChannelMembersResponse
 
 // repeated .e8.UserPublicProfile user_profiles = 1;
@@ -1756,9 +1802,29 @@ GetMessageChannelMembersResponse::user_profiles() const {
   return user_profiles_;
 }
 
+// map<int64, .e8.MessageChannelUserType> user_types = 2;
+inline int GetMessageChannelMembersResponse::user_types_size() const {
+  return user_types_.size();
+}
+inline void GetMessageChannelMembersResponse::clear_user_types() {
+  user_types_.Clear();
+}
+inline const ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >&
+GetMessageChannelMembersResponse::user_types() const {
+  // @@protoc_insertion_point(field_map:e8.GetMessageChannelMembersResponse.user_types)
+  return user_types_.GetMap();
+}
+inline ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >*
+GetMessageChannelMembersResponse::mutable_user_types() {
+  // @@protoc_insertion_point(field_mutable_map:e8.GetMessageChannelMembersResponse.user_types)
+  return user_types_.MutableMap();
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

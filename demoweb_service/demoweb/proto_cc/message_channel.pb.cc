@@ -50,6 +50,7 @@ void InitDefaults() {
 }
 
 ::google::protobuf::Metadata file_level_metadata[1];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -58,7 +59,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, channel_id_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, admin_user_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, title_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, avatar_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, avatar_preview_readonly_access_),
@@ -77,7 +77,7 @@ void protobuf_AssignDescriptors() {
   AddDescriptors();
   AssignDescriptors(
       "message_channel.proto", schemas, file_default_instances, TableStruct::offsets,
-      file_level_metadata, NULL, NULL);
+      file_level_metadata, file_level_enum_descriptors, NULL);
 }
 
 void protobuf_AssignDescriptorsOnce() {
@@ -95,15 +95,17 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\025message_channel.proto\022\002e8\032\nfile.proto\""
-      "\343\001\n\016MessageChannel\022\022\n\nchannel_id\030\001 \001(\003\022\025"
-      "\n\radmin_user_id\030\002 \001(\003\022\r\n\005title\030\003 \001(\t\0223\n\026"
-      "avatar_readonly_access\030\004 \001(\0132\023.e8.FileTo"
-      "kenAccess\022;\n\036avatar_preview_readonly_acc"
-      "ess\030\005 \001(\0132\023.e8.FileTokenAccess\022\022\n\ncreate"
-      "d_at\030\006 \001(\003\022\021\n\tjoined_at\030\007 \001(\003b\006proto3"
+      "\314\001\n\016MessageChannel\022\022\n\nchannel_id\030\001 \001(\003\022\r"
+      "\n\005title\030\002 \001(\t\0223\n\026avatar_readonly_access\030"
+      "\003 \001(\0132\023.e8.FileTokenAccess\022;\n\036avatar_pre"
+      "view_readonly_access\030\004 \001(\0132\023.e8.FileToke"
+      "nAccess\022\022\n\ncreated_at\030\005 \001(\003\022\021\n\tjoined_at"
+      "\030\006 \001(\003*K\n\026MessageChannelUserType\022\020\n\014MCUT"
+      "_INVALID\020\000\022\017\n\013MCUT_MEMBER\020\001\022\016\n\nMCUT_ADMI"
+      "N\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 277);
+      descriptor, 331);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -121,6 +123,21 @@ struct StaticDescriptorInitializer {
 } static_descriptor_initializer;
 }  // namespace protobuf_message_5fchannel_2eproto
 namespace e8 {
+const ::google::protobuf::EnumDescriptor* MessageChannelUserType_descriptor() {
+  protobuf_message_5fchannel_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_message_5fchannel_2eproto::file_level_enum_descriptors[0];
+}
+bool MessageChannelUserType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 // ===================================================================
 
@@ -144,7 +161,6 @@ void MessageChannel::clear_avatar_preview_readonly_access() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int MessageChannel::kChannelIdFieldNumber;
-const int MessageChannel::kAdminUserIdFieldNumber;
 const int MessageChannel::kTitleFieldNumber;
 const int MessageChannel::kAvatarReadonlyAccessFieldNumber;
 const int MessageChannel::kAvatarPreviewReadonlyAccessFieldNumber;
@@ -260,24 +276,10 @@ bool MessageChannel::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 admin_user_id = 2;
+      // string title = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &admin_user_id_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string title = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_title()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -290,10 +292,10 @@ bool MessageChannel::MergePartialFromCodedStream(
         break;
       }
 
-      // .e8.FileTokenAccess avatar_readonly_access = 4;
-      case 4: {
+      // .e8.FileTokenAccess avatar_readonly_access = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_avatar_readonly_access()));
         } else {
@@ -302,10 +304,10 @@ bool MessageChannel::MergePartialFromCodedStream(
         break;
       }
 
-      // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
-      case 5: {
+      // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_avatar_preview_readonly_access()));
         } else {
@@ -314,10 +316,10 @@ bool MessageChannel::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 created_at = 6;
-      case 6: {
+      // int64 created_at = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
@@ -328,10 +330,10 @@ bool MessageChannel::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 joined_at = 7;
-      case 7: {
+      // int64 joined_at = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
@@ -373,41 +375,36 @@ void MessageChannel::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->channel_id(), output);
   }
 
-  // int64 admin_user_id = 2;
-  if (this->admin_user_id() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->admin_user_id(), output);
-  }
-
-  // string title = 3;
+  // string title = 2;
   if (this->title().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->title().data(), static_cast<int>(this->title().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "e8.MessageChannel.title");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->title(), output);
+      2, this->title(), output);
   }
 
-  // .e8.FileTokenAccess avatar_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_readonly_access = 3;
   if (this->has_avatar_readonly_access()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->_internal_avatar_readonly_access(), output);
+      3, this->_internal_avatar_readonly_access(), output);
   }
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
   if (this->has_avatar_preview_readonly_access()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->_internal_avatar_preview_readonly_access(), output);
+      4, this->_internal_avatar_preview_readonly_access(), output);
   }
 
-  // int64 created_at = 6;
+  // int64 created_at = 5;
   if (this->created_at() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->created_at(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(5, this->created_at(), output);
   }
 
-  // int64 joined_at = 7;
+  // int64 joined_at = 6;
   if (this->joined_at() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(7, this->joined_at(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->joined_at(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -429,12 +426,7 @@ void MessageChannel::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->channel_id(), target);
   }
 
-  // int64 admin_user_id = 2;
-  if (this->admin_user_id() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->admin_user_id(), target);
-  }
-
-  // string title = 3;
+  // string title = 2;
   if (this->title().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->title().data(), static_cast<int>(this->title().length()),
@@ -442,31 +434,31 @@ void MessageChannel::SerializeWithCachedSizes(
       "e8.MessageChannel.title");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->title(), target);
+        2, this->title(), target);
   }
 
-  // .e8.FileTokenAccess avatar_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_readonly_access = 3;
   if (this->has_avatar_readonly_access()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        4, this->_internal_avatar_readonly_access(), deterministic, target);
+        3, this->_internal_avatar_readonly_access(), deterministic, target);
   }
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
   if (this->has_avatar_preview_readonly_access()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        5, this->_internal_avatar_preview_readonly_access(), deterministic, target);
+        4, this->_internal_avatar_preview_readonly_access(), deterministic, target);
   }
 
-  // int64 created_at = 6;
+  // int64 created_at = 5;
   if (this->created_at() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->created_at(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(5, this->created_at(), target);
   }
 
-  // int64 joined_at = 7;
+  // int64 joined_at = 6;
   if (this->joined_at() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(7, this->joined_at(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->joined_at(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -486,21 +478,21 @@ size_t MessageChannel::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string title = 3;
+  // string title = 2;
   if (this->title().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->title());
   }
 
-  // .e8.FileTokenAccess avatar_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_readonly_access = 3;
   if (this->has_avatar_readonly_access()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *avatar_readonly_access_);
   }
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
   if (this->has_avatar_preview_readonly_access()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
@@ -514,21 +506,14 @@ size_t MessageChannel::ByteSizeLong() const {
         this->channel_id());
   }
 
-  // int64 admin_user_id = 2;
-  if (this->admin_user_id() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->admin_user_id());
-  }
-
-  // int64 created_at = 6;
+  // int64 created_at = 5;
   if (this->created_at() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->created_at());
   }
 
-  // int64 joined_at = 7;
+  // int64 joined_at = 6;
   if (this->joined_at() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
@@ -575,9 +560,6 @@ void MessageChannel::MergeFrom(const MessageChannel& from) {
   if (from.channel_id() != 0) {
     set_channel_id(from.channel_id());
   }
-  if (from.admin_user_id() != 0) {
-    set_admin_user_id(from.admin_user_id());
-  }
   if (from.created_at() != 0) {
     set_created_at(from.created_at());
   }
@@ -615,7 +597,6 @@ void MessageChannel::InternalSwap(MessageChannel* other) {
   swap(avatar_readonly_access_, other->avatar_readonly_access_);
   swap(avatar_preview_readonly_access_, other->avatar_preview_readonly_access_);
   swap(channel_id_, other->channel_id_);
-  swap(admin_user_id_, other->admin_user_id_);
   swap(created_at_, other->created_at_);
   swap(joined_at_, other->joined_at_);
   _internal_metadata_.Swap(&other->_internal_metadata_);

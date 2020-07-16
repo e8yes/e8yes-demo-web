@@ -25,6 +25,9 @@ extern PROTOBUF_INTERNAL_EXPORT_protobuf_message_5fchannel_2eproto ::google::pro
 namespace protobuf_pagination_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_pagination_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Pagination;
 }  // namespace protobuf_pagination_2eproto
+namespace protobuf_service_5fmessage_5fchannel_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_service_5fmessage_5fchannel_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse;
+}  // namespace protobuf_service_5fmessage_5fchannel_2eproto
 namespace protobuf_user_5fprofile_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_user_5fprofile_2eproto ::google::protobuf::internal::SCCInfo<3> scc_info_UserPublicProfile;
 }  // namespace protobuf_user_5fprofile_2eproto
@@ -84,6 +87,11 @@ class GetMessageChannelMembersRequestDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<GetMessageChannelMembersRequest>
       _instance;
 } _GetMessageChannelMembersRequest_default_instance_;
+class GetMessageChannelMembersResponse_UserTypesEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse>
+      _instance;
+} _GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse_default_instance_;
 class GetMessageChannelMembersResponseDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<GetMessageChannelMembersResponse>
@@ -247,6 +255,19 @@ static void InitDefaultsGetMessageChannelMembersRequest() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_GetMessageChannelMembersRequest =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetMessageChannelMembersRequest}, {}};
 
+static void InitDefaultsGetMessageChannelMembersResponse_UserTypesEntry_DoNotUse() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse_default_instance_;
+    new (ptr) ::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse();
+  }
+  ::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<0> scc_info_GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetMessageChannelMembersResponse_UserTypesEntry_DoNotUse}, {}};
+
 static void InitDefaultsGetMessageChannelMembersResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -258,9 +279,10 @@ static void InitDefaultsGetMessageChannelMembersResponse() {
   ::e8::GetMessageChannelMembersResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_GetMessageChannelMembersResponse =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetMessageChannelMembersResponse}, {
-      &protobuf_user_5fprofile_2eproto::scc_info_UserPublicProfile.base,}};
+::google::protobuf::internal::SCCInfo<2> scc_info_GetMessageChannelMembersResponse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsGetMessageChannelMembersResponse}, {
+      &protobuf_user_5fprofile_2eproto::scc_info_UserPublicProfile.base,
+      &protobuf_service_5fmessage_5fchannel_2eproto::scc_info_GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse.base,}};
 
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_CreateMessageChannelRequest.base);
@@ -274,10 +296,11 @@ void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_GetJoinedMessageChannelsRequest.base);
   ::google::protobuf::internal::InitSCC(&scc_info_GetJoinedMessageChannelsResponse.base);
   ::google::protobuf::internal::InitSCC(&scc_info_GetMessageChannelMembersRequest.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse.base);
   ::google::protobuf::internal::InitSCC(&scc_info_GetMessageChannelMembersResponse.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[12];
+::google::protobuf::Metadata file_level_metadata[13];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -347,12 +370,22 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetMessageChannelMembersRequest, channel_id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse, value_),
+  0,
+  1,
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetMessageChannelMembersResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetMessageChannelMembersResponse, user_profiles_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetMessageChannelMembersResponse, user_types_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::CreateMessageChannelRequest)},
@@ -366,7 +399,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 49, -1, sizeof(::e8::GetJoinedMessageChannelsRequest)},
   { 55, -1, sizeof(::e8::GetJoinedMessageChannelsResponse)},
   { 61, -1, sizeof(::e8::GetMessageChannelMembersRequest)},
-  { 67, -1, sizeof(::e8::GetMessageChannelMembersResponse)},
+  { 67, 74, sizeof(::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse)},
+  { 76, -1, sizeof(::e8::GetMessageChannelMembersResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -381,6 +415,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetJoinedMessageChannelsRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetJoinedMessageChannelsResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetMessageChannelMembersRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetMessageChannelMembersResponse_default_instance_),
 };
 
@@ -399,7 +434,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 12);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 13);
 }
 
 void AddDescriptorsImpl() {
@@ -423,27 +458,31 @@ void AddDescriptorsImpl() {
       "n\"H\n GetJoinedMessageChannelsResponse\022$\n"
       "\010channels\030\001 \003(\0132\022.e8.MessageChannel\"5\n\037G"
       "etMessageChannelMembersRequest\022\022\n\nchanne"
-      "l_id\030\001 \001(\003\"P\n GetMessageChannelMembersRe"
-      "sponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8.UserP"
-      "ublicProfile2\335\004\n\025MessageChannelService\022Y"
-      "\n\024CreateMessageChannel\022\037.e8.CreateMessag"
-      "eChannelRequest\032 .e8.CreateMessageChanne"
-      "lResponse\022h\n\031AddMemberToMessageChannel\022$"
-      ".e8.AddMemberToMessageChannelRequest\032%.e"
-      "8.AddMemberToMessageChannelResponse\022Y\n\024G"
-      "etMessageChannelKey\022\037.e8.GetMessageChann"
-      "elKeyRequest\032 .e8.GetMessageChannelKeyRe"
-      "sponse\022V\n\023LeaveMessageChannel\022\036.e8.Leave"
-      "MessageChannelRequest\032\037.e8.LeaveMessageC"
-      "hannelResponse\022e\n\030GetJoinedMessageChanne"
-      "ls\022#.e8.GetJoinedMessageChannelsRequest\032"
-      "$.e8.GetJoinedMessageChannelsResponse\022e\n"
-      "\030GetMessageChannelMembers\022#.e8.GetMessag"
-      "eChannelMembersRequest\032$.e8.GetMessageCh"
-      "annelMembersResponseb\006proto3"
+      "l_id\030\001 \001(\003\"\347\001\n GetMessageChannelMembersR"
+      "esponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8.User"
+      "PublicProfile\022G\n\nuser_types\030\002 \003(\01323.e8.G"
+      "etMessageChannelMembersResponse.UserType"
+      "sEntry\032L\n\016UserTypesEntry\022\013\n\003key\030\001 \001(\003\022)\n"
+      "\005value\030\002 \001(\0162\032.e8.MessageChannelUserType"
+      ":\0028\0012\335\004\n\025MessageChannelService\022Y\n\024Create"
+      "MessageChannel\022\037.e8.CreateMessageChannel"
+      "Request\032 .e8.CreateMessageChannelRespons"
+      "e\022h\n\031AddMemberToMessageChannel\022$.e8.AddM"
+      "emberToMessageChannelRequest\032%.e8.AddMem"
+      "berToMessageChannelResponse\022Y\n\024GetMessag"
+      "eChannelKey\022\037.e8.GetMessageChannelKeyReq"
+      "uest\032 .e8.GetMessageChannelKeyResponse\022V"
+      "\n\023LeaveMessageChannel\022\036.e8.LeaveMessageC"
+      "hannelRequest\032\037.e8.LeaveMessageChannelRe"
+      "sponse\022e\n\030GetJoinedMessageChannels\022#.e8."
+      "GetJoinedMessageChannelsRequest\032$.e8.Get"
+      "JoinedMessageChannelsResponse\022e\n\030GetMess"
+      "ageChannelMembers\022#.e8.GetMessageChannel"
+      "MembersRequest\032$.e8.GetMessageChannelMem"
+      "bersResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1428);
+      descriptor, 1580);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_pagination_2eproto::AddDescriptors();
@@ -3016,6 +3055,23 @@ void GetMessageChannelMembersRequest::InternalSwap(GetMessageChannelMembersReque
 
 // ===================================================================
 
+GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse() {}
+GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+void GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse::MergeFrom(const GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::google::protobuf::Metadata GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse::GetMetadata() const {
+  ::protobuf_service_5fmessage_5fchannel_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_service_5fmessage_5fchannel_2eproto::file_level_metadata[11];
+}
+void GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse::MergeFrom(
+    const ::google::protobuf::Message& other) {
+  ::google::protobuf::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
 void GetMessageChannelMembersResponse::InitAsDefaultInstance() {
 }
 void GetMessageChannelMembersResponse::clear_user_profiles() {
@@ -3023,6 +3079,7 @@ void GetMessageChannelMembersResponse::clear_user_profiles() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int GetMessageChannelMembersResponse::kUserProfilesFieldNumber;
+const int GetMessageChannelMembersResponse::kUserTypesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 GetMessageChannelMembersResponse::GetMessageChannelMembersResponse()
@@ -3037,6 +3094,7 @@ GetMessageChannelMembersResponse::GetMessageChannelMembersResponse(const GetMess
       _internal_metadata_(NULL),
       user_profiles_(from.user_profiles_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  user_types_.MergeFrom(from.user_types_);
   // @@protoc_insertion_point(copy_constructor:e8.GetMessageChannelMembersResponse)
 }
 
@@ -3072,6 +3130,7 @@ void GetMessageChannelMembersResponse::Clear() {
   (void) cached_has_bits;
 
   user_profiles_.Clear();
+  user_types_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -3091,6 +3150,25 @@ bool GetMessageChannelMembersResponse::MergePartialFromCodedStream(
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                 input, add_user_profiles()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // map<int64, .e8.MessageChannelUserType> user_types = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
+              GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse,
+              ::google::protobuf::int64, ::e8::MessageChannelUserType,
+              ::google::protobuf::internal::WireFormatLite::TYPE_INT64,
+              ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
+              0 >,
+            ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType > > parser(&user_types_);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, &parser));
         } else {
           goto handle_unusual;
         }
@@ -3132,6 +3210,45 @@ void GetMessageChannelMembersResponse::SerializeWithCachedSizes(
       output);
   }
 
+  // map<int64, .e8.MessageChannelUserType> user_types = 2;
+  if (!this->user_types().empty()) {
+    typedef ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::const_pointer
+        ConstPtr;
+    typedef ::google::protobuf::internal::SortItem< ::google::protobuf::int64, ConstPtr > SortItem;
+    typedef ::google::protobuf::internal::CompareByFirstField<SortItem> Less;
+
+    if (output->IsSerializationDeterministic() &&
+        this->user_types().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->user_types().size()]);
+      typedef ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::const_iterator
+          it = this->user_types().begin();
+          it != this->user_types().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::std::unique_ptr<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(user_types_.NewEnumEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            2, *entry, output);
+      }
+    } else {
+      ::std::unique_ptr<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::const_iterator
+          it = this->user_types().begin();
+          it != this->user_types().end(); ++it) {
+        entry.reset(user_types_.NewEnumEntryWrapper(
+            it->first, it->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            2, *entry, output);
+      }
+    }
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -3152,6 +3269,49 @@ void GetMessageChannelMembersResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
         1, this->user_profiles(static_cast<int>(i)), deterministic, target);
+  }
+
+  // map<int64, .e8.MessageChannelUserType> user_types = 2;
+  if (!this->user_types().empty()) {
+    typedef ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::const_pointer
+        ConstPtr;
+    typedef ::google::protobuf::internal::SortItem< ::google::protobuf::int64, ConstPtr > SortItem;
+    typedef ::google::protobuf::internal::CompareByFirstField<SortItem> Less;
+
+    if (deterministic &&
+        this->user_types().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->user_types().size()]);
+      typedef ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::const_iterator
+          it = this->user_types().begin();
+          it != this->user_types().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::std::unique_ptr<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(user_types_.NewEnumEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       2, *entry, deterministic, target);
+;
+      }
+    } else {
+      ::std::unique_ptr<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::const_iterator
+          it = this->user_types().begin();
+          it != this->user_types().end(); ++it) {
+        entry.reset(user_types_.NewEnumEntryWrapper(
+            it->first, it->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       2, *entry, deterministic, target);
+;
+      }
+    }
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -3179,6 +3339,20 @@ size_t GetMessageChannelMembersResponse::ByteSizeLong() const {
       total_size +=
         ::google::protobuf::internal::WireFormatLite::MessageSize(
           this->user_profiles(static_cast<int>(i)));
+    }
+  }
+
+  // map<int64, .e8.MessageChannelUserType> user_types = 2;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->user_types_size());
+  {
+    ::std::unique_ptr<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse> entry;
+    for (::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >::const_iterator
+        it = this->user_types().begin();
+        it != this->user_types().end(); ++it) {
+      entry.reset(user_types_.NewEnumEntryWrapper(it->first, it->second));
+      total_size += ::google::protobuf::internal::WireFormatLite::
+          MessageSizeNoVirtual(*entry);
     }
   }
 
@@ -3210,6 +3384,7 @@ void GetMessageChannelMembersResponse::MergeFrom(const GetMessageChannelMembersR
   (void) cached_has_bits;
 
   user_profiles_.MergeFrom(from.user_profiles_);
+  user_types_.MergeFrom(from.user_types_);
 }
 
 void GetMessageChannelMembersResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -3237,6 +3412,7 @@ void GetMessageChannelMembersResponse::Swap(GetMessageChannelMembersResponse* ot
 void GetMessageChannelMembersResponse::InternalSwap(GetMessageChannelMembersResponse* other) {
   using std::swap;
   CastToBase(&user_profiles_)->InternalSwap(CastToBase(&other->user_profiles_));
+  user_types_.Swap(&other->user_types_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
@@ -3282,6 +3458,9 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetJoinedMessageChannelsResp
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetMessageChannelMembersRequest* Arena::CreateMaybeMessage< ::e8::GetMessageChannelMembersRequest >(Arena* arena) {
   return Arena::CreateInternal< ::e8::GetMessageChannelMembersRequest >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse* Arena::CreateMaybeMessage< ::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse >(arena);
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetMessageChannelMembersResponse* Arena::CreateMaybeMessage< ::e8::GetMessageChannelMembersResponse >(Arena* arena) {
   return Arena::CreateInternal< ::e8::GetMessageChannelMembersResponse >(arena);

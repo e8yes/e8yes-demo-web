@@ -14,6 +14,8 @@ import 'pagination.pb.dart' as $12;
 import 'message_channel.pb.dart' as $14;
 import 'user_profile.pb.dart' as $11;
 
+import 'message_channel.pbenum.dart' as $14;
+
 class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOB(1, 'encrypted')
@@ -364,6 +366,7 @@ class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
 class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetMessageChannelMembersResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..pc<$11.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $11.UserPublicProfile.create)
+    ..m<$fixnum.Int64, $14.MessageChannelUserType>(2, 'userTypes', entryClassName: 'GetMessageChannelMembersResponse.UserTypesEntry', keyFieldType: $pb.PbFieldType.O6, valueFieldType: $pb.PbFieldType.OE, valueOf: $14.MessageChannelUserType.valueOf, enumValues: $14.MessageChannelUserType.values, packageName: const $pb.PackageName('e8'))
     ..hasRequiredFields = false
   ;
 
@@ -384,5 +387,8 @@ class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<$11.UserPublicProfile> get userProfiles => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.Map<$fixnum.Int64, $14.MessageChannelUserType> get userTypes => $_getMap(1);
 }
 

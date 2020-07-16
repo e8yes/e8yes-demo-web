@@ -29,6 +29,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 #include "file.pb.h"
 // @@protoc_insertion_point(includes)
@@ -58,6 +59,28 @@ template<> ::e8::MessageChannel* Arena::CreateMaybeMessage<::e8::MessageChannel>
 }  // namespace google
 namespace e8 {
 
+enum MessageChannelUserType {
+  MCUT_INVALID = 0,
+  MCUT_MEMBER = 1,
+  MCUT_ADMIN = 2,
+  MessageChannelUserType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  MessageChannelUserType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool MessageChannelUserType_IsValid(int value);
+const MessageChannelUserType MessageChannelUserType_MIN = MCUT_INVALID;
+const MessageChannelUserType MessageChannelUserType_MAX = MCUT_ADMIN;
+const int MessageChannelUserType_ARRAYSIZE = MessageChannelUserType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* MessageChannelUserType_descriptor();
+inline const ::std::string& MessageChannelUserType_Name(MessageChannelUserType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    MessageChannelUserType_descriptor(), value);
+}
+inline bool MessageChannelUserType_Parse(
+    const ::std::string& name, MessageChannelUserType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MessageChannelUserType>(
+    MessageChannelUserType_descriptor(), name, value);
+}
 // ===================================================================
 
 class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.MessageChannel) */ {
@@ -147,9 +170,9 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // string title = 3;
+  // string title = 2;
   void clear_title();
-  static const int kTitleFieldNumber = 3;
+  static const int kTitleFieldNumber = 2;
   const ::std::string& title() const;
   void set_title(const ::std::string& value);
   #if LANG_CXX11
@@ -161,10 +184,10 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_title();
   void set_allocated_title(::std::string* title);
 
-  // .e8.FileTokenAccess avatar_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_readonly_access = 3;
   bool has_avatar_readonly_access() const;
   void clear_avatar_readonly_access();
-  static const int kAvatarReadonlyAccessFieldNumber = 4;
+  static const int kAvatarReadonlyAccessFieldNumber = 3;
   private:
   const ::e8::FileTokenAccess& _internal_avatar_readonly_access() const;
   public:
@@ -173,10 +196,10 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::e8::FileTokenAccess* mutable_avatar_readonly_access();
   void set_allocated_avatar_readonly_access(::e8::FileTokenAccess* avatar_readonly_access);
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
   bool has_avatar_preview_readonly_access() const;
   void clear_avatar_preview_readonly_access();
-  static const int kAvatarPreviewReadonlyAccessFieldNumber = 5;
+  static const int kAvatarPreviewReadonlyAccessFieldNumber = 4;
   private:
   const ::e8::FileTokenAccess& _internal_avatar_preview_readonly_access() const;
   public:
@@ -191,21 +214,15 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int64 channel_id() const;
   void set_channel_id(::google::protobuf::int64 value);
 
-  // int64 admin_user_id = 2;
-  void clear_admin_user_id();
-  static const int kAdminUserIdFieldNumber = 2;
-  ::google::protobuf::int64 admin_user_id() const;
-  void set_admin_user_id(::google::protobuf::int64 value);
-
-  // int64 created_at = 6;
+  // int64 created_at = 5;
   void clear_created_at();
-  static const int kCreatedAtFieldNumber = 6;
+  static const int kCreatedAtFieldNumber = 5;
   ::google::protobuf::int64 created_at() const;
   void set_created_at(::google::protobuf::int64 value);
 
-  // int64 joined_at = 7;
+  // int64 joined_at = 6;
   void clear_joined_at();
-  static const int kJoinedAtFieldNumber = 7;
+  static const int kJoinedAtFieldNumber = 6;
   ::google::protobuf::int64 joined_at() const;
   void set_joined_at(::google::protobuf::int64 value);
 
@@ -217,7 +234,6 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::e8::FileTokenAccess* avatar_readonly_access_;
   ::e8::FileTokenAccess* avatar_preview_readonly_access_;
   ::google::protobuf::int64 channel_id_;
-  ::google::protobuf::int64 admin_user_id_;
   ::google::protobuf::int64 created_at_;
   ::google::protobuf::int64 joined_at_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -248,21 +264,7 @@ inline void MessageChannel::set_channel_id(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:e8.MessageChannel.channel_id)
 }
 
-// int64 admin_user_id = 2;
-inline void MessageChannel::clear_admin_user_id() {
-  admin_user_id_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 MessageChannel::admin_user_id() const {
-  // @@protoc_insertion_point(field_get:e8.MessageChannel.admin_user_id)
-  return admin_user_id_;
-}
-inline void MessageChannel::set_admin_user_id(::google::protobuf::int64 value) {
-  
-  admin_user_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.MessageChannel.admin_user_id)
-}
-
-// string title = 3;
+// string title = 2;
 inline void MessageChannel::clear_title() {
   title_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -315,7 +317,7 @@ inline void MessageChannel::set_allocated_title(::std::string* title) {
   // @@protoc_insertion_point(field_set_allocated:e8.MessageChannel.title)
 }
 
-// .e8.FileTokenAccess avatar_readonly_access = 4;
+// .e8.FileTokenAccess avatar_readonly_access = 3;
 inline bool MessageChannel::has_avatar_readonly_access() const {
   return this != internal_default_instance() && avatar_readonly_access_ != NULL;
 }
@@ -363,7 +365,7 @@ inline void MessageChannel::set_allocated_avatar_readonly_access(::e8::FileToken
   // @@protoc_insertion_point(field_set_allocated:e8.MessageChannel.avatar_readonly_access)
 }
 
-// .e8.FileTokenAccess avatar_preview_readonly_access = 5;
+// .e8.FileTokenAccess avatar_preview_readonly_access = 4;
 inline bool MessageChannel::has_avatar_preview_readonly_access() const {
   return this != internal_default_instance() && avatar_preview_readonly_access_ != NULL;
 }
@@ -411,7 +413,7 @@ inline void MessageChannel::set_allocated_avatar_preview_readonly_access(::e8::F
   // @@protoc_insertion_point(field_set_allocated:e8.MessageChannel.avatar_preview_readonly_access)
 }
 
-// int64 created_at = 6;
+// int64 created_at = 5;
 inline void MessageChannel::clear_created_at() {
   created_at_ = GOOGLE_LONGLONG(0);
 }
@@ -425,7 +427,7 @@ inline void MessageChannel::set_created_at(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:e8.MessageChannel.created_at)
 }
 
-// int64 joined_at = 7;
+// int64 joined_at = 6;
 inline void MessageChannel::clear_joined_at() {
   joined_at_ = GOOGLE_LONGLONG(0);
 }
@@ -446,6 +448,18 @@ inline void MessageChannel::set_joined_at(::google::protobuf::int64 value) {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace e8
+
+namespace google {
+namespace protobuf {
+
+template <> struct is_proto_enum< ::e8::MessageChannelUserType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::e8::MessageChannelUserType>() {
+  return ::e8::MessageChannelUserType_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 

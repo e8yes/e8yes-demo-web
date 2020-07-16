@@ -15,23 +15,25 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-syntax = "proto3";
+#ifndef MESSAGE_CHANNEL_H
+#define MESSAGE_CHANNEL_H
 
-package e8;
+#include <string>
 
-import "file.proto";
+#include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
-message MessageChannel {
-    int64 channel_id = 1;
-    string title = 2;
-    FileTokenAccess avatar_readonly_access = 3;
-    FileTokenAccess avatar_preview_readonly_access = 4;
-    int64 created_at = 5;
-    int64 joined_at = 6;
-}
+namespace e8 {
 
-enum MessageChannelUserType {
-    MCUT_INVALID = 0;
-    MCUT_MEMBER = 1;
-    MCUT_ADMIN = 2;
-}
+/**
+ * @brief CreateMessageChannel Create a new message channel.
+ */
+MessageChannelEntity CreateMessageChannel(UserId creator_id, std::string const &channel_name,
+                                          bool encrypted, HostId host_id,
+                                          ConnectionReservoirInterface *conns);
+
+} // namespace e8
+
+#endif // MESSAGE_CHANNEL_H
