@@ -97,9 +97,9 @@ DROP FUNCTION IF EXISTS update_auser_search_terms CASCADE;
 CREATE FUNCTION update_auser_search_terms() RETURNS trigger AS $$
 begin
   new.search_terms :=
-    setweight(to_tsvector(coalesce(new.id_str,'')), 'A') ||
-    setweight(to_tsvector(coalesce(new.alias,'')), 'A') ||
-    setweight(to_tsvector(coalesce(new.biography,'')), 'B');
+    setweight(to_tsvector(coalesce(new.id_str, '')), 'A') ||
+    setweight(to_tsvector(coalesce(new.alias, '')), 'A') ||
+    setweight(to_tsvector(coalesce(new.biography, '')), 'B');
   return new;
 end
 $$ LANGUAGE plpgsql;
@@ -131,7 +131,7 @@ DROP FUNCTION IF EXISTS update_contact_relation_search_terms CASCADE;
 CREATE FUNCTION update_contact_relation_search_terms() RETURNS trigger AS $$
 begin
   new.search_terms :=
-    setweight(to_tsvector(coalesce(new.description,'')), 'A');
+    setweight(to_tsvector(coalesce(new.description, '')), 'A');
   return new;
 end
 $$ LANGUAGE plpgsql;
@@ -168,8 +168,8 @@ DROP FUNCTION IF EXISTS update_message_channel_search_terms CASCADE;
 CREATE FUNCTION update_message_channel_search_terms() RETURNS trigger AS $$
 begin
   new.search_terms :=
-    setweight(to_tsvector(coalesce(new.channel_name,'')), 'A') ||
-    setweight(to_tsvector(coalesce(new.description,'')), 'B');
+    setweight(to_tsvector(coalesce(new.channel_name, '')), 'A') ||
+    setweight(to_tsvector(coalesce(new.description, '')), 'B');
   return new;
 end
 $$ LANGUAGE plpgsql;
@@ -195,6 +195,46 @@ CREATE TABLE IF NOT EXISTS message_channel_has_user (
 );
 
 
+/* Message group */
+CREATE SEQUENCE IF NOT EXISTS message_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE IF NOT EXISTS message_group (
+    id BIGINT NOT NULL DEFAULT nextval('message_group_id_seq'),
+    group_type INT NOT NULL DEFAULT 0,
+    channel_id BIGINT NOT NULL,
+    creator_id BIGINT NULL,
+    description CHARACTER VARYING (4096) NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    search_terms tsvector,
+    PRIMARY KEY (id),
+    FOREIGN KEY (channel_id) REFERENCES message_channel (id) ON DELETE CASCADE,
+    FOREIGN KEY (creator_id) REFERENCES auser (id) ON DELETE CASCADE
+);
+
+DROP FUNCTION IF EXISTS update_message_group_search_terms CASCADE;
+CREATE FUNCTION update_message_group_search_terms() RETURNS trigger AS $$
+begin
+  new.search_terms :=
+    setweight(to_tsvector(coalesce(new.description, '')), 'A');
+  return new;
+end
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER upsert_message_group
+    BEFORE INSERT OR UPDATE
+    ON message_group 
+    FOR EACH ROW 
+    EXECUTE PROCEDURE update_message_group_search_terms();
+
+CREATE INDEX IF NOT EXISTS message_search_terms ON message_group USING gin (search_terms);
+
+
 /* Message */
 CREATE SEQUENCE IF NOT EXISTS message_id_seq
     START WITH 1
@@ -205,16 +245,17 @@ CREATE SEQUENCE IF NOT EXISTS message_id_seq
 
 CREATE TABLE IF NOT EXISTS message (
     id BIGINT NOT NULL DEFAULT nextval('message_id_seq'),
-    channel_id BIGINT NOT NULL,
+    group_id BIGINT NOT NULL,
     sender_id BIGINT NOT NULL,
     text_content CHARACTER VARYING [] NULL,
+    binary_content BYTEA NULL,
     media_file_path CHARACTER VARYING(128) [] NULL,
     media_file_preview_path CHARACTER VARYING(128) [] NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     search_terms tsvector,
     PRIMARY KEY (id),
-    FOREIGN KEY (channel_id) REFERENCES message_channel (id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES message_group (id) ON DELETE CASCADE,
     FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE
 );
 
@@ -222,7 +263,7 @@ DROP FUNCTION IF EXISTS update_message_search_terms CASCADE;
 CREATE FUNCTION update_message_search_terms() RETURNS trigger AS $$
 begin
   new.search_terms :=
-    setweight(to_tsvector(coalesce(new.text_content,'')), 'A');
+    setweight(to_tsvector(coalesce(new.text_content, '')), 'A');
   return new;
 end
 $$ LANGUAGE plpgsql;
