@@ -63,6 +63,7 @@ message GetPublicProfileResponse {
 message UpdatePublicProfileRequest {
     // It will only fetch and update the public profile of the logged-in user.
     NullableString alias = 1;
+    NullableString biography = 2;
 }
 
 message UpdatePublicProfileResponse {

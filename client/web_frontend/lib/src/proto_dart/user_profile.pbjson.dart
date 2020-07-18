@@ -10,10 +10,11 @@ const UserPublicProfile$json = const {
   '2': const [
     const {'1': 'user_id', '3': 1, '4': 1, '5': 3, '10': 'userId'},
     const {'1': 'alias', '3': 2, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'alias'},
-    const {'1': 'avatar_readonly_access', '3': 3, '4': 1, '5': 11, '6': '.e8.FileTokenAccess', '10': 'avatarReadonlyAccess'},
-    const {'1': 'avatar_preview_readonly_access', '3': 4, '4': 1, '5': 11, '6': '.e8.FileTokenAccess', '10': 'avatarPreviewReadonlyAccess'},
-    const {'1': 'relations', '3': 5, '4': 3, '5': 11, '6': '.e8.UserRelationRecord', '10': 'relations'},
-    const {'1': 'join_at', '3': 6, '4': 1, '5': 3, '10': 'joinAt'},
+    const {'1': 'biography', '3': 3, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'biography'},
+    const {'1': 'avatar_readonly_access', '3': 4, '4': 1, '5': 11, '6': '.e8.FileTokenAccess', '10': 'avatarReadonlyAccess'},
+    const {'1': 'avatar_preview_readonly_access', '3': 5, '4': 1, '5': 11, '6': '.e8.FileTokenAccess', '10': 'avatarPreviewReadonlyAccess'},
+    const {'1': 'relations', '3': 6, '4': 3, '5': 11, '6': '.e8.UserRelationRecord', '10': 'relations'},
+    const {'1': 'join_at', '3': 7, '4': 1, '5': 3, '10': 'joinAt'},
   ],
 };
 

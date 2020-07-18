@@ -42,6 +42,7 @@ class UserEntity : public SqlEntityInterface {
     SqlStr id_str = SqlStr("id_str");
     SqlStrArr emails = SqlStrArr("emails");
     SqlStr alias = SqlStr("alias");
+    SqlStr biography = SqlStr("biography");
     SqlStr avatar_path = SqlStr("avatar_path");
     SqlStr avatar_preview_path = SqlStr("avatar_preview_path");
     SqlStr security_key_hash = SqlStr("security_key_hash");

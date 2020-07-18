@@ -21,14 +21,16 @@
 namespace e8 {
 
 UserEntity::UserEntity()
-    : SqlEntityInterface({&id, &id_str, &emails, &alias, &avatar_path, &avatar_preview_path,
-                          &security_key_hash, &group_names, &active_level, &created_at}) {}
+    : SqlEntityInterface({&id, &id_str, &emails, &alias, &biography, &avatar_path,
+                          &avatar_preview_path, &security_key_hash, &group_names, &active_level,
+                          &created_at}) {}
 
 UserEntity::UserEntity(UserEntity const &other) : UserEntity() {
     id = other.id;
     id_str = other.id_str;
     emails = other.emails;
     alias = other.alias;
+    biography = other.biography;
     avatar_path = other.avatar_path;
     avatar_preview_path = other.avatar_preview_path;
     security_key_hash = other.security_key_hash;
@@ -42,6 +44,7 @@ UserEntity &UserEntity::operator=(UserEntity const &other) {
     id_str = other.id_str;
     emails = other.emails;
     alias = other.alias;
+    biography = other.biography;
     avatar_path = other.avatar_path;
     avatar_preview_path = other.avatar_preview_path;
     security_key_hash = other.security_key_hash;

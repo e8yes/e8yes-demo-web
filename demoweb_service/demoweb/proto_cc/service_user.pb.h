@@ -918,11 +918,24 @@ class UpdatePublicProfileRequest : public ::google::protobuf::Message /* @@proto
   ::e8::NullableString* mutable_alias();
   void set_allocated_alias(::e8::NullableString* alias);
 
+  // .e8.NullableString biography = 2;
+  bool has_biography() const;
+  void clear_biography();
+  static const int kBiographyFieldNumber = 2;
+  private:
+  const ::e8::NullableString& _internal_biography() const;
+  public:
+  const ::e8::NullableString& biography() const;
+  ::e8::NullableString* release_biography();
+  ::e8::NullableString* mutable_biography();
+  void set_allocated_biography(::e8::NullableString* biography);
+
   // @@protoc_insertion_point(class_scope:e8.UpdatePublicProfileRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::e8::NullableString* alias_;
+  ::e8::NullableString* biography_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fuser_2eproto::TableStruct;
 };
@@ -1830,6 +1843,54 @@ inline void UpdatePublicProfileRequest::set_allocated_alias(::e8::NullableString
   }
   alias_ = alias;
   // @@protoc_insertion_point(field_set_allocated:e8.UpdatePublicProfileRequest.alias)
+}
+
+// .e8.NullableString biography = 2;
+inline bool UpdatePublicProfileRequest::has_biography() const {
+  return this != internal_default_instance() && biography_ != NULL;
+}
+inline const ::e8::NullableString& UpdatePublicProfileRequest::_internal_biography() const {
+  return *biography_;
+}
+inline const ::e8::NullableString& UpdatePublicProfileRequest::biography() const {
+  const ::e8::NullableString* p = biography_;
+  // @@protoc_insertion_point(field_get:e8.UpdatePublicProfileRequest.biography)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
+      &::e8::_NullableString_default_instance_);
+}
+inline ::e8::NullableString* UpdatePublicProfileRequest::release_biography() {
+  // @@protoc_insertion_point(field_release:e8.UpdatePublicProfileRequest.biography)
+  
+  ::e8::NullableString* temp = biography_;
+  biography_ = NULL;
+  return temp;
+}
+inline ::e8::NullableString* UpdatePublicProfileRequest::mutable_biography() {
+  
+  if (biography_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
+    biography_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.UpdatePublicProfileRequest.biography)
+  return biography_;
+}
+inline void UpdatePublicProfileRequest::set_allocated_biography(::e8::NullableString* biography) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(biography_);
+  }
+  if (biography) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      biography = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, biography, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  biography_ = biography;
+  // @@protoc_insertion_point(field_set_allocated:e8.UpdatePublicProfileRequest.biography)
 }
 
 // -------------------------------------------------------------------

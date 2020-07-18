@@ -63,6 +63,7 @@ const UpdatePublicProfileRequest$json = const {
   '1': 'UpdatePublicProfileRequest',
   '2': const [
     const {'1': 'alias', '3': 1, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'alias'},
+    const {'1': 'biography', '3': 2, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'biography'},
   ],
 };
 

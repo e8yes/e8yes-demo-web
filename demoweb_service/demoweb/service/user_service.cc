@@ -122,7 +122,10 @@ grpc::Status UserServiceImpl::UpdatePublicProfile(grpc::ServerContext *context,
 
     std::optional<std::string> alias =
         request->has_alias() ? std::optional<std::string>(request->alias().value()) : std::nullopt;
-    UpdateProfile(alias, &user.value(), CurrentEnvironment()->DemowebDatabase());
+    std::optional<std::string> biography =
+        request->has_biography() ? std::optional<std::string>(request->biography().value())
+                                 : std::nullopt;
+    UpdateProfile(alias, biography, &user.value(), CurrentEnvironment()->DemowebDatabase());
 
     std::vector<UserPublicProfile> profiles =
         BuildPublicProfiles(user_id, {user.value()}, CurrentEnvironment()->KeyGen(),

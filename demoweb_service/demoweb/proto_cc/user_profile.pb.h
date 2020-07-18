@@ -149,10 +149,10 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.UserRelationRecord relations = 5;
+  // repeated .e8.UserRelationRecord relations = 6;
   int relations_size() const;
   void clear_relations();
-  static const int kRelationsFieldNumber = 5;
+  static const int kRelationsFieldNumber = 6;
   ::e8::UserRelationRecord* mutable_relations(int index);
   ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord >*
       mutable_relations();
@@ -173,10 +173,22 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
   ::e8::NullableString* mutable_alias();
   void set_allocated_alias(::e8::NullableString* alias);
 
-  // .e8.FileTokenAccess avatar_readonly_access = 3;
+  // .e8.NullableString biography = 3;
+  bool has_biography() const;
+  void clear_biography();
+  static const int kBiographyFieldNumber = 3;
+  private:
+  const ::e8::NullableString& _internal_biography() const;
+  public:
+  const ::e8::NullableString& biography() const;
+  ::e8::NullableString* release_biography();
+  ::e8::NullableString* mutable_biography();
+  void set_allocated_biography(::e8::NullableString* biography);
+
+  // .e8.FileTokenAccess avatar_readonly_access = 4;
   bool has_avatar_readonly_access() const;
   void clear_avatar_readonly_access();
-  static const int kAvatarReadonlyAccessFieldNumber = 3;
+  static const int kAvatarReadonlyAccessFieldNumber = 4;
   private:
   const ::e8::FileTokenAccess& _internal_avatar_readonly_access() const;
   public:
@@ -185,10 +197,10 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
   ::e8::FileTokenAccess* mutable_avatar_readonly_access();
   void set_allocated_avatar_readonly_access(::e8::FileTokenAccess* avatar_readonly_access);
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
   bool has_avatar_preview_readonly_access() const;
   void clear_avatar_preview_readonly_access();
-  static const int kAvatarPreviewReadonlyAccessFieldNumber = 4;
+  static const int kAvatarPreviewReadonlyAccessFieldNumber = 5;
   private:
   const ::e8::FileTokenAccess& _internal_avatar_preview_readonly_access() const;
   public:
@@ -203,9 +215,9 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::int64 user_id() const;
   void set_user_id(::google::protobuf::int64 value);
 
-  // int64 join_at = 6;
+  // int64 join_at = 7;
   void clear_join_at();
-  static const int kJoinAtFieldNumber = 6;
+  static const int kJoinAtFieldNumber = 7;
   ::google::protobuf::int64 join_at() const;
   void set_join_at(::google::protobuf::int64 value);
 
@@ -215,6 +227,7 @@ class UserPublicProfile : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::e8::UserRelationRecord > relations_;
   ::e8::NullableString* alias_;
+  ::e8::NullableString* biography_;
   ::e8::FileTokenAccess* avatar_readonly_access_;
   ::e8::FileTokenAccess* avatar_preview_readonly_access_;
   ::google::protobuf::int64 user_id_;
@@ -295,7 +308,55 @@ inline void UserPublicProfile::set_allocated_alias(::e8::NullableString* alias) 
   // @@protoc_insertion_point(field_set_allocated:e8.UserPublicProfile.alias)
 }
 
-// .e8.FileTokenAccess avatar_readonly_access = 3;
+// .e8.NullableString biography = 3;
+inline bool UserPublicProfile::has_biography() const {
+  return this != internal_default_instance() && biography_ != NULL;
+}
+inline const ::e8::NullableString& UserPublicProfile::_internal_biography() const {
+  return *biography_;
+}
+inline const ::e8::NullableString& UserPublicProfile::biography() const {
+  const ::e8::NullableString* p = biography_;
+  // @@protoc_insertion_point(field_get:e8.UserPublicProfile.biography)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
+      &::e8::_NullableString_default_instance_);
+}
+inline ::e8::NullableString* UserPublicProfile::release_biography() {
+  // @@protoc_insertion_point(field_release:e8.UserPublicProfile.biography)
+  
+  ::e8::NullableString* temp = biography_;
+  biography_ = NULL;
+  return temp;
+}
+inline ::e8::NullableString* UserPublicProfile::mutable_biography() {
+  
+  if (biography_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
+    biography_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.UserPublicProfile.biography)
+  return biography_;
+}
+inline void UserPublicProfile::set_allocated_biography(::e8::NullableString* biography) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(biography_);
+  }
+  if (biography) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      biography = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, biography, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  biography_ = biography;
+  // @@protoc_insertion_point(field_set_allocated:e8.UserPublicProfile.biography)
+}
+
+// .e8.FileTokenAccess avatar_readonly_access = 4;
 inline bool UserPublicProfile::has_avatar_readonly_access() const {
   return this != internal_default_instance() && avatar_readonly_access_ != NULL;
 }
@@ -343,7 +404,7 @@ inline void UserPublicProfile::set_allocated_avatar_readonly_access(::e8::FileTo
   // @@protoc_insertion_point(field_set_allocated:e8.UserPublicProfile.avatar_readonly_access)
 }
 
-// .e8.FileTokenAccess avatar_preview_readonly_access = 4;
+// .e8.FileTokenAccess avatar_preview_readonly_access = 5;
 inline bool UserPublicProfile::has_avatar_preview_readonly_access() const {
   return this != internal_default_instance() && avatar_preview_readonly_access_ != NULL;
 }
@@ -391,7 +452,7 @@ inline void UserPublicProfile::set_allocated_avatar_preview_readonly_access(::e8
   // @@protoc_insertion_point(field_set_allocated:e8.UserPublicProfile.avatar_preview_readonly_access)
 }
 
-// repeated .e8.UserRelationRecord relations = 5;
+// repeated .e8.UserRelationRecord relations = 6;
 inline int UserPublicProfile::relations_size() const {
   return relations_.size();
 }
@@ -418,7 +479,7 @@ UserPublicProfile::relations() const {
   return relations_;
 }
 
-// int64 join_at = 6;
+// int64 join_at = 7;
 inline void UserPublicProfile::clear_join_at() {
   join_at_ = GOOGLE_LONGLONG(0);
 }

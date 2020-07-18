@@ -113,27 +113,27 @@ void retrieve_user_test::search_user_by_id_alias_test() {
     e8::UserEntity user0 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*user_id=*/1L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"John A", &user0, db_conns);
+    e8::UpdateProfile(/*alias=*/"John A", std::nullopt, &user0, db_conns);
 
     e8::UserEntity user1 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*userId=*/2L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"John A", &user1, db_conns);
+    e8::UpdateProfile(/*alias=*/"John A", std::nullopt, &user1, db_conns);
 
     e8::UserEntity user2 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*userId=*/3L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"John B", &user2, db_conns);
+    e8::UpdateProfile(/*alias=*/"John B", std::nullopt, &user2, db_conns);
 
     e8::UserEntity user3 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*userId=*/4L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"John C", &user3, db_conns);
+    e8::UpdateProfile(/*alias=*/"John C", std::nullopt, &user3, db_conns);
 
     e8::UserEntity user4 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*userId=*/5L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"Stieve A", &user4, db_conns);
+    e8::UpdateProfile(/*alias=*/"Stieve A", std::nullopt, &user4, db_conns);
 
     e8::Pagination pagination;
     pagination.set_page_number(0);

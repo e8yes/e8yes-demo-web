@@ -98,9 +98,11 @@ UserPublicProfile BuildPublicProfile(UserEntity const &user, UserRelations const
 
 } // namespace profile_internal
 
-bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
+bool UpdateProfile(std::optional<std::string> const &alias,
+                   std::optional<std::string> const &biography, UserEntity *user,
                    ConnectionReservoirInterface *db_conns) {
     *user->alias.ValuePtr() = alias;
+    *user->biography.ValuePtr() = biography;
 
     int num_rows_updated = Update(*user, TableNames::AUser(), /*override=*/true, db_conns);
     if (num_rows_updated == 0) {

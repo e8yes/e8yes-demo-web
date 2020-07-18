@@ -234,6 +234,7 @@ class GetPublicProfileResponse extends $pb.GeneratedMessage {
 class UpdatePublicProfileRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UpdatePublicProfileRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<$7.NullableString>(1, 'alias', subBuilder: $7.NullableString.create)
+    ..aOM<$7.NullableString>(2, 'biography', subBuilder: $7.NullableString.create)
     ..hasRequiredFields = false
   ;
 
@@ -262,6 +263,17 @@ class UpdatePublicProfileRequest extends $pb.GeneratedMessage {
   void clearAlias() => clearField(1);
   @$pb.TagNumber(1)
   $7.NullableString ensureAlias() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $7.NullableString get biography => $_getN(1);
+  @$pb.TagNumber(2)
+  set biography($7.NullableString v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasBiography() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBiography() => clearField(2);
+  @$pb.TagNumber(2)
+  $7.NullableString ensureBiography() => $_ensure(1);
 }
 
 class UpdatePublicProfileResponse extends $pb.GeneratedMessage {

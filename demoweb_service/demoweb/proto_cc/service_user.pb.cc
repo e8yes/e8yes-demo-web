@@ -338,6 +338,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UpdatePublicProfileRequest, alias_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UpdatePublicProfileRequest, biography_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UpdatePublicProfileResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -379,11 +380,11 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 26, -1, sizeof(::e8::GetPublicProfileRequest)},
   { 32, -1, sizeof(::e8::GetPublicProfileResponse)},
   { 38, -1, sizeof(::e8::UpdatePublicProfileRequest)},
-  { 44, -1, sizeof(::e8::UpdatePublicProfileResponse)},
-  { 50, -1, sizeof(::e8::SearchUserRequest)},
-  { 58, -1, sizeof(::e8::SearchUserResponse)},
-  { 64, -1, sizeof(::e8::PrepareNewAvatarRequest)},
-  { 70, -1, sizeof(::e8::PrepareNewAvatarResponse)},
+  { 45, -1, sizeof(::e8::UpdatePublicProfileResponse)},
+  { 51, -1, sizeof(::e8::SearchUserRequest)},
+  { 59, -1, sizeof(::e8::SearchUserResponse)},
+  { 65, -1, sizeof(::e8::PrepareNewAvatarRequest)},
+  { 71, -1, sizeof(::e8::PrepareNewAvatarResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -437,33 +438,34 @@ void AddDescriptorsImpl() {
       "entitySignature\"*\n\027GetPublicProfileReque"
       "st\022\017\n\007user_id\030\001 \001(\003\"B\n\030GetPublicProfileR"
       "esponse\022&\n\007profile\030\001 \001(\0132\025.e8.UserPublic"
-      "Profile\"\?\n\032UpdatePublicProfileRequest\022!\n"
-      "\005alias\030\001 \001(\0132\022.e8.NullableString\"E\n\033Upda"
-      "tePublicProfileResponse\022&\n\007profile\030\001 \001(\013"
-      "2\025.e8.UserPublicProfile\"~\n\021SearchUserReq"
-      "uest\022!\n\005alias\030\001 \001(\0132\022.e8.NullableString\022"
-      "\"\n\007user_id\030\002 \001(\0132\021.e8.NullableInt64\022\"\n\np"
-      "agination\030\003 \001(\0132\016.e8.Pagination\"B\n\022Searc"
-      "hUserResponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e"
-      "8.UserPublicProfile\">\n\027PrepareNewAvatarR"
-      "equest\022#\n\013file_format\030\001 \001(\0162\016.e8.FileFor"
-      "mat\"P\n\030PrepareNewAvatarResponse\0224\n\027avata"
-      "r_readwrite_access\030\001 \001(\0132\023.e8.FileTokenA"
-      "ccess2\275\003\n\013UserService\022=\n\010Register\022\027.e8.R"
-      "egistrationRequest\032\030.e8.RegistrationResp"
-      "onse\022@\n\tAuthorize\022\030.e8.AuthorizationRequ"
-      "est\032\031.e8.AuthorizationResponse\022M\n\020GetPub"
-      "licProfile\022\033.e8.GetPublicProfileRequest\032"
-      "\034.e8.GetPublicProfileResponse\022V\n\023UpdateP"
-      "ublicProfile\022\036.e8.UpdatePublicProfileReq"
-      "uest\032\037.e8.UpdatePublicProfileResponse\0227\n"
-      "\006Search\022\025.e8.SearchUserRequest\032\026.e8.Sear"
-      "chUserResponse\022M\n\020PrepareNewAvatar\022\033.e8."
-      "PrepareNewAvatarRequest\032\034.e8.PrepareNewA"
-      "vatarResponseb\006proto3"
+      "Profile\"f\n\032UpdatePublicProfileRequest\022!\n"
+      "\005alias\030\001 \001(\0132\022.e8.NullableString\022%\n\tbiog"
+      "raphy\030\002 \001(\0132\022.e8.NullableString\"E\n\033Updat"
+      "ePublicProfileResponse\022&\n\007profile\030\001 \001(\0132"
+      "\025.e8.UserPublicProfile\"~\n\021SearchUserRequ"
+      "est\022!\n\005alias\030\001 \001(\0132\022.e8.NullableString\022\""
+      "\n\007user_id\030\002 \001(\0132\021.e8.NullableInt64\022\"\n\npa"
+      "gination\030\003 \001(\0132\016.e8.Pagination\"B\n\022Search"
+      "UserResponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8"
+      ".UserPublicProfile\">\n\027PrepareNewAvatarRe"
+      "quest\022#\n\013file_format\030\001 \001(\0162\016.e8.FileForm"
+      "at\"P\n\030PrepareNewAvatarResponse\0224\n\027avatar"
+      "_readwrite_access\030\001 \001(\0132\023.e8.FileTokenAc"
+      "cess2\275\003\n\013UserService\022=\n\010Register\022\027.e8.Re"
+      "gistrationRequest\032\030.e8.RegistrationRespo"
+      "nse\022@\n\tAuthorize\022\030.e8.AuthorizationReque"
+      "st\032\031.e8.AuthorizationResponse\022M\n\020GetPubl"
+      "icProfile\022\033.e8.GetPublicProfileRequest\032\034"
+      ".e8.GetPublicProfileResponse\022V\n\023UpdatePu"
+      "blicProfile\022\036.e8.UpdatePublicProfileRequ"
+      "est\032\037.e8.UpdatePublicProfileResponse\0227\n\006"
+      "Search\022\025.e8.SearchUserRequest\032\026.e8.Searc"
+      "hUserResponse\022M\n\020PrepareNewAvatar\022\033.e8.P"
+      "repareNewAvatarRequest\032\034.e8.PrepareNewAv"
+      "atarResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1541);
+      descriptor, 1580);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_user.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -1983,6 +1985,8 @@ void GetPublicProfileResponse::InternalSwap(GetPublicProfileResponse* other) {
 void UpdatePublicProfileRequest::InitAsDefaultInstance() {
   ::e8::_UpdatePublicProfileRequest_default_instance_._instance.get_mutable()->alias_ = const_cast< ::e8::NullableString*>(
       ::e8::NullableString::internal_default_instance());
+  ::e8::_UpdatePublicProfileRequest_default_instance_._instance.get_mutable()->biography_ = const_cast< ::e8::NullableString*>(
+      ::e8::NullableString::internal_default_instance());
 }
 void UpdatePublicProfileRequest::clear_alias() {
   if (GetArenaNoVirtual() == NULL && alias_ != NULL) {
@@ -1990,8 +1994,15 @@ void UpdatePublicProfileRequest::clear_alias() {
   }
   alias_ = NULL;
 }
+void UpdatePublicProfileRequest::clear_biography() {
+  if (GetArenaNoVirtual() == NULL && biography_ != NULL) {
+    delete biography_;
+  }
+  biography_ = NULL;
+}
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int UpdatePublicProfileRequest::kAliasFieldNumber;
+const int UpdatePublicProfileRequest::kBiographyFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 UpdatePublicProfileRequest::UpdatePublicProfileRequest()
@@ -2010,11 +2021,18 @@ UpdatePublicProfileRequest::UpdatePublicProfileRequest(const UpdatePublicProfile
   } else {
     alias_ = NULL;
   }
+  if (from.has_biography()) {
+    biography_ = new ::e8::NullableString(*from.biography_);
+  } else {
+    biography_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:e8.UpdatePublicProfileRequest)
 }
 
 void UpdatePublicProfileRequest::SharedCtor() {
-  alias_ = NULL;
+  ::memset(&alias_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&biography_) -
+      reinterpret_cast<char*>(&alias_)) + sizeof(biography_));
 }
 
 UpdatePublicProfileRequest::~UpdatePublicProfileRequest() {
@@ -2024,6 +2042,7 @@ UpdatePublicProfileRequest::~UpdatePublicProfileRequest() {
 
 void UpdatePublicProfileRequest::SharedDtor() {
   if (this != internal_default_instance()) delete alias_;
+  if (this != internal_default_instance()) delete biography_;
 }
 
 void UpdatePublicProfileRequest::SetCachedSize(int size) const {
@@ -2050,6 +2069,10 @@ void UpdatePublicProfileRequest::Clear() {
     delete alias_;
   }
   alias_ = NULL;
+  if (GetArenaNoVirtual() == NULL && biography_ != NULL) {
+    delete biography_;
+  }
+  biography_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -2069,6 +2092,18 @@ bool UpdatePublicProfileRequest::MergePartialFromCodedStream(
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_alias()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .e8.NullableString biography = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_biography()));
         } else {
           goto handle_unusual;
         }
@@ -2107,6 +2142,12 @@ void UpdatePublicProfileRequest::SerializeWithCachedSizes(
       1, this->_internal_alias(), output);
   }
 
+  // .e8.NullableString biography = 2;
+  if (this->has_biography()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->_internal_biography(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2126,6 +2167,13 @@ void UpdatePublicProfileRequest::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
         1, this->_internal_alias(), deterministic, target);
+  }
+
+  // .e8.NullableString biography = 2;
+  if (this->has_biography()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        2, this->_internal_biography(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2150,6 +2198,13 @@ size_t UpdatePublicProfileRequest::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *alias_);
+  }
+
+  // .e8.NullableString biography = 2;
+  if (this->has_biography()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *biography_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2182,6 +2237,9 @@ void UpdatePublicProfileRequest::MergeFrom(const UpdatePublicProfileRequest& fro
   if (from.has_alias()) {
     mutable_alias()->::e8::NullableString::MergeFrom(from.alias());
   }
+  if (from.has_biography()) {
+    mutable_biography()->::e8::NullableString::MergeFrom(from.biography());
+  }
 }
 
 void UpdatePublicProfileRequest::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2209,6 +2267,7 @@ void UpdatePublicProfileRequest::Swap(UpdatePublicProfileRequest* other) {
 void UpdatePublicProfileRequest::InternalSwap(UpdatePublicProfileRequest* other) {
   using std::swap;
   swap(alias_, other->alias_);
+  swap(biography_, other->biography_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

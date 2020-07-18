@@ -33,7 +33,9 @@ namespace e8 {
 
 /**
  * @brief UpdateProfile Update a user's profile. See class UserPublicProfile for what parameters are
- * considered public profile.
+ * considered public profile. Note that the semantics of optional isn't that whether if function
+ * updates the field but that it treats them as actual value to update to the database table. A
+ * std::opt value will be updated as NULL to the field.
  *
  * @param user Table entity of the user whose profile needs to be updated. The content of this
  * entity will be updated with the specified parameters after the function call.
@@ -41,7 +43,8 @@ namespace e8 {
  * @return If the user pointed to by the ID of the entity doesn't exist, it will return false.
  * Otherwise, it returns true.
  */
-bool UpdateProfile(std::optional<std::string> const &alias, UserEntity *user,
+bool UpdateProfile(std::optional<std::string> const &alias,
+                   std::optional<std::string> const &biography, UserEntity *user,
                    ConnectionReservoirInterface *db_conns);
 
 /**

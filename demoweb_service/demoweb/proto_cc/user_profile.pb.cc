@@ -67,6 +67,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, user_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, alias_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, biography_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, avatar_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, avatar_preview_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UserPublicProfile, relations_),
@@ -103,16 +104,17 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\022user_profile.proto\022\002e8\032\nfile.proto\032\031nu"
       "llable_primitives.proto\032\023user_relation.p"
-      "roto\"\365\001\n\021UserPublicProfile\022\017\n\007user_id\030\001 "
-      "\001(\003\022!\n\005alias\030\002 \001(\0132\022.e8.NullableString\0223"
-      "\n\026avatar_readonly_access\030\003 \001(\0132\023.e8.File"
-      "TokenAccess\022;\n\036avatar_preview_readonly_a"
-      "ccess\030\004 \001(\0132\023.e8.FileTokenAccess\022)\n\trela"
-      "tions\030\005 \003(\0132\026.e8.UserRelationRecord\022\017\n\007j"
-      "oin_at\030\006 \001(\003b\006proto3"
+      "roto\"\234\002\n\021UserPublicProfile\022\017\n\007user_id\030\001 "
+      "\001(\003\022!\n\005alias\030\002 \001(\0132\022.e8.NullableString\022%"
+      "\n\tbiography\030\003 \001(\0132\022.e8.NullableString\0223\n"
+      "\026avatar_readonly_access\030\004 \001(\0132\023.e8.FileT"
+      "okenAccess\022;\n\036avatar_preview_readonly_ac"
+      "cess\030\005 \001(\0132\023.e8.FileTokenAccess\022)\n\trelat"
+      "ions\030\006 \003(\0132\026.e8.UserRelationRecord\022\017\n\007jo"
+      "in_at\030\007 \001(\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 340);
+      descriptor, 379);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "user_profile.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -138,6 +140,8 @@ namespace e8 {
 void UserPublicProfile::InitAsDefaultInstance() {
   ::e8::_UserPublicProfile_default_instance_._instance.get_mutable()->alias_ = const_cast< ::e8::NullableString*>(
       ::e8::NullableString::internal_default_instance());
+  ::e8::_UserPublicProfile_default_instance_._instance.get_mutable()->biography_ = const_cast< ::e8::NullableString*>(
+      ::e8::NullableString::internal_default_instance());
   ::e8::_UserPublicProfile_default_instance_._instance.get_mutable()->avatar_readonly_access_ = const_cast< ::e8::FileTokenAccess*>(
       ::e8::FileTokenAccess::internal_default_instance());
   ::e8::_UserPublicProfile_default_instance_._instance.get_mutable()->avatar_preview_readonly_access_ = const_cast< ::e8::FileTokenAccess*>(
@@ -148,6 +152,12 @@ void UserPublicProfile::clear_alias() {
     delete alias_;
   }
   alias_ = NULL;
+}
+void UserPublicProfile::clear_biography() {
+  if (GetArenaNoVirtual() == NULL && biography_ != NULL) {
+    delete biography_;
+  }
+  biography_ = NULL;
 }
 void UserPublicProfile::clear_avatar_readonly_access() {
   if (GetArenaNoVirtual() == NULL && avatar_readonly_access_ != NULL) {
@@ -167,6 +177,7 @@ void UserPublicProfile::clear_relations() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int UserPublicProfile::kUserIdFieldNumber;
 const int UserPublicProfile::kAliasFieldNumber;
+const int UserPublicProfile::kBiographyFieldNumber;
 const int UserPublicProfile::kAvatarReadonlyAccessFieldNumber;
 const int UserPublicProfile::kAvatarPreviewReadonlyAccessFieldNumber;
 const int UserPublicProfile::kRelationsFieldNumber;
@@ -189,6 +200,11 @@ UserPublicProfile::UserPublicProfile(const UserPublicProfile& from)
     alias_ = new ::e8::NullableString(*from.alias_);
   } else {
     alias_ = NULL;
+  }
+  if (from.has_biography()) {
+    biography_ = new ::e8::NullableString(*from.biography_);
+  } else {
+    biography_ = NULL;
   }
   if (from.has_avatar_readonly_access()) {
     avatar_readonly_access_ = new ::e8::FileTokenAccess(*from.avatar_readonly_access_);
@@ -219,6 +235,7 @@ UserPublicProfile::~UserPublicProfile() {
 
 void UserPublicProfile::SharedDtor() {
   if (this != internal_default_instance()) delete alias_;
+  if (this != internal_default_instance()) delete biography_;
   if (this != internal_default_instance()) delete avatar_readonly_access_;
   if (this != internal_default_instance()) delete avatar_preview_readonly_access_;
 }
@@ -248,6 +265,10 @@ void UserPublicProfile::Clear() {
     delete alias_;
   }
   alias_ = NULL;
+  if (GetArenaNoVirtual() == NULL && biography_ != NULL) {
+    delete biography_;
+  }
+  biography_ = NULL;
   if (GetArenaNoVirtual() == NULL && avatar_readonly_access_ != NULL) {
     delete avatar_readonly_access_;
   }
@@ -298,10 +319,22 @@ bool UserPublicProfile::MergePartialFromCodedStream(
         break;
       }
 
-      // .e8.FileTokenAccess avatar_readonly_access = 3;
+      // .e8.NullableString biography = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_biography()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .e8.FileTokenAccess avatar_readonly_access = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_avatar_readonly_access()));
         } else {
@@ -310,10 +343,10 @@ bool UserPublicProfile::MergePartialFromCodedStream(
         break;
       }
 
-      // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
-      case 4: {
+      // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_avatar_preview_readonly_access()));
         } else {
@@ -322,10 +355,10 @@ bool UserPublicProfile::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .e8.UserRelationRecord relations = 5;
-      case 5: {
+      // repeated .e8.UserRelationRecord relations = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                 input, add_relations()));
         } else {
@@ -334,10 +367,10 @@ bool UserPublicProfile::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 join_at = 6;
-      case 6: {
+      // int64 join_at = 7;
+      case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
@@ -385,30 +418,36 @@ void UserPublicProfile::SerializeWithCachedSizes(
       2, this->_internal_alias(), output);
   }
 
-  // .e8.FileTokenAccess avatar_readonly_access = 3;
+  // .e8.NullableString biography = 3;
+  if (this->has_biography()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->_internal_biography(), output);
+  }
+
+  // .e8.FileTokenAccess avatar_readonly_access = 4;
   if (this->has_avatar_readonly_access()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->_internal_avatar_readonly_access(), output);
+      4, this->_internal_avatar_readonly_access(), output);
   }
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
   if (this->has_avatar_preview_readonly_access()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->_internal_avatar_preview_readonly_access(), output);
+      5, this->_internal_avatar_preview_readonly_access(), output);
   }
 
-  // repeated .e8.UserRelationRecord relations = 5;
+  // repeated .e8.UserRelationRecord relations = 6;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->relations_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5,
+      6,
       this->relations(static_cast<int>(i)),
       output);
   }
 
-  // int64 join_at = 6;
+  // int64 join_at = 7;
   if (this->join_at() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->join_at(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(7, this->join_at(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -437,31 +476,38 @@ void UserPublicProfile::SerializeWithCachedSizes(
         2, this->_internal_alias(), deterministic, target);
   }
 
-  // .e8.FileTokenAccess avatar_readonly_access = 3;
+  // .e8.NullableString biography = 3;
+  if (this->has_biography()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        3, this->_internal_biography(), deterministic, target);
+  }
+
+  // .e8.FileTokenAccess avatar_readonly_access = 4;
   if (this->has_avatar_readonly_access()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        3, this->_internal_avatar_readonly_access(), deterministic, target);
+        4, this->_internal_avatar_readonly_access(), deterministic, target);
   }
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
   if (this->has_avatar_preview_readonly_access()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        4, this->_internal_avatar_preview_readonly_access(), deterministic, target);
+        5, this->_internal_avatar_preview_readonly_access(), deterministic, target);
   }
 
-  // repeated .e8.UserRelationRecord relations = 5;
+  // repeated .e8.UserRelationRecord relations = 6;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->relations_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        5, this->relations(static_cast<int>(i)), deterministic, target);
+        6, this->relations(static_cast<int>(i)), deterministic, target);
   }
 
-  // int64 join_at = 6;
+  // int64 join_at = 7;
   if (this->join_at() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->join_at(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(7, this->join_at(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -481,7 +527,7 @@ size_t UserPublicProfile::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.UserRelationRecord relations = 5;
+  // repeated .e8.UserRelationRecord relations = 6;
   {
     unsigned int count = static_cast<unsigned int>(this->relations_size());
     total_size += 1UL * count;
@@ -499,14 +545,21 @@ size_t UserPublicProfile::ByteSizeLong() const {
         *alias_);
   }
 
-  // .e8.FileTokenAccess avatar_readonly_access = 3;
+  // .e8.NullableString biography = 3;
+  if (this->has_biography()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *biography_);
+  }
+
+  // .e8.FileTokenAccess avatar_readonly_access = 4;
   if (this->has_avatar_readonly_access()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *avatar_readonly_access_);
   }
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
   if (this->has_avatar_preview_readonly_access()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
@@ -520,7 +573,7 @@ size_t UserPublicProfile::ByteSizeLong() const {
         this->user_id());
   }
 
-  // int64 join_at = 6;
+  // int64 join_at = 7;
   if (this->join_at() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
@@ -557,6 +610,9 @@ void UserPublicProfile::MergeFrom(const UserPublicProfile& from) {
   relations_.MergeFrom(from.relations_);
   if (from.has_alias()) {
     mutable_alias()->::e8::NullableString::MergeFrom(from.alias());
+  }
+  if (from.has_biography()) {
+    mutable_biography()->::e8::NullableString::MergeFrom(from.biography());
   }
   if (from.has_avatar_readonly_access()) {
     mutable_avatar_readonly_access()->::e8::FileTokenAccess::MergeFrom(from.avatar_readonly_access());
@@ -598,6 +654,7 @@ void UserPublicProfile::InternalSwap(UserPublicProfile* other) {
   using std::swap;
   CastToBase(&relations_)->InternalSwap(CastToBase(&other->relations_));
   swap(alias_, other->alias_);
+  swap(biography_, other->biography_);
   swap(avatar_readonly_access_, other->avatar_readonly_access_);
   swap(avatar_preview_readonly_access_, other->avatar_preview_readonly_access_);
   swap(user_id_, other->user_id_);

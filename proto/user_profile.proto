@@ -26,8 +26,9 @@ import "user_relation.proto";
 message UserPublicProfile {
     int64 user_id = 1;
     NullableString alias = 2;
-    FileTokenAccess avatar_readonly_access = 3;
-    FileTokenAccess avatar_preview_readonly_access = 4;
-    repeated UserRelationRecord relations = 5;
-    int64 join_at = 6;
+    NullableString biography = 3;
+    FileTokenAccess avatar_readonly_access = 4;
+    FileTokenAccess avatar_preview_readonly_access = 5;
+    repeated UserRelationRecord relations = 6;
+    int64 join_at = 7;
 }
