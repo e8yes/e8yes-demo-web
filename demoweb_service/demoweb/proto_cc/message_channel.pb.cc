@@ -100,12 +100,12 @@ void AddDescriptorsImpl() {
       "\003 \001(\0132\023.e8.FileTokenAccess\022;\n\036avatar_pre"
       "view_readonly_access\030\004 \001(\0132\023.e8.FileToke"
       "nAccess\022\022\n\ncreated_at\030\005 \001(\003\022\021\n\tjoined_at"
-      "\030\006 \001(\003*K\n\026MessageChannelUserType\022\020\n\014MCUT"
-      "_INVALID\020\000\022\017\n\013MCUT_MEMBER\020\001\022\016\n\nMCUT_ADMI"
-      "N\020\002b\006proto3"
+      "\030\006 \001(\003*M\n\030MessageChannelMemberType\022\020\n\014MC"
+      "MT_INVALID\020\000\022\017\n\013MCMT_MEMBER\020\001\022\016\n\nMCMT_AD"
+      "MIN\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 331);
+      descriptor, 333);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -123,11 +123,11 @@ struct StaticDescriptorInitializer {
 } static_descriptor_initializer;
 }  // namespace protobuf_message_5fchannel_2eproto
 namespace e8 {
-const ::google::protobuf::EnumDescriptor* MessageChannelUserType_descriptor() {
+const ::google::protobuf::EnumDescriptor* MessageChannelMemberType_descriptor() {
   protobuf_message_5fchannel_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_message_5fchannel_2eproto::file_level_enum_descriptors[0];
 }
-bool MessageChannelUserType_IsValid(int value) {
+bool MessageChannelMemberType_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:

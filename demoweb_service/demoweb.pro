@@ -3,6 +3,7 @@ SUBDIRS = \
     demoweb/demowebservice.pro \
     demoweb/demowebmain.pro \
     demoweb_test/module/create_user_test \
+    demoweb_test/module/message_channel_test \
     demoweb_test/module/retrieve_user_test \
     demoweb_test/module/user_identity_test \
     demoweb_test/module/user_profile_test \

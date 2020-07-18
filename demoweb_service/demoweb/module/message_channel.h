@@ -18,21 +18,42 @@
 #ifndef MESSAGE_CHANNEL_H
 #define MESSAGE_CHANNEL_H
 
+#include <optional>
 #include <string>
+#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
+#include "demoweb_service/demoweb/proto_cc/message_channel.pb.h"
+#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
 
 /**
- * @brief CreateMessageChannel Create a new message channel.
+ * @brief CreateMessageChannel Create a new message channel. A message channel allows communication
+ * among users once they are members of. The communication can be encrypted as flagged by the
+ * "encrypted" parameter. The argument close_group_channel specifies a more relaxed close group RBAC
+ * policy for what the members can do.
  */
 MessageChannelEntity CreateMessageChannel(UserId creator_id, std::string const &channel_name,
-                                          bool encrypted, HostId host_id,
+                                          bool encrypted, bool close_group_channel, HostId host_id,
                                           ConnectionReservoirInterface *conns);
+
+struct JoinedInMessageChannel {
+    MessageChannelEntity message_channel;
+    MessageChannelMemberType member_type;
+};
+
+/**
+ * @brief GetJoinedInMessageChannels Get all the message channels that the user pointed to by the
+ * member_id is a member of. It also returns the member type the user is assigned in each specific
+ * message channel.
+ */
+std::vector<JoinedInMessageChannel>
+GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pagination,
+                           ConnectionReservoirInterface *conns);
 
 } // namespace e8
 

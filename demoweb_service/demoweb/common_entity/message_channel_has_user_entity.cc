@@ -22,20 +22,24 @@
 namespace e8 {
 
 MessageChannelHasUserEntity::MessageChannelHasUserEntity()
-    : SqlEntityInterface({&channel_id, &user_id, &ownership}) {}
+    : SqlEntityInterface({&channel_id, &user_id, &ownership, &created_at, &last_interaction_at}) {}
 
 MessageChannelHasUserEntity::MessageChannelHasUserEntity(MessageChannelHasUserEntity const &other)
     : MessageChannelHasUserEntity() {
     channel_id = other.channel_id;
     user_id = other.user_id;
     ownership = other.ownership;
+    created_at = other.created_at;
+    last_interaction_at = other.last_interaction_at;
 }
 
 MessageChannelHasUserEntity &
-MessageChannelHasUserEntity::operator=(const MessageChannelHasUserEntity &other) {
+MessageChannelHasUserEntity::operator=(MessageChannelHasUserEntity const &other) {
     channel_id = other.channel_id;
     user_id = other.user_id;
     ownership = other.ownership;
+    created_at = other.created_at;
+    last_interaction_at = other.last_interaction_at;
     return *this;
 }
 

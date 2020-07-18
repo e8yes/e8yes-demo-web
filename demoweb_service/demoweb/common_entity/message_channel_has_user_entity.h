@@ -38,6 +38,8 @@ class MessageChannelHasUserEntity : public SqlEntityInterface {
     SqlLong channel_id = SqlLong("channel_id");
     SqlLong user_id = SqlLong("user_id");
     SqlInt ownership = SqlInt("ownership");
+    SqlTimestamp created_at = SqlTimestamp("created_at");
+    SqlTimestamp last_interaction_at = SqlTimestamp("last_interaction_at");
 };
 
 } // namespace e8

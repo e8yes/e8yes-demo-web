@@ -59,27 +59,27 @@ template<> ::e8::MessageChannel* Arena::CreateMaybeMessage<::e8::MessageChannel>
 }  // namespace google
 namespace e8 {
 
-enum MessageChannelUserType {
-  MCUT_INVALID = 0,
-  MCUT_MEMBER = 1,
-  MCUT_ADMIN = 2,
-  MessageChannelUserType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  MessageChannelUserType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+enum MessageChannelMemberType {
+  MCMT_INVALID = 0,
+  MCMT_MEMBER = 1,
+  MCMT_ADMIN = 2,
+  MessageChannelMemberType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  MessageChannelMemberType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
-bool MessageChannelUserType_IsValid(int value);
-const MessageChannelUserType MessageChannelUserType_MIN = MCUT_INVALID;
-const MessageChannelUserType MessageChannelUserType_MAX = MCUT_ADMIN;
-const int MessageChannelUserType_ARRAYSIZE = MessageChannelUserType_MAX + 1;
+bool MessageChannelMemberType_IsValid(int value);
+const MessageChannelMemberType MessageChannelMemberType_MIN = MCMT_INVALID;
+const MessageChannelMemberType MessageChannelMemberType_MAX = MCMT_ADMIN;
+const int MessageChannelMemberType_ARRAYSIZE = MessageChannelMemberType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* MessageChannelUserType_descriptor();
-inline const ::std::string& MessageChannelUserType_Name(MessageChannelUserType value) {
+const ::google::protobuf::EnumDescriptor* MessageChannelMemberType_descriptor();
+inline const ::std::string& MessageChannelMemberType_Name(MessageChannelMemberType value) {
   return ::google::protobuf::internal::NameOfEnum(
-    MessageChannelUserType_descriptor(), value);
+    MessageChannelMemberType_descriptor(), value);
 }
-inline bool MessageChannelUserType_Parse(
-    const ::std::string& name, MessageChannelUserType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<MessageChannelUserType>(
-    MessageChannelUserType_descriptor(), name, value);
+inline bool MessageChannelMemberType_Parse(
+    const ::std::string& name, MessageChannelMemberType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MessageChannelMemberType>(
+    MessageChannelMemberType_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -452,10 +452,10 @@ inline void MessageChannel::set_joined_at(::google::protobuf::int64 value) {
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::e8::MessageChannelUserType> : ::std::true_type {};
+template <> struct is_proto_enum< ::e8::MessageChannelMemberType> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::e8::MessageChannelUserType>() {
-  return ::e8::MessageChannelUserType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::e8::MessageChannelMemberType>() {
+  return ::e8::MessageChannelMemberType_descriptor();
 }
 
 }  // namespace protobuf

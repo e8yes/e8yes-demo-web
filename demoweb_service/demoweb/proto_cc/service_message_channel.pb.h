@@ -64,12 +64,12 @@ extern CreateMessageChannelRequestDefaultTypeInternal _CreateMessageChannelReque
 class CreateMessageChannelResponse;
 class CreateMessageChannelResponseDefaultTypeInternal;
 extern CreateMessageChannelResponseDefaultTypeInternal _CreateMessageChannelResponse_default_instance_;
-class GetJoinedMessageChannelsRequest;
-class GetJoinedMessageChannelsRequestDefaultTypeInternal;
-extern GetJoinedMessageChannelsRequestDefaultTypeInternal _GetJoinedMessageChannelsRequest_default_instance_;
-class GetJoinedMessageChannelsResponse;
-class GetJoinedMessageChannelsResponseDefaultTypeInternal;
-extern GetJoinedMessageChannelsResponseDefaultTypeInternal _GetJoinedMessageChannelsResponse_default_instance_;
+class GetJoinedInMessageChannelsRequest;
+class GetJoinedInMessageChannelsRequestDefaultTypeInternal;
+extern GetJoinedInMessageChannelsRequestDefaultTypeInternal _GetJoinedInMessageChannelsRequest_default_instance_;
+class GetJoinedInMessageChannelsResponse;
+class GetJoinedInMessageChannelsResponseDefaultTypeInternal;
+extern GetJoinedInMessageChannelsResponseDefaultTypeInternal _GetJoinedInMessageChannelsResponse_default_instance_;
 class GetMessageChannelKeyRequest;
 class GetMessageChannelKeyRequestDefaultTypeInternal;
 extern GetMessageChannelKeyRequestDefaultTypeInternal _GetMessageChannelKeyRequest_default_instance_;
@@ -82,9 +82,9 @@ extern GetMessageChannelMembersRequestDefaultTypeInternal _GetMessageChannelMemb
 class GetMessageChannelMembersResponse;
 class GetMessageChannelMembersResponseDefaultTypeInternal;
 extern GetMessageChannelMembersResponseDefaultTypeInternal _GetMessageChannelMembersResponse_default_instance_;
-class GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse;
-class GetMessageChannelMembersResponse_UserTypesEntry_DoNotUseDefaultTypeInternal;
-extern GetMessageChannelMembersResponse_UserTypesEntry_DoNotUseDefaultTypeInternal _GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse_default_instance_;
+class GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse;
+class GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUseDefaultTypeInternal;
+extern GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUseDefaultTypeInternal _GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse_default_instance_;
 class LeaveMessageChannelRequest;
 class LeaveMessageChannelRequestDefaultTypeInternal;
 extern LeaveMessageChannelRequestDefaultTypeInternal _LeaveMessageChannelRequest_default_instance_;
@@ -98,13 +98,13 @@ template<> ::e8::AddMemberToMessageChannelRequest* Arena::CreateMaybeMessage<::e
 template<> ::e8::AddMemberToMessageChannelResponse* Arena::CreateMaybeMessage<::e8::AddMemberToMessageChannelResponse>(Arena*);
 template<> ::e8::CreateMessageChannelRequest* Arena::CreateMaybeMessage<::e8::CreateMessageChannelRequest>(Arena*);
 template<> ::e8::CreateMessageChannelResponse* Arena::CreateMaybeMessage<::e8::CreateMessageChannelResponse>(Arena*);
-template<> ::e8::GetJoinedMessageChannelsRequest* Arena::CreateMaybeMessage<::e8::GetJoinedMessageChannelsRequest>(Arena*);
-template<> ::e8::GetJoinedMessageChannelsResponse* Arena::CreateMaybeMessage<::e8::GetJoinedMessageChannelsResponse>(Arena*);
+template<> ::e8::GetJoinedInMessageChannelsRequest* Arena::CreateMaybeMessage<::e8::GetJoinedInMessageChannelsRequest>(Arena*);
+template<> ::e8::GetJoinedInMessageChannelsResponse* Arena::CreateMaybeMessage<::e8::GetJoinedInMessageChannelsResponse>(Arena*);
 template<> ::e8::GetMessageChannelKeyRequest* Arena::CreateMaybeMessage<::e8::GetMessageChannelKeyRequest>(Arena*);
 template<> ::e8::GetMessageChannelKeyResponse* Arena::CreateMaybeMessage<::e8::GetMessageChannelKeyResponse>(Arena*);
 template<> ::e8::GetMessageChannelMembersRequest* Arena::CreateMaybeMessage<::e8::GetMessageChannelMembersRequest>(Arena*);
 template<> ::e8::GetMessageChannelMembersResponse* Arena::CreateMaybeMessage<::e8::GetMessageChannelMembersResponse>(Arena*);
-template<> ::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse* Arena::CreateMaybeMessage<::e8::GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse>(Arena*);
+template<> ::e8::GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse* Arena::CreateMaybeMessage<::e8::GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse>(Arena*);
 template<> ::e8::LeaveMessageChannelRequest* Arena::CreateMaybeMessage<::e8::LeaveMessageChannelRequest>(Arena*);
 template<> ::e8::LeaveMessageChannelResponse* Arena::CreateMaybeMessage<::e8::LeaveMessageChannelResponse>(Arena*);
 }  // namespace protobuf
@@ -960,24 +960,24 @@ class LeaveMessageChannelResponse : public ::google::protobuf::Message /* @@prot
 };
 // -------------------------------------------------------------------
 
-class GetJoinedMessageChannelsRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetJoinedMessageChannelsRequest) */ {
+class GetJoinedInMessageChannelsRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetJoinedInMessageChannelsRequest) */ {
  public:
-  GetJoinedMessageChannelsRequest();
-  virtual ~GetJoinedMessageChannelsRequest();
+  GetJoinedInMessageChannelsRequest();
+  virtual ~GetJoinedInMessageChannelsRequest();
 
-  GetJoinedMessageChannelsRequest(const GetJoinedMessageChannelsRequest& from);
+  GetJoinedInMessageChannelsRequest(const GetJoinedInMessageChannelsRequest& from);
 
-  inline GetJoinedMessageChannelsRequest& operator=(const GetJoinedMessageChannelsRequest& from) {
+  inline GetJoinedInMessageChannelsRequest& operator=(const GetJoinedInMessageChannelsRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  GetJoinedMessageChannelsRequest(GetJoinedMessageChannelsRequest&& from) noexcept
-    : GetJoinedMessageChannelsRequest() {
+  GetJoinedInMessageChannelsRequest(GetJoinedInMessageChannelsRequest&& from) noexcept
+    : GetJoinedInMessageChannelsRequest() {
     *this = ::std::move(from);
   }
 
-  inline GetJoinedMessageChannelsRequest& operator=(GetJoinedMessageChannelsRequest&& from) noexcept {
+  inline GetJoinedInMessageChannelsRequest& operator=(GetJoinedInMessageChannelsRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -987,34 +987,34 @@ class GetJoinedMessageChannelsRequest : public ::google::protobuf::Message /* @@
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetJoinedMessageChannelsRequest& default_instance();
+  static const GetJoinedInMessageChannelsRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetJoinedMessageChannelsRequest* internal_default_instance() {
-    return reinterpret_cast<const GetJoinedMessageChannelsRequest*>(
-               &_GetJoinedMessageChannelsRequest_default_instance_);
+  static inline const GetJoinedInMessageChannelsRequest* internal_default_instance() {
+    return reinterpret_cast<const GetJoinedInMessageChannelsRequest*>(
+               &_GetJoinedInMessageChannelsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     8;
 
-  void Swap(GetJoinedMessageChannelsRequest* other);
-  friend void swap(GetJoinedMessageChannelsRequest& a, GetJoinedMessageChannelsRequest& b) {
+  void Swap(GetJoinedInMessageChannelsRequest* other);
+  friend void swap(GetJoinedInMessageChannelsRequest& a, GetJoinedInMessageChannelsRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetJoinedMessageChannelsRequest* New() const final {
-    return CreateMaybeMessage<GetJoinedMessageChannelsRequest>(NULL);
+  inline GetJoinedInMessageChannelsRequest* New() const final {
+    return CreateMaybeMessage<GetJoinedInMessageChannelsRequest>(NULL);
   }
 
-  GetJoinedMessageChannelsRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetJoinedMessageChannelsRequest>(arena);
+  GetJoinedInMessageChannelsRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetJoinedInMessageChannelsRequest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetJoinedMessageChannelsRequest& from);
-  void MergeFrom(const GetJoinedMessageChannelsRequest& from);
+  void CopyFrom(const GetJoinedInMessageChannelsRequest& from);
+  void MergeFrom(const GetJoinedInMessageChannelsRequest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -1031,7 +1031,7 @@ class GetJoinedMessageChannelsRequest : public ::google::protobuf::Message /* @@
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetJoinedMessageChannelsRequest* other);
+  void InternalSwap(GetJoinedInMessageChannelsRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1059,7 +1059,7 @@ class GetJoinedMessageChannelsRequest : public ::google::protobuf::Message /* @@
   ::e8::Pagination* mutable_pagination();
   void set_allocated_pagination(::e8::Pagination* pagination);
 
-  // @@protoc_insertion_point(class_scope:e8.GetJoinedMessageChannelsRequest)
+  // @@protoc_insertion_point(class_scope:e8.GetJoinedInMessageChannelsRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1069,24 +1069,24 @@ class GetJoinedMessageChannelsRequest : public ::google::protobuf::Message /* @@
 };
 // -------------------------------------------------------------------
 
-class GetJoinedMessageChannelsResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetJoinedMessageChannelsResponse) */ {
+class GetJoinedInMessageChannelsResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetJoinedInMessageChannelsResponse) */ {
  public:
-  GetJoinedMessageChannelsResponse();
-  virtual ~GetJoinedMessageChannelsResponse();
+  GetJoinedInMessageChannelsResponse();
+  virtual ~GetJoinedInMessageChannelsResponse();
 
-  GetJoinedMessageChannelsResponse(const GetJoinedMessageChannelsResponse& from);
+  GetJoinedInMessageChannelsResponse(const GetJoinedInMessageChannelsResponse& from);
 
-  inline GetJoinedMessageChannelsResponse& operator=(const GetJoinedMessageChannelsResponse& from) {
+  inline GetJoinedInMessageChannelsResponse& operator=(const GetJoinedInMessageChannelsResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  GetJoinedMessageChannelsResponse(GetJoinedMessageChannelsResponse&& from) noexcept
-    : GetJoinedMessageChannelsResponse() {
+  GetJoinedInMessageChannelsResponse(GetJoinedInMessageChannelsResponse&& from) noexcept
+    : GetJoinedInMessageChannelsResponse() {
     *this = ::std::move(from);
   }
 
-  inline GetJoinedMessageChannelsResponse& operator=(GetJoinedMessageChannelsResponse&& from) noexcept {
+  inline GetJoinedInMessageChannelsResponse& operator=(GetJoinedInMessageChannelsResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1096,34 +1096,34 @@ class GetJoinedMessageChannelsResponse : public ::google::protobuf::Message /* @
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetJoinedMessageChannelsResponse& default_instance();
+  static const GetJoinedInMessageChannelsResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetJoinedMessageChannelsResponse* internal_default_instance() {
-    return reinterpret_cast<const GetJoinedMessageChannelsResponse*>(
-               &_GetJoinedMessageChannelsResponse_default_instance_);
+  static inline const GetJoinedInMessageChannelsResponse* internal_default_instance() {
+    return reinterpret_cast<const GetJoinedInMessageChannelsResponse*>(
+               &_GetJoinedInMessageChannelsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     9;
 
-  void Swap(GetJoinedMessageChannelsResponse* other);
-  friend void swap(GetJoinedMessageChannelsResponse& a, GetJoinedMessageChannelsResponse& b) {
+  void Swap(GetJoinedInMessageChannelsResponse* other);
+  friend void swap(GetJoinedInMessageChannelsResponse& a, GetJoinedInMessageChannelsResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetJoinedMessageChannelsResponse* New() const final {
-    return CreateMaybeMessage<GetJoinedMessageChannelsResponse>(NULL);
+  inline GetJoinedInMessageChannelsResponse* New() const final {
+    return CreateMaybeMessage<GetJoinedInMessageChannelsResponse>(NULL);
   }
 
-  GetJoinedMessageChannelsResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetJoinedMessageChannelsResponse>(arena);
+  GetJoinedInMessageChannelsResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetJoinedInMessageChannelsResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetJoinedMessageChannelsResponse& from);
-  void MergeFrom(const GetJoinedMessageChannelsResponse& from);
+  void CopyFrom(const GetJoinedInMessageChannelsResponse& from);
+  void MergeFrom(const GetJoinedInMessageChannelsResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -1140,7 +1140,7 @@ class GetJoinedMessageChannelsResponse : public ::google::protobuf::Message /* @
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetJoinedMessageChannelsResponse* other);
+  void InternalSwap(GetJoinedInMessageChannelsResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1168,7 +1168,7 @@ class GetJoinedMessageChannelsResponse : public ::google::protobuf::Message /* @
   const ::google::protobuf::RepeatedPtrField< ::e8::MessageChannel >&
       channels() const;
 
-  // @@protoc_insertion_point(class_scope:e8.GetJoinedMessageChannelsResponse)
+  // @@protoc_insertion_point(class_scope:e8.GetJoinedInMessageChannelsResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1281,21 +1281,21 @@ class GetMessageChannelMembersRequest : public ::google::protobuf::Message /* @@
 };
 // -------------------------------------------------------------------
 
-class GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse : public ::google::protobuf::internal::MapEntry<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse, 
-    ::google::protobuf::int64, ::e8::MessageChannelUserType,
+class GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse : public ::google::protobuf::internal::MapEntry<GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse, 
+    ::google::protobuf::int64, ::e8::MessageChannelMemberType,
     ::google::protobuf::internal::WireFormatLite::TYPE_INT64,
     ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
     0 > {
 public:
-  typedef ::google::protobuf::internal::MapEntry<GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse, 
-    ::google::protobuf::int64, ::e8::MessageChannelUserType,
+  typedef ::google::protobuf::internal::MapEntry<GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse, 
+    ::google::protobuf::int64, ::e8::MessageChannelMemberType,
     ::google::protobuf::internal::WireFormatLite::TYPE_INT64,
     ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
     0 > SuperType;
-  GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse();
-  GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse(::google::protobuf::Arena* arena);
-  void MergeFrom(const GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse& other);
-  static const GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse*>(&_GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse_default_instance_); }
+  GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse();
+  GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse(::google::protobuf::Arena* arena);
+  void MergeFrom(const GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse& other);
+  static const GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse*>(&_GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse_default_instance_); }
   void MergeFrom(const ::google::protobuf::Message& other) final;
   ::google::protobuf::Metadata GetMetadata() const;
 };
@@ -1402,14 +1402,14 @@ class GetMessageChannelMembersResponse : public ::google::protobuf::Message /* @
   const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
       user_profiles() const;
 
-  // map<int64, .e8.MessageChannelUserType> user_types = 2;
-  int user_types_size() const;
-  void clear_user_types();
-  static const int kUserTypesFieldNumber = 2;
-  const ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >&
-      user_types() const;
-  ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >*
-      mutable_user_types();
+  // map<int64, .e8.MessageChannelMemberType> member_types = 2;
+  int member_types_size() const;
+  void clear_member_types();
+  static const int kMemberTypesFieldNumber = 2;
+  const ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelMemberType >&
+      member_types() const;
+  ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelMemberType >*
+      mutable_member_types();
 
   // @@protoc_insertion_point(class_scope:e8.GetMessageChannelMembersResponse)
  private:
@@ -1417,11 +1417,11 @@ class GetMessageChannelMembersResponse : public ::google::protobuf::Message /* @
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile > user_profiles_;
   ::google::protobuf::internal::MapField<
-      GetMessageChannelMembersResponse_UserTypesEntry_DoNotUse,
-      ::google::protobuf::int64, ::e8::MessageChannelUserType,
+      GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse,
+      ::google::protobuf::int64, ::e8::MessageChannelMemberType,
       ::google::protobuf::internal::WireFormatLite::TYPE_INT64,
       ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
-      0 > user_types_;
+      0 > member_types_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
 };
@@ -1670,38 +1670,38 @@ inline void LeaveMessageChannelRequest::set_channel_id(::google::protobuf::int64
 
 // -------------------------------------------------------------------
 
-// GetJoinedMessageChannelsRequest
+// GetJoinedInMessageChannelsRequest
 
 // .e8.Pagination pagination = 1;
-inline bool GetJoinedMessageChannelsRequest::has_pagination() const {
+inline bool GetJoinedInMessageChannelsRequest::has_pagination() const {
   return this != internal_default_instance() && pagination_ != NULL;
 }
-inline const ::e8::Pagination& GetJoinedMessageChannelsRequest::_internal_pagination() const {
+inline const ::e8::Pagination& GetJoinedInMessageChannelsRequest::_internal_pagination() const {
   return *pagination_;
 }
-inline const ::e8::Pagination& GetJoinedMessageChannelsRequest::pagination() const {
+inline const ::e8::Pagination& GetJoinedInMessageChannelsRequest::pagination() const {
   const ::e8::Pagination* p = pagination_;
-  // @@protoc_insertion_point(field_get:e8.GetJoinedMessageChannelsRequest.pagination)
+  // @@protoc_insertion_point(field_get:e8.GetJoinedInMessageChannelsRequest.pagination)
   return p != NULL ? *p : *reinterpret_cast<const ::e8::Pagination*>(
       &::e8::_Pagination_default_instance_);
 }
-inline ::e8::Pagination* GetJoinedMessageChannelsRequest::release_pagination() {
-  // @@protoc_insertion_point(field_release:e8.GetJoinedMessageChannelsRequest.pagination)
+inline ::e8::Pagination* GetJoinedInMessageChannelsRequest::release_pagination() {
+  // @@protoc_insertion_point(field_release:e8.GetJoinedInMessageChannelsRequest.pagination)
   
   ::e8::Pagination* temp = pagination_;
   pagination_ = NULL;
   return temp;
 }
-inline ::e8::Pagination* GetJoinedMessageChannelsRequest::mutable_pagination() {
+inline ::e8::Pagination* GetJoinedInMessageChannelsRequest::mutable_pagination() {
   
   if (pagination_ == NULL) {
     auto* p = CreateMaybeMessage<::e8::Pagination>(GetArenaNoVirtual());
     pagination_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:e8.GetJoinedMessageChannelsRequest.pagination)
+  // @@protoc_insertion_point(field_mutable:e8.GetJoinedInMessageChannelsRequest.pagination)
   return pagination_;
 }
-inline void GetJoinedMessageChannelsRequest::set_allocated_pagination(::e8::Pagination* pagination) {
+inline void GetJoinedInMessageChannelsRequest::set_allocated_pagination(::e8::Pagination* pagination) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete reinterpret_cast< ::google::protobuf::MessageLite*>(pagination_);
@@ -1717,37 +1717,37 @@ inline void GetJoinedMessageChannelsRequest::set_allocated_pagination(::e8::Pagi
     
   }
   pagination_ = pagination;
-  // @@protoc_insertion_point(field_set_allocated:e8.GetJoinedMessageChannelsRequest.pagination)
+  // @@protoc_insertion_point(field_set_allocated:e8.GetJoinedInMessageChannelsRequest.pagination)
 }
 
 // -------------------------------------------------------------------
 
-// GetJoinedMessageChannelsResponse
+// GetJoinedInMessageChannelsResponse
 
 // repeated .e8.MessageChannel channels = 1;
-inline int GetJoinedMessageChannelsResponse::channels_size() const {
+inline int GetJoinedInMessageChannelsResponse::channels_size() const {
   return channels_.size();
 }
-inline ::e8::MessageChannel* GetJoinedMessageChannelsResponse::mutable_channels(int index) {
-  // @@protoc_insertion_point(field_mutable:e8.GetJoinedMessageChannelsResponse.channels)
+inline ::e8::MessageChannel* GetJoinedInMessageChannelsResponse::mutable_channels(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.GetJoinedInMessageChannelsResponse.channels)
   return channels_.Mutable(index);
 }
 inline ::google::protobuf::RepeatedPtrField< ::e8::MessageChannel >*
-GetJoinedMessageChannelsResponse::mutable_channels() {
-  // @@protoc_insertion_point(field_mutable_list:e8.GetJoinedMessageChannelsResponse.channels)
+GetJoinedInMessageChannelsResponse::mutable_channels() {
+  // @@protoc_insertion_point(field_mutable_list:e8.GetJoinedInMessageChannelsResponse.channels)
   return &channels_;
 }
-inline const ::e8::MessageChannel& GetJoinedMessageChannelsResponse::channels(int index) const {
-  // @@protoc_insertion_point(field_get:e8.GetJoinedMessageChannelsResponse.channels)
+inline const ::e8::MessageChannel& GetJoinedInMessageChannelsResponse::channels(int index) const {
+  // @@protoc_insertion_point(field_get:e8.GetJoinedInMessageChannelsResponse.channels)
   return channels_.Get(index);
 }
-inline ::e8::MessageChannel* GetJoinedMessageChannelsResponse::add_channels() {
-  // @@protoc_insertion_point(field_add:e8.GetJoinedMessageChannelsResponse.channels)
+inline ::e8::MessageChannel* GetJoinedInMessageChannelsResponse::add_channels() {
+  // @@protoc_insertion_point(field_add:e8.GetJoinedInMessageChannelsResponse.channels)
   return channels_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::e8::MessageChannel >&
-GetJoinedMessageChannelsResponse::channels() const {
-  // @@protoc_insertion_point(field_list:e8.GetJoinedMessageChannelsResponse.channels)
+GetJoinedInMessageChannelsResponse::channels() const {
+  // @@protoc_insertion_point(field_list:e8.GetJoinedInMessageChannelsResponse.channels)
   return channels_;
 }
 
@@ -1802,22 +1802,22 @@ GetMessageChannelMembersResponse::user_profiles() const {
   return user_profiles_;
 }
 
-// map<int64, .e8.MessageChannelUserType> user_types = 2;
-inline int GetMessageChannelMembersResponse::user_types_size() const {
-  return user_types_.size();
+// map<int64, .e8.MessageChannelMemberType> member_types = 2;
+inline int GetMessageChannelMembersResponse::member_types_size() const {
+  return member_types_.size();
 }
-inline void GetMessageChannelMembersResponse::clear_user_types() {
-  user_types_.Clear();
+inline void GetMessageChannelMembersResponse::clear_member_types() {
+  member_types_.Clear();
 }
-inline const ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >&
-GetMessageChannelMembersResponse::user_types() const {
-  // @@protoc_insertion_point(field_map:e8.GetMessageChannelMembersResponse.user_types)
-  return user_types_.GetMap();
+inline const ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelMemberType >&
+GetMessageChannelMembersResponse::member_types() const {
+  // @@protoc_insertion_point(field_map:e8.GetMessageChannelMembersResponse.member_types)
+  return member_types_.GetMap();
 }
-inline ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelUserType >*
-GetMessageChannelMembersResponse::mutable_user_types() {
-  // @@protoc_insertion_point(field_mutable_map:e8.GetMessageChannelMembersResponse.user_types)
-  return user_types_.MutableMap();
+inline ::google::protobuf::Map< ::google::protobuf::int64, ::e8::MessageChannelMemberType >*
+GetMessageChannelMembersResponse::mutable_member_types() {
+  // @@protoc_insertion_point(field_mutable_map:e8.GetMessageChannelMembersResponse.member_types)
+  return member_types_.MutableMap();
 }
 
 #ifdef __GNUC__

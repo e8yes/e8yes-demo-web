@@ -58,11 +58,11 @@ message LeaveMessageChannelRequest {
 message LeaveMessageChannelResponse {}
 
 
-message GetJoinedMessageChannelsRequest {
+message GetJoinedInMessageChannelsRequest {
     Pagination pagination = 1;
 }
 
-message GetJoinedMessageChannelsResponse {
+message GetJoinedInMessageChannelsResponse {
     repeated MessageChannel channels = 1;
 }
 
@@ -75,7 +75,7 @@ message GetMessageChannelMembersResponse {
     repeated UserPublicProfile user_profiles = 1;
     // Amend the channel user type information to the above user list,
     // keyed by user ID.
-    map<int64, MessageChannelUserType> user_types = 2;
+    map<int64, MessageChannelMemberType> member_types = 2;
 }
 
 
@@ -100,8 +100,8 @@ service MessageChannelService {
         (LeaveMessageChannelResponse);
 
     // Get a list of channels that the logged-in user is a member of.
-    rpc GetJoinedMessageChannels (GetJoinedMessageChannelsRequest) returns
-        (GetJoinedMessageChannelsResponse);
+    rpc GetJoinedInMessageChannels (GetJoinedInMessageChannelsRequest) returns
+        (GetJoinedInMessageChannelsResponse);
 
     // Get information about the members in the specified channel.
     rpc GetMessageChannelMembers (GetMessageChannelMembersRequest) 

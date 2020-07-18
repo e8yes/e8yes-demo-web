@@ -22,7 +22,7 @@ static const char* MessageChannelService_method_names[] = {
   "/e8.MessageChannelService/AddMemberToMessageChannel",
   "/e8.MessageChannelService/GetMessageChannelKey",
   "/e8.MessageChannelService/LeaveMessageChannel",
-  "/e8.MessageChannelService/GetJoinedMessageChannels",
+  "/e8.MessageChannelService/GetJoinedInMessageChannels",
   "/e8.MessageChannelService/GetMessageChannelMembers",
 };
 
@@ -37,7 +37,7 @@ MessageChannelService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterfac
   , rpcmethod_AddMemberToMessageChannel_(MessageChannelService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetMessageChannelKey_(MessageChannelService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_LeaveMessageChannel_(MessageChannelService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetJoinedMessageChannels_(MessageChannelService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetJoinedInMessageChannels_(MessageChannelService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetMessageChannelMembers_(MessageChannelService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
@@ -105,20 +105,20 @@ void MessageChannelService::Stub::experimental_async::LeaveMessageChannel(::grpc
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::LeaveMessageChannelResponse>::Create(channel_.get(), cq, rpcmethod_LeaveMessageChannel_, context, request, false);
 }
 
-::grpc::Status MessageChannelService::Stub::GetJoinedMessageChannels(::grpc::ClientContext* context, const ::e8::GetJoinedMessageChannelsRequest& request, ::e8::GetJoinedMessageChannelsResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetJoinedMessageChannels_, context, request, response);
+::grpc::Status MessageChannelService::Stub::GetJoinedInMessageChannels(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest& request, ::e8::GetJoinedInMessageChannelsResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetJoinedInMessageChannels_, context, request, response);
 }
 
-void MessageChannelService::Stub::experimental_async::GetJoinedMessageChannels(::grpc::ClientContext* context, const ::e8::GetJoinedMessageChannelsRequest* request, ::e8::GetJoinedMessageChannelsResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetJoinedMessageChannels_, context, request, response, std::move(f));
+void MessageChannelService::Stub::experimental_async::GetJoinedInMessageChannels(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest* request, ::e8::GetJoinedInMessageChannelsResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetJoinedInMessageChannels_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetJoinedMessageChannelsResponse>* MessageChannelService::Stub::AsyncGetJoinedMessageChannelsRaw(::grpc::ClientContext* context, const ::e8::GetJoinedMessageChannelsRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetJoinedMessageChannelsResponse>::Create(channel_.get(), cq, rpcmethod_GetJoinedMessageChannels_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::GetJoinedInMessageChannelsResponse>* MessageChannelService::Stub::AsyncGetJoinedInMessageChannelsRaw(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetJoinedInMessageChannelsResponse>::Create(channel_.get(), cq, rpcmethod_GetJoinedInMessageChannels_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetJoinedMessageChannelsResponse>* MessageChannelService::Stub::PrepareAsyncGetJoinedMessageChannelsRaw(::grpc::ClientContext* context, const ::e8::GetJoinedMessageChannelsRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetJoinedMessageChannelsResponse>::Create(channel_.get(), cq, rpcmethod_GetJoinedMessageChannels_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::GetJoinedInMessageChannelsResponse>* MessageChannelService::Stub::PrepareAsyncGetJoinedInMessageChannelsRaw(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetJoinedInMessageChannelsResponse>::Create(channel_.get(), cq, rpcmethod_GetJoinedInMessageChannels_, context, request, false);
 }
 
 ::grpc::Status MessageChannelService::Stub::GetMessageChannelMembers(::grpc::ClientContext* context, const ::e8::GetMessageChannelMembersRequest& request, ::e8::GetMessageChannelMembersResponse* response) {
@@ -161,8 +161,8 @@ MessageChannelService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MessageChannelService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::GetJoinedMessageChannelsRequest, ::e8::GetJoinedMessageChannelsResponse>(
-          std::mem_fn(&MessageChannelService::Service::GetJoinedMessageChannels), this)));
+      new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::GetJoinedInMessageChannelsRequest, ::e8::GetJoinedInMessageChannelsResponse>(
+          std::mem_fn(&MessageChannelService::Service::GetJoinedInMessageChannels), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MessageChannelService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
@@ -201,7 +201,7 @@ MessageChannelService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status MessageChannelService::Service::GetJoinedMessageChannels(::grpc::ServerContext* context, const ::e8::GetJoinedMessageChannelsRequest* request, ::e8::GetJoinedMessageChannelsResponse* response) {
+::grpc::Status MessageChannelService::Service::GetJoinedInMessageChannels(::grpc::ServerContext* context, const ::e8::GetJoinedInMessageChannelsRequest* request, ::e8::GetJoinedInMessageChannelsResponse* response) {
   (void) context;
   (void) request;
   (void) response;

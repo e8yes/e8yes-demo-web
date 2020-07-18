@@ -30,8 +30,8 @@ message MessageChannel {
     int64 joined_at = 6;
 }
 
-enum MessageChannelUserType {
-    MCUT_INVALID = 0;
-    MCUT_MEMBER = 1;
-    MCUT_ADMIN = 2;
+enum MessageChannelMemberType {
+    MCMT_INVALID = 0;
+    MCMT_MEMBER = 1;
+    MCMT_ADMIN = 2;
 }

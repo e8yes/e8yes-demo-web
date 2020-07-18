@@ -9,20 +9,20 @@
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class MessageChannelUserType extends $pb.ProtobufEnum {
-  static const MessageChannelUserType MCUT_INVALID = MessageChannelUserType._(0, 'MCUT_INVALID');
-  static const MessageChannelUserType MCUT_MEMBER = MessageChannelUserType._(1, 'MCUT_MEMBER');
-  static const MessageChannelUserType MCUT_ADMIN = MessageChannelUserType._(2, 'MCUT_ADMIN');
+class MessageChannelMemberType extends $pb.ProtobufEnum {
+  static const MessageChannelMemberType MCMT_INVALID = MessageChannelMemberType._(0, 'MCMT_INVALID');
+  static const MessageChannelMemberType MCMT_MEMBER = MessageChannelMemberType._(1, 'MCMT_MEMBER');
+  static const MessageChannelMemberType MCMT_ADMIN = MessageChannelMemberType._(2, 'MCMT_ADMIN');
 
-  static const $core.List<MessageChannelUserType> values = <MessageChannelUserType> [
-    MCUT_INVALID,
-    MCUT_MEMBER,
-    MCUT_ADMIN,
+  static const $core.List<MessageChannelMemberType> values = <MessageChannelMemberType> [
+    MCMT_INVALID,
+    MCMT_MEMBER,
+    MCMT_ADMIN,
   ];
 
-  static final $core.Map<$core.int, MessageChannelUserType> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static MessageChannelUserType valueOf($core.int value) => _byValue[value];
+  static final $core.Map<$core.int, MessageChannelMemberType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static MessageChannelMemberType valueOf($core.int value) => _byValue[value];
 
-  const MessageChannelUserType._($core.int v, $core.String n) : super(v, n);
+  const MessageChannelMemberType._($core.int v, $core.String n) : super(v, n);
 }
 

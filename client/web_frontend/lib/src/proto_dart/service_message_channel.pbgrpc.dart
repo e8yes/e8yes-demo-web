@@ -39,13 +39,13 @@ class MessageChannelServiceClient extends $grpc.Client {
       ($4.LeaveMessageChannelRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
           $4.LeaveMessageChannelResponse.fromBuffer(value));
-  static final _$getJoinedMessageChannels = $grpc.ClientMethod<
-          $4.GetJoinedMessageChannelsRequest,
-          $4.GetJoinedMessageChannelsResponse>(
-      '/e8.MessageChannelService/GetJoinedMessageChannels',
-      ($4.GetJoinedMessageChannelsRequest value) => value.writeToBuffer(),
+  static final _$getJoinedInMessageChannels = $grpc.ClientMethod<
+          $4.GetJoinedInMessageChannelsRequest,
+          $4.GetJoinedInMessageChannelsResponse>(
+      '/e8.MessageChannelService/GetJoinedInMessageChannels',
+      ($4.GetJoinedInMessageChannelsRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
-          $4.GetJoinedMessageChannelsResponse.fromBuffer(value));
+          $4.GetJoinedInMessageChannelsResponse.fromBuffer(value));
   static final _$getMessageChannelMembers = $grpc.ClientMethod<
           $4.GetMessageChannelMembersRequest,
           $4.GetMessageChannelMembersResponse>(
@@ -94,11 +94,11 @@ class MessageChannelServiceClient extends $grpc.Client {
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$4.GetJoinedMessageChannelsResponse>
-      getJoinedMessageChannels($4.GetJoinedMessageChannelsRequest request,
+  $grpc.ResponseFuture<$4.GetJoinedInMessageChannelsResponse>
+      getJoinedInMessageChannels($4.GetJoinedInMessageChannelsRequest request,
           {$grpc.CallOptions options}) {
     final call = $createCall(
-        _$getJoinedMessageChannels, $async.Stream.fromIterable([request]),
+        _$getJoinedInMessageChannels, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -153,15 +153,16 @@ abstract class MessageChannelServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $4.LeaveMessageChannelRequest.fromBuffer(value),
         ($4.LeaveMessageChannelResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$4.GetJoinedMessageChannelsRequest,
-            $4.GetJoinedMessageChannelsResponse>(
-        'GetJoinedMessageChannels',
-        getJoinedMessageChannels_Pre,
+    $addMethod($grpc.ServiceMethod<$4.GetJoinedInMessageChannelsRequest,
+            $4.GetJoinedInMessageChannelsResponse>(
+        'GetJoinedInMessageChannels',
+        getJoinedInMessageChannels_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $4.GetJoinedMessageChannelsRequest.fromBuffer(value),
-        ($4.GetJoinedMessageChannelsResponse value) => value.writeToBuffer()));
+            $4.GetJoinedInMessageChannelsRequest.fromBuffer(value),
+        ($4.GetJoinedInMessageChannelsResponse value) =>
+            value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$4.GetMessageChannelMembersRequest,
             $4.GetMessageChannelMembersResponse>(
         'GetMessageChannelMembers',
@@ -197,10 +198,10 @@ abstract class MessageChannelServiceBase extends $grpc.Service {
     return leaveMessageChannel(call, await request);
   }
 
-  $async.Future<$4.GetJoinedMessageChannelsResponse>
-      getJoinedMessageChannels_Pre($grpc.ServiceCall call,
-          $async.Future<$4.GetJoinedMessageChannelsRequest> request) async {
-    return getJoinedMessageChannels(call, await request);
+  $async.Future<$4.GetJoinedInMessageChannelsResponse>
+      getJoinedInMessageChannels_Pre($grpc.ServiceCall call,
+          $async.Future<$4.GetJoinedInMessageChannelsRequest> request) async {
+    return getJoinedInMessageChannels(call, await request);
   }
 
   $async.Future<$4.GetMessageChannelMembersResponse>
@@ -217,8 +218,9 @@ abstract class MessageChannelServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $4.GetMessageChannelKeyRequest request);
   $async.Future<$4.LeaveMessageChannelResponse> leaveMessageChannel(
       $grpc.ServiceCall call, $4.LeaveMessageChannelRequest request);
-  $async.Future<$4.GetJoinedMessageChannelsResponse> getJoinedMessageChannels(
-      $grpc.ServiceCall call, $4.GetJoinedMessageChannelsRequest request);
+  $async.Future<$4.GetJoinedInMessageChannelsResponse>
+      getJoinedInMessageChannels(
+          $grpc.ServiceCall call, $4.GetJoinedInMessageChannelsRequest request);
   $async.Future<$4.GetMessageChannelMembersResponse> getMessageChannelMembers(
       $grpc.ServiceCall call, $4.GetMessageChannelMembersRequest request);
 }

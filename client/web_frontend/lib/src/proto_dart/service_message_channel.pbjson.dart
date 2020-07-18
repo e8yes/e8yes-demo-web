@@ -58,15 +58,15 @@ const LeaveMessageChannelResponse$json = const {
   '1': 'LeaveMessageChannelResponse',
 };
 
-const GetJoinedMessageChannelsRequest$json = const {
-  '1': 'GetJoinedMessageChannelsRequest',
+const GetJoinedInMessageChannelsRequest$json = const {
+  '1': 'GetJoinedInMessageChannelsRequest',
   '2': const [
     const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
   ],
 };
 
-const GetJoinedMessageChannelsResponse$json = const {
-  '1': 'GetJoinedMessageChannelsResponse',
+const GetJoinedInMessageChannelsResponse$json = const {
+  '1': 'GetJoinedInMessageChannelsResponse',
   '2': const [
     const {'1': 'channels', '3': 1, '4': 3, '5': 11, '6': '.e8.MessageChannel', '10': 'channels'},
   ],
@@ -83,16 +83,16 @@ const GetMessageChannelMembersResponse$json = const {
   '1': 'GetMessageChannelMembersResponse',
   '2': const [
     const {'1': 'user_profiles', '3': 1, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'userProfiles'},
-    const {'1': 'user_types', '3': 2, '4': 3, '5': 11, '6': '.e8.GetMessageChannelMembersResponse.UserTypesEntry', '10': 'userTypes'},
+    const {'1': 'member_types', '3': 2, '4': 3, '5': 11, '6': '.e8.GetMessageChannelMembersResponse.MemberTypesEntry', '10': 'memberTypes'},
   ],
-  '3': const [GetMessageChannelMembersResponse_UserTypesEntry$json],
+  '3': const [GetMessageChannelMembersResponse_MemberTypesEntry$json],
 };
 
-const GetMessageChannelMembersResponse_UserTypesEntry$json = const {
-  '1': 'UserTypesEntry',
+const GetMessageChannelMembersResponse_MemberTypesEntry$json = const {
+  '1': 'MemberTypesEntry',
   '2': const [
     const {'1': 'key', '3': 1, '4': 1, '5': 3, '10': 'key'},
-    const {'1': 'value', '3': 2, '4': 1, '5': 14, '6': '.e8.MessageChannelUserType', '10': 'value'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 14, '6': '.e8.MessageChannelMemberType', '10': 'value'},
   ],
   '7': const {'7': true},
 };

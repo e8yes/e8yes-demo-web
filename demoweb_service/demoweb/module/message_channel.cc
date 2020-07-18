@@ -18,7 +18,11 @@
 #include <cassert>
 #include <cstdint>
 #include <ctime>
+#include <memory>
+#include <optional>
 #include <string>
+#include <tuple>
+#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/message_channel_has_user_entity.h"
@@ -28,20 +32,23 @@
 #include "demoweb_service/demoweb/module/message_channel.h"
 #include "demoweb_service/demoweb/proto_cc/message_channel.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
 
 MessageChannelEntity CreateMessageChannel(UserId creator_id, std::string const &channel_name,
-                                          bool encrypted, HostId host_id,
+                                          bool encrypted, bool close_group_channel, HostId host_id,
                                           ConnectionReservoirInterface *conns) {
+    std::time_t current_timestamp;
+    std::time(&current_timestamp);
+
     MessageChannelEntity message_channel;
     *message_channel.id.ValuePtr() = TimeId(host_id);
     *message_channel.channel_name.ValuePtr() = channel_name;
     *message_channel.encryption_enabled.ValuePtr() = encrypted;
-    std::time_t timestamp;
-    std::time(&timestamp);
-    *message_channel.created_at.ValuePtr() = timestamp;
+    *message_channel.close_group_channel.ValuePtr() = close_group_channel;
+    *message_channel.created_at.ValuePtr() = current_timestamp;
 
     int64_t num_rows =
         Update(message_channel, TableNames::MessageChannel(), /*replace=*/false, conns);
@@ -50,12 +57,59 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id, std::string const &
     MessageChannelHasUserEntity channel_user;
     *channel_user.channel_id.ValuePtr() = message_channel.id.Value();
     *channel_user.user_id.ValuePtr() = creator_id;
-    *channel_user.ownership.ValuePtr() = MessageChannelUserType::MCUT_ADMIN;
+    *channel_user.ownership.ValuePtr() = MessageChannelMemberType::MCMT_ADMIN;
+    *channel_user.created_at.ValuePtr() = current_timestamp;
+    *channel_user.last_interaction_at.ValuePtr() = current_timestamp;
 
     num_rows = Update(channel_user, TableNames::MessageChannelHasUser(), /*replace=*/false, conns);
     assert(num_rows == 1);
 
     return message_channel;
+}
+
+std::vector<JoinedInMessageChannel>
+GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pagination,
+                           ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLong> member_id_ph;
+    query.QueryPiece(TableNames::MessageChannel())
+        .QueryPiece(" mc")
+        .QueryPiece(" JOIN ")
+        .QueryPiece(TableNames::MessageChannelHasUser())
+        .QueryPiece(" mchu ON mchu.channel_id=mc.id")
+        .QueryPiece(" WHERE mchu.user_id=")
+        .Holder(&member_id_ph)
+        .QueryPiece(" ORDER BY mchu.last_interaction_at DESC");
+
+    query.SetValueToPlaceholder(member_id_ph, std::make_shared<SqlLong>(member_id));
+
+    if (pagination.has_value()) {
+        SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
+        SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
+        query.QueryPiece(" LIMIT ").Holder(&limit_ph).QueryPiece(" OFFSET ").Holder(&offset_ph);
+        query.SetValueToPlaceholder(limit_ph,
+                                    std::make_shared<SqlInt>(pagination->result_per_page()));
+        query.SetValueToPlaceholder(
+            offset_ph,
+            std::make_shared<SqlInt>(pagination->page_number() * pagination->result_per_page()));
+    }
+
+    std::vector<std::tuple<MessageChannelEntity, MessageChannelHasUserEntity>> query_result =
+        Query<MessageChannelEntity, MessageChannelHasUserEntity>(query, {"mc", "mchu"}, conns);
+
+    std::vector<JoinedInMessageChannel> results(query_result.size());
+    for (unsigned i = 0; i < query_result.size(); i++) {
+        auto const &entry = query_result[i];
+
+        JoinedInMessageChannel result;
+        result.message_channel = std::get<0>(entry);
+        result.member_type =
+            static_cast<MessageChannelMemberType>(*std::get<1>(entry).ownership.Value());
+
+        results[i] = result;
+    }
+
+    return results;
 }
 
 } // namespace e8
