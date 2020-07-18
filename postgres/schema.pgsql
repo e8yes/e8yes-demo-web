@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS file_metadata (
     format INT NOT NULL,
     encryption_key_source INT NOT NULL,
     storage_size BIGINT NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    last_modified_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     PRIMARY KEY (path)
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS file_metadata (
 /* Email */
 CREATE TABLE IF NOT EXISTS email_set (
     email CHARACTER VARYING NOT NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     PRIMARY KEY (email)
 );
 
@@ -49,18 +49,18 @@ CREATE TABLE IF NOT EXISTS email_set (
 CREATE TABLE IF NOT EXISTS user_group (
     group_name CHARACTER VARYING(60) NOT NULL,
     permissions INT[] NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    last_modified_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     PRIMARY KEY (group_name)
 );
 
 CREATE TABLE IF NOT EXISTS user_group_has_file (
     group_name CHARACTER VARYING(60) NOT NULL,
     file_path CHARACTER VARYING(256) NOT NULL,
-    can_read BOOLEAN NOT NULL DEFAULT FALSE,
-    can_write BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    can_read BOOLEAN NOT NULL,
+    can_write BOOLEAN NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    last_modified_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     PRIMARY KEY (group_name, file_path),
     FOREIGN KEY (group_name) REFERENCES user_group (group_name) ON DELETE CASCADE,
     FOREIGN KEY (file_path) REFERENCES file_metadata (path) ON DELETE CASCADE
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS auser (
     security_key_hash CHARACTER VARYING NOT NULL,
     group_names CHARACTER VARYING(60) [] NULL,
     active_level INT NOT NULL DEFAULT 0,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     search_terms tsvector,
     PRIMARY KEY (id),
     FOREIGN KEY (avatar_path) REFERENCES file_metadata (path) ON DELETE SET NULL,
@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS contact_relation (
     dst_user_id BIGINT NOT NULL,
     relation INT NOT NULL DEFAULT 0,
     description CHARACTER VARYING(4096) NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     search_terms tsvector,
     PRIMARY KEY (src_user_id, dst_user_id, relation),
     FOREIGN KEY (src_user_id) REFERENCES auser (id) ON DELETE CASCADE,
@@ -157,9 +157,9 @@ CREATE TABLE IF NOT EXISTS message_channel (
     id BIGINT NOT NULL DEFAULT nextval('message_channel_id_seq'),
     channel_name CHARACTER VARYING(40) NULL,
     description CHARACTER VARYING(4096) NULL,
-    encryption_enabled BOOLEAN NOT NULL DEFAULT FALSE,
-    close_group_channel BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    encryption_enabled BOOLEAN NOT NULL,
+    close_group_channel BOOLEAN NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     search_terms tsvector,
     PRIMARY KEY (id)
 );
@@ -187,8 +187,8 @@ CREATE TABLE IF NOT EXISTS message_channel_has_user (
     channel_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     ownership INT NOT NULL DEFAULT 0,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     PRIMARY KEY (channel_id, user_id),
     FOREIGN KEY (channel_id) REFERENCES message_channel (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES auser (id) ON DELETE CASCADE
@@ -209,8 +209,8 @@ CREATE TABLE IF NOT EXISTS message_group (
     channel_id BIGINT NOT NULL,
     creator_id BIGINT NULL,
     description CHARACTER VARYING (4096) NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     search_terms tsvector,
     PRIMARY KEY (id),
     FOREIGN KEY (channel_id) REFERENCES message_channel (id) ON DELETE CASCADE,
@@ -251,8 +251,8 @@ CREATE TABLE IF NOT EXISTS message (
     binary_content BYTEA NULL,
     media_file_path CHARACTER VARYING(128) [] NULL,
     media_file_preview_path CHARACTER VARYING(128) [] NULL,
-    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     search_terms tsvector,
     PRIMARY KEY (id),
     FOREIGN KEY (group_id) REFERENCES message_group (id) ON DELETE CASCADE,
