@@ -22,7 +22,15 @@
 namespace protobuf_file_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_file_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_FileTokenAccess;
 }  // namespace protobuf_file_2eproto
+namespace protobuf_message_5fchannel_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_message_5fchannel_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessageChannelRelation;
+}  // namespace protobuf_message_5fchannel_2eproto
 namespace e8 {
+class MessageChannelRelationDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<MessageChannelRelation>
+      _instance;
+} _MessageChannelRelation_default_instance_;
 class MessageChannelDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<MessageChannel>
@@ -30,6 +38,20 @@ class MessageChannelDefaultTypeInternal {
 } _MessageChannel_default_instance_;
 }  // namespace e8
 namespace protobuf_message_5fchannel_2eproto {
+static void InitDefaultsMessageChannelRelation() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_MessageChannelRelation_default_instance_;
+    new (ptr) ::e8::MessageChannelRelation();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::e8::MessageChannelRelation::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<0> scc_info_MessageChannelRelation =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsMessageChannelRelation}, {}};
+
 static void InitDefaultsMessageChannel() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -41,18 +63,27 @@ static void InitDefaultsMessageChannel() {
   ::e8::MessageChannel::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_MessageChannel =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsMessageChannel}, {
-      &protobuf_file_2eproto::scc_info_FileTokenAccess.base,}};
+::google::protobuf::internal::SCCInfo<2> scc_info_MessageChannel =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsMessageChannel}, {
+      &protobuf_file_2eproto::scc_info_FileTokenAccess.base,
+      &protobuf_message_5fchannel_2eproto::scc_info_MessageChannelRelation.base,}};
 
 void InitDefaults() {
+  ::google::protobuf::internal::InitSCC(&scc_info_MessageChannelRelation.base);
   ::google::protobuf::internal::InitSCC(&scc_info_MessageChannel.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[1];
+::google::protobuf::Metadata file_level_metadata[2];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelRelation, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelRelation, member_type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelRelation, join_at_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -64,14 +95,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, avatar_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, avatar_preview_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, created_at_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, joined_at_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, member_type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, relation_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::e8::MessageChannel)},
+  { 0, -1, sizeof(::e8::MessageChannelRelation)},
+  { 7, -1, sizeof(::e8::MessageChannel)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_MessageChannelRelation_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_MessageChannel_default_instance_),
 };
 
@@ -90,26 +122,27 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 2);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\025message_channel.proto\022\002e8\032\nfile.proto\""
-      "\224\002\n\016MessageChannel\022\022\n\nchannel_id\030\001 \001(\003\022\r"
-      "\n\005title\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\0223\n\026av"
-      "atar_readonly_access\030\004 \001(\0132\023.e8.FileToke"
-      "nAccess\022;\n\036avatar_preview_readonly_acces"
-      "s\030\005 \001(\0132\023.e8.FileTokenAccess\022\022\n\ncreated_"
-      "at\030\006 \001(\003\022\021\n\tjoined_at\030\007 \001(\003\0221\n\013member_ty"
-      "pe\030\010 \001(\0162\034.e8.MessageChannelMemberType*M"
-      "\n\030MessageChannelMemberType\022\020\n\014MCMT_INVAL"
-      "ID\020\000\022\017\n\013MCMT_MEMBER\020\001\022\016\n\nMCMT_ADMIN\020\002b\006p"
-      "roto3"
+      "\\\n\026MessageChannelRelation\0221\n\013member_type"
+      "\030\001 \001(\0162\034.e8.MessageChannelMemberType\022\017\n\007"
+      "join_at\030\002 \001(\003\"\374\001\n\016MessageChannel\022\022\n\nchan"
+      "nel_id\030\001 \001(\003\022\r\n\005title\030\002 \001(\t\022\023\n\013descripti"
+      "on\030\003 \001(\t\0223\n\026avatar_readonly_access\030\004 \001(\013"
+      "2\023.e8.FileTokenAccess\022;\n\036avatar_preview_"
+      "readonly_access\030\005 \001(\0132\023.e8.FileTokenAcce"
+      "ss\022\022\n\ncreated_at\030\006 \001(\003\022,\n\010relation\030\007 \001(\013"
+      "2\032.e8.MessageChannelRelation*M\n\030MessageC"
+      "hannelMemberType\022\020\n\014MCMT_INVALID\020\000\022\017\n\013MC"
+      "MT_MEMBER\020\001\022\016\n\nMCMT_ADMIN\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 405);
+      descriptor, 475);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -145,11 +178,280 @@ bool MessageChannelMemberType_IsValid(int value) {
 
 // ===================================================================
 
+void MessageChannelRelation::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int MessageChannelRelation::kMemberTypeFieldNumber;
+const int MessageChannelRelation::kJoinAtFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+MessageChannelRelation::MessageChannelRelation()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_message_5fchannel_2eproto::scc_info_MessageChannelRelation.base);
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:e8.MessageChannelRelation)
+}
+MessageChannelRelation::MessageChannelRelation(const MessageChannelRelation& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&join_at_, &from.join_at_,
+    static_cast<size_t>(reinterpret_cast<char*>(&member_type_) -
+    reinterpret_cast<char*>(&join_at_)) + sizeof(member_type_));
+  // @@protoc_insertion_point(copy_constructor:e8.MessageChannelRelation)
+}
+
+void MessageChannelRelation::SharedCtor() {
+  ::memset(&join_at_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&member_type_) -
+      reinterpret_cast<char*>(&join_at_)) + sizeof(member_type_));
+}
+
+MessageChannelRelation::~MessageChannelRelation() {
+  // @@protoc_insertion_point(destructor:e8.MessageChannelRelation)
+  SharedDtor();
+}
+
+void MessageChannelRelation::SharedDtor() {
+}
+
+void MessageChannelRelation::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ::google::protobuf::Descriptor* MessageChannelRelation::descriptor() {
+  ::protobuf_message_5fchannel_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_message_5fchannel_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const MessageChannelRelation& MessageChannelRelation::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_message_5fchannel_2eproto::scc_info_MessageChannelRelation.base);
+  return *internal_default_instance();
+}
+
+
+void MessageChannelRelation::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.MessageChannelRelation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&join_at_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&member_type_) -
+      reinterpret_cast<char*>(&join_at_)) + sizeof(member_type_));
+  _internal_metadata_.Clear();
+}
+
+bool MessageChannelRelation::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:e8.MessageChannelRelation)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .e8.MessageChannelMemberType member_type = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_member_type(static_cast< ::e8::MessageChannelMemberType >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 join_at = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &join_at_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:e8.MessageChannelRelation)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:e8.MessageChannelRelation)
+  return false;
+#undef DO_
+}
+
+void MessageChannelRelation::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:e8.MessageChannelRelation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .e8.MessageChannelMemberType member_type = 1;
+  if (this->member_type() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->member_type(), output);
+  }
+
+  // int64 join_at = 2;
+  if (this->join_at() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->join_at(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:e8.MessageChannelRelation)
+}
+
+::google::protobuf::uint8* MessageChannelRelation::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:e8.MessageChannelRelation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .e8.MessageChannelMemberType member_type = 1;
+  if (this->member_type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->member_type(), target);
+  }
+
+  // int64 join_at = 2;
+  if (this->join_at() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->join_at(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:e8.MessageChannelRelation)
+  return target;
+}
+
+size_t MessageChannelRelation::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.MessageChannelRelation)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // int64 join_at = 2;
+  if (this->join_at() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->join_at());
+  }
+
+  // .e8.MessageChannelMemberType member_type = 1;
+  if (this->member_type() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->member_type());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void MessageChannelRelation::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.MessageChannelRelation)
+  GOOGLE_DCHECK_NE(&from, this);
+  const MessageChannelRelation* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const MessageChannelRelation>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.MessageChannelRelation)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.MessageChannelRelation)
+    MergeFrom(*source);
+  }
+}
+
+void MessageChannelRelation::MergeFrom(const MessageChannelRelation& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.MessageChannelRelation)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.join_at() != 0) {
+    set_join_at(from.join_at());
+  }
+  if (from.member_type() != 0) {
+    set_member_type(from.member_type());
+  }
+}
+
+void MessageChannelRelation::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.MessageChannelRelation)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void MessageChannelRelation::CopyFrom(const MessageChannelRelation& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.MessageChannelRelation)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool MessageChannelRelation::IsInitialized() const {
+  return true;
+}
+
+void MessageChannelRelation::Swap(MessageChannelRelation* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void MessageChannelRelation::InternalSwap(MessageChannelRelation* other) {
+  using std::swap;
+  swap(join_at_, other->join_at_);
+  swap(member_type_, other->member_type_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+}
+
+::google::protobuf::Metadata MessageChannelRelation::GetMetadata() const {
+  protobuf_message_5fchannel_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_message_5fchannel_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
 void MessageChannel::InitAsDefaultInstance() {
   ::e8::_MessageChannel_default_instance_._instance.get_mutable()->avatar_readonly_access_ = const_cast< ::e8::FileTokenAccess*>(
       ::e8::FileTokenAccess::internal_default_instance());
   ::e8::_MessageChannel_default_instance_._instance.get_mutable()->avatar_preview_readonly_access_ = const_cast< ::e8::FileTokenAccess*>(
       ::e8::FileTokenAccess::internal_default_instance());
+  ::e8::_MessageChannel_default_instance_._instance.get_mutable()->relation_ = const_cast< ::e8::MessageChannelRelation*>(
+      ::e8::MessageChannelRelation::internal_default_instance());
 }
 void MessageChannel::clear_avatar_readonly_access() {
   if (GetArenaNoVirtual() == NULL && avatar_readonly_access_ != NULL) {
@@ -170,8 +472,7 @@ const int MessageChannel::kDescriptionFieldNumber;
 const int MessageChannel::kAvatarReadonlyAccessFieldNumber;
 const int MessageChannel::kAvatarPreviewReadonlyAccessFieldNumber;
 const int MessageChannel::kCreatedAtFieldNumber;
-const int MessageChannel::kJoinedAtFieldNumber;
-const int MessageChannel::kMemberTypeFieldNumber;
+const int MessageChannel::kRelationFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 MessageChannel::MessageChannel()
@@ -203,9 +504,14 @@ MessageChannel::MessageChannel(const MessageChannel& from)
   } else {
     avatar_preview_readonly_access_ = NULL;
   }
+  if (from.has_relation()) {
+    relation_ = new ::e8::MessageChannelRelation(*from.relation_);
+  } else {
+    relation_ = NULL;
+  }
   ::memcpy(&channel_id_, &from.channel_id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&member_type_) -
-    reinterpret_cast<char*>(&channel_id_)) + sizeof(member_type_));
+    static_cast<size_t>(reinterpret_cast<char*>(&created_at_) -
+    reinterpret_cast<char*>(&channel_id_)) + sizeof(created_at_));
   // @@protoc_insertion_point(copy_constructor:e8.MessageChannel)
 }
 
@@ -213,8 +519,8 @@ void MessageChannel::SharedCtor() {
   title_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&avatar_readonly_access_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&member_type_) -
-      reinterpret_cast<char*>(&avatar_readonly_access_)) + sizeof(member_type_));
+      reinterpret_cast<char*>(&created_at_) -
+      reinterpret_cast<char*>(&avatar_readonly_access_)) + sizeof(created_at_));
 }
 
 MessageChannel::~MessageChannel() {
@@ -227,6 +533,7 @@ void MessageChannel::SharedDtor() {
   description_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete avatar_readonly_access_;
   if (this != internal_default_instance()) delete avatar_preview_readonly_access_;
+  if (this != internal_default_instance()) delete relation_;
 }
 
 void MessageChannel::SetCachedSize(int size) const {
@@ -259,9 +566,13 @@ void MessageChannel::Clear() {
     delete avatar_preview_readonly_access_;
   }
   avatar_preview_readonly_access_ = NULL;
+  if (GetArenaNoVirtual() == NULL && relation_ != NULL) {
+    delete relation_;
+  }
+  relation_ = NULL;
   ::memset(&channel_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&member_type_) -
-      reinterpret_cast<char*>(&channel_id_)) + sizeof(member_type_));
+      reinterpret_cast<char*>(&created_at_) -
+      reinterpret_cast<char*>(&channel_id_)) + sizeof(created_at_));
   _internal_metadata_.Clear();
 }
 
@@ -359,29 +670,12 @@ bool MessageChannel::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 joined_at = 7;
+      // .e8.MessageChannelRelation relation = 7;
       case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &joined_at_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .e8.MessageChannelMemberType member_type = 8;
-      case 8: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(64u /* 64 & 0xFF */)) {
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_member_type(static_cast< ::e8::MessageChannelMemberType >(value));
+            static_cast< ::google::protobuf::uint8>(58u /* 58 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_relation()));
         } else {
           goto handle_unusual;
         }
@@ -456,15 +750,10 @@ void MessageChannel::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->created_at(), output);
   }
 
-  // int64 joined_at = 7;
-  if (this->joined_at() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(7, this->joined_at(), output);
-  }
-
-  // .e8.MessageChannelMemberType member_type = 8;
-  if (this->member_type() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      8, this->member_type(), output);
+  // .e8.MessageChannelRelation relation = 7;
+  if (this->has_relation()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      7, this->_internal_relation(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -527,15 +816,11 @@ void MessageChannel::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->created_at(), target);
   }
 
-  // int64 joined_at = 7;
-  if (this->joined_at() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(7, this->joined_at(), target);
-  }
-
-  // .e8.MessageChannelMemberType member_type = 8;
-  if (this->member_type() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      8, this->member_type(), target);
+  // .e8.MessageChannelRelation relation = 7;
+  if (this->has_relation()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        7, this->_internal_relation(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -583,6 +868,13 @@ size_t MessageChannel::ByteSizeLong() const {
         *avatar_preview_readonly_access_);
   }
 
+  // .e8.MessageChannelRelation relation = 7;
+  if (this->has_relation()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *relation_);
+  }
+
   // int64 channel_id = 1;
   if (this->channel_id() != 0) {
     total_size += 1 +
@@ -595,19 +887,6 @@ size_t MessageChannel::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->created_at());
-  }
-
-  // int64 joined_at = 7;
-  if (this->joined_at() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->joined_at());
-  }
-
-  // .e8.MessageChannelMemberType member_type = 8;
-  if (this->member_type() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->member_type());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -651,17 +930,14 @@ void MessageChannel::MergeFrom(const MessageChannel& from) {
   if (from.has_avatar_preview_readonly_access()) {
     mutable_avatar_preview_readonly_access()->::e8::FileTokenAccess::MergeFrom(from.avatar_preview_readonly_access());
   }
+  if (from.has_relation()) {
+    mutable_relation()->::e8::MessageChannelRelation::MergeFrom(from.relation());
+  }
   if (from.channel_id() != 0) {
     set_channel_id(from.channel_id());
   }
   if (from.created_at() != 0) {
     set_created_at(from.created_at());
-  }
-  if (from.joined_at() != 0) {
-    set_joined_at(from.joined_at());
-  }
-  if (from.member_type() != 0) {
-    set_member_type(from.member_type());
   }
 }
 
@@ -695,10 +971,9 @@ void MessageChannel::InternalSwap(MessageChannel* other) {
     GetArenaNoVirtual());
   swap(avatar_readonly_access_, other->avatar_readonly_access_);
   swap(avatar_preview_readonly_access_, other->avatar_preview_readonly_access_);
+  swap(relation_, other->relation_);
   swap(channel_id_, other->channel_id_);
   swap(created_at_, other->created_at_);
-  swap(joined_at_, other->joined_at_);
-  swap(member_type_, other->member_type_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
@@ -712,6 +987,9 @@ void MessageChannel::InternalSwap(MessageChannel* other) {
 }  // namespace e8
 namespace google {
 namespace protobuf {
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::MessageChannelRelation* Arena::CreateMaybeMessage< ::e8::MessageChannelRelation >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::MessageChannelRelation >(arena);
+}
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::MessageChannel* Arena::CreateMaybeMessage< ::e8::MessageChannel >(Arena* arena) {
   return Arena::CreateInternal< ::e8::MessageChannel >(arena);
 }

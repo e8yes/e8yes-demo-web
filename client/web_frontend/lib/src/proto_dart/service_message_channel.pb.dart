@@ -15,8 +15,6 @@ import 'pagination.pb.dart' as $12;
 import 'message_channel.pb.dart' as $14;
 import 'user_profile.pb.dart' as $11;
 
-import 'message_channel.pbenum.dart' as $14;
-
 class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOB(1, 'encrypted')
@@ -360,6 +358,7 @@ class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
 class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetMessageChannelMembersRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
+    ..aOM<$12.Pagination>(2, 'pagination', subBuilder: $12.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -386,12 +385,23 @@ class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
   $core.bool hasChannelId() => $_has(0);
   @$pb.TagNumber(1)
   void clearChannelId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $12.Pagination get pagination => $_getN(1);
+  @$pb.TagNumber(2)
+  set pagination($12.Pagination v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPagination() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPagination() => clearField(2);
+  @$pb.TagNumber(2)
+  $12.Pagination ensurePagination() => $_ensure(1);
 }
 
 class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetMessageChannelMembersResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..pc<$11.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $11.UserPublicProfile.create)
-    ..m<$fixnum.Int64, $14.MessageChannelMemberType>(2, 'memberTypes', entryClassName: 'GetMessageChannelMembersResponse.MemberTypesEntry', keyFieldType: $pb.PbFieldType.O6, valueFieldType: $pb.PbFieldType.OE, valueOf: $14.MessageChannelMemberType.valueOf, enumValues: $14.MessageChannelMemberType.values, packageName: const $pb.PackageName('e8'))
+    ..pc<$14.MessageChannelRelation>(2, 'channelRelations', $pb.PbFieldType.PM, subBuilder: $14.MessageChannelRelation.create)
     ..hasRequiredFields = false
   ;
 
@@ -414,6 +424,6 @@ class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   $core.List<$11.UserPublicProfile> get userProfiles => $_getList(0);
 
   @$pb.TagNumber(2)
-  $core.Map<$fixnum.Int64, $14.MessageChannelMemberType> get memberTypes => $_getMap(1);
+  $core.List<$14.MessageChannelRelation> get channelRelations => $_getList(1);
 }
 

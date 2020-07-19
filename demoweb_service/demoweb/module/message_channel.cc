@@ -128,8 +128,12 @@ ToMessageChannels(std::vector<JoinedInMessageChannel> const &joining_info) {
         proto_message.set_title(*info.message_channel.channel_name.Value());
         proto_message.set_description(*info.message_channel.description.Value());
         proto_message.set_created_at(*info.message_channel.created_at.Value());
-        proto_message.set_joined_at(info.join_at);
-        proto_message.set_member_type(info.member_type);
+
+        MessageChannelRelation relation;
+        relation.set_join_at(info.join_at);
+        relation.set_member_type(info.member_type);
+
+        *proto_message.mutable_relation() = relation;
 
         proto_messages[i] = proto_message;
     }

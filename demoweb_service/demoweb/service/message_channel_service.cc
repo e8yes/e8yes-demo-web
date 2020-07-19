@@ -22,8 +22,10 @@
 
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
+#include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
+#include "demoweb_service/demoweb/proto_cc/user_profile.pb.h"
 #include "demoweb_service/demoweb/service/message_channel_service.h"
 #include "demoweb_service/demoweb/service/service_util.h"
 
@@ -65,11 +67,52 @@ grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
 
     std::optional<Pagination> pagination =
         request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
+
     std::vector<JoinedInMessageChannel> channels = ::e8::GetJoinedInMessageChannels(
         identity->user_id(), pagination, CurrentEnvironment()->DemowebDatabase());
 
     std::vector<MessageChannel> results = ToMessageChannels(channels);
     *response->mutable_channels() = {results.begin(), results.end()};
+
+    return grpc::Status::OK;
+}
+
+grpc::Status
+MessageChannelServiceImpl::GetMessageChannelMembers(grpc::ServerContext *context,
+                                                    GetMessageChannelMembersRequest const *request,
+                                                    GetMessageChannelMembersResponse *response) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!identity.has_value()) {
+        return status;
+    }
+
+    std::optional<Pagination> pagination =
+        request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
+
+    std::vector<MessageChannelMember> members = ::e8::GetMessageChannelMembers(
+        identity->user_id(), pagination, CurrentEnvironment()->DemowebDatabase());
+
+    // Build member profiles.
+    std::vector<UserEntity> users(members.size());
+    for (unsigned i = 0; i < members.size(); i++) {
+        users[i] = members[i].member;
+    }
+    std::vector<UserPublicProfile> profiles =
+        BuildPublicProfiles(identity->user_id(), users, CurrentEnvironment()->KeyGen(),
+                            CurrentEnvironment()->DemowebDatabase());
+    *response->mutable_user_profiles() = {profiles.begin(), profiles.end()};
+
+    // Build channel relation.
+    std::vector<MessageChannelRelation> relations(members.size());
+    for (unsigned i = 0; i < members.size(); i++) {
+        MessageChannelRelation relation;
+        relation.set_member_type(members[i].member_type);
+        relation.set_join_at(members[i].join_at);
+
+        relations[i] = relation;
+    }
+    *response->mutable_channel_relations() = {relations.begin(), relations.end()};
 
     return grpc::Status::OK;
 }

@@ -16,6 +16,47 @@ import 'message_channel.pbenum.dart';
 
 export 'message_channel.pbenum.dart';
 
+class MessageChannelRelation extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageChannelRelation', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..e<MessageChannelMemberType>(1, 'memberType', $pb.PbFieldType.OE, defaultOrMaker: MessageChannelMemberType.MCMT_INVALID, valueOf: MessageChannelMemberType.valueOf, enumValues: MessageChannelMemberType.values)
+    ..aInt64(2, 'joinAt')
+    ..hasRequiredFields = false
+  ;
+
+  MessageChannelRelation._() : super();
+  factory MessageChannelRelation() => create();
+  factory MessageChannelRelation.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MessageChannelRelation.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  MessageChannelRelation clone() => MessageChannelRelation()..mergeFromMessage(this);
+  MessageChannelRelation copyWith(void Function(MessageChannelRelation) updates) => super.copyWith((message) => updates(message as MessageChannelRelation));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static MessageChannelRelation create() => MessageChannelRelation._();
+  MessageChannelRelation createEmptyInstance() => create();
+  static $pb.PbList<MessageChannelRelation> createRepeated() => $pb.PbList<MessageChannelRelation>();
+  @$core.pragma('dart2js:noInline')
+  static MessageChannelRelation getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MessageChannelRelation>(create);
+  static MessageChannelRelation _defaultInstance;
+
+  @$pb.TagNumber(1)
+  MessageChannelMemberType get memberType => $_getN(0);
+  @$pb.TagNumber(1)
+  set memberType(MessageChannelMemberType v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMemberType() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMemberType() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get joinAt => $_getI64(1);
+  @$pb.TagNumber(2)
+  set joinAt($fixnum.Int64 v) { $_setInt64(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasJoinAt() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearJoinAt() => clearField(2);
+}
+
 class MessageChannel extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageChannel', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
@@ -24,8 +65,7 @@ class MessageChannel extends $pb.GeneratedMessage {
     ..aOM<$8.FileTokenAccess>(4, 'avatarReadonlyAccess', subBuilder: $8.FileTokenAccess.create)
     ..aOM<$8.FileTokenAccess>(5, 'avatarPreviewReadonlyAccess', subBuilder: $8.FileTokenAccess.create)
     ..aInt64(6, 'createdAt')
-    ..aInt64(7, 'joinedAt')
-    ..e<MessageChannelMemberType>(8, 'memberType', $pb.PbFieldType.OE, defaultOrMaker: MessageChannelMemberType.MCMT_INVALID, valueOf: MessageChannelMemberType.valueOf, enumValues: MessageChannelMemberType.values)
+    ..aOM<MessageChannelRelation>(7, 'relation', subBuilder: MessageChannelRelation.create)
     ..hasRequiredFields = false
   ;
 
@@ -103,21 +143,14 @@ class MessageChannel extends $pb.GeneratedMessage {
   void clearCreatedAt() => clearField(6);
 
   @$pb.TagNumber(7)
-  $fixnum.Int64 get joinedAt => $_getI64(6);
+  MessageChannelRelation get relation => $_getN(6);
   @$pb.TagNumber(7)
-  set joinedAt($fixnum.Int64 v) { $_setInt64(6, v); }
+  set relation(MessageChannelRelation v) { setField(7, v); }
   @$pb.TagNumber(7)
-  $core.bool hasJoinedAt() => $_has(6);
+  $core.bool hasRelation() => $_has(6);
   @$pb.TagNumber(7)
-  void clearJoinedAt() => clearField(7);
-
-  @$pb.TagNumber(8)
-  MessageChannelMemberType get memberType => $_getN(7);
-  @$pb.TagNumber(8)
-  set memberType(MessageChannelMemberType v) { setField(8, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasMemberType() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearMemberType() => clearField(8);
+  void clearRelation() => clearField(7);
+  @$pb.TagNumber(7)
+  MessageChannelRelation ensureRelation() => $_ensure(6);
 }
 

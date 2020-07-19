@@ -78,6 +78,7 @@ const GetMessageChannelMembersRequest$json = const {
   '1': 'GetMessageChannelMembersRequest',
   '2': const [
     const {'1': 'channel_id', '3': 1, '4': 1, '5': 3, '10': 'channelId'},
+    const {'1': 'pagination', '3': 2, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
   ],
 };
 
@@ -85,17 +86,7 @@ const GetMessageChannelMembersResponse$json = const {
   '1': 'GetMessageChannelMembersResponse',
   '2': const [
     const {'1': 'user_profiles', '3': 1, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'userProfiles'},
-    const {'1': 'member_types', '3': 2, '4': 3, '5': 11, '6': '.e8.GetMessageChannelMembersResponse.MemberTypesEntry', '10': 'memberTypes'},
+    const {'1': 'channel_relations', '3': 2, '4': 3, '5': 11, '6': '.e8.MessageChannelRelation', '10': 'channelRelations'},
   ],
-  '3': const [GetMessageChannelMembersResponse_MemberTypesEntry$json],
-};
-
-const GetMessageChannelMembersResponse_MemberTypesEntry$json = const {
-  '1': 'MemberTypesEntry',
-  '2': const [
-    const {'1': 'key', '3': 1, '4': 1, '5': 3, '10': 'key'},
-    const {'1': 'value', '3': 2, '4': 1, '5': 14, '6': '.e8.MessageChannelMemberType', '10': 'value'},
-  ],
-  '7': const {'7': true},
 };
 

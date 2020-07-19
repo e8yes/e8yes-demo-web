@@ -27,6 +27,11 @@ enum MessageChannelMemberType {
     MCMT_ADMIN = 2;
 }
 
+message MessageChannelRelation {
+    MessageChannelMemberType member_type = 1;
+    int64 join_at = 2;
+}
+
 message MessageChannel {
     int64 channel_id = 1;
     string title = 2;
@@ -34,6 +39,5 @@ message MessageChannel {
     FileTokenAccess avatar_readonly_access = 4;
     FileTokenAccess avatar_preview_readonly_access = 5;
     int64 created_at = 6;
-    int64 joined_at = 7;
-    MessageChannelMemberType member_type = 8;
+    MessageChannelRelation relation = 7;
 }

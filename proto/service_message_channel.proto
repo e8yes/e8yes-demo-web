@@ -72,13 +72,14 @@ message GetJoinedInMessageChannelsResponse {
 
 message GetMessageChannelMembersRequest {
     int64 channel_id = 1;
+    Pagination pagination = 2;
 }
 
 message GetMessageChannelMembersResponse {
     repeated UserPublicProfile user_profiles = 1;
-    // Amend the channel user type information to the above user list,
-    // keyed by user ID.
-    map<int64, MessageChannelMemberType> member_types = 2;
+
+    // Amend the channel relation information to the above user list.
+    repeated MessageChannelRelation channel_relations = 2;
 }
 
 
