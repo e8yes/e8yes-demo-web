@@ -31,6 +31,7 @@
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
 #include "demoweb_service/demoweb/proto_cc/message_channel.pb.h"
+#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
@@ -134,6 +135,51 @@ ToMessageChannels(std::vector<JoinedInMessageChannel> const &joining_info) {
     }
 
     return proto_messages;
+}
+
+std::vector<MessageChannelMember>
+GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> const &pagination,
+                         ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
+    query.QueryPiece(TableNames::AUser())
+        .QueryPiece(" u")
+        .QueryPiece(" JOIN ")
+        .QueryPiece(TableNames::MessageChannelHasUser())
+        .QueryPiece(" mchu ON mchu.user_id=u.id")
+        .QueryPiece(" WHERE mchu.channel_id=")
+        .Holder(&channel_id_ph)
+        .QueryPiece(" ORDER BY mchu.last_interaction_at DESC");
+
+    query.SetValueToPlaceholder(channel_id_ph, std::make_shared<SqlLong>(channel_id));
+
+    if (pagination.has_value()) {
+        SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
+        SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
+        query.QueryPiece(" LIMIT ").Holder(&limit_ph).QueryPiece(" OFFSET ").Holder(&offset_ph);
+        query.SetValueToPlaceholder(limit_ph,
+                                    std::make_shared<SqlInt>(pagination->result_per_page()));
+        query.SetValueToPlaceholder(
+            offset_ph,
+            std::make_shared<SqlInt>(pagination->page_number() * pagination->result_per_page()));
+    }
+
+    std::vector<std::tuple<UserEntity, MessageChannelHasUserEntity>> query_result =
+        Query<UserEntity, MessageChannelHasUserEntity>(query, {"u", "mchu"}, conns);
+
+    std::vector<MessageChannelMember> results(query_result.size());
+    for (unsigned i = 0; i < query_result.size(); i++) {
+        auto const &entry = query_result[i];
+
+        MessageChannelMember result;
+        result.member = std::get<0>(entry);
+        result.member_type =
+            static_cast<MessageChannelMemberType>(*std::get<1>(entry).ownership.Value());
+
+        results[i] = result;
+    }
+
+    return results;
 }
 
 } // namespace e8

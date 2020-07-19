@@ -53,7 +53,8 @@ struct JoinedInMessageChannel {
 /**
  * @brief GetJoinedInMessageChannels Get all the message channels that the user pointed to by the
  * member_id is a member of. It also returns the member type the user is assigned in each specific
- * message channel.
+ * message channel. The result list is ordered by the last interaction timestamp where the most
+ * recently interacted message channels rank first.
  */
 std::vector<JoinedInMessageChannel>
 GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pagination,
@@ -65,6 +66,21 @@ GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pa
  */
 std::vector<MessageChannel>
 ToMessageChannels(std::vector<JoinedInMessageChannel> const &joining_info);
+
+struct MessageChannelMember {
+    UserEntity member;
+    MessageChannelMemberType member_type;
+    std::time_t join_at;
+};
+
+/**
+ * @brief GetMessageChannelMembers Get all the channel members of the channel specified by the
+ * channel_id. The result list is ordered by the last interaction timestamp where the most recently
+ * interacted users rank first.
+ */
+std::vector<MessageChannelMember>
+GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> const &pagination,
+                         ConnectionReservoirInterface *conns);
 
 } // namespace e8
 
