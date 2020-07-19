@@ -18,6 +18,7 @@
 #ifndef MESSAGE_CHANNEL_H
 #define MESSAGE_CHANNEL_H
 
+#include <ctime>
 #include <optional>
 #include <string>
 #include <vector>
@@ -46,6 +47,7 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
 struct JoinedInMessageChannel {
     MessageChannelEntity message_channel;
     MessageChannelMemberType member_type;
+    std::time_t join_at;
 };
 
 /**
@@ -56,6 +58,13 @@ struct JoinedInMessageChannel {
 std::vector<JoinedInMessageChannel>
 GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pagination,
                            ConnectionReservoirInterface *conns);
+
+/**
+ * @brief ToMessageChannels Converts message channel entities with user joining information to
+ * message channel proto messages.
+ */
+std::vector<MessageChannel>
+ToMessageChannels(std::vector<JoinedInMessageChannel> const &joining_info);
 
 } // namespace e8
 

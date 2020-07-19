@@ -21,17 +21,19 @@ package e8;
 
 import "file.proto";
 
-message MessageChannel {
-    int64 channel_id = 1;
-    string title = 2;
-    FileTokenAccess avatar_readonly_access = 3;
-    FileTokenAccess avatar_preview_readonly_access = 4;
-    int64 created_at = 5;
-    int64 joined_at = 6;
-}
-
 enum MessageChannelMemberType {
     MCMT_INVALID = 0;
     MCMT_MEMBER = 1;
     MCMT_ADMIN = 2;
+}
+
+message MessageChannel {
+    int64 channel_id = 1;
+    string title = 2;
+    string description = 3;
+    FileTokenAccess avatar_readonly_access = 4;
+    FileTokenAccess avatar_preview_readonly_access = 5;
+    int64 created_at = 6;
+    int64 joined_at = 7;
+    MessageChannelMemberType member_type = 8;
 }

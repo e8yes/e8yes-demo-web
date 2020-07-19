@@ -12,16 +12,20 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'file.pb.dart' as $8;
 
+import 'message_channel.pbenum.dart';
+
 export 'message_channel.pbenum.dart';
 
 class MessageChannel extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageChannel', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
     ..aOS(2, 'title')
-    ..aOM<$8.FileTokenAccess>(3, 'avatarReadonlyAccess', subBuilder: $8.FileTokenAccess.create)
-    ..aOM<$8.FileTokenAccess>(4, 'avatarPreviewReadonlyAccess', subBuilder: $8.FileTokenAccess.create)
-    ..aInt64(5, 'createdAt')
-    ..aInt64(6, 'joinedAt')
+    ..aOS(3, 'description')
+    ..aOM<$8.FileTokenAccess>(4, 'avatarReadonlyAccess', subBuilder: $8.FileTokenAccess.create)
+    ..aOM<$8.FileTokenAccess>(5, 'avatarPreviewReadonlyAccess', subBuilder: $8.FileTokenAccess.create)
+    ..aInt64(6, 'createdAt')
+    ..aInt64(7, 'joinedAt')
+    ..e<MessageChannelMemberType>(8, 'memberType', $pb.PbFieldType.OE, defaultOrMaker: MessageChannelMemberType.MCMT_INVALID, valueOf: MessageChannelMemberType.valueOf, enumValues: MessageChannelMemberType.values)
     ..hasRequiredFields = false
   ;
 
@@ -59,43 +63,61 @@ class MessageChannel extends $pb.GeneratedMessage {
   void clearTitle() => clearField(2);
 
   @$pb.TagNumber(3)
-  $8.FileTokenAccess get avatarReadonlyAccess => $_getN(2);
+  $core.String get description => $_getSZ(2);
   @$pb.TagNumber(3)
-  set avatarReadonlyAccess($8.FileTokenAccess v) { setField(3, v); }
+  set description($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasAvatarReadonlyAccess() => $_has(2);
+  $core.bool hasDescription() => $_has(2);
   @$pb.TagNumber(3)
-  void clearAvatarReadonlyAccess() => clearField(3);
-  @$pb.TagNumber(3)
-  $8.FileTokenAccess ensureAvatarReadonlyAccess() => $_ensure(2);
+  void clearDescription() => clearField(3);
 
   @$pb.TagNumber(4)
-  $8.FileTokenAccess get avatarPreviewReadonlyAccess => $_getN(3);
+  $8.FileTokenAccess get avatarReadonlyAccess => $_getN(3);
   @$pb.TagNumber(4)
-  set avatarPreviewReadonlyAccess($8.FileTokenAccess v) { setField(4, v); }
+  set avatarReadonlyAccess($8.FileTokenAccess v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasAvatarPreviewReadonlyAccess() => $_has(3);
+  $core.bool hasAvatarReadonlyAccess() => $_has(3);
   @$pb.TagNumber(4)
-  void clearAvatarPreviewReadonlyAccess() => clearField(4);
+  void clearAvatarReadonlyAccess() => clearField(4);
   @$pb.TagNumber(4)
-  $8.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(3);
+  $8.FileTokenAccess ensureAvatarReadonlyAccess() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get createdAt => $_getI64(4);
+  $8.FileTokenAccess get avatarPreviewReadonlyAccess => $_getN(4);
   @$pb.TagNumber(5)
-  set createdAt($fixnum.Int64 v) { $_setInt64(4, v); }
+  set avatarPreviewReadonlyAccess($8.FileTokenAccess v) { setField(5, v); }
   @$pb.TagNumber(5)
-  $core.bool hasCreatedAt() => $_has(4);
+  $core.bool hasAvatarPreviewReadonlyAccess() => $_has(4);
   @$pb.TagNumber(5)
-  void clearCreatedAt() => clearField(5);
+  void clearAvatarPreviewReadonlyAccess() => clearField(5);
+  @$pb.TagNumber(5)
+  $8.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $fixnum.Int64 get joinedAt => $_getI64(5);
+  $fixnum.Int64 get createdAt => $_getI64(5);
   @$pb.TagNumber(6)
-  set joinedAt($fixnum.Int64 v) { $_setInt64(5, v); }
+  set createdAt($fixnum.Int64 v) { $_setInt64(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasJoinedAt() => $_has(5);
+  $core.bool hasCreatedAt() => $_has(5);
   @$pb.TagNumber(6)
-  void clearJoinedAt() => clearField(6);
+  void clearCreatedAt() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $fixnum.Int64 get joinedAt => $_getI64(6);
+  @$pb.TagNumber(7)
+  set joinedAt($fixnum.Int64 v) { $_setInt64(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasJoinedAt() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearJoinedAt() => clearField(7);
+
+  @$pb.TagNumber(8)
+  MessageChannelMemberType get memberType => $_getN(7);
+  @$pb.TagNumber(8)
+  set memberType(MessageChannelMemberType v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasMemberType() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearMemberType() => clearField(8);
 }
 

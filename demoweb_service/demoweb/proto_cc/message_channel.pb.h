@@ -184,10 +184,24 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_title();
   void set_allocated_title(::std::string* title);
 
-  // .e8.FileTokenAccess avatar_readonly_access = 3;
+  // string description = 3;
+  void clear_description();
+  static const int kDescriptionFieldNumber = 3;
+  const ::std::string& description() const;
+  void set_description(const ::std::string& value);
+  #if LANG_CXX11
+  void set_description(::std::string&& value);
+  #endif
+  void set_description(const char* value);
+  void set_description(const char* value, size_t size);
+  ::std::string* mutable_description();
+  ::std::string* release_description();
+  void set_allocated_description(::std::string* description);
+
+  // .e8.FileTokenAccess avatar_readonly_access = 4;
   bool has_avatar_readonly_access() const;
   void clear_avatar_readonly_access();
-  static const int kAvatarReadonlyAccessFieldNumber = 3;
+  static const int kAvatarReadonlyAccessFieldNumber = 4;
   private:
   const ::e8::FileTokenAccess& _internal_avatar_readonly_access() const;
   public:
@@ -196,10 +210,10 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::e8::FileTokenAccess* mutable_avatar_readonly_access();
   void set_allocated_avatar_readonly_access(::e8::FileTokenAccess* avatar_readonly_access);
 
-  // .e8.FileTokenAccess avatar_preview_readonly_access = 4;
+  // .e8.FileTokenAccess avatar_preview_readonly_access = 5;
   bool has_avatar_preview_readonly_access() const;
   void clear_avatar_preview_readonly_access();
-  static const int kAvatarPreviewReadonlyAccessFieldNumber = 4;
+  static const int kAvatarPreviewReadonlyAccessFieldNumber = 5;
   private:
   const ::e8::FileTokenAccess& _internal_avatar_preview_readonly_access() const;
   public:
@@ -214,28 +228,36 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int64 channel_id() const;
   void set_channel_id(::google::protobuf::int64 value);
 
-  // int64 created_at = 5;
+  // int64 created_at = 6;
   void clear_created_at();
-  static const int kCreatedAtFieldNumber = 5;
+  static const int kCreatedAtFieldNumber = 6;
   ::google::protobuf::int64 created_at() const;
   void set_created_at(::google::protobuf::int64 value);
 
-  // int64 joined_at = 6;
+  // int64 joined_at = 7;
   void clear_joined_at();
-  static const int kJoinedAtFieldNumber = 6;
+  static const int kJoinedAtFieldNumber = 7;
   ::google::protobuf::int64 joined_at() const;
   void set_joined_at(::google::protobuf::int64 value);
+
+  // .e8.MessageChannelMemberType member_type = 8;
+  void clear_member_type();
+  static const int kMemberTypeFieldNumber = 8;
+  ::e8::MessageChannelMemberType member_type() const;
+  void set_member_type(::e8::MessageChannelMemberType value);
 
   // @@protoc_insertion_point(class_scope:e8.MessageChannel)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr title_;
+  ::google::protobuf::internal::ArenaStringPtr description_;
   ::e8::FileTokenAccess* avatar_readonly_access_;
   ::e8::FileTokenAccess* avatar_preview_readonly_access_;
   ::google::protobuf::int64 channel_id_;
   ::google::protobuf::int64 created_at_;
   ::google::protobuf::int64 joined_at_;
+  int member_type_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_message_5fchannel_2eproto::TableStruct;
 };
@@ -317,7 +339,60 @@ inline void MessageChannel::set_allocated_title(::std::string* title) {
   // @@protoc_insertion_point(field_set_allocated:e8.MessageChannel.title)
 }
 
-// .e8.FileTokenAccess avatar_readonly_access = 3;
+// string description = 3;
+inline void MessageChannel::clear_description() {
+  description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MessageChannel::description() const {
+  // @@protoc_insertion_point(field_get:e8.MessageChannel.description)
+  return description_.GetNoArena();
+}
+inline void MessageChannel::set_description(const ::std::string& value) {
+  
+  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.MessageChannel.description)
+}
+#if LANG_CXX11
+inline void MessageChannel::set_description(::std::string&& value) {
+  
+  description_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.MessageChannel.description)
+}
+#endif
+inline void MessageChannel::set_description(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.MessageChannel.description)
+}
+inline void MessageChannel::set_description(const char* value, size_t size) {
+  
+  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.MessageChannel.description)
+}
+inline ::std::string* MessageChannel::mutable_description() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.MessageChannel.description)
+  return description_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MessageChannel::release_description() {
+  // @@protoc_insertion_point(field_release:e8.MessageChannel.description)
+  
+  return description_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MessageChannel::set_allocated_description(::std::string* description) {
+  if (description != NULL) {
+    
+  } else {
+    
+  }
+  description_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), description);
+  // @@protoc_insertion_point(field_set_allocated:e8.MessageChannel.description)
+}
+
+// .e8.FileTokenAccess avatar_readonly_access = 4;
 inline bool MessageChannel::has_avatar_readonly_access() const {
   return this != internal_default_instance() && avatar_readonly_access_ != NULL;
 }
@@ -365,7 +440,7 @@ inline void MessageChannel::set_allocated_avatar_readonly_access(::e8::FileToken
   // @@protoc_insertion_point(field_set_allocated:e8.MessageChannel.avatar_readonly_access)
 }
 
-// .e8.FileTokenAccess avatar_preview_readonly_access = 4;
+// .e8.FileTokenAccess avatar_preview_readonly_access = 5;
 inline bool MessageChannel::has_avatar_preview_readonly_access() const {
   return this != internal_default_instance() && avatar_preview_readonly_access_ != NULL;
 }
@@ -413,7 +488,7 @@ inline void MessageChannel::set_allocated_avatar_preview_readonly_access(::e8::F
   // @@protoc_insertion_point(field_set_allocated:e8.MessageChannel.avatar_preview_readonly_access)
 }
 
-// int64 created_at = 5;
+// int64 created_at = 6;
 inline void MessageChannel::clear_created_at() {
   created_at_ = GOOGLE_LONGLONG(0);
 }
@@ -427,7 +502,7 @@ inline void MessageChannel::set_created_at(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:e8.MessageChannel.created_at)
 }
 
-// int64 joined_at = 6;
+// int64 joined_at = 7;
 inline void MessageChannel::clear_joined_at() {
   joined_at_ = GOOGLE_LONGLONG(0);
 }
@@ -439,6 +514,20 @@ inline void MessageChannel::set_joined_at(::google::protobuf::int64 value) {
   
   joined_at_ = value;
   // @@protoc_insertion_point(field_set:e8.MessageChannel.joined_at)
+}
+
+// .e8.MessageChannelMemberType member_type = 8;
+inline void MessageChannel::clear_member_type() {
+  member_type_ = 0;
+}
+inline ::e8::MessageChannelMemberType MessageChannel::member_type() const {
+  // @@protoc_insertion_point(field_get:e8.MessageChannel.member_type)
+  return static_cast< ::e8::MessageChannelMemberType >(member_type_);
+}
+inline void MessageChannel::set_member_type(::e8::MessageChannelMemberType value) {
+  
+  member_type_ = value;
+  // @@protoc_insertion_point(field_set:e8.MessageChannel.member_type)
 }
 
 #ifdef __GNUC__

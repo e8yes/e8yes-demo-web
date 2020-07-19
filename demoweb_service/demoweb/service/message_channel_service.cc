@@ -18,6 +18,7 @@
 #include <grpcpp/grpcpp.h>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
@@ -48,6 +49,24 @@ MessageChannelServiceImpl::CreateMessageChannel(grpc::ServerContext *context,
         CurrentEnvironment()->DemowebDatabase());
 
     response->set_channel_id(*channel.id.Value());
+
+    return grpc::Status::OK;
+}
+
+grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
+    grpc::ServerContext *context, GetJoinedInMessageChannelsRequest const *request,
+    GetJoinedInMessageChannelsResponse *response) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!identity.has_value()) {
+        return status;
+    }
+
+    std::vector<JoinedInMessageChannel> channels = ::e8::GetJoinedInMessageChannels(
+        identity->user_id(), request->pagination(), CurrentEnvironment()->DemowebDatabase());
+
+    std::vector<MessageChannel> results = ToMessageChannels(channels);
+    *response->mutable_channels() = {results.begin(), results.end()};
 
     return grpc::Status::OK;
 }

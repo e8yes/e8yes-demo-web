@@ -115,4 +115,25 @@ GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pa
     return results;
 }
 
+std::vector<MessageChannel>
+ToMessageChannels(std::vector<JoinedInMessageChannel> const &joining_info) {
+    std::vector<MessageChannel> proto_messages(joining_info.size());
+
+    for (unsigned i = 0; i < joining_info.size(); i++) {
+        auto const &info = joining_info[i];
+
+        MessageChannel proto_message;
+        proto_message.set_channel_id(*info.message_channel.id.Value());
+        proto_message.set_title(*info.message_channel.channel_name.Value());
+        proto_message.set_description(*info.message_channel.description.Value());
+        proto_message.set_created_at(*info.message_channel.created_at.Value());
+        proto_message.set_joined_at(info.join_at);
+        proto_message.set_member_type(info.member_type);
+
+        proto_messages[i] = proto_message;
+    }
+
+    return proto_messages;
+}
+
 } // namespace e8
