@@ -23,6 +23,7 @@
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
 #include "demoweb_service/demoweb/proto_cc/identity.pb.h"
+#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
 #include "demoweb_service/demoweb/service/message_channel_service.h"
 #include "demoweb_service/demoweb/service/service_util.h"
 
@@ -62,8 +63,10 @@ grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
         return status;
     }
 
+    std::optional<Pagination> pagination =
+        request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
     std::vector<JoinedInMessageChannel> channels = ::e8::GetJoinedInMessageChannels(
-        identity->user_id(), request->pagination(), CurrentEnvironment()->DemowebDatabase());
+        identity->user_id(), pagination, CurrentEnvironment()->DemowebDatabase());
 
     std::vector<MessageChannel> results = ToMessageChannels(channels);
     *response->mutable_channels() = {results.begin(), results.end()};
