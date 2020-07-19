@@ -37,7 +37,9 @@
 
 namespace e8 {
 
-MessageChannelEntity CreateMessageChannel(UserId creator_id, std::string const &channel_name,
+MessageChannelEntity CreateMessageChannel(UserId creator_id,
+                                          std::optional<std::string> const &channel_name,
+                                          std::optional<std::string> const &description,
                                           bool encrypted, bool close_group_channel, HostId host_id,
                                           ConnectionReservoirInterface *conns) {
     std::time_t current_timestamp;
@@ -46,6 +48,7 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id, std::string const &
     MessageChannelEntity message_channel;
     *message_channel.id.ValuePtr() = TimeId(host_id);
     *message_channel.channel_name.ValuePtr() = channel_name;
+    *message_channel.description.ValuePtr() = description;
     *message_channel.encryption_enabled.ValuePtr() = encrypted;
     *message_channel.close_group_channel.ValuePtr() = close_group_channel;
     *message_channel.created_at.ValuePtr() = current_timestamp;

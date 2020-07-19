@@ -52,8 +52,9 @@ void message_channel_test::create_and_list_message_channel_test() {
                        env.CurrentHostId(), env.DemowebDatabase());
 
     std::string channel_name = "channel1";
+    std::string channel_desc = "Description of channel1";
     e8::MessageChannelEntity channel = e8::CreateMessageChannel(
-        user_id, channel_name, /*encrypted=*/false, /*close_group_channel=*/true,
+        user_id, channel_name, channel_desc, /*encrypted=*/false, /*close_group_channel=*/true,
         env.CurrentHostId(), env.DemowebDatabase());
 
     e8::Pagination page1;
@@ -65,6 +66,7 @@ void message_channel_test::create_and_list_message_channel_test() {
     QVERIFY(retrieved_channel.size() == 1);
     QVERIFY(*retrieved_channel[0].message_channel.id.Value() == *channel.id.Value());
     QVERIFY(*retrieved_channel[0].message_channel.channel_name.Value() == channel_name);
+    QVERIFY(*retrieved_channel[0].message_channel.description.Value() == channel_desc);
     QVERIFY(*retrieved_channel[0].message_channel.encryption_enabled.Value() == false);
     QVERIFY(*retrieved_channel[0].message_channel.close_group_channel.Value() == true);
     QVERIFY(retrieved_channel[0].member_type == e8::MessageChannelMemberType::MCMT_ADMIN);

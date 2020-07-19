@@ -16,7 +16,40 @@
  */
 
 #include <grpcpp/grpcpp.h>
+#include <optional>
+#include <string>
 
+#include "demoweb_service/demoweb/environment/environment_context_interface.h"
+#include "demoweb_service/demoweb/module/message_channel.h"
+#include "demoweb_service/demoweb/proto_cc/identity.pb.h"
 #include "demoweb_service/demoweb/service/message_channel_service.h"
+#include "demoweb_service/demoweb/service/service_util.h"
 
-namespace e8 {}
+namespace e8 {
+
+grpc::Status
+MessageChannelServiceImpl::CreateMessageChannel(grpc::ServerContext *context,
+                                                CreateMessageChannelRequest const *request,
+                                                CreateMessageChannelResponse *response) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!identity.has_value()) {
+        return status;
+    }
+
+    std::optional<std::string> channel_title =
+        request->has_title() ? std::optional<std::string>(request->title().value()) : std::nullopt;
+    std::optional<std::string> channel_desc =
+        request->has_title() ? std::optional<std::string>(request->description().value())
+                             : std::nullopt;
+    MessageChannelEntity channel = ::e8::CreateMessageChannel(
+        identity->user_id(), channel_title, channel_desc, request->encrypted(),
+        request->close_group_channel(), CurrentEnvironment()->CurrentHostId(),
+        CurrentEnvironment()->DemowebDatabase());
+
+    response->set_channel_id(*channel.id.Value());
+
+    return grpc::Status::OK;
+}
+
+} // namespace e8

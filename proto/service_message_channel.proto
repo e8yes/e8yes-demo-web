@@ -20,12 +20,15 @@ syntax = "proto3";
 package e8;
 
 import "pagination.proto";
+import "nullable_primitives.proto";
 import "message_channel.proto";
 import "user_profile.proto";
 
 message CreateMessageChannelRequest {
     bool encrypted = 1;
-    string title = 2;
+    bool close_group_channel = 2;
+    NullableString title = 3;
+    NullableString description = 4;
 }
 
 message CreateMessageChannelResponse {

@@ -31,6 +31,10 @@ class MessageChannelServiceImpl : public MessageChannelService::Service {
   public:
     MessageChannelServiceImpl() = default;
     ~MessageChannelServiceImpl() override = default;
+
+    grpc::Status CreateMessageChannel(grpc::ServerContext *context,
+                                      CreateMessageChannelRequest const *request,
+                                      CreateMessageChannelResponse *response) override;
 };
 
 } // namespace e8

@@ -10,6 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'nullable_primitives.pb.dart' as $7;
 import 'pagination.pb.dart' as $12;
 import 'message_channel.pb.dart' as $14;
 import 'user_profile.pb.dart' as $11;
@@ -19,7 +20,9 @@ import 'message_channel.pbenum.dart' as $14;
 class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOB(1, 'encrypted')
-    ..aOS(2, 'title')
+    ..aOB(2, 'closeGroupChannel')
+    ..aOM<$7.NullableString>(3, 'title', subBuilder: $7.NullableString.create)
+    ..aOM<$7.NullableString>(4, 'description', subBuilder: $7.NullableString.create)
     ..hasRequiredFields = false
   ;
 
@@ -48,13 +51,35 @@ class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   void clearEncrypted() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get title => $_getSZ(1);
+  $core.bool get closeGroupChannel => $_getBF(1);
   @$pb.TagNumber(2)
-  set title($core.String v) { $_setString(1, v); }
+  set closeGroupChannel($core.bool v) { $_setBool(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTitle() => $_has(1);
+  $core.bool hasCloseGroupChannel() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTitle() => clearField(2);
+  void clearCloseGroupChannel() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $7.NullableString get title => $_getN(2);
+  @$pb.TagNumber(3)
+  set title($7.NullableString v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasTitle() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTitle() => clearField(3);
+  @$pb.TagNumber(3)
+  $7.NullableString ensureTitle() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $7.NullableString get description => $_getN(3);
+  @$pb.TagNumber(4)
+  set description($7.NullableString v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasDescription() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearDescription() => clearField(4);
+  @$pb.TagNumber(4)
+  $7.NullableString ensureDescription() => $_ensure(3);
 }
 
 class CreateMessageChannelResponse extends $pb.GeneratedMessage {

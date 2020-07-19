@@ -22,6 +22,9 @@
 namespace protobuf_message_5fchannel_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_message_5fchannel_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_MessageChannel;
 }  // namespace protobuf_message_5fchannel_2eproto
+namespace protobuf_nullable_5fprimitives_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableString;
+}  // namespace protobuf_nullable_5fprimitives_2eproto
 namespace protobuf_pagination_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_pagination_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Pagination;
 }  // namespace protobuf_pagination_2eproto
@@ -110,8 +113,9 @@ static void InitDefaultsCreateMessageChannelRequest() {
   ::e8::CreateMessageChannelRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_CreateMessageChannelRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsCreateMessageChannelRequest}, {}};
+::google::protobuf::internal::SCCInfo<1> scc_info_CreateMessageChannelRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsCreateMessageChannelRequest}, {
+      &protobuf_nullable_5fprimitives_2eproto::scc_info_NullableString.base,}};
 
 static void InitDefaultsCreateMessageChannelResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -309,7 +313,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateMessageChannelRequest, encrypted_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateMessageChannelRequest, close_group_channel_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateMessageChannelRequest, title_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateMessageChannelRequest, description_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::CreateMessageChannelResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -389,18 +395,18 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::CreateMessageChannelRequest)},
-  { 7, -1, sizeof(::e8::CreateMessageChannelResponse)},
-  { 13, -1, sizeof(::e8::AddMemberToMessageChannelRequest)},
-  { 20, -1, sizeof(::e8::AddMemberToMessageChannelResponse)},
-  { 25, -1, sizeof(::e8::GetMessageChannelKeyRequest)},
-  { 32, -1, sizeof(::e8::GetMessageChannelKeyResponse)},
-  { 38, -1, sizeof(::e8::LeaveMessageChannelRequest)},
-  { 44, -1, sizeof(::e8::LeaveMessageChannelResponse)},
-  { 49, -1, sizeof(::e8::GetJoinedInMessageChannelsRequest)},
-  { 55, -1, sizeof(::e8::GetJoinedInMessageChannelsResponse)},
-  { 61, -1, sizeof(::e8::GetMessageChannelMembersRequest)},
-  { 67, 74, sizeof(::e8::GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse)},
-  { 76, -1, sizeof(::e8::GetMessageChannelMembersResponse)},
+  { 9, -1, sizeof(::e8::CreateMessageChannelResponse)},
+  { 15, -1, sizeof(::e8::AddMemberToMessageChannelRequest)},
+  { 22, -1, sizeof(::e8::AddMemberToMessageChannelResponse)},
+  { 27, -1, sizeof(::e8::GetMessageChannelKeyRequest)},
+  { 34, -1, sizeof(::e8::GetMessageChannelKeyResponse)},
+  { 40, -1, sizeof(::e8::LeaveMessageChannelRequest)},
+  { 46, -1, sizeof(::e8::LeaveMessageChannelResponse)},
+  { 51, -1, sizeof(::e8::GetJoinedInMessageChannelsRequest)},
+  { 57, -1, sizeof(::e8::GetJoinedInMessageChannelsResponse)},
+  { 63, -1, sizeof(::e8::GetMessageChannelMembersRequest)},
+  { 69, 76, sizeof(::e8::GetMessageChannelMembersResponse_MemberTypesEntry_DoNotUse)},
+  { 78, -1, sizeof(::e8::GetMessageChannelMembersResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -441,51 +447,55 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\035service_message_channel.proto\022\002e8\032\020pag"
-      "ination.proto\032\025message_channel.proto\032\022us"
-      "er_profile.proto\"\?\n\033CreateMessageChannel"
-      "Request\022\021\n\tencrypted\030\001 \001(\010\022\r\n\005title\030\002 \001("
-      "\t\"2\n\034CreateMessageChannelResponse\022\022\n\ncha"
-      "nnel_id\030\001 \001(\003\"G\n AddMemberToMessageChann"
-      "elRequest\022\022\n\nchannel_id\030\001 \001(\003\022\017\n\007user_id"
-      "\030\002 \001(\003\"#\n!AddMemberToMessageChannelRespo"
-      "nse\"G\n\033GetMessageChannelKeyRequest\022\022\n\nch"
-      "annel_id\030\001 \001(\003\022\024\n\014timeout_secs\030\002 \001(\005\"3\n\034"
-      "GetMessageChannelKeyResponse\022\023\n\013channel_"
-      "key\030\003 \001(\t\"0\n\032LeaveMessageChannelRequest\022"
-      "\022\n\nchannel_id\030\001 \001(\003\"\035\n\033LeaveMessageChann"
-      "elResponse\"G\n!GetJoinedInMessageChannels"
-      "Request\022\"\n\npagination\030\001 \001(\0132\016.e8.Paginat"
-      "ion\"J\n\"GetJoinedInMessageChannelsRespons"
-      "e\022$\n\010channels\030\001 \003(\0132\022.e8.MessageChannel\""
-      "5\n\037GetMessageChannelMembersRequest\022\022\n\nch"
-      "annel_id\030\001 \001(\003\"\357\001\n GetMessageChannelMemb"
-      "ersResponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8."
-      "UserPublicProfile\022K\n\014member_types\030\002 \003(\0132"
-      "5.e8.GetMessageChannelMembersResponse.Me"
-      "mberTypesEntry\032P\n\020MemberTypesEntry\022\013\n\003ke"
-      "y\030\001 \001(\003\022+\n\005value\030\002 \001(\0162\034.e8.MessageChann"
-      "elMemberType:\0028\0012\343\004\n\025MessageChannelServi"
-      "ce\022Y\n\024CreateMessageChannel\022\037.e8.CreateMe"
-      "ssageChannelRequest\032 .e8.CreateMessageCh"
-      "annelResponse\022h\n\031AddMemberToMessageChann"
-      "el\022$.e8.AddMemberToMessageChannelRequest"
-      "\032%.e8.AddMemberToMessageChannelResponse\022"
-      "Y\n\024GetMessageChannelKey\022\037.e8.GetMessageC"
-      "hannelKeyRequest\032 .e8.GetMessageChannelK"
-      "eyResponse\022V\n\023LeaveMessageChannel\022\036.e8.L"
-      "eaveMessageChannelRequest\032\037.e8.LeaveMess"
-      "ageChannelResponse\022k\n\032GetJoinedInMessage"
-      "Channels\022%.e8.GetJoinedInMessageChannels"
-      "Request\032&.e8.GetJoinedInMessageChannelsR"
-      "esponse\022e\n\030GetMessageChannelMembers\022#.e8"
-      ".GetMessageChannelMembersRequest\032$.e8.Ge"
-      "tMessageChannelMembersResponseb\006proto3"
+      "ination.proto\032\031nullable_primitives.proto"
+      "\032\025message_channel.proto\032\022user_profile.pr"
+      "oto\"\231\001\n\033CreateMessageChannelRequest\022\021\n\te"
+      "ncrypted\030\001 \001(\010\022\033\n\023close_group_channel\030\002 "
+      "\001(\010\022!\n\005title\030\003 \001(\0132\022.e8.NullableString\022\'"
+      "\n\013description\030\004 \001(\0132\022.e8.NullableString\""
+      "2\n\034CreateMessageChannelResponse\022\022\n\nchann"
+      "el_id\030\001 \001(\003\"G\n AddMemberToMessageChannel"
+      "Request\022\022\n\nchannel_id\030\001 \001(\003\022\017\n\007user_id\030\002"
+      " \001(\003\"#\n!AddMemberToMessageChannelRespons"
+      "e\"G\n\033GetMessageChannelKeyRequest\022\022\n\nchan"
+      "nel_id\030\001 \001(\003\022\024\n\014timeout_secs\030\002 \001(\005\"3\n\034Ge"
+      "tMessageChannelKeyResponse\022\023\n\013channel_ke"
+      "y\030\003 \001(\t\"0\n\032LeaveMessageChannelRequest\022\022\n"
+      "\nchannel_id\030\001 \001(\003\"\035\n\033LeaveMessageChannel"
+      "Response\"G\n!GetJoinedInMessageChannelsRe"
+      "quest\022\"\n\npagination\030\001 \001(\0132\016.e8.Paginatio"
+      "n\"J\n\"GetJoinedInMessageChannelsResponse\022"
+      "$\n\010channels\030\001 \003(\0132\022.e8.MessageChannel\"5\n"
+      "\037GetMessageChannelMembersRequest\022\022\n\nchan"
+      "nel_id\030\001 \001(\003\"\357\001\n GetMessageChannelMember"
+      "sResponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8.Us"
+      "erPublicProfile\022K\n\014member_types\030\002 \003(\01325."
+      "e8.GetMessageChannelMembersResponse.Memb"
+      "erTypesEntry\032P\n\020MemberTypesEntry\022\013\n\003key\030"
+      "\001 \001(\003\022+\n\005value\030\002 \001(\0162\034.e8.MessageChannel"
+      "MemberType:\0028\0012\343\004\n\025MessageChannelService"
+      "\022Y\n\024CreateMessageChannel\022\037.e8.CreateMess"
+      "ageChannelRequest\032 .e8.CreateMessageChan"
+      "nelResponse\022h\n\031AddMemberToMessageChannel"
+      "\022$.e8.AddMemberToMessageChannelRequest\032%"
+      ".e8.AddMemberToMessageChannelResponse\022Y\n"
+      "\024GetMessageChannelKey\022\037.e8.GetMessageCha"
+      "nnelKeyRequest\032 .e8.GetMessageChannelKey"
+      "Response\022V\n\023LeaveMessageChannel\022\036.e8.Lea"
+      "veMessageChannelRequest\032\037.e8.LeaveMessag"
+      "eChannelResponse\022k\n\032GetJoinedInMessageCh"
+      "annels\022%.e8.GetJoinedInMessageChannelsRe"
+      "quest\032&.e8.GetJoinedInMessageChannelsRes"
+      "ponse\022e\n\030GetMessageChannelMembers\022#.e8.G"
+      "etMessageChannelMembersRequest\032$.e8.GetM"
+      "essageChannelMembersResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1598);
+      descriptor, 1716);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_pagination_2eproto::AddDescriptors();
+  ::protobuf_nullable_5fprimitives_2eproto::AddDescriptors();
   ::protobuf_message_5fchannel_2eproto::AddDescriptors();
   ::protobuf_user_5fprofile_2eproto::AddDescriptors();
 }
@@ -506,10 +516,28 @@ namespace e8 {
 // ===================================================================
 
 void CreateMessageChannelRequest::InitAsDefaultInstance() {
+  ::e8::_CreateMessageChannelRequest_default_instance_._instance.get_mutable()->title_ = const_cast< ::e8::NullableString*>(
+      ::e8::NullableString::internal_default_instance());
+  ::e8::_CreateMessageChannelRequest_default_instance_._instance.get_mutable()->description_ = const_cast< ::e8::NullableString*>(
+      ::e8::NullableString::internal_default_instance());
+}
+void CreateMessageChannelRequest::clear_title() {
+  if (GetArenaNoVirtual() == NULL && title_ != NULL) {
+    delete title_;
+  }
+  title_ = NULL;
+}
+void CreateMessageChannelRequest::clear_description() {
+  if (GetArenaNoVirtual() == NULL && description_ != NULL) {
+    delete description_;
+  }
+  description_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int CreateMessageChannelRequest::kEncryptedFieldNumber;
+const int CreateMessageChannelRequest::kCloseGroupChannelFieldNumber;
 const int CreateMessageChannelRequest::kTitleFieldNumber;
+const int CreateMessageChannelRequest::kDescriptionFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 CreateMessageChannelRequest::CreateMessageChannelRequest()
@@ -523,17 +551,26 @@ CreateMessageChannelRequest::CreateMessageChannelRequest(const CreateMessageChan
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  title_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.title().size() > 0) {
-    title_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.title_);
+  if (from.has_title()) {
+    title_ = new ::e8::NullableString(*from.title_);
+  } else {
+    title_ = NULL;
   }
-  encrypted_ = from.encrypted_;
+  if (from.has_description()) {
+    description_ = new ::e8::NullableString(*from.description_);
+  } else {
+    description_ = NULL;
+  }
+  ::memcpy(&encrypted_, &from.encrypted_,
+    static_cast<size_t>(reinterpret_cast<char*>(&close_group_channel_) -
+    reinterpret_cast<char*>(&encrypted_)) + sizeof(close_group_channel_));
   // @@protoc_insertion_point(copy_constructor:e8.CreateMessageChannelRequest)
 }
 
 void CreateMessageChannelRequest::SharedCtor() {
-  title_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  encrypted_ = false;
+  ::memset(&title_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&close_group_channel_) -
+      reinterpret_cast<char*>(&title_)) + sizeof(close_group_channel_));
 }
 
 CreateMessageChannelRequest::~CreateMessageChannelRequest() {
@@ -542,7 +579,8 @@ CreateMessageChannelRequest::~CreateMessageChannelRequest() {
 }
 
 void CreateMessageChannelRequest::SharedDtor() {
-  title_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete title_;
+  if (this != internal_default_instance()) delete description_;
 }
 
 void CreateMessageChannelRequest::SetCachedSize(int size) const {
@@ -565,8 +603,17 @@ void CreateMessageChannelRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  title_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  encrypted_ = false;
+  if (GetArenaNoVirtual() == NULL && title_ != NULL) {
+    delete title_;
+  }
+  title_ = NULL;
+  if (GetArenaNoVirtual() == NULL && description_ != NULL) {
+    delete description_;
+  }
+  description_ = NULL;
+  ::memset(&encrypted_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&close_group_channel_) -
+      reinterpret_cast<char*>(&encrypted_)) + sizeof(close_group_channel_));
   _internal_metadata_.Clear();
 }
 
@@ -594,16 +641,38 @@ bool CreateMessageChannelRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // string title = 2;
+      // bool close_group_channel = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_title()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->title().data(), static_cast<int>(this->title().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "e8.CreateMessageChannelRequest.title"));
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &close_group_channel_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .e8.NullableString title = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_title()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .e8.NullableString description = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_description()));
         } else {
           goto handle_unusual;
         }
@@ -641,14 +710,21 @@ void CreateMessageChannelRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->encrypted(), output);
   }
 
-  // string title = 2;
-  if (this->title().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->title().data(), static_cast<int>(this->title().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.CreateMessageChannelRequest.title");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->title(), output);
+  // bool close_group_channel = 2;
+  if (this->close_group_channel() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->close_group_channel(), output);
+  }
+
+  // .e8.NullableString title = 3;
+  if (this->has_title()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->_internal_title(), output);
+  }
+
+  // .e8.NullableString description = 4;
+  if (this->has_description()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, this->_internal_description(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -670,15 +746,23 @@ void CreateMessageChannelRequest::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->encrypted(), target);
   }
 
-  // string title = 2;
-  if (this->title().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->title().data(), static_cast<int>(this->title().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.CreateMessageChannelRequest.title");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->title(), target);
+  // bool close_group_channel = 2;
+  if (this->close_group_channel() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->close_group_channel(), target);
+  }
+
+  // .e8.NullableString title = 3;
+  if (this->has_title()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        3, this->_internal_title(), deterministic, target);
+  }
+
+  // .e8.NullableString description = 4;
+  if (this->has_description()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        4, this->_internal_description(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -698,15 +782,27 @@ size_t CreateMessageChannelRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string title = 2;
-  if (this->title().size() > 0) {
+  // .e8.NullableString title = 3;
+  if (this->has_title()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->title());
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *title_);
+  }
+
+  // .e8.NullableString description = 4;
+  if (this->has_description()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *description_);
   }
 
   // bool encrypted = 1;
   if (this->encrypted() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool close_group_channel = 2;
+  if (this->close_group_channel() != 0) {
     total_size += 1 + 1;
   }
 
@@ -737,12 +833,17 @@ void CreateMessageChannelRequest::MergeFrom(const CreateMessageChannelRequest& f
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.title().size() > 0) {
-
-    title_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.title_);
+  if (from.has_title()) {
+    mutable_title()->::e8::NullableString::MergeFrom(from.title());
+  }
+  if (from.has_description()) {
+    mutable_description()->::e8::NullableString::MergeFrom(from.description());
   }
   if (from.encrypted() != 0) {
     set_encrypted(from.encrypted());
+  }
+  if (from.close_group_channel() != 0) {
+    set_close_group_channel(from.close_group_channel());
   }
 }
 
@@ -770,9 +871,10 @@ void CreateMessageChannelRequest::Swap(CreateMessageChannelRequest* other) {
 }
 void CreateMessageChannelRequest::InternalSwap(CreateMessageChannelRequest* other) {
   using std::swap;
-  title_.Swap(&other->title_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  swap(title_, other->title_);
+  swap(description_, other->description_);
   swap(encrypted_, other->encrypted_);
+  swap(close_group_channel_, other->close_group_channel_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

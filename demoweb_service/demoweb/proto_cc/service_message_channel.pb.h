@@ -34,6 +34,7 @@
 #include <google/protobuf/map_field_inl.h>
 #include <google/protobuf/unknown_field_set.h>
 #include "pagination.pb.h"
+#include "nullable_primitives.pb.h"
 #include "message_channel.pb.h"
 #include "user_profile.pb.h"
 // @@protoc_insertion_point(includes)
@@ -200,19 +201,29 @@ class CreateMessageChannelRequest : public ::google::protobuf::Message /* @@prot
 
   // accessors -------------------------------------------------------
 
-  // string title = 2;
+  // .e8.NullableString title = 3;
+  bool has_title() const;
   void clear_title();
-  static const int kTitleFieldNumber = 2;
-  const ::std::string& title() const;
-  void set_title(const ::std::string& value);
-  #if LANG_CXX11
-  void set_title(::std::string&& value);
-  #endif
-  void set_title(const char* value);
-  void set_title(const char* value, size_t size);
-  ::std::string* mutable_title();
-  ::std::string* release_title();
-  void set_allocated_title(::std::string* title);
+  static const int kTitleFieldNumber = 3;
+  private:
+  const ::e8::NullableString& _internal_title() const;
+  public:
+  const ::e8::NullableString& title() const;
+  ::e8::NullableString* release_title();
+  ::e8::NullableString* mutable_title();
+  void set_allocated_title(::e8::NullableString* title);
+
+  // .e8.NullableString description = 4;
+  bool has_description() const;
+  void clear_description();
+  static const int kDescriptionFieldNumber = 4;
+  private:
+  const ::e8::NullableString& _internal_description() const;
+  public:
+  const ::e8::NullableString& description() const;
+  ::e8::NullableString* release_description();
+  ::e8::NullableString* mutable_description();
+  void set_allocated_description(::e8::NullableString* description);
 
   // bool encrypted = 1;
   void clear_encrypted();
@@ -220,12 +231,20 @@ class CreateMessageChannelRequest : public ::google::protobuf::Message /* @@prot
   bool encrypted() const;
   void set_encrypted(bool value);
 
+  // bool close_group_channel = 2;
+  void clear_close_group_channel();
+  static const int kCloseGroupChannelFieldNumber = 2;
+  bool close_group_channel() const;
+  void set_close_group_channel(bool value);
+
   // @@protoc_insertion_point(class_scope:e8.CreateMessageChannelRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr title_;
+  ::e8::NullableString* title_;
+  ::e8::NullableString* description_;
   bool encrypted_;
+  bool close_group_channel_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
 };
@@ -1450,57 +1469,114 @@ inline void CreateMessageChannelRequest::set_encrypted(bool value) {
   // @@protoc_insertion_point(field_set:e8.CreateMessageChannelRequest.encrypted)
 }
 
-// string title = 2;
-inline void CreateMessageChannelRequest::clear_title() {
-  title_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// bool close_group_channel = 2;
+inline void CreateMessageChannelRequest::clear_close_group_channel() {
+  close_group_channel_ = false;
 }
-inline const ::std::string& CreateMessageChannelRequest::title() const {
+inline bool CreateMessageChannelRequest::close_group_channel() const {
+  // @@protoc_insertion_point(field_get:e8.CreateMessageChannelRequest.close_group_channel)
+  return close_group_channel_;
+}
+inline void CreateMessageChannelRequest::set_close_group_channel(bool value) {
+  
+  close_group_channel_ = value;
+  // @@protoc_insertion_point(field_set:e8.CreateMessageChannelRequest.close_group_channel)
+}
+
+// .e8.NullableString title = 3;
+inline bool CreateMessageChannelRequest::has_title() const {
+  return this != internal_default_instance() && title_ != NULL;
+}
+inline const ::e8::NullableString& CreateMessageChannelRequest::_internal_title() const {
+  return *title_;
+}
+inline const ::e8::NullableString& CreateMessageChannelRequest::title() const {
+  const ::e8::NullableString* p = title_;
   // @@protoc_insertion_point(field_get:e8.CreateMessageChannelRequest.title)
-  return title_.GetNoArena();
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
+      &::e8::_NullableString_default_instance_);
 }
-inline void CreateMessageChannelRequest::set_title(const ::std::string& value) {
-  
-  title_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.CreateMessageChannelRequest.title)
-}
-#if LANG_CXX11
-inline void CreateMessageChannelRequest::set_title(::std::string&& value) {
-  
-  title_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.CreateMessageChannelRequest.title)
-}
-#endif
-inline void CreateMessageChannelRequest::set_title(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  title_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.CreateMessageChannelRequest.title)
-}
-inline void CreateMessageChannelRequest::set_title(const char* value, size_t size) {
-  
-  title_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.CreateMessageChannelRequest.title)
-}
-inline ::std::string* CreateMessageChannelRequest::mutable_title() {
-  
-  // @@protoc_insertion_point(field_mutable:e8.CreateMessageChannelRequest.title)
-  return title_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* CreateMessageChannelRequest::release_title() {
+inline ::e8::NullableString* CreateMessageChannelRequest::release_title() {
   // @@protoc_insertion_point(field_release:e8.CreateMessageChannelRequest.title)
   
-  return title_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::e8::NullableString* temp = title_;
+  title_ = NULL;
+  return temp;
 }
-inline void CreateMessageChannelRequest::set_allocated_title(::std::string* title) {
-  if (title != NULL) {
+inline ::e8::NullableString* CreateMessageChannelRequest::mutable_title() {
+  
+  if (title_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
+    title_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.CreateMessageChannelRequest.title)
+  return title_;
+}
+inline void CreateMessageChannelRequest::set_allocated_title(::e8::NullableString* title) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(title_);
+  }
+  if (title) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      title = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, title, submessage_arena);
+    }
     
   } else {
     
   }
-  title_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), title);
+  title_ = title;
   // @@protoc_insertion_point(field_set_allocated:e8.CreateMessageChannelRequest.title)
+}
+
+// .e8.NullableString description = 4;
+inline bool CreateMessageChannelRequest::has_description() const {
+  return this != internal_default_instance() && description_ != NULL;
+}
+inline const ::e8::NullableString& CreateMessageChannelRequest::_internal_description() const {
+  return *description_;
+}
+inline const ::e8::NullableString& CreateMessageChannelRequest::description() const {
+  const ::e8::NullableString* p = description_;
+  // @@protoc_insertion_point(field_get:e8.CreateMessageChannelRequest.description)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
+      &::e8::_NullableString_default_instance_);
+}
+inline ::e8::NullableString* CreateMessageChannelRequest::release_description() {
+  // @@protoc_insertion_point(field_release:e8.CreateMessageChannelRequest.description)
+  
+  ::e8::NullableString* temp = description_;
+  description_ = NULL;
+  return temp;
+}
+inline ::e8::NullableString* CreateMessageChannelRequest::mutable_description() {
+  
+  if (description_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
+    description_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.CreateMessageChannelRequest.description)
+  return description_;
+}
+inline void CreateMessageChannelRequest::set_allocated_description(::e8::NullableString* description) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(description_);
+  }
+  if (description) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      description = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, description, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  description_ = description;
+  // @@protoc_insertion_point(field_set_allocated:e8.CreateMessageChannelRequest.description)
 }
 
 // -------------------------------------------------------------------
