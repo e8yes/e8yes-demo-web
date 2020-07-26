@@ -5,6 +5,7 @@ SUBDIRS = \
     file_system/filesystemw.pro \
     postgres/postgres.pro \
     keygen/keygenw.pro \
+    message_queue/message_queue.pro \
     demoweb_service/demoweb.pro
 
 CONFIG += ordered

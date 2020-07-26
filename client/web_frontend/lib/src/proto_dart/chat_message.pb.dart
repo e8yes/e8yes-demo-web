@@ -10,7 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'file.pb.dart' as $8;
+import 'file.pb.dart' as $9;
 
 class ChatMessageEntry extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ChatMessageEntry', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -18,7 +18,7 @@ class ChatMessageEntry extends $pb.GeneratedMessage {
     ..aInt64(2, 'messageId')
     ..aInt64(3, 'senderId')
     ..pPS(4, 'messages')
-    ..pc<$8.FileTokenAccess>(5, 'mediaFileAccesses', $pb.PbFieldType.PM, subBuilder: $8.FileTokenAccess.create)
+    ..pc<$9.FileTokenAccess>(5, 'mediaFileAccesses', $pb.PbFieldType.PM, subBuilder: $9.FileTokenAccess.create)
     ..aInt64(6, 'createdAt')
     ..hasRequiredFields = false
   ;
@@ -69,7 +69,7 @@ class ChatMessageEntry extends $pb.GeneratedMessage {
   $core.List<$core.String> get messages => $_getList(3);
 
   @$pb.TagNumber(5)
-  $core.List<$8.FileTokenAccess> get mediaFileAccesses => $_getList(4);
+  $core.List<$9.FileTokenAccess> get mediaFileAccesses => $_getList(4);
 
   @$pb.TagNumber(6)
   $fixnum.Int64 get createdAt => $_getI64(5);
