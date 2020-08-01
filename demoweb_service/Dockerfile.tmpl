@@ -8,7 +8,7 @@ EXPOSE 50051
 
 ENV LD_LIBRARY_PATH="./bin/"
 
-CMD ["./bin/demowebmain", \
+CMD ["./bin/demoweb_service_main", \
      "--port=50051", \
      "--demoweb_db_host_name={{postgres_citus_master_location}}", \
      "--demoweb_db_port={{postgres_citus_master_port}}", \

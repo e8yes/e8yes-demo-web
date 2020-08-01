@@ -7,6 +7,10 @@ find . -name *main -exec cp -f {} bin/ \;
 
 pushd bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
-./demowebmain --demoweb_db_host_name=localhost --demoweb_db_port=5432 --demoweb_db_user_name=postgres --demoweb_db_password=password
+./demoweb_service_main \
+	--demoweb_db_host_name=localhost \
+	--demoweb_db_port=5432 \
+	--demoweb_db_user_name=postgres \
+	--demoweb_db_password=password
 popd
 

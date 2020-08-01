@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS = \
-    demoweb/demowebservice.pro \
-    demoweb/demowebmain.pro \
+    demoweb/demoweb_service.pro \
+    demoweb/demoweb_service_main.pro \
     demoweb_test/module/create_user_test \
     demoweb_test/module/message_channel_test \
     demoweb_test/module/retrieve_user_test \

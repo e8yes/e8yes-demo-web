@@ -21,6 +21,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/./ -lmessage_queue_service
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/flags/ -lflags
+
+INCLUDEPATH += $$PWD/../../common/flags
+DEPENDPATH += $$PWD/../../common/flags
+
 LIBS += -pthread
 LIBS += -ldl
 LIBS += -lprotobuf

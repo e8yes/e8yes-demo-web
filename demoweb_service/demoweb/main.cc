@@ -25,6 +25,7 @@
 #include <optional>
 #include <string>
 
+#include "common/flags/parse_flags.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/environment/prod_environment_context.h"
 #include "demoweb_service/demoweb/service/file_service.h"
@@ -35,6 +36,7 @@
 namespace {
 
 static char const kPortFlag[] = "port";
+static char const kGrpcWebProxyFlag[] = "grpc_web_proxy";
 static char const kDemowebDbHostNameFlag[] = "demoweb_db_host_name";
 static char const kDemowebDbPortFlag[] = "demoweb_db_port";
 static char const kDemowebDbUserName[] = "demoweb_db_user_name";
@@ -47,42 +49,23 @@ static e8::FileServiceImpl gFileService;
 static e8::SocialNetworkServiceImpl gSocialNetworkService;
 static e8::MessageChannelServiceImpl gMessageChannelService;
 
-std::optional<std::string> ScanFlag(int argc, char *argv[], std::string const &flag) {
-    std::string expected_flag_prefix = "--" + flag + "=";
-
-    for (int i = 1; i < argc; i++) {
-        std::string cur_flag(argv[i]);
-        if (cur_flag.rfind(expected_flag_prefix, 0) == 0) {
-            std::string flag_value = cur_flag.substr(std::string(expected_flag_prefix).length());
-            return flag_value;
-        }
-    }
-
-    return std::nullopt;
-}
-
-int PortValue(int argc, char *argv[]) {
-    std::optional<std::string> port_val = ScanFlag(argc, argv, kPortFlag);
-    if (port_val.has_value()) {
-        return std::stoi(port_val.value());
-    } else {
-        return kDefaultPort;
-    }
-}
-
-std::unique_ptr<e8::ProductionEnvironmentContext> BuildEnvironmentContext(int argc, char *argv[]) {
-    std::optional<std::string> demoweb_db_host_name = ScanFlag(argc, argv, kDemowebDbHostNameFlag);
-    std::optional<std::string> demoweb_db_port = ScanFlag(argc, argv, kDemowebDbPortFlag);
-    std::optional<std::string> demoweb_db_user_name = ScanFlag(argc, argv, kDemowebDbUserName);
-    std::optional<std::string> demoweb_db_password = ScanFlag(argc, argv, kDemowebDbPassword);
-    assert(demoweb_db_host_name.has_value());
-    assert(demoweb_db_port.has_value());
-    assert(demoweb_db_user_name.has_value());
-    assert(demoweb_db_password.has_value());
+std::unique_ptr<e8::ProductionEnvironmentContext> BuildEnvironmentContext() {
+    std::string demoweb_db_host_name =
+        e8::ReadFlag(kDemowebDbHostNameFlag, std::string(), e8::FromString<std::string>);
+    std::string demoweb_db_port =
+        e8::ReadFlag(kDemowebDbPortFlag, std::string(), e8::FromString<std::string>);
+    std::string demoweb_db_user_name =
+        e8::ReadFlag(kDemowebDbUserName, std::string(), e8::FromString<std::string>);
+    std::string demoweb_db_password =
+        e8::ReadFlag(kDemowebDbPassword, std::string(), e8::FromString<std::string>);
+    assert(!demoweb_db_host_name.empty());
+    assert(!demoweb_db_port.empty());
+    assert(!demoweb_db_user_name.empty());
+    assert(!demoweb_db_password.empty());
 
     auto context = std::make_unique<e8::ProductionEnvironmentContext>(
-        demoweb_db_host_name.value(), std::stoi(demoweb_db_port.value()),
-        demoweb_db_user_name.value(), demoweb_db_password.value());
+        demoweb_db_host_name, std::stoi(demoweb_db_port), demoweb_db_user_name,
+        demoweb_db_password);
 
     return context;
 }
@@ -90,13 +73,15 @@ std::unique_ptr<e8::ProductionEnvironmentContext> BuildEnvironmentContext(int ar
 } // namespace
 
 int main(int argc, char *argv[]) {
-    auto prod_environment = BuildEnvironmentContext(argc, argv);
+    e8::Argv(argc, argv);
+
+    auto prod_environment = BuildEnvironmentContext();
     e8::RegisterEnvironment(prod_environment.get());
 
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 
-    int port = PortValue(argc, argv);
+    int port = e8::ReadFlag<int>(kPortFlag, kDefaultPort, e8::FromString<int>);
     std::string server_address("0.0.0.0:" + std::to_string(port));
 
     grpc::ServerBuilder builder;
@@ -110,11 +95,11 @@ int main(int argc, char *argv[]) {
     std::cout << "Server listening on " << server_address << std::endl;
 
     // Run GRPC web proxy.
-    std::optional<std::string> grpc_web_proxy = ScanFlag(argc, argv, "grpc_web_proxy");
-    if (grpc_web_proxy.has_value()) {
-        std::string cmd = grpc_web_proxy.value() +
-                          " --backend_addr=localhost:50051 --run_tls_server=false "
-                          "--server_http_debug_port=8000 --allow_all_origins &";
+    std::string grpc_web_proxy =
+        e8::ReadFlag(kGrpcWebProxyFlag, std::string(), e8::FromString<std::string>);
+    if (!grpc_web_proxy.empty()) {
+        std::string cmd = grpc_web_proxy + " --backend_addr=localhost:50051 --run_tls_server=false "
+                                           "--server_http_debug_port=8000 --allow_all_origins &";
         int _ = std::system(cmd.c_str());
         (void)_;
     }

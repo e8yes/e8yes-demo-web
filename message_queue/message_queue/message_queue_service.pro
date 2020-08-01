@@ -15,6 +15,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
+    module/message_queue_store.cc \
     proto_cc/chat_message.grpc.pb.cc \
     proto_cc/chat_message.pb.cc \
     proto_cc/encryption_source.grpc.pb.cc \
@@ -56,8 +57,10 @@ SOURCES += \
     proto_cc/user_profile.grpc.pb.cc \
     proto_cc/user_profile.pb.cc \
     proto_cc/user_relation.grpc.pb.cc \
-    proto_cc/user_relation.pb.cc
+    proto_cc/user_relation.pb.cc \
+    service/message_queue_service.cc
 HEADERS += \
+    module/message_queue_store.h \
     proto_cc/chat_message.grpc.pb.h \
     proto_cc/chat_message.pb.h \
     proto_cc/encryption_source.grpc.pb.h \
@@ -99,7 +102,8 @@ HEADERS += \
     proto_cc/user_profile.grpc.pb.h \
     proto_cc/user_profile.pb.h \
     proto_cc/user_relation.grpc.pb.h \
-    proto_cc/user_relation.pb.h
+    proto_cc/user_relation.pb.h \
+    service/message_queue_service.h
 
 # Default rules for deployment.
 unix {

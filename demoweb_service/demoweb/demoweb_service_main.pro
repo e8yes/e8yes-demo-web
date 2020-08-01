@@ -36,6 +36,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../third_party/base64/ -lbase64
 INCLUDEPATH += $$PWD/../../third_party/base64
 DEPENDPATH += $$PWD/../../third_party/base64
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/flags/ -lflags
+
+INCLUDEPATH += $$PWD/../../common/flags
+DEPENDPATH += $$PWD/../../common/flags
+
 LIBS += -lpthread
 LIBS += -ldl
 LIBS += -lgrpc++ -lgrpc++_reflection
