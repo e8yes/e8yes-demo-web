@@ -14,7 +14,7 @@ INCLUDEPATH += $$PWD/../../../../
 SOURCES +=  \
     tst_file_access_validator_test.cc
 
-unix:!macx: LIBS += -L$$OUT_PWD/../../../demoweb/ -ldemowebservice
+unix:!macx: LIBS += -L$$OUT_PWD/../../../demoweb/ -ldemoweb_service
 
 INCLUDEPATH += $$PWD/../../../demoweb
 DEPENDPATH += $$PWD/../../../demoweb

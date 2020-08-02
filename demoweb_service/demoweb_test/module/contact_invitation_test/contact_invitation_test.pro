@@ -24,7 +24,7 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../../keygen/ -lkeygen
 INCLUDEPATH += $$PWD/../../../../keygen
 DEPENDPATH += $$PWD/../../../../keygen
 
-unix:!macx: LIBS += -L$$OUT_PWD/../../../demoweb/ -ldemowebservice
+unix:!macx: LIBS += -L$$OUT_PWD/../../../demoweb/ -ldemoweb_service
 
 INCLUDEPATH += $$PWD/../../../demoweb
 DEPENDPATH += $$PWD/../../../demoweb

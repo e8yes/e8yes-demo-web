@@ -14,7 +14,7 @@ INCLUDEPATH += $$PWD/../../../../
 SOURCES +=  \
     tst_user_identity_test.cc
 
-unix:!macx: LIBS += -L$$OUT_PWD/../../../demoweb/ -ldemowebservice
+unix:!macx: LIBS += -L$$OUT_PWD/../../../demoweb/ -ldemoweb_service
 
 INCLUDEPATH += $$PWD/../../../demoweb
 DEPENDPATH += $$PWD/../../../demoweb
