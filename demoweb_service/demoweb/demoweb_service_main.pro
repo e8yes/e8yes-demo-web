@@ -16,7 +16,7 @@ INCLUDEPATH += $$PWD/../../
 SOURCES += \
     main.cc
 
-unix:!macx: LIBS += -L$$OUT_PWD/./ -ldemowebservice
+unix:!macx: LIBS += -L$$OUT_PWD/./ -ldemoweb_service
 
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
