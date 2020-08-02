@@ -28,10 +28,9 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/module/user_identity.h"
-#include "proto_cc/identity.pb.h"
+#include "identity/trustable_identity.h"
 #include "keygen/key_generator_interface.h"
-#include "keygen/sign_message.h"
-#include "third_party/base64/base64.h"
+#include "proto_cc/identity.pb.h"
 
 namespace e8 {
 namespace {
@@ -39,7 +38,6 @@ namespace {
 static char const kDigestAlgorithmPrefix[] = "$2y$";
 static unsigned const kDigestStrength = 11;
 static unsigned const kNumRandomBytes = 16;
-static char const kEncrypter[] = "DemowebIdentitySigner";
 static uint64_t const kIdentityValidDurationSecs = 60 * 10;
 
 std::vector<std::string> Split(std::string const &input, char delimiter) {
@@ -113,43 +111,12 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
     std::time(&cur_timestamp);
     identity.set_expiry_timestamp(cur_timestamp + kIdentityValidDurationSecs);
 
-    std::string identity_bytes;
-    bool serialize_status = identity.SerializeToString(&identity_bytes);
-    assert(serialize_status == true);
-
-    KeyGeneratorInterface::Key key_pair =
-        key_gen->KeyOf(kEncrypter, KeyGeneratorInterface::RSA_4096_BITS);
-
-    std::string raw_bytes = SignMessage(identity_bytes, key_pair.key);
-    return base64_encode(raw_bytes);
+    return SignIdentity(identity, key_gen);
 }
 
 std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_identity,
                                                KeyGeneratorInterface *key_gen) {
-    KeyGeneratorInterface::Key key_pair =
-        key_gen->KeyOf(kEncrypter, KeyGeneratorInterface::RSA_4096_BITS);
-    assert(key_pair.public_key.has_value());
-
-    std::string raw_bytes = base64_decode(signed_identity);
-
-    std::optional<std::string> decoded_bytes =
-        DecodeSignedMessage(raw_bytes, key_pair.public_key.value());
-    if (!decoded_bytes.has_value()) {
-        return std::nullopt;
-    }
-
-    Identity identity;
-    bool deserialize_status =
-        identity.ParseFromArray(decoded_bytes.value().data(), decoded_bytes.value().size());
-    assert(deserialize_status == true);
-
-    std::time_t cur_timestamp;
-    std::time(&cur_timestamp);
-    if (cur_timestamp > identity.expiry_timestamp()) {
-        return std::nullopt;
-    }
-
-    return identity;
+    return ValidateSignedIdentity(signed_identity, key_gen);
 }
 
 } // namespace e8

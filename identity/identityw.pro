@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = \
-    identity.pro
+    identity.pro \
+    identity_test
 
 CONFIG += ordered

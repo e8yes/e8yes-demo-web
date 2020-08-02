@@ -31,5 +31,15 @@ unix:!macx: LIBS += -L$$OUT_PWD/../proto_cc/ -lproto_cc
 INCLUDEPATH += $$PWD/../proto_cc
 DEPENDPATH += $$PWD/../proto_cc
 
+unix:!macx: LIBS += -L$$OUT_PWD/../third_party/base64/ -lbase64
+
+INCLUDEPATH += $$PWD/../third_party/base64
+DEPENDPATH += $$PWD/../third_party/base64
+
+unix:!macx: LIBS += -L$$OUT_PWD/../keygen/ -lkeygen
+
+INCLUDEPATH += $$PWD/../keygen
+DEPENDPATH += $$PWD/../keygen
+
 LIBS += -lprotobuf
 LIBS += -lgrpc++

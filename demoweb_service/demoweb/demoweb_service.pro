@@ -1,5 +1,5 @@
 QT       -= core gui
-TARGET = demowebservice
+TARGET = demoweb_service
 TEMPLATE = lib
 CONFIG += c++17
 
