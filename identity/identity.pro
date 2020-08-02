@@ -15,9 +15,11 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../
 
 SOURCES += \
+    extract_identity_from_metadata.cc \
     trustable_identity.cc
 
 HEADERS += \
+    extract_identity_from_metadata.h \
     trustable_identity.h
 
 # Default rules for deployment.

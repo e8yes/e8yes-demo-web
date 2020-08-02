@@ -21,38 +21,17 @@
 
 #include "demoweb_service/demoweb/constant/context_key.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
-#include "demoweb_service/demoweb/module/user_identity.h"
+#include "demoweb_service/demoweb/service/service_util.h"
+#include "identity/extract_identity_from_metadata.h"
 #include "proto_cc/identity.pb.h"
 #include "proto_cc/pagination.pb.h"
-#include "demoweb_service/demoweb/service/service_util.h"
 
 namespace e8 {
 
 std::optional<Identity> ExtractIdentityFromContext(grpc::ServerContext const &context,
                                                    grpc::Status *status) {
-    auto context_it = context.client_metadata().find(kAuthorizationKey);
-    if (context_it == context.client_metadata().end()) {
-        if (status != nullptr) {
-            *status = grpc::Status(grpc::StatusCode::UNAUTHENTICATED, "Expect a signed identity.");
-        }
-        return std::nullopt;
-    }
-
-    std::optional<Identity> identity_optional =
-        ValidateSignedIdentity(std::string(context_it->second.data(), context_it->second.size()),
-                               CurrentEnvironment()->KeyGen());
-    if (!identity_optional.has_value()) {
-        if (status != nullptr) {
-            *status = grpc::Status(grpc::StatusCode::UNAUTHENTICATED,
-                                   "Failed to decode the signed identity.");
-        }
-        return std::nullopt;
-    }
-
-    if (status != nullptr) {
-        *status = grpc::Status::OK;
-    }
-    return identity_optional;
+    return ExtractIdentityFromContext(context, kAuthorizationKey, CurrentEnvironment()->KeyGen(),
+                                      status);
 }
 
 grpc::Status ValidatePagination(Pagination const &pagination, unsigned result_per_page_limit) {
