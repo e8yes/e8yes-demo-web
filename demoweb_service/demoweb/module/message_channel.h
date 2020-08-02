@@ -26,8 +26,8 @@
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
-#include "demoweb_service/demoweb/proto_cc/message_channel.pb.h"
-#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
+#include "proto_cc/message_channel.pb.h"
+#include "proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {

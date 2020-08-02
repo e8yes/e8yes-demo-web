@@ -23,8 +23,8 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_group_entity.h"
-#include "demoweb_service/demoweb/proto_cc/file.pb.h"
-#include "demoweb_service/demoweb/proto_cc/identity.pb.h"
+#include "proto_cc/file.pb.h"
+#include "proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 

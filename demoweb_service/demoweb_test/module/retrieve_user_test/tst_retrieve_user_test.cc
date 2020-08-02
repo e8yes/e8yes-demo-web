@@ -24,7 +24,7 @@
 #include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/retrieve_user.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
-#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
+#include "proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 class retrieve_user_test : public QObject {

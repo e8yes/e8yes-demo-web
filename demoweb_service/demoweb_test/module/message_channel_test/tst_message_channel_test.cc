@@ -25,8 +25,8 @@
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
-#include "demoweb_service/demoweb/proto_cc/message_channel.pb.h"
-#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
+#include "proto_cc/message_channel.pb.h"
+#include "proto_cc/pagination.pb.h"
 
 class message_channel_test : public QObject {
     Q_OBJECT

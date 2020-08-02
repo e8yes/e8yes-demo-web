@@ -21,8 +21,8 @@
 #include <grpcpp/grpcpp.h>
 #include <optional>
 
-#include "demoweb_service/demoweb/proto_cc/identity.pb.h"
-#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
+#include "proto_cc/identity.pb.h"
+#include "proto_cc/pagination.pb.h"
 
 namespace e8 {
 

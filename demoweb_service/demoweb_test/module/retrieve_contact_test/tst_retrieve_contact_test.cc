@@ -24,8 +24,8 @@
 #include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/retrieve_contact.h"
-#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
-#include "demoweb_service/demoweb/proto_cc/user_relation.pb.h"
+#include "proto_cc/pagination.pb.h"
+#include "proto_cc/user_relation.pb.h"
 
 class retrieve_contact_test : public QObject {
     Q_OBJECT

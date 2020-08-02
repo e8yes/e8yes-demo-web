@@ -20,8 +20,8 @@
 
 #include <grpcpp/grpcpp.h>
 
-#include "demoweb_service/demoweb/proto_cc/service_user.grpc.pb.h"
-#include "demoweb_service/demoweb/proto_cc/service_user.pb.h"
+#include "proto_cc/service_user.grpc.pb.h"
+#include "proto_cc/service_user.pb.h"
 
 namespace e8 {
 

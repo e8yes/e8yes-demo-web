@@ -41,6 +41,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../common/flags/ -lflags
 INCLUDEPATH += $$PWD/../../common/flags
 DEPENDPATH += $$PWD/../../common/flags
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../proto_cc/ -lproto_cc
+
+INCLUDEPATH += $$PWD/../../proto_cc
+DEPENDPATH += $$PWD/../../proto_cc
+
 LIBS += -lpthread
 LIBS += -ldl
 LIBS += -lgrpc++ -lgrpc++_reflection

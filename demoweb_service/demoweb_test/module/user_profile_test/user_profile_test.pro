@@ -36,3 +36,8 @@ INCLUDEPATH += $$PWD/../../../../third_party/base64
 DEPENDPATH += $$PWD/../../../../third_party/base64
 
 LIBS += -lprotobuf
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../proto_cc/ -lproto_cc
+
+INCLUDEPATH += $$PWD/../../../../proto_cc
+DEPENDPATH += $$PWD/../../../../proto_cc

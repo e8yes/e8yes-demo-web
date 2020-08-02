@@ -15,20 +15,10 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <grpcpp/grpcpp.h>
+#include <optional>
 
-#include "proto_cc/service_file.grpc.pb.h"
-#include "proto_cc/service_file.pb.h"
-#include "demoweb_service/demoweb/service/file_service.h"
+#include "proto_cc/identity.pb.h"
+#include "identity/trustable_identity.h"
+#include "keygen/key_generator_interface.h"
 
-namespace e8 {
-
-grpc::Status FileServiceImpl::Upload(grpc::ServerContext *context,
-                                     grpc::ServerReader<UploadFileRequest> *reader,
-                                     UploadFileResponse *response) {}
-
-grpc::Status FileServiceImpl::Download(grpc::ServerContext *context,
-                                       DownloadFileRequest const *request,
-                                       grpc::ServerWriter<DownloadFileResponse> *writer) {}
-
-} // namespace e8
+namespace e8 {} // namespace e8

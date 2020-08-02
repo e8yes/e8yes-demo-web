@@ -17,8 +17,8 @@
 
 #include <grpcpp/grpcpp.h>
 
-#include "message_queue/message_queue/proto_cc/service_message_queue.grpc.pb.h"
-#include "message_queue/message_queue/proto_cc/service_message_queue.pb.h"
+#include "proto_cc/service_message_queue.grpc.pb.h"
+#include "proto_cc/service_message_queue.pb.h"
 #include "message_queue/message_queue/service/message_queue_service.h"
 
 namespace e8 {

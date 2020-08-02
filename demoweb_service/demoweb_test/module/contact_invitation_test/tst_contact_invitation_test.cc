@@ -25,7 +25,7 @@
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/module/create_user.h"
-#include "demoweb_service/demoweb/proto_cc/user_relation.pb.h"
+#include "proto_cc/user_relation.pb.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
 

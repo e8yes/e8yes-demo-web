@@ -27,7 +27,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "message_queue/message_queue/proto_cc/real_time_message.pb.h"
+#include "proto_cc/real_time_message.pb.h"
 
 namespace e8 {
 

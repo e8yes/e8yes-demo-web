@@ -15,43 +15,27 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef USER_IDENTITY_H
-#define USER_IDENTITY_H
+#ifndef TRUSTABLE_IDENTITY_H
+#define TRUSTABLE_IDENTITY_H
 
-#include <cstdint>
 #include <optional>
-#include <string>
-#include <vector>
 
-#include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
+#include "proto_cc/identity.pb.h"
 
 namespace e8 {
 
-using SecurityKeyHash = std::string;
 using SignedIdentity = std::string;
 
 /**
- * @brief DigestSecurityKey A one-way encryption function that hashes a security key into a
- * cryptograhpic token.
+ * @brief SignIdentity Serializes then encrypts the identity into a signature token.
  *
- * @param security_key The security key to be encrypted.
- * @return The hashed token if no error occurs, otherwise, a nullptr.
- */
-std::optional<SecurityKeyHash> DigestSecurityKey(std::string const &security_key);
-
-/**
- * @brief SignIdentity Validates the security key against the checksum then signs and encrypts
- * identity the into a token.
- *
- * @param user The user the security key to validate against.
- * @param security_key The security key used to authorize the signature of the identity.
+ * @param identity The identity to be encrypted.
  * @param key_gen Key generator that holds the private signature key.
  * @return The signed identity token if the security key validation is successful. Otherwise, it
  * returns a nullopt.
  */
-std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string const &security_key,
+std::optional<SignedIdentity> SignIdentity(Identity const &identity,
                                            KeyGeneratorInterface *key_gen);
 
 /**
@@ -67,4 +51,4 @@ std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_iden
 
 } // namespace e8
 
-#endif // USER_IDENTITY_H
+#endif // TRUSTABLE_IDENTITY_H

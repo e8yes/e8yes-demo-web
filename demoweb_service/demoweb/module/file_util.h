@@ -21,7 +21,7 @@
 #include <optional>
 #include <string>
 
-#include "demoweb_service/demoweb/proto_cc/file.pb.h"
+#include "proto_cc/file.pb.h"
 
 namespace e8 {
 

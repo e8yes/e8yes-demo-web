@@ -20,7 +20,7 @@
 
 #include <grpcpp/grpcpp.h>
 
-#include "demoweb_service/demoweb/proto_cc/service_message_channel.grpc.pb.h"
+#include "proto_cc/service_message_channel.grpc.pb.h"
 
 namespace e8 {
 

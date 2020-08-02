@@ -24,7 +24,7 @@
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/file_access_validator.h"
-#include "demoweb_service/demoweb/proto_cc/identity.pb.h"
+#include "proto_cc/identity.pb.h"
 
 class file_access_validator_test : public QObject {
     Q_OBJECT

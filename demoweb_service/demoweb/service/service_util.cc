@@ -22,8 +22,8 @@
 #include "demoweb_service/demoweb/constant/context_key.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/user_identity.h"
-#include "demoweb_service/demoweb/proto_cc/identity.pb.h"
-#include "demoweb_service/demoweb/proto_cc/pagination.pb.h"
+#include "proto_cc/identity.pb.h"
+#include "proto_cc/pagination.pb.h"
 #include "demoweb_service/demoweb/service/service_util.h"
 
 namespace e8 {

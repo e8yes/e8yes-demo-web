@@ -28,7 +28,7 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/module/user_identity.h"
-#include "demoweb_service/demoweb/proto_cc/identity.pb.h"
+#include "proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/sign_message.h"
 #include "third_party/base64/base64.h"
