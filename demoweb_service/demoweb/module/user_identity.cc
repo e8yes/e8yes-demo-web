@@ -114,9 +114,4 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
     return SignIdentity(identity, key_gen);
 }
 
-std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_identity,
-                                               KeyGeneratorInterface *key_gen) {
-    return ValidateSignedIdentity(signed_identity, key_gen);
-}
-
 } // namespace e8

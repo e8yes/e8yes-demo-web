@@ -24,8 +24,8 @@
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
+#include "proto_cc/identity.pb.h"
 
 namespace e8 {
 
@@ -53,17 +53,6 @@ std::optional<SecurityKeyHash> DigestSecurityKey(std::string const &security_key
  */
 std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string const &security_key,
                                            KeyGeneratorInterface *key_gen);
-
-/**
- * @brief ValidateSignedIdentity Decode the signed identity token into the identity object.
- *
- * @param signed_identity The signature to be validate and extract information from.
- * @param key_gen Key generator that holds the public signature verification key..
- * @return The identity object if the signed identity token can be sucessfully validated. Otherwise,
- * it returns a nullopt.
- */
-std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_identity,
-                                               KeyGeneratorInterface *key_gen);
 
 } // namespace e8
 
