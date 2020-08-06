@@ -40,18 +40,21 @@ MessageQueueStore::MessageQueue::MessageQueue() { sem_init(&sem, 0, 0); }
 MessageQueueStore::MessageQueue::~MessageQueue() { sem_destroy(&sem); }
 
 MessageQueueStore::MessageQueue *MessageQueueStore::FetchQueue(MessageKey key) {
-    map_lock_.lock_shared();
+    MessageQueue *queue;
 
-    auto it = queues_.find(key);
-    if (it == queues_.end()) {
+    map_lock_.lock_shared();
+    auto read_it = queues_.find(key);
+    if (read_it != queues_.end()) {
+        queue = read_it->second.get();
+        map_lock_.unlock_shared();
+    } else {
+        map_lock_.unlock_shared();
+
         map_lock_.lock();
-        it = queues_.insert(std::make_pair(key, std::make_shared<MessageQueue>())).first;
+        auto write_it = queues_.insert(std::make_pair(key, std::make_shared<MessageQueue>())).first;
+        queue = write_it->second.get();
         map_lock_.unlock();
     }
-
-    MessageQueue *queue = it->second.get();
-
-    map_lock_.unlock_shared();
 
     return queue;
 }
@@ -72,11 +75,17 @@ RealTimeMessage MessageQueueStore::BlockingDequeue(MessageKey key) {
     sem_wait(&message_queue->sem);
 
     message_queue->lock.lock();
-    RealTimeMessage result = message_queue->queue.back();
+    RealTimeMessage result = message_queue->queue.front();
     message_queue->queue.pop();
     message_queue->lock.unlock();
 
     return result;
+}
+
+void MessageQueueStore::Clear() {
+    map_lock_.lock();
+    queues_.clear();
+    map_lock_.unlock();
 }
 
 MessageQueueStore *MessageQueueStoreInstance() { return &gMessageQueueStore; }

@@ -59,6 +59,11 @@ class MessageQueueStore {
      */
     RealTimeMessage BlockingDequeue(MessageKey key);
 
+    /**
+     * @brief Clear Delete all the message queues.
+     */
+    void Clear();
+
   private:
     struct MessageQueue {
         MessageQueue();
