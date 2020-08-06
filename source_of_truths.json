@@ -55,11 +55,18 @@
             "open_ports": []
         },
         {
+            "name": "message_queue_service",
+            "docker_template": "message_queue/message_queue/Dockerfile.tmpl",
+            "pushable": true,
+            "open_ports": [40041, 7000]
+        },
+        {
             "name": "demoweb_service",
-            "docker_template": "demoweb_service/Dockerfile.tmpl",
+            "docker_template": "demoweb_service/demoweb/Dockerfile.tmpl",
             "pushable": true,
             "open_ports": [50051, 8000]
         },
+        
         {
             "name": "demoweb_frontend_web",
             "docker_template": "client/web_frontend/Dockerfile.tmpl",
