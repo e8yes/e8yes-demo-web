@@ -101,7 +101,7 @@ class DequeueMessageRequest extends $pb.GeneratedMessage {
 
 class DequeueMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DequeueMessageResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$11.RealTimeMessage>(2, 'messages', $pb.PbFieldType.PM, subBuilder: $11.RealTimeMessage.create)
+    ..aOM<$11.RealTimeMessage>(2, 'message', subBuilder: $11.RealTimeMessage.create)
     ..hasRequiredFields = false
   ;
 
@@ -121,6 +121,14 @@ class DequeueMessageResponse extends $pb.GeneratedMessage {
   static DequeueMessageResponse _defaultInstance;
 
   @$pb.TagNumber(2)
-  $core.List<$11.RealTimeMessage> get messages => $_getList(0);
+  $11.RealTimeMessage get message => $_getN(0);
+  @$pb.TagNumber(2)
+  set message($11.RealTimeMessage v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMessage() => $_has(0);
+  @$pb.TagNumber(2)
+  void clearMessage() => clearField(2);
+  @$pb.TagNumber(2)
+  $11.RealTimeMessage ensureMessage() => $_ensure(0);
 }
 

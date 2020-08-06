@@ -136,7 +136,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DequeueMessageResponse, messages_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DequeueMessageResponse, message_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::EnqueueMessageRequest)},
@@ -178,16 +178,16 @@ void AddDescriptorsImpl() {
       "est\022\017\n\007user_id\030\001 \001(\003\022%\n\010messages\030\002 \003(\0132\023"
       ".e8.RealTimeMessage\"\030\n\026EnqueueMessageRes"
       "ponse\"(\n\025DequeueMessageRequest\022\017\n\007user_i"
-      "d\030\001 \001(\003\"\?\n\026DequeueMessageResponse\022%\n\010mes"
-      "sages\030\002 \003(\0132\023.e8.RealTimeMessage2\247\001\n\023Mes"
-      "sageQueueService\022G\n\016EnqueueMessage\022\031.e8."
-      "EnqueueMessageRequest\032\032.e8.EnqueueMessag"
-      "eResponse\022G\n\016DequeueMessage\022\031.e8.Dequeue"
-      "MessageRequest\032\032.e8.DequeueMessageRespon"
-      "seb\006proto3"
+      "d\030\001 \001(\003\">\n\026DequeueMessageResponse\022$\n\007mes"
+      "sage\030\002 \001(\0132\023.e8.RealTimeMessage2\251\001\n\023Mess"
+      "ageQueueService\022G\n\016EnqueueMessage\022\031.e8.E"
+      "nqueueMessageRequest\032\032.e8.EnqueueMessage"
+      "Response\022I\n\016DequeueMessage\022\031.e8.DequeueM"
+      "essageRequest\032\032.e8.DequeueMessageRespons"
+      "e0\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 450);
+      descriptor, 451);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_queue.proto", &protobuf_RegisterTypes);
   ::protobuf_real_5ftime_5fmessage_2eproto::AddDescriptors();
@@ -882,12 +882,17 @@ void DequeueMessageRequest::InternalSwap(DequeueMessageRequest* other) {
 // ===================================================================
 
 void DequeueMessageResponse::InitAsDefaultInstance() {
+  ::e8::_DequeueMessageResponse_default_instance_._instance.get_mutable()->message_ = const_cast< ::e8::RealTimeMessage*>(
+      ::e8::RealTimeMessage::internal_default_instance());
 }
-void DequeueMessageResponse::clear_messages() {
-  messages_.Clear();
+void DequeueMessageResponse::clear_message() {
+  if (GetArenaNoVirtual() == NULL && message_ != NULL) {
+    delete message_;
+  }
+  message_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int DequeueMessageResponse::kMessagesFieldNumber;
+const int DequeueMessageResponse::kMessageFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 DequeueMessageResponse::DequeueMessageResponse()
@@ -899,13 +904,18 @@ DequeueMessageResponse::DequeueMessageResponse()
 }
 DequeueMessageResponse::DequeueMessageResponse(const DequeueMessageResponse& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
-      messages_(from.messages_) {
+      _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_message()) {
+    message_ = new ::e8::RealTimeMessage(*from.message_);
+  } else {
+    message_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:e8.DequeueMessageResponse)
 }
 
 void DequeueMessageResponse::SharedCtor() {
+  message_ = NULL;
 }
 
 DequeueMessageResponse::~DequeueMessageResponse() {
@@ -914,6 +924,7 @@ DequeueMessageResponse::~DequeueMessageResponse() {
 }
 
 void DequeueMessageResponse::SharedDtor() {
+  if (this != internal_default_instance()) delete message_;
 }
 
 void DequeueMessageResponse::SetCachedSize(int size) const {
@@ -936,7 +947,10 @@ void DequeueMessageResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  messages_.Clear();
+  if (GetArenaNoVirtual() == NULL && message_ != NULL) {
+    delete message_;
+  }
+  message_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -950,12 +964,12 @@ bool DequeueMessageResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .e8.RealTimeMessage messages = 2;
+      // .e8.RealTimeMessage message = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-                input, add_messages()));
+               input, mutable_message()));
         } else {
           goto handle_unusual;
         }
@@ -988,13 +1002,10 @@ void DequeueMessageResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .e8.RealTimeMessage messages = 2;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->messages_size()); i < n; i++) {
+  // .e8.RealTimeMessage message = 2;
+  if (this->has_message()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2,
-      this->messages(static_cast<int>(i)),
-      output);
+      2, this->_internal_message(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1011,12 +1022,11 @@ void DequeueMessageResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .e8.RealTimeMessage messages = 2;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->messages_size()); i < n; i++) {
+  // .e8.RealTimeMessage message = 2;
+  if (this->has_message()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        2, this->messages(static_cast<int>(i)), deterministic, target);
+        2, this->_internal_message(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1036,15 +1046,11 @@ size_t DequeueMessageResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.RealTimeMessage messages = 2;
-  {
-    unsigned int count = static_cast<unsigned int>(this->messages_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->messages(static_cast<int>(i)));
-    }
+  // .e8.RealTimeMessage message = 2;
+  if (this->has_message()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *message_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1074,7 +1080,9 @@ void DequeueMessageResponse::MergeFrom(const DequeueMessageResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  messages_.MergeFrom(from.messages_);
+  if (from.has_message()) {
+    mutable_message()->::e8::RealTimeMessage::MergeFrom(from.message());
+  }
 }
 
 void DequeueMessageResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1101,7 +1109,7 @@ void DequeueMessageResponse::Swap(DequeueMessageResponse* other) {
 }
 void DequeueMessageResponse::InternalSwap(DequeueMessageResponse* other) {
   using std::swap;
-  CastToBase(&messages_)->InternalSwap(CastToBase(&other->messages_));
+  swap(message_, other->message_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

@@ -34,7 +34,7 @@ class SubscribeRealTimeMessageQueueRequest extends $pb.GeneratedMessage {
 
 class SubscribeRealTimeMessageQueueResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SubscribeRealTimeMessageQueueResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$11.RealTimeMessage>(1, 'messages', $pb.PbFieldType.PM, subBuilder: $11.RealTimeMessage.create)
+    ..aOM<$11.RealTimeMessage>(1, 'message', subBuilder: $11.RealTimeMessage.create)
     ..hasRequiredFields = false
   ;
 
@@ -54,6 +54,14 @@ class SubscribeRealTimeMessageQueueResponse extends $pb.GeneratedMessage {
   static SubscribeRealTimeMessageQueueResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$11.RealTimeMessage> get messages => $_getList(0);
+  $11.RealTimeMessage get message => $_getN(0);
+  @$pb.TagNumber(1)
+  set message($11.RealTimeMessage v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMessage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMessage() => clearField(1);
+  @$pb.TagNumber(1)
+  $11.RealTimeMessage ensureMessage() => $_ensure(0);
 }
 

@@ -12,7 +12,7 @@ const SubscribeRealTimeMessageQueueRequest$json = const {
 const SubscribeRealTimeMessageQueueResponse$json = const {
   '1': 'SubscribeRealTimeMessageQueueResponse',
   '2': const [
-    const {'1': 'messages', '3': 1, '4': 3, '5': 11, '6': '.e8.RealTimeMessage', '10': 'messages'},
+    const {'1': 'message', '3': 1, '4': 1, '5': 11, '6': '.e8.RealTimeMessage', '10': 'message'},
   ],
 };
 

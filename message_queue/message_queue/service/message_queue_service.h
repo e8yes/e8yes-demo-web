@@ -27,7 +27,7 @@
 namespace e8 {
 
 /**
- * @brief The MessageQueueServiceImpl class
+ * @brief The MessageQueueServiceImpl class Service for manipulating message queue storage.
  */
 class MessageQueueServiceImpl : public MessageQueueService::Service {
   public:
@@ -38,7 +38,7 @@ class MessageQueueServiceImpl : public MessageQueueService::Service {
                                 EnqueueMessageResponse *response) override;
 
     grpc::Status DequeueMessage(grpc::ServerContext *context, DequeueMessageRequest const *request,
-                                DequeueMessageResponse *response) override;
+                                grpc::ServerWriter<DequeueMessageResponse> *writer) override;
 };
 
 } // namespace e8

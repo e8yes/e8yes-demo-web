@@ -15,11 +15,14 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <chrono>
 #include <cstdint>
 #include <memory>
 #include <mutex>
 #include <optional>
 #include <queue>
+#include <semaphore.h>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
@@ -32,7 +35,11 @@ static MessageQueueStore gMessageQueueStore;
 
 } // namespace
 
-void MessageQueueStore::Enqueue(MessageKey key, RealTimeMessage const &message) {
+MessageQueueStore::MessageQueue::MessageQueue() { sem_init(&sem, 0, 0); }
+
+MessageQueueStore::MessageQueue::~MessageQueue() { sem_destroy(&sem); }
+
+MessageQueueStore::MessageQueue *MessageQueueStore::FetchQueue(MessageKey key) {
     map_lock_.lock_shared();
 
     auto it = queues_.find(key);
@@ -43,29 +50,31 @@ void MessageQueueStore::Enqueue(MessageKey key, RealTimeMessage const &message) 
     }
 
     MessageQueue *queue = it->second.get();
-    queue->queue_lock.lock();
-    queue->queue.push(message);
-    queue->queue_lock.unlock();
 
     map_lock_.unlock_shared();
+
+    return queue;
 }
 
-std::optional<RealTimeMessage> MessageQueueStore::Dequeue(MessageKey key) {
-    std::optional<RealTimeMessage> result;
+void MessageQueueStore::Enqueue(MessageKey key, RealTimeMessage const &message) {
+    MessageQueue *message_queue = FetchQueue(key);
 
-    map_lock_.lock_shared();
+    message_queue->lock.lock();
+    message_queue->queue.push(message);
+    message_queue->lock.unlock();
 
-    auto it = queues_.find(key);
-    if (it != queues_.end()) {
-        it->second->queue_lock.lock();
+    sem_post(&message_queue->sem);
+}
 
-        result = it->second->queue.back();
-        it->second->queue.pop();
+RealTimeMessage MessageQueueStore::BlockingDequeue(MessageKey key) {
+    MessageQueue *message_queue = FetchQueue(key);
 
-        it->second->queue_lock.unlock();
-    }
+    sem_wait(&message_queue->sem);
 
-    map_lock_.unlock_shared();
+    message_queue->lock.lock();
+    RealTimeMessage result = message_queue->queue.back();
+    message_queue->queue.pop();
+    message_queue->lock.unlock();
 
     return result;
 }

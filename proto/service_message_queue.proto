@@ -35,7 +35,7 @@ message DequeueMessageRequest {
 }
 
 message DequeueMessageResponse {
-    repeated RealTimeMessage messages = 2;
+    RealTimeMessage message = 2;
 }
 
 // A user oriented message queue.
@@ -44,5 +44,5 @@ service MessageQueueService {
         returns (EnqueueMessageResponse);
 
     rpc DequeueMessage (DequeueMessageRequest) 
-        returns (DequeueMessageResponse);
+        returns (stream DequeueMessageResponse);
 }

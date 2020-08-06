@@ -30,7 +30,7 @@ std::unique_ptr< MessageQueueService::Stub> MessageQueueService::NewStub(const s
 
 MessageQueueService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_EnqueueMessage_(MessageQueueService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DequeueMessage_(MessageQueueService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DequeueMessage_(MessageQueueService_method_names[1], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
 ::grpc::Status MessageQueueService::Stub::EnqueueMessage(::grpc::ClientContext* context, const ::e8::EnqueueMessageRequest& request, ::e8::EnqueueMessageResponse* response) {
@@ -49,20 +49,16 @@ void MessageQueueService::Stub::experimental_async::EnqueueMessage(::grpc::Clien
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::EnqueueMessageResponse>::Create(channel_.get(), cq, rpcmethod_EnqueueMessage_, context, request, false);
 }
 
-::grpc::Status MessageQueueService::Stub::DequeueMessage(::grpc::ClientContext* context, const ::e8::DequeueMessageRequest& request, ::e8::DequeueMessageResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_DequeueMessage_, context, request, response);
+::grpc::ClientReader< ::e8::DequeueMessageResponse>* MessageQueueService::Stub::DequeueMessageRaw(::grpc::ClientContext* context, const ::e8::DequeueMessageRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::e8::DequeueMessageResponse>::Create(channel_.get(), rpcmethod_DequeueMessage_, context, request);
 }
 
-void MessageQueueService::Stub::experimental_async::DequeueMessage(::grpc::ClientContext* context, const ::e8::DequeueMessageRequest* request, ::e8::DequeueMessageResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_DequeueMessage_, context, request, response, std::move(f));
+::grpc::ClientAsyncReader< ::e8::DequeueMessageResponse>* MessageQueueService::Stub::AsyncDequeueMessageRaw(::grpc::ClientContext* context, const ::e8::DequeueMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::e8::DequeueMessageResponse>::Create(channel_.get(), cq, rpcmethod_DequeueMessage_, context, request, true, tag);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::DequeueMessageResponse>* MessageQueueService::Stub::AsyncDequeueMessageRaw(::grpc::ClientContext* context, const ::e8::DequeueMessageRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DequeueMessageResponse>::Create(channel_.get(), cq, rpcmethod_DequeueMessage_, context, request, true);
-}
-
-::grpc::ClientAsyncResponseReader< ::e8::DequeueMessageResponse>* MessageQueueService::Stub::PrepareAsyncDequeueMessageRaw(::grpc::ClientContext* context, const ::e8::DequeueMessageRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DequeueMessageResponse>::Create(channel_.get(), cq, rpcmethod_DequeueMessage_, context, request, false);
+::grpc::ClientAsyncReader< ::e8::DequeueMessageResponse>* MessageQueueService::Stub::PrepareAsyncDequeueMessageRaw(::grpc::ClientContext* context, const ::e8::DequeueMessageRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::e8::DequeueMessageResponse>::Create(channel_.get(), cq, rpcmethod_DequeueMessage_, context, request, false, nullptr);
 }
 
 MessageQueueService::Service::Service() {
@@ -73,8 +69,8 @@ MessageQueueService::Service::Service() {
           std::mem_fn(&MessageQueueService::Service::EnqueueMessage), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MessageQueueService_method_names[1],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< MessageQueueService::Service, ::e8::DequeueMessageRequest, ::e8::DequeueMessageResponse>(
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< MessageQueueService::Service, ::e8::DequeueMessageRequest, ::e8::DequeueMessageResponse>(
           std::mem_fn(&MessageQueueService::Service::DequeueMessage), this)));
 }
 
@@ -88,10 +84,10 @@ MessageQueueService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status MessageQueueService::Service::DequeueMessage(::grpc::ServerContext* context, const ::e8::DequeueMessageRequest* request, ::e8::DequeueMessageResponse* response) {
+::grpc::Status MessageQueueService::Service::DequeueMessage(::grpc::ServerContext* context, const ::e8::DequeueMessageRequest* request, ::grpc::ServerWriter< ::e8::DequeueMessageResponse>* writer) {
   (void) context;
   (void) request;
-  (void) response;
+  (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

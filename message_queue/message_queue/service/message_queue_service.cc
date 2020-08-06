@@ -16,19 +16,36 @@
  */
 
 #include <grpcpp/grpcpp.h>
+#include <optional>
 
+#include "message_queue/message_queue/module/message_queue_store.h"
+#include "message_queue/message_queue/service/message_queue_service.h"
+#include "proto_cc/real_time_message.pb.h"
 #include "proto_cc/service_message_queue.grpc.pb.h"
 #include "proto_cc/service_message_queue.pb.h"
-#include "message_queue/message_queue/service/message_queue_service.h"
 
 namespace e8 {
 
-grpc::Status MessageQueueServiceImpl::EnqueueMessage(grpc::ServerContext *context,
+grpc::Status MessageQueueServiceImpl::EnqueueMessage(grpc::ServerContext * /*context*/,
                                                      EnqueueMessageRequest const *request,
-                                                     EnqueueMessageResponse *response) {}
+                                                     EnqueueMessageResponse * /*response*/) {
+    for (auto const &message : request->messages()) {
+        MessageQueueStoreInstance()->Enqueue(request->user_id(), message);
+    }
+    return grpc::Status::OK;
+}
 
-grpc::Status MessageQueueServiceImpl::DequeueMessage(grpc::ServerContext *context,
-                                                     DequeueMessageRequest const *request,
-                                                     DequeueMessageResponse *response) {}
+grpc::Status DequeueMessage(grpc::ServerContext * /*context*/, DequeueMessageRequest const *request,
+                            grpc::ServerWriter<DequeueMessageResponse> *writer) {
+    while (true) {
+        RealTimeMessage message = MessageQueueStoreInstance()->BlockingDequeue(request->user_id());
+
+        DequeueMessageResponse res;
+        *res.mutable_message() = message;
+
+        writer->Write(res);
+    }
+    return grpc::Status::OK;
+}
 
 } // namespace e8

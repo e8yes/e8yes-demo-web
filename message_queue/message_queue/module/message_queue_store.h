@@ -23,6 +23,7 @@
 #include <mutex>
 #include <optional>
 #include <queue>
+#include <semaphore.h>
 #include <shared_mutex>
 #include <unordered_map>
 #include <vector>
@@ -34,37 +35,48 @@ namespace e8 {
 using MessageKey = int64_t;
 
 /**
- * @brief The MessageQueueStore class
+ * @brief The MessageQueueStore class A thread-safe FIFO message queue store. It stores a set of
+ * message queues identfied by a unique key.
  */
 class MessageQueueStore {
   public:
     /**
-     * @brief Enqueue
-     * @param key
-     * @param message
+     * @brief Enqueue Add a new message to the queue pointed by the parameter key. If there are
+     * readers calling BlockingDequeue on an empty queue, this operation will unblock one of the
+     * readers.
+     *
+     * @param key A unique ID pointing to the queue to add message to.
+     * @param message Message to be added.
      */
     void Enqueue(MessageKey key, RealTimeMessage const &message);
 
     /**
-     * @brief Dequeue
-     * @param key
-     * @return
+     * @brief BlockingDequeue Read and remove the oldest element from the queue pointed to by the
+     * key. If the queue is empty, this function will block until it becomes non-empty.
+     *
+     * @param key A unique ID pointing to the queue to read and remove message from.
+     * @return The oldest message from the queue.
      */
-    std::optional<RealTimeMessage> Dequeue(MessageKey key);
+    RealTimeMessage BlockingDequeue(MessageKey key);
 
   private:
     struct MessageQueue {
+        MessageQueue();
+        ~MessageQueue();
+
         std::queue<RealTimeMessage> queue;
-        std::mutex queue_lock;
+        std::mutex lock;
+        sem_t sem;
     };
+
+    MessageQueue *FetchQueue(MessageKey key);
 
     std::unordered_map<MessageKey, std::shared_ptr<MessageQueue>> queues_;
     std::shared_mutex map_lock_;
 };
 
 /**
- * @brief MessageQueueStoreInstance
- * @return
+ * @brief MessageQueueStoreInstance Get the singleton MessageQueueStore instance.
  */
 MessageQueueStore *MessageQueueStoreInstance();
 

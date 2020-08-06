@@ -474,23 +474,23 @@ class DequeueMessageResponse : public ::google::protobuf::Message /* @@protoc_in
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.RealTimeMessage messages = 2;
-  int messages_size() const;
-  void clear_messages();
-  static const int kMessagesFieldNumber = 2;
-  ::e8::RealTimeMessage* mutable_messages(int index);
-  ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage >*
-      mutable_messages();
-  const ::e8::RealTimeMessage& messages(int index) const;
-  ::e8::RealTimeMessage* add_messages();
-  const ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage >&
-      messages() const;
+  // .e8.RealTimeMessage message = 2;
+  bool has_message() const;
+  void clear_message();
+  static const int kMessageFieldNumber = 2;
+  private:
+  const ::e8::RealTimeMessage& _internal_message() const;
+  public:
+  const ::e8::RealTimeMessage& message() const;
+  ::e8::RealTimeMessage* release_message();
+  ::e8::RealTimeMessage* mutable_message();
+  void set_allocated_message(::e8::RealTimeMessage* message);
 
   // @@protoc_insertion_point(class_scope:e8.DequeueMessageResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage > messages_;
+  ::e8::RealTimeMessage* message_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
 };
@@ -572,31 +572,52 @@ inline void DequeueMessageRequest::set_user_id(::google::protobuf::int64 value) 
 
 // DequeueMessageResponse
 
-// repeated .e8.RealTimeMessage messages = 2;
-inline int DequeueMessageResponse::messages_size() const {
-  return messages_.size();
+// .e8.RealTimeMessage message = 2;
+inline bool DequeueMessageResponse::has_message() const {
+  return this != internal_default_instance() && message_ != NULL;
 }
-inline ::e8::RealTimeMessage* DequeueMessageResponse::mutable_messages(int index) {
-  // @@protoc_insertion_point(field_mutable:e8.DequeueMessageResponse.messages)
-  return messages_.Mutable(index);
+inline const ::e8::RealTimeMessage& DequeueMessageResponse::_internal_message() const {
+  return *message_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage >*
-DequeueMessageResponse::mutable_messages() {
-  // @@protoc_insertion_point(field_mutable_list:e8.DequeueMessageResponse.messages)
-  return &messages_;
+inline const ::e8::RealTimeMessage& DequeueMessageResponse::message() const {
+  const ::e8::RealTimeMessage* p = message_;
+  // @@protoc_insertion_point(field_get:e8.DequeueMessageResponse.message)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::RealTimeMessage*>(
+      &::e8::_RealTimeMessage_default_instance_);
 }
-inline const ::e8::RealTimeMessage& DequeueMessageResponse::messages(int index) const {
-  // @@protoc_insertion_point(field_get:e8.DequeueMessageResponse.messages)
-  return messages_.Get(index);
+inline ::e8::RealTimeMessage* DequeueMessageResponse::release_message() {
+  // @@protoc_insertion_point(field_release:e8.DequeueMessageResponse.message)
+  
+  ::e8::RealTimeMessage* temp = message_;
+  message_ = NULL;
+  return temp;
 }
-inline ::e8::RealTimeMessage* DequeueMessageResponse::add_messages() {
-  // @@protoc_insertion_point(field_add:e8.DequeueMessageResponse.messages)
-  return messages_.Add();
+inline ::e8::RealTimeMessage* DequeueMessageResponse::mutable_message() {
+  
+  if (message_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::RealTimeMessage>(GetArenaNoVirtual());
+    message_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.DequeueMessageResponse.message)
+  return message_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage >&
-DequeueMessageResponse::messages() const {
-  // @@protoc_insertion_point(field_list:e8.DequeueMessageResponse.messages)
-  return messages_;
+inline void DequeueMessageResponse::set_allocated_message(::e8::RealTimeMessage* message) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(message_);
+  }
+  if (message) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      message = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, message, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  message_ = message;
+  // @@protoc_insertion_point(field_set_allocated:e8.DequeueMessageResponse.message)
 }
 
 #ifdef __GNUC__

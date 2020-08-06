@@ -25,7 +25,7 @@ message SubscribeRealTimeMessageQueueRequest {
 }
 
 message SubscribeRealTimeMessageQueueResponse {
-    repeated RealTimeMessage messages = 1;
+    RealTimeMessage message = 1;
 }
 
 service MessageSubscriberService {

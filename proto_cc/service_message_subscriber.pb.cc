@@ -82,7 +82,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SubscribeRealTimeMessageQueueResponse, messages_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SubscribeRealTimeMessageQueueResponse, message_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::SubscribeRealTimeMessageQueueRequest)},
@@ -117,16 +117,16 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n service_message_subscriber.proto\022\002e8\032\027"
       "real_time_message.proto\"&\n$SubscribeReal"
-      "TimeMessageQueueRequest\"N\n%SubscribeReal"
-      "TimeMessageQueueResponse\022%\n\010messages\030\001 \003"
-      "(\0132\023.e8.RealTimeMessage2\222\001\n\030MessageSubsc"
-      "riberService\022v\n\035SubscribeRealTimeMessage"
-      "Queue\022(.e8.SubscribeRealTimeMessageQueue"
-      "Request\032).e8.SubscribeRealTimeMessageQue"
-      "ueResponse0\001b\006proto3"
+      "TimeMessageQueueRequest\"M\n%SubscribeReal"
+      "TimeMessageQueueResponse\022$\n\007message\030\001 \001("
+      "\0132\023.e8.RealTimeMessage2\222\001\n\030MessageSubscr"
+      "iberService\022v\n\035SubscribeRealTimeMessageQ"
+      "ueue\022(.e8.SubscribeRealTimeMessageQueueR"
+      "equest\032).e8.SubscribeRealTimeMessageQueu"
+      "eResponse0\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 340);
+      descriptor, 339);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_subscriber.proto", &protobuf_RegisterTypes);
   ::protobuf_real_5ftime_5fmessage_2eproto::AddDescriptors();
@@ -327,12 +327,17 @@ void SubscribeRealTimeMessageQueueRequest::InternalSwap(SubscribeRealTimeMessage
 // ===================================================================
 
 void SubscribeRealTimeMessageQueueResponse::InitAsDefaultInstance() {
+  ::e8::_SubscribeRealTimeMessageQueueResponse_default_instance_._instance.get_mutable()->message_ = const_cast< ::e8::RealTimeMessage*>(
+      ::e8::RealTimeMessage::internal_default_instance());
 }
-void SubscribeRealTimeMessageQueueResponse::clear_messages() {
-  messages_.Clear();
+void SubscribeRealTimeMessageQueueResponse::clear_message() {
+  if (GetArenaNoVirtual() == NULL && message_ != NULL) {
+    delete message_;
+  }
+  message_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SubscribeRealTimeMessageQueueResponse::kMessagesFieldNumber;
+const int SubscribeRealTimeMessageQueueResponse::kMessageFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SubscribeRealTimeMessageQueueResponse::SubscribeRealTimeMessageQueueResponse()
@@ -344,13 +349,18 @@ SubscribeRealTimeMessageQueueResponse::SubscribeRealTimeMessageQueueResponse()
 }
 SubscribeRealTimeMessageQueueResponse::SubscribeRealTimeMessageQueueResponse(const SubscribeRealTimeMessageQueueResponse& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
-      messages_(from.messages_) {
+      _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_message()) {
+    message_ = new ::e8::RealTimeMessage(*from.message_);
+  } else {
+    message_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:e8.SubscribeRealTimeMessageQueueResponse)
 }
 
 void SubscribeRealTimeMessageQueueResponse::SharedCtor() {
+  message_ = NULL;
 }
 
 SubscribeRealTimeMessageQueueResponse::~SubscribeRealTimeMessageQueueResponse() {
@@ -359,6 +369,7 @@ SubscribeRealTimeMessageQueueResponse::~SubscribeRealTimeMessageQueueResponse() 
 }
 
 void SubscribeRealTimeMessageQueueResponse::SharedDtor() {
+  if (this != internal_default_instance()) delete message_;
 }
 
 void SubscribeRealTimeMessageQueueResponse::SetCachedSize(int size) const {
@@ -381,7 +392,10 @@ void SubscribeRealTimeMessageQueueResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  messages_.Clear();
+  if (GetArenaNoVirtual() == NULL && message_ != NULL) {
+    delete message_;
+  }
+  message_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -395,12 +409,12 @@ bool SubscribeRealTimeMessageQueueResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .e8.RealTimeMessage messages = 1;
+      // .e8.RealTimeMessage message = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-                input, add_messages()));
+               input, mutable_message()));
         } else {
           goto handle_unusual;
         }
@@ -433,13 +447,10 @@ void SubscribeRealTimeMessageQueueResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .e8.RealTimeMessage messages = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->messages_size()); i < n; i++) {
+  // .e8.RealTimeMessage message = 1;
+  if (this->has_message()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1,
-      this->messages(static_cast<int>(i)),
-      output);
+      1, this->_internal_message(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -456,12 +467,11 @@ void SubscribeRealTimeMessageQueueResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .e8.RealTimeMessage messages = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->messages_size()); i < n; i++) {
+  // .e8.RealTimeMessage message = 1;
+  if (this->has_message()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, this->messages(static_cast<int>(i)), deterministic, target);
+        1, this->_internal_message(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -481,15 +491,11 @@ size_t SubscribeRealTimeMessageQueueResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.RealTimeMessage messages = 1;
-  {
-    unsigned int count = static_cast<unsigned int>(this->messages_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->messages(static_cast<int>(i)));
-    }
+  // .e8.RealTimeMessage message = 1;
+  if (this->has_message()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *message_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -519,7 +525,9 @@ void SubscribeRealTimeMessageQueueResponse::MergeFrom(const SubscribeRealTimeMes
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  messages_.MergeFrom(from.messages_);
+  if (from.has_message()) {
+    mutable_message()->::e8::RealTimeMessage::MergeFrom(from.message());
+  }
 }
 
 void SubscribeRealTimeMessageQueueResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -546,7 +554,7 @@ void SubscribeRealTimeMessageQueueResponse::Swap(SubscribeRealTimeMessageQueueRe
 }
 void SubscribeRealTimeMessageQueueResponse::InternalSwap(SubscribeRealTimeMessageQueueResponse* other) {
   using std::swap;
-  CastToBase(&messages_)->InternalSwap(CastToBase(&other->messages_));
+  swap(message_, other->message_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
