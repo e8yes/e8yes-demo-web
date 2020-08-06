@@ -35,8 +35,10 @@ grpc::Status MessageQueueServiceImpl::EnqueueMessage(grpc::ServerContext * /*con
     return grpc::Status::OK;
 }
 
-grpc::Status DequeueMessage(grpc::ServerContext * /*context*/, DequeueMessageRequest const *request,
-                            grpc::ServerWriter<DequeueMessageResponse> *writer) {
+grpc::Status
+MessageQueueServiceImpl::DequeueMessage(grpc::ServerContext * /*context*/,
+                                        DequeueMessageRequest const *request,
+                                        grpc::ServerWriter<DequeueMessageResponse> *writer) {
     while (true) {
         RealTimeMessage message = MessageQueueStoreInstance()->BlockingDequeue(request->user_id());
 
