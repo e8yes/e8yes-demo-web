@@ -15,31 +15,29 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGEQUEUESERVICEIMPL_H
-#define MESSAGEQUEUESERVICEIMPL_H
+#ifndef SUBSCRIBERSERVICEIMPL_H
+#define SUBSCRIBERSERVICEIMPL_H
 
 #include <grpcpp/grpcpp.h>
 
-#include "proto_cc/service_message_queue.grpc.pb.h"
-#include "proto_cc/service_message_queue.pb.h"
+#include "proto_cc/service_message_subscriber.grpc.pb.h"
+#include "proto_cc/service_message_subscriber.pb.h"
 
 namespace e8 {
 
 /**
- * @brief The MessageQueueServiceImpl class Service for manipulating message queue storage.
+ * @brief The SubscriberServiceImpl class Service for handling message queue subscriptions.
  */
-class MessageQueueServiceImpl : public MessageQueueService::Service {
+class MessageSubscriberServiceImpl : public MessageSubscriberService::Service {
   public:
-    MessageQueueServiceImpl() = default;
-    ~MessageQueueServiceImpl() override = default;
+    MessageSubscriberServiceImpl() = default;
+    ~MessageSubscriberServiceImpl() override = default;
 
-    grpc::Status EnqueueMessage(grpc::ServerContext *context, EnqueueMessageRequest const *request,
-                                EnqueueMessageResponse *response) override;
-
-    grpc::Status DequeueMessage(grpc::ServerContext *context, DequeueMessageRequest const *request,
-                                grpc::ServerWriter<DequeueMessageResponse> *writer) override;
+    grpc::Status SubscribeRealTimeMessageQueue(
+        grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const *request,
+        grpc::ServerWriter<SubscribeRealTimeMessageQueueResponse> *writer) override;
 };
 
 } // namespace e8
 
-#endif // MESSAGEQUEUESERVICEIMPL_H
+#endif // SUBSCRIBERSERVICEIMPL_H

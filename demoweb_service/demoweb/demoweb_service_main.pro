@@ -51,6 +51,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../identity/ -lidentity
 INCLUDEPATH += $$PWD/../../identity
 DEPENDPATH += $$PWD/../../identity
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../message_queue/subscriber/ -lsubscriber_service
+
+INCLUDEPATH += $$PWD/../../message_queue/subscriber
+DEPENDPATH += $$PWD/../../message_queue/subscriber
+
 LIBS += -lpthread
 LIBS += -ldl
 LIBS += -lgrpc++ -lgrpc++_reflection

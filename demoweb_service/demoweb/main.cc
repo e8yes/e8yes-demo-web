@@ -32,6 +32,7 @@
 #include "demoweb_service/demoweb/service/message_channel_service.h"
 #include "demoweb_service/demoweb/service/social_network_service.h"
 #include "demoweb_service/demoweb/service/user_service.h"
+#include "message_queue/subscriber/service/message_subscriber_service.h"
 
 namespace {
 
@@ -48,6 +49,7 @@ static e8::UserServiceImpl gUserService;
 static e8::FileServiceImpl gFileService;
 static e8::SocialNetworkServiceImpl gSocialNetworkService;
 static e8::MessageChannelServiceImpl gMessageChannelService;
+static e8::MessageSubscriberServiceImpl gMessageSubscriberService;
 
 std::unique_ptr<e8::ProductionEnvironmentContext> BuildEnvironmentContext() {
     std::string demoweb_db_host_name =
@@ -90,6 +92,7 @@ int main(int argc, char *argv[]) {
     builder.RegisterService(&gFileService);
     builder.RegisterService(&gSocialNetworkService);
     builder.RegisterService(&gMessageChannelService);
+    builder.RegisterService(&gMessageSubscriberService);
 
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;

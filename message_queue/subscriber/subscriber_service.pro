@@ -14,8 +14,10 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 INCLUDEPATH += ../../
 
-SOURCES +=
-HEADERS +=
+SOURCES += \
+    service/message_subscriber_service.cc
+HEADERS += \
+    service/message_subscriber_service.h
 
 # Default rules for deployment.
 unix {
