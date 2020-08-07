@@ -47,13 +47,13 @@ struct TableStruct {
 void AddDescriptors();
 }  // namespace protobuf_node_2eproto
 namespace e8 {
-class Node;
-class NodeDefaultTypeInternal;
-extern NodeDefaultTypeInternal _Node_default_instance_;
+class NodeState;
+class NodeStateDefaultTypeInternal;
+extern NodeStateDefaultTypeInternal _NodeState_default_instance_;
 }  // namespace e8
 namespace google {
 namespace protobuf {
-template<> ::e8::Node* Arena::CreateMaybeMessage<::e8::Node>(Arena*);
+template<> ::e8::NodeState* Arena::CreateMaybeMessage<::e8::NodeState>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace e8 {
@@ -83,24 +83,24 @@ inline bool NodeType_Parse(
 }
 // ===================================================================
 
-class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.Node) */ {
+class NodeState : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.NodeState) */ {
  public:
-  Node();
-  virtual ~Node();
+  NodeState();
+  virtual ~NodeState();
 
-  Node(const Node& from);
+  NodeState(const NodeState& from);
 
-  inline Node& operator=(const Node& from) {
+  inline NodeState& operator=(const NodeState& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  Node(Node&& from) noexcept
-    : Node() {
+  NodeState(NodeState&& from) noexcept
+    : NodeState() {
     *this = ::std::move(from);
   }
 
-  inline Node& operator=(Node&& from) noexcept {
+  inline NodeState& operator=(NodeState&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -110,34 +110,34 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Node& default_instance();
+  static const NodeState& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Node* internal_default_instance() {
-    return reinterpret_cast<const Node*>(
-               &_Node_default_instance_);
+  static inline const NodeState* internal_default_instance() {
+    return reinterpret_cast<const NodeState*>(
+               &_NodeState_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  void Swap(Node* other);
-  friend void swap(Node& a, Node& b) {
+  void Swap(NodeState* other);
+  friend void swap(NodeState& a, NodeState& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline Node* New() const final {
-    return CreateMaybeMessage<Node>(NULL);
+  inline NodeState* New() const final {
+    return CreateMaybeMessage<NodeState>(NULL);
   }
 
-  Node* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<Node>(arena);
+  NodeState* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<NodeState>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const Node& from);
-  void MergeFrom(const Node& from);
+  void CopyFrom(const NodeState& from);
+  void MergeFrom(const NodeState& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -154,7 +154,7 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Node* other);
+  void InternalSwap(NodeState* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -170,20 +170,20 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.NodeType types = 3;
+  // repeated .e8.NodeType types = 4;
   int types_size() const;
   void clear_types();
-  static const int kTypesFieldNumber = 3;
+  static const int kTypesFieldNumber = 4;
   ::e8::NodeType types(int index) const;
   void set_types(int index, ::e8::NodeType value);
   void add_types(::e8::NodeType value);
   const ::google::protobuf::RepeatedField<int>& types() const;
   ::google::protobuf::RepeatedField<int>* mutable_types();
 
-  // repeated int32 ports = 4;
+  // repeated int32 ports = 5;
   int ports_size() const;
   void clear_ports();
-  static const int kPortsFieldNumber = 4;
+  static const int kPortsFieldNumber = 5;
   ::google::protobuf::int32 ports(int index) const;
   void set_ports(int index, ::google::protobuf::int32 value);
   void add_ports(::google::protobuf::int32 value);
@@ -192,9 +192,9 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
       mutable_ports();
 
-  // bytes ip_address = 1;
+  // bytes ip_address = 2;
   void clear_ip_address();
-  static const int kIpAddressFieldNumber = 1;
+  static const int kIpAddressFieldNumber = 2;
   const ::std::string& ip_address() const;
   void set_ip_address(const ::std::string& value);
   #if LANG_CXX11
@@ -206,9 +206,9 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_ip_address();
   void set_allocated_ip_address(::std::string* ip_address);
 
-  // string name = 2;
+  // string name = 3;
   void clear_name();
-  static const int kNameFieldNumber = 2;
+  static const int kNameFieldNumber = 3;
   const ::std::string& name() const;
   void set_name(const ::std::string& value);
   #if LANG_CXX11
@@ -220,7 +220,13 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // @@protoc_insertion_point(class_scope:e8.Node)
+  // int64 clock = 1;
+  void clear_clock();
+  static const int kClockFieldNumber = 1;
+  ::google::protobuf::int64 clock() const;
+  void set_clock(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:e8.NodeState)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -230,6 +236,7 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   mutable int _ports_cached_byte_size_;
   ::google::protobuf::internal::ArenaStringPtr ip_address_;
   ::google::protobuf::internal::ArenaStringPtr name_;
+  ::google::protobuf::int64 clock_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_node_2eproto::TableStruct;
 };
@@ -242,171 +249,185 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// Node
+// NodeState
 
-// bytes ip_address = 1;
-inline void Node::clear_ip_address() {
+// int64 clock = 1;
+inline void NodeState::clear_clock() {
+  clock_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 NodeState::clock() const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.clock)
+  return clock_;
+}
+inline void NodeState::set_clock(::google::protobuf::int64 value) {
+  
+  clock_ = value;
+  // @@protoc_insertion_point(field_set:e8.NodeState.clock)
+}
+
+// bytes ip_address = 2;
+inline void NodeState::clear_ip_address() {
   ip_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& Node::ip_address() const {
-  // @@protoc_insertion_point(field_get:e8.Node.ip_address)
+inline const ::std::string& NodeState::ip_address() const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.ip_address)
   return ip_address_.GetNoArena();
 }
-inline void Node::set_ip_address(const ::std::string& value) {
+inline void NodeState::set_ip_address(const ::std::string& value) {
   
   ip_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.Node.ip_address)
+  // @@protoc_insertion_point(field_set:e8.NodeState.ip_address)
 }
 #if LANG_CXX11
-inline void Node::set_ip_address(::std::string&& value) {
+inline void NodeState::set_ip_address(::std::string&& value) {
   
   ip_address_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.Node.ip_address)
+  // @@protoc_insertion_point(field_set_rvalue:e8.NodeState.ip_address)
 }
 #endif
-inline void Node::set_ip_address(const char* value) {
+inline void NodeState::set_ip_address(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   ip_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.Node.ip_address)
+  // @@protoc_insertion_point(field_set_char:e8.NodeState.ip_address)
 }
-inline void Node::set_ip_address(const void* value, size_t size) {
+inline void NodeState::set_ip_address(const void* value, size_t size) {
   
   ip_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.Node.ip_address)
+  // @@protoc_insertion_point(field_set_pointer:e8.NodeState.ip_address)
 }
-inline ::std::string* Node::mutable_ip_address() {
+inline ::std::string* NodeState::mutable_ip_address() {
   
-  // @@protoc_insertion_point(field_mutable:e8.Node.ip_address)
+  // @@protoc_insertion_point(field_mutable:e8.NodeState.ip_address)
   return ip_address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* Node::release_ip_address() {
-  // @@protoc_insertion_point(field_release:e8.Node.ip_address)
+inline ::std::string* NodeState::release_ip_address() {
+  // @@protoc_insertion_point(field_release:e8.NodeState.ip_address)
   
   return ip_address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void Node::set_allocated_ip_address(::std::string* ip_address) {
+inline void NodeState::set_allocated_ip_address(::std::string* ip_address) {
   if (ip_address != NULL) {
     
   } else {
     
   }
   ip_address_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ip_address);
-  // @@protoc_insertion_point(field_set_allocated:e8.Node.ip_address)
+  // @@protoc_insertion_point(field_set_allocated:e8.NodeState.ip_address)
 }
 
-// string name = 2;
-inline void Node::clear_name() {
+// string name = 3;
+inline void NodeState::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& Node::name() const {
-  // @@protoc_insertion_point(field_get:e8.Node.name)
+inline const ::std::string& NodeState::name() const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.name)
   return name_.GetNoArena();
 }
-inline void Node::set_name(const ::std::string& value) {
+inline void NodeState::set_name(const ::std::string& value) {
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.Node.name)
+  // @@protoc_insertion_point(field_set:e8.NodeState.name)
 }
 #if LANG_CXX11
-inline void Node::set_name(::std::string&& value) {
+inline void NodeState::set_name(::std::string&& value) {
   
   name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.Node.name)
+  // @@protoc_insertion_point(field_set_rvalue:e8.NodeState.name)
 }
 #endif
-inline void Node::set_name(const char* value) {
+inline void NodeState::set_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.Node.name)
+  // @@protoc_insertion_point(field_set_char:e8.NodeState.name)
 }
-inline void Node::set_name(const char* value, size_t size) {
+inline void NodeState::set_name(const char* value, size_t size) {
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.Node.name)
+  // @@protoc_insertion_point(field_set_pointer:e8.NodeState.name)
 }
-inline ::std::string* Node::mutable_name() {
+inline ::std::string* NodeState::mutable_name() {
   
-  // @@protoc_insertion_point(field_mutable:e8.Node.name)
+  // @@protoc_insertion_point(field_mutable:e8.NodeState.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* Node::release_name() {
-  // @@protoc_insertion_point(field_release:e8.Node.name)
+inline ::std::string* NodeState::release_name() {
+  // @@protoc_insertion_point(field_release:e8.NodeState.name)
   
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void Node::set_allocated_name(::std::string* name) {
+inline void NodeState::set_allocated_name(::std::string* name) {
   if (name != NULL) {
     
   } else {
     
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:e8.Node.name)
+  // @@protoc_insertion_point(field_set_allocated:e8.NodeState.name)
 }
 
-// repeated .e8.NodeType types = 3;
-inline int Node::types_size() const {
+// repeated .e8.NodeType types = 4;
+inline int NodeState::types_size() const {
   return types_.size();
 }
-inline void Node::clear_types() {
+inline void NodeState::clear_types() {
   types_.Clear();
 }
-inline ::e8::NodeType Node::types(int index) const {
-  // @@protoc_insertion_point(field_get:e8.Node.types)
+inline ::e8::NodeType NodeState::types(int index) const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.types)
   return static_cast< ::e8::NodeType >(types_.Get(index));
 }
-inline void Node::set_types(int index, ::e8::NodeType value) {
+inline void NodeState::set_types(int index, ::e8::NodeType value) {
   types_.Set(index, value);
-  // @@protoc_insertion_point(field_set:e8.Node.types)
+  // @@protoc_insertion_point(field_set:e8.NodeState.types)
 }
-inline void Node::add_types(::e8::NodeType value) {
+inline void NodeState::add_types(::e8::NodeType value) {
   types_.Add(value);
-  // @@protoc_insertion_point(field_add:e8.Node.types)
+  // @@protoc_insertion_point(field_add:e8.NodeState.types)
 }
 inline const ::google::protobuf::RepeatedField<int>&
-Node::types() const {
-  // @@protoc_insertion_point(field_list:e8.Node.types)
+NodeState::types() const {
+  // @@protoc_insertion_point(field_list:e8.NodeState.types)
   return types_;
 }
 inline ::google::protobuf::RepeatedField<int>*
-Node::mutable_types() {
-  // @@protoc_insertion_point(field_mutable_list:e8.Node.types)
+NodeState::mutable_types() {
+  // @@protoc_insertion_point(field_mutable_list:e8.NodeState.types)
   return &types_;
 }
 
-// repeated int32 ports = 4;
-inline int Node::ports_size() const {
+// repeated int32 ports = 5;
+inline int NodeState::ports_size() const {
   return ports_.size();
 }
-inline void Node::clear_ports() {
+inline void NodeState::clear_ports() {
   ports_.Clear();
 }
-inline ::google::protobuf::int32 Node::ports(int index) const {
-  // @@protoc_insertion_point(field_get:e8.Node.ports)
+inline ::google::protobuf::int32 NodeState::ports(int index) const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.ports)
   return ports_.Get(index);
 }
-inline void Node::set_ports(int index, ::google::protobuf::int32 value) {
+inline void NodeState::set_ports(int index, ::google::protobuf::int32 value) {
   ports_.Set(index, value);
-  // @@protoc_insertion_point(field_set:e8.Node.ports)
+  // @@protoc_insertion_point(field_set:e8.NodeState.ports)
 }
-inline void Node::add_ports(::google::protobuf::int32 value) {
+inline void NodeState::add_ports(::google::protobuf::int32 value) {
   ports_.Add(value);
-  // @@protoc_insertion_point(field_add:e8.Node.ports)
+  // @@protoc_insertion_point(field_add:e8.NodeState.ports)
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
-Node::ports() const {
-  // @@protoc_insertion_point(field_list:e8.Node.ports)
+NodeState::ports() const {
+  // @@protoc_insertion_point(field_list:e8.NodeState.ports)
   return ports_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
-Node::mutable_ports() {
-  // @@protoc_insertion_point(field_mutable_list:e8.Node.ports)
+NodeState::mutable_ports() {
+  // @@protoc_insertion_point(field_mutable_list:e8.NodeState.ports)
   return &ports_;
 }
 

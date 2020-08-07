@@ -15,13 +15,14 @@ const NodeType$json = const {
   ],
 };
 
-const Node$json = const {
-  '1': 'Node',
+const NodeState$json = const {
+  '1': 'NodeState',
   '2': const [
-    const {'1': 'ip_address', '3': 1, '4': 1, '5': 12, '10': 'ipAddress'},
-    const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'types', '3': 3, '4': 3, '5': 14, '6': '.e8.NodeType', '10': 'types'},
-    const {'1': 'ports', '3': 4, '4': 3, '5': 5, '10': 'ports'},
+    const {'1': 'clock', '3': 1, '4': 1, '5': 3, '10': 'clock'},
+    const {'1': 'ip_address', '3': 2, '4': 1, '5': 12, '10': 'ipAddress'},
+    const {'1': 'name', '3': 3, '4': 1, '5': 9, '10': 'name'},
+    const {'1': 'types', '3': 4, '4': 3, '5': 14, '6': '.e8.NodeType', '10': 'types'},
+    const {'1': 'ports', '3': 5, '4': 3, '5': 5, '10': 'ports'},
   ],
 };
 

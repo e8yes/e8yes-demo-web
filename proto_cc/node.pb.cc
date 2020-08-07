@@ -20,29 +20,29 @@
 // @@protoc_insertion_point(includes)
 
 namespace e8 {
-class NodeDefaultTypeInternal {
+class NodeStateDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Node>
+  ::google::protobuf::internal::ExplicitlyConstructed<NodeState>
       _instance;
-} _Node_default_instance_;
+} _NodeState_default_instance_;
 }  // namespace e8
 namespace protobuf_node_2eproto {
-static void InitDefaultsNode() {
+static void InitDefaultsNodeState() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_Node_default_instance_;
-    new (ptr) ::e8::Node();
+    void* ptr = &::e8::_NodeState_default_instance_;
+    new (ptr) ::e8::NodeState();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::Node::InitAsDefaultInstance();
+  ::e8::NodeState::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_Node =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsNode}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_NodeState =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsNodeState}, {}};
 
 void InitDefaults() {
-  ::google::protobuf::internal::InitSCC(&scc_info_Node.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_NodeState.base);
 }
 
 ::google::protobuf::Metadata file_level_metadata[1];
@@ -50,21 +50,22 @@ const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Node, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Node, ip_address_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Node, name_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Node, types_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::Node, ports_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, clock_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, ip_address_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, types_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, ports_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::e8::Node)},
+  { 0, -1, sizeof(::e8::NodeState)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_Node_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_NodeState_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -88,15 +89,15 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\nnode.proto\022\002e8\"T\n\004Node\022\022\n\nip_address\030\001"
-      " \001(\014\022\014\n\004name\030\002 \001(\t\022\033\n\005types\030\003 \003(\0162\014.e8.N"
-      "odeType\022\r\n\005ports\030\004 \003(\005*]\n\010NodeType\022\017\n\013ND"
-      "T_INVALID\020\000\022\022\n\016NDT_FILE_STORE\020\001\022\025\n\021NDT_M"
-      "ESSAGE_STORE\020\002\022\025\n\021NDT_TASK_EXECUTOR\020\003b\006p"
-      "roto3"
+      "\n\nnode.proto\022\002e8\"h\n\tNodeState\022\r\n\005clock\030\001"
+      " \001(\003\022\022\n\nip_address\030\002 \001(\014\022\014\n\004name\030\003 \001(\t\022\033"
+      "\n\005types\030\004 \003(\0162\014.e8.NodeType\022\r\n\005ports\030\005 \003"
+      "(\005*]\n\010NodeType\022\017\n\013NDT_INVALID\020\000\022\022\n\016NDT_F"
+      "ILE_STORE\020\001\022\025\n\021NDT_MESSAGE_STORE\020\002\022\025\n\021ND"
+      "T_TASK_EXECUTOR\020\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 205);
+      descriptor, 225);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "node.proto", &protobuf_RegisterTypes);
 }
@@ -132,23 +133,24 @@ bool NodeType_IsValid(int value) {
 
 // ===================================================================
 
-void Node::InitAsDefaultInstance() {
+void NodeState::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Node::kIpAddressFieldNumber;
-const int Node::kNameFieldNumber;
-const int Node::kTypesFieldNumber;
-const int Node::kPortsFieldNumber;
+const int NodeState::kClockFieldNumber;
+const int NodeState::kIpAddressFieldNumber;
+const int NodeState::kNameFieldNumber;
+const int NodeState::kTypesFieldNumber;
+const int NodeState::kPortsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Node::Node()
+NodeState::NodeState()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_node_2eproto::scc_info_Node.base);
+      &protobuf_node_2eproto::scc_info_NodeState.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.Node)
+  // @@protoc_insertion_point(constructor:e8.NodeState)
 }
-Node::Node(const Node& from)
+NodeState::NodeState(const NodeState& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       types_(from.types_),
@@ -162,40 +164,42 @@ Node::Node(const Node& from)
   if (from.name().size() > 0) {
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
-  // @@protoc_insertion_point(copy_constructor:e8.Node)
+  clock_ = from.clock_;
+  // @@protoc_insertion_point(copy_constructor:e8.NodeState)
 }
 
-void Node::SharedCtor() {
+void NodeState::SharedCtor() {
   ip_address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clock_ = GOOGLE_LONGLONG(0);
 }
 
-Node::~Node() {
-  // @@protoc_insertion_point(destructor:e8.Node)
+NodeState::~NodeState() {
+  // @@protoc_insertion_point(destructor:e8.NodeState)
   SharedDtor();
 }
 
-void Node::SharedDtor() {
+void NodeState::SharedDtor() {
   ip_address_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-void Node::SetCachedSize(int size) const {
+void NodeState::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* Node::descriptor() {
+const ::google::protobuf::Descriptor* NodeState::descriptor() {
   ::protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_node_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const Node& Node::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_node_2eproto::scc_info_Node.base);
+const NodeState& NodeState::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_node_2eproto::scc_info_NodeState.base);
   return *internal_default_instance();
 }
 
 
-void Node::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.Node)
+void NodeState::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.NodeState)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -204,23 +208,38 @@ void Node::Clear() {
   ports_.Clear();
   ip_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clock_ = GOOGLE_LONGLONG(0);
   _internal_metadata_.Clear();
 }
 
-bool Node::MergePartialFromCodedStream(
+bool NodeState::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.Node)
+  // @@protoc_insertion_point(parse_start:e8.NodeState)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bytes ip_address = 1;
+      // int64 clock = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &clock_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bytes ip_address = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_ip_address()));
         } else {
@@ -229,26 +248,26 @@ bool Node::MergePartialFromCodedStream(
         break;
       }
 
-      // string name = 2;
-      case 2: {
+      // string name = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_name()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->name().data(), static_cast<int>(this->name().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "e8.Node.name"));
+            "e8.NodeState.name"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // repeated .e8.NodeType types = 3;
-      case 3: {
+      // repeated .e8.NodeType types = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           ::google::protobuf::uint32 length;
           DO_(input->ReadVarint32(&length));
           ::google::protobuf::io::CodedInputStream::Limit limit = input->PushLimit(static_cast<int>(length));
@@ -262,7 +281,7 @@ bool Node::MergePartialFromCodedStream(
           input->PopLimit(limit);
         } else if (
             static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -274,19 +293,19 @@ bool Node::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated int32 ports = 4;
-      case 4: {
+      // repeated int32 ports = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_ports())));
         } else if (
             static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 34u, input, this->mutable_ports())));
+                 1, 42u, input, this->mutable_ports())));
         } else {
           goto handle_unusual;
         }
@@ -305,40 +324,45 @@ bool Node::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.Node)
+  // @@protoc_insertion_point(parse_success:e8.NodeState)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.Node)
+  // @@protoc_insertion_point(parse_failure:e8.NodeState)
   return false;
 #undef DO_
 }
 
-void Node::SerializeWithCachedSizes(
+void NodeState::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.Node)
+  // @@protoc_insertion_point(serialize_start:e8.NodeState)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes ip_address = 1;
-  if (this->ip_address().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      1, this->ip_address(), output);
+  // int64 clock = 1;
+  if (this->clock() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->clock(), output);
   }
 
-  // string name = 2;
+  // bytes ip_address = 2;
+  if (this->ip_address().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      2, this->ip_address(), output);
+  }
+
+  // string name = 3;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->name().data(), static_cast<int>(this->name().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.Node.name");
+      "e8.NodeState.name");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->name(), output);
+      3, this->name(), output);
   }
 
-  // repeated .e8.NodeType types = 3;
+  // repeated .e8.NodeType types = 4;
   if (this->types_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(
-      3,
+      4,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       output);
     output->WriteVarint32(
@@ -349,9 +373,9 @@ void Node::SerializeWithCachedSizes(
       this->types(i), output);
   }
 
-  // repeated int32 ports = 4;
+  // repeated int32 ports = 5;
   if (this->ports_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    ::google::protobuf::internal::WireFormatLite::WriteTag(5, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
         _ports_cached_byte_size_));
   }
@@ -364,38 +388,43 @@ void Node::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.Node)
+  // @@protoc_insertion_point(serialize_end:e8.NodeState)
 }
 
-::google::protobuf::uint8* Node::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* NodeState::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.Node)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.NodeState)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes ip_address = 1;
+  // int64 clock = 1;
+  if (this->clock() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->clock(), target);
+  }
+
+  // bytes ip_address = 2;
   if (this->ip_address().size() > 0) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->ip_address(), target);
+        2, this->ip_address(), target);
   }
 
-  // string name = 2;
+  // string name = 3;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->name().data(), static_cast<int>(this->name().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.Node.name");
+      "e8.NodeState.name");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->name(), target);
+        3, this->name(), target);
   }
 
-  // repeated .e8.NodeType types = 3;
+  // repeated .e8.NodeType types = 4;
   if (this->types_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      3,
+      4,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(      static_cast< ::google::protobuf::uint32>(
@@ -404,10 +433,10 @@ void Node::SerializeWithCachedSizes(
       this->types_, target);
   }
 
-  // repeated int32 ports = 4;
+  // repeated int32 ports = 5;
   if (this->ports_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      4,
+      5,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
@@ -421,12 +450,12 @@ void Node::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.Node)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.NodeState)
   return target;
 }
 
-size_t Node::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.Node)
+size_t NodeState::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.NodeState)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -434,7 +463,7 @@ size_t Node::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.NodeType types = 3;
+  // repeated .e8.NodeType types = 4;
   {
     size_t data_size = 0;
     unsigned int count = static_cast<unsigned int>(this->types_size());for (unsigned int i = 0; i < count; i++) {
@@ -453,7 +482,7 @@ size_t Node::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // repeated int32 ports = 4;
+  // repeated int32 ports = 5;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
       Int32Size(this->ports_);
@@ -469,18 +498,25 @@ size_t Node::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // bytes ip_address = 1;
+  // bytes ip_address = 2;
   if (this->ip_address().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->ip_address());
   }
 
-  // string name = 2;
+  // string name = 3;
   if (this->name().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->name());
+  }
+
+  // int64 clock = 1;
+  if (this->clock() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->clock());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -488,23 +524,23 @@ size_t Node::ByteSizeLong() const {
   return total_size;
 }
 
-void Node::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.Node)
+void NodeState::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.NodeState)
   GOOGLE_DCHECK_NE(&from, this);
-  const Node* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Node>(
+  const NodeState* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const NodeState>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.Node)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.NodeState)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.Node)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.NodeState)
     MergeFrom(*source);
   }
 }
 
-void Node::MergeFrom(const Node& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.Node)
+void NodeState::MergeFrom(const NodeState& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.NodeState)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -520,31 +556,34 @@ void Node::MergeFrom(const Node& from) {
 
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
+  if (from.clock() != 0) {
+    set_clock(from.clock());
+  }
 }
 
-void Node::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.Node)
+void NodeState::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.NodeState)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Node::CopyFrom(const Node& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.Node)
+void NodeState::CopyFrom(const NodeState& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.NodeState)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Node::IsInitialized() const {
+bool NodeState::IsInitialized() const {
   return true;
 }
 
-void Node::Swap(Node* other) {
+void NodeState::Swap(NodeState* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void Node::InternalSwap(Node* other) {
+void NodeState::InternalSwap(NodeState* other) {
   using std::swap;
   types_.InternalSwap(&other->types_);
   ports_.InternalSwap(&other->ports_);
@@ -552,10 +591,11 @@ void Node::InternalSwap(Node* other) {
     GetArenaNoVirtual());
   name_.Swap(&other->name_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  swap(clock_, other->clock_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata Node::GetMetadata() const {
+::google::protobuf::Metadata NodeState::GetMetadata() const {
   protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_node_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -565,8 +605,8 @@ void Node::InternalSwap(Node* other) {
 }  // namespace e8
 namespace google {
 namespace protobuf {
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::Node* Arena::CreateMaybeMessage< ::e8::Node >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::Node >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::NodeState* Arena::CreateMaybeMessage< ::e8::NodeState >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::NodeState >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

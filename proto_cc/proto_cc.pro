@@ -12,10 +12,6 @@ QMAKE_LDFLAGS_RELEASE += -O3 -flto
 DEFINES += DEMOWEBLIB_LIBRARY
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-LIBS += -lprotobuf
-LIBS += -lgrpc++
-LIBS += -lgrpc++_reflection
-
 HEADERS += \
     chat_message.grpc.pb.h \
     chat_message.pb.h \
@@ -31,6 +27,8 @@ HEADERS += \
     message_channel.pb.h \
     message_type.grpc.pb.h \
     message_type.pb.h \
+    node.grpc.pb.h \
+    node.pb.h \
     nullable_primitives.grpc.pb.h \
     nullable_primitives.pb.h \
     pagination.grpc.pb.h \
@@ -49,6 +47,8 @@ HEADERS += \
     service_message_queue.pb.h \
     service_message_subscriber.grpc.pb.h \
     service_message_subscriber.pb.h \
+    service_node_state.grpc.pb.h \
+    service_node_state.pb.h \
     service_socialnetwork.grpc.pb.h \
     service_socialnetwork.pb.h \
     service_system.grpc.pb.h \
@@ -75,6 +75,8 @@ SOURCES += \
     message_channel.pb.cc \
     message_type.grpc.pb.cc \
     message_type.pb.cc \
+    node.grpc.pb.cc \
+    node.pb.cc \
     nullable_primitives.grpc.pb.cc \
     nullable_primitives.pb.cc \
     pagination.grpc.pb.cc \
@@ -93,6 +95,8 @@ SOURCES += \
     service_message_queue.pb.cc \
     service_message_subscriber.grpc.pb.cc \
     service_message_subscriber.pb.cc \
+    service_node_state.grpc.pb.cc \
+    service_node_state.pb.cc \
     service_socialnetwork.grpc.pb.cc \
     service_socialnetwork.pb.cc \
     service_system.grpc.pb.cc \
@@ -103,3 +107,7 @@ SOURCES += \
     user_profile.pb.cc \
     user_relation.grpc.pb.cc \
     user_relation.pb.cc
+
+LIBS += -lprotobuf
+LIBS += -lgrpc++
+LIBS += -lgrpc++_reflection

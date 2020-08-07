@@ -22,7 +22,7 @@ package e8;
 import "node.proto";
 
 message UpdateNodeStateRequest {
-    repeated Node nodes = 1;
+    repeated NodeState nodes = 1;
 }
 
 message UpdateNodeStateResponse {

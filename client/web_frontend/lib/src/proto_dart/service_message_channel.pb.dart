@@ -10,17 +10,17 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'nullable_primitives.pb.dart' as $13;
-import 'pagination.pb.dart' as $17;
+import 'nullable_primitives.pb.dart' as $14;
+import 'pagination.pb.dart' as $18;
 import 'message_channel.pb.dart' as $19;
-import 'user_profile.pb.dart' as $16;
+import 'user_profile.pb.dart' as $17;
 
 class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOB(1, 'encrypted')
     ..aOB(2, 'closeGroupChannel')
-    ..aOM<$13.NullableString>(3, 'title', subBuilder: $13.NullableString.create)
-    ..aOM<$13.NullableString>(4, 'description', subBuilder: $13.NullableString.create)
+    ..aOM<$14.NullableString>(3, 'title', subBuilder: $14.NullableString.create)
+    ..aOM<$14.NullableString>(4, 'description', subBuilder: $14.NullableString.create)
     ..hasRequiredFields = false
   ;
 
@@ -58,26 +58,26 @@ class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   void clearCloseGroupChannel() => clearField(2);
 
   @$pb.TagNumber(3)
-  $13.NullableString get title => $_getN(2);
+  $14.NullableString get title => $_getN(2);
   @$pb.TagNumber(3)
-  set title($13.NullableString v) { setField(3, v); }
+  set title($14.NullableString v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasTitle() => $_has(2);
   @$pb.TagNumber(3)
   void clearTitle() => clearField(3);
   @$pb.TagNumber(3)
-  $13.NullableString ensureTitle() => $_ensure(2);
+  $14.NullableString ensureTitle() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $13.NullableString get description => $_getN(3);
+  $14.NullableString get description => $_getN(3);
   @$pb.TagNumber(4)
-  set description($13.NullableString v) { setField(4, v); }
+  set description($14.NullableString v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasDescription() => $_has(3);
   @$pb.TagNumber(4)
   void clearDescription() => clearField(4);
   @$pb.TagNumber(4)
-  $13.NullableString ensureDescription() => $_ensure(3);
+  $14.NullableString ensureDescription() => $_ensure(3);
 }
 
 class CreateMessageChannelResponse extends $pb.GeneratedMessage {
@@ -299,7 +299,7 @@ class LeaveMessageChannelResponse extends $pb.GeneratedMessage {
 
 class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetJoinedInMessageChannelsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$17.Pagination>(1, 'pagination', subBuilder: $17.Pagination.create)
+    ..aOM<$18.Pagination>(1, 'pagination', subBuilder: $18.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -319,15 +319,15 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   static GetJoinedInMessageChannelsRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $17.Pagination get pagination => $_getN(0);
+  $18.Pagination get pagination => $_getN(0);
   @$pb.TagNumber(1)
-  set pagination($17.Pagination v) { setField(1, v); }
+  set pagination($18.Pagination v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasPagination() => $_has(0);
   @$pb.TagNumber(1)
   void clearPagination() => clearField(1);
   @$pb.TagNumber(1)
-  $17.Pagination ensurePagination() => $_ensure(0);
+  $18.Pagination ensurePagination() => $_ensure(0);
 }
 
 class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
@@ -358,7 +358,7 @@ class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
 class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetMessageChannelMembersRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
-    ..aOM<$17.Pagination>(2, 'pagination', subBuilder: $17.Pagination.create)
+    ..aOM<$18.Pagination>(2, 'pagination', subBuilder: $18.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -387,20 +387,20 @@ class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
   void clearChannelId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $17.Pagination get pagination => $_getN(1);
+  $18.Pagination get pagination => $_getN(1);
   @$pb.TagNumber(2)
-  set pagination($17.Pagination v) { setField(2, v); }
+  set pagination($18.Pagination v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasPagination() => $_has(1);
   @$pb.TagNumber(2)
   void clearPagination() => clearField(2);
   @$pb.TagNumber(2)
-  $17.Pagination ensurePagination() => $_ensure(1);
+  $18.Pagination ensurePagination() => $_ensure(1);
 }
 
 class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetMessageChannelMembersResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$16.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $16.UserPublicProfile.create)
+    ..pc<$17.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $17.UserPublicProfile.create)
     ..pc<$19.MessageChannelRelation>(2, 'channelRelations', $pb.PbFieldType.PM, subBuilder: $19.MessageChannelRelation.create)
     ..hasRequiredFields = false
   ;
@@ -421,7 +421,7 @@ class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   static GetMessageChannelMembersResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$16.UserPublicProfile> get userProfiles => $_getList(0);
+  $core.List<$17.UserPublicProfile> get userProfiles => $_getList(0);
 
   @$pb.TagNumber(2)
   $core.List<$19.MessageChannelRelation> get channelRelations => $_getList(1);

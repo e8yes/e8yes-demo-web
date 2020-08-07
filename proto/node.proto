@@ -26,9 +26,10 @@ enum NodeType {
     NDT_TASK_EXECUTOR = 3;
 }
 
-message Node {
-    bytes ip_address = 1;
-    string name = 2;
-    repeated NodeType types = 3;
-    repeated int32 ports = 4;
+message NodeState {
+    int64 clock = 1;
+    bytes ip_address = 2;
+    string name = 3;
+    repeated NodeType types = 4;
+    repeated int32 ports = 5;
 }

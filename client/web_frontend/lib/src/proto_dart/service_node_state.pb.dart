@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: service_node_info.proto
+//  source: service_node_state.proto
 //
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
@@ -9,11 +9,11 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'node.pb.dart' as $18;
+import 'node.pb.dart' as $13;
 
 class UpdateNodeStateRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UpdateNodeStateRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$18.Node>(1, 'nodes', $pb.PbFieldType.PM, subBuilder: $18.Node.create)
+    ..pc<$13.NodeState>(1, 'nodes', $pb.PbFieldType.PM, subBuilder: $13.NodeState.create)
     ..hasRequiredFields = false
   ;
 
@@ -33,7 +33,7 @@ class UpdateNodeStateRequest extends $pb.GeneratedMessage {
   static UpdateNodeStateRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$18.Node> get nodes => $_getList(0);
+  $core.List<$13.NodeState> get nodes => $_getList(0);
 }
 
 class UpdateNodeStateResponse extends $pb.GeneratedMessage {
