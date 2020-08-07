@@ -10,29 +10,29 @@ import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
-import 'service_message_queue.pb.dart' as $3;
+import 'service_message_queue.pb.dart' as $4;
 export 'service_message_queue.pb.dart';
 
 class MessageQueueServiceClient extends $grpc.Client {
   static final _$enqueueMessage =
-      $grpc.ClientMethod<$3.EnqueueMessageRequest, $3.EnqueueMessageResponse>(
+      $grpc.ClientMethod<$4.EnqueueMessageRequest, $4.EnqueueMessageResponse>(
           '/e8.MessageQueueService/EnqueueMessage',
-          ($3.EnqueueMessageRequest value) => value.writeToBuffer(),
+          ($4.EnqueueMessageRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $3.EnqueueMessageResponse.fromBuffer(value));
+              $4.EnqueueMessageResponse.fromBuffer(value));
   static final _$dequeueMessage =
-      $grpc.ClientMethod<$3.DequeueMessageRequest, $3.DequeueMessageResponse>(
+      $grpc.ClientMethod<$4.DequeueMessageRequest, $4.DequeueMessageResponse>(
           '/e8.MessageQueueService/DequeueMessage',
-          ($3.DequeueMessageRequest value) => value.writeToBuffer(),
+          ($4.DequeueMessageRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $3.DequeueMessageResponse.fromBuffer(value));
+              $4.DequeueMessageResponse.fromBuffer(value));
 
   MessageQueueServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions options})
       : super(channel, options: options);
 
-  $grpc.ResponseFuture<$3.EnqueueMessageResponse> enqueueMessage(
-      $3.EnqueueMessageRequest request,
+  $grpc.ResponseFuture<$4.EnqueueMessageResponse> enqueueMessage(
+      $4.EnqueueMessageRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$enqueueMessage, $async.Stream.fromIterable([request]),
@@ -40,8 +40,8 @@ class MessageQueueServiceClient extends $grpc.Client {
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseStream<$3.DequeueMessageResponse> dequeueMessage(
-      $3.DequeueMessageRequest request,
+  $grpc.ResponseStream<$4.DequeueMessageResponse> dequeueMessage(
+      $4.DequeueMessageRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$dequeueMessage, $async.Stream.fromIterable([request]),
@@ -54,40 +54,40 @@ abstract class MessageQueueServiceBase extends $grpc.Service {
   $core.String get $name => 'e8.MessageQueueService';
 
   MessageQueueServiceBase() {
-    $addMethod($grpc.ServiceMethod<$3.EnqueueMessageRequest,
-            $3.EnqueueMessageResponse>(
+    $addMethod($grpc.ServiceMethod<$4.EnqueueMessageRequest,
+            $4.EnqueueMessageResponse>(
         'EnqueueMessage',
         enqueueMessage_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $3.EnqueueMessageRequest.fromBuffer(value),
-        ($3.EnqueueMessageResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$3.DequeueMessageRequest,
-            $3.DequeueMessageResponse>(
+            $4.EnqueueMessageRequest.fromBuffer(value),
+        ($4.EnqueueMessageResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$4.DequeueMessageRequest,
+            $4.DequeueMessageResponse>(
         'DequeueMessage',
         dequeueMessage_Pre,
         false,
         true,
         ($core.List<$core.int> value) =>
-            $3.DequeueMessageRequest.fromBuffer(value),
-        ($3.DequeueMessageResponse value) => value.writeToBuffer()));
+            $4.DequeueMessageRequest.fromBuffer(value),
+        ($4.DequeueMessageResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$3.EnqueueMessageResponse> enqueueMessage_Pre(
+  $async.Future<$4.EnqueueMessageResponse> enqueueMessage_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$3.EnqueueMessageRequest> request) async {
+      $async.Future<$4.EnqueueMessageRequest> request) async {
     return enqueueMessage(call, await request);
   }
 
-  $async.Stream<$3.DequeueMessageResponse> dequeueMessage_Pre(
+  $async.Stream<$4.DequeueMessageResponse> dequeueMessage_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$3.DequeueMessageRequest> request) async* {
+      $async.Future<$4.DequeueMessageRequest> request) async* {
     yield* dequeueMessage(call, await request);
   }
 
-  $async.Future<$3.EnqueueMessageResponse> enqueueMessage(
-      $grpc.ServiceCall call, $3.EnqueueMessageRequest request);
-  $async.Stream<$3.DequeueMessageResponse> dequeueMessage(
-      $grpc.ServiceCall call, $3.DequeueMessageRequest request);
+  $async.Future<$4.EnqueueMessageResponse> enqueueMessage(
+      $grpc.ServiceCall call, $4.EnqueueMessageRequest request);
+  $async.Stream<$4.DequeueMessageResponse> dequeueMessage(
+      $grpc.ServiceCall call, $4.DequeueMessageRequest request);
 }

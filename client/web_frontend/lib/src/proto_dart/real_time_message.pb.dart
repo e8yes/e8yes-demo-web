@@ -10,7 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'chat_message.pb.dart' as $10;
+import 'chat_message.pb.dart' as $11;
 
 class InvitationReceivedMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('InvitationReceivedMessage', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -56,7 +56,7 @@ class InvitationAcceptedMessage extends $pb.GeneratedMessage {
 
 class UnreadChatMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UnreadChatMessage', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$10.ChatMessageThread>(1, 'messageThreads', $pb.PbFieldType.PM, subBuilder: $10.ChatMessageThread.create)
+    ..pc<$11.ChatMessageThread>(1, 'messageThreads', $pb.PbFieldType.PM, subBuilder: $11.ChatMessageThread.create)
     ..hasRequiredFields = false
   ;
 
@@ -76,7 +76,7 @@ class UnreadChatMessage extends $pb.GeneratedMessage {
   static UnreadChatMessage _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$10.ChatMessageThread> get messageThreads => $_getList(0);
+  $core.List<$11.ChatMessageThread> get messageThreads => $_getList(0);
 }
 
 enum RealTimeMessagenContent_NotificationContent {

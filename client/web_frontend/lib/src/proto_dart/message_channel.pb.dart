@@ -10,7 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'file.pb.dart' as $9;
+import 'file.pb.dart' as $10;
 
 import 'message_channel.pbenum.dart';
 
@@ -62,8 +62,8 @@ class MessageChannel extends $pb.GeneratedMessage {
     ..aInt64(1, 'channelId')
     ..aOS(2, 'title')
     ..aOS(3, 'description')
-    ..aOM<$9.FileTokenAccess>(4, 'avatarReadonlyAccess', subBuilder: $9.FileTokenAccess.create)
-    ..aOM<$9.FileTokenAccess>(5, 'avatarPreviewReadonlyAccess', subBuilder: $9.FileTokenAccess.create)
+    ..aOM<$10.FileTokenAccess>(4, 'avatarReadonlyAccess', subBuilder: $10.FileTokenAccess.create)
+    ..aOM<$10.FileTokenAccess>(5, 'avatarPreviewReadonlyAccess', subBuilder: $10.FileTokenAccess.create)
     ..aInt64(6, 'createdAt')
     ..aOM<MessageChannelRelation>(7, 'relation', subBuilder: MessageChannelRelation.create)
     ..hasRequiredFields = false
@@ -112,26 +112,26 @@ class MessageChannel extends $pb.GeneratedMessage {
   void clearDescription() => clearField(3);
 
   @$pb.TagNumber(4)
-  $9.FileTokenAccess get avatarReadonlyAccess => $_getN(3);
+  $10.FileTokenAccess get avatarReadonlyAccess => $_getN(3);
   @$pb.TagNumber(4)
-  set avatarReadonlyAccess($9.FileTokenAccess v) { setField(4, v); }
+  set avatarReadonlyAccess($10.FileTokenAccess v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasAvatarReadonlyAccess() => $_has(3);
   @$pb.TagNumber(4)
   void clearAvatarReadonlyAccess() => clearField(4);
   @$pb.TagNumber(4)
-  $9.FileTokenAccess ensureAvatarReadonlyAccess() => $_ensure(3);
+  $10.FileTokenAccess ensureAvatarReadonlyAccess() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $9.FileTokenAccess get avatarPreviewReadonlyAccess => $_getN(4);
+  $10.FileTokenAccess get avatarPreviewReadonlyAccess => $_getN(4);
   @$pb.TagNumber(5)
-  set avatarPreviewReadonlyAccess($9.FileTokenAccess v) { setField(5, v); }
+  set avatarPreviewReadonlyAccess($10.FileTokenAccess v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasAvatarPreviewReadonlyAccess() => $_has(4);
   @$pb.TagNumber(5)
   void clearAvatarPreviewReadonlyAccess() => clearField(5);
   @$pb.TagNumber(5)
-  $9.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(4);
+  $10.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(4);
 
   @$pb.TagNumber(6)
   $fixnum.Int64 get createdAt => $_getI64(5);
