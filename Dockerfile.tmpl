@@ -18,7 +18,7 @@ RUN apt install -y libcrypt2-dev
 RUN apt install -y golang-go
 RUN apt install -y go-dep
 RUN apt install -y qt5-default
-RUN apt install -y sqlite3
+RUN apt install -y libsqlite3-dev
 
 # Install grpc web proxy
 ENV GOPATH=/home/go

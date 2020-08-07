@@ -5,5 +5,5 @@ sudo apt install -y libprotobuf-dev
 sudo apt install -y libgrpc++-dev
 
 echo "Installing sqlite3 packages..."
-sudo apt install -y sqlite3
+sudo apt install -y libsqlite3-dev
 

@@ -3,6 +3,7 @@ SUBDIRS = \
     third_party/base64/base64.pro \
     proto_cc/proto_cc.pro \
     common/common.pro \
+    distributor/distributor.pro \
     file_system/filesystemw.pro \
     postgres/postgres.pro \
     keygen/keygenw.pro \
