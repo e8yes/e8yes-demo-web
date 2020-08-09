@@ -1,7 +1,7 @@
 CONFIG -= qt
 
 TEMPLATE = lib
-DEFINES += DISTRIBUTOR_LIBRARY
+DEFINES += NODE_STATE_STORE_LIBRARY
 
 CONFIG += c++17
 
@@ -14,11 +14,24 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 INCLUDEPATH += ../../
 
-SOURCES +=
-HEADERS +=
+SOURCES += \
+    create_schema.cc \
+    node_state_store.cc
+
+HEADERS += \
+    create_schema.h \
+    node_state_store.h
 
 # Default rules for deployment.
 unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../proto_cc/ -lproto_cc
+
+INCLUDEPATH += $$PWD/../../proto_cc
+DEPENDPATH += $$PWD/../../proto_cc
+
+LIBS += -lprotobuf
+LIBS += -lsqlite3
