@@ -91,7 +91,10 @@ def SetUpLoadBalancerNode(load_balancer: NodeConfig,
 
   RunSingleCommandInNode(node=load_balancer,
                          command="sudo systemctl restart nginx")
-  
+
+def SetUpMountpoint(node: NodeConfig, mount_point: str):
+  RunSingleCommandInNode(node=node,
+                         command="mkdir -p {0}".format(mount_point))
 
 if __name__ == "__main__":
   node_configs, cluster_config, build_targets = LoadSourceOfTruths(
@@ -108,6 +111,11 @@ if __name__ == "__main__":
     print("Installing packages for node", node_name, node_config)
     InstallPackagesForNode(node_config=node_config, 
                            script_file_path="script/install_pkgs_for_node.sh")
+
+  for node_name, node_config in node_configs.items():
+    print("Set up mount point for node", node_name, node_config)
+    SetUpMountpoint(node=node_config, 
+                    mount_point=cluster_config.mount_point)
   
   print("Setting up the load balancer...")
   load_balancer_node = node_configs[cluster_config.load_balancer]

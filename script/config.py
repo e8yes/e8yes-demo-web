@@ -26,7 +26,8 @@ class ClusterConfig:
                postgres_citus_master_password: str,
                deployment_master: str,
                deployment_image_registry_port: str,
-               git_repo: str):
+               git_repo: str,
+               mount_point: str):
     self.load_balancer = load_balancer
     self.postgres_citus_master = postgres_citus_master
     self.postgres_citus_master_port = postgres_citus_master_port
@@ -35,6 +36,7 @@ class ClusterConfig:
     self.deployment_master = deployment_master
     self.deployment_image_registry_port = deployment_image_registry_port
     self.git_repo = git_repo
+    self.mount_point = mount_point
 
   def __repr__(self):
     return "ClusterConfig={load_balancer=" + self.load_balancer + \
@@ -50,6 +52,7 @@ class ClusterConfig:
                          ",deployment_image_registry_port=" + \
                             self.deployment_image_registry_port + \
                          ",git_repo=" + self.git_repo + \
+                         ",mount_point=" + self.mount_point + \
                          "}"
 
 class BuildTarget:
@@ -99,7 +102,8 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
     deployment_master=json_cluster_config["deployment_master"],
     deployment_image_registry_port=\
       json_cluster_config["deployment_image_registry_port"],
-    git_repo=json_cluster_config["git_repo"])
+    git_repo=json_cluster_config["git_repo"],
+    mount_point=json_cluster_config["mount_point"])
 
   json_build_targets = json_obj["build_targets"]
   build_targets: List[BuildTarget] = list()

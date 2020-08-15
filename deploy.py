@@ -47,5 +47,6 @@ if __name__ == "__main__":
   print("Deploy images")
   DeployImages(deployment_node=deployment_node,
                docker_registry_port=cluster_config.deployment_image_registry_port,
+               mount_point=cluster_config.mount_point,
                targets=build_targets,
                nodes=node_configs.values())

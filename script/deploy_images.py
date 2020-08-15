@@ -13,6 +13,7 @@ def PortPublishingCommandArgs(ports: List[int]) -> str:
 
 def DeployImages(deployment_node: NodeConfig,
                  docker_registry_port: int,
+                 mount_point: str,
                  targets: List[BuildTarget], 
                  nodes: List[NodeConfig]) -> None:
   for node in nodes:
@@ -49,6 +50,7 @@ def DeployImages(deployment_node: NodeConfig,
       print("Running image", image_name, "in node", node)
       RunSingleCommandInNode(
         node=node,
-        command="sudo docker run {0} -d -t {1}:latest --restart always"
+        command="sudo docker run {0} -v {1}:/host -d -t {2}:latest --restart always"
           .format(PortPublishingCommandArgs(target.open_ports),
+                  mount_point,
                   image_name))
