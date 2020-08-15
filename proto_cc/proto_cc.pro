@@ -15,6 +15,8 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 HEADERS += \
     chat_message.grpc.pb.h \
     chat_message.pb.h \
+    delta.grpc.pb.h \
+    delta.pb.h \
     encryption_source.grpc.pb.h \
     encryption_source.pb.h \
     file.grpc.pb.h \
@@ -63,6 +65,8 @@ HEADERS += \
 SOURCES += \
     chat_message.grpc.pb.cc \
     chat_message.pb.cc \
+    delta.grpc.pb.cc \
+    delta.pb.cc \
     encryption_source.grpc.pb.cc \
     encryption_source.pb.cc \
     file.grpc.pb.cc \

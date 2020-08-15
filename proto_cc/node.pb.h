@@ -29,8 +29,12 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/map.h>  // IWYU pragma: export
+#include <google/protobuf/map_entry.h>
+#include <google/protobuf/map_field_inl.h>
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "delta.pb.h"
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_node_2eproto 
 
@@ -39,7 +43,7 @@ namespace protobuf_node_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[1];
+  static const ::google::protobuf::internal::ParseTable schema[4];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -50,36 +54,48 @@ namespace e8 {
 class NodeState;
 class NodeStateDefaultTypeInternal;
 extern NodeStateDefaultTypeInternal _NodeState_default_instance_;
+class NodeStateRevision;
+class NodeStateRevisionDefaultTypeInternal;
+extern NodeStateRevisionDefaultTypeInternal _NodeStateRevision_default_instance_;
+class NodeStateRevision_DeltaOperationsEntry_DoNotUse;
+class NodeStateRevision_DeltaOperationsEntry_DoNotUseDefaultTypeInternal;
+extern NodeStateRevision_DeltaOperationsEntry_DoNotUseDefaultTypeInternal _NodeStateRevision_DeltaOperationsEntry_DoNotUse_default_instance_;
+class NodeStateRevision_NodesEntry_DoNotUse;
+class NodeStateRevision_NodesEntry_DoNotUseDefaultTypeInternal;
+extern NodeStateRevision_NodesEntry_DoNotUseDefaultTypeInternal _NodeStateRevision_NodesEntry_DoNotUse_default_instance_;
 }  // namespace e8
 namespace google {
 namespace protobuf {
 template<> ::e8::NodeState* Arena::CreateMaybeMessage<::e8::NodeState>(Arena*);
+template<> ::e8::NodeStateRevision* Arena::CreateMaybeMessage<::e8::NodeStateRevision>(Arena*);
+template<> ::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse* Arena::CreateMaybeMessage<::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse>(Arena*);
+template<> ::e8::NodeStateRevision_NodesEntry_DoNotUse* Arena::CreateMaybeMessage<::e8::NodeStateRevision_NodesEntry_DoNotUse>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace e8 {
 
-enum NodeType {
-  NDT_INVALID = 0,
-  NDT_FILE_STORE = 1,
-  NDT_MESSAGE_STORE = 2,
-  NDT_TASK_EXECUTOR = 3,
-  NodeType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  NodeType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+enum NodeFunction {
+  NDF_INVALID = 0,
+  NDF_FILE_STORE = 1,
+  NDF_MESSAGE_STORE = 2,
+  NDF_TASK_EXECUTOR = 3,
+  NodeFunction_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  NodeFunction_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
-bool NodeType_IsValid(int value);
-const NodeType NodeType_MIN = NDT_INVALID;
-const NodeType NodeType_MAX = NDT_TASK_EXECUTOR;
-const int NodeType_ARRAYSIZE = NodeType_MAX + 1;
+bool NodeFunction_IsValid(int value);
+const NodeFunction NodeFunction_MIN = NDF_INVALID;
+const NodeFunction NodeFunction_MAX = NDF_TASK_EXECUTOR;
+const int NodeFunction_ARRAYSIZE = NodeFunction_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* NodeType_descriptor();
-inline const ::std::string& NodeType_Name(NodeType value) {
+const ::google::protobuf::EnumDescriptor* NodeFunction_descriptor();
+inline const ::std::string& NodeFunction_Name(NodeFunction value) {
   return ::google::protobuf::internal::NameOfEnum(
-    NodeType_descriptor(), value);
+    NodeFunction_descriptor(), value);
 }
-inline bool NodeType_Parse(
-    const ::std::string& name, NodeType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<NodeType>(
-    NodeType_descriptor(), name, value);
+inline bool NodeFunction_Parse(
+    const ::std::string& name, NodeFunction* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<NodeFunction>(
+    NodeFunction_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -170,27 +186,41 @@ class NodeState : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.NodeType types = 4;
-  int types_size() const;
-  void clear_types();
-  static const int kTypesFieldNumber = 4;
-  ::e8::NodeType types(int index) const;
-  void set_types(int index, ::e8::NodeType value);
-  void add_types(::e8::NodeType value);
-  const ::google::protobuf::RepeatedField<int>& types() const;
-  ::google::protobuf::RepeatedField<int>* mutable_types();
+  // repeated .e8.NodeFunction functions = 3;
+  int functions_size() const;
+  void clear_functions();
+  static const int kFunctionsFieldNumber = 3;
+  ::e8::NodeFunction functions(int index) const;
+  void set_functions(int index, ::e8::NodeFunction value);
+  void add_functions(::e8::NodeFunction value);
+  const ::google::protobuf::RepeatedField<int>& functions() const;
+  ::google::protobuf::RepeatedField<int>* mutable_functions();
 
-  // repeated int32 ports = 5;
-  int ports_size() const;
-  void clear_ports();
-  static const int kPortsFieldNumber = 5;
-  ::google::protobuf::int32 ports(int index) const;
-  void set_ports(int index, ::google::protobuf::int32 value);
-  void add_ports(::google::protobuf::int32 value);
+  // repeated int32 function_ports = 4;
+  int function_ports_size() const;
+  void clear_function_ports();
+  static const int kFunctionPortsFieldNumber = 4;
+  ::google::protobuf::int32 function_ports(int index) const;
+  void set_function_ports(int index, ::google::protobuf::int32 value);
+  void add_function_ports(::google::protobuf::int32 value);
   const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
-      ports() const;
+      function_ports() const;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
-      mutable_ports();
+      mutable_function_ports();
+
+  // string name = 1;
+  void clear_name();
+  static const int kNameFieldNumber = 1;
+  const ::std::string& name() const;
+  void set_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_name(::std::string&& value);
+  #endif
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  ::std::string* mutable_name();
+  ::std::string* release_name();
+  void set_allocated_name(::std::string* name);
 
   // bytes ip_address = 2;
   void clear_ip_address();
@@ -206,37 +236,192 @@ class NodeState : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_ip_address();
   void set_allocated_ip_address(::std::string* ip_address);
 
-  // string name = 3;
-  void clear_name();
-  static const int kNameFieldNumber = 3;
-  const ::std::string& name() const;
-  void set_name(const ::std::string& value);
-  #if LANG_CXX11
-  void set_name(::std::string&& value);
-  #endif
-  void set_name(const char* value);
-  void set_name(const char* value, size_t size);
-  ::std::string* mutable_name();
-  ::std::string* release_name();
-  void set_allocated_name(::std::string* name);
-
-  // int64 clock = 1;
-  void clear_clock();
-  static const int kClockFieldNumber = 1;
-  ::google::protobuf::int64 clock() const;
-  void set_clock(::google::protobuf::int64 value);
-
   // @@protoc_insertion_point(class_scope:e8.NodeState)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedField<int> types_;
-  mutable int _types_cached_byte_size_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > ports_;
-  mutable int _ports_cached_byte_size_;
-  ::google::protobuf::internal::ArenaStringPtr ip_address_;
+  ::google::protobuf::RepeatedField<int> functions_;
+  mutable int _functions_cached_byte_size_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > function_ports_;
+  mutable int _function_ports_cached_byte_size_;
   ::google::protobuf::internal::ArenaStringPtr name_;
-  ::google::protobuf::int64 clock_;
+  ::google::protobuf::internal::ArenaStringPtr ip_address_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_node_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class NodeStateRevision_NodesEntry_DoNotUse : public ::google::protobuf::internal::MapEntry<NodeStateRevision_NodesEntry_DoNotUse, 
+    ::std::string, ::e8::NodeState,
+    ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+    ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::google::protobuf::internal::MapEntry<NodeStateRevision_NodesEntry_DoNotUse, 
+    ::std::string, ::e8::NodeState,
+    ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+    ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  NodeStateRevision_NodesEntry_DoNotUse();
+  NodeStateRevision_NodesEntry_DoNotUse(::google::protobuf::Arena* arena);
+  void MergeFrom(const NodeStateRevision_NodesEntry_DoNotUse& other);
+  static const NodeStateRevision_NodesEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const NodeStateRevision_NodesEntry_DoNotUse*>(&_NodeStateRevision_NodesEntry_DoNotUse_default_instance_); }
+  void MergeFrom(const ::google::protobuf::Message& other) final;
+  ::google::protobuf::Metadata GetMetadata() const;
+};
+
+// -------------------------------------------------------------------
+
+class NodeStateRevision_DeltaOperationsEntry_DoNotUse : public ::google::protobuf::internal::MapEntry<NodeStateRevision_DeltaOperationsEntry_DoNotUse, 
+    ::std::string, ::e8::DeltaOperation,
+    ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+    ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
+    0 > {
+public:
+  typedef ::google::protobuf::internal::MapEntry<NodeStateRevision_DeltaOperationsEntry_DoNotUse, 
+    ::std::string, ::e8::DeltaOperation,
+    ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+    ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
+    0 > SuperType;
+  NodeStateRevision_DeltaOperationsEntry_DoNotUse();
+  NodeStateRevision_DeltaOperationsEntry_DoNotUse(::google::protobuf::Arena* arena);
+  void MergeFrom(const NodeStateRevision_DeltaOperationsEntry_DoNotUse& other);
+  static const NodeStateRevision_DeltaOperationsEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const NodeStateRevision_DeltaOperationsEntry_DoNotUse*>(&_NodeStateRevision_DeltaOperationsEntry_DoNotUse_default_instance_); }
+  void MergeFrom(const ::google::protobuf::Message& other) final;
+  ::google::protobuf::Metadata GetMetadata() const;
+};
+
+// -------------------------------------------------------------------
+
+class NodeStateRevision : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.NodeStateRevision) */ {
+ public:
+  NodeStateRevision();
+  virtual ~NodeStateRevision();
+
+  NodeStateRevision(const NodeStateRevision& from);
+
+  inline NodeStateRevision& operator=(const NodeStateRevision& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  NodeStateRevision(NodeStateRevision&& from) noexcept
+    : NodeStateRevision() {
+    *this = ::std::move(from);
+  }
+
+  inline NodeStateRevision& operator=(NodeStateRevision&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const NodeStateRevision& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const NodeStateRevision* internal_default_instance() {
+    return reinterpret_cast<const NodeStateRevision*>(
+               &_NodeStateRevision_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  void Swap(NodeStateRevision* other);
+  friend void swap(NodeStateRevision& a, NodeStateRevision& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline NodeStateRevision* New() const final {
+    return CreateMaybeMessage<NodeStateRevision>(NULL);
+  }
+
+  NodeStateRevision* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<NodeStateRevision>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const NodeStateRevision& from);
+  void MergeFrom(const NodeStateRevision& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(NodeStateRevision* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+
+  // accessors -------------------------------------------------------
+
+  // map<string, .e8.NodeState> nodes = 3;
+  int nodes_size() const;
+  void clear_nodes();
+  static const int kNodesFieldNumber = 3;
+  const ::google::protobuf::Map< ::std::string, ::e8::NodeState >&
+      nodes() const;
+  ::google::protobuf::Map< ::std::string, ::e8::NodeState >*
+      mutable_nodes();
+
+  // map<string, .e8.DeltaOperation> delta_operations = 4;
+  int delta_operations_size() const;
+  void clear_delta_operations();
+  static const int kDeltaOperationsFieldNumber = 4;
+  const ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >&
+      delta_operations() const;
+  ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >*
+      mutable_delta_operations();
+
+  // int64 revision_epoch = 1;
+  void clear_revision_epoch();
+  static const int kRevisionEpochFieldNumber = 1;
+  ::google::protobuf::int64 revision_epoch() const;
+  void set_revision_epoch(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:e8.NodeStateRevision)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::MapField<
+      NodeStateRevision_NodesEntry_DoNotUse,
+      ::std::string, ::e8::NodeState,
+      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > nodes_;
+  ::google::protobuf::internal::MapField<
+      NodeStateRevision_DeltaOperationsEntry_DoNotUse,
+      ::std::string, ::e8::DeltaOperation,
+      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+      ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
+      0 > delta_operations_;
+  ::google::protobuf::int64 revision_epoch_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_node_2eproto::TableStruct;
 };
@@ -251,18 +436,57 @@ class NodeState : public ::google::protobuf::Message /* @@protoc_insertion_point
 #endif  // __GNUC__
 // NodeState
 
-// int64 clock = 1;
-inline void NodeState::clear_clock() {
-  clock_ = GOOGLE_LONGLONG(0);
+// string name = 1;
+inline void NodeState::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::int64 NodeState::clock() const {
-  // @@protoc_insertion_point(field_get:e8.NodeState.clock)
-  return clock_;
+inline const ::std::string& NodeState::name() const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.name)
+  return name_.GetNoArena();
 }
-inline void NodeState::set_clock(::google::protobuf::int64 value) {
+inline void NodeState::set_name(const ::std::string& value) {
   
-  clock_ = value;
-  // @@protoc_insertion_point(field_set:e8.NodeState.clock)
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.NodeState.name)
+}
+#if LANG_CXX11
+inline void NodeState::set_name(::std::string&& value) {
+  
+  name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.NodeState.name)
+}
+#endif
+inline void NodeState::set_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.NodeState.name)
+}
+inline void NodeState::set_name(const char* value, size_t size) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.NodeState.name)
+}
+inline ::std::string* NodeState::mutable_name() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.NodeState.name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* NodeState::release_name() {
+  // @@protoc_insertion_point(field_release:e8.NodeState.name)
+  
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void NodeState::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
+    
+  } else {
+    
+  }
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:e8.NodeState.name)
 }
 
 // bytes ip_address = 2;
@@ -318,122 +542,133 @@ inline void NodeState::set_allocated_ip_address(::std::string* ip_address) {
   // @@protoc_insertion_point(field_set_allocated:e8.NodeState.ip_address)
 }
 
-// string name = 3;
-inline void NodeState::clear_name() {
-  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// repeated .e8.NodeFunction functions = 3;
+inline int NodeState::functions_size() const {
+  return functions_.size();
 }
-inline const ::std::string& NodeState::name() const {
-  // @@protoc_insertion_point(field_get:e8.NodeState.name)
-  return name_.GetNoArena();
+inline void NodeState::clear_functions() {
+  functions_.Clear();
 }
-inline void NodeState::set_name(const ::std::string& value) {
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.NodeState.name)
+inline ::e8::NodeFunction NodeState::functions(int index) const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.functions)
+  return static_cast< ::e8::NodeFunction >(functions_.Get(index));
 }
-#if LANG_CXX11
-inline void NodeState::set_name(::std::string&& value) {
-  
-  name_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.NodeState.name)
+inline void NodeState::set_functions(int index, ::e8::NodeFunction value) {
+  functions_.Set(index, value);
+  // @@protoc_insertion_point(field_set:e8.NodeState.functions)
 }
-#endif
-inline void NodeState::set_name(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.NodeState.name)
-}
-inline void NodeState::set_name(const char* value, size_t size) {
-  
-  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.NodeState.name)
-}
-inline ::std::string* NodeState::mutable_name() {
-  
-  // @@protoc_insertion_point(field_mutable:e8.NodeState.name)
-  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* NodeState::release_name() {
-  // @@protoc_insertion_point(field_release:e8.NodeState.name)
-  
-  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void NodeState::set_allocated_name(::std::string* name) {
-  if (name != NULL) {
-    
-  } else {
-    
-  }
-  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:e8.NodeState.name)
-}
-
-// repeated .e8.NodeType types = 4;
-inline int NodeState::types_size() const {
-  return types_.size();
-}
-inline void NodeState::clear_types() {
-  types_.Clear();
-}
-inline ::e8::NodeType NodeState::types(int index) const {
-  // @@protoc_insertion_point(field_get:e8.NodeState.types)
-  return static_cast< ::e8::NodeType >(types_.Get(index));
-}
-inline void NodeState::set_types(int index, ::e8::NodeType value) {
-  types_.Set(index, value);
-  // @@protoc_insertion_point(field_set:e8.NodeState.types)
-}
-inline void NodeState::add_types(::e8::NodeType value) {
-  types_.Add(value);
-  // @@protoc_insertion_point(field_add:e8.NodeState.types)
+inline void NodeState::add_functions(::e8::NodeFunction value) {
+  functions_.Add(value);
+  // @@protoc_insertion_point(field_add:e8.NodeState.functions)
 }
 inline const ::google::protobuf::RepeatedField<int>&
-NodeState::types() const {
-  // @@protoc_insertion_point(field_list:e8.NodeState.types)
-  return types_;
+NodeState::functions() const {
+  // @@protoc_insertion_point(field_list:e8.NodeState.functions)
+  return functions_;
 }
 inline ::google::protobuf::RepeatedField<int>*
-NodeState::mutable_types() {
-  // @@protoc_insertion_point(field_mutable_list:e8.NodeState.types)
-  return &types_;
+NodeState::mutable_functions() {
+  // @@protoc_insertion_point(field_mutable_list:e8.NodeState.functions)
+  return &functions_;
 }
 
-// repeated int32 ports = 5;
-inline int NodeState::ports_size() const {
-  return ports_.size();
+// repeated int32 function_ports = 4;
+inline int NodeState::function_ports_size() const {
+  return function_ports_.size();
 }
-inline void NodeState::clear_ports() {
-  ports_.Clear();
+inline void NodeState::clear_function_ports() {
+  function_ports_.Clear();
 }
-inline ::google::protobuf::int32 NodeState::ports(int index) const {
-  // @@protoc_insertion_point(field_get:e8.NodeState.ports)
-  return ports_.Get(index);
+inline ::google::protobuf::int32 NodeState::function_ports(int index) const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.function_ports)
+  return function_ports_.Get(index);
 }
-inline void NodeState::set_ports(int index, ::google::protobuf::int32 value) {
-  ports_.Set(index, value);
-  // @@protoc_insertion_point(field_set:e8.NodeState.ports)
+inline void NodeState::set_function_ports(int index, ::google::protobuf::int32 value) {
+  function_ports_.Set(index, value);
+  // @@protoc_insertion_point(field_set:e8.NodeState.function_ports)
 }
-inline void NodeState::add_ports(::google::protobuf::int32 value) {
-  ports_.Add(value);
-  // @@protoc_insertion_point(field_add:e8.NodeState.ports)
+inline void NodeState::add_function_ports(::google::protobuf::int32 value) {
+  function_ports_.Add(value);
+  // @@protoc_insertion_point(field_add:e8.NodeState.function_ports)
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
-NodeState::ports() const {
-  // @@protoc_insertion_point(field_list:e8.NodeState.ports)
-  return ports_;
+NodeState::function_ports() const {
+  // @@protoc_insertion_point(field_list:e8.NodeState.function_ports)
+  return function_ports_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
-NodeState::mutable_ports() {
-  // @@protoc_insertion_point(field_mutable_list:e8.NodeState.ports)
-  return &ports_;
+NodeState::mutable_function_ports() {
+  // @@protoc_insertion_point(field_mutable_list:e8.NodeState.function_ports)
+  return &function_ports_;
+}
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// NodeStateRevision
+
+// int64 revision_epoch = 1;
+inline void NodeStateRevision::clear_revision_epoch() {
+  revision_epoch_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 NodeStateRevision::revision_epoch() const {
+  // @@protoc_insertion_point(field_get:e8.NodeStateRevision.revision_epoch)
+  return revision_epoch_;
+}
+inline void NodeStateRevision::set_revision_epoch(::google::protobuf::int64 value) {
+  
+  revision_epoch_ = value;
+  // @@protoc_insertion_point(field_set:e8.NodeStateRevision.revision_epoch)
+}
+
+// map<string, .e8.NodeState> nodes = 3;
+inline int NodeStateRevision::nodes_size() const {
+  return nodes_.size();
+}
+inline void NodeStateRevision::clear_nodes() {
+  nodes_.Clear();
+}
+inline const ::google::protobuf::Map< ::std::string, ::e8::NodeState >&
+NodeStateRevision::nodes() const {
+  // @@protoc_insertion_point(field_map:e8.NodeStateRevision.nodes)
+  return nodes_.GetMap();
+}
+inline ::google::protobuf::Map< ::std::string, ::e8::NodeState >*
+NodeStateRevision::mutable_nodes() {
+  // @@protoc_insertion_point(field_mutable_map:e8.NodeStateRevision.nodes)
+  return nodes_.MutableMap();
+}
+
+// map<string, .e8.DeltaOperation> delta_operations = 4;
+inline int NodeStateRevision::delta_operations_size() const {
+  return delta_operations_.size();
+}
+inline void NodeStateRevision::clear_delta_operations() {
+  delta_operations_.Clear();
+}
+inline const ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >&
+NodeStateRevision::delta_operations() const {
+  // @@protoc_insertion_point(field_map:e8.NodeStateRevision.delta_operations)
+  return delta_operations_.GetMap();
+}
+inline ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >*
+NodeStateRevision::mutable_delta_operations() {
+  // @@protoc_insertion_point(field_mutable_map:e8.NodeStateRevision.delta_operations)
+  return delta_operations_.MutableMap();
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -442,10 +677,10 @@ NodeState::mutable_ports() {
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::e8::NodeType> : ::std::true_type {};
+template <> struct is_proto_enum< ::e8::NodeFunction> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::e8::NodeType>() {
-  return ::e8::NodeType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::e8::NodeFunction>() {
+  return ::e8::NodeFunction_descriptor();
 }
 
 }  // namespace protobuf

@@ -19,12 +19,32 @@
 #endif
 // @@protoc_insertion_point(includes)
 
+namespace protobuf_node_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_node_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NodeState;
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_node_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NodeStateRevision_DeltaOperationsEntry_DoNotUse;
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_node_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_NodeStateRevision_NodesEntry_DoNotUse;
+}  // namespace protobuf_node_2eproto
 namespace e8 {
 class NodeStateDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<NodeState>
       _instance;
 } _NodeState_default_instance_;
+class NodeStateRevision_NodesEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<NodeStateRevision_NodesEntry_DoNotUse>
+      _instance;
+} _NodeStateRevision_NodesEntry_DoNotUse_default_instance_;
+class NodeStateRevision_DeltaOperationsEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<NodeStateRevision_DeltaOperationsEntry_DoNotUse>
+      _instance;
+} _NodeStateRevision_DeltaOperationsEntry_DoNotUse_default_instance_;
+class NodeStateRevisionDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<NodeStateRevision>
+      _instance;
+} _NodeStateRevision_default_instance_;
 }  // namespace e8
 namespace protobuf_node_2eproto {
 static void InitDefaultsNodeState() {
@@ -41,11 +61,57 @@ static void InitDefaultsNodeState() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_NodeState =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsNodeState}, {}};
 
-void InitDefaults() {
-  ::google::protobuf::internal::InitSCC(&scc_info_NodeState.base);
+static void InitDefaultsNodeStateRevision_NodesEntry_DoNotUse() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_NodeStateRevision_NodesEntry_DoNotUse_default_instance_;
+    new (ptr) ::e8::NodeStateRevision_NodesEntry_DoNotUse();
+  }
+  ::e8::NodeStateRevision_NodesEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::google::protobuf::Metadata file_level_metadata[1];
+::google::protobuf::internal::SCCInfo<1> scc_info_NodeStateRevision_NodesEntry_DoNotUse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsNodeStateRevision_NodesEntry_DoNotUse}, {
+      &protobuf_node_2eproto::scc_info_NodeState.base,}};
+
+static void InitDefaultsNodeStateRevision_DeltaOperationsEntry_DoNotUse() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_NodeStateRevision_DeltaOperationsEntry_DoNotUse_default_instance_;
+    new (ptr) ::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse();
+  }
+  ::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<0> scc_info_NodeStateRevision_DeltaOperationsEntry_DoNotUse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsNodeStateRevision_DeltaOperationsEntry_DoNotUse}, {}};
+
+static void InitDefaultsNodeStateRevision() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_NodeStateRevision_default_instance_;
+    new (ptr) ::e8::NodeStateRevision();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::e8::NodeStateRevision::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<2> scc_info_NodeStateRevision =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsNodeStateRevision}, {
+      &protobuf_node_2eproto::scc_info_NodeStateRevision_NodesEntry_DoNotUse.base,
+      &protobuf_node_2eproto::scc_info_NodeStateRevision_DeltaOperationsEntry_DoNotUse.base,}};
+
+void InitDefaults() {
+  ::google::protobuf::internal::InitSCC(&scc_info_NodeState.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_NodeStateRevision_NodesEntry_DoNotUse.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_NodeStateRevision_DeltaOperationsEntry_DoNotUse.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_NodeStateRevision.base);
+}
+
+::google::protobuf::Metadata file_level_metadata[4];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -54,18 +120,49 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, clock_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, ip_address_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, name_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, types_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, ports_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, ip_address_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, functions_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, function_ports_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_NodesEntry_DoNotUse, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_NodesEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_NodesEntry_DoNotUse, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_NodesEntry_DoNotUse, value_),
+  0,
+  1,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse, value_),
+  0,
+  1,
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision, revision_epoch_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision, nodes_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision, delta_operations_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::NodeState)},
+  { 9, 16, sizeof(::e8::NodeStateRevision_NodesEntry_DoNotUse)},
+  { 18, 25, sizeof(::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse)},
+  { 27, -1, sizeof(::e8::NodeStateRevision)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_NodeState_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_NodeStateRevision_NodesEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_NodeStateRevision_DeltaOperationsEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_NodeStateRevision_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -83,23 +180,32 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 4);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\nnode.proto\022\002e8\"h\n\tNodeState\022\r\n\005clock\030\001"
-      " \001(\003\022\022\n\nip_address\030\002 \001(\014\022\014\n\004name\030\003 \001(\t\022\033"
-      "\n\005types\030\004 \003(\0162\014.e8.NodeType\022\r\n\005ports\030\005 \003"
-      "(\005*]\n\010NodeType\022\017\n\013NDT_INVALID\020\000\022\022\n\016NDT_F"
-      "ILE_STORE\020\001\022\025\n\021NDT_MESSAGE_STORE\020\002\022\025\n\021ND"
-      "T_TASK_EXECUTOR\020\003b\006proto3"
+      "\n\nnode.proto\022\002e8\032\013delta.proto\"j\n\tNodeSta"
+      "te\022\014\n\004name\030\001 \001(\t\022\022\n\nip_address\030\002 \001(\014\022#\n\t"
+      "functions\030\003 \003(\0162\020.e8.NodeFunction\022\026\n\016fun"
+      "ction_ports\030\004 \003(\005\"\253\002\n\021NodeStateRevision\022"
+      "\026\n\016revision_epoch\030\001 \001(\003\022/\n\005nodes\030\003 \003(\0132 "
+      ".e8.NodeStateRevision.NodesEntry\022D\n\020delt"
+      "a_operations\030\004 \003(\0132*.e8.NodeStateRevisio"
+      "n.DeltaOperationsEntry\032;\n\nNodesEntry\022\013\n\003"
+      "key\030\001 \001(\t\022\034\n\005value\030\002 \001(\0132\r.e8.NodeState:"
+      "\0028\001\032J\n\024DeltaOperationsEntry\022\013\n\003key\030\001 \001(\t"
+      "\022!\n\005value\030\002 \001(\0162\022.e8.DeltaOperation:\0028\001*"
+      "a\n\014NodeFunction\022\017\n\013NDF_INVALID\020\000\022\022\n\016NDF_"
+      "FILE_STORE\020\001\022\025\n\021NDF_MESSAGE_STORE\020\002\022\025\n\021N"
+      "DF_TASK_EXECUTOR\020\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 225);
+      descriptor, 546);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "node.proto", &protobuf_RegisterTypes);
+  ::protobuf_delta_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
@@ -114,11 +220,11 @@ struct StaticDescriptorInitializer {
 } static_descriptor_initializer;
 }  // namespace protobuf_node_2eproto
 namespace e8 {
-const ::google::protobuf::EnumDescriptor* NodeType_descriptor() {
+const ::google::protobuf::EnumDescriptor* NodeFunction_descriptor() {
   protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_node_2eproto::file_level_enum_descriptors[0];
 }
-bool NodeType_IsValid(int value) {
+bool NodeFunction_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -136,11 +242,10 @@ bool NodeType_IsValid(int value) {
 void NodeState::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int NodeState::kClockFieldNumber;
-const int NodeState::kIpAddressFieldNumber;
 const int NodeState::kNameFieldNumber;
-const int NodeState::kTypesFieldNumber;
-const int NodeState::kPortsFieldNumber;
+const int NodeState::kIpAddressFieldNumber;
+const int NodeState::kFunctionsFieldNumber;
+const int NodeState::kFunctionPortsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 NodeState::NodeState()
@@ -153,25 +258,23 @@ NodeState::NodeState()
 NodeState::NodeState(const NodeState& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
-      types_(from.types_),
-      ports_(from.ports_) {
+      functions_(from.functions_),
+      function_ports_(from.function_ports_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ip_address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.ip_address().size() > 0) {
-    ip_address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_address_);
-  }
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.name().size() > 0) {
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
-  clock_ = from.clock_;
+  ip_address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.ip_address().size() > 0) {
+    ip_address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_address_);
+  }
   // @@protoc_insertion_point(copy_constructor:e8.NodeState)
 }
 
 void NodeState::SharedCtor() {
-  ip_address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clock_ = GOOGLE_LONGLONG(0);
+  ip_address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 NodeState::~NodeState() {
@@ -180,8 +283,8 @@ NodeState::~NodeState() {
 }
 
 void NodeState::SharedDtor() {
-  ip_address_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ip_address_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void NodeState::SetCachedSize(int size) const {
@@ -204,11 +307,10 @@ void NodeState::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  types_.Clear();
-  ports_.Clear();
-  ip_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  functions_.Clear();
+  function_ports_.Clear();
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clock_ = GOOGLE_LONGLONG(0);
+  ip_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
@@ -222,14 +324,16 @@ bool NodeState::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int64 clock = 1;
+      // string name = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &clock_)));
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->name().data(), static_cast<int>(this->name().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "e8.NodeState.name"));
         } else {
           goto handle_unusual;
         }
@@ -248,26 +352,10 @@ bool NodeState::MergePartialFromCodedStream(
         break;
       }
 
-      // string name = 3;
+      // repeated .e8.NodeFunction functions = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_name()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->name().data(), static_cast<int>(this->name().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "e8.NodeState.name"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // repeated .e8.NodeType types = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           ::google::protobuf::uint32 length;
           DO_(input->ReadVarint32(&length));
           ::google::protobuf::io::CodedInputStream::Limit limit = input->PushLimit(static_cast<int>(length));
@@ -276,36 +364,36 @@ bool NodeState::MergePartialFromCodedStream(
             DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-            add_types(static_cast< ::e8::NodeType >(value));
+            add_functions(static_cast< ::e8::NodeFunction >(value));
           }
           input->PopLimit(limit);
         } else if (
             static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          add_types(static_cast< ::e8::NodeType >(value));
+          add_functions(static_cast< ::e8::NodeFunction >(value));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // repeated int32 ports = 5;
-      case 5: {
+      // repeated int32 function_ports = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, this->mutable_ports())));
+                 input, this->mutable_function_ports())));
         } else if (
             static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 42u, input, this->mutable_ports())));
+                 1, 34u, input, this->mutable_function_ports())));
         } else {
           goto handle_unusual;
         }
@@ -338,9 +426,14 @@ void NodeState::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 clock = 1;
-  if (this->clock() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->clock(), output);
+  // string name = 1;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.NodeState.name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->name(), output);
   }
 
   // bytes ip_address = 2;
@@ -349,39 +442,29 @@ void NodeState::SerializeWithCachedSizes(
       2, this->ip_address(), output);
   }
 
-  // string name = 3;
-  if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->name().data(), static_cast<int>(this->name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.NodeState.name");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->name(), output);
-  }
-
-  // repeated .e8.NodeType types = 4;
-  if (this->types_size() > 0) {
+  // repeated .e8.NodeFunction functions = 3;
+  if (this->functions_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(
-      4,
+      3,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       output);
     output->WriteVarint32(
-        static_cast< ::google::protobuf::uint32>(_types_cached_byte_size_));
+        static_cast< ::google::protobuf::uint32>(_functions_cached_byte_size_));
   }
-  for (int i = 0, n = this->types_size(); i < n; i++) {
+  for (int i = 0, n = this->functions_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteEnumNoTag(
-      this->types(i), output);
+      this->functions(i), output);
   }
 
-  // repeated int32 ports = 5;
-  if (this->ports_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(5, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+  // repeated int32 function_ports = 4;
+  if (this->function_ports_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
-        _ports_cached_byte_size_));
+        _function_ports_cached_byte_size_));
   }
-  for (int i = 0, n = this->ports_size(); i < n; i++) {
+  for (int i = 0, n = this->function_ports_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
-      this->ports(i), output);
+      this->function_ports(i), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -398,9 +481,15 @@ void NodeState::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 clock = 1;
-  if (this->clock() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->clock(), target);
+  // string name = 1;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.NodeState.name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->name(), target);
   }
 
   // bytes ip_address = 2;
@@ -410,40 +499,29 @@ void NodeState::SerializeWithCachedSizes(
         2, this->ip_address(), target);
   }
 
-  // string name = 3;
-  if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->name().data(), static_cast<int>(this->name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.NodeState.name");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->name(), target);
+  // repeated .e8.NodeFunction functions = 3;
+  if (this->functions_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      3,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(      static_cast< ::google::protobuf::uint32>(
+            _functions_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumNoTagToArray(
+      this->functions_, target);
   }
 
-  // repeated .e8.NodeType types = 4;
-  if (this->types_size() > 0) {
+  // repeated int32 function_ports = 4;
+  if (this->function_ports_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       4,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
-    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(      static_cast< ::google::protobuf::uint32>(
-            _types_cached_byte_size_), target);
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumNoTagToArray(
-      this->types_, target);
-  }
-
-  // repeated int32 ports = 5;
-  if (this->ports_size() > 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      5,
-      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
-      target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
         static_cast< ::google::protobuf::int32>(
-            _ports_cached_byte_size_), target);
+            _function_ports_cached_byte_size_), target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->ports_, target);
+      WriteInt32NoTagToArray(this->function_ports_, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -463,12 +541,12 @@ size_t NodeState::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.NodeType types = 4;
+  // repeated .e8.NodeFunction functions = 3;
   {
     size_t data_size = 0;
-    unsigned int count = static_cast<unsigned int>(this->types_size());for (unsigned int i = 0; i < count; i++) {
+    unsigned int count = static_cast<unsigned int>(this->functions_size());for (unsigned int i = 0; i < count; i++) {
       data_size += ::google::protobuf::internal::WireFormatLite::EnumSize(
-        this->types(static_cast<int>(i)));
+        this->functions(static_cast<int>(i)));
     }
     if (data_size > 0) {
       total_size += 1 +
@@ -477,15 +555,15 @@ size_t NodeState::ByteSizeLong() const {
     }
     int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
     GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-    _types_cached_byte_size_ = cached_size;
+    _functions_cached_byte_size_ = cached_size;
     GOOGLE_SAFE_CONCURRENT_WRITES_END();
     total_size += data_size;
   }
 
-  // repeated int32 ports = 5;
+  // repeated int32 function_ports = 4;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->ports_);
+      Int32Size(this->function_ports_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -493,9 +571,16 @@ size_t NodeState::ByteSizeLong() const {
     }
     int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
     GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-    _ports_cached_byte_size_ = cached_size;
+    _function_ports_cached_byte_size_ = cached_size;
     GOOGLE_SAFE_CONCURRENT_WRITES_END();
     total_size += data_size;
+  }
+
+  // string name = 1;
+  if (this->name().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->name());
   }
 
   // bytes ip_address = 2;
@@ -503,20 +588,6 @@ size_t NodeState::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->ip_address());
-  }
-
-  // string name = 3;
-  if (this->name().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->name());
-  }
-
-  // int64 clock = 1;
-  if (this->clock() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->clock());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -546,18 +617,15 @@ void NodeState::MergeFrom(const NodeState& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  types_.MergeFrom(from.types_);
-  ports_.MergeFrom(from.ports_);
-  if (from.ip_address().size() > 0) {
-
-    ip_address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_address_);
-  }
+  functions_.MergeFrom(from.functions_);
+  function_ports_.MergeFrom(from.function_ports_);
   if (from.name().size() > 0) {
 
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
-  if (from.clock() != 0) {
-    set_clock(from.clock());
+  if (from.ip_address().size() > 0) {
+
+    ip_address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_address_);
   }
 }
 
@@ -585,17 +653,561 @@ void NodeState::Swap(NodeState* other) {
 }
 void NodeState::InternalSwap(NodeState* other) {
   using std::swap;
-  types_.InternalSwap(&other->types_);
-  ports_.InternalSwap(&other->ports_);
-  ip_address_.Swap(&other->ip_address_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  functions_.InternalSwap(&other->functions_);
+  function_ports_.InternalSwap(&other->function_ports_);
   name_.Swap(&other->name_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  swap(clock_, other->clock_);
+  ip_address_.Swap(&other->ip_address_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
 ::google::protobuf::Metadata NodeState::GetMetadata() const {
+  protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_node_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+NodeStateRevision_NodesEntry_DoNotUse::NodeStateRevision_NodesEntry_DoNotUse() {}
+NodeStateRevision_NodesEntry_DoNotUse::NodeStateRevision_NodesEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+void NodeStateRevision_NodesEntry_DoNotUse::MergeFrom(const NodeStateRevision_NodesEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::google::protobuf::Metadata NodeStateRevision_NodesEntry_DoNotUse::GetMetadata() const {
+  ::protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_node_2eproto::file_level_metadata[1];
+}
+void NodeStateRevision_NodesEntry_DoNotUse::MergeFrom(
+    const ::google::protobuf::Message& other) {
+  ::google::protobuf::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
+NodeStateRevision_DeltaOperationsEntry_DoNotUse::NodeStateRevision_DeltaOperationsEntry_DoNotUse() {}
+NodeStateRevision_DeltaOperationsEntry_DoNotUse::NodeStateRevision_DeltaOperationsEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+void NodeStateRevision_DeltaOperationsEntry_DoNotUse::MergeFrom(const NodeStateRevision_DeltaOperationsEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::google::protobuf::Metadata NodeStateRevision_DeltaOperationsEntry_DoNotUse::GetMetadata() const {
+  ::protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_node_2eproto::file_level_metadata[2];
+}
+void NodeStateRevision_DeltaOperationsEntry_DoNotUse::MergeFrom(
+    const ::google::protobuf::Message& other) {
+  ::google::protobuf::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
+void NodeStateRevision::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int NodeStateRevision::kRevisionEpochFieldNumber;
+const int NodeStateRevision::kNodesFieldNumber;
+const int NodeStateRevision::kDeltaOperationsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+NodeStateRevision::NodeStateRevision()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_node_2eproto::scc_info_NodeStateRevision.base);
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:e8.NodeStateRevision)
+}
+NodeStateRevision::NodeStateRevision(const NodeStateRevision& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  nodes_.MergeFrom(from.nodes_);
+  delta_operations_.MergeFrom(from.delta_operations_);
+  revision_epoch_ = from.revision_epoch_;
+  // @@protoc_insertion_point(copy_constructor:e8.NodeStateRevision)
+}
+
+void NodeStateRevision::SharedCtor() {
+  revision_epoch_ = GOOGLE_LONGLONG(0);
+}
+
+NodeStateRevision::~NodeStateRevision() {
+  // @@protoc_insertion_point(destructor:e8.NodeStateRevision)
+  SharedDtor();
+}
+
+void NodeStateRevision::SharedDtor() {
+}
+
+void NodeStateRevision::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ::google::protobuf::Descriptor* NodeStateRevision::descriptor() {
+  ::protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_node_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const NodeStateRevision& NodeStateRevision::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_node_2eproto::scc_info_NodeStateRevision.base);
+  return *internal_default_instance();
+}
+
+
+void NodeStateRevision::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.NodeStateRevision)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  nodes_.Clear();
+  delta_operations_.Clear();
+  revision_epoch_ = GOOGLE_LONGLONG(0);
+  _internal_metadata_.Clear();
+}
+
+bool NodeStateRevision::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:e8.NodeStateRevision)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int64 revision_epoch = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &revision_epoch_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // map<string, .e8.NodeState> nodes = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          NodeStateRevision_NodesEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
+              NodeStateRevision_NodesEntry_DoNotUse,
+              ::std::string, ::e8::NodeState,
+              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+              ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+              0 >,
+            ::google::protobuf::Map< ::std::string, ::e8::NodeState > > parser(&nodes_);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, &parser));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            parser.key().data(), static_cast<int>(parser.key().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "e8.NodeStateRevision.NodesEntry.key"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // map<string, .e8.DeltaOperation> delta_operations = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          NodeStateRevision_DeltaOperationsEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
+              NodeStateRevision_DeltaOperationsEntry_DoNotUse,
+              ::std::string, ::e8::DeltaOperation,
+              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+              ::google::protobuf::internal::WireFormatLite::TYPE_ENUM,
+              0 >,
+            ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation > > parser(&delta_operations_);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, &parser));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            parser.key().data(), static_cast<int>(parser.key().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "e8.NodeStateRevision.DeltaOperationsEntry.key"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:e8.NodeStateRevision)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:e8.NodeStateRevision)
+  return false;
+#undef DO_
+}
+
+void NodeStateRevision::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:e8.NodeStateRevision)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 revision_epoch = 1;
+  if (this->revision_epoch() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->revision_epoch(), output);
+  }
+
+  // map<string, .e8.NodeState> nodes = 3;
+  if (!this->nodes().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "e8.NodeStateRevision.NodesEntry.key");
+      }
+    };
+
+    if (output->IsSerializationDeterministic() &&
+        this->nodes().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->nodes().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::e8::NodeState >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+          it = this->nodes().begin();
+          it != this->nodes().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::std::unique_ptr<NodeStateRevision_NodesEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(nodes_.NewEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            3, *entry, output);
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::std::unique_ptr<NodeStateRevision_NodesEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+          it = this->nodes().begin();
+          it != this->nodes().end(); ++it) {
+        entry.reset(nodes_.NewEntryWrapper(
+            it->first, it->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            3, *entry, output);
+        Utf8Check::Check(&*it);
+      }
+    }
+  }
+
+  // map<string, .e8.DeltaOperation> delta_operations = 4;
+  if (!this->delta_operations().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "e8.NodeStateRevision.DeltaOperationsEntry.key");
+      }
+    };
+
+    if (output->IsSerializationDeterministic() &&
+        this->delta_operations().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->delta_operations().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::const_iterator
+          it = this->delta_operations().begin();
+          it != this->delta_operations().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::std::unique_ptr<NodeStateRevision_DeltaOperationsEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(delta_operations_.NewEnumEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            4, *entry, output);
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::std::unique_ptr<NodeStateRevision_DeltaOperationsEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::const_iterator
+          it = this->delta_operations().begin();
+          it != this->delta_operations().end(); ++it) {
+        entry.reset(delta_operations_.NewEnumEntryWrapper(
+            it->first, it->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            4, *entry, output);
+        Utf8Check::Check(&*it);
+      }
+    }
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:e8.NodeStateRevision)
+}
+
+::google::protobuf::uint8* NodeStateRevision::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:e8.NodeStateRevision)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 revision_epoch = 1;
+  if (this->revision_epoch() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->revision_epoch(), target);
+  }
+
+  // map<string, .e8.NodeState> nodes = 3;
+  if (!this->nodes().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "e8.NodeStateRevision.NodesEntry.key");
+      }
+    };
+
+    if (deterministic &&
+        this->nodes().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->nodes().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::e8::NodeState >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+          it = this->nodes().begin();
+          it != this->nodes().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::std::unique_ptr<NodeStateRevision_NodesEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(nodes_.NewEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       3, *entry, deterministic, target);
+;
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::std::unique_ptr<NodeStateRevision_NodesEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+          it = this->nodes().begin();
+          it != this->nodes().end(); ++it) {
+        entry.reset(nodes_.NewEntryWrapper(
+            it->first, it->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       3, *entry, deterministic, target);
+;
+        Utf8Check::Check(&*it);
+      }
+    }
+  }
+
+  // map<string, .e8.DeltaOperation> delta_operations = 4;
+  if (!this->delta_operations().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "e8.NodeStateRevision.DeltaOperationsEntry.key");
+      }
+    };
+
+    if (deterministic &&
+        this->delta_operations().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->delta_operations().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::const_iterator
+          it = this->delta_operations().begin();
+          it != this->delta_operations().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::std::unique_ptr<NodeStateRevision_DeltaOperationsEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(delta_operations_.NewEnumEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       4, *entry, deterministic, target);
+;
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::std::unique_ptr<NodeStateRevision_DeltaOperationsEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::const_iterator
+          it = this->delta_operations().begin();
+          it != this->delta_operations().end(); ++it) {
+        entry.reset(delta_operations_.NewEnumEntryWrapper(
+            it->first, it->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       4, *entry, deterministic, target);
+;
+        Utf8Check::Check(&*it);
+      }
+    }
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:e8.NodeStateRevision)
+  return target;
+}
+
+size_t NodeStateRevision::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.NodeStateRevision)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // map<string, .e8.NodeState> nodes = 3;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->nodes_size());
+  {
+    ::std::unique_ptr<NodeStateRevision_NodesEntry_DoNotUse> entry;
+    for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+        it = this->nodes().begin();
+        it != this->nodes().end(); ++it) {
+      entry.reset(nodes_.NewEntryWrapper(it->first, it->second));
+      total_size += ::google::protobuf::internal::WireFormatLite::
+          MessageSizeNoVirtual(*entry);
+    }
+  }
+
+  // map<string, .e8.DeltaOperation> delta_operations = 4;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->delta_operations_size());
+  {
+    ::std::unique_ptr<NodeStateRevision_DeltaOperationsEntry_DoNotUse> entry;
+    for (::google::protobuf::Map< ::std::string, ::e8::DeltaOperation >::const_iterator
+        it = this->delta_operations().begin();
+        it != this->delta_operations().end(); ++it) {
+      entry.reset(delta_operations_.NewEnumEntryWrapper(it->first, it->second));
+      total_size += ::google::protobuf::internal::WireFormatLite::
+          MessageSizeNoVirtual(*entry);
+    }
+  }
+
+  // int64 revision_epoch = 1;
+  if (this->revision_epoch() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->revision_epoch());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void NodeStateRevision::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.NodeStateRevision)
+  GOOGLE_DCHECK_NE(&from, this);
+  const NodeStateRevision* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const NodeStateRevision>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.NodeStateRevision)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.NodeStateRevision)
+    MergeFrom(*source);
+  }
+}
+
+void NodeStateRevision::MergeFrom(const NodeStateRevision& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.NodeStateRevision)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  nodes_.MergeFrom(from.nodes_);
+  delta_operations_.MergeFrom(from.delta_operations_);
+  if (from.revision_epoch() != 0) {
+    set_revision_epoch(from.revision_epoch());
+  }
+}
+
+void NodeStateRevision::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.NodeStateRevision)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void NodeStateRevision::CopyFrom(const NodeStateRevision& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.NodeStateRevision)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool NodeStateRevision::IsInitialized() const {
+  return true;
+}
+
+void NodeStateRevision::Swap(NodeStateRevision* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void NodeStateRevision::InternalSwap(NodeStateRevision* other) {
+  using std::swap;
+  nodes_.Swap(&other->nodes_);
+  delta_operations_.Swap(&other->delta_operations_);
+  swap(revision_epoch_, other->revision_epoch_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+}
+
+::google::protobuf::Metadata NodeStateRevision::GetMetadata() const {
   protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_node_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -607,6 +1219,15 @@ namespace google {
 namespace protobuf {
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::NodeState* Arena::CreateMaybeMessage< ::e8::NodeState >(Arena* arena) {
   return Arena::CreateInternal< ::e8::NodeState >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::NodeStateRevision_NodesEntry_DoNotUse* Arena::CreateMaybeMessage< ::e8::NodeStateRevision_NodesEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::NodeStateRevision_NodesEntry_DoNotUse >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse* Arena::CreateMaybeMessage< ::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::NodeStateRevision* Arena::CreateMaybeMessage< ::e8::NodeStateRevision >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::NodeStateRevision >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

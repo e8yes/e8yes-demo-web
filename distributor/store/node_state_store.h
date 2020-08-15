@@ -18,58 +18,61 @@
 #ifndef NODESTATESTORE_H
 #define NODESTATESTORE_H
 
+#include <cstdint>
 #include <map>
-#include <sqlite3.h>
+#include <mutex>
 #include <string>
 
+#include "distributor/store/entity.h"
+#include "proto_cc/delta.pb.h"
 #include "proto_cc/node.pb.h"
 
 namespace e8 {
 
-using NodeName = std::string;
+using RevisionEpoch = int64_t;
 
 /**
- * @brief The NodeStateStore class Connects and reads from the local persistent node state storage.
- * This allows the updates from the writer store to be shared by the processes using this class.
+ * @brief The NodeStateStore class Connects to the local persistent node state storage. This allows
+ * the updates to be shared by the processes using this class.
  */
-class NodeStateReaderStore {
+class NodeStateStore {
   public:
     /**
      * @brief NodeStateReaderStore Initialize the database with the schema if it had not before.
      * This operation won't change the existing data.
      */
-    NodeStateReaderStore(std::string const &file_path);
-    ~NodeStateReaderStore();
+    NodeStateStore(std::string const &file_path);
+    ~NodeStateStore();
 
     /**
-     * @brief Load Reads the current node states.
+     * @brief UpdateNodeStates Store the revision to the revision history and apply the revision to
+     * create the latest snapshot if the former revision is avaliable. If future revisions are
+     * avaiable, then it updates to the latest possible epoch. If the revision has been applied
+     * before, it will do nothing.
+     *
+     * Caution: this function should only be called by one process.
+     * TODO: Use inter-process mutexes to increase fault tolerance even though this is not likely to
+     * happen.
+     *
+     * @return true if the revision has never been applied before, otherwise, false.
      */
-    std::map<NodeName, NodeState> Load();
+    bool UpdateNodeStates(NodeStateRevision const &revision);
+
+    /**
+     * @brief Nodes Retrieves all nodes in the latest snapshot, with an optional to filter based
+     * on node function.
+     */
+    std::map<NodeName, NodeState> Nodes(std::optional<NodeFunction> const node_function);
+
+    /**
+     * @brief CurrentRevisionEpoch Retrieve the current revision epoch applied to the latest node
+     * state snapshot.
+     */
+    RevisionEpoch CurrentRevisionEpoch();
 
   private:
     std::string const file_path_;
-};
-
-/**
- * @brief The NodeStateWriterStore class Connects and writes to the local persistent node state
- * storage. This class updates the node states sharable with the reader stores.
- */
-class NodeStateWriterStore {
-  public:
-    /**
-     * @brief NodeStateWriterStore Initialize the database with the schema. If the schema exists and
-     * override_data is set to true, then it will remove all the data before the initialization.
-     */
-    NodeStateWriterStore(std::string const &file_path, bool override_data);
-    ~NodeStateWriterStore();
-
-    /**
-     * @brief Update Writes the new node states to the persistent store.
-     */
-    void Update(std::map<NodeName, NodeState> const &node_states);
-
-  private:
-    std::string const file_path_;
+    std::mutex lock_;
 };
 
 } // namespace e8

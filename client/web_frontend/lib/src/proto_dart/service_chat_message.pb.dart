@@ -11,7 +11,7 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'chat_message.pb.dart' as $11;
-import 'pagination.pb.dart' as $18;
+import 'pagination.pb.dart' as $19;
 
 class SendChatMessageRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SendChatMessageRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -92,7 +92,7 @@ class SendChatMessageResponse extends $pb.GeneratedMessage {
 class GetChatMessageRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetChatMessageRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
-    ..aOM<$18.Pagination>(2, 'pagination', subBuilder: $18.Pagination.create)
+    ..aOM<$19.Pagination>(2, 'pagination', subBuilder: $19.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -121,15 +121,15 @@ class GetChatMessageRequest extends $pb.GeneratedMessage {
   void clearChannelId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $18.Pagination get pagination => $_getN(1);
+  $19.Pagination get pagination => $_getN(1);
   @$pb.TagNumber(2)
-  set pagination($18.Pagination v) { setField(2, v); }
+  set pagination($19.Pagination v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasPagination() => $_has(1);
   @$pb.TagNumber(2)
   void clearPagination() => clearField(2);
   @$pb.TagNumber(2)
-  $18.Pagination ensurePagination() => $_ensure(1);
+  $19.Pagination ensurePagination() => $_ensure(1);
 }
 
 class GetChatMessageResponse extends $pb.GeneratedMessage {

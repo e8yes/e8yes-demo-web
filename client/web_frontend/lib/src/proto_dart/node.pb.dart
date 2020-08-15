@@ -11,16 +11,16 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'node.pbenum.dart';
+import 'delta.pbenum.dart' as $13;
 
 export 'node.pbenum.dart';
 
 class NodeState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('NodeState', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aInt64(1, 'clock')
+    ..aOS(1, 'name')
     ..a<$core.List<$core.int>>(2, 'ipAddress', $pb.PbFieldType.OY)
-    ..aOS(3, 'name')
-    ..pc<NodeType>(4, 'types', $pb.PbFieldType.PE, valueOf: NodeType.valueOf, enumValues: NodeType.values)
-    ..p<$core.int>(5, 'ports', $pb.PbFieldType.P3)
+    ..pc<NodeFunction>(3, 'functions', $pb.PbFieldType.PE, valueOf: NodeFunction.valueOf, enumValues: NodeFunction.values)
+    ..p<$core.int>(4, 'functionPorts', $pb.PbFieldType.P3)
     ..hasRequiredFields = false
   ;
 
@@ -40,13 +40,13 @@ class NodeState extends $pb.GeneratedMessage {
   static NodeState _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get clock => $_getI64(0);
+  $core.String get name => $_getSZ(0);
   @$pb.TagNumber(1)
-  set clock($fixnum.Int64 v) { $_setInt64(0, v); }
+  set name($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasClock() => $_has(0);
+  $core.bool hasName() => $_has(0);
   @$pb.TagNumber(1)
-  void clearClock() => clearField(1);
+  void clearName() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.List<$core.int> get ipAddress => $_getN(1);
@@ -58,18 +58,48 @@ class NodeState extends $pb.GeneratedMessage {
   void clearIpAddress() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get name => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set name($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasName() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearName() => clearField(3);
+  $core.List<NodeFunction> get functions => $_getList(2);
 
   @$pb.TagNumber(4)
-  $core.List<NodeType> get types => $_getList(3);
+  $core.List<$core.int> get functionPorts => $_getList(3);
+}
 
-  @$pb.TagNumber(5)
-  $core.List<$core.int> get ports => $_getList(4);
+class NodeStateRevision extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('NodeStateRevision', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aInt64(1, 'revisionEpoch')
+    ..m<$core.String, NodeState>(3, 'nodes', entryClassName: 'NodeStateRevision.NodesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: NodeState.create, packageName: const $pb.PackageName('e8'))
+    ..m<$core.String, $13.DeltaOperation>(4, 'deltaOperations', entryClassName: 'NodeStateRevision.DeltaOperationsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OE, valueOf: $13.DeltaOperation.valueOf, enumValues: $13.DeltaOperation.values, packageName: const $pb.PackageName('e8'))
+    ..hasRequiredFields = false
+  ;
+
+  NodeStateRevision._() : super();
+  factory NodeStateRevision() => create();
+  factory NodeStateRevision.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory NodeStateRevision.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  NodeStateRevision clone() => NodeStateRevision()..mergeFromMessage(this);
+  NodeStateRevision copyWith(void Function(NodeStateRevision) updates) => super.copyWith((message) => updates(message as NodeStateRevision));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static NodeStateRevision create() => NodeStateRevision._();
+  NodeStateRevision createEmptyInstance() => create();
+  static $pb.PbList<NodeStateRevision> createRepeated() => $pb.PbList<NodeStateRevision>();
+  @$core.pragma('dart2js:noInline')
+  static NodeStateRevision getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<NodeStateRevision>(create);
+  static NodeStateRevision _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get revisionEpoch => $_getI64(0);
+  @$pb.TagNumber(1)
+  set revisionEpoch($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRevisionEpoch() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRevisionEpoch() => clearField(1);
+
+  @$pb.TagNumber(3)
+  $core.Map<$core.String, NodeState> get nodes => $_getMap(1);
+
+  @$pb.TagNumber(4)
+  $core.Map<$core.String, $13.DeltaOperation> get deltaOperations => $_getMap(2);
 }
 

@@ -39,7 +39,7 @@ namespace protobuf_service_5fnode_5fstate_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[2];
+  static const ::google::protobuf::internal::ParseTable schema[8];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -47,41 +47,65 @@ struct TableStruct {
 void AddDescriptors();
 }  // namespace protobuf_service_5fnode_5fstate_2eproto
 namespace e8 {
-class UpdateNodeStateRequest;
-class UpdateNodeStateRequestDefaultTypeInternal;
-extern UpdateNodeStateRequestDefaultTypeInternal _UpdateNodeStateRequest_default_instance_;
-class UpdateNodeStateResponse;
-class UpdateNodeStateResponseDefaultTypeInternal;
-extern UpdateNodeStateResponseDefaultTypeInternal _UpdateNodeStateResponse_default_instance_;
+class AddPeerRequest;
+class AddPeerRequestDefaultTypeInternal;
+extern AddPeerRequestDefaultTypeInternal _AddPeerRequest_default_instance_;
+class AddPeerResponse;
+class AddPeerResponseDefaultTypeInternal;
+extern AddPeerResponseDefaultTypeInternal _AddPeerResponse_default_instance_;
+class DeletePeerRequest;
+class DeletePeerRequestDefaultTypeInternal;
+extern DeletePeerRequestDefaultTypeInternal _DeletePeerRequest_default_instance_;
+class DeletePeerResponse;
+class DeletePeerResponseDefaultTypeInternal;
+extern DeletePeerResponseDefaultTypeInternal _DeletePeerResponse_default_instance_;
+class GetLatestRevisionEpochRequest;
+class GetLatestRevisionEpochRequestDefaultTypeInternal;
+extern GetLatestRevisionEpochRequestDefaultTypeInternal _GetLatestRevisionEpochRequest_default_instance_;
+class GetLatestRevisionEpochResponse;
+class GetLatestRevisionEpochResponseDefaultTypeInternal;
+extern GetLatestRevisionEpochResponseDefaultTypeInternal _GetLatestRevisionEpochResponse_default_instance_;
+class ReviseNodeStateRequest;
+class ReviseNodeStateRequestDefaultTypeInternal;
+extern ReviseNodeStateRequestDefaultTypeInternal _ReviseNodeStateRequest_default_instance_;
+class ReviseNodeStateResponse;
+class ReviseNodeStateResponseDefaultTypeInternal;
+extern ReviseNodeStateResponseDefaultTypeInternal _ReviseNodeStateResponse_default_instance_;
 }  // namespace e8
 namespace google {
 namespace protobuf {
-template<> ::e8::UpdateNodeStateRequest* Arena::CreateMaybeMessage<::e8::UpdateNodeStateRequest>(Arena*);
-template<> ::e8::UpdateNodeStateResponse* Arena::CreateMaybeMessage<::e8::UpdateNodeStateResponse>(Arena*);
+template<> ::e8::AddPeerRequest* Arena::CreateMaybeMessage<::e8::AddPeerRequest>(Arena*);
+template<> ::e8::AddPeerResponse* Arena::CreateMaybeMessage<::e8::AddPeerResponse>(Arena*);
+template<> ::e8::DeletePeerRequest* Arena::CreateMaybeMessage<::e8::DeletePeerRequest>(Arena*);
+template<> ::e8::DeletePeerResponse* Arena::CreateMaybeMessage<::e8::DeletePeerResponse>(Arena*);
+template<> ::e8::GetLatestRevisionEpochRequest* Arena::CreateMaybeMessage<::e8::GetLatestRevisionEpochRequest>(Arena*);
+template<> ::e8::GetLatestRevisionEpochResponse* Arena::CreateMaybeMessage<::e8::GetLatestRevisionEpochResponse>(Arena*);
+template<> ::e8::ReviseNodeStateRequest* Arena::CreateMaybeMessage<::e8::ReviseNodeStateRequest>(Arena*);
+template<> ::e8::ReviseNodeStateResponse* Arena::CreateMaybeMessage<::e8::ReviseNodeStateResponse>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace e8 {
 
 // ===================================================================
 
-class UpdateNodeStateRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.UpdateNodeStateRequest) */ {
+class ReviseNodeStateRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.ReviseNodeStateRequest) */ {
  public:
-  UpdateNodeStateRequest();
-  virtual ~UpdateNodeStateRequest();
+  ReviseNodeStateRequest();
+  virtual ~ReviseNodeStateRequest();
 
-  UpdateNodeStateRequest(const UpdateNodeStateRequest& from);
+  ReviseNodeStateRequest(const ReviseNodeStateRequest& from);
 
-  inline UpdateNodeStateRequest& operator=(const UpdateNodeStateRequest& from) {
+  inline ReviseNodeStateRequest& operator=(const ReviseNodeStateRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  UpdateNodeStateRequest(UpdateNodeStateRequest&& from) noexcept
-    : UpdateNodeStateRequest() {
+  ReviseNodeStateRequest(ReviseNodeStateRequest&& from) noexcept
+    : ReviseNodeStateRequest() {
     *this = ::std::move(from);
   }
 
-  inline UpdateNodeStateRequest& operator=(UpdateNodeStateRequest&& from) noexcept {
+  inline ReviseNodeStateRequest& operator=(ReviseNodeStateRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -91,34 +115,34 @@ class UpdateNodeStateRequest : public ::google::protobuf::Message /* @@protoc_in
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const UpdateNodeStateRequest& default_instance();
+  static const ReviseNodeStateRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const UpdateNodeStateRequest* internal_default_instance() {
-    return reinterpret_cast<const UpdateNodeStateRequest*>(
-               &_UpdateNodeStateRequest_default_instance_);
+  static inline const ReviseNodeStateRequest* internal_default_instance() {
+    return reinterpret_cast<const ReviseNodeStateRequest*>(
+               &_ReviseNodeStateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  void Swap(UpdateNodeStateRequest* other);
-  friend void swap(UpdateNodeStateRequest& a, UpdateNodeStateRequest& b) {
+  void Swap(ReviseNodeStateRequest* other);
+  friend void swap(ReviseNodeStateRequest& a, ReviseNodeStateRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline UpdateNodeStateRequest* New() const final {
-    return CreateMaybeMessage<UpdateNodeStateRequest>(NULL);
+  inline ReviseNodeStateRequest* New() const final {
+    return CreateMaybeMessage<ReviseNodeStateRequest>(NULL);
   }
 
-  UpdateNodeStateRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<UpdateNodeStateRequest>(arena);
+  ReviseNodeStateRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ReviseNodeStateRequest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const UpdateNodeStateRequest& from);
-  void MergeFrom(const UpdateNodeStateRequest& from);
+  void CopyFrom(const ReviseNodeStateRequest& from);
+  void MergeFrom(const ReviseNodeStateRequest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -135,7 +159,7 @@ class UpdateNodeStateRequest : public ::google::protobuf::Message /* @@protoc_in
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(UpdateNodeStateRequest* other);
+  void InternalSwap(ReviseNodeStateRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -151,46 +175,46 @@ class UpdateNodeStateRequest : public ::google::protobuf::Message /* @@protoc_in
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.NodeState nodes = 1;
-  int nodes_size() const;
-  void clear_nodes();
-  static const int kNodesFieldNumber = 1;
-  ::e8::NodeState* mutable_nodes(int index);
-  ::google::protobuf::RepeatedPtrField< ::e8::NodeState >*
-      mutable_nodes();
-  const ::e8::NodeState& nodes(int index) const;
-  ::e8::NodeState* add_nodes();
-  const ::google::protobuf::RepeatedPtrField< ::e8::NodeState >&
-      nodes() const;
+  // .e8.NodeStateRevision revision = 1;
+  bool has_revision() const;
+  void clear_revision();
+  static const int kRevisionFieldNumber = 1;
+  private:
+  const ::e8::NodeStateRevision& _internal_revision() const;
+  public:
+  const ::e8::NodeStateRevision& revision() const;
+  ::e8::NodeStateRevision* release_revision();
+  ::e8::NodeStateRevision* mutable_revision();
+  void set_allocated_revision(::e8::NodeStateRevision* revision);
 
-  // @@protoc_insertion_point(class_scope:e8.UpdateNodeStateRequest)
+  // @@protoc_insertion_point(class_scope:e8.ReviseNodeStateRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::e8::NodeState > nodes_;
+  ::e8::NodeStateRevision* revision_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class UpdateNodeStateResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.UpdateNodeStateResponse) */ {
+class ReviseNodeStateResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.ReviseNodeStateResponse) */ {
  public:
-  UpdateNodeStateResponse();
-  virtual ~UpdateNodeStateResponse();
+  ReviseNodeStateResponse();
+  virtual ~ReviseNodeStateResponse();
 
-  UpdateNodeStateResponse(const UpdateNodeStateResponse& from);
+  ReviseNodeStateResponse(const ReviseNodeStateResponse& from);
 
-  inline UpdateNodeStateResponse& operator=(const UpdateNodeStateResponse& from) {
+  inline ReviseNodeStateResponse& operator=(const ReviseNodeStateResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  UpdateNodeStateResponse(UpdateNodeStateResponse&& from) noexcept
-    : UpdateNodeStateResponse() {
+  ReviseNodeStateResponse(ReviseNodeStateResponse&& from) noexcept
+    : ReviseNodeStateResponse() {
     *this = ::std::move(from);
   }
 
-  inline UpdateNodeStateResponse& operator=(UpdateNodeStateResponse&& from) noexcept {
+  inline ReviseNodeStateResponse& operator=(ReviseNodeStateResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -200,34 +224,34 @@ class UpdateNodeStateResponse : public ::google::protobuf::Message /* @@protoc_i
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const UpdateNodeStateResponse& default_instance();
+  static const ReviseNodeStateResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const UpdateNodeStateResponse* internal_default_instance() {
-    return reinterpret_cast<const UpdateNodeStateResponse*>(
-               &_UpdateNodeStateResponse_default_instance_);
+  static inline const ReviseNodeStateResponse* internal_default_instance() {
+    return reinterpret_cast<const ReviseNodeStateResponse*>(
+               &_ReviseNodeStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  void Swap(UpdateNodeStateResponse* other);
-  friend void swap(UpdateNodeStateResponse& a, UpdateNodeStateResponse& b) {
+  void Swap(ReviseNodeStateResponse* other);
+  friend void swap(ReviseNodeStateResponse& a, ReviseNodeStateResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline UpdateNodeStateResponse* New() const final {
-    return CreateMaybeMessage<UpdateNodeStateResponse>(NULL);
+  inline ReviseNodeStateResponse* New() const final {
+    return CreateMaybeMessage<ReviseNodeStateResponse>(NULL);
   }
 
-  UpdateNodeStateResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<UpdateNodeStateResponse>(arena);
+  ReviseNodeStateResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ReviseNodeStateResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const UpdateNodeStateResponse& from);
-  void MergeFrom(const UpdateNodeStateResponse& from);
+  void CopyFrom(const ReviseNodeStateResponse& from);
+  void MergeFrom(const ReviseNodeStateResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -244,7 +268,7 @@ class UpdateNodeStateResponse : public ::google::protobuf::Message /* @@protoc_i
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(UpdateNodeStateResponse* other);
+  void InternalSwap(ReviseNodeStateResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -260,7 +284,618 @@ class UpdateNodeStateResponse : public ::google::protobuf::Message /* @@protoc_i
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:e8.UpdateNodeStateResponse)
+  // @@protoc_insertion_point(class_scope:e8.ReviseNodeStateResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class GetLatestRevisionEpochRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetLatestRevisionEpochRequest) */ {
+ public:
+  GetLatestRevisionEpochRequest();
+  virtual ~GetLatestRevisionEpochRequest();
+
+  GetLatestRevisionEpochRequest(const GetLatestRevisionEpochRequest& from);
+
+  inline GetLatestRevisionEpochRequest& operator=(const GetLatestRevisionEpochRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  GetLatestRevisionEpochRequest(GetLatestRevisionEpochRequest&& from) noexcept
+    : GetLatestRevisionEpochRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetLatestRevisionEpochRequest& operator=(GetLatestRevisionEpochRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetLatestRevisionEpochRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GetLatestRevisionEpochRequest* internal_default_instance() {
+    return reinterpret_cast<const GetLatestRevisionEpochRequest*>(
+               &_GetLatestRevisionEpochRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  void Swap(GetLatestRevisionEpochRequest* other);
+  friend void swap(GetLatestRevisionEpochRequest& a, GetLatestRevisionEpochRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GetLatestRevisionEpochRequest* New() const final {
+    return CreateMaybeMessage<GetLatestRevisionEpochRequest>(NULL);
+  }
+
+  GetLatestRevisionEpochRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetLatestRevisionEpochRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const GetLatestRevisionEpochRequest& from);
+  void MergeFrom(const GetLatestRevisionEpochRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetLatestRevisionEpochRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:e8.GetLatestRevisionEpochRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class GetLatestRevisionEpochResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetLatestRevisionEpochResponse) */ {
+ public:
+  GetLatestRevisionEpochResponse();
+  virtual ~GetLatestRevisionEpochResponse();
+
+  GetLatestRevisionEpochResponse(const GetLatestRevisionEpochResponse& from);
+
+  inline GetLatestRevisionEpochResponse& operator=(const GetLatestRevisionEpochResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  GetLatestRevisionEpochResponse(GetLatestRevisionEpochResponse&& from) noexcept
+    : GetLatestRevisionEpochResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline GetLatestRevisionEpochResponse& operator=(GetLatestRevisionEpochResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetLatestRevisionEpochResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GetLatestRevisionEpochResponse* internal_default_instance() {
+    return reinterpret_cast<const GetLatestRevisionEpochResponse*>(
+               &_GetLatestRevisionEpochResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  void Swap(GetLatestRevisionEpochResponse* other);
+  friend void swap(GetLatestRevisionEpochResponse& a, GetLatestRevisionEpochResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GetLatestRevisionEpochResponse* New() const final {
+    return CreateMaybeMessage<GetLatestRevisionEpochResponse>(NULL);
+  }
+
+  GetLatestRevisionEpochResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetLatestRevisionEpochResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const GetLatestRevisionEpochResponse& from);
+  void MergeFrom(const GetLatestRevisionEpochResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetLatestRevisionEpochResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int64 revision_epoch = 1;
+  void clear_revision_epoch();
+  static const int kRevisionEpochFieldNumber = 1;
+  ::google::protobuf::int64 revision_epoch() const;
+  void set_revision_epoch(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:e8.GetLatestRevisionEpochResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int64 revision_epoch_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddPeerRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AddPeerRequest) */ {
+ public:
+  AddPeerRequest();
+  virtual ~AddPeerRequest();
+
+  AddPeerRequest(const AddPeerRequest& from);
+
+  inline AddPeerRequest& operator=(const AddPeerRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  AddPeerRequest(AddPeerRequest&& from) noexcept
+    : AddPeerRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline AddPeerRequest& operator=(AddPeerRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddPeerRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const AddPeerRequest* internal_default_instance() {
+    return reinterpret_cast<const AddPeerRequest*>(
+               &_AddPeerRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  void Swap(AddPeerRequest* other);
+  friend void swap(AddPeerRequest& a, AddPeerRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AddPeerRequest* New() const final {
+    return CreateMaybeMessage<AddPeerRequest>(NULL);
+  }
+
+  AddPeerRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<AddPeerRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const AddPeerRequest& from);
+  void MergeFrom(const AddPeerRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AddPeerRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .e8.NodeState node = 1;
+  bool has_node() const;
+  void clear_node();
+  static const int kNodeFieldNumber = 1;
+  private:
+  const ::e8::NodeState& _internal_node() const;
+  public:
+  const ::e8::NodeState& node() const;
+  ::e8::NodeState* release_node();
+  ::e8::NodeState* mutable_node();
+  void set_allocated_node(::e8::NodeState* node);
+
+  // @@protoc_insertion_point(class_scope:e8.AddPeerRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::e8::NodeState* node_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddPeerResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AddPeerResponse) */ {
+ public:
+  AddPeerResponse();
+  virtual ~AddPeerResponse();
+
+  AddPeerResponse(const AddPeerResponse& from);
+
+  inline AddPeerResponse& operator=(const AddPeerResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  AddPeerResponse(AddPeerResponse&& from) noexcept
+    : AddPeerResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline AddPeerResponse& operator=(AddPeerResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddPeerResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const AddPeerResponse* internal_default_instance() {
+    return reinterpret_cast<const AddPeerResponse*>(
+               &_AddPeerResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  void Swap(AddPeerResponse* other);
+  friend void swap(AddPeerResponse& a, AddPeerResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AddPeerResponse* New() const final {
+    return CreateMaybeMessage<AddPeerResponse>(NULL);
+  }
+
+  AddPeerResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<AddPeerResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const AddPeerResponse& from);
+  void MergeFrom(const AddPeerResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AddPeerResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:e8.AddPeerResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeletePeerRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.DeletePeerRequest) */ {
+ public:
+  DeletePeerRequest();
+  virtual ~DeletePeerRequest();
+
+  DeletePeerRequest(const DeletePeerRequest& from);
+
+  inline DeletePeerRequest& operator=(const DeletePeerRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  DeletePeerRequest(DeletePeerRequest&& from) noexcept
+    : DeletePeerRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline DeletePeerRequest& operator=(DeletePeerRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeletePeerRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DeletePeerRequest* internal_default_instance() {
+    return reinterpret_cast<const DeletePeerRequest*>(
+               &_DeletePeerRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  void Swap(DeletePeerRequest* other);
+  friend void swap(DeletePeerRequest& a, DeletePeerRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DeletePeerRequest* New() const final {
+    return CreateMaybeMessage<DeletePeerRequest>(NULL);
+  }
+
+  DeletePeerRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<DeletePeerRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const DeletePeerRequest& from);
+  void MergeFrom(const DeletePeerRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DeletePeerRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string node_name = 1;
+  void clear_node_name();
+  static const int kNodeNameFieldNumber = 1;
+  const ::std::string& node_name() const;
+  void set_node_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_node_name(::std::string&& value);
+  #endif
+  void set_node_name(const char* value);
+  void set_node_name(const char* value, size_t size);
+  ::std::string* mutable_node_name();
+  ::std::string* release_node_name();
+  void set_allocated_node_name(::std::string* node_name);
+
+  // @@protoc_insertion_point(class_scope:e8.DeletePeerRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr node_name_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeletePeerResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.DeletePeerResponse) */ {
+ public:
+  DeletePeerResponse();
+  virtual ~DeletePeerResponse();
+
+  DeletePeerResponse(const DeletePeerResponse& from);
+
+  inline DeletePeerResponse& operator=(const DeletePeerResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  DeletePeerResponse(DeletePeerResponse&& from) noexcept
+    : DeletePeerResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline DeletePeerResponse& operator=(DeletePeerResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeletePeerResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DeletePeerResponse* internal_default_instance() {
+    return reinterpret_cast<const DeletePeerResponse*>(
+               &_DeletePeerResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  void Swap(DeletePeerResponse* other);
+  friend void swap(DeletePeerResponse& a, DeletePeerResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DeletePeerResponse* New() const final {
+    return CreateMaybeMessage<DeletePeerResponse>(NULL);
+  }
+
+  DeletePeerResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<DeletePeerResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const DeletePeerResponse& from);
+  void MergeFrom(const DeletePeerResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DeletePeerResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:e8.DeletePeerResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -276,42 +911,214 @@ class UpdateNodeStateResponse : public ::google::protobuf::Message /* @@protoc_i
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// UpdateNodeStateRequest
+// ReviseNodeStateRequest
 
-// repeated .e8.NodeState nodes = 1;
-inline int UpdateNodeStateRequest::nodes_size() const {
-  return nodes_.size();
+// .e8.NodeStateRevision revision = 1;
+inline bool ReviseNodeStateRequest::has_revision() const {
+  return this != internal_default_instance() && revision_ != NULL;
 }
-inline ::e8::NodeState* UpdateNodeStateRequest::mutable_nodes(int index) {
-  // @@protoc_insertion_point(field_mutable:e8.UpdateNodeStateRequest.nodes)
-  return nodes_.Mutable(index);
+inline const ::e8::NodeStateRevision& ReviseNodeStateRequest::_internal_revision() const {
+  return *revision_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::e8::NodeState >*
-UpdateNodeStateRequest::mutable_nodes() {
-  // @@protoc_insertion_point(field_mutable_list:e8.UpdateNodeStateRequest.nodes)
-  return &nodes_;
+inline const ::e8::NodeStateRevision& ReviseNodeStateRequest::revision() const {
+  const ::e8::NodeStateRevision* p = revision_;
+  // @@protoc_insertion_point(field_get:e8.ReviseNodeStateRequest.revision)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NodeStateRevision*>(
+      &::e8::_NodeStateRevision_default_instance_);
 }
-inline const ::e8::NodeState& UpdateNodeStateRequest::nodes(int index) const {
-  // @@protoc_insertion_point(field_get:e8.UpdateNodeStateRequest.nodes)
-  return nodes_.Get(index);
+inline ::e8::NodeStateRevision* ReviseNodeStateRequest::release_revision() {
+  // @@protoc_insertion_point(field_release:e8.ReviseNodeStateRequest.revision)
+  
+  ::e8::NodeStateRevision* temp = revision_;
+  revision_ = NULL;
+  return temp;
 }
-inline ::e8::NodeState* UpdateNodeStateRequest::add_nodes() {
-  // @@protoc_insertion_point(field_add:e8.UpdateNodeStateRequest.nodes)
-  return nodes_.Add();
+inline ::e8::NodeStateRevision* ReviseNodeStateRequest::mutable_revision() {
+  
+  if (revision_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NodeStateRevision>(GetArenaNoVirtual());
+    revision_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.ReviseNodeStateRequest.revision)
+  return revision_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::e8::NodeState >&
-UpdateNodeStateRequest::nodes() const {
-  // @@protoc_insertion_point(field_list:e8.UpdateNodeStateRequest.nodes)
-  return nodes_;
+inline void ReviseNodeStateRequest::set_allocated_revision(::e8::NodeStateRevision* revision) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(revision_);
+  }
+  if (revision) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      revision = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, revision, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  revision_ = revision;
+  // @@protoc_insertion_point(field_set_allocated:e8.ReviseNodeStateRequest.revision)
 }
 
 // -------------------------------------------------------------------
 
-// UpdateNodeStateResponse
+// ReviseNodeStateResponse
+
+// -------------------------------------------------------------------
+
+// GetLatestRevisionEpochRequest
+
+// -------------------------------------------------------------------
+
+// GetLatestRevisionEpochResponse
+
+// int64 revision_epoch = 1;
+inline void GetLatestRevisionEpochResponse::clear_revision_epoch() {
+  revision_epoch_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 GetLatestRevisionEpochResponse::revision_epoch() const {
+  // @@protoc_insertion_point(field_get:e8.GetLatestRevisionEpochResponse.revision_epoch)
+  return revision_epoch_;
+}
+inline void GetLatestRevisionEpochResponse::set_revision_epoch(::google::protobuf::int64 value) {
+  
+  revision_epoch_ = value;
+  // @@protoc_insertion_point(field_set:e8.GetLatestRevisionEpochResponse.revision_epoch)
+}
+
+// -------------------------------------------------------------------
+
+// AddPeerRequest
+
+// .e8.NodeState node = 1;
+inline bool AddPeerRequest::has_node() const {
+  return this != internal_default_instance() && node_ != NULL;
+}
+inline const ::e8::NodeState& AddPeerRequest::_internal_node() const {
+  return *node_;
+}
+inline const ::e8::NodeState& AddPeerRequest::node() const {
+  const ::e8::NodeState* p = node_;
+  // @@protoc_insertion_point(field_get:e8.AddPeerRequest.node)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NodeState*>(
+      &::e8::_NodeState_default_instance_);
+}
+inline ::e8::NodeState* AddPeerRequest::release_node() {
+  // @@protoc_insertion_point(field_release:e8.AddPeerRequest.node)
+  
+  ::e8::NodeState* temp = node_;
+  node_ = NULL;
+  return temp;
+}
+inline ::e8::NodeState* AddPeerRequest::mutable_node() {
+  
+  if (node_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NodeState>(GetArenaNoVirtual());
+    node_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.AddPeerRequest.node)
+  return node_;
+}
+inline void AddPeerRequest::set_allocated_node(::e8::NodeState* node) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(node_);
+  }
+  if (node) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      node = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, node, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  node_ = node;
+  // @@protoc_insertion_point(field_set_allocated:e8.AddPeerRequest.node)
+}
+
+// -------------------------------------------------------------------
+
+// AddPeerResponse
+
+// -------------------------------------------------------------------
+
+// DeletePeerRequest
+
+// string node_name = 1;
+inline void DeletePeerRequest::clear_node_name() {
+  node_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeletePeerRequest::node_name() const {
+  // @@protoc_insertion_point(field_get:e8.DeletePeerRequest.node_name)
+  return node_name_.GetNoArena();
+}
+inline void DeletePeerRequest::set_node_name(const ::std::string& value) {
+  
+  node_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.DeletePeerRequest.node_name)
+}
+#if LANG_CXX11
+inline void DeletePeerRequest::set_node_name(::std::string&& value) {
+  
+  node_name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.DeletePeerRequest.node_name)
+}
+#endif
+inline void DeletePeerRequest::set_node_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  node_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.DeletePeerRequest.node_name)
+}
+inline void DeletePeerRequest::set_node_name(const char* value, size_t size) {
+  
+  node_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.DeletePeerRequest.node_name)
+}
+inline ::std::string* DeletePeerRequest::mutable_node_name() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.DeletePeerRequest.node_name)
+  return node_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeletePeerRequest::release_node_name() {
+  // @@protoc_insertion_point(field_release:e8.DeletePeerRequest.node_name)
+  
+  return node_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeletePeerRequest::set_allocated_node_name(::std::string* node_name) {
+  if (node_name != NULL) {
+    
+  } else {
+    
+  }
+  node_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), node_name);
+  // @@protoc_insertion_point(field_set_allocated:e8.DeletePeerRequest.node_name)
+}
+
+// -------------------------------------------------------------------
+
+// DeletePeerResponse
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 

@@ -15,26 +15,15 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CREATE_SCHEMA_H
-#define CREATE_SCHEMA_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
-#include <sqlite3.h>
 #include <string>
 
 namespace e8 {
 
-static char const kNodeStateTableName[] = "node_states";
-static char const kNodeStateTableNodeNameColumnName[] = "node_name";
-static char const kNodeStateTableClockColumnName[] = "clock";
-static char const kNodeStateTableSerializedDataColumnName[] = "serialized_data";
-
-/**
- * @brief CreateAndOpenDatabase
- * @param file
- * @param override_data
- */
-void CreateSchema(std::string const &file, bool override_data);
+using NodeName = std::string;
 
 } // namespace e8
 
-#endif // CREATE_SCHEMA_H
+#endif // ENTITY_H

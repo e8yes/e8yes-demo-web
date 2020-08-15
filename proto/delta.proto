@@ -19,24 +19,9 @@ syntax = "proto3";
 
 package e8;
 
-import "delta.proto";
-
-enum NodeFunction {
-    NDF_INVALID = 0;
-    NDF_FILE_STORE = 1;
-    NDF_MESSAGE_STORE = 2;
-    NDF_TASK_EXECUTOR = 3;
-}
-
-message NodeState {
-    string name = 1;
-    bytes ip_address = 2;
-    repeated NodeFunction functions = 3;
-    repeated int32 function_ports = 4;
-}
-
-message NodeStateRevision {
-    int64 revision_epoch = 1;
-    map<string, NodeState> nodes = 3;
-    map<string, DeltaOperation> delta_operations = 4;
+enum DeltaOperation {
+    DOP_INVALID = 0;
+    DOP_ADD = 1;
+    DOP_DELETE = 2;
+    DOP_SWAP = 3;
 }

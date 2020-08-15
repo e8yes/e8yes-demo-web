@@ -21,14 +21,48 @@ package e8;
 
 import "node.proto";
 
-message UpdateNodeStateRequest {
-    repeated NodeState nodes = 1;
+message ReviseNodeStateRequest {
+    NodeStateRevision revision = 1;
 }
 
-message UpdateNodeStateResponse {
+message ReviseNodeStateResponse {
 }
+
+
+message GetLatestRevisionEpochRequest {
+}
+
+message GetLatestRevisionEpochResponse {
+    int64 revision_epoch = 1;
+}
+
+
+message AddPeerRequest {
+    NodeState node = 1;
+}
+
+message AddPeerResponse {
+}
+
+
+message DeletePeerRequest {
+    string node_name = 1;
+}
+
+message DeletePeerResponse {
+}
+
 
 service NodeStateService {
-    rpc UpdateNodeState (UpdateNodeStateRequest) returns 
-        (UpdateNodeStateResponse);
+    //
+    rpc ReviseNodeState (ReviseNodeStateRequest) returns (ReviseNodeStateResponse);
+
+    // 
+    rpc GetLatestRevisionEpoch (GetLatestRevisionEpochRequest) returns (GetLatestRevisionEpochResponse);
+
+    //
+    rpc AddPeer (AddPeerRequest) returns (AddPeerResponse); 
+
+    //
+    rpc DeletePeer (DeletePeerRequest) returns (DeletePeerResponse);
 }
