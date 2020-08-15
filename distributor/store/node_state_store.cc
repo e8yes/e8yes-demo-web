@@ -304,7 +304,9 @@ bool NodeStateStore::UpdateNodeStates(NodeStateRevision const &revision) {
     // Move the revision epoch to that represents the current node state snapshot.
     SetCurrentRevisionEpoch(current_revision, db);
 
-    sqlite3_close(db);
+    rc = sqlite3_close(db);
+    assert(rc == SQLITE_OK);
+
     lock_.unlock();
 
     return true;

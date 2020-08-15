@@ -15,12 +15,18 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
-    create_schema.cc \
-    node_state_store.cc
+    node_state_schema.cc \
+    node_state_store.cc \
+    peer_schema.cc \
+    peer_store.cc
 
 HEADERS += \
-    create_schema.h \
-    node_state_store.h
+    constants.h \
+    entity.h \
+    node_state_schema.h \
+    node_state_store.h \
+    peer_schema.h \
+    peer_store.h
 
 # Default rules for deployment.
 unix {
