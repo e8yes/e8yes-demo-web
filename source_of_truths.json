@@ -45,7 +45,8 @@
         "postgres_citus_master_password": "password",
         "deployment_master": "pi6",
         "deployment_image_registry_port": 5000,
-        "git_repo": "https://github.com/e8yes/e8yes-demo-web.git"
+        "git_repo": "https://github.com/e8yes/e8yes-demo-web.git",
+        "mount_point": "~/data"
     },
     "build_targets": [
         {
