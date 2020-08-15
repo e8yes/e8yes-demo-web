@@ -60,9 +60,10 @@ class NodeStateStore {
 
     /**
      * @brief Nodes Retrieves all nodes in the latest snapshot, with an optional to filter based
-     * on node function.
+     * on node function and node status.
      */
-    std::map<NodeName, NodeState> Nodes(std::optional<NodeFunction> const node_function);
+    std::map<NodeName, NodeState> Nodes(std::optional<NodeFunction> const node_function,
+                                        std::optional<NodeStatus> const node_status);
 
     /**
      * @brief CurrentRevisionEpoch Retrieve the current revision epoch applied to the latest node

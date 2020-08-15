@@ -24,8 +24,8 @@
 #include <string>
 #include <utility>
 
-#include "distributor/store/node_state_schema.h"
 #include "distributor/store/entity.h"
+#include "distributor/store/node_state_schema.h"
 #include "distributor/store/node_state_store.h"
 
 namespace e8 {
@@ -222,8 +222,8 @@ NodeStateStore::NodeStateStore(std::string const &file_path) : file_path_(file_p
 
 NodeStateStore::~NodeStateStore() {}
 
-std::map<NodeName, NodeState>
-NodeStateStore::Nodes(std::optional<NodeFunction> const node_function) {
+std::map<NodeName, NodeState> NodeStateStore::Nodes(std::optional<NodeFunction> const node_function,
+                                                    std::optional<NodeStatus> const node_status) {
     sqlite3 *db;
     int rc = sqlite3_open_v2(file_path_.c_str(), &db, SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX,
                              /*zVfs=*/nullptr);
@@ -247,6 +247,9 @@ NodeStateStore::Nodes(std::optional<NodeFunction> const node_function) {
         node_state.ParseFromArray(serialized_data, serialized_data_bytes);
 
         if (node_function.has_value() && !ContainsFunction(node_state, *node_function)) {
+            continue;
+        }
+        if (node_status.has_value() && node_state.status() != *node_status) {
             continue;
         }
 
