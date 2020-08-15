@@ -49,6 +49,6 @@ def DeployImages(deployment_node: NodeConfig,
       print("Running image", image_name, "in node", node)
       RunSingleCommandInNode(
         node=node,
-        command="sudo docker run {0} -d -t {1}:latest"
+        command="sudo docker run {0} -d -t {1}:latest --restart always"
           .format(PortPublishingCommandArgs(target.open_ports),
                   image_name))
