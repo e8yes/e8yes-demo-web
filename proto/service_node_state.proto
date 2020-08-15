@@ -54,15 +54,15 @@ message DeletePeerResponse {
 
 
 service NodeStateService {
-    //
+    // Applies incremental updates to the node state snapshot.
     rpc ReviseNodeState (ReviseNodeStateRequest) returns (ReviseNodeStateResponse);
 
-    // 
+    // Returns the the latest revision epoch the target node is currently at.
     rpc GetLatestRevisionEpoch (GetLatestRevisionEpochRequest) returns (GetLatestRevisionEpochResponse);
 
-    //
+    // Add a peer to the current node.
     rpc AddPeer (AddPeerRequest) returns (AddPeerResponse); 
 
-    //
+    // Delete a peer that was previously added to the current node.
     rpc DeletePeer (DeletePeerRequest) returns (DeletePeerResponse);
 }

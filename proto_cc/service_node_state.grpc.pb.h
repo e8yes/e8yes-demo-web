@@ -52,7 +52,7 @@ class NodeStateService final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    //
+    // Applies incremental updates to the node state snapshot.
     virtual ::grpc::Status ReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::e8::ReviseNodeStateResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::ReviseNodeStateResponse>> AsyncReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::ReviseNodeStateResponse>>(AsyncReviseNodeStateRaw(context, request, cq));
@@ -60,7 +60,7 @@ class NodeStateService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::ReviseNodeStateResponse>> PrepareAsyncReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::ReviseNodeStateResponse>>(PrepareAsyncReviseNodeStateRaw(context, request, cq));
     }
-    // 
+    // Returns the the latest revision epoch the target node is currently at.
     virtual ::grpc::Status GetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::e8::GetLatestRevisionEpochResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>> AsyncGetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>>(AsyncGetLatestRevisionEpochRaw(context, request, cq));
@@ -68,7 +68,7 @@ class NodeStateService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>> PrepareAsyncGetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>>(PrepareAsyncGetLatestRevisionEpochRaw(context, request, cq));
     }
-    //
+    // Add a peer to the current node.
     virtual ::grpc::Status AddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::e8::AddPeerResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>> AsyncAddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>>(AsyncAddPeerRaw(context, request, cq));
@@ -76,7 +76,7 @@ class NodeStateService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>> PrepareAsyncAddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>>(PrepareAsyncAddPeerRaw(context, request, cq));
     }
-    //
+    // Delete a peer that was previously added to the current node.
     virtual ::grpc::Status DeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::e8::DeletePeerResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeerResponse>> AsyncDeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeerResponse>>(AsyncDeletePeerRaw(context, request, cq));
@@ -87,13 +87,13 @@ class NodeStateService final {
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
-      //
+      // Applies incremental updates to the node state snapshot.
       virtual void ReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest* request, ::e8::ReviseNodeStateResponse* response, std::function<void(::grpc::Status)>) = 0;
-      // 
+      // Returns the the latest revision epoch the target node is currently at.
       virtual void GetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response, std::function<void(::grpc::Status)>) = 0;
-      //
+      // Add a peer to the current node.
       virtual void AddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response, std::function<void(::grpc::Status)>) = 0;
-      //
+      // Delete a peer that was previously added to the current node.
       virtual void DeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
@@ -175,13 +175,13 @@ class NodeStateService final {
    public:
     Service();
     virtual ~Service();
-    //
+    // Applies incremental updates to the node state snapshot.
     virtual ::grpc::Status ReviseNodeState(::grpc::ServerContext* context, const ::e8::ReviseNodeStateRequest* request, ::e8::ReviseNodeStateResponse* response);
-    // 
+    // Returns the the latest revision epoch the target node is currently at.
     virtual ::grpc::Status GetLatestRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response);
-    //
+    // Add a peer to the current node.
     virtual ::grpc::Status AddPeer(::grpc::ServerContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response);
-    //
+    // Delete a peer that was previously added to the current node.
     virtual ::grpc::Status DeletePeer(::grpc::ServerContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response);
   };
   template <class BaseClass>

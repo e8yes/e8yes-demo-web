@@ -19,8 +19,9 @@ class NodeState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('NodeState', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOS(1, 'name')
     ..a<$core.List<$core.int>>(2, 'ipAddress', $pb.PbFieldType.OY)
-    ..pc<NodeFunction>(3, 'functions', $pb.PbFieldType.PE, valueOf: NodeFunction.valueOf, enumValues: NodeFunction.values)
-    ..p<$core.int>(4, 'functionPorts', $pb.PbFieldType.P3)
+    ..e<NodeStatus>(3, 'status', $pb.PbFieldType.OE, defaultOrMaker: NodeStatus.NDS_INVALID, valueOf: NodeStatus.valueOf, enumValues: NodeStatus.values)
+    ..pc<NodeFunction>(4, 'functions', $pb.PbFieldType.PE, valueOf: NodeFunction.valueOf, enumValues: NodeFunction.values)
+    ..p<$core.int>(5, 'functionPorts', $pb.PbFieldType.P3)
     ..hasRequiredFields = false
   ;
 
@@ -58,10 +59,19 @@ class NodeState extends $pb.GeneratedMessage {
   void clearIpAddress() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<NodeFunction> get functions => $_getList(2);
+  NodeStatus get status => $_getN(2);
+  @$pb.TagNumber(3)
+  set status(NodeStatus v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasStatus() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStatus() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.List<$core.int> get functionPorts => $_getList(3);
+  $core.List<NodeFunction> get functions => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.List<$core.int> get functionPorts => $_getList(4);
 }
 
 class NodeStateRevision extends $pb.GeneratedMessage {

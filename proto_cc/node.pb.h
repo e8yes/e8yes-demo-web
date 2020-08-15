@@ -97,6 +97,29 @@ inline bool NodeFunction_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<NodeFunction>(
     NodeFunction_descriptor(), name, value);
 }
+enum NodeStatus {
+  NDS_INVALID = 0,
+  NDS_INITIALIZING = 1,
+  NDS_READY = 2,
+  NDS_UNAVALIABLE = 3,
+  NodeStatus_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  NodeStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool NodeStatus_IsValid(int value);
+const NodeStatus NodeStatus_MIN = NDS_INVALID;
+const NodeStatus NodeStatus_MAX = NDS_UNAVALIABLE;
+const int NodeStatus_ARRAYSIZE = NodeStatus_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* NodeStatus_descriptor();
+inline const ::std::string& NodeStatus_Name(NodeStatus value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    NodeStatus_descriptor(), value);
+}
+inline bool NodeStatus_Parse(
+    const ::std::string& name, NodeStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<NodeStatus>(
+    NodeStatus_descriptor(), name, value);
+}
 // ===================================================================
 
 class NodeState : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.NodeState) */ {
@@ -186,20 +209,20 @@ class NodeState : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.NodeFunction functions = 3;
+  // repeated .e8.NodeFunction functions = 4;
   int functions_size() const;
   void clear_functions();
-  static const int kFunctionsFieldNumber = 3;
+  static const int kFunctionsFieldNumber = 4;
   ::e8::NodeFunction functions(int index) const;
   void set_functions(int index, ::e8::NodeFunction value);
   void add_functions(::e8::NodeFunction value);
   const ::google::protobuf::RepeatedField<int>& functions() const;
   ::google::protobuf::RepeatedField<int>* mutable_functions();
 
-  // repeated int32 function_ports = 4;
+  // repeated int32 function_ports = 5;
   int function_ports_size() const;
   void clear_function_ports();
-  static const int kFunctionPortsFieldNumber = 4;
+  static const int kFunctionPortsFieldNumber = 5;
   ::google::protobuf::int32 function_ports(int index) const;
   void set_function_ports(int index, ::google::protobuf::int32 value);
   void add_function_ports(::google::protobuf::int32 value);
@@ -236,6 +259,12 @@ class NodeState : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_ip_address();
   void set_allocated_ip_address(::std::string* ip_address);
 
+  // .e8.NodeStatus status = 3;
+  void clear_status();
+  static const int kStatusFieldNumber = 3;
+  ::e8::NodeStatus status() const;
+  void set_status(::e8::NodeStatus value);
+
   // @@protoc_insertion_point(class_scope:e8.NodeState)
  private:
 
@@ -246,6 +275,7 @@ class NodeState : public ::google::protobuf::Message /* @@protoc_insertion_point
   mutable int _function_ports_cached_byte_size_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::internal::ArenaStringPtr ip_address_;
+  int status_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_node_2eproto::TableStruct;
 };
@@ -542,7 +572,21 @@ inline void NodeState::set_allocated_ip_address(::std::string* ip_address) {
   // @@protoc_insertion_point(field_set_allocated:e8.NodeState.ip_address)
 }
 
-// repeated .e8.NodeFunction functions = 3;
+// .e8.NodeStatus status = 3;
+inline void NodeState::clear_status() {
+  status_ = 0;
+}
+inline ::e8::NodeStatus NodeState::status() const {
+  // @@protoc_insertion_point(field_get:e8.NodeState.status)
+  return static_cast< ::e8::NodeStatus >(status_);
+}
+inline void NodeState::set_status(::e8::NodeStatus value) {
+  
+  status_ = value;
+  // @@protoc_insertion_point(field_set:e8.NodeState.status)
+}
+
+// repeated .e8.NodeFunction functions = 4;
 inline int NodeState::functions_size() const {
   return functions_.size();
 }
@@ -572,7 +616,7 @@ NodeState::mutable_functions() {
   return &functions_;
 }
 
-// repeated int32 function_ports = 4;
+// repeated int32 function_ports = 5;
 inline int NodeState::function_ports_size() const {
   return function_ports_.size();
 }
@@ -681,6 +725,11 @@ template <> struct is_proto_enum< ::e8::NodeFunction> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::e8::NodeFunction>() {
   return ::e8::NodeFunction_descriptor();
+}
+template <> struct is_proto_enum< ::e8::NodeStatus> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::e8::NodeStatus>() {
+  return ::e8::NodeStatus_descriptor();
 }
 
 }  // namespace protobuf

@@ -28,11 +28,19 @@ enum NodeFunction {
     NDF_TASK_EXECUTOR = 3;
 }
 
+enum NodeStatus {
+    NDS_INVALID = 0;
+    NDS_INITIALIZING = 1;
+    NDS_READY = 2;
+    NDS_UNAVALIABLE = 3;
+}
+
 message NodeState {
     string name = 1;
     bytes ip_address = 2;
-    repeated NodeFunction functions = 3;
-    repeated int32 function_ports = 4;
+    NodeStatus status = 3;
+    repeated NodeFunction functions = 4;
+    repeated int32 function_ports = 5;
 }
 
 message NodeStateRevision {

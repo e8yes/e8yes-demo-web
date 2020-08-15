@@ -112,7 +112,7 @@ void InitDefaults() {
 }
 
 ::google::protobuf::Metadata file_level_metadata[4];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -122,6 +122,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, ip_address_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, status_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, functions_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeState, function_ports_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::NodeStateRevision_NodesEntry_DoNotUse, _has_bits_),
@@ -153,9 +154,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::NodeState)},
-  { 9, 16, sizeof(::e8::NodeStateRevision_NodesEntry_DoNotUse)},
-  { 18, 25, sizeof(::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse)},
-  { 27, -1, sizeof(::e8::NodeStateRevision)},
+  { 10, 17, sizeof(::e8::NodeStateRevision_NodesEntry_DoNotUse)},
+  { 19, 26, sizeof(::e8::NodeStateRevision_DeltaOperationsEntry_DoNotUse)},
+  { 28, -1, sizeof(::e8::NodeStateRevision)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -186,23 +187,26 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\nnode.proto\022\002e8\032\013delta.proto\"j\n\tNodeSta"
-      "te\022\014\n\004name\030\001 \001(\t\022\022\n\nip_address\030\002 \001(\014\022#\n\t"
-      "functions\030\003 \003(\0162\020.e8.NodeFunction\022\026\n\016fun"
-      "ction_ports\030\004 \003(\005\"\253\002\n\021NodeStateRevision\022"
-      "\026\n\016revision_epoch\030\001 \001(\003\022/\n\005nodes\030\003 \003(\0132 "
-      ".e8.NodeStateRevision.NodesEntry\022D\n\020delt"
-      "a_operations\030\004 \003(\0132*.e8.NodeStateRevisio"
-      "n.DeltaOperationsEntry\032;\n\nNodesEntry\022\013\n\003"
-      "key\030\001 \001(\t\022\034\n\005value\030\002 \001(\0132\r.e8.NodeState:"
-      "\0028\001\032J\n\024DeltaOperationsEntry\022\013\n\003key\030\001 \001(\t"
-      "\022!\n\005value\030\002 \001(\0162\022.e8.DeltaOperation:\0028\001*"
-      "a\n\014NodeFunction\022\017\n\013NDF_INVALID\020\000\022\022\n\016NDF_"
-      "FILE_STORE\020\001\022\025\n\021NDF_MESSAGE_STORE\020\002\022\025\n\021N"
-      "DF_TASK_EXECUTOR\020\003b\006proto3"
+      "\n\nnode.proto\022\002e8\032\013delta.proto\"\212\001\n\tNodeSt"
+      "ate\022\014\n\004name\030\001 \001(\t\022\022\n\nip_address\030\002 \001(\014\022\036\n"
+      "\006status\030\003 \001(\0162\016.e8.NodeStatus\022#\n\tfunctio"
+      "ns\030\004 \003(\0162\020.e8.NodeFunction\022\026\n\016function_p"
+      "orts\030\005 \003(\005\"\253\002\n\021NodeStateRevision\022\026\n\016revi"
+      "sion_epoch\030\001 \001(\003\022/\n\005nodes\030\003 \003(\0132 .e8.Nod"
+      "eStateRevision.NodesEntry\022D\n\020delta_opera"
+      "tions\030\004 \003(\0132*.e8.NodeStateRevision.Delta"
+      "OperationsEntry\032;\n\nNodesEntry\022\013\n\003key\030\001 \001"
+      "(\t\022\034\n\005value\030\002 \001(\0132\r.e8.NodeState:\0028\001\032J\n\024"
+      "DeltaOperationsEntry\022\013\n\003key\030\001 \001(\t\022!\n\005val"
+      "ue\030\002 \001(\0162\022.e8.DeltaOperation:\0028\001*a\n\014Node"
+      "Function\022\017\n\013NDF_INVALID\020\000\022\022\n\016NDF_FILE_ST"
+      "ORE\020\001\022\025\n\021NDF_MESSAGE_STORE\020\002\022\025\n\021NDF_TASK"
+      "_EXECUTOR\020\003*W\n\nNodeStatus\022\017\n\013NDS_INVALID"
+      "\020\000\022\024\n\020NDS_INITIALIZING\020\001\022\r\n\tNDS_READY\020\002\022"
+      "\023\n\017NDS_UNAVALIABLE\020\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 546);
+      descriptor, 668);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "node.proto", &protobuf_RegisterTypes);
   ::protobuf_delta_2eproto::AddDescriptors();
@@ -236,6 +240,22 @@ bool NodeFunction_IsValid(int value) {
   }
 }
 
+const ::google::protobuf::EnumDescriptor* NodeStatus_descriptor() {
+  protobuf_node_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_node_2eproto::file_level_enum_descriptors[1];
+}
+bool NodeStatus_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 // ===================================================================
 
@@ -244,6 +264,7 @@ void NodeState::InitAsDefaultInstance() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int NodeState::kNameFieldNumber;
 const int NodeState::kIpAddressFieldNumber;
+const int NodeState::kStatusFieldNumber;
 const int NodeState::kFunctionsFieldNumber;
 const int NodeState::kFunctionPortsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -269,12 +290,14 @@ NodeState::NodeState(const NodeState& from)
   if (from.ip_address().size() > 0) {
     ip_address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_address_);
   }
+  status_ = from.status_;
   // @@protoc_insertion_point(copy_constructor:e8.NodeState)
 }
 
 void NodeState::SharedCtor() {
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ip_address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  status_ = 0;
 }
 
 NodeState::~NodeState() {
@@ -311,6 +334,7 @@ void NodeState::Clear() {
   function_ports_.Clear();
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ip_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  status_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -352,10 +376,25 @@ bool NodeState::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .e8.NodeFunction functions = 3;
+      // .e8.NodeStatus status = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_status(static_cast< ::e8::NodeStatus >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated .e8.NodeFunction functions = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           ::google::protobuf::uint32 length;
           DO_(input->ReadVarint32(&length));
           ::google::protobuf::io::CodedInputStream::Limit limit = input->PushLimit(static_cast<int>(length));
@@ -369,7 +408,7 @@ bool NodeState::MergePartialFromCodedStream(
           input->PopLimit(limit);
         } else if (
             static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -381,19 +420,19 @@ bool NodeState::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated int32 function_ports = 4;
-      case 4: {
+      // repeated int32 function_ports = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_function_ports())));
         } else if (
             static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 34u, input, this->mutable_function_ports())));
+                 1, 42u, input, this->mutable_function_ports())));
         } else {
           goto handle_unusual;
         }
@@ -442,10 +481,16 @@ void NodeState::SerializeWithCachedSizes(
       2, this->ip_address(), output);
   }
 
-  // repeated .e8.NodeFunction functions = 3;
+  // .e8.NodeStatus status = 3;
+  if (this->status() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      3, this->status(), output);
+  }
+
+  // repeated .e8.NodeFunction functions = 4;
   if (this->functions_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(
-      3,
+      4,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       output);
     output->WriteVarint32(
@@ -456,9 +501,9 @@ void NodeState::SerializeWithCachedSizes(
       this->functions(i), output);
   }
 
-  // repeated int32 function_ports = 4;
+  // repeated int32 function_ports = 5;
   if (this->function_ports_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    ::google::protobuf::internal::WireFormatLite::WriteTag(5, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
         _function_ports_cached_byte_size_));
   }
@@ -499,10 +544,16 @@ void NodeState::SerializeWithCachedSizes(
         2, this->ip_address(), target);
   }
 
-  // repeated .e8.NodeFunction functions = 3;
+  // .e8.NodeStatus status = 3;
+  if (this->status() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      3, this->status(), target);
+  }
+
+  // repeated .e8.NodeFunction functions = 4;
   if (this->functions_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      3,
+      4,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(      static_cast< ::google::protobuf::uint32>(
@@ -511,10 +562,10 @@ void NodeState::SerializeWithCachedSizes(
       this->functions_, target);
   }
 
-  // repeated int32 function_ports = 4;
+  // repeated int32 function_ports = 5;
   if (this->function_ports_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      4,
+      5,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
@@ -541,7 +592,7 @@ size_t NodeState::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.NodeFunction functions = 3;
+  // repeated .e8.NodeFunction functions = 4;
   {
     size_t data_size = 0;
     unsigned int count = static_cast<unsigned int>(this->functions_size());for (unsigned int i = 0; i < count; i++) {
@@ -560,7 +611,7 @@ size_t NodeState::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // repeated int32 function_ports = 4;
+  // repeated int32 function_ports = 5;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
       Int32Size(this->function_ports_);
@@ -588,6 +639,12 @@ size_t NodeState::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->ip_address());
+  }
+
+  // .e8.NodeStatus status = 3;
+  if (this->status() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->status());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -627,6 +684,9 @@ void NodeState::MergeFrom(const NodeState& from) {
 
     ip_address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_address_);
   }
+  if (from.status() != 0) {
+    set_status(from.status());
+  }
 }
 
 void NodeState::CopyFrom(const ::google::protobuf::Message& from) {
@@ -659,6 +719,7 @@ void NodeState::InternalSwap(NodeState* other) {
     GetArenaNoVirtual());
   ip_address_.Swap(&other->ip_address_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  swap(status_, other->status_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

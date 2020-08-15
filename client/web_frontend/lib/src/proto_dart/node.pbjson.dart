@@ -15,13 +15,24 @@ const NodeFunction$json = const {
   ],
 };
 
+const NodeStatus$json = const {
+  '1': 'NodeStatus',
+  '2': const [
+    const {'1': 'NDS_INVALID', '2': 0},
+    const {'1': 'NDS_INITIALIZING', '2': 1},
+    const {'1': 'NDS_READY', '2': 2},
+    const {'1': 'NDS_UNAVALIABLE', '2': 3},
+  ],
+};
+
 const NodeState$json = const {
   '1': 'NodeState',
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'ip_address', '3': 2, '4': 1, '5': 12, '10': 'ipAddress'},
-    const {'1': 'functions', '3': 3, '4': 3, '5': 14, '6': '.e8.NodeFunction', '10': 'functions'},
-    const {'1': 'function_ports', '3': 4, '4': 3, '5': 5, '10': 'functionPorts'},
+    const {'1': 'status', '3': 3, '4': 1, '5': 14, '6': '.e8.NodeStatus', '10': 'status'},
+    const {'1': 'functions', '3': 4, '4': 3, '5': 14, '6': '.e8.NodeFunction', '10': 'functions'},
+    const {'1': 'function_ports', '3': 5, '4': 3, '5': 5, '10': 'functionPorts'},
   ],
 };
 

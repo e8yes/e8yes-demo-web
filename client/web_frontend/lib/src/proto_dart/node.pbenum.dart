@@ -28,3 +28,22 @@ class NodeFunction extends $pb.ProtobufEnum {
   const NodeFunction._($core.int v, $core.String n) : super(v, n);
 }
 
+class NodeStatus extends $pb.ProtobufEnum {
+  static const NodeStatus NDS_INVALID = NodeStatus._(0, 'NDS_INVALID');
+  static const NodeStatus NDS_INITIALIZING = NodeStatus._(1, 'NDS_INITIALIZING');
+  static const NodeStatus NDS_READY = NodeStatus._(2, 'NDS_READY');
+  static const NodeStatus NDS_UNAVALIABLE = NodeStatus._(3, 'NDS_UNAVALIABLE');
+
+  static const $core.List<NodeStatus> values = <NodeStatus> [
+    NDS_INVALID,
+    NDS_INITIALIZING,
+    NDS_READY,
+    NDS_UNAVALIABLE,
+  ];
+
+  static final $core.Map<$core.int, NodeStatus> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static NodeStatus valueOf($core.int value) => _byValue[value];
+
+  const NodeStatus._($core.int v, $core.String n) : super(v, n);
+}
+
