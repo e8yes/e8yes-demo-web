@@ -144,10 +144,10 @@ void node_state_store_test::add_swap_delete_test() {
 
     // Remove node2.
     e8::NodeStateRevision revision3;
-    revision2.set_revision_epoch(3);
-    (*revision2.mutable_delta_operations())["node2"] = e8::DOP_DELETE;
+    revision3.set_revision_epoch(3);
+    (*revision3.mutable_delta_operations())["node2"] = e8::DOP_DELETE;
 
-    updated = store.UpdateNodeStates(revision2);
+    updated = store.UpdateNodeStates(revision3);
     QVERIFY(updated == true);
 
     epoch = store.CurrentRevisionEpoch();
@@ -160,9 +160,78 @@ void node_state_store_test::add_swap_delete_test() {
     std::remove("test.sqlite");
 }
 
-void node_state_store_test::arbitrary_update_order_test() {}
+void node_state_store_test::arbitrary_update_order_test() {
+    std::map<e8::NodeName, e8::NodeState> nodes = PrepareNodeStates();
 
-void node_state_store_test::query_filter_test() {}
+    // Add nodes.
+    e8::NodeStateRevision revision1;
+    revision1.set_revision_epoch(1);
+    *revision1.mutable_nodes() = {nodes.begin(), nodes.end()};
+    (*revision1.mutable_delta_operations())["node1"] = e8::DOP_ADD;
+    (*revision1.mutable_delta_operations())["node2"] = e8::DOP_ADD;
+
+    // Swap node1.
+    nodes["node1"].set_status(e8::NDS_UNAVALIABLE);
+
+    e8::NodeStateRevision revision2;
+    revision2.set_revision_epoch(2);
+    (*revision2.mutable_nodes())["node1"] = nodes["node1"];
+    (*revision2.mutable_delta_operations())["node1"] = e8::DOP_SWAP;
+
+    // Remove node2.
+    e8::NodeStateRevision revision3;
+    revision3.set_revision_epoch(3);
+    (*revision3.mutable_delta_operations())["node2"] = e8::DOP_DELETE;
+
+    std::remove("test.sqlite");
+
+    e8::NodeStateStore store(/*file_path=*/"test.sqlite");
+    store.UpdateNodeStates(revision3);
+    e8::RevisionEpoch epoch = store.CurrentRevisionEpoch();
+    QVERIFY(epoch == 0);
+
+    store.UpdateNodeStates(revision1);
+    epoch = store.CurrentRevisionEpoch();
+    QVERIFY(epoch == 1);
+
+    store.UpdateNodeStates(revision2);
+    epoch = store.CurrentRevisionEpoch();
+    QVERIFY(epoch == 3);
+
+    std::map<e8::NodeName, e8::NodeState> retrieved =
+        store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt);
+    QVERIFY(retrieved.size() == 1);
+    QVERIFY(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
+
+    std::remove("test.sqlite");
+}
+
+void node_state_store_test::query_filter_test() {
+    std::map<e8::NodeName, e8::NodeState> nodes = PrepareNodeStates();
+
+    // Add nodes.
+    e8::NodeStateRevision revision;
+    revision.set_revision_epoch(1);
+    *revision.mutable_nodes() = {nodes.begin(), nodes.end()};
+    (*revision.mutable_delta_operations())["node1"] = e8::DOP_ADD;
+    (*revision.mutable_delta_operations())["node2"] = e8::DOP_ADD;
+
+    std::remove("test.sqlite");
+
+    e8::NodeStateStore store(/*file_path=*/"test.sqlite");
+    store.UpdateNodeStates(revision);
+
+    std::map<e8::NodeName, e8::NodeState> message_nodes =
+        store.Nodes(/*node_function=*/e8::NDF_MESSAGE_STORE, /*node_status=*/std::nullopt);
+    QVERIFY(message_nodes.size() == 1);
+    QVERIFY(message_nodes["node2"].status() == e8::NDS_READY);
+
+    std::map<e8::NodeName, e8::NodeState> initializing_nodes =
+        store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/e8::NDS_INITIALIZING);
+    QVERIFY(initializing_nodes.empty());
+
+    std::remove("test.sqlite");
+}
 
 QTEST_APPLESS_MAIN(node_state_store_test)
 
