@@ -55,7 +55,9 @@ void CreateNodeStateStoreSchema(std::string const &file, bool override_data) {
 
     std::string create_current_revision_epoch_table_stmt =
         std::string("CREATE TABLE IF NOT EXISTS ") + kCurrentRevisionEpochTableName + "(" +
-        kCurrentRevisionEpochVersionNumberColumnName + " INTEGER NOT NULL)";
+        kCurrentRevisionEpochIdColumnName + " INTEGER NOT NULL," +
+        kCurrentRevisionEpochVersionNumberColumnName + " INTEGER NOT NULL," + "PRIMARY KEY(" +
+        kCurrentRevisionEpochIdColumnName + "))";
     rc = sqlite3_exec(db, create_current_revision_epoch_table_stmt.c_str(), /*callback=*/nullptr,
                       /*data=*/nullptr,
                       /*errormsg=*/nullptr);

@@ -22,6 +22,7 @@
 #include <utility>
 
 #include "distributor/store/node_state_store.h"
+#include "proto_cc/delta.pb.h"
 #include "proto_cc/node.pb.h"
 
 class node_state_store_test : public QObject {
@@ -32,8 +33,9 @@ class node_state_store_test : public QObject {
     ~node_state_store_test();
 
   private slots:
-    void update_and_load_test();
-    void update_override_test();
+    void add_swap_delete_test();
+    void arbitrary_update_order_test();
+    void query_filter_test();
 };
 
 inline unsigned char constexpr operator"" _uchar(unsigned long long arg) noexcept {
@@ -48,13 +50,14 @@ node_state_store_test::node_state_store_test() {}
 
 node_state_store_test::~node_state_store_test() {}
 
-std::map<std::string, e8::NodeState> PrepareNodeStates() {
+std::map<e8::NodeName, e8::NodeState> PrepareNodeStates() {
     e8::NodeState node1;
     node1.set_name("node1");
     (*node1.mutable_ip_address()) += 192_uchar;
     (*node1.mutable_ip_address()) += 168_uchar;
     (*node1.mutable_ip_address()) += 1_uchar;
     (*node1.mutable_ip_address()) += 1_uchar;
+    node1.set_status(e8::NodeStatus::NDS_READY);
     node1.mutable_functions()->Add(e8::NDF_FILE_STORE);
 
     e8::NodeState node2;
@@ -63,69 +66,103 @@ std::map<std::string, e8::NodeState> PrepareNodeStates() {
     (*node2.mutable_ip_address()) += 168_uchar;
     (*node2.mutable_ip_address()) += 1_uchar;
     (*node2.mutable_ip_address()) += 2_uchar;
+    node2.set_status(e8::NodeStatus::NDS_READY);
     node2.mutable_functions()->Add(e8::NDF_TASK_EXECUTOR);
     node2.mutable_functions()->Add(e8::NDF_MESSAGE_STORE);
 
-    return std::map<std::string, e8::NodeState>{std::make_pair(node2.name(), node2),
-                                                std::make_pair(node1.name(), node1)};
+    return std::map<e8::NodeName, e8::NodeState>{std::make_pair(node2.name(), node2),
+                                                 std::make_pair(node1.name(), node1)};
 }
 
-void node_state_store_test::update_and_load_test() {
-    //    e8::NodeStateReaderStore reader_store(/*file_path=*/"test.sqlite");
-    //    e8::NodeStateWriterStore writer_store(/*file_path=*/"test.sqlite",
-    //    /*override_data=*/true);
+void node_state_store_test::add_swap_delete_test() {
+    std::remove("test.sqlite");
 
-    //    std::map<std::string, e8::NodeState> node_states = PrepareNodeStates();
+    e8::NodeStateStore store(/*file_path=*/"test.sqlite");
+    e8::RevisionEpoch epoch = store.CurrentRevisionEpoch();
+    QVERIFY(epoch == 0);
 
-    //    writer_store.Update(node_states);
-    //    std::map<std::string, e8::NodeState> loaded_node_states = reader_store.Load();
+    std::map<e8::NodeName, e8::NodeState> nodes = PrepareNodeStates();
 
-    //    QVERIFY(loaded_node_states.size() == node_states.size());
+    // Add nodes.
+    e8::NodeStateRevision revision1;
+    revision1.set_revision_epoch(1);
+    *revision1.mutable_nodes() = {nodes.begin(), nodes.end()};
+    (*revision1.mutable_delta_operations())["node1"] = e8::DOP_ADD;
+    (*revision1.mutable_delta_operations())["node2"] = e8::DOP_ADD;
 
-    //    QVERIFY(loaded_node_states.find("node1") != loaded_node_states.end());
-    //    QVERIFY(loaded_node_states["node1"].name() == "node1");
-    //    QVERIFY(loaded_node_states["node1"].clock() == 0);
-    //    QVERIFY(loaded_node_states["node1"].ip_address()[0] == 192_char);
-    //    QVERIFY(loaded_node_states["node1"].ip_address()[1] == 168_char);
-    //    QVERIFY(loaded_node_states["node1"].ip_address()[2] == 1_char);
-    //    QVERIFY(loaded_node_states["node1"].ip_address()[3] == 1_char);
-    //    QVERIFY(loaded_node_states["node1"].types_size() == 1);
-    //    QVERIFY(loaded_node_states["node1"].types()[0] == e8::NDT_FILE_STORE);
+    bool updated = store.UpdateNodeStates(revision1);
+    QVERIFY(updated == true);
 
-    //    QVERIFY(loaded_node_states.find("node2") != loaded_node_states.end());
-    //    QVERIFY(loaded_node_states["node2"].name() == "node2");
-    //    QVERIFY(loaded_node_states["node2"].clock() == 10);
-    //    QVERIFY(loaded_node_states["node2"].ip_address()[0] == 192_char);
-    //    QVERIFY(loaded_node_states["node2"].ip_address()[1] == 168_char);
-    //    QVERIFY(loaded_node_states["node2"].ip_address()[2] == 1_char);
-    //    QVERIFY(loaded_node_states["node2"].ip_address()[3] == 2_char);
-    //    QVERIFY(loaded_node_states["node2"].types_size() == 2);
-    //    QVERIFY(loaded_node_states["node2"].types()[0] == e8::NDT_TASK_EXECUTOR);
-    //    QVERIFY(loaded_node_states["node2"].types()[1] == e8::NDT_MESSAGE_STORE);
+    epoch = store.CurrentRevisionEpoch();
+    QVERIFY(epoch == 1);
 
-    //    std::remove("test.sqlite");
+    std::map<e8::NodeName, e8::NodeState> retrieved =
+        store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt);
+    QVERIFY(retrieved.size() == 2);
+    QVERIFY(retrieved.find("node1") != retrieved.end());
+    QVERIFY(retrieved["node1"].name() == "node1");
+    QVERIFY(retrieved["node1"].ip_address()[0] == 192_char);
+    QVERIFY(retrieved["node1"].ip_address()[1] == 168_char);
+    QVERIFY(retrieved["node1"].ip_address()[2] == 1_char);
+    QVERIFY(retrieved["node1"].ip_address()[3] == 1_char);
+    QVERIFY(retrieved["node1"].status() == e8::NDS_READY);
+    QVERIFY(retrieved["node1"].functions_size() == 1);
+    QVERIFY(retrieved["node1"].functions()[0] == e8::NDF_FILE_STORE);
+
+    QVERIFY(retrieved.find("node2") != retrieved.end());
+    QVERIFY(retrieved["node2"].name() == "node2");
+    QVERIFY(retrieved["node2"].ip_address()[0] == 192_char);
+    QVERIFY(retrieved["node2"].ip_address()[1] == 168_char);
+    QVERIFY(retrieved["node2"].ip_address()[2] == 1_char);
+    QVERIFY(retrieved["node2"].ip_address()[3] == 2_char);
+    QVERIFY(retrieved["node2"].status() == e8::NDS_READY);
+    QVERIFY(retrieved["node2"].functions_size() == 2);
+    QVERIFY(retrieved["node2"].functions()[0] == e8::NDF_TASK_EXECUTOR);
+    QVERIFY(retrieved["node2"].functions()[1] == e8::NDF_MESSAGE_STORE);
+
+    updated = store.UpdateNodeStates(revision1);
+    QVERIFY(updated == false);
+
+    // Swap node1.
+    nodes["node1"].set_status(e8::NDS_UNAVALIABLE);
+
+    e8::NodeStateRevision revision2;
+    revision2.set_revision_epoch(2);
+    (*revision2.mutable_nodes())["node1"] = nodes["node1"];
+    (*revision2.mutable_delta_operations())["node1"] = e8::DOP_SWAP;
+
+    updated = store.UpdateNodeStates(revision2);
+    QVERIFY(updated == true);
+
+    epoch = store.CurrentRevisionEpoch();
+    QVERIFY(epoch == 2);
+
+    retrieved = store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt);
+    QVERIFY(retrieved.size() == 2);
+    QVERIFY(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
+    QVERIFY(retrieved["node2"].status() == e8::NDS_READY);
+
+    // Remove node2.
+    e8::NodeStateRevision revision3;
+    revision2.set_revision_epoch(3);
+    (*revision2.mutable_delta_operations())["node2"] = e8::DOP_DELETE;
+
+    updated = store.UpdateNodeStates(revision2);
+    QVERIFY(updated == true);
+
+    epoch = store.CurrentRevisionEpoch();
+    QVERIFY(epoch == 3);
+
+    retrieved = store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt);
+    QVERIFY(retrieved.size() == 1);
+    QVERIFY(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
+
+    std::remove("test.sqlite");
 }
 
-void node_state_store_test::update_override_test() {
-    //    e8::NodeStateReaderStore reader_store(/*file_path=*/"test.sqlite");
-    //    e8::NodeStateWriterStore writer_store(/*file_path=*/"test.sqlite",
-    //    /*override_data=*/true);
+void node_state_store_test::arbitrary_update_order_test() {}
 
-    //    std::map<std::string, e8::NodeState> node_states = PrepareNodeStates();
-
-    //    writer_store.Update(node_states);
-    //    node_states["node1"].set_clock(2);
-    //    writer_store.Update(node_states);
-
-    //    std::map<std::string, e8::NodeState> loaded_node_states = reader_store.Load();
-    //    QVERIFY(loaded_node_states.size() == node_states.size());
-
-    //    QVERIFY(loaded_node_states.find("node1") != loaded_node_states.end());
-    //    QVERIFY(loaded_node_states.find("node2") != loaded_node_states.end());
-    //    QVERIFY(loaded_node_states["node1"].clock() == 2);
-
-    //    std::remove("test.sqlite");
-}
+void node_state_store_test::query_filter_test() {}
 
 QTEST_APPLESS_MAIN(node_state_store_test)
 

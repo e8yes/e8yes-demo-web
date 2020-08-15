@@ -27,6 +27,8 @@
 #include "distributor/store/entity.h"
 #include "distributor/store/node_state_schema.h"
 #include "distributor/store/node_state_store.h"
+#include "proto_cc/delta.pb.h"
+#include "proto_cc/node.pb.h"
 
 namespace e8 {
 namespace {
@@ -34,7 +36,7 @@ namespace {
 static RevisionEpoch const kStartingRevisionEpoch = 1;
 
 bool ExistRevision(RevisionEpoch const epoch, sqlite3 *db) {
-    std::string sql = std::string("SELECT 1 FROM") + kRevisionHistoryTableName + " WHERE " +
+    std::string sql = std::string("SELECT 1 FROM ") + kRevisionHistoryTableName + " WHERE " +
                       kRevisionHistoryTableRevisionEpochColumnName + "=?";
 
     sqlite3_stmt *stmt;
@@ -149,13 +151,15 @@ void WriteRevisionHistory(NodeStateRevision const &revision, sqlite3 *db) {
 
 RevisionEpoch GetCurrentRevisionEpoch(sqlite3 *db) {
     std::string sql = std::string("SELECT ") + kCurrentRevisionEpochVersionNumberColumnName +
-                      " FROM " + kCurrentRevisionEpochTableName;
+                      " FROM " + kCurrentRevisionEpochTableName + " WHERE " +
+                      kCurrentRevisionEpochIdColumnName + "=1";
 
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(db, sql.c_str(), sql.size() + 1, &stmt, /*pzTail=*/nullptr);
     assert(rc == SQLITE_OK);
 
-    if (SQLITE_ROW != sqlite3_step(stmt)) {
+    int state = sqlite3_step(stmt);
+    if (SQLITE_ROW != state) {
         rc = sqlite3_finalize(stmt);
         assert(rc == SQLITE_OK);
         return kStartingRevisionEpoch - 1;
@@ -168,8 +172,12 @@ RevisionEpoch GetCurrentRevisionEpoch(sqlite3 *db) {
 }
 
 void SetCurrentRevisionEpoch(RevisionEpoch const epoch, sqlite3 *db) {
-    std::string sql = std::string("UPDATE ") + kCurrentRevisionEpochTableName + " SET " +
-                      kCurrentRevisionEpochVersionNumberColumnName + "=?";
+    std::string sql = std::string("INSERT INTO ") + kCurrentRevisionEpochTableName + "(" +
+                      kCurrentRevisionEpochIdColumnName + "," +
+                      kCurrentRevisionEpochVersionNumberColumnName + ")VALUES(1,?)ON CONFLICT(" +
+                      kCurrentRevisionEpochIdColumnName + ")DO UPDATE SET " +
+                      kCurrentRevisionEpochVersionNumberColumnName + "=excluded." +
+                      kCurrentRevisionEpochVersionNumberColumnName;
 
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(db, sql.c_str(), sql.size() + 1, &stmt, /*pzTail=*/nullptr);
@@ -189,18 +197,20 @@ void ApplyRevisionToCurrentNodeStates(NodeStateRevision const &revision, sqlite3
     sqlite3_stmt *delete_node_state_stmt = DeleteNodeStateStatement(db);
 
     for (auto const &[node_name, delta_operation] : revision.delta_operations()) {
-        NodeState const &node_state = revision.nodes().at(node_name);
-
         switch (delta_operation) {
         case DOP_ADD:
-        case DOP_SWAP:
+        case DOP_SWAP: {
+            NodeState const &node_state = revision.nodes().at(node_name);
             UpsertNodeState(node_name, node_state, upsert_node_state_stmt);
             break;
-        case DOP_DELETE:
+        }
+        case DOP_DELETE: {
             DeleteNodeState(node_name, delete_node_state_stmt);
             break;
-        default:
+        }
+        default: {
             assert(false);
+        }
         }
     }
 
@@ -292,11 +302,10 @@ bool NodeStateStore::UpdateNodeStates(NodeStateRevision const &revision) {
 
     // Update the node state snapshot if possible.
     RevisionEpoch current_revision = this->CurrentRevisionEpoch();
-    while (ExistRevision(current_revision + 1, db)) {
-        // Can only apply revision when the next adjacent revision exists.
-        std::optional<NodeStateRevision> next_revision =
-            LoadRevisionHistory(current_revision + 1, db);
-        assert(next_revision.has_value());
+    std::optional<NodeStateRevision> next_revision;
+
+    // Can only apply revision when the next adjacent revision exists.
+    while ((next_revision = LoadRevisionHistory(current_revision + 1, db)).has_value()) {
         ApplyRevisionToCurrentNodeStates(*next_revision, db);
         ++current_revision;
     }

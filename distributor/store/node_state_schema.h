@@ -28,6 +28,7 @@ static char const kRevisionHistoryTableRevisionEpochColumnName[] = "revision_epo
 static char const kRevisionHistoryTableRevisionDataColumnName[] = "revision_data";
 
 static char const kCurrentRevisionEpochTableName[] = "current_revision_epoch";
+static char const kCurrentRevisionEpochIdColumnName[] = "id";
 static char const kCurrentRevisionEpochVersionNumberColumnName[] = "version_number";
 
 static char const kNodeStateTableName[] = "node_states";

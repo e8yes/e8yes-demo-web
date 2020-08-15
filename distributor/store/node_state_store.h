@@ -24,7 +24,6 @@
 #include <string>
 
 #include "distributor/store/entity.h"
-#include "proto_cc/delta.pb.h"
 #include "proto_cc/node.pb.h"
 
 namespace e8 {
