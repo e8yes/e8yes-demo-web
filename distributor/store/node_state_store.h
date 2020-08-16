@@ -42,7 +42,7 @@ class NodeStateStore {
      * @brief NodeStateReaderStore Initialize the database with the schema if it had not before.
      * This operation won't change the existing data.
      */
-    NodeStateStore(std::string const &file_path);
+    explicit NodeStateStore(std::string const &file_path);
     ~NodeStateStore();
 
     /**

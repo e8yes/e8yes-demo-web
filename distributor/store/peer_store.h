@@ -33,7 +33,7 @@ namespace e8 {
  */
 class PeerStore {
   public:
-    PeerStore(std::string const &file_path);
+    explicit PeerStore(std::string const &file_path);
 
     /**
      * @brief AddPeer Adds a node to the peer set.

@@ -19,9 +19,9 @@
 #define NODESTATESERVICEIMPL_H
 
 #include <grpcpp/grpcpp.h>
-#include <memory>
 
 #include "distributor/store/node_state_store.h"
+#include "distributor/store/peer_store.h"
 #include "proto_cc/service_node_state.grpc.pb.h"
 #include "proto_cc/service_node_state.pb.h"
 
@@ -30,9 +30,18 @@ namespace e8 {
 /**
  * @brief The NodeStateServiceImpl class
  */
-class NodeStateServiceImpl {
+class NodeStateServiceImpl : public NodeStateService::Service {
   public:
     NodeStateServiceImpl();
+    ~NodeStateServiceImpl() override = default;
+
+    grpc::Status ReviseNodeState(grpc::ServerContext *context,
+                                 ReviseNodeStateRequest const *request,
+                                 ReviseNodeStateResponse *response) override;
+
+  private:
+    NodeStateStore node_states_;
+    PeerStore peers_;
 };
 
 } // namespace e8
