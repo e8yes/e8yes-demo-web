@@ -54,6 +54,9 @@ bool PeerStore::AddPeer(NodeState const &node) {
     rc = sqlite3_step(stmt);
     assert(rc == SQLITE_DONE);
 
+    rc = sqlite3_finalize(stmt);
+    assert(rc == SQLITE_OK);
+
     int num_rows_inserted = sqlite3_total_changes(db);
 
     rc = sqlite3_close(db);
@@ -83,12 +86,15 @@ bool PeerStore::DeletePeer(std::string const &node_name) {
     rc = sqlite3_step(stmt);
     assert(rc == SQLITE_DONE);
 
+    rc = sqlite3_finalize(stmt);
+    assert(rc == SQLITE_OK);
+
     int num_rows_inserted = sqlite3_total_changes(db);
 
     rc = sqlite3_close(db);
     assert(rc == SQLITE_OK);
 
-    lock_.lock();
+    lock_.unlock();
 
     return num_rows_inserted == 1;
 }
@@ -117,6 +123,9 @@ std::map<NodeName, NodeState> PeerStore::Peers() {
 
         result.insert(std::make_pair(std::string(node_name), node_state));
     }
+
+    rc = sqlite3_finalize(stmt);
+    assert(rc == SQLITE_OK);
 
     rc = sqlite3_close(db);
     assert(rc == SQLITE_OK);
