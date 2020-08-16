@@ -19,6 +19,7 @@
 #define PEERSTORE_H
 
 #include <map>
+#include <mutex>
 #include <string>
 
 #include "distributor/store/entity.h"
@@ -36,13 +37,25 @@ class PeerStore {
 
     /**
      * @brief AddPeer Adds a node to the peer set.
+     *
+     * Caution: this function should only be called by one process.
+     * TODO: Use inter-process mutexes to increase fault tolerance even though this is not likely to
+     * happen.
+     *
+     * @return true if the peer did not exist. Otherwise, false.
      */
-    void AddPeer(NodeState const &node);
+    bool AddPeer(NodeState const &node);
 
     /**
      * @brief DeletePeer Deletes a node from the peer set.
+     *
+     * Caution: this function should only be called by one process.
+     * TODO: Use inter-process mutexes to increase fault tolerance even though this is not likely to
+     * happen.
+     *
+     * @return true if the peer did exist. Otherwise, false.
      */
-    void DeletePeer(std::string const &node_name);
+    bool DeletePeer(std::string const &node_name);
 
     /**
      * @brief Peers Retrieves the peer set.
@@ -51,6 +64,7 @@ class PeerStore {
 
   private:
     std::string const file_path_;
+    std::mutex lock_;
 };
 
 } // namespace e8

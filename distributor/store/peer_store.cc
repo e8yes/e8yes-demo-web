@@ -16,6 +16,7 @@
  */
 
 #include <map>
+#include <mutex>
 #include <sqlite3.h>
 #include <string>
 
@@ -30,7 +31,9 @@ PeerStore::PeerStore(std::string const &file_path) : file_path_(file_path) {
     CreatePeerStoreSchema(file_path, /*override_data=*/false);
 }
 
-void PeerStore::AddPeer(NodeState const &node) {
+bool PeerStore::AddPeer(NodeState const &node) {
+    lock_.lock();
+
     sqlite3 *db;
     int rc = sqlite3_open_v2(file_path_.c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_NOMUTEX,
                              /*zVfs=*/nullptr);
@@ -38,9 +41,7 @@ void PeerStore::AddPeer(NodeState const &node) {
 
     std::string sql = std::string("INSERT INTO ") + kPeerTableName + "(" +
                       kPeerTableNodeNameColumnName + "," + kPeerTableNodeDataColumnName +
-                      ")VALUES(?,?)ON CONFLICT(" + kPeerTableNodeNameColumnName +
-                      ")DO UPDATE SET " + kPeerTableNodeDataColumnName + "=excluded." +
-                      kPeerTableNodeDataColumnName;
+                      ")VALUES(?,?)ON CONFLICT(" + kPeerTableNodeNameColumnName + ")DO NOTHING";
     sqlite3_stmt *stmt;
     rc = sqlite3_prepare_v2(db, sql.c_str(), sql.size() + 1, &stmt, /*pzTail=*/nullptr);
     assert(rc == SQLITE_OK);
@@ -53,11 +54,19 @@ void PeerStore::AddPeer(NodeState const &node) {
     rc = sqlite3_step(stmt);
     assert(rc == SQLITE_DONE);
 
+    int num_rows_inserted = sqlite3_total_changes(db);
+
     rc = sqlite3_close(db);
     assert(rc == SQLITE_OK);
+
+    lock_.unlock();
+
+    return num_rows_inserted == 1;
 }
 
-void PeerStore::DeletePeer(std::string const &node_name) {
+bool PeerStore::DeletePeer(std::string const &node_name) {
+    lock_.lock();
+
     sqlite3 *db;
     int rc = sqlite3_open_v2(file_path_.c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_NOMUTEX,
                              /*zVfs=*/nullptr);
@@ -74,8 +83,14 @@ void PeerStore::DeletePeer(std::string const &node_name) {
     rc = sqlite3_step(stmt);
     assert(rc == SQLITE_DONE);
 
+    int num_rows_inserted = sqlite3_total_changes(db);
+
     rc = sqlite3_close(db);
     assert(rc == SQLITE_OK);
+
+    lock_.lock();
+
+    return num_rows_inserted == 1;
 }
 
 std::map<NodeName, NodeState> PeerStore::Peers() {
