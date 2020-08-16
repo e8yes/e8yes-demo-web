@@ -20,6 +20,7 @@
 #include <map>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "distributor/store/node_state_store.h"
 #include "proto_cc/delta.pb.h"
@@ -36,6 +37,7 @@ class node_state_store_test : public QObject {
     void add_swap_delete_test();
     void arbitrary_update_order_test();
     void query_filter_test();
+    void revision_history_test();
 };
 
 inline unsigned char constexpr operator"" _uchar(unsigned long long arg) noexcept {
@@ -229,6 +231,43 @@ void node_state_store_test::query_filter_test() {
     std::map<e8::NodeName, e8::NodeState> initializing_nodes =
         store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/e8::NDS_INITIALIZING);
     QVERIFY(initializing_nodes.empty());
+
+    std::remove("test.sqlite");
+}
+
+void node_state_store_test::revision_history_test() {
+    std::map<e8::NodeName, e8::NodeState> nodes = PrepareNodeStates();
+
+    // Add nodes.
+    e8::NodeStateRevision revision1;
+    revision1.set_revision_epoch(1);
+    *revision1.mutable_nodes() = {nodes.begin(), nodes.end()};
+    (*revision1.mutable_delta_operations())["node1"] = e8::DOP_ADD;
+    (*revision1.mutable_delta_operations())["node2"] = e8::DOP_ADD;
+
+    // Swap node1.
+    nodes["node1"].set_status(e8::NDS_UNAVALIABLE);
+
+    e8::NodeStateRevision revision2;
+    revision2.set_revision_epoch(2);
+    (*revision2.mutable_nodes())["node1"] = nodes["node1"];
+    (*revision2.mutable_delta_operations())["node1"] = e8::DOP_SWAP;
+
+    // Remove node2.
+    e8::NodeStateRevision revision3;
+    revision3.set_revision_epoch(3);
+    (*revision3.mutable_delta_operations())["node2"] = e8::DOP_DELETE;
+
+    std::remove("test.sqlite");
+
+    e8::NodeStateStore store(/*file_path=*/"test.sqlite");
+
+    store.UpdateNodeStates(revision3);
+    store.UpdateNodeStates(revision1);
+    store.UpdateNodeStates(revision2);
+
+    std::vector<e8::NodeStateRevision> revisions1_2 = store.Revisions(/*begin=*/1, /*end=*/2);
+    QVERIFY(revisions1_2.size() == 2);
 
     std::remove("test.sqlite");
 }

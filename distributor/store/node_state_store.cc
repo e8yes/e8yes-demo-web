@@ -99,33 +99,47 @@ void DeleteNodeState(std::string const &node_name, sqlite3_stmt *stmt) {
     assert(rc == SQLITE_DONE);
 }
 
-std::optional<NodeStateRevision> LoadRevisionHistory(RevisionEpoch epoch, sqlite3 *db) {
+std::vector<NodeStateRevision> LoadRevisionHistory(RevisionEpoch begin, RevisionEpoch end,
+                                                   sqlite3 *db) {
     std::string sql = std::string("SELECT ") + kRevisionHistoryTableRevisionDataColumnName +
                       " FROM " + kRevisionHistoryTableName + " WHERE " +
-                      kRevisionHistoryTableRevisionEpochColumnName + "=?";
+                      kRevisionHistoryTableRevisionEpochColumnName + ">=? AND " +
+                      kRevisionHistoryTableRevisionEpochColumnName + "<=?";
 
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(db, sql.c_str(), sql.size() + 1, &stmt, /*pzTail=*/nullptr);
     assert(rc == SQLITE_OK);
-    rc = sqlite3_bind_int(stmt, /*index=*/1, epoch);
+    rc = sqlite3_bind_int(stmt, /*index=*/1, begin);
+    assert(rc == SQLITE_OK);
+    rc = sqlite3_bind_int(stmt, /*index=*/2, end);
     assert(rc == SQLITE_OK);
 
-    if (SQLITE_ROW != sqlite3_step(stmt)) {
-        rc = sqlite3_finalize(stmt);
-        assert(rc == SQLITE_OK);
-        return std::nullopt;
+    std::vector<NodeStateRevision> revisions;
+    while (SQLITE_ROW == sqlite3_step(stmt)) {
+        void const *serialized_revision = sqlite3_column_blob(stmt, 0);
+        int serialized_revision_bytes = sqlite3_column_bytes(stmt, 0);
+
+        NodeStateRevision revision;
+        revision.ParseFromArray(serialized_revision, serialized_revision_bytes);
+
+        revisions.push_back(revision);
     }
-
-    void const *serialized_revision = sqlite3_column_blob(stmt, 0);
-    int serialized_revision_bytes = sqlite3_column_bytes(stmt, 0);
-
-    NodeStateRevision result;
-    result.ParseFromArray(serialized_revision, serialized_revision_bytes);
 
     rc = sqlite3_finalize(stmt);
     assert(rc == SQLITE_OK);
 
-    return result;
+    return revisions;
+}
+
+std::optional<NodeStateRevision> LoadRevisionHistory(RevisionEpoch epoch, sqlite3 *db) {
+    std::vector<NodeStateRevision> revisions =
+        LoadRevisionHistory(/*begin=*/epoch, /*end=*/epoch, db);
+    if (revisions.empty()) {
+        return std::nullopt;
+    } else {
+        assert(revisions.size() == 1);
+        return revisions[0];
+    }
 }
 
 void WriteRevisionHistory(NodeStateRevision const &revision, sqlite3 *db) {
@@ -319,6 +333,21 @@ bool NodeStateStore::UpdateNodeStates(NodeStateRevision const &revision) {
     lock_.unlock();
 
     return true;
+}
+
+std::vector<NodeStateRevision> NodeStateStore::Revisions(RevisionEpoch const begin,
+                                                         RevisionEpoch const end) {
+    sqlite3 *db;
+    int rc = sqlite3_open_v2(file_path_.c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_NOMUTEX,
+                             /*zVfs=*/nullptr);
+    assert(rc == SQLITE_OK);
+
+    std::vector<NodeStateRevision> revisions = LoadRevisionHistory(begin, end, db);
+
+    rc = sqlite3_close(db);
+    assert(rc == SQLITE_OK);
+
+    return revisions;
 }
 
 } // namespace e8

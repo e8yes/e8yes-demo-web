@@ -21,7 +21,9 @@
 #include <cstdint>
 #include <map>
 #include <mutex>
+#include <optional>
 #include <string>
+#include <vector>
 
 #include "distributor/store/entity.h"
 #include "proto_cc/node.pb.h"
@@ -69,6 +71,12 @@ class NodeStateStore {
      * state snapshot.
      */
     RevisionEpoch CurrentRevisionEpoch();
+
+    /**
+     * @brief Revisions Retrieves all the revisions bounded by the epoch interval [begin, end].
+     * @return Returns all the available revisions within the interval.
+     */
+    std::vector<NodeStateRevision> Revisions(RevisionEpoch const begin, RevisionEpoch const end);
 
   private:
     std::string const file_path_;
