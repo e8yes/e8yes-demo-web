@@ -38,6 +38,7 @@ set +e
 
 echo "============================================"
 echo "Running the test suite"
+num_tests=0
 for test_exec in ${test_execs[@]}
 do
 	($test_exec)
@@ -48,8 +49,9 @@ do
 		echo "Test $test_exec failed."
 		exit 1
 	fi
+	((num_tests = num_tests + 1))
 done
 
 echo "============================================"
-echo "Test suite has passed."
+echo "Test suite ($num_tests collections) has passed."
 
