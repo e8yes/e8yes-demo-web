@@ -22,34 +22,34 @@ package e8;
 import "node.proto";
 
 message ReviseNodeStateRequest {
-    NodeStateRevision revision = 1;
+    repeated NodeStateRevision revisions = 1;
 }
 
 message ReviseNodeStateResponse {
 }
 
 
-message GetLatestRevisionEpochRequest {
+message GetCurrentRevisionEpochRequest {
 }
 
-message GetLatestRevisionEpochResponse {
+message GetCurrentRevisionEpochResponse {
     int64 revision_epoch = 1;
 }
 
 
-message AddPeerRequest {
-    NodeState node = 1;
+message AddPeersRequest {
+    repeated NodeState nodes = 1;
 }
 
-message AddPeerResponse {
+message AddPeersResponse {
 }
 
 
-message DeletePeerRequest {
-    string node_name = 1;
+message DeletePeersRequest {
+    repeated string node_names = 1;
 }
 
-message DeletePeerResponse {
+message DeletePeersResponse {
 }
 
 
@@ -58,11 +58,11 @@ service NodeStateService {
     rpc ReviseNodeState (ReviseNodeStateRequest) returns (ReviseNodeStateResponse);
 
     // Returns the the latest revision epoch the target node is currently at.
-    rpc GetLatestRevisionEpoch (GetLatestRevisionEpochRequest) returns (GetLatestRevisionEpochResponse);
+    rpc GetCurrentRevisionEpoch (GetCurrentRevisionEpochRequest) returns (GetCurrentRevisionEpochResponse);
 
     // Add a peer to the current node.
-    rpc AddPeer (AddPeerRequest) returns (AddPeerResponse); 
+    rpc AddPeers (AddPeersRequest) returns (AddPeersResponse); 
 
     // Delete a peer that was previously added to the current node.
-    rpc DeletePeer (DeletePeerRequest) returns (DeletePeerResponse);
+    rpc DeletePeers (DeletePeersRequest) returns (DeletePeersResponse);
 }

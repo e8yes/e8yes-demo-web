@@ -61,28 +61,28 @@ class NodeStateService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::ReviseNodeStateResponse>>(PrepareAsyncReviseNodeStateRaw(context, request, cq));
     }
     // Returns the the latest revision epoch the target node is currently at.
-    virtual ::grpc::Status GetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::e8::GetLatestRevisionEpochResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>> AsyncGetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>>(AsyncGetLatestRevisionEpochRaw(context, request, cq));
+    virtual ::grpc::Status GetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::e8::GetCurrentRevisionEpochResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetCurrentRevisionEpochResponse>> AsyncGetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetCurrentRevisionEpochResponse>>(AsyncGetCurrentRevisionEpochRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>> PrepareAsyncGetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>>(PrepareAsyncGetLatestRevisionEpochRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetCurrentRevisionEpochResponse>> PrepareAsyncGetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetCurrentRevisionEpochResponse>>(PrepareAsyncGetCurrentRevisionEpochRaw(context, request, cq));
     }
     // Add a peer to the current node.
-    virtual ::grpc::Status AddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::e8::AddPeerResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>> AsyncAddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>>(AsyncAddPeerRaw(context, request, cq));
+    virtual ::grpc::Status AddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::e8::AddPeersResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeersResponse>> AsyncAddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeersResponse>>(AsyncAddPeersRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>> PrepareAsyncAddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>>(PrepareAsyncAddPeerRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeersResponse>> PrepareAsyncAddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeersResponse>>(PrepareAsyncAddPeersRaw(context, request, cq));
     }
     // Delete a peer that was previously added to the current node.
-    virtual ::grpc::Status DeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::e8::DeletePeerResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeerResponse>> AsyncDeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeerResponse>>(AsyncDeletePeerRaw(context, request, cq));
+    virtual ::grpc::Status DeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::e8::DeletePeersResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>> AsyncDeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>>(AsyncDeletePeersRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeerResponse>> PrepareAsyncDeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeerResponse>>(PrepareAsyncDeletePeerRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>> PrepareAsyncDeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>>(PrepareAsyncDeletePeersRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
@@ -90,22 +90,22 @@ class NodeStateService final {
       // Applies incremental updates to the node state snapshot.
       virtual void ReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest* request, ::e8::ReviseNodeStateResponse* response, std::function<void(::grpc::Status)>) = 0;
       // Returns the the latest revision epoch the target node is currently at.
-      virtual void GetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response, std::function<void(::grpc::Status)>) = 0;
       // Add a peer to the current node.
-      virtual void AddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void AddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response, std::function<void(::grpc::Status)>) = 0;
       // Delete a peer that was previously added to the current node.
-      virtual void DeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::ReviseNodeStateResponse>* AsyncReviseNodeStateRaw(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::ReviseNodeStateResponse>* PrepareAsyncReviseNodeStateRaw(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>* AsyncGetLatestRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetLatestRevisionEpochResponse>* PrepareAsyncGetLatestRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>* AsyncAddPeerRaw(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeerResponse>* PrepareAsyncAddPeerRaw(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeerResponse>* AsyncDeletePeerRaw(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeerResponse>* PrepareAsyncDeletePeerRaw(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetCurrentRevisionEpochResponse>* AsyncGetCurrentRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetCurrentRevisionEpochResponse>* PrepareAsyncGetCurrentRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeersResponse>* AsyncAddPeersRaw(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeersResponse>* PrepareAsyncAddPeersRaw(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>* AsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>* PrepareAsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -117,34 +117,34 @@ class NodeStateService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::ReviseNodeStateResponse>> PrepareAsyncReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::ReviseNodeStateResponse>>(PrepareAsyncReviseNodeStateRaw(context, request, cq));
     }
-    ::grpc::Status GetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::e8::GetLatestRevisionEpochResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetLatestRevisionEpochResponse>> AsyncGetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetLatestRevisionEpochResponse>>(AsyncGetLatestRevisionEpochRaw(context, request, cq));
+    ::grpc::Status GetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::e8::GetCurrentRevisionEpochResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetCurrentRevisionEpochResponse>> AsyncGetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetCurrentRevisionEpochResponse>>(AsyncGetCurrentRevisionEpochRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetLatestRevisionEpochResponse>> PrepareAsyncGetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetLatestRevisionEpochResponse>>(PrepareAsyncGetLatestRevisionEpochRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetCurrentRevisionEpochResponse>> PrepareAsyncGetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetCurrentRevisionEpochResponse>>(PrepareAsyncGetCurrentRevisionEpochRaw(context, request, cq));
     }
-    ::grpc::Status AddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::e8::AddPeerResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddPeerResponse>> AsyncAddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddPeerResponse>>(AsyncAddPeerRaw(context, request, cq));
+    ::grpc::Status AddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::e8::AddPeersResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>> AsyncAddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>>(AsyncAddPeersRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddPeerResponse>> PrepareAsyncAddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddPeerResponse>>(PrepareAsyncAddPeerRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>> PrepareAsyncAddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>>(PrepareAsyncAddPeersRaw(context, request, cq));
     }
-    ::grpc::Status DeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::e8::DeletePeerResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeerResponse>> AsyncDeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeerResponse>>(AsyncDeletePeerRaw(context, request, cq));
+    ::grpc::Status DeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::e8::DeletePeersResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>> AsyncDeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>>(AsyncDeletePeersRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeerResponse>> PrepareAsyncDeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeerResponse>>(PrepareAsyncDeletePeerRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>> PrepareAsyncDeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>>(PrepareAsyncDeletePeersRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
       void ReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest* request, ::e8::ReviseNodeStateResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response, std::function<void(::grpc::Status)>) override;
-      void AddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response, std::function<void(::grpc::Status)>) override;
-      void DeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response, std::function<void(::grpc::Status)>) override;
+      void AddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response, std::function<void(::grpc::Status)>) override;
+      void DeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -158,16 +158,16 @@ class NodeStateService final {
     class experimental_async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::e8::ReviseNodeStateResponse>* AsyncReviseNodeStateRaw(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::ReviseNodeStateResponse>* PrepareAsyncReviseNodeStateRaw(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::GetLatestRevisionEpochResponse>* AsyncGetLatestRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::GetLatestRevisionEpochResponse>* PrepareAsyncGetLatestRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::AddPeerResponse>* AsyncAddPeerRaw(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::AddPeerResponse>* PrepareAsyncAddPeerRaw(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::DeletePeerResponse>* AsyncDeletePeerRaw(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::DeletePeerResponse>* PrepareAsyncDeletePeerRaw(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::GetCurrentRevisionEpochResponse>* AsyncGetCurrentRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::GetCurrentRevisionEpochResponse>* PrepareAsyncGetCurrentRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>* AsyncAddPeersRaw(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>* PrepareAsyncAddPeersRaw(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>* AsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>* PrepareAsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_ReviseNodeState_;
-    const ::grpc::internal::RpcMethod rpcmethod_GetLatestRevisionEpoch_;
-    const ::grpc::internal::RpcMethod rpcmethod_AddPeer_;
-    const ::grpc::internal::RpcMethod rpcmethod_DeletePeer_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetCurrentRevisionEpoch_;
+    const ::grpc::internal::RpcMethod rpcmethod_AddPeers_;
+    const ::grpc::internal::RpcMethod rpcmethod_DeletePeers_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -178,11 +178,11 @@ class NodeStateService final {
     // Applies incremental updates to the node state snapshot.
     virtual ::grpc::Status ReviseNodeState(::grpc::ServerContext* context, const ::e8::ReviseNodeStateRequest* request, ::e8::ReviseNodeStateResponse* response);
     // Returns the the latest revision epoch the target node is currently at.
-    virtual ::grpc::Status GetLatestRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response);
+    virtual ::grpc::Status GetCurrentRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response);
     // Add a peer to the current node.
-    virtual ::grpc::Status AddPeer(::grpc::ServerContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response);
+    virtual ::grpc::Status AddPeers(::grpc::ServerContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response);
     // Delete a peer that was previously added to the current node.
-    virtual ::grpc::Status DeletePeer(::grpc::ServerContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response);
+    virtual ::grpc::Status DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_ReviseNodeState : public BaseClass {
@@ -205,66 +205,66 @@ class NodeStateService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetLatestRevisionEpoch : public BaseClass {
+  class WithAsyncMethod_GetCurrentRevisionEpoch : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithAsyncMethod_GetLatestRevisionEpoch() {
+    WithAsyncMethod_GetCurrentRevisionEpoch() {
       ::grpc::Service::MarkMethodAsync(1);
     }
-    ~WithAsyncMethod_GetLatestRevisionEpoch() override {
+    ~WithAsyncMethod_GetCurrentRevisionEpoch() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetLatestRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response) override {
+    ::grpc::Status GetCurrentRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetLatestRevisionEpoch(::grpc::ServerContext* context, ::e8::GetLatestRevisionEpochRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::GetLatestRevisionEpochResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetCurrentRevisionEpoch(::grpc::ServerContext* context, ::e8::GetCurrentRevisionEpochRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::GetCurrentRevisionEpochResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_AddPeer : public BaseClass {
+  class WithAsyncMethod_AddPeers : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithAsyncMethod_AddPeer() {
+    WithAsyncMethod_AddPeers() {
       ::grpc::Service::MarkMethodAsync(2);
     }
-    ~WithAsyncMethod_AddPeer() override {
+    ~WithAsyncMethod_AddPeers() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddPeer(::grpc::ServerContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response) override {
+    ::grpc::Status AddPeers(::grpc::ServerContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestAddPeer(::grpc::ServerContext* context, ::e8::AddPeerRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::AddPeerResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestAddPeers(::grpc::ServerContext* context, ::e8::AddPeersRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::AddPeersResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_DeletePeer : public BaseClass {
+  class WithAsyncMethod_DeletePeers : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithAsyncMethod_DeletePeer() {
+    WithAsyncMethod_DeletePeers() {
       ::grpc::Service::MarkMethodAsync(3);
     }
-    ~WithAsyncMethod_DeletePeer() override {
+    ~WithAsyncMethod_DeletePeers() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DeletePeer(::grpc::ServerContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response) override {
+    ::grpc::Status DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestDeletePeer(::grpc::ServerContext* context, ::e8::DeletePeerRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::DeletePeerResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestDeletePeers(::grpc::ServerContext* context, ::e8::DeletePeersRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::DeletePeersResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_ReviseNodeState<WithAsyncMethod_GetLatestRevisionEpoch<WithAsyncMethod_AddPeer<WithAsyncMethod_DeletePeer<Service > > > > AsyncService;
+  typedef WithAsyncMethod_ReviseNodeState<WithAsyncMethod_GetCurrentRevisionEpoch<WithAsyncMethod_AddPeers<WithAsyncMethod_DeletePeers<Service > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_ReviseNodeState : public BaseClass {
    private:
@@ -283,52 +283,52 @@ class NodeStateService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_GetLatestRevisionEpoch : public BaseClass {
+  class WithGenericMethod_GetCurrentRevisionEpoch : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithGenericMethod_GetLatestRevisionEpoch() {
+    WithGenericMethod_GetCurrentRevisionEpoch() {
       ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithGenericMethod_GetLatestRevisionEpoch() override {
+    ~WithGenericMethod_GetCurrentRevisionEpoch() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetLatestRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response) override {
+    ::grpc::Status GetCurrentRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_AddPeer : public BaseClass {
+  class WithGenericMethod_AddPeers : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithGenericMethod_AddPeer() {
+    WithGenericMethod_AddPeers() {
       ::grpc::Service::MarkMethodGeneric(2);
     }
-    ~WithGenericMethod_AddPeer() override {
+    ~WithGenericMethod_AddPeers() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddPeer(::grpc::ServerContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response) override {
+    ::grpc::Status AddPeers(::grpc::ServerContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_DeletePeer : public BaseClass {
+  class WithGenericMethod_DeletePeers : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithGenericMethod_DeletePeer() {
+    WithGenericMethod_DeletePeers() {
       ::grpc::Service::MarkMethodGeneric(3);
     }
-    ~WithGenericMethod_DeletePeer() override {
+    ~WithGenericMethod_DeletePeers() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DeletePeer(::grpc::ServerContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response) override {
+    ::grpc::Status DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -354,62 +354,62 @@ class NodeStateService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetLatestRevisionEpoch : public BaseClass {
+  class WithRawMethod_GetCurrentRevisionEpoch : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithRawMethod_GetLatestRevisionEpoch() {
+    WithRawMethod_GetCurrentRevisionEpoch() {
       ::grpc::Service::MarkMethodRaw(1);
     }
-    ~WithRawMethod_GetLatestRevisionEpoch() override {
+    ~WithRawMethod_GetCurrentRevisionEpoch() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetLatestRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response) override {
+    ::grpc::Status GetCurrentRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetLatestRevisionEpoch(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetCurrentRevisionEpoch(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_AddPeer : public BaseClass {
+  class WithRawMethod_AddPeers : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithRawMethod_AddPeer() {
+    WithRawMethod_AddPeers() {
       ::grpc::Service::MarkMethodRaw(2);
     }
-    ~WithRawMethod_AddPeer() override {
+    ~WithRawMethod_AddPeers() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddPeer(::grpc::ServerContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response) override {
+    ::grpc::Status AddPeers(::grpc::ServerContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestAddPeer(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestAddPeers(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_DeletePeer : public BaseClass {
+  class WithRawMethod_DeletePeers : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithRawMethod_DeletePeer() {
+    WithRawMethod_DeletePeers() {
       ::grpc::Service::MarkMethodRaw(3);
     }
-    ~WithRawMethod_DeletePeer() override {
+    ~WithRawMethod_DeletePeers() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DeletePeer(::grpc::ServerContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response) override {
+    ::grpc::Status DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestDeletePeer(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestDeletePeers(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -434,68 +434,68 @@ class NodeStateService final {
     virtual ::grpc::Status StreamedReviseNodeState(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::ReviseNodeStateRequest,::e8::ReviseNodeStateResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetLatestRevisionEpoch : public BaseClass {
+  class WithStreamedUnaryMethod_GetCurrentRevisionEpoch : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithStreamedUnaryMethod_GetLatestRevisionEpoch() {
+    WithStreamedUnaryMethod_GetCurrentRevisionEpoch() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::GetLatestRevisionEpochRequest, ::e8::GetLatestRevisionEpochResponse>(std::bind(&WithStreamedUnaryMethod_GetLatestRevisionEpoch<BaseClass>::StreamedGetLatestRevisionEpoch, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::GetCurrentRevisionEpochRequest, ::e8::GetCurrentRevisionEpochResponse>(std::bind(&WithStreamedUnaryMethod_GetCurrentRevisionEpoch<BaseClass>::StreamedGetCurrentRevisionEpoch, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithStreamedUnaryMethod_GetLatestRevisionEpoch() override {
+    ~WithStreamedUnaryMethod_GetCurrentRevisionEpoch() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetLatestRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response) override {
+    ::grpc::Status GetCurrentRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetLatestRevisionEpoch(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::GetLatestRevisionEpochRequest,::e8::GetLatestRevisionEpochResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedGetCurrentRevisionEpoch(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::GetCurrentRevisionEpochRequest,::e8::GetCurrentRevisionEpochResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_AddPeer : public BaseClass {
+  class WithStreamedUnaryMethod_AddPeers : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithStreamedUnaryMethod_AddPeer() {
+    WithStreamedUnaryMethod_AddPeers() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::AddPeerRequest, ::e8::AddPeerResponse>(std::bind(&WithStreamedUnaryMethod_AddPeer<BaseClass>::StreamedAddPeer, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::AddPeersRequest, ::e8::AddPeersResponse>(std::bind(&WithStreamedUnaryMethod_AddPeers<BaseClass>::StreamedAddPeers, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithStreamedUnaryMethod_AddPeer() override {
+    ~WithStreamedUnaryMethod_AddPeers() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status AddPeer(::grpc::ServerContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response) override {
+    ::grpc::Status AddPeers(::grpc::ServerContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedAddPeer(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::AddPeerRequest,::e8::AddPeerResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedAddPeers(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::AddPeersRequest,::e8::AddPeersResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_DeletePeer : public BaseClass {
+  class WithStreamedUnaryMethod_DeletePeers : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithStreamedUnaryMethod_DeletePeer() {
+    WithStreamedUnaryMethod_DeletePeers() {
       ::grpc::Service::MarkMethodStreamed(3,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::DeletePeerRequest, ::e8::DeletePeerResponse>(std::bind(&WithStreamedUnaryMethod_DeletePeer<BaseClass>::StreamedDeletePeer, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::DeletePeersRequest, ::e8::DeletePeersResponse>(std::bind(&WithStreamedUnaryMethod_DeletePeers<BaseClass>::StreamedDeletePeers, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithStreamedUnaryMethod_DeletePeer() override {
+    ~WithStreamedUnaryMethod_DeletePeers() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status DeletePeer(::grpc::ServerContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response) override {
+    ::grpc::Status DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedDeletePeer(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::DeletePeerRequest,::e8::DeletePeerResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedDeletePeers(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::DeletePeersRequest,::e8::DeletePeersResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_ReviseNodeState<WithStreamedUnaryMethod_GetLatestRevisionEpoch<WithStreamedUnaryMethod_AddPeer<WithStreamedUnaryMethod_DeletePeer<Service > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_ReviseNodeState<WithStreamedUnaryMethod_GetCurrentRevisionEpoch<WithStreamedUnaryMethod_AddPeers<WithStreamedUnaryMethod_DeletePeers<Service > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_ReviseNodeState<WithStreamedUnaryMethod_GetLatestRevisionEpoch<WithStreamedUnaryMethod_AddPeer<WithStreamedUnaryMethod_DeletePeer<Service > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_ReviseNodeState<WithStreamedUnaryMethod_GetCurrentRevisionEpoch<WithStreamedUnaryMethod_AddPeers<WithStreamedUnaryMethod_DeletePeers<Service > > > > StreamedService;
 };
 
 }  // namespace e8

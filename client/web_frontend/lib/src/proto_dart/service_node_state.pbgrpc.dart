@@ -20,24 +20,25 @@ class NodeStateServiceClient extends $grpc.Client {
           ($1.ReviseNodeStateRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.ReviseNodeStateResponse.fromBuffer(value));
-  static final _$getLatestRevisionEpoch = $grpc.ClientMethod<
-          $1.GetLatestRevisionEpochRequest, $1.GetLatestRevisionEpochResponse>(
-      '/e8.NodeStateService/GetLatestRevisionEpoch',
-      ($1.GetLatestRevisionEpochRequest value) => value.writeToBuffer(),
+  static final _$getCurrentRevisionEpoch = $grpc.ClientMethod<
+          $1.GetCurrentRevisionEpochRequest,
+          $1.GetCurrentRevisionEpochResponse>(
+      '/e8.NodeStateService/GetCurrentRevisionEpoch',
+      ($1.GetCurrentRevisionEpochRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
-          $1.GetLatestRevisionEpochResponse.fromBuffer(value));
-  static final _$addPeer =
-      $grpc.ClientMethod<$1.AddPeerRequest, $1.AddPeerResponse>(
-          '/e8.NodeStateService/AddPeer',
-          ($1.AddPeerRequest value) => value.writeToBuffer(),
+          $1.GetCurrentRevisionEpochResponse.fromBuffer(value));
+  static final _$addPeers =
+      $grpc.ClientMethod<$1.AddPeersRequest, $1.AddPeersResponse>(
+          '/e8.NodeStateService/AddPeers',
+          ($1.AddPeersRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $1.AddPeerResponse.fromBuffer(value));
-  static final _$deletePeer =
-      $grpc.ClientMethod<$1.DeletePeerRequest, $1.DeletePeerResponse>(
-          '/e8.NodeStateService/DeletePeer',
-          ($1.DeletePeerRequest value) => value.writeToBuffer(),
+              $1.AddPeersResponse.fromBuffer(value));
+  static final _$deletePeers =
+      $grpc.ClientMethod<$1.DeletePeersRequest, $1.DeletePeersResponse>(
+          '/e8.NodeStateService/DeletePeers',
+          ($1.DeletePeersRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $1.DeletePeerResponse.fromBuffer(value));
+              $1.DeletePeersResponse.fromBuffer(value));
 
   NodeStateServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions options})
@@ -52,27 +53,27 @@ class NodeStateServiceClient extends $grpc.Client {
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$1.GetLatestRevisionEpochResponse>
-      getLatestRevisionEpoch($1.GetLatestRevisionEpochRequest request,
+  $grpc.ResponseFuture<$1.GetCurrentRevisionEpochResponse>
+      getCurrentRevisionEpoch($1.GetCurrentRevisionEpochRequest request,
           {$grpc.CallOptions options}) {
     final call = $createCall(
-        _$getLatestRevisionEpoch, $async.Stream.fromIterable([request]),
+        _$getCurrentRevisionEpoch, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$1.AddPeerResponse> addPeer($1.AddPeerRequest request,
+  $grpc.ResponseFuture<$1.AddPeersResponse> addPeers($1.AddPeersRequest request,
       {$grpc.CallOptions options}) {
-    final call = $createCall(_$addPeer, $async.Stream.fromIterable([request]),
+    final call = $createCall(_$addPeers, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$1.DeletePeerResponse> deletePeer(
-      $1.DeletePeerRequest request,
+  $grpc.ResponseFuture<$1.DeletePeersResponse> deletePeers(
+      $1.DeletePeersRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
-        _$deletePeer, $async.Stream.fromIterable([request]),
+        _$deletePeers, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -91,29 +92,31 @@ abstract class NodeStateServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $1.ReviseNodeStateRequest.fromBuffer(value),
         ($1.ReviseNodeStateResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.GetLatestRevisionEpochRequest,
-            $1.GetLatestRevisionEpochResponse>(
-        'GetLatestRevisionEpoch',
-        getLatestRevisionEpoch_Pre,
+    $addMethod($grpc.ServiceMethod<$1.GetCurrentRevisionEpochRequest,
+            $1.GetCurrentRevisionEpochResponse>(
+        'GetCurrentRevisionEpoch',
+        getCurrentRevisionEpoch_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $1.GetLatestRevisionEpochRequest.fromBuffer(value),
-        ($1.GetLatestRevisionEpochResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.AddPeerRequest, $1.AddPeerResponse>(
-        'AddPeer',
-        addPeer_Pre,
+            $1.GetCurrentRevisionEpochRequest.fromBuffer(value),
+        ($1.GetCurrentRevisionEpochResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.AddPeersRequest, $1.AddPeersResponse>(
+        'AddPeers',
+        addPeers_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.AddPeerRequest.fromBuffer(value),
-        ($1.AddPeerResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.DeletePeerRequest, $1.DeletePeerResponse>(
-        'DeletePeer',
-        deletePeer_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $1.DeletePeerRequest.fromBuffer(value),
-        ($1.DeletePeerResponse value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $1.AddPeersRequest.fromBuffer(value),
+        ($1.AddPeersResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$1.DeletePeersRequest, $1.DeletePeersResponse>(
+            'DeletePeers',
+            deletePeers_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $1.DeletePeersRequest.fromBuffer(value),
+            ($1.DeletePeersResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$1.ReviseNodeStateResponse> reviseNodeState_Pre(
@@ -122,28 +125,28 @@ abstract class NodeStateServiceBase extends $grpc.Service {
     return reviseNodeState(call, await request);
   }
 
-  $async.Future<$1.GetLatestRevisionEpochResponse> getLatestRevisionEpoch_Pre(
+  $async.Future<$1.GetCurrentRevisionEpochResponse> getCurrentRevisionEpoch_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$1.GetLatestRevisionEpochRequest> request) async {
-    return getLatestRevisionEpoch(call, await request);
+      $async.Future<$1.GetCurrentRevisionEpochRequest> request) async {
+    return getCurrentRevisionEpoch(call, await request);
   }
 
-  $async.Future<$1.AddPeerResponse> addPeer_Pre(
-      $grpc.ServiceCall call, $async.Future<$1.AddPeerRequest> request) async {
-    return addPeer(call, await request);
+  $async.Future<$1.AddPeersResponse> addPeers_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.AddPeersRequest> request) async {
+    return addPeers(call, await request);
   }
 
-  $async.Future<$1.DeletePeerResponse> deletePeer_Pre($grpc.ServiceCall call,
-      $async.Future<$1.DeletePeerRequest> request) async {
-    return deletePeer(call, await request);
+  $async.Future<$1.DeletePeersResponse> deletePeers_Pre($grpc.ServiceCall call,
+      $async.Future<$1.DeletePeersRequest> request) async {
+    return deletePeers(call, await request);
   }
 
   $async.Future<$1.ReviseNodeStateResponse> reviseNodeState(
       $grpc.ServiceCall call, $1.ReviseNodeStateRequest request);
-  $async.Future<$1.GetLatestRevisionEpochResponse> getLatestRevisionEpoch(
-      $grpc.ServiceCall call, $1.GetLatestRevisionEpochRequest request);
-  $async.Future<$1.AddPeerResponse> addPeer(
-      $grpc.ServiceCall call, $1.AddPeerRequest request);
-  $async.Future<$1.DeletePeerResponse> deletePeer(
-      $grpc.ServiceCall call, $1.DeletePeerRequest request);
+  $async.Future<$1.GetCurrentRevisionEpochResponse> getCurrentRevisionEpoch(
+      $grpc.ServiceCall call, $1.GetCurrentRevisionEpochRequest request);
+  $async.Future<$1.AddPeersResponse> addPeers(
+      $grpc.ServiceCall call, $1.AddPeersRequest request);
+  $async.Future<$1.DeletePeersResponse> deletePeers(
+      $grpc.ServiceCall call, $1.DeletePeersRequest request);
 }

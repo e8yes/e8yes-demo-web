@@ -32,7 +32,10 @@ NodeStateServiceImpl::NodeStateServiceImpl()
 grpc::Status NodeStateServiceImpl::ReviseNodeState(grpc::ServerContext * /*context*/,
                                                    ReviseNodeStateRequest const *request,
                                                    ReviseNodeStateResponse * /*response*/) {
-    bool updatable = node_states_.UpdateNodeStates(request->revision());
+    bool updatable = false;
+    for (auto const &revision : request->revisions()) {
+        updatable |= node_states_.UpdateNodeStates(revision);
+    }
     if (!updatable) {
         return grpc::Status::OK;
     }

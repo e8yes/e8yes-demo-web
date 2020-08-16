@@ -19,9 +19,9 @@ namespace e8 {
 
 static const char* NodeStateService_method_names[] = {
   "/e8.NodeStateService/ReviseNodeState",
-  "/e8.NodeStateService/GetLatestRevisionEpoch",
-  "/e8.NodeStateService/AddPeer",
-  "/e8.NodeStateService/DeletePeer",
+  "/e8.NodeStateService/GetCurrentRevisionEpoch",
+  "/e8.NodeStateService/AddPeers",
+  "/e8.NodeStateService/DeletePeers",
 };
 
 std::unique_ptr< NodeStateService::Stub> NodeStateService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -32,9 +32,9 @@ std::unique_ptr< NodeStateService::Stub> NodeStateService::NewStub(const std::sh
 
 NodeStateService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_ReviseNodeState_(NodeStateService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetLatestRevisionEpoch_(NodeStateService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_AddPeer_(NodeStateService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DeletePeer_(NodeStateService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetCurrentRevisionEpoch_(NodeStateService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_AddPeers_(NodeStateService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DeletePeers_(NodeStateService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status NodeStateService::Stub::ReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::e8::ReviseNodeStateResponse* response) {
@@ -53,52 +53,52 @@ void NodeStateService::Stub::experimental_async::ReviseNodeState(::grpc::ClientC
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::ReviseNodeStateResponse>::Create(channel_.get(), cq, rpcmethod_ReviseNodeState_, context, request, false);
 }
 
-::grpc::Status NodeStateService::Stub::GetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::e8::GetLatestRevisionEpochResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetLatestRevisionEpoch_, context, request, response);
+::grpc::Status NodeStateService::Stub::GetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::e8::GetCurrentRevisionEpochResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetCurrentRevisionEpoch_, context, request, response);
 }
 
-void NodeStateService::Stub::experimental_async::GetLatestRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetLatestRevisionEpoch_, context, request, response, std::move(f));
+void NodeStateService::Stub::experimental_async::GetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetCurrentRevisionEpoch_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetLatestRevisionEpochResponse>* NodeStateService::Stub::AsyncGetLatestRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetLatestRevisionEpochResponse>::Create(channel_.get(), cq, rpcmethod_GetLatestRevisionEpoch_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::GetCurrentRevisionEpochResponse>* NodeStateService::Stub::AsyncGetCurrentRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetCurrentRevisionEpochResponse>::Create(channel_.get(), cq, rpcmethod_GetCurrentRevisionEpoch_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetLatestRevisionEpochResponse>* NodeStateService::Stub::PrepareAsyncGetLatestRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetLatestRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetLatestRevisionEpochResponse>::Create(channel_.get(), cq, rpcmethod_GetLatestRevisionEpoch_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::GetCurrentRevisionEpochResponse>* NodeStateService::Stub::PrepareAsyncGetCurrentRevisionEpochRaw(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetCurrentRevisionEpochResponse>::Create(channel_.get(), cq, rpcmethod_GetCurrentRevisionEpoch_, context, request, false);
 }
 
-::grpc::Status NodeStateService::Stub::AddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::e8::AddPeerResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_AddPeer_, context, request, response);
+::grpc::Status NodeStateService::Stub::AddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::e8::AddPeersResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_AddPeers_, context, request, response);
 }
 
-void NodeStateService::Stub::experimental_async::AddPeer(::grpc::ClientContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_AddPeer_, context, request, response, std::move(f));
+void NodeStateService::Stub::experimental_async::AddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_AddPeers_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::AddPeerResponse>* NodeStateService::Stub::AsyncAddPeerRaw(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::AddPeerResponse>::Create(channel_.get(), cq, rpcmethod_AddPeer_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>* NodeStateService::Stub::AsyncAddPeersRaw(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::AddPeersResponse>::Create(channel_.get(), cq, rpcmethod_AddPeers_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::AddPeerResponse>* NodeStateService::Stub::PrepareAsyncAddPeerRaw(::grpc::ClientContext* context, const ::e8::AddPeerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::AddPeerResponse>::Create(channel_.get(), cq, rpcmethod_AddPeer_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>* NodeStateService::Stub::PrepareAsyncAddPeersRaw(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::AddPeersResponse>::Create(channel_.get(), cq, rpcmethod_AddPeers_, context, request, false);
 }
 
-::grpc::Status NodeStateService::Stub::DeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::e8::DeletePeerResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_DeletePeer_, context, request, response);
+::grpc::Status NodeStateService::Stub::DeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::e8::DeletePeersResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_DeletePeers_, context, request, response);
 }
 
-void NodeStateService::Stub::experimental_async::DeletePeer(::grpc::ClientContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_DeletePeer_, context, request, response, std::move(f));
+void NodeStateService::Stub::experimental_async::DeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_DeletePeers_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::DeletePeerResponse>* NodeStateService::Stub::AsyncDeletePeerRaw(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeletePeerResponse>::Create(channel_.get(), cq, rpcmethod_DeletePeer_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>* NodeStateService::Stub::AsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeletePeersResponse>::Create(channel_.get(), cq, rpcmethod_DeletePeers_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::DeletePeerResponse>* NodeStateService::Stub::PrepareAsyncDeletePeerRaw(::grpc::ClientContext* context, const ::e8::DeletePeerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeletePeerResponse>::Create(channel_.get(), cq, rpcmethod_DeletePeer_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>* NodeStateService::Stub::PrepareAsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeletePeersResponse>::Create(channel_.get(), cq, rpcmethod_DeletePeers_, context, request, false);
 }
 
 NodeStateService::Service::Service() {
@@ -110,18 +110,18 @@ NodeStateService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       NodeStateService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< NodeStateService::Service, ::e8::GetLatestRevisionEpochRequest, ::e8::GetLatestRevisionEpochResponse>(
-          std::mem_fn(&NodeStateService::Service::GetLatestRevisionEpoch), this)));
+      new ::grpc::internal::RpcMethodHandler< NodeStateService::Service, ::e8::GetCurrentRevisionEpochRequest, ::e8::GetCurrentRevisionEpochResponse>(
+          std::mem_fn(&NodeStateService::Service::GetCurrentRevisionEpoch), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       NodeStateService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< NodeStateService::Service, ::e8::AddPeerRequest, ::e8::AddPeerResponse>(
-          std::mem_fn(&NodeStateService::Service::AddPeer), this)));
+      new ::grpc::internal::RpcMethodHandler< NodeStateService::Service, ::e8::AddPeersRequest, ::e8::AddPeersResponse>(
+          std::mem_fn(&NodeStateService::Service::AddPeers), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       NodeStateService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< NodeStateService::Service, ::e8::DeletePeerRequest, ::e8::DeletePeerResponse>(
-          std::mem_fn(&NodeStateService::Service::DeletePeer), this)));
+      new ::grpc::internal::RpcMethodHandler< NodeStateService::Service, ::e8::DeletePeersRequest, ::e8::DeletePeersResponse>(
+          std::mem_fn(&NodeStateService::Service::DeletePeers), this)));
 }
 
 NodeStateService::Service::~Service() {
@@ -134,21 +134,21 @@ NodeStateService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status NodeStateService::Service::GetLatestRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetLatestRevisionEpochRequest* request, ::e8::GetLatestRevisionEpochResponse* response) {
+::grpc::Status NodeStateService::Service::GetCurrentRevisionEpoch(::grpc::ServerContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status NodeStateService::Service::AddPeer(::grpc::ServerContext* context, const ::e8::AddPeerRequest* request, ::e8::AddPeerResponse* response) {
+::grpc::Status NodeStateService::Service::AddPeers(::grpc::ServerContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status NodeStateService::Service::DeletePeer(::grpc::ServerContext* context, const ::e8::DeletePeerRequest* request, ::e8::DeletePeerResponse* response) {
+::grpc::Status NodeStateService::Service::DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response) {
   (void) context;
   (void) request;
   (void) response;

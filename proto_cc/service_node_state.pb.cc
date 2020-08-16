@@ -34,36 +34,36 @@ class ReviseNodeStateResponseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<ReviseNodeStateResponse>
       _instance;
 } _ReviseNodeStateResponse_default_instance_;
-class GetLatestRevisionEpochRequestDefaultTypeInternal {
+class GetCurrentRevisionEpochRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<GetLatestRevisionEpochRequest>
+  ::google::protobuf::internal::ExplicitlyConstructed<GetCurrentRevisionEpochRequest>
       _instance;
-} _GetLatestRevisionEpochRequest_default_instance_;
-class GetLatestRevisionEpochResponseDefaultTypeInternal {
+} _GetCurrentRevisionEpochRequest_default_instance_;
+class GetCurrentRevisionEpochResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<GetLatestRevisionEpochResponse>
+  ::google::protobuf::internal::ExplicitlyConstructed<GetCurrentRevisionEpochResponse>
       _instance;
-} _GetLatestRevisionEpochResponse_default_instance_;
-class AddPeerRequestDefaultTypeInternal {
+} _GetCurrentRevisionEpochResponse_default_instance_;
+class AddPeersRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<AddPeerRequest>
+  ::google::protobuf::internal::ExplicitlyConstructed<AddPeersRequest>
       _instance;
-} _AddPeerRequest_default_instance_;
-class AddPeerResponseDefaultTypeInternal {
+} _AddPeersRequest_default_instance_;
+class AddPeersResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<AddPeerResponse>
+  ::google::protobuf::internal::ExplicitlyConstructed<AddPeersResponse>
       _instance;
-} _AddPeerResponse_default_instance_;
-class DeletePeerRequestDefaultTypeInternal {
+} _AddPeersResponse_default_instance_;
+class DeletePeersRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<DeletePeerRequest>
+  ::google::protobuf::internal::ExplicitlyConstructed<DeletePeersRequest>
       _instance;
-} _DeletePeerRequest_default_instance_;
-class DeletePeerResponseDefaultTypeInternal {
+} _DeletePeersRequest_default_instance_;
+class DeletePeersResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<DeletePeerResponse>
+  ::google::protobuf::internal::ExplicitlyConstructed<DeletePeersResponse>
       _instance;
-} _DeletePeerResponse_default_instance_;
+} _DeletePeersResponse_default_instance_;
 }  // namespace e8
 namespace protobuf_service_5fnode_5fstate_2eproto {
 static void InitDefaultsReviseNodeStateRequest() {
@@ -95,100 +95,100 @@ static void InitDefaultsReviseNodeStateResponse() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_ReviseNodeStateResponse =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsReviseNodeStateResponse}, {}};
 
-static void InitDefaultsGetLatestRevisionEpochRequest() {
+static void InitDefaultsGetCurrentRevisionEpochRequest() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_GetLatestRevisionEpochRequest_default_instance_;
-    new (ptr) ::e8::GetLatestRevisionEpochRequest();
+    void* ptr = &::e8::_GetCurrentRevisionEpochRequest_default_instance_;
+    new (ptr) ::e8::GetCurrentRevisionEpochRequest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::GetLatestRevisionEpochRequest::InitAsDefaultInstance();
+  ::e8::GetCurrentRevisionEpochRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_GetLatestRevisionEpochRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetLatestRevisionEpochRequest}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_GetCurrentRevisionEpochRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetCurrentRevisionEpochRequest}, {}};
 
-static void InitDefaultsGetLatestRevisionEpochResponse() {
+static void InitDefaultsGetCurrentRevisionEpochResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_GetLatestRevisionEpochResponse_default_instance_;
-    new (ptr) ::e8::GetLatestRevisionEpochResponse();
+    void* ptr = &::e8::_GetCurrentRevisionEpochResponse_default_instance_;
+    new (ptr) ::e8::GetCurrentRevisionEpochResponse();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::GetLatestRevisionEpochResponse::InitAsDefaultInstance();
+  ::e8::GetCurrentRevisionEpochResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_GetLatestRevisionEpochResponse =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetLatestRevisionEpochResponse}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_GetCurrentRevisionEpochResponse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetCurrentRevisionEpochResponse}, {}};
 
-static void InitDefaultsAddPeerRequest() {
+static void InitDefaultsAddPeersRequest() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_AddPeerRequest_default_instance_;
-    new (ptr) ::e8::AddPeerRequest();
+    void* ptr = &::e8::_AddPeersRequest_default_instance_;
+    new (ptr) ::e8::AddPeersRequest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::AddPeerRequest::InitAsDefaultInstance();
+  ::e8::AddPeersRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_AddPeerRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsAddPeerRequest}, {
+::google::protobuf::internal::SCCInfo<1> scc_info_AddPeersRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsAddPeersRequest}, {
       &protobuf_node_2eproto::scc_info_NodeState.base,}};
 
-static void InitDefaultsAddPeerResponse() {
+static void InitDefaultsAddPeersResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_AddPeerResponse_default_instance_;
-    new (ptr) ::e8::AddPeerResponse();
+    void* ptr = &::e8::_AddPeersResponse_default_instance_;
+    new (ptr) ::e8::AddPeersResponse();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::AddPeerResponse::InitAsDefaultInstance();
+  ::e8::AddPeersResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_AddPeerResponse =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsAddPeerResponse}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_AddPeersResponse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsAddPeersResponse}, {}};
 
-static void InitDefaultsDeletePeerRequest() {
+static void InitDefaultsDeletePeersRequest() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_DeletePeerRequest_default_instance_;
-    new (ptr) ::e8::DeletePeerRequest();
+    void* ptr = &::e8::_DeletePeersRequest_default_instance_;
+    new (ptr) ::e8::DeletePeersRequest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::DeletePeerRequest::InitAsDefaultInstance();
+  ::e8::DeletePeersRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_DeletePeerRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsDeletePeerRequest}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_DeletePeersRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsDeletePeersRequest}, {}};
 
-static void InitDefaultsDeletePeerResponse() {
+static void InitDefaultsDeletePeersResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_DeletePeerResponse_default_instance_;
-    new (ptr) ::e8::DeletePeerResponse();
+    void* ptr = &::e8::_DeletePeersResponse_default_instance_;
+    new (ptr) ::e8::DeletePeersResponse();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::DeletePeerResponse::InitAsDefaultInstance();
+  ::e8::DeletePeersResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_DeletePeerResponse =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsDeletePeerResponse}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_DeletePeersResponse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsDeletePeersResponse}, {}};
 
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_ReviseNodeStateRequest.base);
   ::google::protobuf::internal::InitSCC(&scc_info_ReviseNodeStateResponse.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_GetLatestRevisionEpochRequest.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_GetLatestRevisionEpochResponse.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_AddPeerRequest.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_AddPeerResponse.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_DeletePeerRequest.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_DeletePeerResponse.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_GetCurrentRevisionEpochRequest.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_GetCurrentRevisionEpochResponse.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_AddPeersRequest.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_AddPeersResponse.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_DeletePeersRequest.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_DeletePeersResponse.base);
 }
 
 ::google::protobuf::Metadata file_level_metadata[8];
@@ -199,42 +199,42 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::ReviseNodeStateRequest, revision_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::ReviseNodeStateRequest, revisions_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::ReviseNodeStateResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetLatestRevisionEpochRequest, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetCurrentRevisionEpochRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetLatestRevisionEpochResponse, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetCurrentRevisionEpochResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetLatestRevisionEpochResponse, revision_epoch_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetCurrentRevisionEpochResponse, revision_epoch_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::AddPeerRequest, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::AddPeersRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::AddPeerRequest, node_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::AddPeersRequest, nodes_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::AddPeerResponse, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::AddPeersResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DeletePeerRequest, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DeletePeersRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DeletePeerRequest, node_name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DeletePeersRequest, node_names_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DeletePeerResponse, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DeletePeersResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
@@ -242,23 +242,23 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::ReviseNodeStateRequest)},
   { 6, -1, sizeof(::e8::ReviseNodeStateResponse)},
-  { 11, -1, sizeof(::e8::GetLatestRevisionEpochRequest)},
-  { 16, -1, sizeof(::e8::GetLatestRevisionEpochResponse)},
-  { 22, -1, sizeof(::e8::AddPeerRequest)},
-  { 28, -1, sizeof(::e8::AddPeerResponse)},
-  { 33, -1, sizeof(::e8::DeletePeerRequest)},
-  { 39, -1, sizeof(::e8::DeletePeerResponse)},
+  { 11, -1, sizeof(::e8::GetCurrentRevisionEpochRequest)},
+  { 16, -1, sizeof(::e8::GetCurrentRevisionEpochResponse)},
+  { 22, -1, sizeof(::e8::AddPeersRequest)},
+  { 28, -1, sizeof(::e8::AddPeersResponse)},
+  { 33, -1, sizeof(::e8::DeletePeersRequest)},
+  { 39, -1, sizeof(::e8::DeletePeersResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_ReviseNodeStateRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_ReviseNodeStateResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetLatestRevisionEpochRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetLatestRevisionEpochResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_AddPeerRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_AddPeerResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DeletePeerRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DeletePeerResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetCurrentRevisionEpochRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetCurrentRevisionEpochResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_AddPeersRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_AddPeersResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DeletePeersRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DeletePeersResponse_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -283,25 +283,26 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\030service_node_state.proto\022\002e8\032\nnode.pro"
-      "to\"A\n\026ReviseNodeStateRequest\022\'\n\010revision"
-      "\030\001 \001(\0132\025.e8.NodeStateRevision\"\031\n\027ReviseN"
-      "odeStateResponse\"\037\n\035GetLatestRevisionEpo"
-      "chRequest\"8\n\036GetLatestRevisionEpochRespo"
-      "nse\022\026\n\016revision_epoch\030\001 \001(\003\"-\n\016AddPeerRe"
-      "quest\022\033\n\004node\030\001 \001(\0132\r.e8.NodeState\"\021\n\017Ad"
-      "dPeerResponse\"&\n\021DeletePeerRequest\022\021\n\tno"
-      "de_name\030\001 \001(\t\"\024\n\022DeletePeerResponse2\260\002\n\020"
-      "NodeStateService\022J\n\017ReviseNodeState\022\032.e8"
-      ".ReviseNodeStateRequest\032\033.e8.ReviseNodeS"
-      "tateResponse\022_\n\026GetLatestRevisionEpoch\022!"
-      ".e8.GetLatestRevisionEpochRequest\032\".e8.G"
-      "etLatestRevisionEpochResponse\0222\n\007AddPeer"
-      "\022\022.e8.AddPeerRequest\032\023.e8.AddPeerRespons"
-      "e\022;\n\nDeletePeer\022\025.e8.DeletePeerRequest\032\026"
-      ".e8.DeletePeerResponseb\006proto3"
+      "to\"B\n\026ReviseNodeStateRequest\022(\n\trevision"
+      "s\030\001 \003(\0132\025.e8.NodeStateRevision\"\031\n\027Revise"
+      "NodeStateResponse\" \n\036GetCurrentRevisionE"
+      "pochRequest\"9\n\037GetCurrentRevisionEpochRe"
+      "sponse\022\026\n\016revision_epoch\030\001 \001(\003\"/\n\017AddPee"
+      "rsRequest\022\034\n\005nodes\030\001 \003(\0132\r.e8.NodeState\""
+      "\022\n\020AddPeersResponse\"(\n\022DeletePeersReques"
+      "t\022\022\n\nnode_names\030\001 \003(\t\"\025\n\023DeletePeersResp"
+      "onse2\271\002\n\020NodeStateService\022J\n\017ReviseNodeS"
+      "tate\022\032.e8.ReviseNodeStateRequest\032\033.e8.Re"
+      "viseNodeStateResponse\022b\n\027GetCurrentRevis"
+      "ionEpoch\022\".e8.GetCurrentRevisionEpochReq"
+      "uest\032#.e8.GetCurrentRevisionEpochRespons"
+      "e\0225\n\010AddPeers\022\023.e8.AddPeersRequest\032\024.e8."
+      "AddPeersResponse\022>\n\013DeletePeers\022\026.e8.Del"
+      "etePeersRequest\032\027.e8.DeletePeersResponse"
+      "b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 670);
+      descriptor, 688);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_node_state.proto", &protobuf_RegisterTypes);
   ::protobuf_node_2eproto::AddDescriptors();
@@ -323,17 +324,12 @@ namespace e8 {
 // ===================================================================
 
 void ReviseNodeStateRequest::InitAsDefaultInstance() {
-  ::e8::_ReviseNodeStateRequest_default_instance_._instance.get_mutable()->revision_ = const_cast< ::e8::NodeStateRevision*>(
-      ::e8::NodeStateRevision::internal_default_instance());
 }
-void ReviseNodeStateRequest::clear_revision() {
-  if (GetArenaNoVirtual() == NULL && revision_ != NULL) {
-    delete revision_;
-  }
-  revision_ = NULL;
+void ReviseNodeStateRequest::clear_revisions() {
+  revisions_.Clear();
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ReviseNodeStateRequest::kRevisionFieldNumber;
+const int ReviseNodeStateRequest::kRevisionsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ReviseNodeStateRequest::ReviseNodeStateRequest()
@@ -345,18 +341,13 @@ ReviseNodeStateRequest::ReviseNodeStateRequest()
 }
 ReviseNodeStateRequest::ReviseNodeStateRequest(const ReviseNodeStateRequest& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
+      _internal_metadata_(NULL),
+      revisions_(from.revisions_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_revision()) {
-    revision_ = new ::e8::NodeStateRevision(*from.revision_);
-  } else {
-    revision_ = NULL;
-  }
   // @@protoc_insertion_point(copy_constructor:e8.ReviseNodeStateRequest)
 }
 
 void ReviseNodeStateRequest::SharedCtor() {
-  revision_ = NULL;
 }
 
 ReviseNodeStateRequest::~ReviseNodeStateRequest() {
@@ -365,7 +356,6 @@ ReviseNodeStateRequest::~ReviseNodeStateRequest() {
 }
 
 void ReviseNodeStateRequest::SharedDtor() {
-  if (this != internal_default_instance()) delete revision_;
 }
 
 void ReviseNodeStateRequest::SetCachedSize(int size) const {
@@ -388,10 +378,7 @@ void ReviseNodeStateRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && revision_ != NULL) {
-    delete revision_;
-  }
-  revision_ = NULL;
+  revisions_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -405,12 +392,12 @@ bool ReviseNodeStateRequest::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .e8.NodeStateRevision revision = 1;
+      // repeated .e8.NodeStateRevision revisions = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_revision()));
+                input, add_revisions()));
         } else {
           goto handle_unusual;
         }
@@ -443,10 +430,13 @@ void ReviseNodeStateRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.NodeStateRevision revision = 1;
-  if (this->has_revision()) {
+  // repeated .e8.NodeStateRevision revisions = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->revisions_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->_internal_revision(), output);
+      1,
+      this->revisions(static_cast<int>(i)),
+      output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -463,11 +453,12 @@ void ReviseNodeStateRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.NodeStateRevision revision = 1;
-  if (this->has_revision()) {
+  // repeated .e8.NodeStateRevision revisions = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->revisions_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, this->_internal_revision(), deterministic, target);
+        1, this->revisions(static_cast<int>(i)), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -487,11 +478,15 @@ size_t ReviseNodeStateRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .e8.NodeStateRevision revision = 1;
-  if (this->has_revision()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *revision_);
+  // repeated .e8.NodeStateRevision revisions = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->revisions_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->revisions(static_cast<int>(i)));
+    }
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -521,9 +516,7 @@ void ReviseNodeStateRequest::MergeFrom(const ReviseNodeStateRequest& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_revision()) {
-    mutable_revision()->::e8::NodeStateRevision::MergeFrom(from.revision());
-  }
+  revisions_.MergeFrom(from.revisions_);
 }
 
 void ReviseNodeStateRequest::CopyFrom(const ::google::protobuf::Message& from) {
@@ -550,7 +543,7 @@ void ReviseNodeStateRequest::Swap(ReviseNodeStateRequest* other) {
 }
 void ReviseNodeStateRequest::InternalSwap(ReviseNodeStateRequest* other) {
   using std::swap;
-  swap(revision_, other->revision_);
+  CastToBase(&revisions_)->InternalSwap(CastToBase(&other->revisions_));
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
@@ -741,52 +734,52 @@ void ReviseNodeStateResponse::InternalSwap(ReviseNodeStateResponse* other) {
 
 // ===================================================================
 
-void GetLatestRevisionEpochRequest::InitAsDefaultInstance() {
+void GetCurrentRevisionEpochRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-GetLatestRevisionEpochRequest::GetLatestRevisionEpochRequest()
+GetCurrentRevisionEpochRequest::GetCurrentRevisionEpochRequest()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fnode_5fstate_2eproto::scc_info_GetLatestRevisionEpochRequest.base);
+      &protobuf_service_5fnode_5fstate_2eproto::scc_info_GetCurrentRevisionEpochRequest.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(constructor:e8.GetCurrentRevisionEpochRequest)
 }
-GetLatestRevisionEpochRequest::GetLatestRevisionEpochRequest(const GetLatestRevisionEpochRequest& from)
+GetCurrentRevisionEpochRequest::GetCurrentRevisionEpochRequest(const GetCurrentRevisionEpochRequest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(copy_constructor:e8.GetCurrentRevisionEpochRequest)
 }
 
-void GetLatestRevisionEpochRequest::SharedCtor() {
+void GetCurrentRevisionEpochRequest::SharedCtor() {
 }
 
-GetLatestRevisionEpochRequest::~GetLatestRevisionEpochRequest() {
-  // @@protoc_insertion_point(destructor:e8.GetLatestRevisionEpochRequest)
+GetCurrentRevisionEpochRequest::~GetCurrentRevisionEpochRequest() {
+  // @@protoc_insertion_point(destructor:e8.GetCurrentRevisionEpochRequest)
   SharedDtor();
 }
 
-void GetLatestRevisionEpochRequest::SharedDtor() {
+void GetCurrentRevisionEpochRequest::SharedDtor() {
 }
 
-void GetLatestRevisionEpochRequest::SetCachedSize(int size) const {
+void GetCurrentRevisionEpochRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* GetLatestRevisionEpochRequest::descriptor() {
+const ::google::protobuf::Descriptor* GetCurrentRevisionEpochRequest::descriptor() {
   ::protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const GetLatestRevisionEpochRequest& GetLatestRevisionEpochRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_GetLatestRevisionEpochRequest.base);
+const GetCurrentRevisionEpochRequest& GetCurrentRevisionEpochRequest::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_GetCurrentRevisionEpochRequest.base);
   return *internal_default_instance();
 }
 
 
-void GetLatestRevisionEpochRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.GetLatestRevisionEpochRequest)
+void GetCurrentRevisionEpochRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.GetCurrentRevisionEpochRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -794,11 +787,11 @@ void GetLatestRevisionEpochRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool GetLatestRevisionEpochRequest::MergePartialFromCodedStream(
+bool GetCurrentRevisionEpochRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(parse_start:e8.GetCurrentRevisionEpochRequest)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -811,17 +804,17 @@ bool GetLatestRevisionEpochRequest::MergePartialFromCodedStream(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(parse_success:e8.GetCurrentRevisionEpochRequest)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(parse_failure:e8.GetCurrentRevisionEpochRequest)
   return false;
 #undef DO_
 }
 
-void GetLatestRevisionEpochRequest::SerializeWithCachedSizes(
+void GetCurrentRevisionEpochRequest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(serialize_start:e8.GetCurrentRevisionEpochRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -829,13 +822,13 @@ void GetLatestRevisionEpochRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(serialize_end:e8.GetCurrentRevisionEpochRequest)
 }
 
-::google::protobuf::uint8* GetLatestRevisionEpochRequest::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* GetCurrentRevisionEpochRequest::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.GetCurrentRevisionEpochRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -843,12 +836,12 @@ void GetLatestRevisionEpochRequest::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.GetCurrentRevisionEpochRequest)
   return target;
 }
 
-size_t GetLatestRevisionEpochRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.GetLatestRevisionEpochRequest)
+size_t GetCurrentRevisionEpochRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.GetCurrentRevisionEpochRequest)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -861,23 +854,23 @@ size_t GetLatestRevisionEpochRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void GetLatestRevisionEpochRequest::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.GetLatestRevisionEpochRequest)
+void GetCurrentRevisionEpochRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.GetCurrentRevisionEpochRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  const GetLatestRevisionEpochRequest* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const GetLatestRevisionEpochRequest>(
+  const GetCurrentRevisionEpochRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const GetCurrentRevisionEpochRequest>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.GetCurrentRevisionEpochRequest)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.GetLatestRevisionEpochRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.GetCurrentRevisionEpochRequest)
     MergeFrom(*source);
   }
 }
 
-void GetLatestRevisionEpochRequest::MergeFrom(const GetLatestRevisionEpochRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.GetLatestRevisionEpochRequest)
+void GetCurrentRevisionEpochRequest::MergeFrom(const GetCurrentRevisionEpochRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.GetCurrentRevisionEpochRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -885,34 +878,34 @@ void GetLatestRevisionEpochRequest::MergeFrom(const GetLatestRevisionEpochReques
 
 }
 
-void GetLatestRevisionEpochRequest::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.GetLatestRevisionEpochRequest)
+void GetCurrentRevisionEpochRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.GetCurrentRevisionEpochRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetLatestRevisionEpochRequest::CopyFrom(const GetLatestRevisionEpochRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.GetLatestRevisionEpochRequest)
+void GetCurrentRevisionEpochRequest::CopyFrom(const GetCurrentRevisionEpochRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.GetCurrentRevisionEpochRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetLatestRevisionEpochRequest::IsInitialized() const {
+bool GetCurrentRevisionEpochRequest::IsInitialized() const {
   return true;
 }
 
-void GetLatestRevisionEpochRequest::Swap(GetLatestRevisionEpochRequest* other) {
+void GetCurrentRevisionEpochRequest::Swap(GetCurrentRevisionEpochRequest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void GetLatestRevisionEpochRequest::InternalSwap(GetLatestRevisionEpochRequest* other) {
+void GetCurrentRevisionEpochRequest::InternalSwap(GetCurrentRevisionEpochRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata GetLatestRevisionEpochRequest::GetMetadata() const {
+::google::protobuf::Metadata GetCurrentRevisionEpochRequest::GetMetadata() const {
   protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -920,55 +913,55 @@ void GetLatestRevisionEpochRequest::InternalSwap(GetLatestRevisionEpochRequest* 
 
 // ===================================================================
 
-void GetLatestRevisionEpochResponse::InitAsDefaultInstance() {
+void GetCurrentRevisionEpochResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GetLatestRevisionEpochResponse::kRevisionEpochFieldNumber;
+const int GetCurrentRevisionEpochResponse::kRevisionEpochFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-GetLatestRevisionEpochResponse::GetLatestRevisionEpochResponse()
+GetCurrentRevisionEpochResponse::GetCurrentRevisionEpochResponse()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fnode_5fstate_2eproto::scc_info_GetLatestRevisionEpochResponse.base);
+      &protobuf_service_5fnode_5fstate_2eproto::scc_info_GetCurrentRevisionEpochResponse.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(constructor:e8.GetCurrentRevisionEpochResponse)
 }
-GetLatestRevisionEpochResponse::GetLatestRevisionEpochResponse(const GetLatestRevisionEpochResponse& from)
+GetCurrentRevisionEpochResponse::GetCurrentRevisionEpochResponse(const GetCurrentRevisionEpochResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   revision_epoch_ = from.revision_epoch_;
-  // @@protoc_insertion_point(copy_constructor:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(copy_constructor:e8.GetCurrentRevisionEpochResponse)
 }
 
-void GetLatestRevisionEpochResponse::SharedCtor() {
+void GetCurrentRevisionEpochResponse::SharedCtor() {
   revision_epoch_ = GOOGLE_LONGLONG(0);
 }
 
-GetLatestRevisionEpochResponse::~GetLatestRevisionEpochResponse() {
-  // @@protoc_insertion_point(destructor:e8.GetLatestRevisionEpochResponse)
+GetCurrentRevisionEpochResponse::~GetCurrentRevisionEpochResponse() {
+  // @@protoc_insertion_point(destructor:e8.GetCurrentRevisionEpochResponse)
   SharedDtor();
 }
 
-void GetLatestRevisionEpochResponse::SharedDtor() {
+void GetCurrentRevisionEpochResponse::SharedDtor() {
 }
 
-void GetLatestRevisionEpochResponse::SetCachedSize(int size) const {
+void GetCurrentRevisionEpochResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* GetLatestRevisionEpochResponse::descriptor() {
+const ::google::protobuf::Descriptor* GetCurrentRevisionEpochResponse::descriptor() {
   ::protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const GetLatestRevisionEpochResponse& GetLatestRevisionEpochResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_GetLatestRevisionEpochResponse.base);
+const GetCurrentRevisionEpochResponse& GetCurrentRevisionEpochResponse::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_GetCurrentRevisionEpochResponse.base);
   return *internal_default_instance();
 }
 
 
-void GetLatestRevisionEpochResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.GetLatestRevisionEpochResponse)
+void GetCurrentRevisionEpochResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.GetCurrentRevisionEpochResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -977,11 +970,11 @@ void GetLatestRevisionEpochResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool GetLatestRevisionEpochResponse::MergePartialFromCodedStream(
+bool GetCurrentRevisionEpochResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(parse_start:e8.GetCurrentRevisionEpochResponse)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1013,17 +1006,17 @@ bool GetLatestRevisionEpochResponse::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(parse_success:e8.GetCurrentRevisionEpochResponse)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(parse_failure:e8.GetCurrentRevisionEpochResponse)
   return false;
 #undef DO_
 }
 
-void GetLatestRevisionEpochResponse::SerializeWithCachedSizes(
+void GetCurrentRevisionEpochResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(serialize_start:e8.GetCurrentRevisionEpochResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1036,13 +1029,13 @@ void GetLatestRevisionEpochResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(serialize_end:e8.GetCurrentRevisionEpochResponse)
 }
 
-::google::protobuf::uint8* GetLatestRevisionEpochResponse::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* GetCurrentRevisionEpochResponse::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.GetCurrentRevisionEpochResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1055,12 +1048,12 @@ void GetLatestRevisionEpochResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.GetCurrentRevisionEpochResponse)
   return target;
 }
 
-size_t GetLatestRevisionEpochResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.GetLatestRevisionEpochResponse)
+size_t GetCurrentRevisionEpochResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.GetCurrentRevisionEpochResponse)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1080,23 +1073,23 @@ size_t GetLatestRevisionEpochResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void GetLatestRevisionEpochResponse::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.GetLatestRevisionEpochResponse)
+void GetCurrentRevisionEpochResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.GetCurrentRevisionEpochResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  const GetLatestRevisionEpochResponse* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const GetLatestRevisionEpochResponse>(
+  const GetCurrentRevisionEpochResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const GetCurrentRevisionEpochResponse>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.GetCurrentRevisionEpochResponse)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.GetLatestRevisionEpochResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.GetCurrentRevisionEpochResponse)
     MergeFrom(*source);
   }
 }
 
-void GetLatestRevisionEpochResponse::MergeFrom(const GetLatestRevisionEpochResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.GetLatestRevisionEpochResponse)
+void GetCurrentRevisionEpochResponse::MergeFrom(const GetCurrentRevisionEpochResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.GetCurrentRevisionEpochResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1107,35 +1100,35 @@ void GetLatestRevisionEpochResponse::MergeFrom(const GetLatestRevisionEpochRespo
   }
 }
 
-void GetLatestRevisionEpochResponse::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.GetLatestRevisionEpochResponse)
+void GetCurrentRevisionEpochResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.GetCurrentRevisionEpochResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetLatestRevisionEpochResponse::CopyFrom(const GetLatestRevisionEpochResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.GetLatestRevisionEpochResponse)
+void GetCurrentRevisionEpochResponse::CopyFrom(const GetCurrentRevisionEpochResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.GetCurrentRevisionEpochResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetLatestRevisionEpochResponse::IsInitialized() const {
+bool GetCurrentRevisionEpochResponse::IsInitialized() const {
   return true;
 }
 
-void GetLatestRevisionEpochResponse::Swap(GetLatestRevisionEpochResponse* other) {
+void GetCurrentRevisionEpochResponse::Swap(GetCurrentRevisionEpochResponse* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void GetLatestRevisionEpochResponse::InternalSwap(GetLatestRevisionEpochResponse* other) {
+void GetCurrentRevisionEpochResponse::InternalSwap(GetCurrentRevisionEpochResponse* other) {
   using std::swap;
   swap(revision_epoch_, other->revision_epoch_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata GetLatestRevisionEpochResponse::GetMetadata() const {
+::google::protobuf::Metadata GetCurrentRevisionEpochResponse::GetMetadata() const {
   protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1143,95 +1136,81 @@ void GetLatestRevisionEpochResponse::InternalSwap(GetLatestRevisionEpochResponse
 
 // ===================================================================
 
-void AddPeerRequest::InitAsDefaultInstance() {
-  ::e8::_AddPeerRequest_default_instance_._instance.get_mutable()->node_ = const_cast< ::e8::NodeState*>(
-      ::e8::NodeState::internal_default_instance());
+void AddPeersRequest::InitAsDefaultInstance() {
 }
-void AddPeerRequest::clear_node() {
-  if (GetArenaNoVirtual() == NULL && node_ != NULL) {
-    delete node_;
-  }
-  node_ = NULL;
+void AddPeersRequest::clear_nodes() {
+  nodes_.Clear();
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int AddPeerRequest::kNodeFieldNumber;
+const int AddPeersRequest::kNodesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-AddPeerRequest::AddPeerRequest()
+AddPeersRequest::AddPeersRequest()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fnode_5fstate_2eproto::scc_info_AddPeerRequest.base);
+      &protobuf_service_5fnode_5fstate_2eproto::scc_info_AddPeersRequest.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.AddPeerRequest)
+  // @@protoc_insertion_point(constructor:e8.AddPeersRequest)
 }
-AddPeerRequest::AddPeerRequest(const AddPeerRequest& from)
+AddPeersRequest::AddPeersRequest(const AddPeersRequest& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
+      _internal_metadata_(NULL),
+      nodes_(from.nodes_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_node()) {
-    node_ = new ::e8::NodeState(*from.node_);
-  } else {
-    node_ = NULL;
-  }
-  // @@protoc_insertion_point(copy_constructor:e8.AddPeerRequest)
+  // @@protoc_insertion_point(copy_constructor:e8.AddPeersRequest)
 }
 
-void AddPeerRequest::SharedCtor() {
-  node_ = NULL;
+void AddPeersRequest::SharedCtor() {
 }
 
-AddPeerRequest::~AddPeerRequest() {
-  // @@protoc_insertion_point(destructor:e8.AddPeerRequest)
+AddPeersRequest::~AddPeersRequest() {
+  // @@protoc_insertion_point(destructor:e8.AddPeersRequest)
   SharedDtor();
 }
 
-void AddPeerRequest::SharedDtor() {
-  if (this != internal_default_instance()) delete node_;
+void AddPeersRequest::SharedDtor() {
 }
 
-void AddPeerRequest::SetCachedSize(int size) const {
+void AddPeersRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* AddPeerRequest::descriptor() {
+const ::google::protobuf::Descriptor* AddPeersRequest::descriptor() {
   ::protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const AddPeerRequest& AddPeerRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_AddPeerRequest.base);
+const AddPeersRequest& AddPeersRequest::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_AddPeersRequest.base);
   return *internal_default_instance();
 }
 
 
-void AddPeerRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.AddPeerRequest)
+void AddPeersRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.AddPeersRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && node_ != NULL) {
-    delete node_;
-  }
-  node_ = NULL;
+  nodes_.Clear();
   _internal_metadata_.Clear();
 }
 
-bool AddPeerRequest::MergePartialFromCodedStream(
+bool AddPeersRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.AddPeerRequest)
+  // @@protoc_insertion_point(parse_start:e8.AddPeersRequest)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .e8.NodeState node = 1;
+      // repeated .e8.NodeState nodes = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_node()));
+                input, add_nodes()));
         } else {
           goto handle_unusual;
         }
@@ -1250,57 +1229,61 @@ bool AddPeerRequest::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.AddPeerRequest)
+  // @@protoc_insertion_point(parse_success:e8.AddPeersRequest)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.AddPeerRequest)
+  // @@protoc_insertion_point(parse_failure:e8.AddPeersRequest)
   return false;
 #undef DO_
 }
 
-void AddPeerRequest::SerializeWithCachedSizes(
+void AddPeersRequest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.AddPeerRequest)
+  // @@protoc_insertion_point(serialize_start:e8.AddPeersRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.NodeState node = 1;
-  if (this->has_node()) {
+  // repeated .e8.NodeState nodes = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->nodes_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->_internal_node(), output);
+      1,
+      this->nodes(static_cast<int>(i)),
+      output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.AddPeerRequest)
+  // @@protoc_insertion_point(serialize_end:e8.AddPeersRequest)
 }
 
-::google::protobuf::uint8* AddPeerRequest::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* AddPeersRequest::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.AddPeerRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.AddPeersRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.NodeState node = 1;
-  if (this->has_node()) {
+  // repeated .e8.NodeState nodes = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->nodes_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, this->_internal_node(), deterministic, target);
+        1, this->nodes(static_cast<int>(i)), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.AddPeerRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.AddPeersRequest)
   return target;
 }
 
-size_t AddPeerRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.AddPeerRequest)
+size_t AddPeersRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.AddPeersRequest)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1308,11 +1291,15 @@ size_t AddPeerRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .e8.NodeState node = 1;
-  if (this->has_node()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *node_);
+  // repeated .e8.NodeState nodes = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->nodes_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->nodes(static_cast<int>(i)));
+    }
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1320,62 +1307,60 @@ size_t AddPeerRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void AddPeerRequest::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.AddPeerRequest)
+void AddPeersRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.AddPeersRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  const AddPeerRequest* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const AddPeerRequest>(
+  const AddPeersRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const AddPeersRequest>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.AddPeerRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.AddPeersRequest)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.AddPeerRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.AddPeersRequest)
     MergeFrom(*source);
   }
 }
 
-void AddPeerRequest::MergeFrom(const AddPeerRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.AddPeerRequest)
+void AddPeersRequest::MergeFrom(const AddPeersRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.AddPeersRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_node()) {
-    mutable_node()->::e8::NodeState::MergeFrom(from.node());
-  }
+  nodes_.MergeFrom(from.nodes_);
 }
 
-void AddPeerRequest::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.AddPeerRequest)
+void AddPeersRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.AddPeersRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void AddPeerRequest::CopyFrom(const AddPeerRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.AddPeerRequest)
+void AddPeersRequest::CopyFrom(const AddPeersRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.AddPeersRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool AddPeerRequest::IsInitialized() const {
+bool AddPeersRequest::IsInitialized() const {
   return true;
 }
 
-void AddPeerRequest::Swap(AddPeerRequest* other) {
+void AddPeersRequest::Swap(AddPeersRequest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void AddPeerRequest::InternalSwap(AddPeerRequest* other) {
+void AddPeersRequest::InternalSwap(AddPeersRequest* other) {
   using std::swap;
-  swap(node_, other->node_);
+  CastToBase(&nodes_)->InternalSwap(CastToBase(&other->nodes_));
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata AddPeerRequest::GetMetadata() const {
+::google::protobuf::Metadata AddPeersRequest::GetMetadata() const {
   protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1383,52 +1368,52 @@ void AddPeerRequest::InternalSwap(AddPeerRequest* other) {
 
 // ===================================================================
 
-void AddPeerResponse::InitAsDefaultInstance() {
+void AddPeersResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-AddPeerResponse::AddPeerResponse()
+AddPeersResponse::AddPeersResponse()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fnode_5fstate_2eproto::scc_info_AddPeerResponse.base);
+      &protobuf_service_5fnode_5fstate_2eproto::scc_info_AddPeersResponse.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.AddPeerResponse)
+  // @@protoc_insertion_point(constructor:e8.AddPeersResponse)
 }
-AddPeerResponse::AddPeerResponse(const AddPeerResponse& from)
+AddPeersResponse::AddPeersResponse(const AddPeersResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:e8.AddPeerResponse)
+  // @@protoc_insertion_point(copy_constructor:e8.AddPeersResponse)
 }
 
-void AddPeerResponse::SharedCtor() {
+void AddPeersResponse::SharedCtor() {
 }
 
-AddPeerResponse::~AddPeerResponse() {
-  // @@protoc_insertion_point(destructor:e8.AddPeerResponse)
+AddPeersResponse::~AddPeersResponse() {
+  // @@protoc_insertion_point(destructor:e8.AddPeersResponse)
   SharedDtor();
 }
 
-void AddPeerResponse::SharedDtor() {
+void AddPeersResponse::SharedDtor() {
 }
 
-void AddPeerResponse::SetCachedSize(int size) const {
+void AddPeersResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* AddPeerResponse::descriptor() {
+const ::google::protobuf::Descriptor* AddPeersResponse::descriptor() {
   ::protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const AddPeerResponse& AddPeerResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_AddPeerResponse.base);
+const AddPeersResponse& AddPeersResponse::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_AddPeersResponse.base);
   return *internal_default_instance();
 }
 
 
-void AddPeerResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.AddPeerResponse)
+void AddPeersResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.AddPeersResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1436,11 +1421,11 @@ void AddPeerResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool AddPeerResponse::MergePartialFromCodedStream(
+bool AddPeersResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.AddPeerResponse)
+  // @@protoc_insertion_point(parse_start:e8.AddPeersResponse)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1453,17 +1438,17 @@ bool AddPeerResponse::MergePartialFromCodedStream(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.AddPeerResponse)
+  // @@protoc_insertion_point(parse_success:e8.AddPeersResponse)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.AddPeerResponse)
+  // @@protoc_insertion_point(parse_failure:e8.AddPeersResponse)
   return false;
 #undef DO_
 }
 
-void AddPeerResponse::SerializeWithCachedSizes(
+void AddPeersResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.AddPeerResponse)
+  // @@protoc_insertion_point(serialize_start:e8.AddPeersResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1471,13 +1456,13 @@ void AddPeerResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.AddPeerResponse)
+  // @@protoc_insertion_point(serialize_end:e8.AddPeersResponse)
 }
 
-::google::protobuf::uint8* AddPeerResponse::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* AddPeersResponse::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.AddPeerResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.AddPeersResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1485,12 +1470,12 @@ void AddPeerResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.AddPeerResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.AddPeersResponse)
   return target;
 }
 
-size_t AddPeerResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.AddPeerResponse)
+size_t AddPeersResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.AddPeersResponse)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1503,23 +1488,23 @@ size_t AddPeerResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void AddPeerResponse::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.AddPeerResponse)
+void AddPeersResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.AddPeersResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  const AddPeerResponse* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const AddPeerResponse>(
+  const AddPeersResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const AddPeersResponse>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.AddPeerResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.AddPeersResponse)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.AddPeerResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.AddPeersResponse)
     MergeFrom(*source);
   }
 }
 
-void AddPeerResponse::MergeFrom(const AddPeerResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.AddPeerResponse)
+void AddPeersResponse::MergeFrom(const AddPeersResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.AddPeersResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1527,34 +1512,34 @@ void AddPeerResponse::MergeFrom(const AddPeerResponse& from) {
 
 }
 
-void AddPeerResponse::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.AddPeerResponse)
+void AddPeersResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.AddPeersResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void AddPeerResponse::CopyFrom(const AddPeerResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.AddPeerResponse)
+void AddPeersResponse::CopyFrom(const AddPeersResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.AddPeersResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool AddPeerResponse::IsInitialized() const {
+bool AddPeersResponse::IsInitialized() const {
   return true;
 }
 
-void AddPeerResponse::Swap(AddPeerResponse* other) {
+void AddPeersResponse::Swap(AddPeersResponse* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void AddPeerResponse::InternalSwap(AddPeerResponse* other) {
+void AddPeersResponse::InternalSwap(AddPeersResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata AddPeerResponse::GetMetadata() const {
+::google::protobuf::Metadata AddPeersResponse::GetMetadata() const {
   protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1562,87 +1547,83 @@ void AddPeerResponse::InternalSwap(AddPeerResponse* other) {
 
 // ===================================================================
 
-void DeletePeerRequest::InitAsDefaultInstance() {
+void DeletePeersRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int DeletePeerRequest::kNodeNameFieldNumber;
+const int DeletePeersRequest::kNodeNamesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-DeletePeerRequest::DeletePeerRequest()
+DeletePeersRequest::DeletePeersRequest()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fnode_5fstate_2eproto::scc_info_DeletePeerRequest.base);
+      &protobuf_service_5fnode_5fstate_2eproto::scc_info_DeletePeersRequest.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(constructor:e8.DeletePeersRequest)
 }
-DeletePeerRequest::DeletePeerRequest(const DeletePeerRequest& from)
+DeletePeersRequest::DeletePeersRequest(const DeletePeersRequest& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
+      _internal_metadata_(NULL),
+      node_names_(from.node_names_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  node_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.node_name().size() > 0) {
-    node_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.node_name_);
-  }
-  // @@protoc_insertion_point(copy_constructor:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(copy_constructor:e8.DeletePeersRequest)
 }
 
-void DeletePeerRequest::SharedCtor() {
-  node_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void DeletePeersRequest::SharedCtor() {
 }
 
-DeletePeerRequest::~DeletePeerRequest() {
-  // @@protoc_insertion_point(destructor:e8.DeletePeerRequest)
+DeletePeersRequest::~DeletePeersRequest() {
+  // @@protoc_insertion_point(destructor:e8.DeletePeersRequest)
   SharedDtor();
 }
 
-void DeletePeerRequest::SharedDtor() {
-  node_name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void DeletePeersRequest::SharedDtor() {
 }
 
-void DeletePeerRequest::SetCachedSize(int size) const {
+void DeletePeersRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* DeletePeerRequest::descriptor() {
+const ::google::protobuf::Descriptor* DeletePeersRequest::descriptor() {
   ::protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const DeletePeerRequest& DeletePeerRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_DeletePeerRequest.base);
+const DeletePeersRequest& DeletePeersRequest::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_DeletePeersRequest.base);
   return *internal_default_instance();
 }
 
 
-void DeletePeerRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.DeletePeerRequest)
+void DeletePeersRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.DeletePeersRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  node_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  node_names_.Clear();
   _internal_metadata_.Clear();
 }
 
-bool DeletePeerRequest::MergePartialFromCodedStream(
+bool DeletePeersRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(parse_start:e8.DeletePeersRequest)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string node_name = 1;
+      // repeated string node_names = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_node_name()));
+                input, this->add_node_names()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->node_name().data(), static_cast<int>(this->node_name().length()),
+            this->node_names(this->node_names_size() - 1).data(),
+            static_cast<int>(this->node_names(this->node_names_size() - 1).length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "e8.DeletePeerRequest.node_name"));
+            "e8.DeletePeersRequest.node_names"));
         } else {
           goto handle_unusual;
         }
@@ -1661,65 +1642,64 @@ bool DeletePeerRequest::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(parse_success:e8.DeletePeersRequest)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(parse_failure:e8.DeletePeersRequest)
   return false;
 #undef DO_
 }
 
-void DeletePeerRequest::SerializeWithCachedSizes(
+void DeletePeersRequest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(serialize_start:e8.DeletePeersRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string node_name = 1;
-  if (this->node_name().size() > 0) {
+  // repeated string node_names = 1;
+  for (int i = 0, n = this->node_names_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->node_name().data(), static_cast<int>(this->node_name().length()),
+      this->node_names(i).data(), static_cast<int>(this->node_names(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.DeletePeerRequest.node_name");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->node_name(), output);
+      "e8.DeletePeersRequest.node_names");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->node_names(i), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(serialize_end:e8.DeletePeersRequest)
 }
 
-::google::protobuf::uint8* DeletePeerRequest::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* DeletePeersRequest::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.DeletePeersRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string node_name = 1;
-  if (this->node_name().size() > 0) {
+  // repeated string node_names = 1;
+  for (int i = 0, n = this->node_names_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->node_name().data(), static_cast<int>(this->node_name().length()),
+      this->node_names(i).data(), static_cast<int>(this->node_names(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.DeletePeerRequest.node_name");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->node_name(), target);
+      "e8.DeletePeersRequest.node_names");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(1, this->node_names(i), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.DeletePeersRequest)
   return target;
 }
 
-size_t DeletePeerRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.DeletePeerRequest)
+size_t DeletePeersRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.DeletePeersRequest)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1727,11 +1707,12 @@ size_t DeletePeerRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string node_name = 1;
-  if (this->node_name().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->node_name());
+  // repeated string node_names = 1;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->node_names_size());
+  for (int i = 0, n = this->node_names_size(); i < n; i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->node_names(i));
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1739,64 +1720,60 @@ size_t DeletePeerRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void DeletePeerRequest::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.DeletePeerRequest)
+void DeletePeersRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.DeletePeersRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  const DeletePeerRequest* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const DeletePeerRequest>(
+  const DeletePeersRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DeletePeersRequest>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.DeletePeersRequest)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.DeletePeerRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.DeletePeersRequest)
     MergeFrom(*source);
   }
 }
 
-void DeletePeerRequest::MergeFrom(const DeletePeerRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.DeletePeerRequest)
+void DeletePeersRequest::MergeFrom(const DeletePeersRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.DeletePeersRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.node_name().size() > 0) {
-
-    node_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.node_name_);
-  }
+  node_names_.MergeFrom(from.node_names_);
 }
 
-void DeletePeerRequest::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.DeletePeerRequest)
+void DeletePeersRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.DeletePeersRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void DeletePeerRequest::CopyFrom(const DeletePeerRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.DeletePeerRequest)
+void DeletePeersRequest::CopyFrom(const DeletePeersRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.DeletePeersRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool DeletePeerRequest::IsInitialized() const {
+bool DeletePeersRequest::IsInitialized() const {
   return true;
 }
 
-void DeletePeerRequest::Swap(DeletePeerRequest* other) {
+void DeletePeersRequest::Swap(DeletePeersRequest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void DeletePeerRequest::InternalSwap(DeletePeerRequest* other) {
+void DeletePeersRequest::InternalSwap(DeletePeersRequest* other) {
   using std::swap;
-  node_name_.Swap(&other->node_name_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  node_names_.InternalSwap(CastToBase(&other->node_names_));
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata DeletePeerRequest::GetMetadata() const {
+::google::protobuf::Metadata DeletePeersRequest::GetMetadata() const {
   protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1804,52 +1781,52 @@ void DeletePeerRequest::InternalSwap(DeletePeerRequest* other) {
 
 // ===================================================================
 
-void DeletePeerResponse::InitAsDefaultInstance() {
+void DeletePeersResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-DeletePeerResponse::DeletePeerResponse()
+DeletePeersResponse::DeletePeersResponse()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fnode_5fstate_2eproto::scc_info_DeletePeerResponse.base);
+      &protobuf_service_5fnode_5fstate_2eproto::scc_info_DeletePeersResponse.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(constructor:e8.DeletePeersResponse)
 }
-DeletePeerResponse::DeletePeerResponse(const DeletePeerResponse& from)
+DeletePeersResponse::DeletePeersResponse(const DeletePeersResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(copy_constructor:e8.DeletePeersResponse)
 }
 
-void DeletePeerResponse::SharedCtor() {
+void DeletePeersResponse::SharedCtor() {
 }
 
-DeletePeerResponse::~DeletePeerResponse() {
-  // @@protoc_insertion_point(destructor:e8.DeletePeerResponse)
+DeletePeersResponse::~DeletePeersResponse() {
+  // @@protoc_insertion_point(destructor:e8.DeletePeersResponse)
   SharedDtor();
 }
 
-void DeletePeerResponse::SharedDtor() {
+void DeletePeersResponse::SharedDtor() {
 }
 
-void DeletePeerResponse::SetCachedSize(int size) const {
+void DeletePeersResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* DeletePeerResponse::descriptor() {
+const ::google::protobuf::Descriptor* DeletePeersResponse::descriptor() {
   ::protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const DeletePeerResponse& DeletePeerResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_DeletePeerResponse.base);
+const DeletePeersResponse& DeletePeersResponse::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fnode_5fstate_2eproto::scc_info_DeletePeersResponse.base);
   return *internal_default_instance();
 }
 
 
-void DeletePeerResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.DeletePeerResponse)
+void DeletePeersResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.DeletePeersResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1857,11 +1834,11 @@ void DeletePeerResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool DeletePeerResponse::MergePartialFromCodedStream(
+bool DeletePeersResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(parse_start:e8.DeletePeersResponse)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1874,17 +1851,17 @@ bool DeletePeerResponse::MergePartialFromCodedStream(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(parse_success:e8.DeletePeersResponse)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(parse_failure:e8.DeletePeersResponse)
   return false;
 #undef DO_
 }
 
-void DeletePeerResponse::SerializeWithCachedSizes(
+void DeletePeersResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(serialize_start:e8.DeletePeersResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1892,13 +1869,13 @@ void DeletePeerResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(serialize_end:e8.DeletePeersResponse)
 }
 
-::google::protobuf::uint8* DeletePeerResponse::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* DeletePeersResponse::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.DeletePeersResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1906,12 +1883,12 @@ void DeletePeerResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.DeletePeersResponse)
   return target;
 }
 
-size_t DeletePeerResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.DeletePeerResponse)
+size_t DeletePeersResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.DeletePeersResponse)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1924,23 +1901,23 @@ size_t DeletePeerResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void DeletePeerResponse::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.DeletePeerResponse)
+void DeletePeersResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.DeletePeersResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  const DeletePeerResponse* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const DeletePeerResponse>(
+  const DeletePeersResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DeletePeersResponse>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.DeletePeersResponse)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.DeletePeerResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.DeletePeersResponse)
     MergeFrom(*source);
   }
 }
 
-void DeletePeerResponse::MergeFrom(const DeletePeerResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.DeletePeerResponse)
+void DeletePeersResponse::MergeFrom(const DeletePeersResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.DeletePeersResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1948,34 +1925,34 @@ void DeletePeerResponse::MergeFrom(const DeletePeerResponse& from) {
 
 }
 
-void DeletePeerResponse::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.DeletePeerResponse)
+void DeletePeersResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.DeletePeersResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void DeletePeerResponse::CopyFrom(const DeletePeerResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.DeletePeerResponse)
+void DeletePeersResponse::CopyFrom(const DeletePeersResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.DeletePeersResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool DeletePeerResponse::IsInitialized() const {
+bool DeletePeersResponse::IsInitialized() const {
   return true;
 }
 
-void DeletePeerResponse::Swap(DeletePeerResponse* other) {
+void DeletePeersResponse::Swap(DeletePeersResponse* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void DeletePeerResponse::InternalSwap(DeletePeerResponse* other) {
+void DeletePeersResponse::InternalSwap(DeletePeersResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata DeletePeerResponse::GetMetadata() const {
+::google::protobuf::Metadata DeletePeersResponse::GetMetadata() const {
   protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1991,23 +1968,23 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::ReviseNodeStateRequest* Aren
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::ReviseNodeStateResponse* Arena::CreateMaybeMessage< ::e8::ReviseNodeStateResponse >(Arena* arena) {
   return Arena::CreateInternal< ::e8::ReviseNodeStateResponse >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetLatestRevisionEpochRequest* Arena::CreateMaybeMessage< ::e8::GetLatestRevisionEpochRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::GetLatestRevisionEpochRequest >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetCurrentRevisionEpochRequest* Arena::CreateMaybeMessage< ::e8::GetCurrentRevisionEpochRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::GetCurrentRevisionEpochRequest >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetLatestRevisionEpochResponse* Arena::CreateMaybeMessage< ::e8::GetLatestRevisionEpochResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::GetLatestRevisionEpochResponse >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetCurrentRevisionEpochResponse* Arena::CreateMaybeMessage< ::e8::GetCurrentRevisionEpochResponse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::GetCurrentRevisionEpochResponse >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::AddPeerRequest* Arena::CreateMaybeMessage< ::e8::AddPeerRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::AddPeerRequest >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::AddPeersRequest* Arena::CreateMaybeMessage< ::e8::AddPeersRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::AddPeersRequest >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::AddPeerResponse* Arena::CreateMaybeMessage< ::e8::AddPeerResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::AddPeerResponse >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::AddPeersResponse* Arena::CreateMaybeMessage< ::e8::AddPeersResponse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::AddPeersResponse >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::DeletePeerRequest* Arena::CreateMaybeMessage< ::e8::DeletePeerRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::DeletePeerRequest >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::DeletePeersRequest* Arena::CreateMaybeMessage< ::e8::DeletePeersRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::DeletePeersRequest >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::DeletePeerResponse* Arena::CreateMaybeMessage< ::e8::DeletePeerResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::DeletePeerResponse >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::DeletePeersResponse* Arena::CreateMaybeMessage< ::e8::DeletePeersResponse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::DeletePeersResponse >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

@@ -8,7 +8,7 @@
 const ReviseNodeStateRequest$json = const {
   '1': 'ReviseNodeStateRequest',
   '2': const [
-    const {'1': 'revision', '3': 1, '4': 1, '5': 11, '6': '.e8.NodeStateRevision', '10': 'revision'},
+    const {'1': 'revisions', '3': 1, '4': 3, '5': 11, '6': '.e8.NodeStateRevision', '10': 'revisions'},
   ],
 };
 
@@ -16,36 +16,36 @@ const ReviseNodeStateResponse$json = const {
   '1': 'ReviseNodeStateResponse',
 };
 
-const GetLatestRevisionEpochRequest$json = const {
-  '1': 'GetLatestRevisionEpochRequest',
+const GetCurrentRevisionEpochRequest$json = const {
+  '1': 'GetCurrentRevisionEpochRequest',
 };
 
-const GetLatestRevisionEpochResponse$json = const {
-  '1': 'GetLatestRevisionEpochResponse',
+const GetCurrentRevisionEpochResponse$json = const {
+  '1': 'GetCurrentRevisionEpochResponse',
   '2': const [
     const {'1': 'revision_epoch', '3': 1, '4': 1, '5': 3, '10': 'revisionEpoch'},
   ],
 };
 
-const AddPeerRequest$json = const {
-  '1': 'AddPeerRequest',
+const AddPeersRequest$json = const {
+  '1': 'AddPeersRequest',
   '2': const [
-    const {'1': 'node', '3': 1, '4': 1, '5': 11, '6': '.e8.NodeState', '10': 'node'},
+    const {'1': 'nodes', '3': 1, '4': 3, '5': 11, '6': '.e8.NodeState', '10': 'nodes'},
   ],
 };
 
-const AddPeerResponse$json = const {
-  '1': 'AddPeerResponse',
+const AddPeersResponse$json = const {
+  '1': 'AddPeersResponse',
 };
 
-const DeletePeerRequest$json = const {
-  '1': 'DeletePeerRequest',
+const DeletePeersRequest$json = const {
+  '1': 'DeletePeersRequest',
   '2': const [
-    const {'1': 'node_name', '3': 1, '4': 1, '5': 9, '10': 'nodeName'},
+    const {'1': 'node_names', '3': 1, '4': 3, '5': 9, '10': 'nodeNames'},
   ],
 };
 
-const DeletePeerResponse$json = const {
-  '1': 'DeletePeerResponse',
+const DeletePeersResponse$json = const {
+  '1': 'DeletePeersResponse',
 };
 

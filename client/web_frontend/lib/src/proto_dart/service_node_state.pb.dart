@@ -14,7 +14,7 @@ import 'node.pb.dart' as $14;
 
 class ReviseNodeStateRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ReviseNodeStateRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$14.NodeStateRevision>(1, 'revision', subBuilder: $14.NodeStateRevision.create)
+    ..pc<$14.NodeStateRevision>(1, 'revisions', $pb.PbFieldType.PM, subBuilder: $14.NodeStateRevision.create)
     ..hasRequiredFields = false
   ;
 
@@ -34,15 +34,7 @@ class ReviseNodeStateRequest extends $pb.GeneratedMessage {
   static ReviseNodeStateRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $14.NodeStateRevision get revision => $_getN(0);
-  @$pb.TagNumber(1)
-  set revision($14.NodeStateRevision v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasRevision() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearRevision() => clearField(1);
-  @$pb.TagNumber(1)
-  $14.NodeStateRevision ensureRevision() => $_ensure(0);
+  $core.List<$14.NodeStateRevision> get revisions => $_getList(0);
 }
 
 class ReviseNodeStateResponse extends $pb.GeneratedMessage {
@@ -66,47 +58,47 @@ class ReviseNodeStateResponse extends $pb.GeneratedMessage {
   static ReviseNodeStateResponse _defaultInstance;
 }
 
-class GetLatestRevisionEpochRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetLatestRevisionEpochRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class GetCurrentRevisionEpochRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetCurrentRevisionEpochRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
-  GetLatestRevisionEpochRequest._() : super();
-  factory GetLatestRevisionEpochRequest() => create();
-  factory GetLatestRevisionEpochRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetLatestRevisionEpochRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetLatestRevisionEpochRequest clone() => GetLatestRevisionEpochRequest()..mergeFromMessage(this);
-  GetLatestRevisionEpochRequest copyWith(void Function(GetLatestRevisionEpochRequest) updates) => super.copyWith((message) => updates(message as GetLatestRevisionEpochRequest));
+  GetCurrentRevisionEpochRequest._() : super();
+  factory GetCurrentRevisionEpochRequest() => create();
+  factory GetCurrentRevisionEpochRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetCurrentRevisionEpochRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetCurrentRevisionEpochRequest clone() => GetCurrentRevisionEpochRequest()..mergeFromMessage(this);
+  GetCurrentRevisionEpochRequest copyWith(void Function(GetCurrentRevisionEpochRequest) updates) => super.copyWith((message) => updates(message as GetCurrentRevisionEpochRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetLatestRevisionEpochRequest create() => GetLatestRevisionEpochRequest._();
-  GetLatestRevisionEpochRequest createEmptyInstance() => create();
-  static $pb.PbList<GetLatestRevisionEpochRequest> createRepeated() => $pb.PbList<GetLatestRevisionEpochRequest>();
+  static GetCurrentRevisionEpochRequest create() => GetCurrentRevisionEpochRequest._();
+  GetCurrentRevisionEpochRequest createEmptyInstance() => create();
+  static $pb.PbList<GetCurrentRevisionEpochRequest> createRepeated() => $pb.PbList<GetCurrentRevisionEpochRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetLatestRevisionEpochRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLatestRevisionEpochRequest>(create);
-  static GetLatestRevisionEpochRequest _defaultInstance;
+  static GetCurrentRevisionEpochRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetCurrentRevisionEpochRequest>(create);
+  static GetCurrentRevisionEpochRequest _defaultInstance;
 }
 
-class GetLatestRevisionEpochResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetLatestRevisionEpochResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class GetCurrentRevisionEpochResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetCurrentRevisionEpochResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'revisionEpoch')
     ..hasRequiredFields = false
   ;
 
-  GetLatestRevisionEpochResponse._() : super();
-  factory GetLatestRevisionEpochResponse() => create();
-  factory GetLatestRevisionEpochResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetLatestRevisionEpochResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetLatestRevisionEpochResponse clone() => GetLatestRevisionEpochResponse()..mergeFromMessage(this);
-  GetLatestRevisionEpochResponse copyWith(void Function(GetLatestRevisionEpochResponse) updates) => super.copyWith((message) => updates(message as GetLatestRevisionEpochResponse));
+  GetCurrentRevisionEpochResponse._() : super();
+  factory GetCurrentRevisionEpochResponse() => create();
+  factory GetCurrentRevisionEpochResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetCurrentRevisionEpochResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetCurrentRevisionEpochResponse clone() => GetCurrentRevisionEpochResponse()..mergeFromMessage(this);
+  GetCurrentRevisionEpochResponse copyWith(void Function(GetCurrentRevisionEpochResponse) updates) => super.copyWith((message) => updates(message as GetCurrentRevisionEpochResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetLatestRevisionEpochResponse create() => GetLatestRevisionEpochResponse._();
-  GetLatestRevisionEpochResponse createEmptyInstance() => create();
-  static $pb.PbList<GetLatestRevisionEpochResponse> createRepeated() => $pb.PbList<GetLatestRevisionEpochResponse>();
+  static GetCurrentRevisionEpochResponse create() => GetCurrentRevisionEpochResponse._();
+  GetCurrentRevisionEpochResponse createEmptyInstance() => create();
+  static $pb.PbList<GetCurrentRevisionEpochResponse> createRepeated() => $pb.PbList<GetCurrentRevisionEpochResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetLatestRevisionEpochResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLatestRevisionEpochResponse>(create);
-  static GetLatestRevisionEpochResponse _defaultInstance;
+  static GetCurrentRevisionEpochResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetCurrentRevisionEpochResponse>(create);
+  static GetCurrentRevisionEpochResponse _defaultInstance;
 
   @$pb.TagNumber(1)
   $fixnum.Int64 get revisionEpoch => $_getI64(0);
@@ -118,109 +110,95 @@ class GetLatestRevisionEpochResponse extends $pb.GeneratedMessage {
   void clearRevisionEpoch() => clearField(1);
 }
 
-class AddPeerRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddPeerRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$14.NodeState>(1, 'node', subBuilder: $14.NodeState.create)
+class AddPeersRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddPeersRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..pc<$14.NodeState>(1, 'nodes', $pb.PbFieldType.PM, subBuilder: $14.NodeState.create)
     ..hasRequiredFields = false
   ;
 
-  AddPeerRequest._() : super();
-  factory AddPeerRequest() => create();
-  factory AddPeerRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AddPeerRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  AddPeerRequest clone() => AddPeerRequest()..mergeFromMessage(this);
-  AddPeerRequest copyWith(void Function(AddPeerRequest) updates) => super.copyWith((message) => updates(message as AddPeerRequest));
+  AddPeersRequest._() : super();
+  factory AddPeersRequest() => create();
+  factory AddPeersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AddPeersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  AddPeersRequest clone() => AddPeersRequest()..mergeFromMessage(this);
+  AddPeersRequest copyWith(void Function(AddPeersRequest) updates) => super.copyWith((message) => updates(message as AddPeersRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static AddPeerRequest create() => AddPeerRequest._();
-  AddPeerRequest createEmptyInstance() => create();
-  static $pb.PbList<AddPeerRequest> createRepeated() => $pb.PbList<AddPeerRequest>();
+  static AddPeersRequest create() => AddPeersRequest._();
+  AddPeersRequest createEmptyInstance() => create();
+  static $pb.PbList<AddPeersRequest> createRepeated() => $pb.PbList<AddPeersRequest>();
   @$core.pragma('dart2js:noInline')
-  static AddPeerRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddPeerRequest>(create);
-  static AddPeerRequest _defaultInstance;
+  static AddPeersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddPeersRequest>(create);
+  static AddPeersRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $14.NodeState get node => $_getN(0);
-  @$pb.TagNumber(1)
-  set node($14.NodeState v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasNode() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearNode() => clearField(1);
-  @$pb.TagNumber(1)
-  $14.NodeState ensureNode() => $_ensure(0);
+  $core.List<$14.NodeState> get nodes => $_getList(0);
 }
 
-class AddPeerResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddPeerResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class AddPeersResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddPeersResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
-  AddPeerResponse._() : super();
-  factory AddPeerResponse() => create();
-  factory AddPeerResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AddPeerResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  AddPeerResponse clone() => AddPeerResponse()..mergeFromMessage(this);
-  AddPeerResponse copyWith(void Function(AddPeerResponse) updates) => super.copyWith((message) => updates(message as AddPeerResponse));
+  AddPeersResponse._() : super();
+  factory AddPeersResponse() => create();
+  factory AddPeersResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AddPeersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  AddPeersResponse clone() => AddPeersResponse()..mergeFromMessage(this);
+  AddPeersResponse copyWith(void Function(AddPeersResponse) updates) => super.copyWith((message) => updates(message as AddPeersResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static AddPeerResponse create() => AddPeerResponse._();
-  AddPeerResponse createEmptyInstance() => create();
-  static $pb.PbList<AddPeerResponse> createRepeated() => $pb.PbList<AddPeerResponse>();
+  static AddPeersResponse create() => AddPeersResponse._();
+  AddPeersResponse createEmptyInstance() => create();
+  static $pb.PbList<AddPeersResponse> createRepeated() => $pb.PbList<AddPeersResponse>();
   @$core.pragma('dart2js:noInline')
-  static AddPeerResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddPeerResponse>(create);
-  static AddPeerResponse _defaultInstance;
+  static AddPeersResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddPeersResponse>(create);
+  static AddPeersResponse _defaultInstance;
 }
 
-class DeletePeerRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeletePeerRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOS(1, 'nodeName')
+class DeletePeersRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeletePeersRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..pPS(1, 'nodeNames')
     ..hasRequiredFields = false
   ;
 
-  DeletePeerRequest._() : super();
-  factory DeletePeerRequest() => create();
-  factory DeletePeerRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DeletePeerRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  DeletePeerRequest clone() => DeletePeerRequest()..mergeFromMessage(this);
-  DeletePeerRequest copyWith(void Function(DeletePeerRequest) updates) => super.copyWith((message) => updates(message as DeletePeerRequest));
+  DeletePeersRequest._() : super();
+  factory DeletePeersRequest() => create();
+  factory DeletePeersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DeletePeersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  DeletePeersRequest clone() => DeletePeersRequest()..mergeFromMessage(this);
+  DeletePeersRequest copyWith(void Function(DeletePeersRequest) updates) => super.copyWith((message) => updates(message as DeletePeersRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static DeletePeerRequest create() => DeletePeerRequest._();
-  DeletePeerRequest createEmptyInstance() => create();
-  static $pb.PbList<DeletePeerRequest> createRepeated() => $pb.PbList<DeletePeerRequest>();
+  static DeletePeersRequest create() => DeletePeersRequest._();
+  DeletePeersRequest createEmptyInstance() => create();
+  static $pb.PbList<DeletePeersRequest> createRepeated() => $pb.PbList<DeletePeersRequest>();
   @$core.pragma('dart2js:noInline')
-  static DeletePeerRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeletePeerRequest>(create);
-  static DeletePeerRequest _defaultInstance;
+  static DeletePeersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeletePeersRequest>(create);
+  static DeletePeersRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get nodeName => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set nodeName($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasNodeName() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearNodeName() => clearField(1);
+  $core.List<$core.String> get nodeNames => $_getList(0);
 }
 
-class DeletePeerResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeletePeerResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class DeletePeersResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeletePeersResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
-  DeletePeerResponse._() : super();
-  factory DeletePeerResponse() => create();
-  factory DeletePeerResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DeletePeerResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  DeletePeerResponse clone() => DeletePeerResponse()..mergeFromMessage(this);
-  DeletePeerResponse copyWith(void Function(DeletePeerResponse) updates) => super.copyWith((message) => updates(message as DeletePeerResponse));
+  DeletePeersResponse._() : super();
+  factory DeletePeersResponse() => create();
+  factory DeletePeersResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DeletePeersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  DeletePeersResponse clone() => DeletePeersResponse()..mergeFromMessage(this);
+  DeletePeersResponse copyWith(void Function(DeletePeersResponse) updates) => super.copyWith((message) => updates(message as DeletePeersResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static DeletePeerResponse create() => DeletePeerResponse._();
-  DeletePeerResponse createEmptyInstance() => create();
-  static $pb.PbList<DeletePeerResponse> createRepeated() => $pb.PbList<DeletePeerResponse>();
+  static DeletePeersResponse create() => DeletePeersResponse._();
+  DeletePeersResponse createEmptyInstance() => create();
+  static $pb.PbList<DeletePeersResponse> createRepeated() => $pb.PbList<DeletePeersResponse>();
   @$core.pragma('dart2js:noInline')
-  static DeletePeerResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeletePeerResponse>(create);
-  static DeletePeerResponse _defaultInstance;
+  static DeletePeersResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeletePeersResponse>(create);
+  static DeletePeersResponse _defaultInstance;
 }
 
