@@ -79,12 +79,13 @@ enum NodeFunction {
   NDF_FILE_STORE = 1,
   NDF_MESSAGE_STORE = 2,
   NDF_TASK_EXECUTOR = 3,
+  NDF_DISTRIBUTOR = 4,
   NodeFunction_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   NodeFunction_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool NodeFunction_IsValid(int value);
 const NodeFunction NodeFunction_MIN = NDF_INVALID;
-const NodeFunction NodeFunction_MAX = NDF_TASK_EXECUTOR;
+const NodeFunction NodeFunction_MAX = NDF_DISTRIBUTOR;
 const int NodeFunction_ARRAYSIZE = NodeFunction_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* NodeFunction_descriptor();

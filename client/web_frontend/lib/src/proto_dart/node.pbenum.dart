@@ -14,12 +14,14 @@ class NodeFunction extends $pb.ProtobufEnum {
   static const NodeFunction NDF_FILE_STORE = NodeFunction._(1, 'NDF_FILE_STORE');
   static const NodeFunction NDF_MESSAGE_STORE = NodeFunction._(2, 'NDF_MESSAGE_STORE');
   static const NodeFunction NDF_TASK_EXECUTOR = NodeFunction._(3, 'NDF_TASK_EXECUTOR');
+  static const NodeFunction NDF_DISTRIBUTOR = NodeFunction._(4, 'NDF_DISTRIBUTOR');
 
   static const $core.List<NodeFunction> values = <NodeFunction> [
     NDF_INVALID,
     NDF_FILE_STORE,
     NDF_MESSAGE_STORE,
     NDF_TASK_EXECUTOR,
+    NDF_DISTRIBUTOR,
   ];
 
   static final $core.Map<$core.int, NodeFunction> _byValue = $pb.ProtobufEnum.initByValue(values);

@@ -15,16 +15,45 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <grpcpp/grpcpp.h>
+#include <map>
+#include <memory>
 
 #include "distributor/node_state/service/node_state_service.h"
 #include "distributor/store/constants.h"
+#include "distributor/store/entity.h"
 #include "distributor/store/node_state_store.h"
 #include "distributor/store/peer_store.h"
 #include "proto_cc/service_node_state.grpc.pb.h"
 #include "proto_cc/service_node_state.pb.h"
 
 namespace e8 {
+namespace {
+
+std::string IpStr(std::string const &ip_bytes) {
+    if (ip_bytes.size() == 4) {
+        return std::to_string(ip_bytes[0]) + "." + std::to_string(ip_bytes[1]) + "." +
+               std::to_string(ip_bytes[2]) + "." + std::to_string(ip_bytes[3]);
+    } else {
+        assert(false);
+    }
+}
+
+std::string DistributorPort(NodeState const &node) {
+    for (int i = 0; i < node.functions_size(); i++) {
+        if (node.functions(i) == NDF_DISTRIBUTOR) {
+            return std::to_string(node.function_ports(i));
+        }
+    }
+    assert(false);
+}
+
+std::string NodeToTargetStr(NodeState const &node) {
+    return IpStr(node.ip_address()) + ":" + DistributorPort(node);
+}
+
+} // namespace
 
 NodeStateServiceImpl::NodeStateServiceImpl()
     : node_states_(kDefaultNodeStatesDatabasePath), peers_(kDefaultNodeStatesDatabasePath) {}
@@ -40,7 +69,33 @@ grpc::Status NodeStateServiceImpl::ReviseNodeState(grpc::ServerContext * /*conte
         return grpc::Status::OK;
     }
 
-    // TODO: Propogate updates to the peers.
+    RevisionEpoch current_epoch = node_states_.CurrentRevisionEpoch();
+
+    // Propogate updates to the peers.
+    std::map<NodeName, NodeState> peers = peers_.Peers();
+    for (auto const &[_, node] : peers) {
+        std::string target_string = NodeToTargetStr(node);
+        std::unique_ptr<NodeStateService::Stub> stub = NodeStateService::NewStub(
+            grpc::CreateChannel(target_string, grpc::InsecureChannelCredentials()));
+
+        GetCurrentRevisionEpochResponse peer_epoch;
+        grpc::Status status =
+            stub->GetCurrentRevisionEpoch(nullptr, GetCurrentRevisionEpochRequest(), &peer_epoch);
+        assert(status.ok());
+
+        std::vector<NodeStateRevision> delta =
+            node_states_.Revisions(peer_epoch.revision_epoch(), current_epoch);
+        if (delta.empty()) {
+            continue;
+        }
+
+        ReviseNodeStateRequest update_delta_request;
+        *update_delta_request.mutable_revisions() = {delta.begin(), delta.end()};
+        ReviseNodeStateResponse update_delta_response;
+        status = stub->ReviseNodeState(nullptr, update_delta_request, &update_delta_response);
+        assert(status.ok());
+    }
+
     return grpc::Status::OK;
 }
 

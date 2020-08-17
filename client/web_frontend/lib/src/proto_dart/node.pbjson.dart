@@ -12,6 +12,7 @@ const NodeFunction$json = const {
     const {'1': 'NDF_FILE_STORE', '2': 1},
     const {'1': 'NDF_MESSAGE_STORE', '2': 2},
     const {'1': 'NDF_TASK_EXECUTOR', '2': 3},
+    const {'1': 'NDF_DISTRIBUTOR', '2': 4},
   ],
 };
 

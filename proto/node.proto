@@ -26,6 +26,7 @@ enum NodeFunction {
     NDF_FILE_STORE = 1;
     NDF_MESSAGE_STORE = 2;
     NDF_TASK_EXECUTOR = 3;
+    NDF_DISTRIBUTOR = 4;
 }
 
 enum NodeStatus {
