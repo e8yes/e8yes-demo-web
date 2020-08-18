@@ -99,4 +99,59 @@ grpc::Status NodeStateServiceImpl::ReviseNodeState(grpc::ServerContext * /*conte
     return grpc::Status::OK;
 }
 
+grpc::Status
+NodeStateServiceImpl::GetCurrentRevisionEpoch(grpc::ServerContext * /*context*/,
+                                              GetCurrentRevisionEpochRequest const * /*request*/,
+                                              GetCurrentRevisionEpochResponse *response) {
+    response->set_revision_epoch(node_states_.CurrentRevisionEpoch());
+    return grpc::Status::OK;
+}
+
+grpc::Status NodeStateServiceImpl::AddPeers(grpc::ServerContext * /*context*/,
+                                            AddPeersRequest const *request,
+                                            AddPeersResponse * /*response*/) {
+    for (auto const &node : request->nodes()) {
+        peers_.AddPeer(node);
+    }
+
+    NodeStateRevision revision;
+    // TODO: use paxos update.
+    revision.set_revision_epoch(node_states_.CurrentRevisionEpoch() + 1);
+    for (auto const &node : request->nodes()) {
+        (*revision.mutable_nodes())[node.name()] = node;
+        (*revision.mutable_delta_operations())[node.name()] = DOP_ADD;
+    }
+
+    ReviseNodeStateRequest revision_request;
+    *revision_request.mutable_revisions()->Add() = revision;
+    ReviseNodeStateResponse revision_response;
+    grpc::Status status = this->ReviseNodeState(nullptr, &revision_request, &revision_response);
+    assert(status.ok());
+
+    return grpc::Status::OK;
+}
+
+grpc::Status NodeStateServiceImpl::DeletePeers(grpc::ServerContext * /*context*/,
+                                               DeletePeersRequest const *request,
+                                               DeletePeersResponse * /*response*/) {
+    for (auto const &node_name : request->node_names()) {
+        peers_.DeletePeer(node_name);
+    }
+
+    NodeStateRevision revision;
+    // TODO: use paxos update.
+    revision.set_revision_epoch(node_states_.CurrentRevisionEpoch() + 1);
+    for (auto const &node_name : request->node_names()) {
+        (*revision.mutable_delta_operations())[node_name] = DOP_DELETE;
+    }
+
+    ReviseNodeStateRequest revision_request;
+    *revision_request.mutable_revisions()->Add() = revision;
+    ReviseNodeStateResponse revision_response;
+    grpc::Status status = this->ReviseNodeState(nullptr, &revision_request, &revision_response);
+    assert(status.ok());
+
+    return grpc::Status::OK;
+}
+
 } // namespace e8

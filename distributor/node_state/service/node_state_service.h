@@ -39,6 +39,16 @@ class NodeStateServiceImpl : public NodeStateService::Service {
                                  ReviseNodeStateRequest const *request,
                                  ReviseNodeStateResponse *response) override;
 
+    grpc::Status GetCurrentRevisionEpoch(grpc::ServerContext *context,
+                                         GetCurrentRevisionEpochRequest const *request,
+                                         GetCurrentRevisionEpochResponse *response) override;
+
+    grpc::Status AddPeers(grpc::ServerContext *context, AddPeersRequest const *request,
+                          AddPeersResponse *response) override;
+
+    grpc::Status DeletePeers(grpc::ServerContext *context, DeletePeersRequest const *request,
+                             DeletePeersResponse *response) override;
+
   private:
     NodeStateStore node_states_;
     PeerStore peers_;
