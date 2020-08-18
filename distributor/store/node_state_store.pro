@@ -21,7 +21,6 @@ SOURCES += \
     peer_store.cc
 
 HEADERS += \
-    constants.h \
     entity.h \
     node_state_schema.h \
     node_state_store.h \

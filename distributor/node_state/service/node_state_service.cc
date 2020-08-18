@@ -21,7 +21,6 @@
 #include <memory>
 
 #include "distributor/node_state/service/node_state_service.h"
-#include "distributor/store/constants.h"
 #include "distributor/store/entity.h"
 #include "distributor/store/node_state_store.h"
 #include "distributor/store/peer_store.h"
@@ -55,8 +54,8 @@ std::string NodeToTargetStr(NodeState const &node) {
 
 } // namespace
 
-NodeStateServiceImpl::NodeStateServiceImpl()
-    : node_states_(kDefaultNodeStatesDatabasePath), peers_(kDefaultNodeStatesDatabasePath) {}
+NodeStateServiceImpl::NodeStateServiceImpl(std::string const &db_path)
+    : node_states_(db_path), peers_(db_path) {}
 
 grpc::Status NodeStateServiceImpl::ReviseNodeState(grpc::ServerContext * /*context*/,
                                                    ReviseNodeStateRequest const *request,

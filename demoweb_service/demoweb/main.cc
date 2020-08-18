@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     builder.RegisterService(&gMessageChannelService);
     builder.RegisterService(&gMessageSubscriberService);
 
-    std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
+    std::unique_ptr<grpc::Server> server = builder.BuildAndStart();
     std::cout << "Server listening on " << server_address << std::endl;
 
     // Run GRPC web proxy.
