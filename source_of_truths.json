@@ -46,7 +46,8 @@
         "deployment_master": "pi6",
         "deployment_image_registry_port": 5000,
         "git_repo": "https://github.com/e8yes/e8yes-demo-web.git",
-        "mount_point": "~/data"
+        "home_mount_point": "~/data",
+        "root_mount_point": "/"
     },
     "build_targets": [
         {
@@ -54,6 +55,12 @@
             "docker_template": "Dockerfile.tmpl",
             "pushable": false,
             "open_ports": []
+        },
+        {
+            "name": "node_state_service",
+            "docker_template": "distributor/node_state/Dockerfile.tmpl",
+            "pushable": true,
+            "open_ports": [20021]
         },
         {
             "name": "message_queue_service",
