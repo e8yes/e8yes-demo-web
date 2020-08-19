@@ -28,9 +28,9 @@
 
 namespace e8 {
 
-std::optional<NodeState> DistributeByKey(std::string const &key,
-                                         std::optional<NodeFunction> const function,
-                                         NodeStateStoreInterface *store) {
+std::optional<NodeState> HashDistributor::Distribute(std::string const &key,
+                                                     std::optional<NodeFunction> const function,
+                                                     NodeStateStoreInterface *store) {
     std::map<NodeName, NodeState> nodes = store->Nodes(function, NodeStatus::NDS_READY);
     if (nodes.empty()) {
         return std::nullopt;

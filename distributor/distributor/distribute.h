@@ -27,18 +27,43 @@
 namespace e8 {
 
 /**
- * @brief DistributeByKey Distribute a keyed object to an active node in the cluster. It's
- * guaranteed that the object can be later retrieved using this function as long as the key is the
- * same.
- *
- * @param function Distribute only to the subset of the nodes that has the specified node function.
- * @param store A node state store that has the information of the entire cluster.
- * @return The node the object should distribute as long as there is one active node that satisfies
- * the constraint. Otherwise, it returns empty.
+ * @brief The DistributorInterface class Provides means to distribute a keyed object to an active
+ * node in the cluster.
  */
-std::optional<NodeState> DistributeByKey(std::string const &key,
-                                         std::optional<NodeFunction> const function,
-                                         NodeStateStoreInterface *store);
+class DistributorInterface {
+  public:
+    DistributorInterface() = default;
+    virtual ~DistributorInterface() = default;
+
+    /**
+     * @brief Distribute Distribute a keyed object to an active node in the cluster. It's
+     * guaranteed that the object can be later retrieved using this function as long as the key is
+     * the same.
+     *
+     * @param function Distribute only to the subset of the nodes that has the specified node
+     * function.
+     * @param store A node state store that has the information of the entire cluster.
+     * @return The node the object should distribute as long as there is one active node that
+     * satisfies the constraint. Otherwise, it returns empty.
+     */
+    virtual std::optional<NodeState> Distribute(std::string const &key,
+                                                std::optional<NodeFunction> const function,
+                                                NodeStateStoreInterface *store) = 0;
+};
+
+/**
+ * @brief The HashDistributor class Distribute the object by hashing the key into different buckets
+ * (nodes).
+ */
+class HashDistributor : public DistributorInterface {
+  public:
+    HashDistributor() = default;
+    ~HashDistributor() override = default;
+
+    std::optional<NodeState> Distribute(std::string const &key,
+                                        std::optional<NodeFunction> const function,
+                                        NodeStateStoreInterface *store) override;
+};
 
 } // namespace e8
 
