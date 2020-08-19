@@ -33,17 +33,13 @@ namespace e8 {
 using RevisionEpoch = int64_t;
 
 /**
- * @brief The NodeStateStore class Connects to the local persistent node state storage. This allows
- * the updates to be shared by the processes using this class.
+ * @brief The NodeStateStoreInterface class Manages the state of all nodes in a cluster. It allows
+ * incremental update to the set of all node states and records a history of the deltas.
  */
-class NodeStateStore {
+class NodeStateStoreInterface {
   public:
-    /**
-     * @brief NodeStateReaderStore Initialize the database with the schema if it had not before.
-     * This operation won't change the existing data.
-     */
-    explicit NodeStateStore(std::string const &file_path);
-    ~NodeStateStore();
+    NodeStateStoreInterface() = default;
+    virtual ~NodeStateStoreInterface() = default;
 
     /**
      * @brief UpdateNodeStates Store the revision to the revision history and apply the revision to
@@ -57,26 +53,51 @@ class NodeStateStore {
      *
      * @return true if the revision has never been applied before, otherwise, false.
      */
-    bool UpdateNodeStates(NodeStateRevision const &revision);
+    virtual bool UpdateNodeStates(NodeStateRevision const &revision) = 0;
 
     /**
      * @brief Nodes Retrieves all nodes in the latest snapshot, with an optional to filter based
      * on node function and node status.
      */
-    std::map<NodeName, NodeState> Nodes(std::optional<NodeFunction> const node_function,
-                                        std::optional<NodeStatus> const node_status);
+    virtual std::map<NodeName, NodeState> Nodes(std::optional<NodeFunction> const node_function,
+                                                std::optional<NodeStatus> const node_status) = 0;
 
     /**
      * @brief CurrentRevisionEpoch Retrieve the current revision epoch applied to the latest node
      * state snapshot.
      */
-    RevisionEpoch CurrentRevisionEpoch();
+    virtual RevisionEpoch CurrentRevisionEpoch() = 0;
 
     /**
      * @brief Revisions Retrieves all the revisions bounded by the epoch interval [begin, end].
      * @return Returns all the available revisions within the interval.
      */
-    std::vector<NodeStateRevision> Revisions(RevisionEpoch const begin, RevisionEpoch const end);
+    virtual std::vector<NodeStateRevision> Revisions(RevisionEpoch const begin,
+                                                     RevisionEpoch const end) = 0;
+};
+
+/**
+ * @brief The NodeStateStore class Connects to the local persistent node state storage. This allows
+ * the updates to be shared by the processes using this class.
+ */
+class NodeStateStore : public NodeStateStoreInterface {
+  public:
+    /**
+     * @brief NodeStateReaderStore Initialize the database with the schema if it had not before.
+     * This operation won't change the existing data.
+     */
+    explicit NodeStateStore(std::string const &file_path);
+    ~NodeStateStore() override;
+
+    bool UpdateNodeStates(NodeStateRevision const &revision) override;
+
+    std::map<NodeName, NodeState> Nodes(std::optional<NodeFunction> const node_function,
+                                        std::optional<NodeStatus> const node_status) override;
+
+    RevisionEpoch CurrentRevisionEpoch() override;
+
+    std::vector<NodeStateRevision> Revisions(RevisionEpoch const begin,
+                                             RevisionEpoch const end) override;
 
   private:
     std::string const file_path_;
