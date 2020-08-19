@@ -18,7 +18,6 @@
 #ifndef NODESTATESTORE_H
 #define NODESTATESTORE_H
 
-#include <cstdint>
 #include <map>
 #include <mutex>
 #include <optional>
@@ -29,8 +28,6 @@
 #include "proto_cc/node.pb.h"
 
 namespace e8 {
-
-using RevisionEpoch = int64_t;
 
 /**
  * @brief The NodeStateStoreInterface class Manages the state of all nodes in a cluster. It allows

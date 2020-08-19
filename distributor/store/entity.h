@@ -18,11 +18,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <cstdint>
 #include <string>
 
 namespace e8 {
 
 using NodeName = std::string;
+using RevisionEpoch = int64_t;
 
 } // namespace e8
 

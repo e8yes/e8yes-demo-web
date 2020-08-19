@@ -15,9 +15,11 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
+    module/propagator.cc \
     service/node_state_service.cc
 
 HEADERS += \
+    module/propagator.h \
     service/node_state_service.h
 
 # Default rules for deployment.
