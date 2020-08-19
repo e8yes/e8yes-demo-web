@@ -14,11 +14,18 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 INCLUDEPATH += ../../
 
-SOURCES +=
-HEADERS +=
+SOURCES += \
+    distribute.cc
+HEADERS += \
+    distribute.h
 
 # Default rules for deployment.
 unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+unix:!macx: LIBS += -L$$OUT_PWD/../store/ -lnode_state_store
+
+INCLUDEPATH += $$PWD/../store
+DEPENDPATH += $$PWD/../store
