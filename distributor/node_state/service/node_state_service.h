@@ -19,8 +19,10 @@
 #define NODESTATESERVICEIMPL_H
 
 #include <grpcpp/grpcpp.h>
+#include <memory>
 #include <string>
 
+#include "distributor/node_state/module/propagator.h"
 #include "distributor/store/node_state_store.h"
 #include "distributor/store/peer_store.h"
 #include "proto_cc/service_node_state.grpc.pb.h"
@@ -51,8 +53,9 @@ class NodeStateServiceImpl : public NodeStateService::Service {
                              DeletePeersResponse *response) override;
 
   private:
-    NodeStateStore node_states_;
-    PeerStore peers_;
+    std::unique_ptr<NodeStateStoreInterface> node_states_;
+    std::unique_ptr<PeerStoreInterface> peers_;
+    std::unique_ptr<PropagatorInterface> propagator_;
 };
 
 } // namespace e8
