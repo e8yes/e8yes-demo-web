@@ -337,6 +337,10 @@ bool NodeStateStore::UpdateNodeStates(NodeStateRevision const &revision) {
 
 std::vector<NodeStateRevision> NodeStateStore::Revisions(RevisionEpoch const begin,
                                                          RevisionEpoch const end) {
+    if (begin >= end) {
+        return std::vector<NodeStateRevision>();
+    }
+
     sqlite3 *db;
     int rc = sqlite3_open_v2(file_path_.c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_NOMUTEX,
                              /*zVfs=*/nullptr);

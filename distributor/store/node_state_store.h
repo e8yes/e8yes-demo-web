@@ -66,7 +66,9 @@ class NodeStateStoreInterface {
     virtual RevisionEpoch CurrentRevisionEpoch() = 0;
 
     /**
-     * @brief Revisions Retrieves all the revisions bounded by the epoch interval [begin, end].
+     * @brief Revisions Retrieves all the revisions bounded by the epoch interval [begin, end]. It's
+     * allowed that begin >= end.
+     *
      * @return Returns all the available revisions within the interval.
      */
     virtual std::vector<NodeStateRevision> Revisions(RevisionEpoch const begin,
@@ -87,12 +89,9 @@ class NodeStateStore : public NodeStateStoreInterface {
     ~NodeStateStore() override;
 
     bool UpdateNodeStates(NodeStateRevision const &revision) override;
-
     std::map<NodeName, NodeState> Nodes(std::optional<NodeFunction> const node_function,
                                         std::optional<NodeStatus> const node_status) override;
-
     RevisionEpoch CurrentRevisionEpoch() override;
-
     std::vector<NodeStateRevision> Revisions(RevisionEpoch const begin,
                                              RevisionEpoch const end) override;
 

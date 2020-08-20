@@ -16,10 +16,12 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     module/propagator.cc \
+    module/sync_node_state.cc \
     service/node_state_service.cc
 
 HEADERS += \
     module/propagator.h \
+    module/sync_node_state.h \
     service/node_state_service.h
 
 # Default rules for deployment.
