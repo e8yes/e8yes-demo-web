@@ -28,13 +28,10 @@
 namespace e8 {
 
 /**
- * @brief The PeerStore class Connects to the local persistent peer state storage and records the
- * local network topology.
+ * @brief The PeerStoreInterface class Manipulates the local network topology.
  */
-class PeerStore {
+class PeerStoreInterface {
   public:
-    explicit PeerStore(std::string const &file_path);
-
     /**
      * @brief AddPeer Adds a node to the peer set.
      *
@@ -44,7 +41,7 @@ class PeerStore {
      *
      * @return true if the peer did not exist. Otherwise, false.
      */
-    bool AddPeer(NodeState const &node);
+    virtual bool AddPeer(NodeState const &node) = 0;
 
     /**
      * @brief DeletePeer Deletes a node from the peer set.
@@ -55,12 +52,25 @@ class PeerStore {
      *
      * @return true if the peer did exist. Otherwise, false.
      */
-    bool DeletePeer(std::string const &node_name);
+    virtual bool DeletePeer(std::string const &node_name) = 0;
 
     /**
      * @brief Peers Retrieves the peer set.
      */
-    std::map<NodeName, NodeState> Peers();
+    virtual std::map<NodeName, NodeState> Peers() = 0;
+};
+
+/**
+ * @brief The PeerStore class Connects to the local persistent peer state storage and records the
+ * local network topology.
+ */
+class PeerStore : public PeerStoreInterface {
+  public:
+    explicit PeerStore(std::string const &file_path);
+
+    bool AddPeer(NodeState const &node) override;
+    bool DeletePeer(std::string const &node_name) override;
+    std::map<NodeName, NodeState> Peers() override;
 
   private:
     std::string const file_path_;
