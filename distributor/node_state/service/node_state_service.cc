@@ -17,13 +17,11 @@
 
 #include <cassert>
 #include <grpcpp/grpcpp.h>
-#include <map>
 #include <memory>
 
 #include "distributor/node_state/module/propagator.h"
 #include "distributor/node_state/module/sync_node_state.h"
 #include "distributor/node_state/service/node_state_service.h"
-#include "distributor/store/entity.h"
 #include "distributor/store/node_state_store.h"
 #include "distributor/store/peer_store.h"
 #include "proto_cc/service_node_state.grpc.pb.h"
