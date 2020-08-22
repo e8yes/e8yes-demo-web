@@ -19,7 +19,7 @@
 #include <memory>
 #include <optional>
 
-#include "distributor/node_state/module/propagator.h"
+#include "distributor/mutation_propagator/module/propagator.h"
 #include "proto_cc/node.pb.h"
 #include "proto_cc/service_node_state.grpc.pb.h"
 #include "proto_cc/service_node_state.pb.h"

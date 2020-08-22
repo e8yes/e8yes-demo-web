@@ -20,8 +20,8 @@
 #include <optional>
 #include <vector>
 
-#include "distributor/node_state/module/propagator.h"
-#include "distributor/node_state/module/sync_node_state.h"
+#include "distributor/mutation_propagator/module/propagator.h"
+#include "distributor/mutation_propagator/module/sync_node_state.h"
 #include "distributor/store/entity.h"
 #include "distributor/store/node_state_store.h"
 #include "proto_cc/node.pb.h"

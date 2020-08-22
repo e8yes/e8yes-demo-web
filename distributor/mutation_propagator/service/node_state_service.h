@@ -22,7 +22,7 @@
 #include <memory>
 #include <string>
 
-#include "distributor/node_state/module/propagator.h"
+#include "distributor/mutation_propagator/module/propagator.h"
 #include "distributor/store/node_state_store.h"
 #include "distributor/store/peer_store.h"
 #include "proto_cc/service_node_state.grpc.pb.h"

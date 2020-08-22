@@ -18,7 +18,7 @@
 #ifndef SYNC_NODE_STATE_H
 #define SYNC_NODE_STATE_H
 
-#include "distributor/node_state/module/propagator.h"
+#include "distributor/mutation_propagator/module/propagator.h"
 #include "distributor/store/node_state_store.h"
 #include "distributor/store/peer_store.h"
 #include "proto_cc/node.pb.h"
