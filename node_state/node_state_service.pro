@@ -15,8 +15,10 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../
 
 SOURCES += \
+    module/grpc_propagator.cc \
     service/node_state_service.cc
 HEADERS += \
+    module/grpc_propagator.h \
     service/node_state_service.h
 
 # Default rules for deployment.

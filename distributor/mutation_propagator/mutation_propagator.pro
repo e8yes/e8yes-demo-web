@@ -36,5 +36,3 @@ DEPENDPATH += $$PWD/../../proto_cc
 LIBS += -pthread
 LIBS += -ldl
 LIBS += -lprotobuf
-LIBS += -lgrpc++
-LIBS += -lgrpc++_reflection

@@ -23,6 +23,7 @@
 #include "distributor/mutation_propagator/sync_node_state.h"
 #include "distributor/store/node_state_store.h"
 #include "distributor/store/peer_store.h"
+#include "node_state/module/grpc_propagator.h"
 #include "node_state/service/node_state_service.h"
 #include "proto_cc/service_node_state.grpc.pb.h"
 #include "proto_cc/service_node_state.pb.h"

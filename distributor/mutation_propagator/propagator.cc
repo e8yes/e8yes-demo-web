@@ -15,73 +15,10 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <grpcpp/grpcpp.h>
-#include <memory>
 #include <optional>
+#include <vector>
 
-#include "distributor/mutation_propagator/propagator.h"
+#include "distributor/store/entity.h"
 #include "proto_cc/node.pb.h"
-#include "proto_cc/service_node_state.grpc.pb.h"
-#include "proto_cc/service_node_state.pb.h"
 
-namespace e8 {
-namespace {
-std::string IpStr(std::string const &ip_bytes) {
-    if (ip_bytes.size() == 4) {
-        return std::to_string(ip_bytes[0]) + "." + std::to_string(ip_bytes[1]) + "." +
-               std::to_string(ip_bytes[2]) + "." + std::to_string(ip_bytes[3]);
-    } else {
-        // TODO: Add IPv6 support.
-        assert(false);
-    }
-}
-
-std::string DistributorPort(NodeState const &node) {
-    for (int i = 0; i < node.functions_size(); i++) {
-        if (node.functions(i) == NDF_DISTRIBUTOR) {
-            return std::to_string(node.function_ports(i));
-        }
-    }
-    assert(false);
-}
-
-std::string NodeToTargetStr(NodeState const &node) {
-    return IpStr(node.ip_address()) + ":" + DistributorPort(node);
-}
-
-std::unique_ptr<NodeStateService::Stub> CreateStub(NodeState const &target) {
-    std::string target_string = NodeToTargetStr(target);
-    return NodeStateService::NewStub(
-        grpc::CreateChannel(target_string, grpc::InsecureChannelCredentials()));
-}
-
-} // namespace
-
-std::optional<RevisionEpoch> GrpcPropagator::GetRevisionEpoch(NodeState const &target) {
-    std::unique_ptr<NodeStateService::Stub> stub = CreateStub(target);
-
-    GetCurrentRevisionEpochResponse peer_epoch;
-    grpc::Status status =
-        stub->GetCurrentRevisionEpoch(nullptr, GetCurrentRevisionEpochRequest(), &peer_epoch);
-    if (!status.ok()) {
-        return std::nullopt;
-    }
-
-    return peer_epoch.revision_epoch();
-}
-
-bool GrpcPropagator::PropagateDelta(NodeState const &target,
-                                    std::vector<NodeStateRevision> const &delta) {
-    std::unique_ptr<NodeStateService::Stub> stub = CreateStub(target);
-
-    ReviseNodeStateRequest update_delta_request;
-    *update_delta_request.mutable_revisions() = {delta.begin(), delta.end()};
-
-    ReviseNodeStateResponse update_delta_response;
-    grpc::Status status =
-        stub->ReviseNodeState(nullptr, update_delta_request, &update_delta_response);
-
-    return status.ok();
-}
-
-} // namespace e8
+namespace e8 {} // namespace e8

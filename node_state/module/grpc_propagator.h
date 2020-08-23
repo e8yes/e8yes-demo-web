@@ -15,40 +15,32 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROPAGATOR_H
-#define PROPAGATOR_H
+#ifndef GRPC_PROPAGATOR_H
+#define GRPC_PROPAGATOR_H
 
 #include <optional>
 #include <vector>
 
+#include "distributor/mutation_propagator/propagator.h"
 #include "distributor/store/entity.h"
 #include "proto_cc/node.pb.h"
 
 namespace e8 {
 
 /**
- * @brief The PropagatorInterface class Serves as a mean to synchronize differences among nodes in
- * a cluster.
+ * @brief The GrpcPropagator class Propagate the delta through gRPC calls.
  */
-class PropagatorInterface {
+class GrpcPropagator : public PropagatorInterface {
   public:
-    PropagatorInterface() = default;
-    virtual ~PropagatorInterface() = default;
+    GrpcPropagator() = default;
+    ~GrpcPropagator() override = default;
 
-    /**
-     * @brief GetRevisionEpoch Get the current revision epoch at the target node.
-     * @return If no error occurs, then it should return the revision epoch retrieved.
-     */
-    virtual std::optional<RevisionEpoch> GetRevisionEpoch(NodeState const &target) = 0;
+    std::optional<RevisionEpoch> GetRevisionEpoch(NodeState const &target) override;
 
-    /**
-     * @brief PropagateDelta Apply and propagate the delta to the target node.
-     * @return True if no error occurred, otherwise false.
-     */
-    virtual bool PropagateDelta(NodeState const &target,
-                                std::vector<NodeStateRevision> const &delta) = 0;
+    bool PropagateDelta(NodeState const &target,
+                        std::vector<NodeStateRevision> const &revisions) override;
 };
 
 } // namespace e8
 
-#endif // PROPAGATOR_H
+#endif // GRPC_PROPAGATOR_H
