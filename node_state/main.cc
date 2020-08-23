@@ -23,7 +23,7 @@
 #include <string>
 
 #include "common/flags/parse_flags.h"
-#include "distributor/node_state/service/node_state_service.h"
+#include "node_state/service/node_state_service.h"
 
 static char const kPortFlag[] = "port";
 static char const kSqliteDbPathFlag[] = "sqlite_db_path";

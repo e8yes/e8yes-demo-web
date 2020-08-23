@@ -4,11 +4,12 @@ SUBDIRS = \
     proto_cc/proto_cc.pro \
     common/common.pro \
     distributor/distributor.pro \
-    file_system/filesystemw.pro \
     postgres/postgres.pro \
     keygen/keygenw.pro \
     identity/identityw.pro \
+    file_system/filesystemw.pro \
     message_queue/message_queue.pro \
+    node_state/node_statew.pro \
     demoweb_service/demoweb.pro
 
 CONFIG += ordered

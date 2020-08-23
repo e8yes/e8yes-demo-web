@@ -58,7 +58,7 @@
         },
         {
             "name": "node_state_service",
-            "docker_template": "distributor/node_state/Dockerfile.tmpl",
+            "docker_template": "node_state/Dockerfile.tmpl",
             "pushable": true,
             "open_ports": [20021]
         },

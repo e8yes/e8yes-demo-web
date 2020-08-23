@@ -32,6 +32,9 @@ namespace e8 {
  */
 class PeerStoreInterface {
   public:
+    PeerStoreInterface() = default;
+    virtual ~PeerStoreInterface() = default;
+
     /**
      * @brief AddPeer Adds a node to the peer set.
      *
@@ -67,6 +70,7 @@ class PeerStoreInterface {
 class PeerStore : public PeerStoreInterface {
   public:
     explicit PeerStore(std::string const &file_path);
+    ~PeerStore() override = default;
 
     bool AddPeer(NodeState const &node) override;
     bool DeletePeer(std::string const &node_name) override;

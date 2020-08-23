@@ -15,25 +15,39 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SYNC_NODE_STATE_H
-#define SYNC_NODE_STATE_H
+#include <cassert>
+#include <map>
+#include <optional>
+#include <vector>
 
-#include "distributor/mutation_propagator/module/propagator.h"
+#include "distributor/mutation_propagator/propagator.h"
+#include "distributor/mutation_propagator/sync_node_state.h"
+#include "distributor/store/entity.h"
 #include "distributor/store/node_state_store.h"
-#include "distributor/store/peer_store.h"
 #include "proto_cc/node.pb.h"
 
 namespace e8 {
 
-/**
- * @brief SyncNodeStates Applies the node states snapshot difference between the current node and
- * the peer nodes to the peer nodes, if there is any.
- *
- * @return True if no error occurs, otherwise false.
- */
 bool SyncNodeStates(PeerStoreInterface *peers, NodeStateStoreInterface *node_states,
-                    PropagatorInterface *propagator);
+                    PropagatorInterface *propagator) {
+    RevisionEpoch current_epoch = node_states->CurrentRevisionEpoch();
+
+    // Propogate updates to the peers.
+    std::map<NodeName, NodeState> peer_nodes = peers->Peers();
+    for (auto const &[_, peer_node] : peer_nodes) {
+        std::optional<RevisionEpoch> dst_epoch = propagator->GetRevisionEpoch(peer_node);
+        assert(dst_epoch.has_value());
+
+        std::vector<NodeStateRevision> delta = node_states->Revisions(*dst_epoch, current_epoch);
+        if (delta.empty()) {
+            continue;
+        }
+
+        bool rc = propagator->PropagateDelta(peer_node, delta);
+        assert(rc);
+    }
+
+    return true;
+}
 
 } // namespace e8
-
-#endif // SYNC_NODE_STATE_H
