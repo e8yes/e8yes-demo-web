@@ -25,7 +25,14 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../proto_cc/ -lproto_cc
+
+INCLUDEPATH += $$PWD/../../proto_cc
+DEPENDPATH += $$PWD/../../proto_cc
+
 unix:!macx: LIBS += -L$$OUT_PWD/../store/ -lnode_state_store
 
 INCLUDEPATH += $$PWD/../store
 DEPENDPATH += $$PWD/../store
+
+LIBS += -lprotobuf
