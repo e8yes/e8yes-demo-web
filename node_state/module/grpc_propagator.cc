@@ -29,8 +29,13 @@ namespace e8 {
 namespace {
 std::string IpStr(std::string const &ip_bytes) {
     if (ip_bytes.size() == 4) {
-        return std::to_string(ip_bytes[0]) + "." + std::to_string(ip_bytes[1]) + "." +
-               std::to_string(ip_bytes[2]) + "." + std::to_string(ip_bytes[3]);
+        return std::to_string(static_cast<unsigned int>(static_cast<unsigned char>(ip_bytes[0]))) +
+               "." +
+               std::to_string(static_cast<unsigned int>(static_cast<unsigned char>(ip_bytes[1]))) +
+               "." +
+               std::to_string(static_cast<unsigned int>(static_cast<unsigned char>(ip_bytes[2]))) +
+               "." +
+               std::to_string(static_cast<unsigned int>(static_cast<unsigned char>(ip_bytes[3])));
     } else {
         // TODO: Add IPv6 support.
         assert(false);
@@ -61,9 +66,11 @@ std::unique_ptr<NodeStateService::Stub> CreateStub(NodeState const &target) {
 std::optional<RevisionEpoch> GrpcPropagator::GetRevisionEpoch(NodeState const &target) {
     std::unique_ptr<NodeStateService::Stub> stub = CreateStub(target);
 
+    grpc::ClientContext context;
+
     GetCurrentRevisionEpochResponse peer_epoch;
     grpc::Status status =
-        stub->GetCurrentRevisionEpoch(nullptr, GetCurrentRevisionEpochRequest(), &peer_epoch);
+        stub->GetCurrentRevisionEpoch(&context, GetCurrentRevisionEpochRequest(), &peer_epoch);
     if (!status.ok()) {
         return std::nullopt;
     }
@@ -75,12 +82,14 @@ bool GrpcPropagator::PropagateDelta(NodeState const &target,
                                     std::vector<NodeStateRevision> const &delta) {
     std::unique_ptr<NodeStateService::Stub> stub = CreateStub(target);
 
+    grpc::ClientContext context;
+
     ReviseNodeStateRequest update_delta_request;
     *update_delta_request.mutable_revisions() = {delta.begin(), delta.end()};
 
     ReviseNodeStateResponse update_delta_response;
     grpc::Status status =
-        stub->ReviseNodeState(nullptr, update_delta_request, &update_delta_response);
+        stub->ReviseNodeState(&context, update_delta_request, &update_delta_response);
 
     return status.ok();
 }
