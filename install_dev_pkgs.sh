@@ -1,10 +1,15 @@
 #!/bin/bash
 
+echo "Updating APT packages..."
+sudo apt update
+sudo apt upgrade -y 
+
 echo "Installing build essentials..."
 sudo apt install -y build-essential
 
 echo "Installing Protobuf compiler..."
 sudo apt install -y protobuf-compiler
+sudo apt install -y protobuf-compiler-grpc
 
 echo "Installing Qt5 development packages..."
 sudo apt install -y qt5-default

@@ -4,7 +4,7 @@ echo "Installing postgres database engine..."
 sudo apt install -y postgresql
 
 echo "Launching postgres cluster..."
-sudo systemctl restart postgresql
+sudo service postgresql start
 
 echo "Installing posgres C++ client library..."
 sudo apt install -y libpqxx-dev
