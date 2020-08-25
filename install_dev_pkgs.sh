@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "Updating APT packages..."
+sudo apt update
+sudo apt upgrade -y 
+
 echo "Installing build essentials..."
 sudo apt install -y build-essential
 
