@@ -11,17 +11,23 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class NodeFunction extends $pb.ProtobufEnum {
   static const NodeFunction NDF_INVALID = NodeFunction._(0, 'NDF_INVALID');
-  static const NodeFunction NDF_FILE_STORE = NodeFunction._(1, 'NDF_FILE_STORE');
-  static const NodeFunction NDF_MESSAGE_STORE = NodeFunction._(2, 'NDF_MESSAGE_STORE');
-  static const NodeFunction NDF_TASK_EXECUTOR = NodeFunction._(3, 'NDF_TASK_EXECUTOR');
-  static const NodeFunction NDF_DISTRIBUTOR = NodeFunction._(4, 'NDF_DISTRIBUTOR');
+  static const NodeFunction NDF_DISTRIBUTOR = NodeFunction._(1, 'NDF_DISTRIBUTOR');
+  static const NodeFunction NDF_FILE_STORE = NodeFunction._(2, 'NDF_FILE_STORE');
+  static const NodeFunction NDF_MESSAGE_QUEUE = NodeFunction._(3, 'NDF_MESSAGE_QUEUE');
+  static const NodeFunction NDF_TASK_EXECUTOR = NodeFunction._(4, 'NDF_TASK_EXECUTOR');
+  static const NodeFunction NDF_RELATIONAL_STORE = NodeFunction._(5, 'NDF_RELATIONAL_STORE');
+  static const NodeFunction NDF_LOAD_BALANCER = NodeFunction._(6, 'NDF_LOAD_BALANCER');
+  static const NodeFunction NDF_IMAGE_BUILDER = NodeFunction._(7, 'NDF_IMAGE_BUILDER');
 
   static const $core.List<NodeFunction> values = <NodeFunction> [
     NDF_INVALID,
-    NDF_FILE_STORE,
-    NDF_MESSAGE_STORE,
-    NDF_TASK_EXECUTOR,
     NDF_DISTRIBUTOR,
+    NDF_FILE_STORE,
+    NDF_MESSAGE_QUEUE,
+    NDF_TASK_EXECUTOR,
+    NDF_RELATIONAL_STORE,
+    NDF_LOAD_BALANCER,
+    NDF_IMAGE_BUILDER,
   ];
 
   static final $core.Map<$core.int, NodeFunction> _byValue = $pb.ProtobufEnum.initByValue(values);

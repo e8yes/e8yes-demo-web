@@ -198,16 +198,18 @@ void AddDescriptorsImpl() {
       "OperationsEntry\032;\n\nNodesEntry\022\013\n\003key\030\001 \001"
       "(\t\022\034\n\005value\030\002 \001(\0132\r.e8.NodeState:\0028\001\032J\n\024"
       "DeltaOperationsEntry\022\013\n\003key\030\001 \001(\t\022!\n\005val"
-      "ue\030\002 \001(\0162\022.e8.DeltaOperation:\0028\001*v\n\014Node"
-      "Function\022\017\n\013NDF_INVALID\020\000\022\022\n\016NDF_FILE_ST"
-      "ORE\020\001\022\025\n\021NDF_MESSAGE_STORE\020\002\022\025\n\021NDF_TASK"
-      "_EXECUTOR\020\003\022\023\n\017NDF_DISTRIBUTOR\020\004*W\n\nNode"
-      "Status\022\017\n\013NDS_INVALID\020\000\022\024\n\020NDS_INITIALIZ"
-      "ING\020\001\022\r\n\tNDS_READY\020\002\022\023\n\017NDS_UNAVALIABLE\020"
-      "\003b\006proto3"
+      "ue\030\002 \001(\0162\022.e8.DeltaOperation:\0028\001*\276\001\n\014Nod"
+      "eFunction\022\017\n\013NDF_INVALID\020\000\022\023\n\017NDF_DISTRI"
+      "BUTOR\020\001\022\022\n\016NDF_FILE_STORE\020\002\022\025\n\021NDF_MESSA"
+      "GE_QUEUE\020\003\022\025\n\021NDF_TASK_EXECUTOR\020\004\022\030\n\024NDF"
+      "_RELATIONAL_STORE\020\005\022\025\n\021NDF_LOAD_BALANCER"
+      "\020\006\022\025\n\021NDF_IMAGE_BUILDER\020\007*W\n\nNodeStatus\022"
+      "\017\n\013NDS_INVALID\020\000\022\024\n\020NDS_INITIALIZING\020\001\022\r"
+      "\n\tNDS_READY\020\002\022\023\n\017NDS_UNAVALIABLE\020\003b\006prot"
+      "o3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 689);
+      descriptor, 762);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "node.proto", &protobuf_RegisterTypes);
   ::protobuf_delta_2eproto::AddDescriptors();
@@ -236,6 +238,9 @@ bool NodeFunction_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
+    case 6:
+    case 7:
       return true;
     default:
       return false;

@@ -9,10 +9,13 @@ const NodeFunction$json = const {
   '1': 'NodeFunction',
   '2': const [
     const {'1': 'NDF_INVALID', '2': 0},
-    const {'1': 'NDF_FILE_STORE', '2': 1},
-    const {'1': 'NDF_MESSAGE_STORE', '2': 2},
-    const {'1': 'NDF_TASK_EXECUTOR', '2': 3},
-    const {'1': 'NDF_DISTRIBUTOR', '2': 4},
+    const {'1': 'NDF_DISTRIBUTOR', '2': 1},
+    const {'1': 'NDF_FILE_STORE', '2': 2},
+    const {'1': 'NDF_MESSAGE_QUEUE', '2': 3},
+    const {'1': 'NDF_TASK_EXECUTOR', '2': 4},
+    const {'1': 'NDF_RELATIONAL_STORE', '2': 5},
+    const {'1': 'NDF_LOAD_BALANCER', '2': 6},
+    const {'1': 'NDF_IMAGE_BUILDER', '2': 7},
   ],
 };
 

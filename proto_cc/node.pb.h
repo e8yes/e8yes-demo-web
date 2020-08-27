@@ -76,16 +76,19 @@ namespace e8 {
 
 enum NodeFunction {
   NDF_INVALID = 0,
-  NDF_FILE_STORE = 1,
-  NDF_MESSAGE_STORE = 2,
-  NDF_TASK_EXECUTOR = 3,
-  NDF_DISTRIBUTOR = 4,
+  NDF_DISTRIBUTOR = 1,
+  NDF_FILE_STORE = 2,
+  NDF_MESSAGE_QUEUE = 3,
+  NDF_TASK_EXECUTOR = 4,
+  NDF_RELATIONAL_STORE = 5,
+  NDF_LOAD_BALANCER = 6,
+  NDF_IMAGE_BUILDER = 7,
   NodeFunction_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   NodeFunction_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool NodeFunction_IsValid(int value);
 const NodeFunction NodeFunction_MIN = NDF_INVALID;
-const NodeFunction NodeFunction_MAX = NDF_DISTRIBUTOR;
+const NodeFunction NodeFunction_MAX = NDF_IMAGE_BUILDER;
 const int NodeFunction_ARRAYSIZE = NodeFunction_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* NodeFunction_descriptor();

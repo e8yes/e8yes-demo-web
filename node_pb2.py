@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='e8',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nnode.proto\x12\x02\x65\x38\x1a\x0b\x64\x65lta.proto\"\x8a\x01\n\tNodeState\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nip_address\x18\x02 \x01(\x0c\x12\x1e\n\x06status\x18\x03 \x01(\x0e\x32\x0e.e8.NodeStatus\x12#\n\tfunctions\x18\x04 \x03(\x0e\x32\x10.e8.NodeFunction\x12\x16\n\x0e\x66unction_ports\x18\x05 \x03(\x05\"\xab\x02\n\x11NodeStateRevision\x12\x16\n\x0erevision_epoch\x18\x01 \x01(\x03\x12/\n\x05nodes\x18\x03 \x03(\x0b\x32 .e8.NodeStateRevision.NodesEntry\x12\x44\n\x10\x64\x65lta_operations\x18\x04 \x03(\x0b\x32*.e8.NodeStateRevision.DeltaOperationsEntry\x1a;\n\nNodesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.e8.NodeState:\x02\x38\x01\x1aJ\n\x14\x44\x65ltaOperationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12!\n\x05value\x18\x02 \x01(\x0e\x32\x12.e8.DeltaOperation:\x02\x38\x01*v\n\x0cNodeFunction\x12\x0f\n\x0bNDF_INVALID\x10\x00\x12\x12\n\x0eNDF_FILE_STORE\x10\x01\x12\x15\n\x11NDF_MESSAGE_STORE\x10\x02\x12\x15\n\x11NDF_TASK_EXECUTOR\x10\x03\x12\x13\n\x0fNDF_DISTRIBUTOR\x10\x04*W\n\nNodeStatus\x12\x0f\n\x0bNDS_INVALID\x10\x00\x12\x14\n\x10NDS_INITIALIZING\x10\x01\x12\r\n\tNDS_READY\x10\x02\x12\x13\n\x0fNDS_UNAVALIABLE\x10\x03\x62\x06proto3')
+  serialized_pb=_b('\n\nnode.proto\x12\x02\x65\x38\x1a\x0b\x64\x65lta.proto\"\x8a\x01\n\tNodeState\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nip_address\x18\x02 \x01(\x0c\x12\x1e\n\x06status\x18\x03 \x01(\x0e\x32\x0e.e8.NodeStatus\x12#\n\tfunctions\x18\x04 \x03(\x0e\x32\x10.e8.NodeFunction\x12\x16\n\x0e\x66unction_ports\x18\x05 \x03(\x05\"\xab\x02\n\x11NodeStateRevision\x12\x16\n\x0erevision_epoch\x18\x01 \x01(\x03\x12/\n\x05nodes\x18\x03 \x03(\x0b\x32 .e8.NodeStateRevision.NodesEntry\x12\x44\n\x10\x64\x65lta_operations\x18\x04 \x03(\x0b\x32*.e8.NodeStateRevision.DeltaOperationsEntry\x1a;\n\nNodesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.e8.NodeState:\x02\x38\x01\x1aJ\n\x14\x44\x65ltaOperationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12!\n\x05value\x18\x02 \x01(\x0e\x32\x12.e8.DeltaOperation:\x02\x38\x01*\xbe\x01\n\x0cNodeFunction\x12\x0f\n\x0bNDF_INVALID\x10\x00\x12\x13\n\x0fNDF_DISTRIBUTOR\x10\x01\x12\x12\n\x0eNDF_FILE_STORE\x10\x02\x12\x15\n\x11NDF_MESSAGE_QUEUE\x10\x03\x12\x15\n\x11NDF_TASK_EXECUTOR\x10\x04\x12\x18\n\x14NDF_RELATIONAL_STORE\x10\x05\x12\x15\n\x11NDF_LOAD_BALANCER\x10\x06\x12\x15\n\x11NDF_IMAGE_BUILDER\x10\x07*W\n\nNodeStatus\x12\x0f\n\x0bNDS_INVALID\x10\x00\x12\x14\n\x10NDS_INITIALIZING\x10\x01\x12\r\n\tNDS_READY\x10\x02\x12\x13\n\x0fNDS_UNAVALIABLE\x10\x03\x62\x06proto3')
   ,
   dependencies=[delta__pb2.DESCRIPTOR,])
 
@@ -36,26 +36,38 @@ _NODEFUNCTION = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='NDF_FILE_STORE', index=1, number=1,
+      name='NDF_DISTRIBUTOR', index=1, number=1,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='NDF_MESSAGE_STORE', index=2, number=2,
+      name='NDF_FILE_STORE', index=2, number=2,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='NDF_TASK_EXECUTOR', index=3, number=3,
+      name='NDF_MESSAGE_QUEUE', index=3, number=3,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='NDF_DISTRIBUTOR', index=4, number=4,
+      name='NDF_TASK_EXECUTOR', index=4, number=4,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NDF_RELATIONAL_STORE', index=5, number=5,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NDF_LOAD_BALANCER', index=6, number=6,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NDF_IMAGE_BUILDER', index=7, number=7,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=474,
-  serialized_end=592,
+  serialized_start=475,
+  serialized_end=665,
 )
 _sym_db.RegisterEnumDescriptor(_NODEFUNCTION)
 
@@ -85,17 +97,20 @@ _NODESTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=594,
-  serialized_end=681,
+  serialized_start=667,
+  serialized_end=754,
 )
 _sym_db.RegisterEnumDescriptor(_NODESTATUS)
 
 NodeStatus = enum_type_wrapper.EnumTypeWrapper(_NODESTATUS)
 NDF_INVALID = 0
-NDF_FILE_STORE = 1
-NDF_MESSAGE_STORE = 2
-NDF_TASK_EXECUTOR = 3
-NDF_DISTRIBUTOR = 4
+NDF_DISTRIBUTOR = 1
+NDF_FILE_STORE = 2
+NDF_MESSAGE_QUEUE = 3
+NDF_TASK_EXECUTOR = 4
+NDF_RELATIONAL_STORE = 5
+NDF_LOAD_BALANCER = 6
+NDF_IMAGE_BUILDER = 7
 NDS_INVALID = 0
 NDS_INITIALIZING = 1
 NDS_READY = 2

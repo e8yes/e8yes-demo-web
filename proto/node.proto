@@ -23,10 +23,13 @@ import "delta.proto";
 
 enum NodeFunction {
     NDF_INVALID = 0;
-    NDF_FILE_STORE = 1;
-    NDF_MESSAGE_STORE = 2;
-    NDF_TASK_EXECUTOR = 3;
-    NDF_DISTRIBUTOR = 4;
+    NDF_DISTRIBUTOR = 1;
+    NDF_FILE_STORE = 2;
+    NDF_MESSAGE_QUEUE = 3;
+    NDF_TASK_EXECUTOR = 4;
+    NDF_RELATIONAL_STORE = 5;
+    NDF_LOAD_BALANCER = 6;
+    NDF_IMAGE_BUILDER = 7;
 }
 
 enum NodeStatus {
