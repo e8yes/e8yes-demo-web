@@ -115,7 +115,7 @@ if __name__ == "__main__":
   for node_name, node_config in node_configs.items():
     print("Set up mount point for node", node_name, node_config)
     SetUpMountpoint(node=node_config, 
-                    mount_point=cluster_config.mount_point)
+                    mount_point=cluster_config.home_mount_point)
   
   print("Setting up the load balancer...")
   load_balancer_node = node_configs[cluster_config.load_balancer]

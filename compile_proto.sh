@@ -6,11 +6,13 @@ protoc --cpp_out=./proto_cc \
        --proto_path=proto \
        `find proto -name *.proto`
        
-protoc --python_out=./proto_py \
-       --grpc_out=./proto_py \
+protoc --python_out=. \
+       --grpc_out=. \
        --plugin=protoc-gen-grpc=`which grpc_python_plugin` \
        --proto_path=proto \
-       `find proto -name *.proto`
+       proto/service_node_state.proto \
+       proto/node.proto \
+       proto/delta.proto
 
 export PATH=$PATH:$HOME/.pub-cache/bin
 
