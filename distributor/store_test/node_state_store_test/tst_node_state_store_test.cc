@@ -70,7 +70,7 @@ std::map<e8::NodeName, e8::NodeState> PrepareNodeStates() {
     (*node2.mutable_ip_address()) += 2_uchar;
     node2.set_status(e8::NodeStatus::NDS_READY);
     node2.mutable_functions()->Add(e8::NDF_TASK_EXECUTOR);
-    node2.mutable_functions()->Add(e8::NDF_MESSAGE_STORE);
+    node2.mutable_functions()->Add(e8::NDF_MESSAGE_QUEUE);
 
     return std::map<e8::NodeName, e8::NodeState>{std::make_pair(node2.name(), node2),
                                                  std::make_pair(node1.name(), node1)};
@@ -120,7 +120,7 @@ void node_state_store_test::add_swap_delete_test() {
     QVERIFY(retrieved["node2"].status() == e8::NDS_READY);
     QVERIFY(retrieved["node2"].functions_size() == 2);
     QVERIFY(retrieved["node2"].functions()[0] == e8::NDF_TASK_EXECUTOR);
-    QVERIFY(retrieved["node2"].functions()[1] == e8::NDF_MESSAGE_STORE);
+    QVERIFY(retrieved["node2"].functions()[1] == e8::NDF_MESSAGE_QUEUE);
 
     updated = store.UpdateNodeStates(revision1);
     QVERIFY(updated == false);
@@ -224,7 +224,7 @@ void node_state_store_test::query_filter_test() {
     store.UpdateNodeStates(revision);
 
     std::map<e8::NodeName, e8::NodeState> message_nodes =
-        store.Nodes(/*node_function=*/e8::NDF_MESSAGE_STORE, /*node_status=*/std::nullopt);
+        store.Nodes(/*node_function=*/e8::NDF_MESSAGE_QUEUE, /*node_status=*/std::nullopt);
     QVERIFY(message_nodes.size() == 1);
     QVERIFY(message_nodes["node2"].status() == e8::NDS_READY);
 
