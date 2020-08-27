@@ -4,17 +4,24 @@ from typing import Tuple
 import json
 
 class NodeConfig:
-  def __init__(self, name: str, user: str, location: str, ssh_password: str):
+  def __init__(self,
+               name: str, 
+               user: str,
+               location: str,
+               ssh_password: str,
+               functions: List[str]):
     self.name = name
     self.user = user
     self.location = location
     self.ssh_password = ssh_password
+    self.functions = functions
 
   def __repr__(self):
     return "NodeConfig={name=" + self.name + \
                       ",user=" + self.user + \
                       ",location=" + self.location + \
                       ",ssh_password=" + self.ssh_password + \
+                      ",functions=" + str(self.functions) + \
                       "}"
 
 class ClusterConfig:
@@ -90,7 +97,8 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
       NodeConfig(name=json_node_config["name"],
                  user=json_node_config["user"],
                  location=json_node_config["location"],
-                 ssh_password=json_node_config["ssh_password"])
+                 ssh_password=json_node_config["ssh_password"],
+                 functions=json_node_config["functions"])
 
   json_cluster_config = json_obj["cluster"]
   cluster_config = ClusterConfig(
