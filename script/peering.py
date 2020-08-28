@@ -1,6 +1,8 @@
+from typing import Dict
 from typing import List
 import grpc
 from script.config import NodeConfig
+from script.config import TopologyConfig
 from service_node_state_pb2_grpc import NodeStateServiceStub
 from service_node_state_pb2 import AddPeersRequest
 from node_pb2 import NodeState
@@ -63,3 +65,17 @@ def AddPeers(node: NodeConfig, peers: List[NodeConfig]):
         
         request = AddPeersRequest(nodes=nodes)
         stub.AddPeers(request=request)
+
+def ApplyTopology(nodes: Dict[str, NodeConfig], 
+                  topology: TopologyConfig):
+    for entry in topology.connections.items():
+        src = entry[0]
+        dsts = entry[1]
+
+        src_node = nodes[src]
+        dst_nodes = list()
+        for dst in dsts:
+            dst_nodes.append(nodes[dst])
+
+        print("Adding connection from=", src_node, "|to=", dst_nodes)
+        AddPeers(node=src_node, peers=dst_nodes)

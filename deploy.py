@@ -1,5 +1,6 @@
 from script.config import NodeConfig
 from script.config import ClusterConfig
+from script.config import TopologyConfig
 from script.config import LoadSourceOfTruths
 from script.refresh_host_keys import RefreshHostKeys
 from script.run_bash_script import UploadScriptToNode
@@ -18,7 +19,7 @@ def PushPostgresSchema(postgres_node: NodeConfig):
                           .format(CODE_REPO_LOCATION))
 
 if __name__ == "__main__":
-  node_configs, cluster_config, build_targets = LoadSourceOfTruths(
+  node_configs, cluster_config, topology_configs, build_targets = LoadSourceOfTruths(
     config_file_path="source_of_truths.json")
 
   instantiator = TemplateInstantiator(cluster_config, 

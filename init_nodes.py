@@ -97,7 +97,7 @@ def SetUpMountpoint(node: NodeConfig, mount_point: str):
                          command="mkdir -p {0}".format(mount_point))
 
 if __name__ == "__main__":
-  node_configs, cluster_config, build_targets = LoadSourceOfTruths(
+  node_configs, cluster_config, _, build_targets = LoadSourceOfTruths(
     config_file_path="source_of_truths.json")
   
   instantiator = TemplateInstantiator(cluster_config, 

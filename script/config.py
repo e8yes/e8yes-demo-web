@@ -65,6 +65,13 @@ class ClusterConfig:
                          ",root_mount_point=" + self.root_mount_point + \
                          "}"
 
+class TopologyConfig:
+  def __init__(self, connections: Dict[str, List[str]]):
+    self.connections = connections
+  
+  def __repr__(self):
+    return str(self.connections)
+
 class BuildTarget:
   def __init__(self, 
                name: str, 
@@ -117,6 +124,8 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
     home_mount_point=json_cluster_config["home_mount_point"],
     root_mount_point=json_cluster_config["root_mount_point"])
 
+  topology_config = TopologyConfig(connections=json_obj["topology"])
+
   json_build_targets = json_obj["build_targets"]
   build_targets: List[BuildTarget] = list()
   for json_build_target in json_build_targets:
@@ -126,5 +135,5 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
                   pushable=bool(json_build_target["pushable"]),
                   open_ports=json_build_target["open_ports"]))
 
-  return node_configs, cluster_config, build_targets
+  return node_configs, cluster_config, topology_config, build_targets
 
