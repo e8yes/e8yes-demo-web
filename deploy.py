@@ -1,3 +1,4 @@
+from time import sleep
 from script.config import NodeConfig
 from script.config import ClusterConfig
 from script.config import TopologyConfig
@@ -11,6 +12,7 @@ from script.code_repo import CODE_REPO_LOCATION
 from script.template_instantiator import TemplateInstantiator
 from script.build_images import BuildAndPushTargetImages
 from script.deploy_images import DeployImages
+from script.peering import ApplyTopology
 
 
 def PushPostgresSchema(postgres_node: NodeConfig):
@@ -19,8 +21,8 @@ def PushPostgresSchema(postgres_node: NodeConfig):
                           .format(CODE_REPO_LOCATION))
 
 if __name__ == "__main__":
-  node_configs, cluster_config, topology_configs, build_targets = LoadSourceOfTruths(
-    config_file_path="source_of_truths.json")
+  node_configs, cluster_config, topology_configs, build_targets = \
+    LoadSourceOfTruths(config_file_path="source_of_truths.json")
 
   instantiator = TemplateInstantiator(cluster_config, 
                                       node_configs,
@@ -52,3 +54,9 @@ if __name__ == "__main__":
                root_mount_point=cluster_config.root_mount_point,
                targets=build_targets,
                nodes=node_configs.values())
+  
+  print("Waiting services to finish launching...")
+  sleep(secs=5)
+
+  print("Apply network topology")
+  ApplyTopology(nodes=node_configs, topology=topology_configs)
