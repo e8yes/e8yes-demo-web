@@ -56,7 +56,7 @@ if __name__ == "__main__":
                nodes=node_configs.values())
   
   print("Waiting services to finish launching...")
-  sleep(secs=5)
+  sleep(5)
 
   print("Apply network topology")
   ApplyTopology(nodes=node_configs, topology=topology_configs)

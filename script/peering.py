@@ -28,7 +28,7 @@ def IpAddressToBytes(ipv4_str: str):
                   int(components[2]), 
                   int(components[3])])
 
-def ToEnum(node_functions: List[str]) -> List[NodeFunction]:
+def ToEnum(node_functions: List[str]):
     result = list()
     for node_func in node_functions:
         if node_func == "distributor":
@@ -59,7 +59,8 @@ def AddPeers(node: NodeConfig, peers: List[NodeConfig]):
                 name=peer.name,
                 ip_address=IpAddressToBytes(peer.location),
                 status=NDS_READY,
-                functions=ToEnum(node.functions))
+                functions=ToEnum(node.functions),
+                function_ports=[20021 for _ in range(len(node.functions))])
 
             nodes.append(node)
         
