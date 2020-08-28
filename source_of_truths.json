@@ -88,6 +88,14 @@
         "home_mount_point": "~/data",
         "root_mount_point": "/"
     },
+    "topology": {
+        "pi1": ["pi2"],
+        "pi2": ["pi3"],
+        "pi3": ["pi4"],
+        "pi4": ["pi5"],
+        "pi5": ["pi6"],
+        "pi6": ["pi1"]
+    },
     "build_targets": [
         {
             "name": "demoweb_base_env",
