@@ -4,6 +4,7 @@ SUBDIRS = \
     store_test/node_state_store_test \
     store_test/peer_store_test \
     mutation_propagator/mutation_propagator.pro \
+    mutation_propagator_test/sync_node_state_test \
     distributor/distributor.pro \
     distributor_test
 
