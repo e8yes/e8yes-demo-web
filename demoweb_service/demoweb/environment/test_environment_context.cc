@@ -27,7 +27,7 @@
 
 namespace e8 {
 
-TestEnvironmentContext::TestEnvironmentContext() {
+DemoWebTestEnvironmentContext::DemoWebTestEnvironmentContext() {
     ConnectionFactory fact(ConnectionFactory::PQ, /*host_name=*/"localhost", kDemowebDatabaseName);
     demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
@@ -38,16 +38,16 @@ TestEnvironmentContext::TestEnvironmentContext() {
     host_id_ = 0;
 }
 
-EnvironmentContextInterface::Environment TestEnvironmentContext::EnvironmentType() const {
-    return EnvironmentContextInterface::TEST;
+DemoWebEnvironmentContextInterface::Environment DemoWebTestEnvironmentContext::EnvironmentType() const {
+    return DemoWebEnvironmentContextInterface::TEST;
 }
 
-HostId TestEnvironmentContext::CurrentHostId() const { return host_id_; }
+HostId DemoWebTestEnvironmentContext::CurrentHostId() const { return host_id_; }
 
-e8::ConnectionReservoirInterface *TestEnvironmentContext::DemowebDatabase() {
+e8::ConnectionReservoirInterface *DemoWebTestEnvironmentContext::DemowebDatabase() {
     return demoweb_database_.get();
 }
 
-e8::KeyGeneratorInterface *TestEnvironmentContext::KeyGen() { return key_gen_.get(); }
+e8::KeyGeneratorInterface *DemoWebTestEnvironmentContext::KeyGen() { return key_gen_.get(); }
 
 } // namespace e8

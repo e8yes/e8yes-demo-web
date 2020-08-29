@@ -42,7 +42,7 @@ create_user_test::create_user_test() {}
 create_user_test::~create_user_test() {}
 
 void create_user_test::create_baseline_user_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
     e8::ConnectionReservoirInterface *db_conns = env.DemowebDatabase();
 
     std::string user0_password = "PASS";

@@ -30,13 +30,13 @@
 namespace e8 {
 
 /**
- * @brief The ProductionEnvironmentContext class Manages global objects for the production
+ * @brief The DemoWebProductionEnvironmentContext class Manages global objects for the production
  * deployment environment.
  */
-class ProductionEnvironmentContext : public EnvironmentContextInterface {
+class DemoWebProductionEnvironmentContext : public DemoWebEnvironmentContextInterface {
   public:
-    ProductionEnvironmentContext(std::string const &demoweb_db_hostname);
-    ~ProductionEnvironmentContext() override = default;
+    DemoWebProductionEnvironmentContext(std::string const &demoweb_db_hostname);
+    ~DemoWebProductionEnvironmentContext() override = default;
 
     Environment EnvironmentType() const override;
     HostId CurrentHostId() const override;

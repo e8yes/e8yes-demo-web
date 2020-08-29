@@ -48,12 +48,12 @@ static e8::SocialNetworkServiceImpl gSocialNetworkService;
 static e8::MessageChannelServiceImpl gMessageChannelService;
 static std::unique_ptr<e8::MessageSubscriberServiceImpl> gMessageSubscriberService;
 
-std::unique_ptr<e8::ProductionEnvironmentContext> BuildEnvironmentContext() {
+std::unique_ptr<e8::DemoWebProductionEnvironmentContext> BuildEnvironmentContext() {
     std::string demoweb_db_host_name =
         e8::ReadFlag(kDemowebDbHostNameFlag, std::string(), e8::FromString<std::string>);
     assert(!demoweb_db_host_name.empty());
 
-    auto context = std::make_unique<e8::ProductionEnvironmentContext>(demoweb_db_host_name);
+    auto context = std::make_unique<e8::DemoWebProductionEnvironmentContext>(demoweb_db_host_name);
 
     return context;
 }

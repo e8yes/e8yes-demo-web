@@ -48,7 +48,7 @@ void user_identity_test::digest_test() {
 }
 
 void user_identity_test::successful_sign_and_parse_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     std::string security_key = "abdcd2";
 
@@ -71,7 +71,7 @@ void user_identity_test::successful_sign_and_parse_test() {
 }
 
 void user_identity_test::access_denied_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     std::string security_key = "abdcd2";
 

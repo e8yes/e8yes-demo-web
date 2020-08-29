@@ -28,13 +28,13 @@ namespace e8 {
  * @brief The EnvironmentContextInterface class Returns global objects the runs in a deployment
  * environment.
  */
-class EnvironmentContextInterface {
+class DemoWebEnvironmentContextInterface {
   public:
     enum Environment { PROD, TEST };
 
-    EnvironmentContextInterface() = default;
-    EnvironmentContextInterface(EnvironmentContextInterface const &) = delete;
-    virtual ~EnvironmentContextInterface() = default;
+    DemoWebEnvironmentContextInterface() = default;
+    DemoWebEnvironmentContextInterface(DemoWebEnvironmentContextInterface const &) = delete;
+    virtual ~DemoWebEnvironmentContextInterface() = default;
 
     /**
      * The type of deployment environment it implements.
@@ -63,13 +63,13 @@ class EnvironmentContextInterface {
  * @brief RegisterEnvironment Register the specified environment to be the currently active
  * environment.
  */
-void RegisterEnvironment(EnvironmentContextInterface *env);
+void RegisterEnvironment(DemoWebEnvironmentContextInterface *env);
 
 /**
  * @brief CurrentEnvironment Retrieve the currently registered environment context. The returned
  * context is guaranteed to be not null. If no environment is registered, this function will fail.
  */
-EnvironmentContextInterface *CurrentEnvironment();
+DemoWebEnvironmentContextInterface *CurrentEnvironment();
 
 } // namespace e8
 

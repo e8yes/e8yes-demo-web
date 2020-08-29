@@ -29,13 +29,13 @@
 namespace e8 {
 
 /**
- * @brief The TestEnvironmentContext class Manages global objects for the test deployment
+ * @brief The DemoWebTestEnvironmentContext class Manages global objects for the test deployment
  * environment.
  */
-class TestEnvironmentContext : public EnvironmentContextInterface {
+class DemoWebTestEnvironmentContext : public DemoWebEnvironmentContextInterface {
   public:
-    TestEnvironmentContext();
-    ~TestEnvironmentContext() override = default;
+    DemoWebTestEnvironmentContext();
+    ~DemoWebTestEnvironmentContext() override = default;
 
     Environment EnvironmentType() const override;
     HostId CurrentHostId() const override;

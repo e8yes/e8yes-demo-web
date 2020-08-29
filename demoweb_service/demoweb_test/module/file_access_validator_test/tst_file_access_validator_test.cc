@@ -43,7 +43,7 @@ file_access_validator_test::file_access_validator_test() {}
 file_access_validator_test::~file_access_validator_test() {}
 
 void file_access_validator_test::access_token_validation_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     e8::UserId user_id = 123L;
     std::string file_path = "/user/123/avatar/face.png";
@@ -69,7 +69,7 @@ void file_access_validator_test::access_token_validation_test() {
 }
 
 void file_access_validator_test::direct_access_validation_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     e8::UserId user_id = 123L;
     std::optional<e8::UserEntity> user = e8::CreateUser("abc", std::vector<std::string>(), user_id,

@@ -46,7 +46,7 @@ contact_invitation_test::contact_invitation_test() {}
 contact_invitation_test::~contact_invitation_test() {}
 
 void contact_invitation_test::send_invitation_store_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     std::optional<e8::UserEntity> user1 =
         e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/1,
@@ -77,7 +77,7 @@ void contact_invitation_test::send_invitation_store_test() {
 }
 
 void contact_invitation_test::process_invitation_accept_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     std::optional<e8::UserEntity> user1 =
         e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/1,

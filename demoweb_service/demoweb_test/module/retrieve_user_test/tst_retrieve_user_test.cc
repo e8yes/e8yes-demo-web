@@ -41,7 +41,7 @@ class retrieve_user_test : public QObject {
 };
 
 void retrieve_user_test::retrieve_user_entity_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
     e8::ConnectionReservoirInterface *db_conns = env.DemowebDatabase();
 
     e8::UserEntity user0 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*user_id=*/123L,
@@ -57,7 +57,7 @@ void retrieve_user_test::retrieve_user_entity_test() {
 }
 
 void retrieve_user_test::search_user_by_id_prefix_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
     e8::ConnectionReservoirInterface *db_conns = env.DemowebDatabase();
 
     e8::UserEntity user0 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*user_id=*/12300L,
@@ -107,7 +107,7 @@ void retrieve_user_test::search_user_by_id_prefix_test() {
 }
 
 void retrieve_user_test::search_user_by_id_alias_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
     e8::ConnectionReservoirInterface *db_conns = env.DemowebDatabase();
 
     e8::UserEntity user0 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*user_id=*/1L,

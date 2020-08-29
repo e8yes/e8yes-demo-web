@@ -27,7 +27,7 @@
 
 namespace e8 {
 
-ProductionEnvironmentContext::ProductionEnvironmentContext(std::string const &db_hostname) {
+DemoWebProductionEnvironmentContext::DemoWebProductionEnvironmentContext(std::string const &db_hostname) {
     ConnectionFactory fact(ConnectionFactory::PQ, db_hostname, kDemowebDatabaseName);
     demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
@@ -37,16 +37,16 @@ ProductionEnvironmentContext::ProductionEnvironmentContext(std::string const &db
     host_id_ = CurrentHostId();
 }
 
-EnvironmentContextInterface::Environment ProductionEnvironmentContext::EnvironmentType() const {
-    return EnvironmentContextInterface::TEST;
+DemoWebEnvironmentContextInterface::Environment DemoWebProductionEnvironmentContext::EnvironmentType() const {
+    return DemoWebEnvironmentContextInterface::TEST;
 }
 
-unsigned ProductionEnvironmentContext::CurrentHostId() const { return host_id_; }
+unsigned DemoWebProductionEnvironmentContext::CurrentHostId() const { return host_id_; }
 
-e8::ConnectionReservoirInterface *ProductionEnvironmentContext::DemowebDatabase() {
+e8::ConnectionReservoirInterface *DemoWebProductionEnvironmentContext::DemowebDatabase() {
     return demoweb_database_.get();
 }
 
-e8::KeyGeneratorInterface *ProductionEnvironmentContext::KeyGen() { return key_gen_.get(); }
+e8::KeyGeneratorInterface *DemoWebProductionEnvironmentContext::KeyGen() { return key_gen_.get(); }
 
 } // namespace e8

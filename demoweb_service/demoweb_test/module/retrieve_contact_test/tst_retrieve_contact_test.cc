@@ -43,7 +43,7 @@ retrieve_contact_test::retrieve_contact_test() {}
 retrieve_contact_test::~retrieve_contact_test() {}
 
 void retrieve_contact_test::get_related_users_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     std::optional<e8::UserEntity> user1 =
         e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/1,

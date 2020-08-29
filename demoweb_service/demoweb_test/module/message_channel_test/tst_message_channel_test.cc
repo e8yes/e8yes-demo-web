@@ -53,7 +53,7 @@ struct CreateNewChannelInfo {
     e8::MessageChannelEntity message_channel;
 };
 
-CreateNewChannelInfo CreateNewChannel(e8::TestEnvironmentContext *env) {
+CreateNewChannelInfo CreateNewChannel(e8::DemoWebTestEnvironmentContext *env) {
     std::optional<e8::UserEntity> user = e8::CreateUser(
         /*security_key=*/"", std::vector<std::string>(), kCreatorId, env->CurrentHostId(),
         env->DemowebDatabase());
@@ -70,7 +70,7 @@ CreateNewChannelInfo CreateNewChannel(e8::TestEnvironmentContext *env) {
 }
 
 void message_channel_test::create_and_list_message_channel_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     CreateNewChannelInfo channel_info = CreateNewChannel(&env);
 
@@ -91,7 +91,7 @@ void message_channel_test::create_and_list_message_channel_test() {
 }
 
 void message_channel_test::create_and_list_channel_member_test() {
-    e8::TestEnvironmentContext env;
+    e8::DemoWebTestEnvironmentContext env;
 
     CreateNewChannelInfo channel_info = CreateNewChannel(&env);
 

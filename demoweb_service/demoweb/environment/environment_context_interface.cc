@@ -22,13 +22,13 @@
 namespace e8 {
 namespace {
 
-static EnvironmentContextInterface *g_env = nullptr;
+static DemoWebEnvironmentContextInterface *g_env = nullptr;
 
 }
 
-void RegisterEnvironment(EnvironmentContextInterface *env) { g_env = env; }
+void RegisterEnvironment(DemoWebEnvironmentContextInterface *env) { g_env = env; }
 
-EnvironmentContextInterface *CurrentEnvironment() {
+DemoWebEnvironmentContextInterface *CurrentEnvironment() {
     assert(g_env != nullptr);
     return g_env;
 }
