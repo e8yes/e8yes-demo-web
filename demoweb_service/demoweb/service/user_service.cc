@@ -38,8 +38,8 @@ grpc::Status UserServiceImpl::Register(grpc::ServerContext * /*context*/,
 
     std::optional<UserEntity> user =
         CreateBaselineUser(request->security_key(),
-                           /*userId=*/std::nullopt, CurrentEnvironment()->CurrentHostId(),
-                           CurrentEnvironment()->DemowebDatabase());
+                           /*userId=*/std::nullopt, DemoWebEnvironment()->CurrentHostId(),
+                           DemoWebEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
         return grpc::Status(grpc::StatusCode::INTERNAL,
                             "User ID conflicts when it shouldn't happen");
@@ -55,14 +55,14 @@ grpc::Status UserServiceImpl::Authorize(grpc::ServerContext * /*context*/,
                                         AuthorizationRequest const *request,
                                         AuthorizationResponse *response) {
     std::optional<UserEntity> user =
-        RetrieveUser(request->user_id(), CurrentEnvironment()->DemowebDatabase());
+        RetrieveUser(request->user_id(), DemoWebEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
         return grpc::Status(grpc::StatusCode::NOT_FOUND,
                             "User ID=" + std::to_string(request->user_id()) + " doesn't exist.");
     }
 
     std::optional<SignedIdentity> signed_identity =
-        SignIdentity(user.value(), request->security_key(), CurrentEnvironment()->KeyGen());
+        SignIdentity(user.value(), request->security_key(), DemoWebEnvironment()->KeyGen());
     if (!signed_identity.has_value()) {
         return grpc::Status(grpc::StatusCode::UNAUTHENTICATED,
                             "Failed to validate the provided security key.");
@@ -81,7 +81,7 @@ grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
     std::optional<Identity> identity = ExtractIdentityFromContext(*context, nullptr);
 
     std::optional<UserEntity> user =
-        RetrieveUser(request->user_id(), CurrentEnvironment()->DemowebDatabase());
+        RetrieveUser(request->user_id(), DemoWebEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
         return grpc::Status(grpc::StatusCode::NOT_FOUND,
                             "User ID=" + std::to_string(request->user_id()) + " doesn't exist.");
@@ -90,12 +90,12 @@ grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
     std::vector<UserPublicProfile> profiles;
     if (identity.has_value()) {
         profiles = BuildPublicProfiles(identity.value().user_id(), {user.value()},
-                                       CurrentEnvironment()->KeyGen(),
-                                       CurrentEnvironment()->DemowebDatabase());
+                                       DemoWebEnvironment()->KeyGen(),
+                                       DemoWebEnvironment()->DemowebDatabase());
     } else {
         profiles = BuildPublicProfiles(std::optional<UserId>(), {user.value()},
-                                       CurrentEnvironment()->KeyGen(),
-                                       CurrentEnvironment()->DemowebDatabase());
+                                       DemoWebEnvironment()->KeyGen(),
+                                       DemoWebEnvironment()->DemowebDatabase());
     }
     assert(profiles.size() == 1);
     *response->mutable_profile() = profiles[0];
@@ -113,7 +113,7 @@ grpc::Status UserServiceImpl::UpdatePublicProfile(grpc::ServerContext *context,
     }
     UserId user_id = identity.value().user_id();
 
-    std::optional<UserEntity> user = RetrieveUser(user_id, CurrentEnvironment()->DemowebDatabase());
+    std::optional<UserEntity> user = RetrieveUser(user_id, DemoWebEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
         return grpc::Status(grpc::StatusCode::NOT_FOUND,
                             "User ID=" + std::to_string(user_id) + " doesn't exist.");
@@ -124,11 +124,11 @@ grpc::Status UserServiceImpl::UpdatePublicProfile(grpc::ServerContext *context,
     std::optional<std::string> biography =
         request->has_biography() ? std::optional<std::string>(request->biography().value())
                                  : std::nullopt;
-    UpdateProfile(alias, biography, &user.value(), CurrentEnvironment()->DemowebDatabase());
+    UpdateProfile(alias, biography, &user.value(), DemoWebEnvironment()->DemowebDatabase());
 
     std::vector<UserPublicProfile> profiles =
-        BuildPublicProfiles(user_id, {user.value()}, CurrentEnvironment()->KeyGen(),
-                            CurrentEnvironment()->DemowebDatabase());
+        BuildPublicProfiles(user_id, {user.value()}, DemoWebEnvironment()->KeyGen(),
+                            DemoWebEnvironment()->DemowebDatabase());
     assert(profiles.size() == 1);
     *response->mutable_profile() = profiles[0];
 
@@ -154,11 +154,11 @@ grpc::Status UserServiceImpl::Search(grpc::ServerContext *context, SearchUserReq
 
     std::vector<UserEntity> user_entities =
         SearchUser(identity->user_id(), user_id_prefix, alias_prefix, request->pagination(),
-                   CurrentEnvironment()->DemowebDatabase());
+                   DemoWebEnvironment()->DemowebDatabase());
 
     std::vector<UserPublicProfile> profiles =
-        BuildPublicProfiles(identity->user_id(), user_entities, CurrentEnvironment()->KeyGen(),
-                            CurrentEnvironment()->DemowebDatabase());
+        BuildPublicProfiles(identity->user_id(), user_entities, DemoWebEnvironment()->KeyGen(),
+                            DemoWebEnvironment()->DemowebDatabase());
 
     *response->mutable_user_profiles() = {profiles.begin(), profiles.end()};
     return grpc::Status::OK;
@@ -174,7 +174,7 @@ grpc::Status UserServiceImpl::PrepareNewAvatar(grpc::ServerContext *context,
     }
 
     std::optional<UserEntity> user =
-        RetrieveUser(identity.value().user_id(), CurrentEnvironment()->DemowebDatabase());
+        RetrieveUser(identity.value().user_id(), DemoWebEnvironment()->DemowebDatabase());
     assert(user.has_value());
 
     if (!AcceptableProfileAvatarFileFormat(request->file_format())) {
@@ -182,8 +182,8 @@ grpc::Status UserServiceImpl::PrepareNewAvatar(grpc::ServerContext *context,
     }
 
     AvatarSetup setup =
-        SetUpNewProfileAvatar(user.value(), request->file_format(), CurrentEnvironment()->KeyGen(),
-                              CurrentEnvironment()->DemowebDatabase());
+        SetUpNewProfileAvatar(user.value(), request->file_format(), DemoWebEnvironment()->KeyGen(),
+                              DemoWebEnvironment()->DemowebDatabase());
     response->mutable_avatar_readwrite_access()->set_access_token(setup.avatar_path_access_token);
 
     return grpc::Status::OK;

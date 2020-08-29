@@ -28,7 +28,7 @@ static DemoWebEnvironmentContextInterface *g_env = nullptr;
 
 void RegisterEnvironment(DemoWebEnvironmentContextInterface *env) { g_env = env; }
 
-DemoWebEnvironmentContextInterface *CurrentEnvironment() {
+DemoWebEnvironmentContextInterface *DemoWebEnvironment() {
     assert(g_env != nullptr);
     return g_env;
 }

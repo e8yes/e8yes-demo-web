@@ -69,7 +69,7 @@ void RegisterEnvironment(DemoWebEnvironmentContextInterface *env);
  * @brief CurrentEnvironment Retrieve the currently registered environment context. The returned
  * context is guaranteed to be not null. If no environment is registered, this function will fail.
  */
-DemoWebEnvironmentContextInterface *CurrentEnvironment();
+DemoWebEnvironmentContextInterface *DemoWebEnvironment();
 
 } // namespace e8
 

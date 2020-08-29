@@ -31,7 +31,7 @@ namespace e8 {
 std::optional<Identity> ExtractIdentityFromContext(grpc::ServerContext const &context,
                                                    grpc::Status *status) {
     return ExtractIdentityFromContext(context, kDemoWebUserAuthorizationKey,
-                                      CurrentEnvironment()->KeyGen(), status);
+                                      DemoWebEnvironment()->KeyGen(), status);
 }
 
 grpc::Status ValidatePagination(Pagination const &pagination, unsigned result_per_page_limit) {

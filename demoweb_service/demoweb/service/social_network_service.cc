@@ -48,7 +48,7 @@ grpc::Status SocialNetworkServiceImpl::GetUserRelations(grpc::ServerContext *con
 
     std::unordered_map<UserId, UserRelations> relations =
         GetUsersRelations(identity.value().user_id(), {request->target_user_id()},
-                          CurrentEnvironment()->DemowebDatabase());
+                          DemoWebEnvironment()->DemowebDatabase());
     assert(relations.size() == 1);
 
     UserRelations result = relations.begin()->second;
@@ -69,7 +69,7 @@ grpc::Status SocialNetworkServiceImpl::SendInvitation(grpc::ServerContext *conte
     }
 
     ::e8::SendInvitation(identity.value().user_id(), request->invitee_user_id(),
-                         /*send_message_anyway=*/true, CurrentEnvironment()->DemowebDatabase());
+                         /*send_message_anyway=*/true, DemoWebEnvironment()->DemowebDatabase());
 
     return grpc::Status::OK;
 }
@@ -94,10 +94,10 @@ grpc::Status SocialNetworkServiceImpl::GetRelatedUserList(grpc::ServerContext *c
     }
     std::vector<UserEntity> inviters =
         GetRelatedUsers(identity.value().user_id(), relation_filter, request->pagination(),
-                        CurrentEnvironment()->DemowebDatabase());
+                        DemoWebEnvironment()->DemowebDatabase());
     std::vector<UserPublicProfile> inviter_profiles =
-        BuildPublicProfiles(identity.value().user_id(), inviters, CurrentEnvironment()->KeyGen(),
-                            CurrentEnvironment()->DemowebDatabase());
+        BuildPublicProfiles(identity.value().user_id(), inviters, DemoWebEnvironment()->KeyGen(),
+                            DemoWebEnvironment()->DemowebDatabase());
 
     *response->mutable_user_profiles() = {inviter_profiles.begin(), inviter_profiles.end()};
 
@@ -114,7 +114,7 @@ grpc::Status SocialNetworkServiceImpl::ProcessInvitation(grpc::ServerContext *co
     }
 
     if (!e8::ProcessInvitation(identity->user_id(), request->inviter_user_id(), request->accept(),
-                               CurrentEnvironment()->DemowebDatabase())) {
+                               DemoWebEnvironment()->DemowebDatabase())) {
         return grpc::Status(grpc::StatusCode::FAILED_PRECONDITION, "Invitation does not exist.");
     }
 

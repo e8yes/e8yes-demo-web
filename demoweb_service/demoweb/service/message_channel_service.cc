@@ -48,8 +48,8 @@ MessageChannelServiceImpl::CreateMessageChannel(grpc::ServerContext *context,
                              : std::nullopt;
     MessageChannelEntity channel = ::e8::CreateMessageChannel(
         identity->user_id(), channel_title, channel_desc, request->encrypted(),
-        request->close_group_channel(), CurrentEnvironment()->CurrentHostId(),
-        CurrentEnvironment()->DemowebDatabase());
+        request->close_group_channel(), DemoWebEnvironment()->CurrentHostId(),
+        DemoWebEnvironment()->DemowebDatabase());
 
     response->set_channel_id(*channel.id.Value());
 
@@ -69,7 +69,7 @@ grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
         request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
 
     std::vector<JoinedInMessageChannel> channels = ::e8::GetJoinedInMessageChannels(
-        identity->user_id(), pagination, CurrentEnvironment()->DemowebDatabase());
+        identity->user_id(), pagination, DemoWebEnvironment()->DemowebDatabase());
 
     std::vector<MessageChannel> results = ToMessageChannels(channels);
     *response->mutable_channels() = {results.begin(), results.end()};
@@ -91,7 +91,7 @@ MessageChannelServiceImpl::GetMessageChannelMembers(grpc::ServerContext *context
         request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
 
     std::vector<MessageChannelMember> members = ::e8::GetMessageChannelMembers(
-        identity->user_id(), pagination, CurrentEnvironment()->DemowebDatabase());
+        identity->user_id(), pagination, DemoWebEnvironment()->DemowebDatabase());
 
     // Build member profiles.
     std::vector<UserEntity> users(members.size());
@@ -99,8 +99,8 @@ MessageChannelServiceImpl::GetMessageChannelMembers(grpc::ServerContext *context
         users[i] = members[i].member;
     }
     std::vector<UserPublicProfile> profiles =
-        BuildPublicProfiles(identity->user_id(), users, CurrentEnvironment()->KeyGen(),
-                            CurrentEnvironment()->DemowebDatabase());
+        BuildPublicProfiles(identity->user_id(), users, DemoWebEnvironment()->KeyGen(),
+                            DemoWebEnvironment()->DemowebDatabase());
     *response->mutable_user_profiles() = {profiles.begin(), profiles.end()};
 
     // Build channel relation.
