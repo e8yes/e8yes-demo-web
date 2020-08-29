@@ -30,6 +30,16 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../proto_cc/ -lproto_cc
 INCLUDEPATH += $$PWD/../../proto_cc
 DEPENDPATH += $$PWD/../../proto_cc
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../distributor/store/ -lnode_state_store
+
+INCLUDEPATH += $$PWD/../../distributor/store
+DEPENDPATH += $$PWD/../../distributor/store
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../distributor/distributor/ -ldistributor
+
+INCLUDEPATH += $$PWD/../../distributor/distributor
+DEPENDPATH += $$PWD/../../distributor/distributor
+
 LIBS += -pthread
 LIBS += -ldl
 LIBS += -lprotobuf
