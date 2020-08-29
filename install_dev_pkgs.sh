@@ -4,6 +4,9 @@ echo "Updating APT packages..."
 sudo apt update
 sudo apt upgrade -y 
 
+echo "Clang format tool..."
+sudo apt install -y clang-format
+
 echo "Installing build essentials..."
 sudo apt install -y build-essential
 
