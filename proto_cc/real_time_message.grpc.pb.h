@@ -3,7 +3,7 @@
 // source: real_time_message.proto
 // Original file comments:
 // *
-// e8yes demo web server.
+// e8yes demo web.
 //
 // <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
 //
