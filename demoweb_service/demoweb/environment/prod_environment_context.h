@@ -35,9 +35,7 @@ namespace e8 {
  */
 class ProductionEnvironmentContext : public EnvironmentContextInterface {
   public:
-    ProductionEnvironmentContext(std::string const &demoweb_db_hostname, int demoweb_db_port,
-                                 std::string const &demoweb_db_user,
-                                 std::string const &demoweb_db_password);
+    ProductionEnvironmentContext(std::string const &demoweb_db_hostname);
     ~ProductionEnvironmentContext() override = default;
 
     Environment EnvironmentType() const override;

@@ -33,9 +33,8 @@ class ConnectionFactory {
   public:
     enum ConnectionType { PQ, MOCK };
 
-    ConnectionFactory(ConnectionType connection_type, std::string const &host_name, int port,
-                      std::string const &db_name, std::string const &user_name,
-                      std::string const &password);
+    ConnectionFactory(ConnectionType connection_type, std::string const &host_name,
+                      std::string const &db_name);
     ConnectionFactory(ConnectionFactory const &) = default;
     ~ConnectionFactory() = default;
 
@@ -45,9 +44,6 @@ class ConnectionFactory {
     ConnectionType connection_type_;
     std::string host_name_;
     std::string db_name_;
-    std::string user_name_;
-    std::string password_;
-    int port_;
 };
 
 } // namespace e8

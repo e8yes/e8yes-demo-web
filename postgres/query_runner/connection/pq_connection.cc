@@ -30,6 +30,9 @@ namespace e8 {
 namespace {
 
 static unsigned const kStatementCacheLimit = 1000;
+static constexpr char kPostgresUserName[] = "postgres";
+static constexpr char kPostgresUserPassword[] = "password";
+static int const kPostgresPort = 5432;
 
 using StatementId = uint32_t;
 
@@ -80,11 +83,10 @@ class PqConnection::PqConnectionImpl {
     LruHashMap<ParameterizedQuery, StatementId, OnFetch, OnEvict> statement_cache;
 };
 
-PqConnection::PqConnection(std::string const &host_name, int port, std::string const &db_name,
-                           std::string const &user_name, std::string const &password)
+PqConnection::PqConnection(std::string const &host_name, std::string const &db_name)
     : impl_(std::make_unique<PqConnectionImpl>(std::make_unique<pqxx::connection>(
-          "host=" + host_name + " port=" + std::to_string(port) + " dbname=" + db_name +
-          " user=" + user_name + " password=" + password))) {}
+          "host=" + host_name + " port=" + std::to_string(kPostgresPort) + " dbname=" + db_name +
+          " user=" + kPostgresUserName + " password=" + kPostgresUserPassword))) {}
 
 PqConnection::~PqConnection() {}
 

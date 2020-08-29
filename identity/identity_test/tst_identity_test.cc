@@ -46,10 +46,7 @@ identity_test::~identity_test() {}
 e8::ConnectionFactory CreateConnectionFactory() {
     e8::ConnectionFactory factory(e8::ConnectionFactory::PQ,
                                   /*host_name=*/"localhost",
-                                  /*port=*/5432,
-                                  /*db_name=*/"demoweb",
-                                  /*user_name=*/"postgres",
-                                  /*password=*/"password");
+                                  /*db_name=*/"demoweb");
     return factory;
 }
 
@@ -57,10 +54,7 @@ void identity_test::successful_sign_and_parse_test() {
     auto reservoir = std::make_unique<e8::BasicConnectionReservoir>(CreateConnectionFactory());
     e8::ClearAllTables(reservoir.get());
 
-    e8::PersistentKeyGenerator key_gen(/*host_name=*/"localhost",
-                                       /*port=*/5432,
-                                       /*user_name=*/"postgres",
-                                       /*password=*/"password");
+    e8::PersistentKeyGenerator key_gen(/*host_name=*/"localhost");
 
     e8::Identity identity;
     identity.set_user_id(1L);
@@ -84,10 +78,7 @@ void identity_test::expired_signature_test() {
     auto reservoir = std::make_unique<e8::BasicConnectionReservoir>(CreateConnectionFactory());
     e8::ClearAllTables(reservoir.get());
 
-    e8::PersistentKeyGenerator key_gen(/*host_name=*/"localhost",
-                                       /*port=*/5432,
-                                       /*user_name=*/"postgres",
-                                       /*password=*/"password");
+    e8::PersistentKeyGenerator key_gen(/*host_name=*/"localhost");
 
     e8::Identity identity;
     identity.set_user_id(1L);

@@ -44,20 +44,14 @@ pq_connection_test::~pq_connection_test() {}
 void pq_connection_test::connection_state_test() {
     e8::PqConnection conn(
         /*host_name=*/"localhost",
-        /*port=*/5432,
-        /*db_name=*/"demoweb",
-        /*user_name=*/"postgres",
-        /*password=*/"password");
+        /*db_name=*/"demoweb");
     QVERIFY(!conn.IsClosed());
 }
 
 void pq_connection_test::update_and_query_test() {
     e8::PqConnection conn(
         /*host_name=*/"localhost",
-        /*port=*/5432,
-        /*db_name=*/"demoweb",
-        /*user_name=*/"postgres",
-        /*password=*/"password");
+        /*db_name=*/"demoweb");
 
     // Prepares table.
     std::string drop_table_stmt = "DROP TABLE IF EXISTS PqConnectionTest";

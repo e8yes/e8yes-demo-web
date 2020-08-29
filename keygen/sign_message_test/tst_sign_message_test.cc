@@ -29,10 +29,7 @@ sign_message_test::~sign_message_test() {}
 e8::ConnectionFactory CreateConnectionFactory() {
     e8::ConnectionFactory factory(e8::ConnectionFactory::PQ,
                                   /*host_name=*/"localhost",
-                                  /*port=*/5432,
-                                  /*db_name=*/"demoweb",
-                                  /*user_name=*/"postgres",
-                                  /*password=*/"password");
+                                  /*db_name=*/"demoweb");
     return factory;
 }
 
@@ -41,10 +38,7 @@ void sign_message_test::successful_encode_and_decode_message_test() {
     e8::BasicConnectionReservoir db_conns(fact);
     e8::ClearAllTables(&db_conns);
 
-    e8::PersistentKeyGenerator key_gen(/*host_name=*/"localhost",
-                                       /*port=*/5432,
-                                       /*user_name=*/"postgres",
-                                       /*password=*/"password");
+    e8::PersistentKeyGenerator key_gen(/*host_name=*/"localhost");
     e8::KeyGeneratorInterface::Key key_set = key_gen.KeyOf(
         "successful_encode_and_decode_message_test", e8::KeyGeneratorInterface::RSA_4096_BITS);
 
@@ -63,10 +57,7 @@ void sign_message_test::encode_and_decode_disrupted_message_test() {
     e8::BasicConnectionReservoir db_conns(fact);
     e8::ClearAllTables(&db_conns);
 
-    e8::PersistentKeyGenerator key_gen(/*host_name=*/"localhost",
-                                       /*port=*/5432,
-                                       /*user_name=*/"postgres",
-                                       /*password=*/"password");
+    e8::PersistentKeyGenerator key_gen(/*host_name=*/"localhost");
     e8::KeyGeneratorInterface::Key key_set = key_gen.KeyOf(
         "encode_and_decode_disrupted_message_test", e8::KeyGeneratorInterface::RSA_4096_BITS);
 

@@ -34,13 +34,12 @@ namespace e8 {
  */
 class PqConnection : public ConnectionInterface {
   public:
-    PqConnection(std::string const &host_name, int port, std::string const &db_name,
-                 std::string const &user_name, std::string const &password);
+    PqConnection(std::string const &host_name, std::string const &db_name);
     ~PqConnection() override;
     PqConnection(PqConnection const &) = delete;
 
     std::unique_ptr<ResultSetInterface> RunQuery(ParameterizedQuery const &query,
-                                                  QueryParams const &params) override;
+                                                 QueryParams const &params) override;
     uint64_t RunUpdate(ParameterizedQuery const &query, QueryParams const &params) override;
     bool IsClosed() const override;
 

@@ -35,9 +35,8 @@ namespace e8 {
  */
 class MessageSubscriberServiceImpl : public MessageSubscriberService::Service {
   public:
-    MessageSubscriberServiceImpl(std::string const &node_state_db_path, std::string const &db_host,
-                                 int db_port, std::string const &db_user,
-                                 std::string const &db_password, int message_queue_port);
+    MessageSubscriberServiceImpl(std::string const &node_state_db_path,
+                                 std::string const &key_gen_db_host, int message_queue_port);
     ~MessageSubscriberServiceImpl() override = default;
 
     grpc::Status SubscribeRealTimeMessageQueue(

@@ -39,12 +39,10 @@
 namespace e8 {
 
 MessageSubscriberServiceImpl::MessageSubscriberServiceImpl(std::string const &node_state_db_path,
-                                                           std::string const &db_host, int db_port,
-                                                           std::string const &db_user,
-                                                           std::string const &db_password,
+                                                           std::string const &key_gen_db_host,
                                                            int message_queue_port)
     : node_states_(std::make_unique<NodeStateStore>(node_state_db_path)),
-      key_gen_(std::make_unique<PersistentKeyGenerator>(db_host, db_port, db_user, db_password)),
+      key_gen_(std::make_unique<PersistentKeyGenerator>(key_gen_db_host)),
       distributor_(std::make_unique<HashDistributor>()), message_queue_port_(message_queue_port) {}
 
 grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(

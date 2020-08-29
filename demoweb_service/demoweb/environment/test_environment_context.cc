@@ -28,17 +28,12 @@
 namespace e8 {
 
 TestEnvironmentContext::TestEnvironmentContext() {
-    ConnectionFactory fact(ConnectionFactory::PQ, /*host_name=*/"localhost",
-                           /*port=*/5432, kDemowebDatabaseName, /*user_name*/ "postgres",
-                           /*password=*/"password");
+    ConnectionFactory fact(ConnectionFactory::PQ, /*host_name=*/"localhost", kDemowebDatabaseName);
     demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
     ClearAllTables(demoweb_database_.get());
 
-    key_gen_ = std::make_unique<PersistentKeyGenerator>(/*host_name=*/"localhost",
-                                                        /*port=*/5432,
-                                                        /*user_name*/ "postgres",
-                                                        /*password=*/"password");
+    key_gen_ = std::make_unique<PersistentKeyGenerator>(/*host_name=*/"localhost");
 
     host_id_ = 0;
 }

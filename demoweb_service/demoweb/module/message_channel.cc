@@ -30,11 +30,11 @@
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
-#include "proto_cc/message_channel.pb.h"
-#include "proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
+#include "proto_cc/message_channel.pb.h"
+#include "proto_cc/pagination.pb.h"
 
 namespace e8 {
 
@@ -173,12 +173,13 @@ GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> 
 
     std::vector<MessageChannelMember> results(query_result.size());
     for (unsigned i = 0; i < query_result.size(); i++) {
-        auto const &entry = query_result[i];
+        std::tuple<UserEntity, MessageChannelHasUserEntity> const &entry = query_result[i];
 
         MessageChannelMember result;
         result.member = std::get<0>(entry);
         result.member_type =
             static_cast<MessageChannelMemberType>(*std::get<1>(entry).ownership.Value());
+        result.join_at = *std::get<1>(entry).created_at.Value();
 
         results[i] = result;
     }

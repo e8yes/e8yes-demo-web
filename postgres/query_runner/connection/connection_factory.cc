@@ -26,15 +26,13 @@
 namespace e8 {
 
 ConnectionFactory::ConnectionFactory(ConnectionType connection_type, std::string const &host_name,
-                                     int port, std::string const &db_name,
-                                     std::string const &user_name, std::string const &password)
-    : connection_type_(connection_type), host_name_(host_name), db_name_(db_name),
-      user_name_(user_name), password_(password), port_(port) {}
+                                     std::string const &db_name)
+    : connection_type_(connection_type), host_name_(host_name), db_name_(db_name) {}
 
 std::unique_ptr<ConnectionInterface> ConnectionFactory::Create() const {
     switch (connection_type_) {
     case PQ:
-        return std::make_unique<PqConnection>(host_name_, port_, db_name_, user_name_, password_);
+        return std::make_unique<PqConnection>(host_name_, db_name_);
     case MOCK:
         return std::make_unique<MockConnection>();
     }

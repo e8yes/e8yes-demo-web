@@ -39,9 +39,6 @@ namespace {
 static char const kPortFlag[] = "port";
 static char const kGrpcWebProxyFlag[] = "grpc_web_proxy";
 static char const kDemowebDbHostNameFlag[] = "demoweb_db_host_name";
-static char const kDemowebDbPortFlag[] = "demoweb_db_port";
-static char const kDemowebDbUserName[] = "demoweb_db_user_name";
-static char const kDemowebDbPassword[] = "demoweb_db_password";
 
 static int const kDefaultPort = 50051;
 
@@ -54,20 +51,9 @@ static std::unique_ptr<e8::MessageSubscriberServiceImpl> gMessageSubscriberServi
 std::unique_ptr<e8::ProductionEnvironmentContext> BuildEnvironmentContext() {
     std::string demoweb_db_host_name =
         e8::ReadFlag(kDemowebDbHostNameFlag, std::string(), e8::FromString<std::string>);
-    std::string demoweb_db_port =
-        e8::ReadFlag(kDemowebDbPortFlag, std::string(), e8::FromString<std::string>);
-    std::string demoweb_db_user_name =
-        e8::ReadFlag(kDemowebDbUserName, std::string(), e8::FromString<std::string>);
-    std::string demoweb_db_password =
-        e8::ReadFlag(kDemowebDbPassword, std::string(), e8::FromString<std::string>);
     assert(!demoweb_db_host_name.empty());
-    assert(!demoweb_db_port.empty());
-    assert(!demoweb_db_user_name.empty());
-    assert(!demoweb_db_password.empty());
 
-    auto context = std::make_unique<e8::ProductionEnvironmentContext>(
-        demoweb_db_host_name, std::stoi(demoweb_db_port), demoweb_db_user_name,
-        demoweb_db_password);
+    auto context = std::make_unique<e8::ProductionEnvironmentContext>(demoweb_db_host_name);
 
     return context;
 }

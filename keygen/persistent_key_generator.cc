@@ -225,13 +225,10 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateKey(KeyUser const &k
     return fetched.value();
 }
 
-PersistentKeyGenerator::PersistentKeyGenerator(std::string const &db_hostname, int db_port,
-                                               std::string const &db_user,
-                                               std::string const &db_password,
-                                               std::string const &database_name)
+PersistentKeyGenerator::PersistentKeyGenerator(std::string const &db_hostname,
+                                               std::string const &db_name)
     : impl(std::make_unique<PersistentKeyGeneratorImpl>(std::make_unique<BasicConnectionReservoir>(
-          ConnectionFactory(ConnectionFactory::PQ, db_hostname, db_port, database_name, db_user,
-                            db_password)))) {}
+          ConnectionFactory(ConnectionFactory::PQ, db_hostname, db_name)))) {}
 
 PersistentKeyGenerator::~PersistentKeyGenerator() {}
 

@@ -69,10 +69,7 @@ class CreditCard : public e8::SqlEntityInterface {
 e8::ConnectionFactory CreateConnectionFactory() {
     e8::ConnectionFactory factory(e8::ConnectionFactory::PQ,
                                   /*host_name=*/"localhost",
-                                  /*port=*/5432,
-                                  /*db_name=*/"demoweb",
-                                  /*user_name=*/"postgres",
-                                  /*password=*/"password");
+                                  /*db_name=*/"demoweb");
     return factory;
 }
 
@@ -223,8 +220,8 @@ void sql_runner_test::insert_then_exists_test() {
     QVERIFY(num_rows_affected == 1);
 
     // Run "exists" query.
-    bool should_not_exist = !e8::Exists(
-        e8::SqlQueryBuilder().QueryPiece("QueryRunnerTestUser WHERE id=2"), &reservoir);
+    bool should_not_exist =
+        !e8::Exists(e8::SqlQueryBuilder().QueryPiece("QueryRunnerTestUser WHERE id=2"), &reservoir);
     QVERIFY(should_not_exist);
 
     bool should_exist =

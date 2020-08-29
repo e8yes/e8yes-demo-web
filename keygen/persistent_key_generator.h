@@ -32,9 +32,8 @@ static char constexpr kDefaultKeyGenDatabaseName[] = "demoweb";
  */
 class PersistentKeyGenerator : public KeyGeneratorInterface {
   public:
-    PersistentKeyGenerator(std::string const &db_hostname, int db_port, std::string const &db_user,
-                           std::string const &db_password,
-                           std::string const &database_name = kDefaultKeyGenDatabaseName);
+    PersistentKeyGenerator(std::string const &db_hostname,
+                           std::string const &db_name = kDefaultKeyGenDatabaseName);
     ~PersistentKeyGenerator() override;
 
     Key KeyOf(std::string const &encrypter, KeyType key_type) override;

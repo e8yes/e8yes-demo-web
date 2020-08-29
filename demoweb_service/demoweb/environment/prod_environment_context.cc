@@ -27,16 +27,12 @@
 
 namespace e8 {
 
-ProductionEnvironmentContext::ProductionEnvironmentContext(std::string const &db_hostname,
-                                                           int db_port, std::string const &db_user,
-                                                           std::string const &db_password) {
-    ConnectionFactory fact(ConnectionFactory::PQ, db_hostname, db_port, kDemowebDatabaseName,
-                           db_user, db_password);
+ProductionEnvironmentContext::ProductionEnvironmentContext(std::string const &db_hostname) {
+    ConnectionFactory fact(ConnectionFactory::PQ, db_hostname, kDemowebDatabaseName);
     demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
 
-    key_gen_ = std::make_unique<PersistentKeyGenerator>(db_hostname, db_port, kDemowebDatabaseName,
-                                                        db_user, db_password);
+    key_gen_ = std::make_unique<PersistentKeyGenerator>(db_hostname);
 
     host_id_ = CurrentHostId();
 }
