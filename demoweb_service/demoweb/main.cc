@@ -32,6 +32,8 @@
 #include "demoweb_service/demoweb/service/message_channel_service.h"
 #include "demoweb_service/demoweb/service/social_network_service.h"
 #include "demoweb_service/demoweb/service/user_service.h"
+#include "message_queue/subscriber/environment/environment_context_interface.h"
+#include "message_queue/subscriber/environment/prod_environment_context.h"
 #include "message_queue/subscriber/service/message_subscriber_service.h"
 
 namespace {
@@ -39,6 +41,8 @@ namespace {
 static char const kPortFlag[] = "port";
 static char const kGrpcWebProxyFlag[] = "grpc_web_proxy";
 static char const kDemowebDbHostNameFlag[] = "demoweb_db_host_name";
+static char const kNodeStateDbPathFlag[] = "node_state_db_path";
+static char const kMessageQueueServicePortFlag[] = "message_queue_service_port";
 
 static int const kDefaultPort = 50051;
 
@@ -46,9 +50,9 @@ static e8::UserServiceImpl gUserService;
 static e8::FileServiceImpl gFileService;
 static e8::SocialNetworkServiceImpl gSocialNetworkService;
 static e8::MessageChannelServiceImpl gMessageChannelService;
-static std::unique_ptr<e8::MessageSubscriberServiceImpl> gMessageSubscriberService;
+static e8::MessageSubscriberServiceImpl gMessageSubscriberService;
 
-std::unique_ptr<e8::DemoWebProductionEnvironmentContext> BuildEnvironmentContext() {
+std::unique_ptr<e8::DemoWebProductionEnvironmentContext> BuildDemoWebEnvironmentContext() {
     std::string demoweb_db_host_name =
         e8::ReadFlag(kDemowebDbHostNameFlag, std::string(), e8::FromString<std::string>);
     assert(!demoweb_db_host_name.empty());
@@ -58,13 +62,36 @@ std::unique_ptr<e8::DemoWebProductionEnvironmentContext> BuildEnvironmentContext
     return context;
 }
 
+std::unique_ptr<e8::SubscriberProductionEnvironmentContext>
+BuildMessageSubscriberEnvironmentContext() {
+    std::string demoweb_db_host_name =
+        e8::ReadFlag(kDemowebDbHostNameFlag, std::string(), e8::FromString<std::string>);
+    assert(!demoweb_db_host_name.empty());
+
+    std::string node_state_db_path =
+        e8::ReadFlag(kNodeStateDbPathFlag, std::string(), e8::FromString<std::string>);
+    assert(!node_state_db_path.empty());
+
+    e8::MessageQueueServicePort message_queue_service_port = e8::ReadFlag(
+        kMessageQueueServicePortFlag, e8::MessageQueueServicePort(), e8::FromString<uint32_t>);
+    assert(message_queue_service_port != 0);
+
+    auto context = std::make_unique<e8::SubscriberProductionEnvironmentContext>(
+        node_state_db_path, demoweb_db_host_name, message_queue_service_port);
+
+    return context;
+}
+
 } // namespace
 
 int main(int argc, char *argv[]) {
     e8::Argv(argc, argv);
 
-    auto prod_environment = BuildEnvironmentContext();
-    e8::RegisterEnvironment(prod_environment.get());
+    auto demo_web_environment = BuildDemoWebEnvironmentContext();
+    e8::RegisterEnvironment(demo_web_environment.get());
+
+    auto message_subscriber_environment = BuildMessageSubscriberEnvironmentContext();
+    e8::RegisterEnvironment(message_subscriber_environment.get());
 
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
@@ -78,8 +105,7 @@ int main(int argc, char *argv[]) {
     builder.RegisterService(&gFileService);
     builder.RegisterService(&gSocialNetworkService);
     builder.RegisterService(&gMessageChannelService);
-    // TODO: Initialize the message subscriber service.
-    // builder.RegisterService(gMessageSubscriberService.get());
+    builder.RegisterService(&gMessageSubscriberService);
 
     std::unique_ptr<grpc::Server> server = builder.BuildAndStart();
     std::cout << "Server listening on " << server_address << std::endl;

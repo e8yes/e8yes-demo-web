@@ -22,12 +22,10 @@
 
 #include "distributor/distributor/distribute.h"
 #include "distributor/distributor/grpc_stub.h"
-#include "distributor/store/node_state_store.h"
 #include "identity/auth_key.h"
 #include "identity/extract_identity_from_metadata.h"
 #include "identity/trustable_identity.h"
-#include "keygen/key_generator_interface.h"
-#include "keygen/persistent_key_generator.h"
+#include "message_queue/subscriber/environment/environment_context_interface.h"
 #include "message_queue/subscriber/service/message_subscriber_service.h"
 #include "proto_cc/identity.pb.h"
 #include "proto_cc/node.pb.h"
@@ -38,32 +36,26 @@
 
 namespace e8 {
 
-MessageSubscriberServiceImpl::MessageSubscriberServiceImpl(std::string const &node_state_db_path,
-                                                           std::string const &key_gen_db_host,
-                                                           int message_queue_port)
-    : node_states_(std::make_unique<NodeStateStore>(node_state_db_path)),
-      key_gen_(std::make_unique<PersistentKeyGenerator>(key_gen_db_host)),
-      distributor_(std::make_unique<HashDistributor>()), message_queue_port_(message_queue_port) {}
-
 grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(
     grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const * /*request*/,
     grpc::ServerWriter<SubscribeRealTimeMessageQueueResponse> *writer) {
     grpc::Status status;
-    std::optional<Identity> identity =
-        ExtractIdentityFromContext(*context, kDemoWebUserAuthorizationKey, key_gen_.get(), &status);
+    std::optional<Identity> identity = ExtractIdentityFromContext(
+        *context, kDemoWebUserAuthorizationKey, SubscriberEnvironment()->KeyGen(), &status);
     if (!identity.has_value()) {
         return status;
     }
 
-    std::optional<NodeState> node = distributor_->Distribute(std::to_string(identity->user_id()),
-                                                             NDF_MESSAGE_QUEUE, node_states_.get());
+    std::optional<NodeState> node = SubscriberEnvironment()->Distributor()->Distribute(
+        std::to_string(identity->user_id()), NDF_MESSAGE_QUEUE,
+        SubscriberEnvironment()->NodeStateStorage());
     if (!node.has_value()) {
         return grpc::Status(grpc::StatusCode::UNAVAILABLE,
                             "No node is available for subscription.");
     }
 
-    std::unique_ptr<MessageQueueService::Stub> stub =
-        CREATE_GRPC_STUB(MessageQueueService, *node, message_queue_port_);
+    std::unique_ptr<MessageQueueService::Stub> stub = CREATE_GRPC_STUB(
+        MessageQueueService, *node, SubscriberEnvironment()->GetMessageQueueServicePort());
 
     grpc::ClientContext client_context;
 

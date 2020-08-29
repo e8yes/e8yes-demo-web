@@ -56,6 +56,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../distributor/store/ -lnode_state_store
 INCLUDEPATH += $$PWD/../../distributor/store
 DEPENDPATH += $$PWD/../../distributor/store
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../distributor/distributor/ -ldistributor
+
+INCLUDEPATH += $$PWD/../../distributor/distributor
+DEPENDPATH += $$PWD/../../distributor/distributor
+
 unix:!macx: LIBS += -L$$OUT_PWD/../../message_queue/subscriber/ -lsubscriber_service
 
 INCLUDEPATH += $$PWD/../../message_queue/subscriber

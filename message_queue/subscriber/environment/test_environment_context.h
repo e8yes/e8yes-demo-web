@@ -15,41 +15,44 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DEMOWEB_PROD_ENVIRONMENT_CONTEXT_H
-#define DEMOWEB_PROD_ENVIRONMENT_CONTEXT_H
+#ifndef SUBSCRIBER_TEST_ENVIRONMENT_CONTEXT_H
+#define SUBSCRIBER_TEST_ENVIRONMENT_CONTEXT_H
 
 #include <cstdint>
 #include <memory>
-#include <string>
 
-#include "demoweb_service/demoweb/environment/environment_context_interface.h"
-#include "demoweb_service/demoweb/environment/host_id.h"
+#include "distributor/distributor/distribute.h"
+#include "distributor/store/node_state_store.h"
 #include "keygen/key_generator_interface.h"
-#include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "message_queue/subscriber/environment/environment_context_interface.h"
 
 namespace e8 {
 
 /**
- * @brief The DemoWebProductionEnvironmentContext class Manages global objects for the production
- * deployment environment.
+ * @brief The DemoWebTestEnvironmentContext class Manages global objects for the test deployment
+ * environment.
  */
-class DemoWebProductionEnvironmentContext : public DemoWebEnvironmentContextInterface {
+class SubscriberTestEnvironmentContext : public SubscriberEnvironmentContextInterface {
   public:
-    DemoWebProductionEnvironmentContext(std::string const &demoweb_db_hostname);
-    ~DemoWebProductionEnvironmentContext() override = default;
+    SubscriberTestEnvironmentContext();
+    ~SubscriberTestEnvironmentContext() override = default;
 
     Environment EnvironmentType() const override;
-    HostId CurrentHostId() const override;
-    e8::ConnectionReservoirInterface *DemowebDatabase() override;
-    e8::KeyGeneratorInterface *KeyGen() override;
+
+    KeyGeneratorInterface *KeyGen() override;
+
+    NodeStateStoreInterface *NodeStateStorage() override;
+
+    DistributorInterface *Distributor() override;
+
+    MessageQueueServicePort GetMessageQueueServicePort() override;
 
   private:
-    std::unique_ptr<ConnectionReservoirInterface> demoweb_database_;
+    std::unique_ptr<NodeStateStoreInterface> node_states_;
     std::unique_ptr<KeyGeneratorInterface> key_gen_;
-    unsigned host_id_;
-    int32_t padding_;
+    std::unique_ptr<DistributorInterface> distributor_;
 };
 
 } // namespace e8
 
-#endif // DEMOWEB_PROD_ENVIRONMENT_CONTEXT_H
+#endif // SUBSCRIBER_TEST_ENVIRONMENT_CONTEXT_H

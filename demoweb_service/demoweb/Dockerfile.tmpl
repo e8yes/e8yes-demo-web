@@ -11,5 +11,7 @@ ENV LD_LIBRARY_PATH="./bin/"
 CMD ["./bin/demoweb_service_main", \
      "--port=50051", \
      "--demoweb_db_host_name={{postgres_citus_master_location}}", \
+     "--message_queue_service_port=40041", \
+     "--node_state_db_path=/host/home/node_state.sqlite", \
      "--grpc_web_proxy=./go/bin/grpcwebproxy"]
 

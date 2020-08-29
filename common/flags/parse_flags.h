@@ -36,8 +36,12 @@ template <typename FlagType> FlagType FromString(std::string const &flag_value) 
         return flag_value;
     } else if constexpr (std::is_same<FlagType, int32_t>::value) {
         return std::stoi(flag_value);
+    } else if constexpr (std::is_same<FlagType, uint32_t>::value) {
+        return std::stoul(flag_value);
     } else if constexpr (std::is_same<FlagType, int64_t>::value) {
-        return std::stoi(flag_value);
+        return std::stoll(flag_value);
+    } else if constexpr (std::is_same<FlagType, uint64_t>::value) {
+        return std::stoull(flag_value);
     } else if constexpr (std::is_same<FlagType, bool>::value) {
         return flag_value == "true";
     } else if constexpr (std::is_same<FlagType, float>::value) {

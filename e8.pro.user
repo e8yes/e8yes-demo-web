@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2020-08-29T14:06:22. -->
+<!-- Written by QtCreator 4.11.0, 2020-08-29T15:11:49. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -1108,7 +1108,7 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/davis/e8yes-demo-web/demoweb_service/demoweb/demoweb_service_main.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/davis/e8yes-demo-web/demoweb_service/demoweb/demoweb_service_main.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments">--demoweb_db_host_name=localhost --grpc_web_proxy=~/go/bin/grpcwebproxy</value>
+    <value type="QString" key="RunConfiguration.Arguments">--demoweb_db_host_name=localhost --node_state_db_path=./node_states.sqlite --message_queue_service_port=40041 --grpc_web_proxy=~/go/bin/grpcwebproxy</value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
@@ -1117,6 +1117,7 @@
     <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseTerminal">false</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/davis/build-e8-Desktop-Debug/demoweb_service/demoweb</value>
    </valuemap>

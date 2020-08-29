@@ -19,12 +19,7 @@
 #define SUBSCRIBERSERVICEIMPL_H
 
 #include <grpcpp/grpcpp.h>
-#include <memory>
-#include <string>
 
-#include "distributor/distributor/distribute.h"
-#include "distributor/store/node_state_store.h"
-#include "keygen/key_generator_interface.h"
 #include "proto_cc/service_message_subscriber.grpc.pb.h"
 #include "proto_cc/service_message_subscriber.pb.h"
 
@@ -35,19 +30,12 @@ namespace e8 {
  */
 class MessageSubscriberServiceImpl : public MessageSubscriberService::Service {
   public:
-    MessageSubscriberServiceImpl(std::string const &node_state_db_path,
-                                 std::string const &key_gen_db_host, int message_queue_port);
+    MessageSubscriberServiceImpl() = default;
     ~MessageSubscriberServiceImpl() override = default;
 
     grpc::Status SubscribeRealTimeMessageQueue(
         grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const *request,
         grpc::ServerWriter<SubscribeRealTimeMessageQueueResponse> *writer) override;
-
-  private:
-    std::unique_ptr<NodeStateStoreInterface> node_states_;
-    std::unique_ptr<KeyGeneratorInterface> key_gen_;
-    std::unique_ptr<DistributorInterface> distributor_;
-    int const message_queue_port_;
 };
 
 } // namespace e8

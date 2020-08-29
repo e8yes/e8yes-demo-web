@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEST_ENVIRONMENT_CONTEXT_H
-#define TEST_ENVIRONMENT_CONTEXT_H
+#ifndef DEMOWEB_TEST_ENVIRONMENT_CONTEXT_H
+#define DEMOWEB_TEST_ENVIRONMENT_CONTEXT_H
 
 #include <cstdint>
 #include <memory>
@@ -51,4 +51,4 @@ class DemoWebTestEnvironmentContext : public DemoWebEnvironmentContextInterface 
 
 } // namespace e8
 
-#endif // TEST_ENVIRONMENT_CONTEXT_H
+#endif // DEMOWEB_TEST_ENVIRONMENT_CONTEXT_H

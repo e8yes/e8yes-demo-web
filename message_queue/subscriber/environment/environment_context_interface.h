@@ -15,26 +15,30 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DEMOWEB_ENVIRONMENT_CONTEXT_INTERFACE_H
-#define DEMOWEB_ENVIRONMENT_CONTEXT_INTERFACE_H
+#ifndef SUBSCRIBER_ENVIRONMENT_CONTEXT_INTERFACE_H
+#define SUBSCRIBER_ENVIRONMENT_CONTEXT_INTERFACE_H
 
-#include "demoweb_service/demoweb/environment/host_id.h"
+#include <cstdint>
+
+#include "distributor/distributor/distribute.h"
+#include "distributor/store/node_state_store.h"
 #include "keygen/key_generator_interface.h"
-#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
+
+using MessageQueueServicePort = uint16_t;
 
 /**
  * @brief The EnvironmentContextInterface class Returns global objects the runs in a deployment
  * environment.
  */
-class DemoWebEnvironmentContextInterface {
+class SubscriberEnvironmentContextInterface {
   public:
     enum Environment { PROD, TEST };
 
-    DemoWebEnvironmentContextInterface() = default;
-    DemoWebEnvironmentContextInterface(DemoWebEnvironmentContextInterface const &) = delete;
-    virtual ~DemoWebEnvironmentContextInterface() = default;
+    SubscriberEnvironmentContextInterface() = default;
+    SubscriberEnvironmentContextInterface(SubscriberEnvironmentContextInterface const &) = delete;
+    virtual ~SubscriberEnvironmentContextInterface() = default;
 
     /**
      * The type of deployment environment it implements.
@@ -44,33 +48,39 @@ class DemoWebEnvironmentContextInterface {
     virtual Environment EnvironmentType() const = 0;
 
     /**
-     * @brief CurrentHostId Returns the host ID of the current machine it is running on.
-     */
-    virtual HostId CurrentHostId() const = 0;
-
-    /**
-     * @brief Connections to the DemoWeb database server.
-     */
-    virtual e8::ConnectionReservoirInterface *DemowebDatabase() = 0;
-
-    /**
      * @brief KeyGen Cryptographic key generator.
      */
-    virtual e8::KeyGeneratorInterface *KeyGen() = 0;
+    virtual KeyGeneratorInterface *KeyGen() = 0;
+
+    /**
+     * @brief NodeStateStore Local node state persistent store.
+     */
+    virtual NodeStateStoreInterface *NodeStateStorage() = 0;
+
+    /**
+     * @brief Distributor Keyed data object distributor.
+     */
+    virtual DistributorInterface *Distributor() = 0;
+
+    /**
+     * @brief GetMessageQueuePort Get the port number that allows communication with the message
+     * queue service.
+     */
+    virtual MessageQueueServicePort GetMessageQueueServicePort() = 0;
 };
 
 /**
  * @brief RegisterEnvironment Register the specified environment to be the currently active
  * environment.
  */
-void RegisterEnvironment(DemoWebEnvironmentContextInterface *env);
+void RegisterEnvironment(SubscriberEnvironmentContextInterface *env);
 
 /**
- * @brief CurrentEnvironment Retrieve the currently registered environment context. The returned
+ * @brief SubscriberEnvironment Retrieve the currently registered environment context. The returned
  * context is guaranteed to be not null. If no environment is registered, this function will fail.
  */
-DemoWebEnvironmentContextInterface *CurrentEnvironment();
+SubscriberEnvironmentContextInterface *SubscriberEnvironment();
 
 } // namespace e8
 
-#endif // DEMOWEB_ENVIRONMENT_CONTEXT_INTERFACE_H
+#endif // SUBSCRIBER_ENVIRONMENT_CONTEXT_INTERFACE_H

@@ -15,8 +15,14 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
+    environment/environment_context_interface.cc \
+    environment/prod_environment_context.cc \
+    environment/test_environment_context.cc \
     service/message_subscriber_service.cc
 HEADERS += \
+    environment/environment_context_interface.h \
+    environment/prod_environment_context.h \
+    environment/test_environment_context.h \
     service/message_subscriber_service.h
 
 # Default rules for deployment.
