@@ -19,6 +19,7 @@ SOURCES += \
     trustable_identity.cc
 
 HEADERS += \
+    auth_key.h \
     extract_identity_from_metadata.h \
     trustable_identity.h
 

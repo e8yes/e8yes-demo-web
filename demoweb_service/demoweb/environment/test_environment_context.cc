@@ -35,7 +35,10 @@ TestEnvironmentContext::TestEnvironmentContext() {
     SendHeartBeat(demoweb_database_.get());
     ClearAllTables(demoweb_database_.get());
 
-    key_gen_ = std::make_unique<PersistentKeyGenerator>(demoweb_database_.get());
+    key_gen_ = std::make_unique<PersistentKeyGenerator>(/*host_name=*/"localhost",
+                                                        /*port=*/5432,
+                                                        /*user_name*/ "postgres",
+                                                        /*password=*/"password");
 
     host_id_ = 0;
 }

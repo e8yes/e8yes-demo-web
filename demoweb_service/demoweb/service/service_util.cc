@@ -19,9 +19,9 @@
 #include <optional>
 #include <string>
 
-#include "demoweb_service/demoweb/constant/context_key.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/service/service_util.h"
+#include "identity/auth_key.h"
 #include "identity/extract_identity_from_metadata.h"
 #include "proto_cc/identity.pb.h"
 #include "proto_cc/pagination.pb.h"
@@ -30,8 +30,8 @@ namespace e8 {
 
 std::optional<Identity> ExtractIdentityFromContext(grpc::ServerContext const &context,
                                                    grpc::Status *status) {
-    return ExtractIdentityFromContext(context, kAuthorizationKey, CurrentEnvironment()->KeyGen(),
-                                      status);
+    return ExtractIdentityFromContext(context, kDemoWebUserAuthorizationKey,
+                                      CurrentEnvironment()->KeyGen(), status);
 }
 
 grpc::Status ValidatePagination(Pagination const &pagination, unsigned result_per_page_limit) {

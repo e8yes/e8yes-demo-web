@@ -15,13 +15,13 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTEXT_KEY_H
-#define CONTEXT_KEY_H
+#ifndef AUTH_KEY_H
+#define AUTH_KEY_H
 
 namespace e8 {
 
-static char const kAuthorizationKey[] = "a";
+static char const kDemoWebUserAuthorizationKey[] = "a";
 
 } // namespace e8
 
-#endif // CONTEXT_KEY_H
+#endif // AUTH_KEY_H

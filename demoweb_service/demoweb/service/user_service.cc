@@ -21,7 +21,6 @@
 #include <string>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "demoweb_service/demoweb/constant/context_key.h"
 #include "demoweb_service/demoweb/constant/pagination.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/create_user.h"

@@ -22,16 +22,19 @@
 #include <string>
 
 #include "keygen/key_generator_interface.h"
-#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
+
+static char constexpr kDefaultKeyGenDatabaseName[] = "demoweb";
 
 /**
  * @brief The PersistentKeyGenerator class Persistence relies on the postgres database.
  */
 class PersistentKeyGenerator : public KeyGeneratorInterface {
   public:
-    PersistentKeyGenerator(ConnectionReservoirInterface *reservoir);
+    PersistentKeyGenerator(std::string const &db_hostname, int db_port, std::string const &db_user,
+                           std::string const &db_password,
+                           std::string const &database_name = kDefaultKeyGenDatabaseName);
     ~PersistentKeyGenerator() override;
 
     Key KeyOf(std::string const &encrypter, KeyType key_type) override;

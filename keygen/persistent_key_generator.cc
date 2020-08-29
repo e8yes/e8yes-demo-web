@@ -29,6 +29,8 @@
 #include "common/container/lru_hash_map.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/persistent_key_generator.h"
+#include "postgres/query_runner/connection/basic_connection_reservoir.h"
+#include "postgres/query_runner/connection/connection_factory.h"
 #include "postgres/query_runner/connection/connection_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/reflection/sql_entity_interface.h"
@@ -138,8 +140,9 @@ class OnEvict {
 
 class PersistentKeyGenerator::PersistentKeyGeneratorImpl {
   public:
-    PersistentKeyGeneratorImpl(ConnectionReservoirInterface *reservoir)
-        : crypto_key_cache(kNumCachedKeys, OnFetch(reservoir), OnEvict()), reservoir_(reservoir) {}
+    PersistentKeyGeneratorImpl(std::unique_ptr<ConnectionReservoirInterface> reservoir)
+        : crypto_key_cache(kNumCachedKeys, OnFetch(reservoir.get()), OnEvict()),
+          reservoir_(std::move(reservoir)) {}
 
     Key GenerateKey(KeyUser const &key_user);
 
@@ -150,7 +153,7 @@ class PersistentKeyGenerator::PersistentKeyGeneratorImpl {
     Key GenerateAlphaNumeric(unsigned length);
     Key GenerateRSA(unsigned bit_len);
 
-    ConnectionReservoirInterface *reservoir_;
+    std::unique_ptr<ConnectionReservoirInterface> reservoir_;
     CryptoPP::AutoSeededRandomPool rng_;
 };
 
@@ -209,7 +212,7 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateKey(KeyUser const &k
     }
 
     uint64_t num_rows_updated =
-        Update(key_persistence, kKeyPersistenceTableName, /*replace=*/false, reservoir_);
+        Update(key_persistence, kKeyPersistenceTableName, /*replace=*/false, reservoir_.get());
     if (num_rows_updated == 1) {
         // Key added successfully.
         return key;
@@ -222,8 +225,13 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateKey(KeyUser const &k
     return fetched.value();
 }
 
-PersistentKeyGenerator::PersistentKeyGenerator(ConnectionReservoirInterface *reservoir)
-    : impl(std::make_unique<PersistentKeyGeneratorImpl>(reservoir)) {}
+PersistentKeyGenerator::PersistentKeyGenerator(std::string const &db_hostname, int db_port,
+                                               std::string const &db_user,
+                                               std::string const &db_password,
+                                               std::string const &database_name)
+    : impl(std::make_unique<PersistentKeyGeneratorImpl>(std::make_unique<BasicConnectionReservoir>(
+          ConnectionFactory(ConnectionFactory::PQ, db_hostname, db_port, database_name, db_user,
+                            db_password)))) {}
 
 PersistentKeyGenerator::~PersistentKeyGenerator() {}
 
