@@ -15,9 +15,11 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
-    distribute.cc
+    distribute.cc \
+    grpc_stub.cc
 HEADERS += \
-    distribute.h
+    distribute.h \
+    grpc_stub.h
 
 # Default rules for deployment.
 unix {
