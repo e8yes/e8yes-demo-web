@@ -2,9 +2,9 @@ TEMPLATE = subdirs
 SUBDIRS = \
     unit_test_util \
     container/container.pro \
-    container_test/test_trie_map \
-    container_test/test_lru_hash_map \
-    flags \
-    test_flags
+    flags/flags.pro \
+    _test_flags/_test_flags.pro \
+    _test_container/_test_trie_map/_test_trie_map.pro \
+    _test_container/_test_lru_hash_map/_test_lru_hash_map.pro
 
 CONFIG += ordered
