@@ -128,7 +128,7 @@ bool InsertThenEraseThenFindTest() {
 }
 
 int main() {
-    e8::BeginTestSuite("test_trie_map");
+    e8::BeginTestSuite("trie_map");
     e8::RunTest("InsertTest", InsertTest);
     e8::RunTest("InsertThenFindTest", InsertThenFindTest);
     e8::RunTest("InsertThenEraseThenFindTest", InsertThenEraseThenFindTest);
