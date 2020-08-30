@@ -11,17 +11,17 @@ QMAKE_LDFLAGS_RELEASE += -O3 -flto
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
-INCLUDEPATH += $$PWD/../../
+INCLUDEPATH += $$PWD/../../../
 
 SOURCES += \
-    test_flags.cc
+    test_trie_map.cc
 
-unix:!macx: LIBS += -L$$OUT_PWD/../unit_test_util/ -lunit_test_util
+unix:!macx: LIBS += -L$$OUT_PWD/../../unit_test_util/ -lunit_test_util
 
 INCLUDEPATH += $$PWD/../unit_test_util
 DEPENDPATH += $$PWD/../unit_test_util
 
-unix:!macx: LIBS += -L$$OUT_PWD/../flags/ -lflags
+unix:!macx: LIBS += -L$$OUT_PWD/../../container/ -lcontainer
 
-INCLUDEPATH += $$PWD/../flags
-DEPENDPATH += $$PWD/../flags
+INCLUDEPATH += $$PWD/../container
+DEPENDPATH += $$PWD/../container
