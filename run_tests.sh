@@ -14,27 +14,13 @@ echo "============================================"
 echo "Building binaries"
 cd build && ./bootstrap.sh
 make -j $n_cores
+./collect_binaries.sh
 cd ..
 
-
-echo "============================================"
-echo "Adding the following DLLs to LD_LIBRARY_PATH"
-dlls=($(find . -regextype sed -regex ".*/build/\(proto_cc\|identity\|demoweb_service/demoweb\|postgres/query_runner\|common/container\|common/flags\|keygen\|third_party/base64\|message_queue/message_queue\|distributor/store\|distributor/distributor\|distributor/mutation_propagator\)"))
-for dll in ${dlls[@]}
-do
-	echo $dll
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$dll
-done
-
-echo "============================================"
-echo "Creating test suite from the following tests"
-test_execs=($(find build -regextype sed -regex ".*_test" -type f))
-for test_exec in ${test_execs[@]}
-do
-	echo $test_exec
-done
-
 set +e
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:build/bin
+test_execs=($(find build/bin -name test_* -type f -executable))
 
 echo "============================================"
 echo "Running the test suite"
@@ -52,6 +38,5 @@ do
 	((num_tests = num_tests + 1))
 done
 
-echo "============================================"
 echo "Test suite ($num_tests collections) has passed."
 
