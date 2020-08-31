@@ -15,32 +15,17 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <cstdint>
 #include <ctime>
 #include <memory>
 #include <optional>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "postgres/query_runner/connection/connection_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 #include "postgres/query_runner/sql_query_builder.h"
 
-class sql_query_builder_test : public QObject {
-    Q_OBJECT
-
-  public:
-    sql_query_builder_test();
-    ~sql_query_builder_test();
-
-  private slots:
-    void build_parameterized_query_test();
-};
-
-sql_query_builder_test::sql_query_builder_test() {}
-
-sql_query_builder_test::~sql_query_builder_test() {}
-
-void sql_query_builder_test::build_parameterized_query_test() {
+bool BuildParameterizedQueryTest() {
     e8::SqlQueryBuilder::Placeholder<e8::SqlInt> user_id;
     e8::SqlQueryBuilder::Placeholder<e8::SqlTimestamp> begin_timestamp;
     e8::SqlQueryBuilder::Placeholder<e8::SqlTimestamp> end_timestamp;
@@ -56,8 +41,9 @@ void sql_query_builder_test::build_parameterized_query_test() {
         .QueryPiece(" AND im.blockId!=")
         .Holder(&user_id);
 
-    QVERIFY(builder.PsqlQuery() == "Security s JOIN Image im ON s.id=im.securityId AND s.userId=$1 "
-                                   "WHERE im.date>=$2 AND im.date<$3 AND im.blockId!=$4");
+    TEST_CONDITION(builder.PsqlQuery() ==
+                   "Security s JOIN Image im ON s.id=im.securityId AND s.userId=$1 "
+                   "WHERE im.date>=$2 AND im.date<$3 AND im.blockId!=$4");
 
     auto user_id_value = std::make_shared<e8::SqlInt>(1);
     auto begin_timestamp_value = std::make_shared<e8::SqlTimestamp>(100);
@@ -67,23 +53,28 @@ void sql_query_builder_test::build_parameterized_query_test() {
     builder.SetValueToPlaceholder(end_timestamp, end_timestamp_value);
 
     e8::ConnectionInterface::QueryParams const &params = builder.QueryParams();
-    QVERIFY(params.Parameters().size() == 4);
-    QVERIFY(*params.GetParam(1) == *user_id_value);
-    QVERIFY(*params.GetParam(2) == *begin_timestamp_value);
-    QVERIFY(*params.GetParam(3) == *end_timestamp_value);
-    QVERIFY(*params.GetParam(4) == *user_id_value);
+    TEST_CONDITION(params.Parameters().size() == 4);
+    TEST_CONDITION(*params.GetParam(1) == *user_id_value);
+    TEST_CONDITION(*params.GetParam(2) == *begin_timestamp_value);
+    TEST_CONDITION(*params.GetParam(3) == *end_timestamp_value);
+    TEST_CONDITION(*params.GetParam(4) == *user_id_value);
 
     auto updated_user_id_value = std::make_shared<e8::SqlInt>(2);
     builder.SetValueToPlaceholder(user_id, updated_user_id_value);
 
     e8::ConnectionInterface::QueryParams const &updated_params = builder.QueryParams();
-    QVERIFY(updated_params.Parameters().size() == 4);
-    QVERIFY(*updated_params.GetParam(1) == *user_id_value);
-    QVERIFY(*updated_params.GetParam(2) == *begin_timestamp_value);
-    QVERIFY(*updated_params.GetParam(3) == *end_timestamp_value);
-    QVERIFY(*updated_params.GetParam(4) == *user_id_value);
+    TEST_CONDITION(updated_params.Parameters().size() == 4);
+    TEST_CONDITION(*updated_params.GetParam(1) == *user_id_value);
+    TEST_CONDITION(*updated_params.GetParam(2) == *begin_timestamp_value);
+    TEST_CONDITION(*updated_params.GetParam(3) == *end_timestamp_value);
+    TEST_CONDITION(*updated_params.GetParam(4) == *user_id_value);
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(sql_query_builder_test)
-
-#include "tst_sql_query_builder_test.moc"
+int main() {
+    e8::BeginTestSuite("sql_query_builder");
+    e8::RunTest("BuildParameterizedQueryTest", BuildParameterizedQueryTest);
+    e8::EndTestSuite();
+    return 0;
+}
