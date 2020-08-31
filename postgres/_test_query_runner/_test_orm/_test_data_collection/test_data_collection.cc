@@ -15,31 +15,16 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <memory>
 #include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "postgres/query_runner/orm/data_collection.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 #include "postgres/query_runner/resultset/mock_result_set.h"
-
-class data_collection_test : public QObject {
-    Q_OBJECT
-
-  public:
-    data_collection_test();
-    ~data_collection_test();
-
-  private slots:
-    void test_to_entity_tuple();
-};
-
-data_collection_test::data_collection_test() {}
-
-data_collection_test::~data_collection_test() {}
 
 class User : public e8::SqlEntityInterface {
   public:
@@ -61,7 +46,7 @@ class CreditCard : public e8::SqlEntityInterface {
           card_number(other.card_number) {}
 };
 
-void data_collection_test::test_to_entity_tuple() {
+bool ToEntityTupleTest() {
     e8::MockResultSet rs(/*num_cells=*/5);
     rs.AddRecord(e8::MockResultSet::Record{// User record.
                                            std::make_shared<e8::SqlInt>(1, "id"),
@@ -77,22 +62,29 @@ void data_collection_test::test_to_entity_tuple() {
 
     std::vector<std::tuple<User, CreditCard>> results = e8::ToEntityTuples<User, CreditCard>(&rs);
 
-    QVERIFY(results.size() == 2);
+    TEST_CONDITION(results.size() == 2);
 
-    QVERIFY(std::get<0>(results[0]).id.Value() == std::optional<int32_t>(1));
-    QVERIFY(std::get<0>(results[0]).user_name.Value() == std::optional<std::string>("user1"));
-    QVERIFY(!std::get<1>(results[0]).id.Value().has_value());
-    QVERIFY(!std::get<1>(results[0]).user_id.Value().has_value());
-    QVERIFY(!std::get<1>(results[0]).card_number.Value().has_value());
+    TEST_CONDITION(std::get<0>(results[0]).id.Value() == std::optional<int32_t>(1));
+    TEST_CONDITION(std::get<0>(results[0]).user_name.Value() ==
+                   std::optional<std::string>("user1"));
+    TEST_CONDITION(!std::get<1>(results[0]).id.Value().has_value());
+    TEST_CONDITION(!std::get<1>(results[0]).user_id.Value().has_value());
+    TEST_CONDITION(!std::get<1>(results[0]).card_number.Value().has_value());
 
-    QVERIFY(std::get<0>(results[1]).id.Value() == std::optional<int32_t>(2));
-    QVERIFY(std::get<0>(results[1]).user_name.Value() == std::optional<std::string>("user2"));
-    QVERIFY(std::get<1>(results[1]).id.Value() == std::optional<int32_t>(101));
-    QVERIFY(std::get<1>(results[1]).user_id.Value() == std::optional<int32_t>(2));
-    QVERIFY(std::get<1>(results[1]).card_number.Value() ==
-            std::optional<std::string>("1010101002"));
+    TEST_CONDITION(std::get<0>(results[1]).id.Value() == std::optional<int32_t>(2));
+    TEST_CONDITION(std::get<0>(results[1]).user_name.Value() ==
+                   std::optional<std::string>("user2"));
+    TEST_CONDITION(std::get<1>(results[1]).id.Value() == std::optional<int32_t>(101));
+    TEST_CONDITION(std::get<1>(results[1]).user_id.Value() == std::optional<int32_t>(2));
+    TEST_CONDITION(std::get<1>(results[1]).card_number.Value() ==
+                   std::optional<std::string>("1010101002"));
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(data_collection_test)
-
-#include "tst_data_collection_test.moc"
+int main() {
+    e8::BeginTestSuite("data_collection");
+    e8::RunTest("ToEntityTupleTest", ToEntityTupleTest);
+    e8::EndTestSuite();
+    return 0;
+}
