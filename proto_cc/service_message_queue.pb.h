@@ -377,11 +377,25 @@ class DequeueMessageRequest : public ::google::protobuf::Message /* @@protoc_ins
   ::google::protobuf::int64 user_id() const;
   void set_user_id(::google::protobuf::int64 value);
 
+  // bool previous_message_delivered = 2;
+  void clear_previous_message_delivered();
+  static const int kPreviousMessageDeliveredFieldNumber = 2;
+  bool previous_message_delivered() const;
+  void set_previous_message_delivered(bool value);
+
+  // bool end_operation = 3;
+  void clear_end_operation();
+  static const int kEndOperationFieldNumber = 3;
+  bool end_operation() const;
+  void set_end_operation(bool value);
+
   // @@protoc_insertion_point(class_scope:e8.DequeueMessageRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int64 user_id_;
+  bool previous_message_delivered_;
+  bool end_operation_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
 };
@@ -566,6 +580,34 @@ inline void DequeueMessageRequest::set_user_id(::google::protobuf::int64 value) 
   
   user_id_ = value;
   // @@protoc_insertion_point(field_set:e8.DequeueMessageRequest.user_id)
+}
+
+// bool previous_message_delivered = 2;
+inline void DequeueMessageRequest::clear_previous_message_delivered() {
+  previous_message_delivered_ = false;
+}
+inline bool DequeueMessageRequest::previous_message_delivered() const {
+  // @@protoc_insertion_point(field_get:e8.DequeueMessageRequest.previous_message_delivered)
+  return previous_message_delivered_;
+}
+inline void DequeueMessageRequest::set_previous_message_delivered(bool value) {
+  
+  previous_message_delivered_ = value;
+  // @@protoc_insertion_point(field_set:e8.DequeueMessageRequest.previous_message_delivered)
+}
+
+// bool end_operation = 3;
+inline void DequeueMessageRequest::clear_end_operation() {
+  end_operation_ = false;
+}
+inline bool DequeueMessageRequest::end_operation() const {
+  // @@protoc_insertion_point(field_get:e8.DequeueMessageRequest.end_operation)
+  return end_operation_;
+}
+inline void DequeueMessageRequest::set_end_operation(bool value) {
+  
+  end_operation_ = value;
+  // @@protoc_insertion_point(field_set:e8.DequeueMessageRequest.end_operation)
 }
 
 // -------------------------------------------------------------------

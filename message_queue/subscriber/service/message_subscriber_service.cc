@@ -36,6 +36,7 @@
 
 namespace e8 {
 
+// TODO: Make this function testable.
 grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(
     grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const * /*request*/,
     grpc::ServerWriter<SubscribeRealTimeMessageQueueResponse> *writer) {
@@ -59,17 +60,24 @@ grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(
 
     grpc::ClientContext client_context;
 
+    std::unique_ptr<grpc::ClientReaderWriter<DequeueMessageRequest, DequeueMessageResponse>>
+        stream = stub->DequeueMessage(&client_context);
+
     DequeueMessageRequest dequeue_request;
     dequeue_request.set_user_id(identity->user_id());
-
-    std::unique_ptr<grpc::ClientReader<DequeueMessageResponse>> reader =
-        stub->DequeueMessage(&client_context, dequeue_request);
+    dequeue_request.set_previous_message_delivered(false);
+    dequeue_request.set_end_operation(false);
 
     DequeueMessageResponse dequeue_response;
-    while (reader->Read(&dequeue_response)) {
+    while (stream->Write(dequeue_request) && stream->Read(&dequeue_response)) {
         SubscribeRealTimeMessageQueueResponse subscriber_response;
         *subscriber_response.mutable_message() = dequeue_response.message();
-        writer->Write(subscriber_response);
+        if (writer->Write(subscriber_response)) {
+            dequeue_request.set_previous_message_delivered(true);
+        } else {
+            dequeue_request.set_previous_message_delivered(false);
+            dequeue_request.set_end_operation(true);
+        }
     }
 
     return grpc::Status::OK;

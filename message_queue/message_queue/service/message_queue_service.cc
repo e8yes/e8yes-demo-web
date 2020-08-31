@@ -27,15 +27,18 @@
 namespace e8 {
 namespace {
 
-bool WriteToStreamOrPutBack(RealTimeMessage const &message, MessageQueueStore::MessageQueue *queue,
-                            grpc::ServerWriter<DequeueMessageResponse> *writer) {
+grpc::Status
+WriteToStream(RealTimeMessage const &message,
+              grpc::ServerReaderWriter<DequeueMessageResponse, DequeueMessageRequest> *stream) {
     DequeueMessageResponse res;
     *res.mutable_message() = message;
 
-    bool successful = writer->Write(res);
-    MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/successful);
+    bool successful = stream->Write(res);
+    if (!successful) {
+        return grpc::Status(grpc::StatusCode::ABORTED, "Stream closed.");
+    }
 
-    return successful;
+    return grpc::Status::OK;
 }
 
 } // namespace
@@ -49,17 +52,54 @@ grpc::Status MessageQueueServiceImpl::EnqueueMessage(grpc::ServerContext * /*con
     return grpc::Status::OK;
 }
 
-grpc::Status
-MessageQueueServiceImpl::DequeueMessage(grpc::ServerContext * /*context*/,
-                                        DequeueMessageRequest const *request,
-                                        grpc::ServerWriter<DequeueMessageResponse> *writer) {
+// TODO: Make this functiont testable.
+grpc::Status MessageQueueServiceImpl::DequeueMessage(
+    grpc::ServerContext * /*context*/,
+    grpc::ServerReaderWriter<DequeueMessageResponse, DequeueMessageRequest> *stream) {
+    MessageKey user_id = 0;
     RealTimeMessage message;
     MessageQueueStore::MessageQueue *queue = nullptr;
-    do {
-        queue = MessageQueueStoreInstance()->BeginBlockingDequeue(request->user_id(), &message);
-    } while (WriteToStreamOrPutBack(message, queue, writer));
+    grpc::Status current_status = grpc::Status::OK;
 
-    return grpc::Status::OK;
+    while (current_status.ok()) {
+        DequeueMessageRequest request;
+        if (!stream->Read(&request)) {
+            current_status = grpc::Status(grpc::StatusCode::ABORTED, "Stream closed.");
+            continue;
+        }
+
+        // Guarantees that the user_id is consistent over the request stream.
+        if (user_id != 0 && user_id != request.user_id()) {
+            current_status = grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
+                                          "Can't operate on different queues.");
+            continue;
+        }
+        user_id = request.user_id();
+        assert(user_id != 0);
+
+        // Remove the oldest element only when the client successfully delivered the message.
+        if (queue != nullptr) {
+            MessageQueueStoreInstance()->EndBlockingDequeue(
+                queue, /*dequeue=*/request.previous_message_delivered());
+        }
+
+        if (request.end_operation()) {
+            current_status = grpc::Status(grpc::StatusCode::ABORTED,
+                                          "Client asks to halt the dequeue operation.");
+            continue;
+        }
+
+        queue = MessageQueueStoreInstance()->BeginBlockingDequeue(user_id, &message);
+
+        current_status = WriteToStream(message, stream);
+    }
+
+    // Put the message back in any failure cases.
+    if (!current_status.ok() && queue != nullptr) {
+        MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/false);
+    }
+
+    return current_status;
 }
 
 } // namespace e8

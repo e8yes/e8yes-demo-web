@@ -41,11 +41,9 @@ class MessageQueueServiceClient extends $grpc.Client {
   }
 
   $grpc.ResponseStream<$4.DequeueMessageResponse> dequeueMessage(
-      $4.DequeueMessageRequest request,
+      $async.Stream<$4.DequeueMessageRequest> request,
       {$grpc.CallOptions options}) {
-    final call = $createCall(
-        _$dequeueMessage, $async.Stream.fromIterable([request]),
-        options: options);
+    final call = $createCall(_$dequeueMessage, request, options: options);
     return $grpc.ResponseStream(call);
   }
 }
@@ -66,8 +64,8 @@ abstract class MessageQueueServiceBase extends $grpc.Service {
     $addMethod($grpc.ServiceMethod<$4.DequeueMessageRequest,
             $4.DequeueMessageResponse>(
         'DequeueMessage',
-        dequeueMessage_Pre,
-        false,
+        dequeueMessage,
+        true,
         true,
         ($core.List<$core.int> value) =>
             $4.DequeueMessageRequest.fromBuffer(value),
@@ -80,14 +78,8 @@ abstract class MessageQueueServiceBase extends $grpc.Service {
     return enqueueMessage(call, await request);
   }
 
-  $async.Stream<$4.DequeueMessageResponse> dequeueMessage_Pre(
-      $grpc.ServiceCall call,
-      $async.Future<$4.DequeueMessageRequest> request) async* {
-    yield* dequeueMessage(call, await request);
-  }
-
   $async.Future<$4.EnqueueMessageResponse> enqueueMessage(
       $grpc.ServiceCall call, $4.EnqueueMessageRequest request);
   $async.Stream<$4.DequeueMessageResponse> dequeueMessage(
-      $grpc.ServiceCall call, $4.DequeueMessageRequest request);
+      $grpc.ServiceCall call, $async.Stream<$4.DequeueMessageRequest> request);
 }

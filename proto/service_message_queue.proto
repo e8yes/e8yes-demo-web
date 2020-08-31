@@ -32,6 +32,8 @@ message EnqueueMessageResponse {
 
 message DequeueMessageRequest {
     int64 user_id = 1;
+    bool previous_message_delivered = 2;
+    bool end_operation = 3;
 }
 
 message DequeueMessageResponse {
@@ -43,6 +45,6 @@ service MessageQueueService {
     rpc EnqueueMessage (EnqueueMessageRequest) 
         returns (EnqueueMessageResponse);
 
-    rpc DequeueMessage (DequeueMessageRequest) 
+    rpc DequeueMessage (stream DequeueMessageRequest) 
         returns (stream DequeueMessageResponse);
 }

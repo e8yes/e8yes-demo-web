@@ -3,7 +3,7 @@
 // source: service_system.proto
 // Original file comments:
 // *
-// e8yes demo web.
+// e8yes demo web server.
 //
 // <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
 //

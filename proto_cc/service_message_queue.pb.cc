@@ -131,6 +131,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DequeueMessageRequest, user_id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DequeueMessageRequest, previous_message_delivered_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DequeueMessageRequest, end_operation_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DequeueMessageResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -142,7 +144,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 0, -1, sizeof(::e8::EnqueueMessageRequest)},
   { 7, -1, sizeof(::e8::EnqueueMessageResponse)},
   { 12, -1, sizeof(::e8::DequeueMessageRequest)},
-  { 18, -1, sizeof(::e8::DequeueMessageResponse)},
+  { 20, -1, sizeof(::e8::DequeueMessageResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -177,17 +179,18 @@ void AddDescriptorsImpl() {
       "time_message.proto\"O\n\025EnqueueMessageRequ"
       "est\022\017\n\007user_id\030\001 \001(\003\022%\n\010messages\030\002 \003(\0132\023"
       ".e8.RealTimeMessage\"\030\n\026EnqueueMessageRes"
-      "ponse\"(\n\025DequeueMessageRequest\022\017\n\007user_i"
-      "d\030\001 \001(\003\">\n\026DequeueMessageResponse\022$\n\007mes"
-      "sage\030\002 \001(\0132\023.e8.RealTimeMessage2\251\001\n\023Mess"
-      "ageQueueService\022G\n\016EnqueueMessage\022\031.e8.E"
-      "nqueueMessageRequest\032\032.e8.EnqueueMessage"
-      "Response\022I\n\016DequeueMessage\022\031.e8.DequeueM"
-      "essageRequest\032\032.e8.DequeueMessageRespons"
-      "e0\001b\006proto3"
+      "ponse\"c\n\025DequeueMessageRequest\022\017\n\007user_i"
+      "d\030\001 \001(\003\022\"\n\032previous_message_delivered\030\002 "
+      "\001(\010\022\025\n\rend_operation\030\003 \001(\010\">\n\026DequeueMes"
+      "sageResponse\022$\n\007message\030\002 \001(\0132\023.e8.RealT"
+      "imeMessage2\253\001\n\023MessageQueueService\022G\n\016En"
+      "queueMessage\022\031.e8.EnqueueMessageRequest\032"
+      "\032.e8.EnqueueMessageResponse\022K\n\016DequeueMe"
+      "ssage\022\031.e8.DequeueMessageRequest\032\032.e8.De"
+      "queueMessageResponse(\0010\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 451);
+      descriptor, 512);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_queue.proto", &protobuf_RegisterTypes);
   ::protobuf_real_5ftime_5fmessage_2eproto::AddDescriptors();
@@ -662,6 +665,8 @@ void DequeueMessageRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int DequeueMessageRequest::kUserIdFieldNumber;
+const int DequeueMessageRequest::kPreviousMessageDeliveredFieldNumber;
+const int DequeueMessageRequest::kEndOperationFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 DequeueMessageRequest::DequeueMessageRequest()
@@ -675,12 +680,16 @@ DequeueMessageRequest::DequeueMessageRequest(const DequeueMessageRequest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  user_id_ = from.user_id_;
+  ::memcpy(&user_id_, &from.user_id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&end_operation_) -
+    reinterpret_cast<char*>(&user_id_)) + sizeof(end_operation_));
   // @@protoc_insertion_point(copy_constructor:e8.DequeueMessageRequest)
 }
 
 void DequeueMessageRequest::SharedCtor() {
-  user_id_ = GOOGLE_LONGLONG(0);
+  ::memset(&user_id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&end_operation_) -
+      reinterpret_cast<char*>(&user_id_)) + sizeof(end_operation_));
 }
 
 DequeueMessageRequest::~DequeueMessageRequest() {
@@ -711,7 +720,9 @@ void DequeueMessageRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  user_id_ = GOOGLE_LONGLONG(0);
+  ::memset(&user_id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&end_operation_) -
+      reinterpret_cast<char*>(&user_id_)) + sizeof(end_operation_));
   _internal_metadata_.Clear();
 }
 
@@ -733,6 +744,34 @@ bool DequeueMessageRequest::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &user_id_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool previous_message_delivered = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &previous_message_delivered_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool end_operation = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &end_operation_)));
         } else {
           goto handle_unusual;
         }
@@ -770,6 +809,16 @@ void DequeueMessageRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->user_id(), output);
   }
 
+  // bool previous_message_delivered = 2;
+  if (this->previous_message_delivered() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->previous_message_delivered(), output);
+  }
+
+  // bool end_operation = 3;
+  if (this->end_operation() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->end_operation(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -787,6 +836,16 @@ void DequeueMessageRequest::SerializeWithCachedSizes(
   // int64 user_id = 1;
   if (this->user_id() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->user_id(), target);
+  }
+
+  // bool previous_message_delivered = 2;
+  if (this->previous_message_delivered() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->previous_message_delivered(), target);
+  }
+
+  // bool end_operation = 3;
+  if (this->end_operation() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->end_operation(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -811,6 +870,16 @@ size_t DequeueMessageRequest::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->user_id());
+  }
+
+  // bool previous_message_delivered = 2;
+  if (this->previous_message_delivered() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool end_operation = 3;
+  if (this->end_operation() != 0) {
+    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -843,6 +912,12 @@ void DequeueMessageRequest::MergeFrom(const DequeueMessageRequest& from) {
   if (from.user_id() != 0) {
     set_user_id(from.user_id());
   }
+  if (from.previous_message_delivered() != 0) {
+    set_previous_message_delivered(from.previous_message_delivered());
+  }
+  if (from.end_operation() != 0) {
+    set_end_operation(from.end_operation());
+  }
 }
 
 void DequeueMessageRequest::CopyFrom(const ::google::protobuf::Message& from) {
@@ -870,6 +945,8 @@ void DequeueMessageRequest::Swap(DequeueMessageRequest* other) {
 void DequeueMessageRequest::InternalSwap(DequeueMessageRequest* other) {
   using std::swap;
   swap(user_id_, other->user_id_);
+  swap(previous_message_delivered_, other->previous_message_delivered_);
+  swap(end_operation_, other->end_operation_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

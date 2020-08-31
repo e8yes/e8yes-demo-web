@@ -71,6 +71,8 @@ class EnqueueMessageResponse extends $pb.GeneratedMessage {
 class DequeueMessageRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DequeueMessageRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'userId')
+    ..aOB(2, 'previousMessageDelivered')
+    ..aOB(3, 'endOperation')
     ..hasRequiredFields = false
   ;
 
@@ -97,6 +99,24 @@ class DequeueMessageRequest extends $pb.GeneratedMessage {
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
   void clearUserId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get previousMessageDelivered => $_getBF(1);
+  @$pb.TagNumber(2)
+  set previousMessageDelivered($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPreviousMessageDelivered() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPreviousMessageDelivered() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get endOperation => $_getBF(2);
+  @$pb.TagNumber(3)
+  set endOperation($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasEndOperation() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEndOperation() => clearField(3);
 }
 
 class DequeueMessageResponse extends $pb.GeneratedMessage {
