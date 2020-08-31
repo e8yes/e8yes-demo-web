@@ -15,33 +15,17 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <ctime>
 #include <memory>
 #include <optional>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "identity/trustable_identity.h"
 #include "keygen/persistent_key_generator.h"
 #include "postgres/query_runner/connection/basic_connection_reservoir.h"
 #include "postgres/query_runner/connection/connection_factory.h"
 #include "postgres/query_runner/sql_runner.h"
 #include "proto_cc/identity.pb.h"
-
-class identity_test : public QObject {
-    Q_OBJECT
-
-  public:
-    identity_test();
-    ~identity_test();
-
-  private slots:
-    void successful_sign_and_parse_test();
-    void expired_signature_test();
-};
-
-identity_test::identity_test() {}
-
-identity_test::~identity_test() {}
 
 e8::ConnectionFactory CreateConnectionFactory() {
     e8::ConnectionFactory factory(e8::ConnectionFactory::PQ,
@@ -50,7 +34,7 @@ e8::ConnectionFactory CreateConnectionFactory() {
     return factory;
 }
 
-void identity_test::successful_sign_and_parse_test() {
+bool SuccessfulSignAndParseTest() {
     auto reservoir = std::make_unique<e8::BasicConnectionReservoir>(CreateConnectionFactory());
     e8::ClearAllTables(reservoir.get());
 
@@ -65,16 +49,18 @@ void identity_test::successful_sign_and_parse_test() {
 
     std::optional<e8::SignedIdentity> signed_id = e8::SignIdentity(identity, &key_gen);
 
-    QVERIFY(signed_id.has_value());
+    TEST_CONDITION(signed_id.has_value());
 
     std::optional<e8::Identity> decoded = e8::ValidateSignedIdentity(*signed_id, &key_gen);
-    QVERIFY(decoded.has_value());
-    QVERIFY(decoded->user_id() == 1L);
-    QVERIFY(decoded->group_names_size() == 1);
-    QVERIFY(decoded->group_names(0) == "default_group");
+    TEST_CONDITION(decoded.has_value());
+    TEST_CONDITION(decoded->user_id() == 1L);
+    TEST_CONDITION(decoded->group_names_size() == 1);
+    TEST_CONDITION(decoded->group_names(0) == "default_group");
+
+    return true;
 }
 
-void identity_test::expired_signature_test() {
+bool ExpiredSignatureTest() {
     auto reservoir = std::make_unique<e8::BasicConnectionReservoir>(CreateConnectionFactory());
     e8::ClearAllTables(reservoir.get());
 
@@ -88,12 +74,18 @@ void identity_test::expired_signature_test() {
 
     std::optional<e8::SignedIdentity> signed_id = e8::SignIdentity(identity, &key_gen);
 
-    QVERIFY(signed_id.has_value());
+    TEST_CONDITION(signed_id.has_value());
 
     std::optional<e8::Identity> decoded = e8::ValidateSignedIdentity(*signed_id, &key_gen);
-    QVERIFY(!decoded.has_value());
+    TEST_CONDITION(!decoded.has_value());
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(identity_test)
-
-#include "tst_identity_test.moc"
+int main() {
+    e8::BeginTestSuite("identity");
+    e8::RunTest("SuccessfulSignAndParseTest", SuccessfulSignAndParseTest);
+    e8::RunTest("ExpiredSignatureTest", ExpiredSignatureTest);
+    e8::EndTestSuite();
+    return 0;
+}

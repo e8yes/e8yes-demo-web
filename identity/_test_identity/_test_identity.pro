@@ -1,21 +1,25 @@
-QT += testlib
-QT -= gui
-
-CONFIG += qt console warn_on depend_includepath testcase
-CONFIG -= app_bundle
-
 TEMPLATE = app
+CONFIG += console
+CONFIG -= app_bundle
+CONFIG -= qt
 CONFIG += c++17
 
 QMAKE_CXXFLAGS += -std=c++17
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3 -flto
+QMAKE_LDFLAGS_RELEASE += -O3 -flto
 
-DEFINES += DEMOWEBLIB_LIBRARY
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 INCLUDEPATH += $$PWD/../../
 
 SOURCES +=  \
-    tst_identity_test.cc
+    test_identity.cc
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/unit_test_util/ -lunit_test_util
+
+INCLUDEPATH += $$PWD/../../common/unit_test_util
+DEPENDPATH += $$PWD/../../common/unit_test_util
 
 unix:!macx: LIBS += -L$$OUT_PWD/../ -lidentity
 
