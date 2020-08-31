@@ -15,12 +15,12 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <cstdint>
 #include <string>
 #include <tuple>
 #include <vector>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "postgres/query_runner/connection/basic_connection_reservoir.h"
 #include "postgres/query_runner/connection/connection_factory.h"
 #include "postgres/query_runner/connection/connection_interface.h"
@@ -28,23 +28,6 @@
 #include "postgres/query_runner/reflection/sql_primitives.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
-
-class sql_runner_test : public QObject {
-    Q_OBJECT
-
-  public:
-    sql_runner_test();
-    ~sql_runner_test();
-
-  private slots:
-    void insert_then_query_test();
-    void insert_then_delete_test();
-    void insert_then_exists_test();
-};
-
-sql_runner_test::sql_runner_test() {}
-
-sql_runner_test::~sql_runner_test() {}
 
 class User : public e8::SqlEntityInterface {
   public:
@@ -96,7 +79,7 @@ void CreateSchema(e8::ConnectionInterface *conn) {
     conn->RunUpdate(create_card_table, e8::ConnectionInterface::QueryParams());
 }
 
-void sql_runner_test::insert_then_query_test() {
+bool InsertThenQueryTest() {
     e8::ConnectionFactory factory = CreateConnectionFactory();
     e8::BasicConnectionReservoir reservoir(factory);
     e8::ConnectionInterface *conn = reservoir.Take();
@@ -112,7 +95,7 @@ void sql_runner_test::insert_then_query_test() {
     uint64_t num_rows_affected = e8::Update(user,
                                             /*tableName=*/"QueryRunnerTestUser",
                                             /*replace=*/true, &reservoir);
-    QVERIFY(num_rows_affected == 1);
+    TEST_CONDITION(num_rows_affected == 1);
 
     CreditCard card0;
     *card0.id.ValuePtr() = 10;
@@ -127,12 +110,12 @@ void sql_runner_test::insert_then_query_test() {
     num_rows_affected = e8::Update(card0,
                                    /*tableName=*/"QueryRunnerTestCard",
                                    /*replace=*/true, &reservoir);
-    QVERIFY(num_rows_affected == 1);
+    TEST_CONDITION(num_rows_affected == 1);
 
     num_rows_affected = e8::Update(card1,
                                    /*tableName=*/"QueryRunnerTestCard",
                                    /*replace=*/true, &reservoir);
-    QVERIFY(num_rows_affected == 1);
+    TEST_CONDITION(num_rows_affected == 1);
 
     // Run query.
     std::vector<std::tuple<User, CreditCard>> results = e8::Query<User, CreditCard>(
@@ -141,32 +124,34 @@ void sql_runner_test::insert_then_query_test() {
             "cards ON cards.user_id=user_info.id ORDER BY cards.id DESC"),
         /*entity_aliases=*/{"user_info", "cards"}, &reservoir);
 
-    QVERIFY(results.size() == 2);
+    TEST_CONDITION(results.size() == 2);
 
     // First record.
     User retrieved_user = std::get<0>(results[0]);
-    QVERIFY(retrieved_user.id.Value() == std::optional<int32_t>(1));
-    QVERIFY(retrieved_user.user_name.Value() == std::optional<std::string>("user0"));
+    TEST_CONDITION(retrieved_user.id.Value() == std::optional<int32_t>(1));
+    TEST_CONDITION(retrieved_user.user_name.Value() == std::optional<std::string>("user0"));
 
     CreditCard retrieved_card0 = std::get<1>(results[0]);
-    QVERIFY(retrieved_card0.id.Value() == std::optional<int32_t>(11));
-    QVERIFY(retrieved_card0.card_number.Value() == std::optional<std::string>("2234"));
+    TEST_CONDITION(retrieved_card0.id.Value() == std::optional<int32_t>(11));
+    TEST_CONDITION(retrieved_card0.card_number.Value() == std::optional<std::string>("2234"));
 
     // Second record.
     User retrieved_user2 = std::get<0>(results[1]);
-    QVERIFY(retrieved_user2.id.Value() == std::optional<int32_t>(1));
-    QVERIFY(retrieved_user2.user_name.Value() == std::optional<std::string>("user0"));
+    TEST_CONDITION(retrieved_user2.id.Value() == std::optional<int32_t>(1));
+    TEST_CONDITION(retrieved_user2.user_name.Value() == std::optional<std::string>("user0"));
 
     CreditCard retrieved_card1 = std::get<1>(results[1]);
-    QVERIFY(retrieved_card1.id.Value() == std::optional<int32_t>(10));
-    QVERIFY(retrieved_card1.card_number.Value() == std::optional<std::string>("1234"));
+    TEST_CONDITION(retrieved_card1.id.Value() == std::optional<int32_t>(10));
+    TEST_CONDITION(retrieved_card1.card_number.Value() == std::optional<std::string>("1234"));
 
     // Clean up.
     DropSchema(conn);
     reservoir.Put(conn);
+
+    return true;
 }
 
-void sql_runner_test::insert_then_delete_test() {
+bool InsertThenDeleteTest() {
     e8::ConnectionFactory factory = CreateConnectionFactory();
     e8::BasicConnectionReservoir reservoir(factory);
     e8::ConnectionInterface *conn = reservoir.Take();
@@ -182,26 +167,28 @@ void sql_runner_test::insert_then_delete_test() {
     uint64_t num_rows_affected = e8::Update(user,
                                             /*tableName=*/"QueryRunnerTestUser",
                                             /*replace=*/true, &reservoir);
-    QVERIFY(num_rows_affected == 1);
+    TEST_CONDITION(num_rows_affected == 1);
 
     // Delete nothing.
     num_rows_affected = e8::Delete(
         /*table_name=*/"QueryRunnerTestUser", e8::SqlQueryBuilder().QueryPiece("WHERE id!=1"),
         &reservoir);
-    QVERIFY(num_rows_affected == 0);
+    TEST_CONDITION(num_rows_affected == 0);
 
     // Delete the user.
     num_rows_affected = e8::Delete(
         /*table_name=*/"QueryRunnerTestUser", e8::SqlQueryBuilder().QueryPiece("WHERE id=1"),
         &reservoir);
-    QVERIFY(num_rows_affected == 1);
+    TEST_CONDITION(num_rows_affected == 1);
 
     // Clean up.
     DropSchema(conn);
     reservoir.Put(conn);
+
+    return true;
 }
 
-void sql_runner_test::insert_then_exists_test() {
+bool InsertThenExistsTest() {
     e8::ConnectionFactory factory = CreateConnectionFactory();
     e8::BasicConnectionReservoir reservoir(factory);
     e8::ConnectionInterface *conn = reservoir.Take();
@@ -217,22 +204,29 @@ void sql_runner_test::insert_then_exists_test() {
     uint64_t num_rows_affected = e8::Update(user,
                                             /*tableName=*/"QueryRunnerTestUser",
                                             /*replace=*/true, &reservoir);
-    QVERIFY(num_rows_affected == 1);
+    TEST_CONDITION(num_rows_affected == 1);
 
     // Run "exists" query.
     bool should_not_exist =
         !e8::Exists(e8::SqlQueryBuilder().QueryPiece("QueryRunnerTestUser WHERE id=2"), &reservoir);
-    QVERIFY(should_not_exist);
+    TEST_CONDITION(should_not_exist);
 
     bool should_exist =
         e8::Exists(e8::SqlQueryBuilder().QueryPiece("QueryRunnerTestUser WHERE id=1"), &reservoir);
-    QVERIFY(should_exist);
+    TEST_CONDITION(should_exist);
 
     // Clean up.
     DropSchema(conn);
     reservoir.Put(conn);
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(sql_runner_test)
-
-#include "tst_sql_runner_test.moc"
+int main() {
+    e8::BeginTestSuite("sql_runner");
+    e8::RunTest("InsertThenQueryTest", InsertThenQueryTest);
+    e8::RunTest("InsertThenDeleteTest", InsertThenDeleteTest);
+    e8::RunTest("InsertThenExistsTest", InsertThenExistsTest);
+    e8::EndTestSuite();
+    return 0;
+}

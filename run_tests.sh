@@ -20,7 +20,7 @@ cd ..
 set +e
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:build/bin
-test_execs=($(find build/bin -name test_* -type f -executable))
+test_execs=($(find build/bin -name _test_* -type f -executable))
 
 echo "============================================"
 echo "Running the test suite"

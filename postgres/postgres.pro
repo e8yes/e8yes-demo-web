@@ -6,6 +6,6 @@ SUBDIRS = \
     query_runner_test/resultset/pq_result_set_test \
     query_runner_test/connection/pq_connection_test \
     query_runner_test/sql_query_builder_test \
-    query_runner_test/sql_runner_test
+    _test_query_runner/_test_sql_runner/_test_sql_runner.pro
 
 CONFIG += ordered
