@@ -15,29 +15,13 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <thread>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "message_queue/message_queue/module/message_queue_store.h"
 #include "proto_cc/real_time_message.pb.h"
 
-class message_queue_store_test : public QObject {
-    Q_OBJECT
-
-  public:
-    message_queue_store_test();
-    ~message_queue_store_test();
-
-  private slots:
-    void enqueue_and_dequeue_test();
-    void dequeue_future_message_test();
-};
-
-message_queue_store_test::message_queue_store_test() {}
-
-message_queue_store_test::~message_queue_store_test() {}
-
-void message_queue_store_test::enqueue_and_dequeue_test() {
+bool EnqueueAndDequeueTest() {
     e8::MessageQueueStoreInstance()->Clear();
 
     e8::RealTimeMessage old_message;
@@ -54,13 +38,17 @@ void message_queue_store_test::enqueue_and_dequeue_test() {
     e8::RealTimeMessage fetched_new_message =
         e8::MessageQueueStoreInstance()->BlockingDequeue(/*key=*/1);
 
-    QVERIFY(old_message.real_time_message_id() == fetched_old_message.real_time_message_id());
-    QVERIFY(new_message.real_time_message_id() == fetched_new_message.real_time_message_id());
+    TEST_CONDITION(old_message.real_time_message_id() ==
+                   fetched_old_message.real_time_message_id());
+    TEST_CONDITION(new_message.real_time_message_id() ==
+                   fetched_new_message.real_time_message_id());
+
+    return true;
 }
 
 void EnqueueInTheFuture() {
     using namespace std::chrono_literals;
-    std::this_thread::sleep_for(2s);
+    std::this_thread::sleep_for(1s);
 
     e8::RealTimeMessage message;
     message.set_real_time_message_id(10);
@@ -68,18 +56,24 @@ void EnqueueInTheFuture() {
     e8::MessageQueueStoreInstance()->Enqueue(/*key=*/1, message);
 }
 
-void message_queue_store_test::dequeue_future_message_test() {
+bool DequeueFutureMessageTest() {
     e8::MessageQueueStoreInstance()->Clear();
 
     std::thread thr(EnqueueInTheFuture);
 
     e8::RealTimeMessage future_message =
         e8::MessageQueueStoreInstance()->BlockingDequeue(/*key=*/1);
-    QVERIFY(future_message.real_time_message_id() == 10);
+    TEST_CONDITION(future_message.real_time_message_id() == 10);
 
     thr.join();
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(message_queue_store_test)
-
-#include "tst_message_queue_store_test.moc"
+int main() {
+    e8::BeginTestSuite("message_queue_store");
+    e8::RunTest("EnqueueAndDequeueTest", EnqueueAndDequeueTest);
+    e8::RunTest("DequeueFutureMessageTest", DequeueFutureMessageTest);
+    e8::EndTestSuite();
+    return 0;
+}
