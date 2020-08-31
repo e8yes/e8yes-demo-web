@@ -15,29 +15,14 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <memory>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/persistent_key_generator.h"
 #include "postgres/query_runner/connection/basic_connection_reservoir.h"
 #include "postgres/query_runner/connection/connection_factory.h"
 #include "postgres/query_runner/sql_runner.h"
-
-class persistent_keygen_test : public QObject {
-    Q_OBJECT
-
-  public:
-    persistent_keygen_test();
-    ~persistent_keygen_test();
-
-  private slots:
-    void key_persistence_test();
-};
-
-persistent_keygen_test::persistent_keygen_test() {}
-
-persistent_keygen_test::~persistent_keygen_test() {}
 
 e8::ConnectionFactory CreateConnectionFactory() {
     e8::ConnectionFactory factory(e8::ConnectionFactory::PQ,
@@ -46,7 +31,7 @@ e8::ConnectionFactory CreateConnectionFactory() {
     return factory;
 }
 
-void persistent_keygen_test::key_persistence_test() {
+bool KeyPersistenceTest() {
     auto reservoir = std::make_unique<e8::BasicConnectionReservoir>(CreateConnectionFactory());
     e8::ClearAllTables(reservoir.get());
 
@@ -54,28 +39,33 @@ void persistent_keygen_test::key_persistence_test() {
 
     e8::KeyGeneratorInterface::Key e1 =
         key_gen.KeyOf(/*encrypter=*/"E1", e8::KeyGeneratorInterface::RANDOM_512_BITS);
-    QVERIFY(!e1.key.empty());
-    QVERIFY(!e1.public_key.has_value());
+    TEST_CONDITION(!e1.key.empty());
+    TEST_CONDITION(!e1.public_key.has_value());
 
     e8::KeyGeneratorInterface::Key e1_2 =
         key_gen.KeyOf(/*encrypter=*/"E1", e8::KeyGeneratorInterface::RANDOM_512_BITS);
-    QVERIFY(e1_2.key == e1.key);
+    TEST_CONDITION(e1_2.key == e1.key);
 
     e8::KeyGeneratorInterface::Key e2 =
         key_gen.KeyOf(/*encrypter=*/"E2", e8::KeyGeneratorInterface::RANDOM_512_BITS);
-    QVERIFY(!e2.key.empty());
-    QVERIFY(!e2.public_key.has_value());
-    QVERIFY(e2.key != e1.key);
+    TEST_CONDITION(!e2.key.empty());
+    TEST_CONDITION(!e2.public_key.has_value());
+    TEST_CONDITION(e2.key != e1.key);
 
     e8::KeyGeneratorInterface::Key e1_rsa =
         key_gen.KeyOf(/*encrypter=*/"E1", e8::KeyGeneratorInterface::RSA_4096_BITS);
-    QVERIFY(!e1_rsa.key.empty());
-    QVERIFY(e1_rsa.public_key.has_value());
-    QVERIFY(e1_rsa.key != e1.key);
+    TEST_CONDITION(!e1_rsa.key.empty());
+    TEST_CONDITION(e1_rsa.public_key.has_value());
+    TEST_CONDITION(e1_rsa.key != e1.key);
 
     e8::ClearAllTables(reservoir.get());
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(persistent_keygen_test)
-
-#include "tst_persistent_keygen_test.moc"
+int main() {
+    e8::BeginTestSuite("persistent_keygen");
+    e8::RunTest("KeyPersistenceTest", KeyPersistenceTest);
+    e8::EndTestSuite();
+    return 0;
+}

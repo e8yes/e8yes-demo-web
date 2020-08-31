@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     keygen.pro \
-    persistent_keygen_test/persistent_keygen_test.pro \
-    sign_message_test/sign_message_test.pro
+    _test_persistent_keygen/_test_persistent_keygen.pro \
+    _test_sign_message/_test_sign_message.pro
 
 CONFIG += ordered
