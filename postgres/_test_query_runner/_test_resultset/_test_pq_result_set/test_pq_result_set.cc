@@ -15,32 +15,17 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <cstdint>
 #include <ctime>
 #include <memory>
 #include <string>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "postgres/query_runner/connection/connection_interface.h"
 #include "postgres/query_runner/connection/pq_connection.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 #include "postgres/query_runner/resultset/pq_result_set.h"
 #include "postgres/query_runner/resultset/result_set_interface.h"
-
-class pq_result_set_test : public QObject {
-    Q_OBJECT
-
-  public:
-    pq_result_set_test();
-    ~pq_result_set_test();
-
-  private slots:
-    void insert_and_retrieve_test();
-};
-
-pq_result_set_test::pq_result_set_test() {}
-
-pq_result_set_test::~pq_result_set_test() {}
 
 class Record {
   public:
@@ -60,7 +45,7 @@ class Record {
     e8::SqlStrArr string_array_field = e8::SqlStrArr("string_array_field");
 };
 
-void pq_result_set_test::insert_and_retrieve_test() {
+bool InsertAndRetrieveTest() {
     e8::PqConnection conn(
         /*host_name=*/"localhost",
         /*db_name=*/"demoweb");
@@ -119,12 +104,12 @@ void pq_result_set_test::insert_and_retrieve_test() {
         ")";
     uint64_t num_rows_inserted =
         conn.RunUpdate(insert_record_stmt, e8::ConnectionInterface::QueryParams());
-    QVERIFY(num_rows_inserted == 1);
+    TEST_CONDITION(num_rows_inserted == 1);
 
     std::string query_stmt = "SELECT * FROM PqResultSetTestTable";
     std::unique_ptr<e8::ResultSetInterface> rs =
         conn.RunQuery(query_stmt, e8::ConnectionInterface::QueryParams());
-    QVERIFY(rs->HasNext());
+    TEST_CONDITION(rs->HasNext());
 
     Record record;
     rs->SetField(0, &record.int_field);
@@ -142,28 +127,33 @@ void pq_result_set_test::insert_and_retrieve_test() {
     rs->SetField(12, &record.timestamp_array_field);
     rs->SetField(13, &record.string_array_field);
 
-    QVERIFY(record.int_field.Value() == 10);
-    QVERIFY(record.long_field.Value() == 100);
-    QVERIFY(record.bool_field.Value() == true);
-    QVERIFY(record.float_field.Value() == 0.5f);
-    QVERIFY(record.double_field.Value() == 0.25);
-    QVERIFY(record.timestamp_field.Value() == 111);
-    QVERIFY(record.string_field.Value() == "string_value");
-    QVERIFY(record.int_array_field.Value() == std::vector<int32_t>({10, 11}));
-    QVERIFY(record.long_array_field.Value() == std::vector<int64_t>({100, 101}));
-    QVERIFY(record.bool_array_field.Value() == std::vector<bool>({true, false}));
-    QVERIFY(record.float_array_field.Value() == std::vector<float>({0.5f, 1.5f}));
-    QVERIFY(record.double_array_field.Value() == std::vector<double>({0.25, 1.25}));
-    QVERIFY(record.timestamp_array_field.Value() == std::vector<std::time_t>({111, 112}));
-    QVERIFY(record.string_array_field.Value() ==
-            std::vector<std::string>({"string_value0", "string_value1"}));
+    TEST_CONDITION(record.int_field.Value() == 10);
+    TEST_CONDITION(record.long_field.Value() == 100);
+    TEST_CONDITION(record.bool_field.Value() == true);
+    TEST_CONDITION(record.float_field.Value() == 0.5f);
+    TEST_CONDITION(record.double_field.Value() == 0.25);
+    TEST_CONDITION(record.timestamp_field.Value() == 111);
+    TEST_CONDITION(record.string_field.Value() == "string_value");
+    TEST_CONDITION(record.int_array_field.Value() == std::vector<int32_t>({10, 11}));
+    TEST_CONDITION(record.long_array_field.Value() == std::vector<int64_t>({100, 101}));
+    TEST_CONDITION(record.bool_array_field.Value() == std::vector<bool>({true, false}));
+    TEST_CONDITION(record.float_array_field.Value() == std::vector<float>({0.5f, 1.5f}));
+    TEST_CONDITION(record.double_array_field.Value() == std::vector<double>({0.25, 1.25}));
+    TEST_CONDITION(record.timestamp_array_field.Value() == std::vector<std::time_t>({111, 112}));
+    TEST_CONDITION(record.string_array_field.Value() ==
+                   std::vector<std::string>({"string_value0", "string_value1"}));
 
     rs->Next();
-    QVERIFY(!rs->HasNext());
+    TEST_CONDITION(!rs->HasNext());
 
     conn.RunUpdate(drop_table_stmt, e8::ConnectionInterface::QueryParams());
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(pq_result_set_test)
-
-#include "tst_pq_result_set_test.moc"
+int main() {
+    e8::BeginTestSuite("pq_result_set");
+    e8::RunTest("InsertAndRetrieveTest", InsertAndRetrieveTest);
+    e8::EndTestSuite();
+    return 0;
+}
