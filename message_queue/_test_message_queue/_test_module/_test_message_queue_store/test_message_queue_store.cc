@@ -21,6 +21,13 @@
 #include "message_queue/message_queue/module/message_queue_store.h"
 #include "proto_cc/real_time_message.pb.h"
 
+bool StorageInstanceNotNullTest() {
+    e8::MessageQueueStore *store_instance = e8::MessageQueueStoreInstance();
+    TEST_CONDITION(store_instance != nullptr);
+
+    return true;
+}
+
 bool EnqueueAndDequeueTest() {
     e8::MessageQueueStoreInstance()->Clear();
 
@@ -33,10 +40,14 @@ bool EnqueueAndDequeueTest() {
     e8::MessageQueueStoreInstance()->Enqueue(/*key=*/1, old_message);
     e8::MessageQueueStoreInstance()->Enqueue(/*key=*/1, new_message);
 
-    e8::RealTimeMessage fetched_old_message =
-        e8::MessageQueueStoreInstance()->BlockingDequeue(/*key=*/1);
-    e8::RealTimeMessage fetched_new_message =
-        e8::MessageQueueStoreInstance()->BlockingDequeue(/*key=*/1);
+    e8::RealTimeMessage fetched_old_message;
+    e8::MessageQueueStore::MessageQueue *queue =
+        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &fetched_old_message);
+    e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/true);
+
+    e8::RealTimeMessage fetched_new_message;
+    queue = e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &fetched_new_message);
+    e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/true);
 
     TEST_CONDITION(old_message.real_time_message_id() ==
                    fetched_old_message.real_time_message_id());
@@ -61,8 +72,10 @@ bool DequeueFutureMessageTest() {
 
     std::thread thr(EnqueueInTheFuture);
 
-    e8::RealTimeMessage future_message =
-        e8::MessageQueueStoreInstance()->BlockingDequeue(/*key=*/1);
+    e8::RealTimeMessage future_message;
+    e8::MessageQueueStore::MessageQueue *queue =
+        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &future_message);
+    e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/true);
     TEST_CONDITION(future_message.real_time_message_id() == 10);
 
     thr.join();
@@ -70,10 +83,35 @@ bool DequeueFutureMessageTest() {
     return true;
 }
 
+bool PeekOnlyTest() {
+    e8::MessageQueueStoreInstance()->Clear();
+
+    e8::RealTimeMessage old_message;
+    old_message.set_real_time_message_id(10);
+
+    e8::MessageQueueStoreInstance()->Enqueue(/*key=*/1, old_message);
+
+    e8::RealTimeMessage fetched_old_message;
+    e8::MessageQueueStore::MessageQueue *queue =
+        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &fetched_old_message);
+    e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/false);
+    TEST_CONDITION(old_message.real_time_message_id() ==
+                   fetched_old_message.real_time_message_id());
+
+    queue = e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &fetched_old_message);
+    e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/true);
+    TEST_CONDITION(old_message.real_time_message_id() ==
+                   fetched_old_message.real_time_message_id());
+
+    return true;
+}
+
 int main() {
     e8::BeginTestSuite("message_queue_store");
+    e8::RunTest("StorageInstanceNotNullTest", StorageInstanceNotNullTest);
     e8::RunTest("EnqueueAndDequeueTest", EnqueueAndDequeueTest);
     e8::RunTest("DequeueFutureMessageTest", DequeueFutureMessageTest);
+    e8::RunTest("PeekOnlyTest", PeekOnlyTest);
     e8::EndTestSuite();
     return 0;
 }

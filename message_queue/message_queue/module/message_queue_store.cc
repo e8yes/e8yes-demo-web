@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <chrono>
 #include <cstdint>
 #include <memory>
@@ -56,6 +57,7 @@ MessageQueueStore::MessageQueue *MessageQueueStore::FetchQueue(MessageKey key) {
         map_lock_.unlock();
     }
 
+    assert(queue != nullptr);
     return queue;
 }
 
@@ -69,17 +71,27 @@ void MessageQueueStore::Enqueue(MessageKey key, RealTimeMessage const &message) 
     sem_post(&message_queue->sem);
 }
 
-RealTimeMessage MessageQueueStore::BlockingDequeue(MessageKey key) {
+MessageQueueStore::MessageQueue *MessageQueueStore::BeginBlockingDequeue(MessageKey key,
+                                                                         RealTimeMessage *message) {
     MessageQueue *message_queue = FetchQueue(key);
 
     sem_wait(&message_queue->sem);
 
     message_queue->lock.lock();
-    RealTimeMessage result = message_queue->queue.front();
-    message_queue->queue.pop();
-    message_queue->lock.unlock();
+    *message = message_queue->queue.front();
 
-    return result;
+    return message_queue;
+}
+
+void MessageQueueStore::EndBlockingDequeue(MessageQueue *message_queue, bool dequeue) {
+    assert(message_queue != nullptr);
+
+    if (dequeue) {
+        message_queue->queue.pop();
+    } else {
+        sem_post(&message_queue->sem);
+    }
+    message_queue->lock.unlock();
 }
 
 void MessageQueueStore::Clear() {

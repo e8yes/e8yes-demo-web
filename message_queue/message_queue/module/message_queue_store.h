@@ -40,6 +40,15 @@ using MessageKey = int64_t;
  */
 class MessageQueueStore {
   public:
+    struct MessageQueue {
+        MessageQueue();
+        ~MessageQueue();
+
+        std::queue<RealTimeMessage> queue;
+        std::mutex lock;
+        sem_t sem;
+    };
+
     /**
      * @brief Enqueue Add a new message to the queue pointed by the parameter key. If there are
      * readers calling BlockingDequeue on an empty queue, this operation will unblock one of the
@@ -51,13 +60,25 @@ class MessageQueueStore {
     void Enqueue(MessageKey key, RealTimeMessage const &message);
 
     /**
-     * @brief BlockingDequeue Read and remove the oldest element from the queue pointed to by the
-     * key. If the queue is empty, this function will block until it becomes non-empty.
+     * @brief BlockingDequeue Read the oldest element from the queue pointed to by the key. If the
+     * queue is empty, this function will block until it becomes non-empty. If the element exists,
+     * this function will exclusively block concurrent access until EndBlockingDequeue() is called.
      *
-     * @param key A unique ID pointing to the queue to read and remove message from.
-     * @return The oldest message from the queue.
+     * @param key A unique ID pointing to the queue to read the message from.
+     * @param message returns the The oldest message from the queue.
+     * @return A pointer to the message queue pointed to by the message key.
      */
-    RealTimeMessage BlockingDequeue(MessageKey key);
+    MessageQueue *BeginBlockingDequeue(MessageKey key, RealTimeMessage *message);
+
+    /**
+     * @brief EndBlockingDequeue Unblock the queue's concurrent access and potentially remove the
+     * oldest element depending on the "dequeue" argument.
+     *
+     * @param message_queue Pointer to the queue to be unblocked the concurrent access.
+     * @param dequeue Whether or not to remove the oldest element before the concurrent access is
+     * recovered.
+     */
+    void EndBlockingDequeue(MessageQueue *message_queue, bool dequeue);
 
     /**
      * @brief Clear Delete all the message queues.
@@ -65,15 +86,6 @@ class MessageQueueStore {
     void Clear();
 
   private:
-    struct MessageQueue {
-        MessageQueue();
-        ~MessageQueue();
-
-        std::queue<RealTimeMessage> queue;
-        std::mutex lock;
-        sem_t sem;
-    };
-
     MessageQueue *FetchQueue(MessageKey key);
 
     std::unordered_map<MessageKey, std::shared_ptr<MessageQueue>> queues_;

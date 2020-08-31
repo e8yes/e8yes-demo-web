@@ -25,6 +25,20 @@
 #include "proto_cc/service_message_queue.pb.h"
 
 namespace e8 {
+namespace {
+
+bool WriteToStreamOrPutBack(RealTimeMessage const &message, MessageQueueStore::MessageQueue *queue,
+                            grpc::ServerWriter<DequeueMessageResponse> *writer) {
+    DequeueMessageResponse res;
+    *res.mutable_message() = message;
+
+    bool successful = writer->Write(res);
+    MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/successful);
+
+    return successful;
+}
+
+} // namespace
 
 grpc::Status MessageQueueServiceImpl::EnqueueMessage(grpc::ServerContext * /*context*/,
                                                      EnqueueMessageRequest const *request,
@@ -39,14 +53,12 @@ grpc::Status
 MessageQueueServiceImpl::DequeueMessage(grpc::ServerContext * /*context*/,
                                         DequeueMessageRequest const *request,
                                         grpc::ServerWriter<DequeueMessageResponse> *writer) {
-    while (true) {
-        RealTimeMessage message = MessageQueueStoreInstance()->BlockingDequeue(request->user_id());
+    RealTimeMessage message;
+    MessageQueueStore::MessageQueue *queue = nullptr;
+    do {
+        queue = MessageQueueStoreInstance()->BeginBlockingDequeue(request->user_id(), &message);
+    } while (WriteToStreamOrPutBack(message, queue, writer));
 
-        DequeueMessageResponse res;
-        *res.mutable_message() = message;
-
-        writer->Write(res);
-    }
     return grpc::Status::OK;
 }
 
