@@ -15,13 +15,13 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <cassert>
 #include <map>
 #include <optional>
 #include <utility>
 #include <vector>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "distributor/distributor/distribute.h"
 #include "distributor/store/entity.h"
 #include "distributor/store/node_state_store.h"
@@ -76,40 +76,30 @@ class MockNodeStateStore : public e8::NodeStateStoreInterface {
     e8::NodeFunction expected_node_function_;
 };
 
-class distributor_test : public QObject {
-    Q_OBJECT
-
-  public:
-    distributor_test();
-    ~distributor_test();
-
-  private slots:
-    void hash_distributor_test();
-};
-
-distributor_test::distributor_test() {}
-
-distributor_test::~distributor_test() {}
-
-void distributor_test::hash_distributor_test() {
+bool HashDistributorTest() {
     e8::HashDistributor distributor;
     MockNodeStateStore store(/*expected_node_function=*/e8::NDF_FILE_STORE);
 
     std::optional<e8::NodeState> node_a = distributor.Distribute("1", e8::NDF_FILE_STORE, &store);
-    QVERIFY(node_a.has_value());
-    QVERIFY(node_a->name() == "node2");
+    TEST_CONDITION(node_a.has_value());
+    TEST_CONDITION(node_a->name() == "node2");
 
     // Distribute with the same key again.
     node_a = distributor.Distribute("1", e8::NDF_FILE_STORE, &store);
-    QVERIFY(node_a.has_value());
-    QVERIFY(node_a->name() == "node2");
+    TEST_CONDITION(node_a.has_value());
+    TEST_CONDITION(node_a->name() == "node2");
 
     // Another key.
     std::optional<e8::NodeState> node_b = distributor.Distribute("2", e8::NDF_FILE_STORE, &store);
-    QVERIFY(node_b.has_value());
-    QVERIFY(node_b->name() == "node1");
+    TEST_CONDITION(node_b.has_value());
+    TEST_CONDITION(node_b->name() == "node1");
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(distributor_test)
-
-#include "tst_distributor_test.moc"
+int main() {
+    e8::BeginTestSuite("distributor");
+    e8::RunTest("HashDistributorTest", HashDistributorTest);
+    e8::EndTestSuite();
+    return 0;
+}

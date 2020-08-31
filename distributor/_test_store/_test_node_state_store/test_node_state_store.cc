@@ -15,30 +15,16 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <cstdio>
 #include <map>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "distributor/store/node_state_store.h"
 #include "proto_cc/delta.pb.h"
 #include "proto_cc/node.pb.h"
-
-class node_state_store_test : public QObject {
-    Q_OBJECT
-
-  public:
-    node_state_store_test();
-    ~node_state_store_test();
-
-  private slots:
-    void add_swap_delete_test();
-    void arbitrary_update_order_test();
-    void query_filter_test();
-    void revision_history_test();
-};
 
 inline unsigned char constexpr operator"" _uchar(unsigned long long arg) noexcept {
     return static_cast<unsigned char>(arg);
@@ -47,10 +33,6 @@ inline unsigned char constexpr operator"" _uchar(unsigned long long arg) noexcep
 inline char constexpr operator"" _char(unsigned long long arg) noexcept {
     return static_cast<char>(arg);
 }
-
-node_state_store_test::node_state_store_test() {}
-
-node_state_store_test::~node_state_store_test() {}
 
 std::map<e8::NodeName, e8::NodeState> PrepareNodeStates() {
     e8::NodeState node1;
@@ -76,12 +58,12 @@ std::map<e8::NodeName, e8::NodeState> PrepareNodeStates() {
                                                  std::make_pair(node1.name(), node1)};
 }
 
-void node_state_store_test::add_swap_delete_test() {
+bool AddSwapDeleteTest() {
     std::remove("test.sqlite");
 
     e8::NodeStateStore store(/*file_path=*/"test.sqlite");
     e8::RevisionEpoch epoch = store.CurrentRevisionEpoch();
-    QVERIFY(epoch == 0);
+    TEST_CONDITION(epoch == 0);
 
     std::map<e8::NodeName, e8::NodeState> nodes = PrepareNodeStates();
 
@@ -93,37 +75,37 @@ void node_state_store_test::add_swap_delete_test() {
     (*revision1.mutable_delta_operations())["node2"] = e8::DOP_ADD;
 
     bool updated = store.UpdateNodeStates(revision1);
-    QVERIFY(updated == true);
+    TEST_CONDITION(updated == true);
 
     epoch = store.CurrentRevisionEpoch();
-    QVERIFY(epoch == 1);
+    TEST_CONDITION(epoch == 1);
 
     std::map<e8::NodeName, e8::NodeState> retrieved =
         store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt);
-    QVERIFY(retrieved.size() == 2);
-    QVERIFY(retrieved.find("node1") != retrieved.end());
-    QVERIFY(retrieved["node1"].name() == "node1");
-    QVERIFY(retrieved["node1"].ip_address()[0] == 192_char);
-    QVERIFY(retrieved["node1"].ip_address()[1] == 168_char);
-    QVERIFY(retrieved["node1"].ip_address()[2] == 1_char);
-    QVERIFY(retrieved["node1"].ip_address()[3] == 1_char);
-    QVERIFY(retrieved["node1"].status() == e8::NDS_READY);
-    QVERIFY(retrieved["node1"].functions_size() == 1);
-    QVERIFY(retrieved["node1"].functions()[0] == e8::NDF_FILE_STORE);
+    TEST_CONDITION(retrieved.size() == 2);
+    TEST_CONDITION(retrieved.find("node1") != retrieved.end());
+    TEST_CONDITION(retrieved["node1"].name() == "node1");
+    TEST_CONDITION(retrieved["node1"].ip_address()[0] == 192_char);
+    TEST_CONDITION(retrieved["node1"].ip_address()[1] == 168_char);
+    TEST_CONDITION(retrieved["node1"].ip_address()[2] == 1_char);
+    TEST_CONDITION(retrieved["node1"].ip_address()[3] == 1_char);
+    TEST_CONDITION(retrieved["node1"].status() == e8::NDS_READY);
+    TEST_CONDITION(retrieved["node1"].functions_size() == 1);
+    TEST_CONDITION(retrieved["node1"].functions()[0] == e8::NDF_FILE_STORE);
 
-    QVERIFY(retrieved.find("node2") != retrieved.end());
-    QVERIFY(retrieved["node2"].name() == "node2");
-    QVERIFY(retrieved["node2"].ip_address()[0] == 192_char);
-    QVERIFY(retrieved["node2"].ip_address()[1] == 168_char);
-    QVERIFY(retrieved["node2"].ip_address()[2] == 1_char);
-    QVERIFY(retrieved["node2"].ip_address()[3] == 2_char);
-    QVERIFY(retrieved["node2"].status() == e8::NDS_READY);
-    QVERIFY(retrieved["node2"].functions_size() == 2);
-    QVERIFY(retrieved["node2"].functions()[0] == e8::NDF_TASK_EXECUTOR);
-    QVERIFY(retrieved["node2"].functions()[1] == e8::NDF_MESSAGE_QUEUE);
+    TEST_CONDITION(retrieved.find("node2") != retrieved.end());
+    TEST_CONDITION(retrieved["node2"].name() == "node2");
+    TEST_CONDITION(retrieved["node2"].ip_address()[0] == 192_char);
+    TEST_CONDITION(retrieved["node2"].ip_address()[1] == 168_char);
+    TEST_CONDITION(retrieved["node2"].ip_address()[2] == 1_char);
+    TEST_CONDITION(retrieved["node2"].ip_address()[3] == 2_char);
+    TEST_CONDITION(retrieved["node2"].status() == e8::NDS_READY);
+    TEST_CONDITION(retrieved["node2"].functions_size() == 2);
+    TEST_CONDITION(retrieved["node2"].functions()[0] == e8::NDF_TASK_EXECUTOR);
+    TEST_CONDITION(retrieved["node2"].functions()[1] == e8::NDF_MESSAGE_QUEUE);
 
     updated = store.UpdateNodeStates(revision1);
-    QVERIFY(updated == false);
+    TEST_CONDITION(updated == false);
 
     // Swap node1.
     nodes["node1"].set_status(e8::NDS_UNAVALIABLE);
@@ -134,15 +116,15 @@ void node_state_store_test::add_swap_delete_test() {
     (*revision2.mutable_delta_operations())["node1"] = e8::DOP_SWAP;
 
     updated = store.UpdateNodeStates(revision2);
-    QVERIFY(updated == true);
+    TEST_CONDITION(updated == true);
 
     epoch = store.CurrentRevisionEpoch();
-    QVERIFY(epoch == 2);
+    TEST_CONDITION(epoch == 2);
 
     retrieved = store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt);
-    QVERIFY(retrieved.size() == 2);
-    QVERIFY(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
-    QVERIFY(retrieved["node2"].status() == e8::NDS_READY);
+    TEST_CONDITION(retrieved.size() == 2);
+    TEST_CONDITION(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
+    TEST_CONDITION(retrieved["node2"].status() == e8::NDS_READY);
 
     // Remove node2.
     e8::NodeStateRevision revision3;
@@ -150,19 +132,21 @@ void node_state_store_test::add_swap_delete_test() {
     (*revision3.mutable_delta_operations())["node2"] = e8::DOP_DELETE;
 
     updated = store.UpdateNodeStates(revision3);
-    QVERIFY(updated == true);
+    TEST_CONDITION(updated == true);
 
     epoch = store.CurrentRevisionEpoch();
-    QVERIFY(epoch == 3);
+    TEST_CONDITION(epoch == 3);
 
     retrieved = store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt);
-    QVERIFY(retrieved.size() == 1);
-    QVERIFY(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
+    TEST_CONDITION(retrieved.size() == 1);
+    TEST_CONDITION(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
 
     std::remove("test.sqlite");
+
+    return true;
 }
 
-void node_state_store_test::arbitrary_update_order_test() {
+bool ArbitraryUpdateOrderTest() {
     std::map<e8::NodeName, e8::NodeState> nodes = PrepareNodeStates();
 
     // Add nodes.
@@ -190,25 +174,27 @@ void node_state_store_test::arbitrary_update_order_test() {
     e8::NodeStateStore store(/*file_path=*/"test.sqlite");
     store.UpdateNodeStates(revision3);
     e8::RevisionEpoch epoch = store.CurrentRevisionEpoch();
-    QVERIFY(epoch == 0);
+    TEST_CONDITION(epoch == 0);
 
     store.UpdateNodeStates(revision1);
     epoch = store.CurrentRevisionEpoch();
-    QVERIFY(epoch == 1);
+    TEST_CONDITION(epoch == 1);
 
     store.UpdateNodeStates(revision2);
     epoch = store.CurrentRevisionEpoch();
-    QVERIFY(epoch == 3);
+    TEST_CONDITION(epoch == 3);
 
     std::map<e8::NodeName, e8::NodeState> retrieved =
         store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt);
-    QVERIFY(retrieved.size() == 1);
-    QVERIFY(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
+    TEST_CONDITION(retrieved.size() == 1);
+    TEST_CONDITION(retrieved["node1"].status() == e8::NDS_UNAVALIABLE);
 
     std::remove("test.sqlite");
+
+    return true;
 }
 
-void node_state_store_test::query_filter_test() {
+bool QueryFilterTest() {
     std::map<e8::NodeName, e8::NodeState> nodes = PrepareNodeStates();
 
     // Add nodes.
@@ -225,17 +211,19 @@ void node_state_store_test::query_filter_test() {
 
     std::map<e8::NodeName, e8::NodeState> message_nodes =
         store.Nodes(/*node_function=*/e8::NDF_MESSAGE_QUEUE, /*node_status=*/std::nullopt);
-    QVERIFY(message_nodes.size() == 1);
-    QVERIFY(message_nodes["node2"].status() == e8::NDS_READY);
+    TEST_CONDITION(message_nodes.size() == 1);
+    TEST_CONDITION(message_nodes["node2"].status() == e8::NDS_READY);
 
     std::map<e8::NodeName, e8::NodeState> initializing_nodes =
         store.Nodes(/*node_function=*/std::nullopt, /*node_status=*/e8::NDS_INITIALIZING);
-    QVERIFY(initializing_nodes.empty());
+    TEST_CONDITION(initializing_nodes.empty());
 
     std::remove("test.sqlite");
+
+    return true;
 }
 
-void node_state_store_test::revision_history_test() {
+bool RevisionHistoryTest() {
     std::map<e8::NodeName, e8::NodeState> nodes = PrepareNodeStates();
 
     // Add nodes.
@@ -267,11 +255,19 @@ void node_state_store_test::revision_history_test() {
     store.UpdateNodeStates(revision2);
 
     std::vector<e8::NodeStateRevision> revisions1_2 = store.Revisions(/*begin=*/1, /*end=*/2);
-    QVERIFY(revisions1_2.size() == 2);
+    TEST_CONDITION(revisions1_2.size() == 2);
 
     std::remove("test.sqlite");
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(node_state_store_test)
-
-#include "tst_node_state_store_test.moc"
+int main() {
+    e8::BeginTestSuite("node_state_store");
+    e8::RunTest("AddSwapDeleteTest", AddSwapDeleteTest);
+    e8::RunTest("ArbitraryUpdateOrderTest", ArbitraryUpdateOrderTest);
+    e8::RunTest("QueryFilterTest", QueryFilterTest);
+    e8::RunTest("RevisionHistoryTest", RevisionHistoryTest);
+    e8::EndTestSuite();
+    return 0;
+}

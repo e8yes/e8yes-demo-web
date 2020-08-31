@@ -1,11 +1,11 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     store/node_state_store.pro \
-    store_test/node_state_store_test \
-    store_test/peer_store_test \
     distributor/distributor.pro \
-    distributor_test \
     mutation_propagator/mutation_propagator.pro \
-    mutation_propagator_test/sync_node_state_test
+    _test_store/_test_node_state_store/_test_node_state_store.pro \
+    _test_store/_test_peer_store/_test_peer_store.pro \
+    _test_distributor/_test_distributor.pro \
+    _test_mutation_propagator/_test_sync_node_state/_test_sync_node_state.pro
 
 CONFIG += ordered

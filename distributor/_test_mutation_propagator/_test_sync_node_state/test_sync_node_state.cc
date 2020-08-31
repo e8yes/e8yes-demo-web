@@ -15,7 +15,6 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <cassert>
 #include <map>
 #include <optional>
@@ -23,6 +22,7 @@
 #include <utility>
 #include <vector>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "distributor/mutation_propagator/propagator.h"
 #include "distributor/mutation_propagator/sync_node_state.h"
 #include "distributor/store/entity.h"
@@ -102,30 +102,20 @@ class MockPropagator : public e8::PropagatorInterface {
     }
 };
 
-class sync_node_state_test : public QObject {
-    Q_OBJECT
-
-  public:
-    sync_node_state_test();
-    ~sync_node_state_test();
-
-  private slots:
-    void propagate_node_state_sync_test();
-};
-
-sync_node_state_test::sync_node_state_test() {}
-
-sync_node_state_test::~sync_node_state_test() {}
-
-void sync_node_state_test::propagate_node_state_sync_test() {
+bool PropagateNodeStateSyncTest() {
     MockPeerStore peers;
     MockNodeStateStore node_states;
     MockPropagator propagator;
 
     bool rc = e8::SyncNodeStates(&peers, &node_states, &propagator);
-    QVERIFY(rc == true);
+    TEST_CONDITION(rc == true);
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(sync_node_state_test)
-
-#include "tst_sync_node_state_test.moc"
+int main() {
+    e8::BeginTestSuite("sync_node_state");
+    e8::RunTest("PropagateNodeStateSyncTest", PropagateNodeStateSyncTest);
+    e8::EndTestSuite();
+    return 0;
+}

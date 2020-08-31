@@ -15,28 +15,13 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtTest>
 #include <cstdio>
 
+#include "common/unit_test_util/unit_test_util.h"
 #include "distributor/store/peer_store.h"
 #include "proto_cc/node.pb.h"
 
-class peer_store_test : public QObject {
-    Q_OBJECT
-
-  public:
-    peer_store_test();
-    ~peer_store_test();
-
-  private slots:
-    void add_delete_query_peer_test();
-};
-
-peer_store_test::peer_store_test() {}
-
-peer_store_test::~peer_store_test() {}
-
-void peer_store_test::add_delete_query_peer_test() {
+bool AddDeleteQueryPeerTest() {
     std::remove("test.sqlite");
 
     e8::NodeState node1;
@@ -47,42 +32,47 @@ void peer_store_test::add_delete_query_peer_test() {
 
     e8::PeerStore store("test.sqlite");
     std::map<e8::NodeName, e8::NodeState> peers = store.Peers();
-    QVERIFY(peers.empty());
+    TEST_CONDITION(peers.empty());
 
     // Add node1.
     bool successful = store.AddPeer(node1);
-    QVERIFY(successful == true);
+    TEST_CONDITION(successful == true);
 
     successful = store.AddPeer(node1);
-    QVERIFY(successful == false);
+    TEST_CONDITION(successful == false);
 
     peers = store.Peers();
-    QVERIFY(peers.size() == 1);
-    QVERIFY(peers.find("node1") != peers.end());
+    TEST_CONDITION(peers.size() == 1);
+    TEST_CONDITION(peers.find("node1") != peers.end());
 
     // Add node2.
     successful = store.AddPeer(node2);
-    QVERIFY(successful == true);
+    TEST_CONDITION(successful == true);
 
     peers = store.Peers();
-    QVERIFY(peers.size() == 2);
-    QVERIFY(peers.find("node1") != peers.end());
-    QVERIFY(peers.find("node2") != peers.end());
+    TEST_CONDITION(peers.size() == 2);
+    TEST_CONDITION(peers.find("node1") != peers.end());
+    TEST_CONDITION(peers.find("node2") != peers.end());
 
     // Delete node1.
     successful = store.DeletePeer("node1");
-    QVERIFY(successful == true);
+    TEST_CONDITION(successful == true);
 
     successful = store.DeletePeer("node1");
-    QVERIFY(successful == false);
+    TEST_CONDITION(successful == false);
 
     peers = store.Peers();
-    QVERIFY(peers.size() == 1);
-    QVERIFY(peers.find("node2") != peers.end());
+    TEST_CONDITION(peers.size() == 1);
+    TEST_CONDITION(peers.find("node2") != peers.end());
 
     std::remove("test.sqlite");
+
+    return true;
 }
 
-QTEST_APPLESS_MAIN(peer_store_test)
-
-#include "tst_peer_store_test.moc"
+int main() {
+    e8::BeginTestSuite("peer_store");
+    e8::RunTest("AddDeleteQueryPeerTest", AddDeleteQueryPeerTest);
+    e8::EndTestSuite();
+    return 0;
+}
