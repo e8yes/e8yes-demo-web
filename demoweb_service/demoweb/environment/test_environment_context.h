@@ -20,10 +20,12 @@
 
 #include <cstdint>
 #include <memory>
+#include <vector>
 
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "keygen/key_generator_interface.h"
+#include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
@@ -38,9 +40,14 @@ class DemoWebTestEnvironmentContext : public DemoWebEnvironmentContextInterface 
     ~DemoWebTestEnvironmentContext() override = default;
 
     Environment EnvironmentType() const override;
+
     HostId CurrentHostId() const override;
-    e8::ConnectionReservoirInterface *DemowebDatabase() override;
-    e8::KeyGeneratorInterface *KeyGen() override;
+
+    ConnectionReservoirInterface *DemowebDatabase() override;
+
+    KeyGeneratorInterface *KeyGen() override;
+
+    std::vector<MessagePublisherInterface *> ClientPushMessagePublishers() override;
 
   private:
     std::unique_ptr<ConnectionReservoirInterface> demoweb_database_;

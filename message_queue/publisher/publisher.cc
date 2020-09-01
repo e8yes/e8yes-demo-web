@@ -33,7 +33,7 @@
 
 namespace e8 {
 
-E8MessagePublisher::E8MessagePublisher(std::shared_ptr<NodeStateStore> const &node_states,
+E8MessagePublisher::E8MessagePublisher(std::shared_ptr<NodeStateStoreInterface> const &node_states,
                                        MessageQueueServicePort const message_queue_service_port)
     : distributor_(CreateMessageQueueDistributor()), node_states_(node_states),
       message_queue_service_port_(message_queue_service_port) {}

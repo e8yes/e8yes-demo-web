@@ -47,7 +47,7 @@ class MessagePublisherInterface {
  */
 class E8MessagePublisher : public MessagePublisherInterface {
   public:
-    E8MessagePublisher(std::shared_ptr<NodeStateStore> const &node_states,
+    E8MessagePublisher(std::shared_ptr<NodeStateStoreInterface> const &node_states,
                        MessageQueueServicePort const message_queue_service_port);
     ~E8MessagePublisher() override = default;
 
@@ -55,7 +55,7 @@ class E8MessagePublisher : public MessagePublisherInterface {
 
   private:
     std::unique_ptr<DistributorInterface> distributor_;
-    std::shared_ptr<NodeStateStore> node_states_;
+    std::shared_ptr<NodeStateStoreInterface> node_states_;
     MessageQueueServicePort const message_queue_service_port_;
 };
 

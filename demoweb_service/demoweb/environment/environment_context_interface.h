@@ -18,8 +18,11 @@
 #ifndef DEMOWEB_ENVIRONMENT_CONTEXT_INTERFACE_H
 #define DEMOWEB_ENVIRONMENT_CONTEXT_INTERFACE_H
 
+#include <vector>
+
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "keygen/key_generator_interface.h"
+#include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
@@ -51,12 +54,17 @@ class DemoWebEnvironmentContextInterface {
     /**
      * @brief Connections to the DemoWeb database server.
      */
-    virtual e8::ConnectionReservoirInterface *DemowebDatabase() = 0;
+    virtual ConnectionReservoirInterface *DemowebDatabase() = 0;
 
     /**
      * @brief KeyGen Cryptographic key generator.
      */
-    virtual e8::KeyGeneratorInterface *KeyGen() = 0;
+    virtual KeyGeneratorInterface *KeyGen() = 0;
+
+    /**
+     * @brief MessagePublisher A collection of client message push facilities.
+     */
+    virtual std::vector<MessagePublisherInterface *> ClientPushMessagePublishers() = 0;
 };
 
 /**

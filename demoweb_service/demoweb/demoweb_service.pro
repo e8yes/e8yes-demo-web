@@ -101,6 +101,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../identity/ -lidentity
 INCLUDEPATH += $$PWD/../../identity
 DEPENDPATH += $$PWD/../../identity
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../message_queue/publisher/ -lpublisher
+
+INCLUDEPATH += $$PWD/../../message_queue/publisher
+DEPENDPATH += $$PWD/../../message_queue/publisher
+
 LIBS += -lcrypt
 LIBS += -lcrypto++
 LIBS += -lpqxx

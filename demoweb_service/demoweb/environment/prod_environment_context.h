@@ -21,10 +21,13 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "keygen/key_generator_interface.h"
+#include "message_queue/common/entity.h"
+#include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
@@ -35,17 +38,25 @@ namespace e8 {
  */
 class DemoWebProductionEnvironmentContext : public DemoWebEnvironmentContextInterface {
   public:
-    DemoWebProductionEnvironmentContext(std::string const &demoweb_db_hostname);
+    DemoWebProductionEnvironmentContext(std::string const &demoweb_db_hostname,
+                                        std::string const &node_state_db_path,
+                                        MessageQueueServicePort const message_queue_port);
     ~DemoWebProductionEnvironmentContext() override = default;
 
     Environment EnvironmentType() const override;
+
     HostId CurrentHostId() const override;
-    e8::ConnectionReservoirInterface *DemowebDatabase() override;
-    e8::KeyGeneratorInterface *KeyGen() override;
+
+    ConnectionReservoirInterface *DemowebDatabase() override;
+
+    KeyGeneratorInterface *KeyGen() override;
+
+    std::vector<MessagePublisherInterface *> ClientPushMessagePublishers() override;
 
   private:
     std::unique_ptr<ConnectionReservoirInterface> demoweb_database_;
     std::unique_ptr<KeyGeneratorInterface> key_gen_;
+    std::unique_ptr<E8MessagePublisher> e8_message_publisher_;
     unsigned host_id_;
     int32_t padding_;
 };

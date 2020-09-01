@@ -52,3 +52,23 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../../identity/ -lidentity
 
 INCLUDEPATH += $$PWD/../../../../identity
 DEPENDPATH += $$PWD/../../../../identity
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../distributor/store/ -lnode_state_store
+
+INCLUDEPATH += $$PWD/../../../../distributor/store
+DEPENDPATH += $$PWD/../../../../distributor/store
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../distributor/distributor/ -ldistributor
+
+INCLUDEPATH += $$PWD/../../../../distributor/distributor
+DEPENDPATH += $$PWD/../../../../distributor/distributor
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../message_queue/publisher/ -lpublisher
+
+INCLUDEPATH += $$PWD/../../../../message_queue/publisher
+DEPENDPATH += $$PWD/../../../../message_queue/publisher
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../message_queue/common/ -lmessage_queue_common
+
+INCLUDEPATH += $$PWD/../../../../message_queue/common
+DEPENDPATH += $$PWD/../../../../message_queue/common

@@ -16,10 +16,12 @@
  */
 
 #include <memory>
+#include <vector>
 
 #include "constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/environment/prod_environment_context.h"
+#include "distributor/store/default_node_state_store.h"
 #include "keygen/persistent_key_generator.h"
 #include "postgres/query_runner/connection/basic_connection_reservoir.h"
 #include "postgres/query_runner/connection/connection_factory.h"
@@ -27,17 +29,25 @@
 
 namespace e8 {
 
-DemoWebProductionEnvironmentContext::DemoWebProductionEnvironmentContext(std::string const &db_hostname) {
+DemoWebProductionEnvironmentContext::DemoWebProductionEnvironmentContext(
+    std::string const &db_hostname, std::string const &node_state_db_path,
+    MessageQueueServicePort const message_queue_port) {
+    InitDefaultNodeStateStoreProvider(node_state_db_path);
+
     ConnectionFactory fact(ConnectionFactory::PQ, db_hostname, kDemowebDatabaseName);
     demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
 
     key_gen_ = std::make_unique<PersistentKeyGenerator>(db_hostname);
 
-    host_id_ = CurrentHostId();
+    host_id_ = ::e8::CurrentHostId();
+
+    e8_message_publisher_ =
+        std::make_unique<E8MessagePublisher>(DefaultNodeStateStore(), message_queue_port);
 }
 
-DemoWebEnvironmentContextInterface::Environment DemoWebProductionEnvironmentContext::EnvironmentType() const {
+DemoWebEnvironmentContextInterface::Environment
+DemoWebProductionEnvironmentContext::EnvironmentType() const {
     return DemoWebEnvironmentContextInterface::TEST;
 }
 
@@ -48,5 +58,10 @@ e8::ConnectionReservoirInterface *DemoWebProductionEnvironmentContext::DemowebDa
 }
 
 e8::KeyGeneratorInterface *DemoWebProductionEnvironmentContext::KeyGen() { return key_gen_.get(); }
+
+std::vector<MessagePublisherInterface *>
+DemoWebProductionEnvironmentContext::ClientPushMessagePublishers() {
+    return std::vector<MessagePublisherInterface *>{e8_message_publisher_.get()};
+}
 
 } // namespace e8

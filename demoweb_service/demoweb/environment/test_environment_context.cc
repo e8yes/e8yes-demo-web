@@ -16,6 +16,7 @@
  */
 
 #include <memory>
+#include <vector>
 
 #include "constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
@@ -38,16 +39,22 @@ DemoWebTestEnvironmentContext::DemoWebTestEnvironmentContext() {
     host_id_ = 0;
 }
 
-DemoWebEnvironmentContextInterface::Environment DemoWebTestEnvironmentContext::EnvironmentType() const {
+DemoWebEnvironmentContextInterface::Environment
+DemoWebTestEnvironmentContext::EnvironmentType() const {
     return DemoWebEnvironmentContextInterface::TEST;
 }
 
 HostId DemoWebTestEnvironmentContext::CurrentHostId() const { return host_id_; }
 
-e8::ConnectionReservoirInterface *DemoWebTestEnvironmentContext::DemowebDatabase() {
+ConnectionReservoirInterface *DemoWebTestEnvironmentContext::DemowebDatabase() {
     return demoweb_database_.get();
 }
 
-e8::KeyGeneratorInterface *DemoWebTestEnvironmentContext::KeyGen() { return key_gen_.get(); }
+KeyGeneratorInterface *DemoWebTestEnvironmentContext::KeyGen() { return key_gen_.get(); }
+
+std::vector<MessagePublisherInterface *>
+DemoWebTestEnvironmentContext::ClientPushMessagePublishers() {
+    return std::vector<MessagePublisherInterface *>();
+}
 
 } // namespace e8

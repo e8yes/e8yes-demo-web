@@ -57,7 +57,16 @@ std::unique_ptr<e8::DemoWebProductionEnvironmentContext> BuildDemoWebEnvironment
         e8::ReadFlag(kDemowebDbHostNameFlag, std::string(), e8::FromString<std::string>);
     assert(!demoweb_db_host_name.empty());
 
-    auto context = std::make_unique<e8::DemoWebProductionEnvironmentContext>(demoweb_db_host_name);
+    std::string node_state_db_path =
+        e8::ReadFlag(kNodeStateDbPathFlag, std::string(), e8::FromString<std::string>);
+    assert(!node_state_db_path.empty());
+
+    e8::MessageQueueServicePort message_queue_service_port = e8::ReadFlag(
+        kMessageQueueServicePortFlag, e8::MessageQueueServicePort(), e8::FromString<uint32_t>);
+    assert(message_queue_service_port != 0);
+
+    auto context = std::make_unique<e8::DemoWebProductionEnvironmentContext>(
+        demoweb_db_host_name, node_state_db_path, message_queue_service_port);
 
     return context;
 }

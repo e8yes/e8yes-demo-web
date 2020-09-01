@@ -71,6 +71,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../message_queue/subscriber/ -lsubscriber_ser
 INCLUDEPATH += $$PWD/../../message_queue/subscriber
 DEPENDPATH += $$PWD/../../message_queue/subscriber
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../message_queue/publisher/ -lpublisher
+
+INCLUDEPATH += $$PWD/../../message_queue/publisher
+DEPENDPATH += $$PWD/../../message_queue/publisher
+
 LIBS += -lpthread
 LIBS += -ldl
 LIBS += -lgrpc++ -lgrpc++_reflection
