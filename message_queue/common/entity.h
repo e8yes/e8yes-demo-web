@@ -23,6 +23,7 @@
 namespace e8 {
 
 using MessageKey = int64_t;
+using MessageQueueServicePort = uint16_t;
 
 } // namespace e8
 

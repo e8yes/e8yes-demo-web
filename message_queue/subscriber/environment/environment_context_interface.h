@@ -23,10 +23,9 @@
 #include "distributor/distributor/distribute.h"
 #include "distributor/store/node_state_store.h"
 #include "keygen/key_generator_interface.h"
+#include "message_queue/common/entity.h"
 
 namespace e8 {
-
-using MessageQueueServicePort = uint16_t;
 
 /**
  * @brief The EnvironmentContextInterface class Returns global objects the runs in a deployment

@@ -36,23 +36,27 @@ class MessagePublisherInterface {
     MessagePublisherInterface() = default;
     virtual ~MessagePublisherInterface() = default;
 
-    virtual void Publish(MessageKey key, RealTimeMessage const &message) = 0;
+    virtual bool Publish(MessageKey key, RealTimeMessage const &message) = 0;
 };
 
 /**
  * @brief The E8MessagePublisher class Pushes keyed messages to the internal distributed message
  * queue.
+ *
+ * TODO: Test this implementation.
  */
 class E8MessagePublisher : public MessagePublisherInterface {
   public:
-    E8MessagePublisher(std::shared_ptr<NodeStateStore> node_states);
+    E8MessagePublisher(std::shared_ptr<NodeStateStore> const &node_states,
+                       MessageQueueServicePort const message_queue_service_port);
     ~E8MessagePublisher() override = default;
 
-    void Publish(MessageKey key, RealTimeMessage const &message) override;
+    bool Publish(MessageKey key, RealTimeMessage const &message) override;
 
   private:
     std::unique_ptr<DistributorInterface> distributor_;
     std::shared_ptr<NodeStateStore> node_states_;
+    MessageQueueServicePort const message_queue_service_port_;
 };
 
 } // namespace e8
