@@ -22,6 +22,7 @@
 #include "distributor/store/node_state_store.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/persistent_key_generator.h"
+#include "message_queue/common/message_queue_distributor.h"
 #include "message_queue/subscriber/environment/environment_context_interface.h"
 #include "message_queue/subscriber/environment/prod_environment_context.h"
 
@@ -32,7 +33,7 @@ SubscriberProductionEnvironmentContext::SubscriberProductionEnvironmentContext(
     MessageQueueServicePort message_queue_port)
     : node_states_(std::make_unique<NodeStateStore>(node_state_db_path)),
       key_gen_(std::make_unique<PersistentKeyGenerator>(key_gen_db_host)),
-      distributor_(std::make_unique<HashDistributor>()), message_queue_port_(message_queue_port) {}
+      distributor_(CreateMessageQueueDistributor()), message_queue_port_(message_queue_port) {}
 
 SubscriberProductionEnvironmentContext::Environment
 SubscriberProductionEnvironmentContext::EnvironmentType() const {

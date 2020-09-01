@@ -1,7 +1,7 @@
 CONFIG -= qt
 
 TEMPLATE = lib
-DEFINES += PUBLISHER_LIBRARY
+DEFINES += MESSAGE_QUEUE_COMMON_LIBRARY
 
 CONFIG += c++17
 
@@ -10,14 +10,15 @@ QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -flto
 QMAKE_LDFLAGS_RELEASE += -O3 -flto
 
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 INCLUDEPATH += ../../
 
 SOURCES += \
-    publisher.cc
+    message_queue_distributor.cc
 HEADERS += \
-    publisher.h
+    entity.h \
+    message_queue_distributor.h
 
 # Default rules for deployment.
 unix {
@@ -25,15 +26,10 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
-unix:!macx: LIBS += -L$$OUT_PWD/../../proto_cc/ -lproto_cc
+unix:!macx: LIBS += -L$$OUT_PWD/../../distributor/distributor/ -ldistributor
 
-INCLUDEPATH += $$PWD/../../proto_cc
-DEPENDPATH += $$PWD/../../proto_cc
-
-unix:!macx: LIBS += -L$$OUT_PWD/../common/ -lmessage_queue_common
-
-INCLUDEPATH += $$PWD/../common
-DEPENDPATH += $$PWD/../common
+INCLUDEPATH += $$PWD/../../distributor/distributor
+DEPENDPATH += $$PWD/../../distributor/distributor
 
 LIBS += -pthread
 LIBS += -ldl

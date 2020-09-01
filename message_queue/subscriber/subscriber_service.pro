@@ -46,6 +46,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../distributor/distributor/ -ldistributor
 INCLUDEPATH += $$PWD/../../distributor/distributor
 DEPENDPATH += $$PWD/../../distributor/distributor
 
+unix:!macx: LIBS += -L$$OUT_PWD/../common/ -lmessage_queue_common
+
+INCLUDEPATH += $$PWD/../common
+DEPENDPATH += $$PWD/../common
+
 LIBS += -pthread
 LIBS += -ldl
 LIBS += -lprotobuf

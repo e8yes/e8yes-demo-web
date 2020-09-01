@@ -32,6 +32,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../proto_cc/ -lproto_cc
 INCLUDEPATH += $$PWD/../../proto_cc
 DEPENDPATH += $$PWD/../../proto_cc
 
+unix:!macx: LIBS += -L$$OUT_PWD/../common/ -lmessage_queue_common
+
+INCLUDEPATH += $$PWD/../common
+DEPENDPATH += $$PWD/../common
+
 LIBS += -pthread
 LIBS += -ldl
 LIBS += -lprotobuf

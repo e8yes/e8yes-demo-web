@@ -15,17 +15,15 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NODE_STATE_STORE_ENTITY_H
-#define NODE_STATE_STORE_ENTITY_H
+#include <memory>
 
-#include <cstdint>
-#include <string>
+#include "distributor/distributor/distribute.h"
+#include "message_queue/common/message_queue_distributor.h"
 
 namespace e8 {
 
-using NodeName = std::string;
-using RevisionEpoch = int64_t;
+std::unique_ptr<DistributorInterface> CreateMessageQueueDistributor() {
+    return std::make_unique<HashDistributor>();
+}
 
 } // namespace e8
-
-#endif // NODE_STATE_STORE_ENTITY_H

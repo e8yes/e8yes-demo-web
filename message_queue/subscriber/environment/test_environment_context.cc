@@ -21,6 +21,7 @@
 #include "distributor/store/node_state_store.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/persistent_key_generator.h"
+#include "message_queue/common/message_queue_distributor.h"
 #include "message_queue/subscriber/environment/environment_context_interface.h"
 #include "message_queue/subscriber/environment/test_environment_context.h"
 
@@ -29,7 +30,7 @@ namespace e8 {
 SubscriberTestEnvironmentContext::SubscriberTestEnvironmentContext()
     : node_states_(std::make_unique<NodeStateStore>("node_states_test.sqlite")),
       key_gen_(std::make_unique<PersistentKeyGenerator>("localhost")),
-      distributor_(std::make_unique<HashDistributor>()) {}
+      distributor_(CreateMessageQueueDistributor()) {}
 
 SubscriberTestEnvironmentContext::Environment
 SubscriberTestEnvironmentContext::EnvironmentType() const {

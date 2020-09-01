@@ -15,17 +15,21 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NODE_STATE_STORE_ENTITY_H
-#define NODE_STATE_STORE_ENTITY_H
+#ifndef MESSAGE_QUEUE_DISTRIBUTOR_H
+#define MESSAGE_QUEUE_DISTRIBUTOR_H
 
-#include <cstdint>
-#include <string>
+#include <memory>
+
+#include "distributor/distributor/distribute.h"
 
 namespace e8 {
 
-using NodeName = std::string;
-using RevisionEpoch = int64_t;
+/**
+ * @brief CreateMessageQueueDistributor Create a distributor which the message queue module should
+ * use.
+ */
+std::unique_ptr<DistributorInterface> CreateMessageQueueDistributor();
 
 } // namespace e8
 
-#endif // NODE_STATE_STORE_ENTITY_H
+#endif // MESSAGE_QUEUE_DISTRIBUTOR_H

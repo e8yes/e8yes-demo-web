@@ -15,17 +15,6 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NODE_STATE_STORE_ENTITY_H
-#define NODE_STATE_STORE_ENTITY_H
+#include "message_queue/publisher/publisher.h"
 
-#include <cstdint>
-#include <string>
-
-namespace e8 {
-
-using NodeName = std::string;
-using RevisionEpoch = int64_t;
-
-} // namespace e8
-
-#endif // NODE_STATE_STORE_ENTITY_H
+namespace e8 {} // namespace e8

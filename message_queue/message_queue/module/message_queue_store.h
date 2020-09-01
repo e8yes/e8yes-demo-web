@@ -28,11 +28,10 @@
 #include <unordered_map>
 #include <vector>
 
+#include "message_queue/common/entity.h"
 #include "proto_cc/real_time_message.pb.h"
 
 namespace e8 {
-
-using MessageKey = int64_t;
 
 /**
  * @brief The MessageQueueStore class A thread-safe FIFO message queue store. It stores a set of
