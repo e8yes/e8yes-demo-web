@@ -22,16 +22,17 @@ const CreateMessageChannelResponse$json = const {
   ],
 };
 
-const AddMemberToMessageChannelRequest$json = const {
-  '1': 'AddMemberToMessageChannelRequest',
+const AddUserToMessageChannelRequest$json = const {
+  '1': 'AddUserToMessageChannelRequest',
   '2': const [
     const {'1': 'channel_id', '3': 1, '4': 1, '5': 3, '10': 'channelId'},
     const {'1': 'user_id', '3': 2, '4': 1, '5': 3, '10': 'userId'},
+    const {'1': 'member_type', '3': 3, '4': 1, '5': 14, '6': '.e8.MessageChannelMemberType', '10': 'memberType'},
   ],
 };
 
-const AddMemberToMessageChannelResponse$json = const {
-  '1': 'AddMemberToMessageChannelResponse',
+const AddUserToMessageChannelResponse$json = const {
+  '1': 'AddUserToMessageChannelResponse',
 };
 
 const GetMessageChannelKeyRequest$json = const {

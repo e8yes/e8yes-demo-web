@@ -36,12 +36,13 @@ message CreateMessageChannelResponse {
 }
 
 
-message AddMemberToMessageChannelRequest {
+message AddUserToMessageChannelRequest {
     int64 channel_id = 1;
     int64 user_id = 2;
+    MessageChannelMemberType member_type = 3;
 }
 
-message AddMemberToMessageChannelResponse {}
+message AddUserToMessageChannelResponse {}
 
 
 message GetMessageChannelKeyRequest {
@@ -93,10 +94,10 @@ service MessageChannelService {
     rpc CreateMessageChannel (CreateMessageChannelRequest) returns 
         (CreateMessageChannelResponse);
 
-    // Add a member to the specified channel where the logged-in user is the
-    // administrator.
-    rpc AddMemberToMessageChannel (AddMemberToMessageChannelRequest) returns
-        (AddMemberToMessageChannelResponse);
+    // Add a user to the specified channel where the logged-in user is the
+    // administrator. The user may or may not be a member of the channel.
+    rpc AddUserToMessageChannel (AddUserToMessageChannelRequest) returns
+        (AddUserToMessageChannelResponse);
 
     // Get an encryption key of the specified channel where the logged-in
     // user is a member.

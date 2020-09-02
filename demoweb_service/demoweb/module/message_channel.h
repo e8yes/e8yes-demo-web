@@ -86,6 +86,21 @@ std::vector<MessageChannelMember>
 GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> const &pagination,
                          ConnectionReservoirInterface *conns);
 
+/**
+ * @brief AddUserToMessageChannel Add a user to the specified message channel. The user may or may
+ * not exist in the message channel. It can be used as a mean to modify the member type privilege.
+ * The viewer, if specified, must be a member of the channel for this call to be successful. If the
+ * requested member_type is an admin, then the viewer must be an admin also.
+ *
+ * @param channel_id ID of the target message channel to add the user to.
+ * @param user_id ID of the user to be added.
+ * @param member_type The requested member type.
+ * @return Whether the viewer has sufficient privilege to perform this operation.
+ */
+bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessagechannelId channel_id,
+                             UserId const user_id, MessageChannelMemberType const member_type,
+                             ConnectionReservoirInterface *conns);
+
 } // namespace e8
 
 #endif // MESSAGE_CHANNEL_H

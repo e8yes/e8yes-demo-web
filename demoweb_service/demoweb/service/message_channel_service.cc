@@ -119,4 +119,25 @@ MessageChannelServiceImpl::GetMessageChannelMembers(grpc::ServerContext *context
     return grpc::Status::OK;
 }
 
+grpc::Status
+MessageChannelServiceImpl::AddUserToMessageChannel(grpc::ServerContext *context,
+                                                   AddUserToMessageChannelRequest const *request,
+                                                   AddUserToMessageChannelResponse * /*response*/) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!identity.has_value()) {
+        return status;
+    }
+
+    if (!e8::AddUserToMessageChannel(identity->user_id(), request->channel_id(), request->user_id(),
+                                     request->member_type(),
+                                     DemoWebEnvironment()->DemowebDatabase())) {
+        return grpc::Status(
+            grpc::StatusCode::PERMISSION_DENIED,
+            "Can't add the person as a channel member with the requested privilege.");
+    }
+
+    return grpc::Status::OK;
+}
+
 } // namespace e8

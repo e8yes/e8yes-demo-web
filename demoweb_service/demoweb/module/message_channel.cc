@@ -37,6 +37,35 @@
 #include "proto_cc/pagination.pb.h"
 
 namespace e8 {
+namespace {
+
+bool CanAdd(UserId const &viewer_id, MessagechannelId channel_id,
+            MessageChannelMemberType const requesting_member_type,
+            ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
+    SqlQueryBuilder::Placeholder<SqlLong> viewer_id_ph;
+    query.QueryPiece(TableNames::MessageChannelHasUser())
+        .QueryPiece(" viewer WHERE viewer.channel_id=")
+        .Holder(&channel_id_ph)
+        .QueryPiece(" AND viewer.user_id=")
+        .Holder(&viewer_id_ph);
+
+    if (requesting_member_type == MCMT_ADMIN) {
+        // Only admin can add another person as admin.
+        SqlQueryBuilder::Placeholder<SqlInt> admin_member_type_ph;
+        query.QueryPiece(" AND viewer.ownership=").Holder(&admin_member_type_ph);
+        query.SetValueToPlaceholder(admin_member_type_ph,
+                                    std::make_shared<SqlInt>(MessageChannelMemberType::MCMT_ADMIN));
+    }
+
+    query.SetValueToPlaceholder(channel_id_ph, std::make_shared<SqlLong>(channel_id));
+    query.SetValueToPlaceholder(viewer_id_ph, std::make_shared<SqlLong>(viewer_id));
+
+    return Exists(query, conns);
+}
+
+} // namespace
 
 MessageChannelEntity CreateMessageChannel(UserId creator_id,
                                           std::optional<std::string> const &channel_name,
@@ -192,6 +221,30 @@ GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> 
     }
 
     return results;
+}
+
+bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessagechannelId channel_id,
+                             UserId const user_id, MessageChannelMemberType const member_type,
+                             ConnectionReservoirInterface *conns) {
+    if (viewer_id.has_value() && !CanAdd(*viewer_id, channel_id, member_type, conns)) {
+        return false;
+    }
+
+    MessageChannelHasUserEntity channel_member;
+    *channel_member.channel_id.ValuePtr() = channel_id;
+    *channel_member.user_id.ValuePtr() = user_id;
+    *channel_member.ownership.ValuePtr() = member_type;
+
+    std::time_t timestamp;
+    std::time(&timestamp);
+    *channel_member.created_at.ValuePtr() = timestamp;
+    *channel_member.last_interaction_at.ValuePtr() = timestamp;
+
+    int64_t num_rows =
+        Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/true, conns);
+    assert(num_rows);
+
+    return true;
 }
 
 } // namespace e8

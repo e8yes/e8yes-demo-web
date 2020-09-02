@@ -61,14 +61,14 @@ class MessageChannelService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateMessageChannelResponse>> PrepareAsyncCreateMessageChannel(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateMessageChannelResponse>>(PrepareAsyncCreateMessageChannelRaw(context, request, cq));
     }
-    // Add a member to the specified channel where the logged-in user is the
-    // administrator.
-    virtual ::grpc::Status AddMemberToMessageChannel(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::e8::AddMemberToMessageChannelResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddMemberToMessageChannelResponse>> AsyncAddMemberToMessageChannel(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddMemberToMessageChannelResponse>>(AsyncAddMemberToMessageChannelRaw(context, request, cq));
+    // Add a user to the specified channel where the logged-in user is the
+    // administrator. The user may or may not be a member of the channel.
+    virtual ::grpc::Status AddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::e8::AddUserToMessageChannelResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddUserToMessageChannelResponse>> AsyncAddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddUserToMessageChannelResponse>>(AsyncAddUserToMessageChannelRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddMemberToMessageChannelResponse>> PrepareAsyncAddMemberToMessageChannel(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddMemberToMessageChannelResponse>>(PrepareAsyncAddMemberToMessageChannelRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddUserToMessageChannelResponse>> PrepareAsyncAddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddUserToMessageChannelResponse>>(PrepareAsyncAddUserToMessageChannelRaw(context, request, cq));
     }
     // Get an encryption key of the specified channel where the logged-in
     // user is a member.
@@ -109,9 +109,9 @@ class MessageChannelService final {
       // Create a new message channel. The logged-in user will be the 
       // administrator of this channel.
       virtual void CreateMessageChannel(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest* request, ::e8::CreateMessageChannelResponse* response, std::function<void(::grpc::Status)>) = 0;
-      // Add a member to the specified channel where the logged-in user is the
-      // administrator.
-      virtual void AddMemberToMessageChannel(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest* request, ::e8::AddMemberToMessageChannelResponse* response, std::function<void(::grpc::Status)>) = 0;
+      // Add a user to the specified channel where the logged-in user is the
+      // administrator. The user may or may not be a member of the channel.
+      virtual void AddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response, std::function<void(::grpc::Status)>) = 0;
       // Get an encryption key of the specified channel where the logged-in
       // user is a member.
       virtual void GetMessageChannelKey(::grpc::ClientContext* context, const ::e8::GetMessageChannelKeyRequest* request, ::e8::GetMessageChannelKeyResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -126,8 +126,8 @@ class MessageChannelService final {
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateMessageChannelResponse>* AsyncCreateMessageChannelRaw(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateMessageChannelResponse>* PrepareAsyncCreateMessageChannelRaw(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddMemberToMessageChannelResponse>* AsyncAddMemberToMessageChannelRaw(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddMemberToMessageChannelResponse>* PrepareAsyncAddMemberToMessageChannelRaw(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddUserToMessageChannelResponse>* AsyncAddUserToMessageChannelRaw(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddUserToMessageChannelResponse>* PrepareAsyncAddUserToMessageChannelRaw(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetMessageChannelKeyResponse>* AsyncGetMessageChannelKeyRaw(::grpc::ClientContext* context, const ::e8::GetMessageChannelKeyRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetMessageChannelKeyResponse>* PrepareAsyncGetMessageChannelKeyRaw(::grpc::ClientContext* context, const ::e8::GetMessageChannelKeyRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::LeaveMessageChannelResponse>* AsyncLeaveMessageChannelRaw(::grpc::ClientContext* context, const ::e8::LeaveMessageChannelRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -147,12 +147,12 @@ class MessageChannelService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateMessageChannelResponse>> PrepareAsyncCreateMessageChannel(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateMessageChannelResponse>>(PrepareAsyncCreateMessageChannelRaw(context, request, cq));
     }
-    ::grpc::Status AddMemberToMessageChannel(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::e8::AddMemberToMessageChannelResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddMemberToMessageChannelResponse>> AsyncAddMemberToMessageChannel(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddMemberToMessageChannelResponse>>(AsyncAddMemberToMessageChannelRaw(context, request, cq));
+    ::grpc::Status AddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::e8::AddUserToMessageChannelResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddUserToMessageChannelResponse>> AsyncAddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddUserToMessageChannelResponse>>(AsyncAddUserToMessageChannelRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddMemberToMessageChannelResponse>> PrepareAsyncAddMemberToMessageChannel(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddMemberToMessageChannelResponse>>(PrepareAsyncAddMemberToMessageChannelRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddUserToMessageChannelResponse>> PrepareAsyncAddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::AddUserToMessageChannelResponse>>(PrepareAsyncAddUserToMessageChannelRaw(context, request, cq));
     }
     ::grpc::Status GetMessageChannelKey(::grpc::ClientContext* context, const ::e8::GetMessageChannelKeyRequest& request, ::e8::GetMessageChannelKeyResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetMessageChannelKeyResponse>> AsyncGetMessageChannelKey(::grpc::ClientContext* context, const ::e8::GetMessageChannelKeyRequest& request, ::grpc::CompletionQueue* cq) {
@@ -186,7 +186,7 @@ class MessageChannelService final {
       public StubInterface::experimental_async_interface {
      public:
       void CreateMessageChannel(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest* request, ::e8::CreateMessageChannelResponse* response, std::function<void(::grpc::Status)>) override;
-      void AddMemberToMessageChannel(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest* request, ::e8::AddMemberToMessageChannelResponse* response, std::function<void(::grpc::Status)>) override;
+      void AddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response, std::function<void(::grpc::Status)>) override;
       void GetMessageChannelKey(::grpc::ClientContext* context, const ::e8::GetMessageChannelKeyRequest* request, ::e8::GetMessageChannelKeyResponse* response, std::function<void(::grpc::Status)>) override;
       void LeaveMessageChannel(::grpc::ClientContext* context, const ::e8::LeaveMessageChannelRequest* request, ::e8::LeaveMessageChannelResponse* response, std::function<void(::grpc::Status)>) override;
       void GetJoinedInMessageChannels(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest* request, ::e8::GetJoinedInMessageChannelsResponse* response, std::function<void(::grpc::Status)>) override;
@@ -204,8 +204,8 @@ class MessageChannelService final {
     class experimental_async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::e8::CreateMessageChannelResponse>* AsyncCreateMessageChannelRaw(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::CreateMessageChannelResponse>* PrepareAsyncCreateMessageChannelRaw(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::AddMemberToMessageChannelResponse>* AsyncAddMemberToMessageChannelRaw(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::AddMemberToMessageChannelResponse>* PrepareAsyncAddMemberToMessageChannelRaw(::grpc::ClientContext* context, const ::e8::AddMemberToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::AddUserToMessageChannelResponse>* AsyncAddUserToMessageChannelRaw(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::AddUserToMessageChannelResponse>* PrepareAsyncAddUserToMessageChannelRaw(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::GetMessageChannelKeyResponse>* AsyncGetMessageChannelKeyRaw(::grpc::ClientContext* context, const ::e8::GetMessageChannelKeyRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::GetMessageChannelKeyResponse>* PrepareAsyncGetMessageChannelKeyRaw(::grpc::ClientContext* context, const ::e8::GetMessageChannelKeyRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::LeaveMessageChannelResponse>* AsyncLeaveMessageChannelRaw(::grpc::ClientContext* context, const ::e8::LeaveMessageChannelRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -215,7 +215,7 @@ class MessageChannelService final {
     ::grpc::ClientAsyncResponseReader< ::e8::GetMessageChannelMembersResponse>* AsyncGetMessageChannelMembersRaw(::grpc::ClientContext* context, const ::e8::GetMessageChannelMembersRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::GetMessageChannelMembersResponse>* PrepareAsyncGetMessageChannelMembersRaw(::grpc::ClientContext* context, const ::e8::GetMessageChannelMembersRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_CreateMessageChannel_;
-    const ::grpc::internal::RpcMethod rpcmethod_AddMemberToMessageChannel_;
+    const ::grpc::internal::RpcMethod rpcmethod_AddUserToMessageChannel_;
     const ::grpc::internal::RpcMethod rpcmethod_GetMessageChannelKey_;
     const ::grpc::internal::RpcMethod rpcmethod_LeaveMessageChannel_;
     const ::grpc::internal::RpcMethod rpcmethod_GetJoinedInMessageChannels_;
@@ -230,9 +230,9 @@ class MessageChannelService final {
     // Create a new message channel. The logged-in user will be the 
     // administrator of this channel.
     virtual ::grpc::Status CreateMessageChannel(::grpc::ServerContext* context, const ::e8::CreateMessageChannelRequest* request, ::e8::CreateMessageChannelResponse* response);
-    // Add a member to the specified channel where the logged-in user is the
-    // administrator.
-    virtual ::grpc::Status AddMemberToMessageChannel(::grpc::ServerContext* context, const ::e8::AddMemberToMessageChannelRequest* request, ::e8::AddMemberToMessageChannelResponse* response);
+    // Add a user to the specified channel where the logged-in user is the
+    // administrator. The user may or may not be a member of the channel.
+    virtual ::grpc::Status AddUserToMessageChannel(::grpc::ServerContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response);
     // Get an encryption key of the specified channel where the logged-in
     // user is a member.
     virtual ::grpc::Status GetMessageChannelKey(::grpc::ServerContext* context, const ::e8::GetMessageChannelKeyRequest* request, ::e8::GetMessageChannelKeyResponse* response);
@@ -264,22 +264,22 @@ class MessageChannelService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_AddMemberToMessageChannel : public BaseClass {
+  class WithAsyncMethod_AddUserToMessageChannel : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithAsyncMethod_AddMemberToMessageChannel() {
+    WithAsyncMethod_AddUserToMessageChannel() {
       ::grpc::Service::MarkMethodAsync(1);
     }
-    ~WithAsyncMethod_AddMemberToMessageChannel() override {
+    ~WithAsyncMethod_AddUserToMessageChannel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddMemberToMessageChannel(::grpc::ServerContext* context, const ::e8::AddMemberToMessageChannelRequest* request, ::e8::AddMemberToMessageChannelResponse* response) override {
+    ::grpc::Status AddUserToMessageChannel(::grpc::ServerContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestAddMemberToMessageChannel(::grpc::ServerContext* context, ::e8::AddMemberToMessageChannelRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::AddMemberToMessageChannelResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestAddUserToMessageChannel(::grpc::ServerContext* context, ::e8::AddUserToMessageChannelRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::AddUserToMessageChannelResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -363,7 +363,7 @@ class MessageChannelService final {
       ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_CreateMessageChannel<WithAsyncMethod_AddMemberToMessageChannel<WithAsyncMethod_GetMessageChannelKey<WithAsyncMethod_LeaveMessageChannel<WithAsyncMethod_GetJoinedInMessageChannels<WithAsyncMethod_GetMessageChannelMembers<Service > > > > > > AsyncService;
+  typedef WithAsyncMethod_CreateMessageChannel<WithAsyncMethod_AddUserToMessageChannel<WithAsyncMethod_GetMessageChannelKey<WithAsyncMethod_LeaveMessageChannel<WithAsyncMethod_GetJoinedInMessageChannels<WithAsyncMethod_GetMessageChannelMembers<Service > > > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_CreateMessageChannel : public BaseClass {
    private:
@@ -382,18 +382,18 @@ class MessageChannelService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_AddMemberToMessageChannel : public BaseClass {
+  class WithGenericMethod_AddUserToMessageChannel : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithGenericMethod_AddMemberToMessageChannel() {
+    WithGenericMethod_AddUserToMessageChannel() {
       ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithGenericMethod_AddMemberToMessageChannel() override {
+    ~WithGenericMethod_AddUserToMessageChannel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddMemberToMessageChannel(::grpc::ServerContext* context, const ::e8::AddMemberToMessageChannelRequest* request, ::e8::AddMemberToMessageChannelResponse* response) override {
+    ::grpc::Status AddUserToMessageChannel(::grpc::ServerContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -487,22 +487,22 @@ class MessageChannelService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_AddMemberToMessageChannel : public BaseClass {
+  class WithRawMethod_AddUserToMessageChannel : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithRawMethod_AddMemberToMessageChannel() {
+    WithRawMethod_AddUserToMessageChannel() {
       ::grpc::Service::MarkMethodRaw(1);
     }
-    ~WithRawMethod_AddMemberToMessageChannel() override {
+    ~WithRawMethod_AddUserToMessageChannel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddMemberToMessageChannel(::grpc::ServerContext* context, const ::e8::AddMemberToMessageChannelRequest* request, ::e8::AddMemberToMessageChannelResponse* response) override {
+    ::grpc::Status AddUserToMessageChannel(::grpc::ServerContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestAddMemberToMessageChannel(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestAddUserToMessageChannel(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -607,24 +607,24 @@ class MessageChannelService final {
     virtual ::grpc::Status StreamedCreateMessageChannel(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::CreateMessageChannelRequest,::e8::CreateMessageChannelResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_AddMemberToMessageChannel : public BaseClass {
+  class WithStreamedUnaryMethod_AddUserToMessageChannel : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithStreamedUnaryMethod_AddMemberToMessageChannel() {
+    WithStreamedUnaryMethod_AddUserToMessageChannel() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::AddMemberToMessageChannelRequest, ::e8::AddMemberToMessageChannelResponse>(std::bind(&WithStreamedUnaryMethod_AddMemberToMessageChannel<BaseClass>::StreamedAddMemberToMessageChannel, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::AddUserToMessageChannelRequest, ::e8::AddUserToMessageChannelResponse>(std::bind(&WithStreamedUnaryMethod_AddUserToMessageChannel<BaseClass>::StreamedAddUserToMessageChannel, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithStreamedUnaryMethod_AddMemberToMessageChannel() override {
+    ~WithStreamedUnaryMethod_AddUserToMessageChannel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status AddMemberToMessageChannel(::grpc::ServerContext* context, const ::e8::AddMemberToMessageChannelRequest* request, ::e8::AddMemberToMessageChannelResponse* response) override {
+    ::grpc::Status AddUserToMessageChannel(::grpc::ServerContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedAddMemberToMessageChannel(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::AddMemberToMessageChannelRequest,::e8::AddMemberToMessageChannelResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedAddUserToMessageChannel(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::AddUserToMessageChannelRequest,::e8::AddUserToMessageChannelResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetMessageChannelKey : public BaseClass {
@@ -706,9 +706,9 @@ class MessageChannelService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetMessageChannelMembers(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::GetMessageChannelMembersRequest,::e8::GetMessageChannelMembersResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_CreateMessageChannel<WithStreamedUnaryMethod_AddMemberToMessageChannel<WithStreamedUnaryMethod_GetMessageChannelKey<WithStreamedUnaryMethod_LeaveMessageChannel<WithStreamedUnaryMethod_GetJoinedInMessageChannels<WithStreamedUnaryMethod_GetMessageChannelMembers<Service > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_CreateMessageChannel<WithStreamedUnaryMethod_AddUserToMessageChannel<WithStreamedUnaryMethod_GetMessageChannelKey<WithStreamedUnaryMethod_LeaveMessageChannel<WithStreamedUnaryMethod_GetJoinedInMessageChannels<WithStreamedUnaryMethod_GetMessageChannelMembers<Service > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_CreateMessageChannel<WithStreamedUnaryMethod_AddMemberToMessageChannel<WithStreamedUnaryMethod_GetMessageChannelKey<WithStreamedUnaryMethod_LeaveMessageChannel<WithStreamedUnaryMethod_GetJoinedInMessageChannels<WithStreamedUnaryMethod_GetMessageChannelMembers<Service > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_CreateMessageChannel<WithStreamedUnaryMethod_AddUserToMessageChannel<WithStreamedUnaryMethod_GetMessageChannelKey<WithStreamedUnaryMethod_LeaveMessageChannel<WithStreamedUnaryMethod_GetJoinedInMessageChannels<WithStreamedUnaryMethod_GetMessageChannelMembers<Service > > > > > > StreamedService;
 };
 
 }  // namespace e8

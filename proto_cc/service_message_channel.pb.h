@@ -50,12 +50,12 @@ struct TableStruct {
 void AddDescriptors();
 }  // namespace protobuf_service_5fmessage_5fchannel_2eproto
 namespace e8 {
-class AddMemberToMessageChannelRequest;
-class AddMemberToMessageChannelRequestDefaultTypeInternal;
-extern AddMemberToMessageChannelRequestDefaultTypeInternal _AddMemberToMessageChannelRequest_default_instance_;
-class AddMemberToMessageChannelResponse;
-class AddMemberToMessageChannelResponseDefaultTypeInternal;
-extern AddMemberToMessageChannelResponseDefaultTypeInternal _AddMemberToMessageChannelResponse_default_instance_;
+class AddUserToMessageChannelRequest;
+class AddUserToMessageChannelRequestDefaultTypeInternal;
+extern AddUserToMessageChannelRequestDefaultTypeInternal _AddUserToMessageChannelRequest_default_instance_;
+class AddUserToMessageChannelResponse;
+class AddUserToMessageChannelResponseDefaultTypeInternal;
+extern AddUserToMessageChannelResponseDefaultTypeInternal _AddUserToMessageChannelResponse_default_instance_;
 class CreateMessageChannelRequest;
 class CreateMessageChannelRequestDefaultTypeInternal;
 extern CreateMessageChannelRequestDefaultTypeInternal _CreateMessageChannelRequest_default_instance_;
@@ -89,8 +89,8 @@ extern LeaveMessageChannelResponseDefaultTypeInternal _LeaveMessageChannelRespon
 }  // namespace e8
 namespace google {
 namespace protobuf {
-template<> ::e8::AddMemberToMessageChannelRequest* Arena::CreateMaybeMessage<::e8::AddMemberToMessageChannelRequest>(Arena*);
-template<> ::e8::AddMemberToMessageChannelResponse* Arena::CreateMaybeMessage<::e8::AddMemberToMessageChannelResponse>(Arena*);
+template<> ::e8::AddUserToMessageChannelRequest* Arena::CreateMaybeMessage<::e8::AddUserToMessageChannelRequest>(Arena*);
+template<> ::e8::AddUserToMessageChannelResponse* Arena::CreateMaybeMessage<::e8::AddUserToMessageChannelResponse>(Arena*);
 template<> ::e8::CreateMessageChannelRequest* Arena::CreateMaybeMessage<::e8::CreateMessageChannelRequest>(Arena*);
 template<> ::e8::CreateMessageChannelResponse* Arena::CreateMaybeMessage<::e8::CreateMessageChannelResponse>(Arena*);
 template<> ::e8::GetJoinedInMessageChannelsRequest* Arena::CreateMaybeMessage<::e8::GetJoinedInMessageChannelsRequest>(Arena*);
@@ -346,24 +346,24 @@ class CreateMessageChannelResponse : public ::google::protobuf::Message /* @@pro
 };
 // -------------------------------------------------------------------
 
-class AddMemberToMessageChannelRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AddMemberToMessageChannelRequest) */ {
+class AddUserToMessageChannelRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AddUserToMessageChannelRequest) */ {
  public:
-  AddMemberToMessageChannelRequest();
-  virtual ~AddMemberToMessageChannelRequest();
+  AddUserToMessageChannelRequest();
+  virtual ~AddUserToMessageChannelRequest();
 
-  AddMemberToMessageChannelRequest(const AddMemberToMessageChannelRequest& from);
+  AddUserToMessageChannelRequest(const AddUserToMessageChannelRequest& from);
 
-  inline AddMemberToMessageChannelRequest& operator=(const AddMemberToMessageChannelRequest& from) {
+  inline AddUserToMessageChannelRequest& operator=(const AddUserToMessageChannelRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  AddMemberToMessageChannelRequest(AddMemberToMessageChannelRequest&& from) noexcept
-    : AddMemberToMessageChannelRequest() {
+  AddUserToMessageChannelRequest(AddUserToMessageChannelRequest&& from) noexcept
+    : AddUserToMessageChannelRequest() {
     *this = ::std::move(from);
   }
 
-  inline AddMemberToMessageChannelRequest& operator=(AddMemberToMessageChannelRequest&& from) noexcept {
+  inline AddUserToMessageChannelRequest& operator=(AddUserToMessageChannelRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -373,34 +373,34 @@ class AddMemberToMessageChannelRequest : public ::google::protobuf::Message /* @
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const AddMemberToMessageChannelRequest& default_instance();
+  static const AddUserToMessageChannelRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const AddMemberToMessageChannelRequest* internal_default_instance() {
-    return reinterpret_cast<const AddMemberToMessageChannelRequest*>(
-               &_AddMemberToMessageChannelRequest_default_instance_);
+  static inline const AddUserToMessageChannelRequest* internal_default_instance() {
+    return reinterpret_cast<const AddUserToMessageChannelRequest*>(
+               &_AddUserToMessageChannelRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     2;
 
-  void Swap(AddMemberToMessageChannelRequest* other);
-  friend void swap(AddMemberToMessageChannelRequest& a, AddMemberToMessageChannelRequest& b) {
+  void Swap(AddUserToMessageChannelRequest* other);
+  friend void swap(AddUserToMessageChannelRequest& a, AddUserToMessageChannelRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline AddMemberToMessageChannelRequest* New() const final {
-    return CreateMaybeMessage<AddMemberToMessageChannelRequest>(NULL);
+  inline AddUserToMessageChannelRequest* New() const final {
+    return CreateMaybeMessage<AddUserToMessageChannelRequest>(NULL);
   }
 
-  AddMemberToMessageChannelRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<AddMemberToMessageChannelRequest>(arena);
+  AddUserToMessageChannelRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<AddUserToMessageChannelRequest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const AddMemberToMessageChannelRequest& from);
-  void MergeFrom(const AddMemberToMessageChannelRequest& from);
+  void CopyFrom(const AddUserToMessageChannelRequest& from);
+  void MergeFrom(const AddUserToMessageChannelRequest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -417,7 +417,7 @@ class AddMemberToMessageChannelRequest : public ::google::protobuf::Message /* @
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(AddMemberToMessageChannelRequest* other);
+  void InternalSwap(AddUserToMessageChannelRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -445,35 +445,42 @@ class AddMemberToMessageChannelRequest : public ::google::protobuf::Message /* @
   ::google::protobuf::int64 user_id() const;
   void set_user_id(::google::protobuf::int64 value);
 
-  // @@protoc_insertion_point(class_scope:e8.AddMemberToMessageChannelRequest)
+  // .e8.MessageChannelMemberType member_type = 3;
+  void clear_member_type();
+  static const int kMemberTypeFieldNumber = 3;
+  ::e8::MessageChannelMemberType member_type() const;
+  void set_member_type(::e8::MessageChannelMemberType value);
+
+  // @@protoc_insertion_point(class_scope:e8.AddUserToMessageChannelRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int64 channel_id_;
   ::google::protobuf::int64 user_id_;
+  int member_type_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class AddMemberToMessageChannelResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AddMemberToMessageChannelResponse) */ {
+class AddUserToMessageChannelResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AddUserToMessageChannelResponse) */ {
  public:
-  AddMemberToMessageChannelResponse();
-  virtual ~AddMemberToMessageChannelResponse();
+  AddUserToMessageChannelResponse();
+  virtual ~AddUserToMessageChannelResponse();
 
-  AddMemberToMessageChannelResponse(const AddMemberToMessageChannelResponse& from);
+  AddUserToMessageChannelResponse(const AddUserToMessageChannelResponse& from);
 
-  inline AddMemberToMessageChannelResponse& operator=(const AddMemberToMessageChannelResponse& from) {
+  inline AddUserToMessageChannelResponse& operator=(const AddUserToMessageChannelResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  AddMemberToMessageChannelResponse(AddMemberToMessageChannelResponse&& from) noexcept
-    : AddMemberToMessageChannelResponse() {
+  AddUserToMessageChannelResponse(AddUserToMessageChannelResponse&& from) noexcept
+    : AddUserToMessageChannelResponse() {
     *this = ::std::move(from);
   }
 
-  inline AddMemberToMessageChannelResponse& operator=(AddMemberToMessageChannelResponse&& from) noexcept {
+  inline AddUserToMessageChannelResponse& operator=(AddUserToMessageChannelResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -483,34 +490,34 @@ class AddMemberToMessageChannelResponse : public ::google::protobuf::Message /* 
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const AddMemberToMessageChannelResponse& default_instance();
+  static const AddUserToMessageChannelResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const AddMemberToMessageChannelResponse* internal_default_instance() {
-    return reinterpret_cast<const AddMemberToMessageChannelResponse*>(
-               &_AddMemberToMessageChannelResponse_default_instance_);
+  static inline const AddUserToMessageChannelResponse* internal_default_instance() {
+    return reinterpret_cast<const AddUserToMessageChannelResponse*>(
+               &_AddUserToMessageChannelResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     3;
 
-  void Swap(AddMemberToMessageChannelResponse* other);
-  friend void swap(AddMemberToMessageChannelResponse& a, AddMemberToMessageChannelResponse& b) {
+  void Swap(AddUserToMessageChannelResponse* other);
+  friend void swap(AddUserToMessageChannelResponse& a, AddUserToMessageChannelResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline AddMemberToMessageChannelResponse* New() const final {
-    return CreateMaybeMessage<AddMemberToMessageChannelResponse>(NULL);
+  inline AddUserToMessageChannelResponse* New() const final {
+    return CreateMaybeMessage<AddUserToMessageChannelResponse>(NULL);
   }
 
-  AddMemberToMessageChannelResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<AddMemberToMessageChannelResponse>(arena);
+  AddUserToMessageChannelResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<AddUserToMessageChannelResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const AddMemberToMessageChannelResponse& from);
-  void MergeFrom(const AddMemberToMessageChannelResponse& from);
+  void CopyFrom(const AddUserToMessageChannelResponse& from);
+  void MergeFrom(const AddUserToMessageChannelResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -527,7 +534,7 @@ class AddMemberToMessageChannelResponse : public ::google::protobuf::Message /* 
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(AddMemberToMessageChannelResponse* other);
+  void InternalSwap(AddUserToMessageChannelResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -543,7 +550,7 @@ class AddMemberToMessageChannelResponse : public ::google::protobuf::Message /* 
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:e8.AddMemberToMessageChannelResponse)
+  // @@protoc_insertion_point(class_scope:e8.AddUserToMessageChannelResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1595,39 +1602,53 @@ inline void CreateMessageChannelResponse::set_channel_id(::google::protobuf::int
 
 // -------------------------------------------------------------------
 
-// AddMemberToMessageChannelRequest
+// AddUserToMessageChannelRequest
 
 // int64 channel_id = 1;
-inline void AddMemberToMessageChannelRequest::clear_channel_id() {
+inline void AddUserToMessageChannelRequest::clear_channel_id() {
   channel_id_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 AddMemberToMessageChannelRequest::channel_id() const {
-  // @@protoc_insertion_point(field_get:e8.AddMemberToMessageChannelRequest.channel_id)
+inline ::google::protobuf::int64 AddUserToMessageChannelRequest::channel_id() const {
+  // @@protoc_insertion_point(field_get:e8.AddUserToMessageChannelRequest.channel_id)
   return channel_id_;
 }
-inline void AddMemberToMessageChannelRequest::set_channel_id(::google::protobuf::int64 value) {
+inline void AddUserToMessageChannelRequest::set_channel_id(::google::protobuf::int64 value) {
   
   channel_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.AddMemberToMessageChannelRequest.channel_id)
+  // @@protoc_insertion_point(field_set:e8.AddUserToMessageChannelRequest.channel_id)
 }
 
 // int64 user_id = 2;
-inline void AddMemberToMessageChannelRequest::clear_user_id() {
+inline void AddUserToMessageChannelRequest::clear_user_id() {
   user_id_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 AddMemberToMessageChannelRequest::user_id() const {
-  // @@protoc_insertion_point(field_get:e8.AddMemberToMessageChannelRequest.user_id)
+inline ::google::protobuf::int64 AddUserToMessageChannelRequest::user_id() const {
+  // @@protoc_insertion_point(field_get:e8.AddUserToMessageChannelRequest.user_id)
   return user_id_;
 }
-inline void AddMemberToMessageChannelRequest::set_user_id(::google::protobuf::int64 value) {
+inline void AddUserToMessageChannelRequest::set_user_id(::google::protobuf::int64 value) {
   
   user_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.AddMemberToMessageChannelRequest.user_id)
+  // @@protoc_insertion_point(field_set:e8.AddUserToMessageChannelRequest.user_id)
+}
+
+// .e8.MessageChannelMemberType member_type = 3;
+inline void AddUserToMessageChannelRequest::clear_member_type() {
+  member_type_ = 0;
+}
+inline ::e8::MessageChannelMemberType AddUserToMessageChannelRequest::member_type() const {
+  // @@protoc_insertion_point(field_get:e8.AddUserToMessageChannelRequest.member_type)
+  return static_cast< ::e8::MessageChannelMemberType >(member_type_);
+}
+inline void AddUserToMessageChannelRequest::set_member_type(::e8::MessageChannelMemberType value) {
+  
+  member_type_ = value;
+  // @@protoc_insertion_point(field_set:e8.AddUserToMessageChannelRequest.member_type)
 }
 
 // -------------------------------------------------------------------
 
-// AddMemberToMessageChannelResponse
+// AddUserToMessageChannelResponse
 
 // -------------------------------------------------------------------
 

@@ -15,6 +15,8 @@ import 'pagination.pb.dart' as $19;
 import 'message_channel.pb.dart' as $20;
 import 'user_profile.pb.dart' as $13;
 
+import 'message_channel.pbenum.dart' as $20;
+
 class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOB(1, 'encrypted')
@@ -111,27 +113,28 @@ class CreateMessageChannelResponse extends $pb.GeneratedMessage {
   void clearChannelId() => clearField(1);
 }
 
-class AddMemberToMessageChannelRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddMemberToMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class AddUserToMessageChannelRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddUserToMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
     ..aInt64(2, 'userId')
+    ..e<$20.MessageChannelMemberType>(3, 'memberType', $pb.PbFieldType.OE, defaultOrMaker: $20.MessageChannelMemberType.MCMT_INVALID, valueOf: $20.MessageChannelMemberType.valueOf, enumValues: $20.MessageChannelMemberType.values)
     ..hasRequiredFields = false
   ;
 
-  AddMemberToMessageChannelRequest._() : super();
-  factory AddMemberToMessageChannelRequest() => create();
-  factory AddMemberToMessageChannelRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AddMemberToMessageChannelRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  AddMemberToMessageChannelRequest clone() => AddMemberToMessageChannelRequest()..mergeFromMessage(this);
-  AddMemberToMessageChannelRequest copyWith(void Function(AddMemberToMessageChannelRequest) updates) => super.copyWith((message) => updates(message as AddMemberToMessageChannelRequest));
+  AddUserToMessageChannelRequest._() : super();
+  factory AddUserToMessageChannelRequest() => create();
+  factory AddUserToMessageChannelRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AddUserToMessageChannelRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  AddUserToMessageChannelRequest clone() => AddUserToMessageChannelRequest()..mergeFromMessage(this);
+  AddUserToMessageChannelRequest copyWith(void Function(AddUserToMessageChannelRequest) updates) => super.copyWith((message) => updates(message as AddUserToMessageChannelRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static AddMemberToMessageChannelRequest create() => AddMemberToMessageChannelRequest._();
-  AddMemberToMessageChannelRequest createEmptyInstance() => create();
-  static $pb.PbList<AddMemberToMessageChannelRequest> createRepeated() => $pb.PbList<AddMemberToMessageChannelRequest>();
+  static AddUserToMessageChannelRequest create() => AddUserToMessageChannelRequest._();
+  AddUserToMessageChannelRequest createEmptyInstance() => create();
+  static $pb.PbList<AddUserToMessageChannelRequest> createRepeated() => $pb.PbList<AddUserToMessageChannelRequest>();
   @$core.pragma('dart2js:noInline')
-  static AddMemberToMessageChannelRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddMemberToMessageChannelRequest>(create);
-  static AddMemberToMessageChannelRequest _defaultInstance;
+  static AddUserToMessageChannelRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddUserToMessageChannelRequest>(create);
+  static AddUserToMessageChannelRequest _defaultInstance;
 
   @$pb.TagNumber(1)
   $fixnum.Int64 get channelId => $_getI64(0);
@@ -150,27 +153,36 @@ class AddMemberToMessageChannelRequest extends $pb.GeneratedMessage {
   $core.bool hasUserId() => $_has(1);
   @$pb.TagNumber(2)
   void clearUserId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $20.MessageChannelMemberType get memberType => $_getN(2);
+  @$pb.TagNumber(3)
+  set memberType($20.MessageChannelMemberType v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasMemberType() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMemberType() => clearField(3);
 }
 
-class AddMemberToMessageChannelResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddMemberToMessageChannelResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class AddUserToMessageChannelResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddUserToMessageChannelResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
-  AddMemberToMessageChannelResponse._() : super();
-  factory AddMemberToMessageChannelResponse() => create();
-  factory AddMemberToMessageChannelResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AddMemberToMessageChannelResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  AddMemberToMessageChannelResponse clone() => AddMemberToMessageChannelResponse()..mergeFromMessage(this);
-  AddMemberToMessageChannelResponse copyWith(void Function(AddMemberToMessageChannelResponse) updates) => super.copyWith((message) => updates(message as AddMemberToMessageChannelResponse));
+  AddUserToMessageChannelResponse._() : super();
+  factory AddUserToMessageChannelResponse() => create();
+  factory AddUserToMessageChannelResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AddUserToMessageChannelResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  AddUserToMessageChannelResponse clone() => AddUserToMessageChannelResponse()..mergeFromMessage(this);
+  AddUserToMessageChannelResponse copyWith(void Function(AddUserToMessageChannelResponse) updates) => super.copyWith((message) => updates(message as AddUserToMessageChannelResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static AddMemberToMessageChannelResponse create() => AddMemberToMessageChannelResponse._();
-  AddMemberToMessageChannelResponse createEmptyInstance() => create();
-  static $pb.PbList<AddMemberToMessageChannelResponse> createRepeated() => $pb.PbList<AddMemberToMessageChannelResponse>();
+  static AddUserToMessageChannelResponse create() => AddUserToMessageChannelResponse._();
+  AddUserToMessageChannelResponse createEmptyInstance() => create();
+  static $pb.PbList<AddUserToMessageChannelResponse> createRepeated() => $pb.PbList<AddUserToMessageChannelResponse>();
   @$core.pragma('dart2js:noInline')
-  static AddMemberToMessageChannelResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddMemberToMessageChannelResponse>(create);
-  static AddMemberToMessageChannelResponse _defaultInstance;
+  static AddUserToMessageChannelResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddUserToMessageChannelResponse>(create);
+  static AddUserToMessageChannelResponse _defaultInstance;
 }
 
 class GetMessageChannelKeyRequest extends $pb.GeneratedMessage {

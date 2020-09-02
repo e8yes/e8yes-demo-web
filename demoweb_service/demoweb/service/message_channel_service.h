@@ -43,6 +43,10 @@ class MessageChannelServiceImpl : public MessageChannelService::Service {
     grpc::Status GetMessageChannelMembers(grpc::ServerContext *context,
                                           GetMessageChannelMembersRequest const *request,
                                           GetMessageChannelMembersResponse *response) override;
+
+    grpc::Status AddUserToMessageChannel(grpc::ServerContext *context,
+                                         AddUserToMessageChannelRequest const *request,
+                                         AddUserToMessageChannelResponse *response) override;
 };
 
 } // namespace e8
