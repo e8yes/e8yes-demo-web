@@ -17,18 +17,17 @@
 
 #include <vector>
 
-#include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "demoweb_service/demoweb/module/push_message.h"
+#include "demoweb_service/demoweb/module/pushable_message.h"
 #include "message_queue/publisher/publisher.h"
 #include "proto_cc/real_time_message.pb.h"
 
 namespace e8 {
 
-std::vector<bool> PushMessage(UserId const user_id, RealTimeMessage const &message,
+std::vector<bool> PushMessage(RealTimeMessage const &message,
                               std::vector<MessagePublisherInterface *> const &publishers) {
     std::vector<bool> rcs;
     for (MessagePublisherInterface *publisher : publishers) {
-        bool rc = publisher->Publish(user_id, message);
+        bool rc = publisher->Publish(message.target_user_id(), message);
         rcs.push_back(rc);
     }
     return rcs;

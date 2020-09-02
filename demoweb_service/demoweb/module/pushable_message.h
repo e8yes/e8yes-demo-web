@@ -20,7 +20,6 @@
 
 #include <vector>
 
-#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "message_queue/publisher/publisher.h"
 #include "proto_cc/real_time_message.pb.h"
 
@@ -31,7 +30,7 @@ namespace e8 {
  *
  * @return The return code of each individual publisher.
  */
-std::vector<bool> PushMessage(UserId const user_id, RealTimeMessage const &message,
+std::vector<bool> PushMessage(RealTimeMessage const &message,
                               std::vector<MessagePublisherInterface *> const &publishers);
 
 } // namespace e8
