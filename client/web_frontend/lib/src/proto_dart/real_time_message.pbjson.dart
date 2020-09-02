@@ -7,10 +7,16 @@
 
 const InvitationReceivedMessage$json = const {
   '1': 'InvitationReceivedMessage',
+  '2': const [
+    const {'1': 'inviter', '3': 1, '4': 1, '5': 11, '6': '.e8.UserPublicProfile', '10': 'inviter'},
+  ],
 };
 
 const InvitationAcceptedMessage$json = const {
   '1': 'InvitationAcceptedMessage',
+  '2': const [
+    const {'1': 'invitee', '3': 1, '4': 1, '5': 11, '6': '.e8.UserPublicProfile', '10': 'invitee'},
+  ],
 };
 
 const UnreadChatMessage$json = const {
@@ -20,8 +26,8 @@ const UnreadChatMessage$json = const {
   ],
 };
 
-const RealTimeMessagenContent$json = const {
-  '1': 'RealTimeMessagenContent',
+const RealTimeMessageContent$json = const {
+  '1': 'RealTimeMessageContent',
   '2': const [
     const {'1': 'invitation_received', '3': 1, '4': 1, '5': 11, '6': '.e8.InvitationReceivedMessage', '9': 0, '10': 'invitationReceived'},
     const {'1': 'invitation_accepted', '3': 2, '4': 1, '5': 11, '6': '.e8.InvitationAcceptedMessage', '9': 0, '10': 'invitationAccepted'},
@@ -38,7 +44,7 @@ const RealTimeMessage$json = const {
     const {'1': 'real_time_message_id', '3': 1, '4': 1, '5': 3, '10': 'realTimeMessageId'},
     const {'1': 'created_at', '3': 2, '4': 1, '5': 3, '10': 'createdAt'},
     const {'1': 'target_user_id', '3': 3, '4': 1, '5': 3, '10': 'targetUserId'},
-    const {'1': 'content', '3': 4, '4': 1, '5': 11, '6': '.e8.RealTimeMessagenContent', '10': 'content'},
+    const {'1': 'content', '3': 4, '4': 1, '5': 11, '6': '.e8.RealTimeMessageContent', '10': 'content'},
   ],
 };
 

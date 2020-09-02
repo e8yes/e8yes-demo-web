@@ -20,18 +20,22 @@
 
 #include <vector>
 
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
 #include "message_queue/publisher/publisher.h"
 #include "proto_cc/real_time_message.pb.h"
 
 namespace e8 {
 
 /**
- * @brief PushMessage Pushes a keyed message to all the message publishers.
+ * @brief PushMessageContent Pushes a keyed message to all the message publishers.
  *
  * @return The return code of each individual publisher.
  */
-std::vector<bool> PushMessage(RealTimeMessage const &message,
-                              std::vector<MessagePublisherInterface *> const &publishers);
+std::vector<bool> PushMessageContent(UserId const target_user_id,
+                                     RealTimeMessageContent const &message_content,
+                                     HostId const host_id,
+                                     std::vector<MessagePublisherInterface *> const &publishers);
 
 } // namespace e8
 

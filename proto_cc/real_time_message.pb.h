@@ -31,6 +31,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
 #include "chat_message.pb.h"
+#include "user_profile.pb.h"
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto 
 
@@ -56,9 +57,9 @@ extern InvitationReceivedMessageDefaultTypeInternal _InvitationReceivedMessage_d
 class RealTimeMessage;
 class RealTimeMessageDefaultTypeInternal;
 extern RealTimeMessageDefaultTypeInternal _RealTimeMessage_default_instance_;
-class RealTimeMessagenContent;
-class RealTimeMessagenContentDefaultTypeInternal;
-extern RealTimeMessagenContentDefaultTypeInternal _RealTimeMessagenContent_default_instance_;
+class RealTimeMessageContent;
+class RealTimeMessageContentDefaultTypeInternal;
+extern RealTimeMessageContentDefaultTypeInternal _RealTimeMessageContent_default_instance_;
 class UnreadChatMessage;
 class UnreadChatMessageDefaultTypeInternal;
 extern UnreadChatMessageDefaultTypeInternal _UnreadChatMessage_default_instance_;
@@ -68,7 +69,7 @@ namespace protobuf {
 template<> ::e8::InvitationAcceptedMessage* Arena::CreateMaybeMessage<::e8::InvitationAcceptedMessage>(Arena*);
 template<> ::e8::InvitationReceivedMessage* Arena::CreateMaybeMessage<::e8::InvitationReceivedMessage>(Arena*);
 template<> ::e8::RealTimeMessage* Arena::CreateMaybeMessage<::e8::RealTimeMessage>(Arena*);
-template<> ::e8::RealTimeMessagenContent* Arena::CreateMaybeMessage<::e8::RealTimeMessagenContent>(Arena*);
+template<> ::e8::RealTimeMessageContent* Arena::CreateMaybeMessage<::e8::RealTimeMessageContent>(Arena*);
 template<> ::e8::UnreadChatMessage* Arena::CreateMaybeMessage<::e8::UnreadChatMessage>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -163,10 +164,23 @@ class InvitationReceivedMessage : public ::google::protobuf::Message /* @@protoc
 
   // accessors -------------------------------------------------------
 
+  // .e8.UserPublicProfile inviter = 1;
+  bool has_inviter() const;
+  void clear_inviter();
+  static const int kInviterFieldNumber = 1;
+  private:
+  const ::e8::UserPublicProfile& _internal_inviter() const;
+  public:
+  const ::e8::UserPublicProfile& inviter() const;
+  ::e8::UserPublicProfile* release_inviter();
+  ::e8::UserPublicProfile* mutable_inviter();
+  void set_allocated_inviter(::e8::UserPublicProfile* inviter);
+
   // @@protoc_insertion_point(class_scope:e8.InvitationReceivedMessage)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::e8::UserPublicProfile* inviter_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_real_5ftime_5fmessage_2eproto::TableStruct;
 };
@@ -259,10 +273,23 @@ class InvitationAcceptedMessage : public ::google::protobuf::Message /* @@protoc
 
   // accessors -------------------------------------------------------
 
+  // .e8.UserPublicProfile invitee = 1;
+  bool has_invitee() const;
+  void clear_invitee();
+  static const int kInviteeFieldNumber = 1;
+  private:
+  const ::e8::UserPublicProfile& _internal_invitee() const;
+  public:
+  const ::e8::UserPublicProfile& invitee() const;
+  ::e8::UserPublicProfile* release_invitee();
+  ::e8::UserPublicProfile* mutable_invitee();
+  void set_allocated_invitee(::e8::UserPublicProfile* invitee);
+
   // @@protoc_insertion_point(class_scope:e8.InvitationAcceptedMessage)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::e8::UserPublicProfile* invitee_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_real_5ftime_5fmessage_2eproto::TableStruct;
 };
@@ -377,24 +404,24 @@ class UnreadChatMessage : public ::google::protobuf::Message /* @@protoc_inserti
 };
 // -------------------------------------------------------------------
 
-class RealTimeMessagenContent : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.RealTimeMessagenContent) */ {
+class RealTimeMessageContent : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.RealTimeMessageContent) */ {
  public:
-  RealTimeMessagenContent();
-  virtual ~RealTimeMessagenContent();
+  RealTimeMessageContent();
+  virtual ~RealTimeMessageContent();
 
-  RealTimeMessagenContent(const RealTimeMessagenContent& from);
+  RealTimeMessageContent(const RealTimeMessageContent& from);
 
-  inline RealTimeMessagenContent& operator=(const RealTimeMessagenContent& from) {
+  inline RealTimeMessageContent& operator=(const RealTimeMessageContent& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  RealTimeMessagenContent(RealTimeMessagenContent&& from) noexcept
-    : RealTimeMessagenContent() {
+  RealTimeMessageContent(RealTimeMessageContent&& from) noexcept
+    : RealTimeMessageContent() {
     *this = ::std::move(from);
   }
 
-  inline RealTimeMessagenContent& operator=(RealTimeMessagenContent&& from) noexcept {
+  inline RealTimeMessageContent& operator=(RealTimeMessageContent&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -404,7 +431,7 @@ class RealTimeMessagenContent : public ::google::protobuf::Message /* @@protoc_i
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const RealTimeMessagenContent& default_instance();
+  static const RealTimeMessageContent& default_instance();
 
   enum NotificationContentCase {
     kInvitationReceived = 1,
@@ -414,31 +441,31 @@ class RealTimeMessagenContent : public ::google::protobuf::Message /* @@protoc_i
   };
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const RealTimeMessagenContent* internal_default_instance() {
-    return reinterpret_cast<const RealTimeMessagenContent*>(
-               &_RealTimeMessagenContent_default_instance_);
+  static inline const RealTimeMessageContent* internal_default_instance() {
+    return reinterpret_cast<const RealTimeMessageContent*>(
+               &_RealTimeMessageContent_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     3;
 
-  void Swap(RealTimeMessagenContent* other);
-  friend void swap(RealTimeMessagenContent& a, RealTimeMessagenContent& b) {
+  void Swap(RealTimeMessageContent* other);
+  friend void swap(RealTimeMessageContent& a, RealTimeMessageContent& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline RealTimeMessagenContent* New() const final {
-    return CreateMaybeMessage<RealTimeMessagenContent>(NULL);
+  inline RealTimeMessageContent* New() const final {
+    return CreateMaybeMessage<RealTimeMessageContent>(NULL);
   }
 
-  RealTimeMessagenContent* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<RealTimeMessagenContent>(arena);
+  RealTimeMessageContent* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<RealTimeMessageContent>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const RealTimeMessagenContent& from);
-  void MergeFrom(const RealTimeMessagenContent& from);
+  void CopyFrom(const RealTimeMessageContent& from);
+  void MergeFrom(const RealTimeMessageContent& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -455,7 +482,7 @@ class RealTimeMessagenContent : public ::google::protobuf::Message /* @@protoc_i
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(RealTimeMessagenContent* other);
+  void InternalSwap(RealTimeMessageContent* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -509,7 +536,7 @@ class RealTimeMessagenContent : public ::google::protobuf::Message /* @@protoc_i
 
   void clear_notification_content();
   NotificationContentCase notification_content_case() const;
-  // @@protoc_insertion_point(class_scope:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(class_scope:e8.RealTimeMessageContent)
  private:
   void set_has_invitation_received();
   void set_has_invitation_accepted();
@@ -619,17 +646,17 @@ class RealTimeMessage : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // .e8.RealTimeMessagenContent content = 4;
+  // .e8.RealTimeMessageContent content = 4;
   bool has_content() const;
   void clear_content();
   static const int kContentFieldNumber = 4;
   private:
-  const ::e8::RealTimeMessagenContent& _internal_content() const;
+  const ::e8::RealTimeMessageContent& _internal_content() const;
   public:
-  const ::e8::RealTimeMessagenContent& content() const;
-  ::e8::RealTimeMessagenContent* release_content();
-  ::e8::RealTimeMessagenContent* mutable_content();
-  void set_allocated_content(::e8::RealTimeMessagenContent* content);
+  const ::e8::RealTimeMessageContent& content() const;
+  ::e8::RealTimeMessageContent* release_content();
+  ::e8::RealTimeMessageContent* mutable_content();
+  void set_allocated_content(::e8::RealTimeMessageContent* content);
 
   // int64 real_time_message_id = 1;
   void clear_real_time_message_id();
@@ -653,7 +680,7 @@ class RealTimeMessage : public ::google::protobuf::Message /* @@protoc_insertion
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::e8::RealTimeMessagenContent* content_;
+  ::e8::RealTimeMessageContent* content_;
   ::google::protobuf::int64 real_time_message_id_;
   ::google::protobuf::int64 created_at_;
   ::google::protobuf::int64 target_user_id_;
@@ -671,9 +698,105 @@ class RealTimeMessage : public ::google::protobuf::Message /* @@protoc_insertion
 #endif  // __GNUC__
 // InvitationReceivedMessage
 
+// .e8.UserPublicProfile inviter = 1;
+inline bool InvitationReceivedMessage::has_inviter() const {
+  return this != internal_default_instance() && inviter_ != NULL;
+}
+inline const ::e8::UserPublicProfile& InvitationReceivedMessage::_internal_inviter() const {
+  return *inviter_;
+}
+inline const ::e8::UserPublicProfile& InvitationReceivedMessage::inviter() const {
+  const ::e8::UserPublicProfile* p = inviter_;
+  // @@protoc_insertion_point(field_get:e8.InvitationReceivedMessage.inviter)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::UserPublicProfile*>(
+      &::e8::_UserPublicProfile_default_instance_);
+}
+inline ::e8::UserPublicProfile* InvitationReceivedMessage::release_inviter() {
+  // @@protoc_insertion_point(field_release:e8.InvitationReceivedMessage.inviter)
+  
+  ::e8::UserPublicProfile* temp = inviter_;
+  inviter_ = NULL;
+  return temp;
+}
+inline ::e8::UserPublicProfile* InvitationReceivedMessage::mutable_inviter() {
+  
+  if (inviter_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::UserPublicProfile>(GetArenaNoVirtual());
+    inviter_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.InvitationReceivedMessage.inviter)
+  return inviter_;
+}
+inline void InvitationReceivedMessage::set_allocated_inviter(::e8::UserPublicProfile* inviter) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(inviter_);
+  }
+  if (inviter) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      inviter = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, inviter, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  inviter_ = inviter;
+  // @@protoc_insertion_point(field_set_allocated:e8.InvitationReceivedMessage.inviter)
+}
+
 // -------------------------------------------------------------------
 
 // InvitationAcceptedMessage
+
+// .e8.UserPublicProfile invitee = 1;
+inline bool InvitationAcceptedMessage::has_invitee() const {
+  return this != internal_default_instance() && invitee_ != NULL;
+}
+inline const ::e8::UserPublicProfile& InvitationAcceptedMessage::_internal_invitee() const {
+  return *invitee_;
+}
+inline const ::e8::UserPublicProfile& InvitationAcceptedMessage::invitee() const {
+  const ::e8::UserPublicProfile* p = invitee_;
+  // @@protoc_insertion_point(field_get:e8.InvitationAcceptedMessage.invitee)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::UserPublicProfile*>(
+      &::e8::_UserPublicProfile_default_instance_);
+}
+inline ::e8::UserPublicProfile* InvitationAcceptedMessage::release_invitee() {
+  // @@protoc_insertion_point(field_release:e8.InvitationAcceptedMessage.invitee)
+  
+  ::e8::UserPublicProfile* temp = invitee_;
+  invitee_ = NULL;
+  return temp;
+}
+inline ::e8::UserPublicProfile* InvitationAcceptedMessage::mutable_invitee() {
+  
+  if (invitee_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::UserPublicProfile>(GetArenaNoVirtual());
+    invitee_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.InvitationAcceptedMessage.invitee)
+  return invitee_;
+}
+inline void InvitationAcceptedMessage::set_allocated_invitee(::e8::UserPublicProfile* invitee) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(invitee_);
+  }
+  if (invitee) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      invitee = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, invitee, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  invitee_ = invitee;
+  // @@protoc_insertion_point(field_set_allocated:e8.InvitationAcceptedMessage.invitee)
+}
 
 // -------------------------------------------------------------------
 
@@ -708,26 +831,26 @@ UnreadChatMessage::message_threads() const {
 
 // -------------------------------------------------------------------
 
-// RealTimeMessagenContent
+// RealTimeMessageContent
 
 // .e8.InvitationReceivedMessage invitation_received = 1;
-inline bool RealTimeMessagenContent::has_invitation_received() const {
+inline bool RealTimeMessageContent::has_invitation_received() const {
   return notification_content_case() == kInvitationReceived;
 }
-inline void RealTimeMessagenContent::set_has_invitation_received() {
+inline void RealTimeMessageContent::set_has_invitation_received() {
   _oneof_case_[0] = kInvitationReceived;
 }
-inline void RealTimeMessagenContent::clear_invitation_received() {
+inline void RealTimeMessageContent::clear_invitation_received() {
   if (has_invitation_received()) {
     delete notification_content_.invitation_received_;
     clear_has_notification_content();
   }
 }
-inline const ::e8::InvitationReceivedMessage& RealTimeMessagenContent::_internal_invitation_received() const {
+inline const ::e8::InvitationReceivedMessage& RealTimeMessageContent::_internal_invitation_received() const {
   return *notification_content_.invitation_received_;
 }
-inline ::e8::InvitationReceivedMessage* RealTimeMessagenContent::release_invitation_received() {
-  // @@protoc_insertion_point(field_release:e8.RealTimeMessagenContent.invitation_received)
+inline ::e8::InvitationReceivedMessage* RealTimeMessageContent::release_invitation_received() {
+  // @@protoc_insertion_point(field_release:e8.RealTimeMessageContent.invitation_received)
   if (has_invitation_received()) {
     clear_has_notification_content();
       ::e8::InvitationReceivedMessage* temp = notification_content_.invitation_received_;
@@ -737,41 +860,41 @@ inline ::e8::InvitationReceivedMessage* RealTimeMessagenContent::release_invitat
     return NULL;
   }
 }
-inline const ::e8::InvitationReceivedMessage& RealTimeMessagenContent::invitation_received() const {
-  // @@protoc_insertion_point(field_get:e8.RealTimeMessagenContent.invitation_received)
+inline const ::e8::InvitationReceivedMessage& RealTimeMessageContent::invitation_received() const {
+  // @@protoc_insertion_point(field_get:e8.RealTimeMessageContent.invitation_received)
   return has_invitation_received()
       ? *notification_content_.invitation_received_
       : *reinterpret_cast< ::e8::InvitationReceivedMessage*>(&::e8::_InvitationReceivedMessage_default_instance_);
 }
-inline ::e8::InvitationReceivedMessage* RealTimeMessagenContent::mutable_invitation_received() {
+inline ::e8::InvitationReceivedMessage* RealTimeMessageContent::mutable_invitation_received() {
   if (!has_invitation_received()) {
     clear_notification_content();
     set_has_invitation_received();
     notification_content_.invitation_received_ = CreateMaybeMessage< ::e8::InvitationReceivedMessage >(
         GetArenaNoVirtual());
   }
-  // @@protoc_insertion_point(field_mutable:e8.RealTimeMessagenContent.invitation_received)
+  // @@protoc_insertion_point(field_mutable:e8.RealTimeMessageContent.invitation_received)
   return notification_content_.invitation_received_;
 }
 
 // .e8.InvitationAcceptedMessage invitation_accepted = 2;
-inline bool RealTimeMessagenContent::has_invitation_accepted() const {
+inline bool RealTimeMessageContent::has_invitation_accepted() const {
   return notification_content_case() == kInvitationAccepted;
 }
-inline void RealTimeMessagenContent::set_has_invitation_accepted() {
+inline void RealTimeMessageContent::set_has_invitation_accepted() {
   _oneof_case_[0] = kInvitationAccepted;
 }
-inline void RealTimeMessagenContent::clear_invitation_accepted() {
+inline void RealTimeMessageContent::clear_invitation_accepted() {
   if (has_invitation_accepted()) {
     delete notification_content_.invitation_accepted_;
     clear_has_notification_content();
   }
 }
-inline const ::e8::InvitationAcceptedMessage& RealTimeMessagenContent::_internal_invitation_accepted() const {
+inline const ::e8::InvitationAcceptedMessage& RealTimeMessageContent::_internal_invitation_accepted() const {
   return *notification_content_.invitation_accepted_;
 }
-inline ::e8::InvitationAcceptedMessage* RealTimeMessagenContent::release_invitation_accepted() {
-  // @@protoc_insertion_point(field_release:e8.RealTimeMessagenContent.invitation_accepted)
+inline ::e8::InvitationAcceptedMessage* RealTimeMessageContent::release_invitation_accepted() {
+  // @@protoc_insertion_point(field_release:e8.RealTimeMessageContent.invitation_accepted)
   if (has_invitation_accepted()) {
     clear_has_notification_content();
       ::e8::InvitationAcceptedMessage* temp = notification_content_.invitation_accepted_;
@@ -781,41 +904,41 @@ inline ::e8::InvitationAcceptedMessage* RealTimeMessagenContent::release_invitat
     return NULL;
   }
 }
-inline const ::e8::InvitationAcceptedMessage& RealTimeMessagenContent::invitation_accepted() const {
-  // @@protoc_insertion_point(field_get:e8.RealTimeMessagenContent.invitation_accepted)
+inline const ::e8::InvitationAcceptedMessage& RealTimeMessageContent::invitation_accepted() const {
+  // @@protoc_insertion_point(field_get:e8.RealTimeMessageContent.invitation_accepted)
   return has_invitation_accepted()
       ? *notification_content_.invitation_accepted_
       : *reinterpret_cast< ::e8::InvitationAcceptedMessage*>(&::e8::_InvitationAcceptedMessage_default_instance_);
 }
-inline ::e8::InvitationAcceptedMessage* RealTimeMessagenContent::mutable_invitation_accepted() {
+inline ::e8::InvitationAcceptedMessage* RealTimeMessageContent::mutable_invitation_accepted() {
   if (!has_invitation_accepted()) {
     clear_notification_content();
     set_has_invitation_accepted();
     notification_content_.invitation_accepted_ = CreateMaybeMessage< ::e8::InvitationAcceptedMessage >(
         GetArenaNoVirtual());
   }
-  // @@protoc_insertion_point(field_mutable:e8.RealTimeMessagenContent.invitation_accepted)
+  // @@protoc_insertion_point(field_mutable:e8.RealTimeMessageContent.invitation_accepted)
   return notification_content_.invitation_accepted_;
 }
 
 // .e8.UnreadChatMessage unread_chat = 3;
-inline bool RealTimeMessagenContent::has_unread_chat() const {
+inline bool RealTimeMessageContent::has_unread_chat() const {
   return notification_content_case() == kUnreadChat;
 }
-inline void RealTimeMessagenContent::set_has_unread_chat() {
+inline void RealTimeMessageContent::set_has_unread_chat() {
   _oneof_case_[0] = kUnreadChat;
 }
-inline void RealTimeMessagenContent::clear_unread_chat() {
+inline void RealTimeMessageContent::clear_unread_chat() {
   if (has_unread_chat()) {
     delete notification_content_.unread_chat_;
     clear_has_notification_content();
   }
 }
-inline const ::e8::UnreadChatMessage& RealTimeMessagenContent::_internal_unread_chat() const {
+inline const ::e8::UnreadChatMessage& RealTimeMessageContent::_internal_unread_chat() const {
   return *notification_content_.unread_chat_;
 }
-inline ::e8::UnreadChatMessage* RealTimeMessagenContent::release_unread_chat() {
-  // @@protoc_insertion_point(field_release:e8.RealTimeMessagenContent.unread_chat)
+inline ::e8::UnreadChatMessage* RealTimeMessageContent::release_unread_chat() {
+  // @@protoc_insertion_point(field_release:e8.RealTimeMessageContent.unread_chat)
   if (has_unread_chat()) {
     clear_has_notification_content();
       ::e8::UnreadChatMessage* temp = notification_content_.unread_chat_;
@@ -825,31 +948,31 @@ inline ::e8::UnreadChatMessage* RealTimeMessagenContent::release_unread_chat() {
     return NULL;
   }
 }
-inline const ::e8::UnreadChatMessage& RealTimeMessagenContent::unread_chat() const {
-  // @@protoc_insertion_point(field_get:e8.RealTimeMessagenContent.unread_chat)
+inline const ::e8::UnreadChatMessage& RealTimeMessageContent::unread_chat() const {
+  // @@protoc_insertion_point(field_get:e8.RealTimeMessageContent.unread_chat)
   return has_unread_chat()
       ? *notification_content_.unread_chat_
       : *reinterpret_cast< ::e8::UnreadChatMessage*>(&::e8::_UnreadChatMessage_default_instance_);
 }
-inline ::e8::UnreadChatMessage* RealTimeMessagenContent::mutable_unread_chat() {
+inline ::e8::UnreadChatMessage* RealTimeMessageContent::mutable_unread_chat() {
   if (!has_unread_chat()) {
     clear_notification_content();
     set_has_unread_chat();
     notification_content_.unread_chat_ = CreateMaybeMessage< ::e8::UnreadChatMessage >(
         GetArenaNoVirtual());
   }
-  // @@protoc_insertion_point(field_mutable:e8.RealTimeMessagenContent.unread_chat)
+  // @@protoc_insertion_point(field_mutable:e8.RealTimeMessageContent.unread_chat)
   return notification_content_.unread_chat_;
 }
 
-inline bool RealTimeMessagenContent::has_notification_content() const {
+inline bool RealTimeMessageContent::has_notification_content() const {
   return notification_content_case() != NOTIFICATION_CONTENT_NOT_SET;
 }
-inline void RealTimeMessagenContent::clear_has_notification_content() {
+inline void RealTimeMessageContent::clear_has_notification_content() {
   _oneof_case_[0] = NOTIFICATION_CONTENT_NOT_SET;
 }
-inline RealTimeMessagenContent::NotificationContentCase RealTimeMessagenContent::notification_content_case() const {
-  return RealTimeMessagenContent::NotificationContentCase(_oneof_case_[0]);
+inline RealTimeMessageContent::NotificationContentCase RealTimeMessageContent::notification_content_case() const {
+  return RealTimeMessageContent::NotificationContentCase(_oneof_case_[0]);
 }
 // -------------------------------------------------------------------
 
@@ -897,7 +1020,7 @@ inline void RealTimeMessage::set_target_user_id(::google::protobuf::int64 value)
   // @@protoc_insertion_point(field_set:e8.RealTimeMessage.target_user_id)
 }
 
-// .e8.RealTimeMessagenContent content = 4;
+// .e8.RealTimeMessageContent content = 4;
 inline bool RealTimeMessage::has_content() const {
   return this != internal_default_instance() && content_ != NULL;
 }
@@ -907,32 +1030,32 @@ inline void RealTimeMessage::clear_content() {
   }
   content_ = NULL;
 }
-inline const ::e8::RealTimeMessagenContent& RealTimeMessage::_internal_content() const {
+inline const ::e8::RealTimeMessageContent& RealTimeMessage::_internal_content() const {
   return *content_;
 }
-inline const ::e8::RealTimeMessagenContent& RealTimeMessage::content() const {
-  const ::e8::RealTimeMessagenContent* p = content_;
+inline const ::e8::RealTimeMessageContent& RealTimeMessage::content() const {
+  const ::e8::RealTimeMessageContent* p = content_;
   // @@protoc_insertion_point(field_get:e8.RealTimeMessage.content)
-  return p != NULL ? *p : *reinterpret_cast<const ::e8::RealTimeMessagenContent*>(
-      &::e8::_RealTimeMessagenContent_default_instance_);
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::RealTimeMessageContent*>(
+      &::e8::_RealTimeMessageContent_default_instance_);
 }
-inline ::e8::RealTimeMessagenContent* RealTimeMessage::release_content() {
+inline ::e8::RealTimeMessageContent* RealTimeMessage::release_content() {
   // @@protoc_insertion_point(field_release:e8.RealTimeMessage.content)
   
-  ::e8::RealTimeMessagenContent* temp = content_;
+  ::e8::RealTimeMessageContent* temp = content_;
   content_ = NULL;
   return temp;
 }
-inline ::e8::RealTimeMessagenContent* RealTimeMessage::mutable_content() {
+inline ::e8::RealTimeMessageContent* RealTimeMessage::mutable_content() {
   
   if (content_ == NULL) {
-    auto* p = CreateMaybeMessage<::e8::RealTimeMessagenContent>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::e8::RealTimeMessageContent>(GetArenaNoVirtual());
     content_ = p;
   }
   // @@protoc_insertion_point(field_mutable:e8.RealTimeMessage.content)
   return content_;
 }
-inline void RealTimeMessage::set_allocated_content(::e8::RealTimeMessagenContent* content) {
+inline void RealTimeMessage::set_allocated_content(::e8::RealTimeMessageContent* content) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete content_;

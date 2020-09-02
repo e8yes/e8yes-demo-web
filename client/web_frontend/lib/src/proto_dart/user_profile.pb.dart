@@ -10,18 +10,18 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'nullable_primitives.pb.dart' as $15;
+import 'nullable_primitives.pb.dart' as $11;
 import 'file.pb.dart' as $10;
-import 'user_relation.pb.dart' as $16;
+import 'user_relation.pb.dart' as $12;
 
 class UserPublicProfile extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UserPublicProfile', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'userId')
-    ..aOM<$15.NullableString>(2, 'alias', subBuilder: $15.NullableString.create)
-    ..aOM<$15.NullableString>(3, 'biography', subBuilder: $15.NullableString.create)
+    ..aOM<$11.NullableString>(2, 'alias', subBuilder: $11.NullableString.create)
+    ..aOM<$11.NullableString>(3, 'biography', subBuilder: $11.NullableString.create)
     ..aOM<$10.FileTokenAccess>(4, 'avatarReadonlyAccess', subBuilder: $10.FileTokenAccess.create)
     ..aOM<$10.FileTokenAccess>(5, 'avatarPreviewReadonlyAccess', subBuilder: $10.FileTokenAccess.create)
-    ..pc<$16.UserRelationRecord>(6, 'relations', $pb.PbFieldType.PM, subBuilder: $16.UserRelationRecord.create)
+    ..pc<$12.UserRelationRecord>(6, 'relations', $pb.PbFieldType.PM, subBuilder: $12.UserRelationRecord.create)
     ..aInt64(7, 'joinAt')
     ..hasRequiredFields = false
   ;
@@ -51,26 +51,26 @@ class UserPublicProfile extends $pb.GeneratedMessage {
   void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $15.NullableString get alias => $_getN(1);
+  $11.NullableString get alias => $_getN(1);
   @$pb.TagNumber(2)
-  set alias($15.NullableString v) { setField(2, v); }
+  set alias($11.NullableString v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasAlias() => $_has(1);
   @$pb.TagNumber(2)
   void clearAlias() => clearField(2);
   @$pb.TagNumber(2)
-  $15.NullableString ensureAlias() => $_ensure(1);
+  $11.NullableString ensureAlias() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $15.NullableString get biography => $_getN(2);
+  $11.NullableString get biography => $_getN(2);
   @$pb.TagNumber(3)
-  set biography($15.NullableString v) { setField(3, v); }
+  set biography($11.NullableString v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasBiography() => $_has(2);
   @$pb.TagNumber(3)
   void clearBiography() => clearField(3);
   @$pb.TagNumber(3)
-  $15.NullableString ensureBiography() => $_ensure(2);
+  $11.NullableString ensureBiography() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $10.FileTokenAccess get avatarReadonlyAccess => $_getN(3);
@@ -95,7 +95,7 @@ class UserPublicProfile extends $pb.GeneratedMessage {
   $10.FileTokenAccess ensureAvatarPreviewReadonlyAccess() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $core.List<$16.UserRelationRecord> get relations => $_getList(5);
+  $core.List<$12.UserRelationRecord> get relations => $_getList(5);
 
   @$pb.TagNumber(7)
   $fixnum.Int64 get joinAt => $_getI64(6);

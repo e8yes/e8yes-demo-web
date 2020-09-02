@@ -23,6 +23,7 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/system_user_group.h"
 #include "demoweb_service/demoweb/module/user_identity.h"
@@ -33,7 +34,7 @@ namespace e8 {
 
 std::optional<UserEntity> CreateUser(std::string const &security_key,
                                      std::vector<std::string> const &user_group_names,
-                                     std::optional<UserId> user_id, unsigned host_id,
+                                     std::optional<UserId> user_id, HostId const host_id,
                                      ConnectionReservoirInterface *db_conn) {
     if (!user_id.has_value()) {
         user_id = TimeId(host_id);
@@ -65,7 +66,7 @@ std::optional<UserEntity> CreateUser(std::string const &security_key,
 }
 
 std::optional<UserEntity> CreateBaselineUser(std::string const &security_key,
-                                             std::optional<UserId> user_id, unsigned host_id,
+                                             std::optional<UserId> user_id, HostId const host_id,
                                              ConnectionReservoirInterface *db_conn) {
     return CreateUser(
         security_key,

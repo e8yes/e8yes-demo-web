@@ -27,13 +27,13 @@
 #include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/module/retrieve_contact.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
+#include "demoweb_service/demoweb/service/service_util.h"
+#include "demoweb_service/demoweb/service/social_network_service.h"
 #include "proto_cc/identity.pb.h"
 #include "proto_cc/service_socialnetwork.grpc.pb.h"
 #include "proto_cc/service_socialnetwork.pb.h"
 #include "proto_cc/user_profile.pb.h"
 #include "proto_cc/user_relation.pb.h"
-#include "demoweb_service/demoweb/service/service_util.h"
-#include "demoweb_service/demoweb/service/social_network_service.h"
 
 namespace e8 {
 
@@ -69,7 +69,9 @@ grpc::Status SocialNetworkServiceImpl::SendInvitation(grpc::ServerContext *conte
     }
 
     ::e8::SendInvitation(identity.value().user_id(), request->invitee_user_id(),
-                         /*send_message_anyway=*/true, DemoWebEnvironment()->DemowebDatabase());
+                         /*send_message_anyway=*/true, DemoWebEnvironment()->CurrentHostId(),
+                         DemoWebEnvironment()->ClientPushMessagePublishers(),
+                         DemoWebEnvironment()->KeyGen(), DemoWebEnvironment()->DemowebDatabase());
 
     return grpc::Status::OK;
 }
@@ -114,6 +116,9 @@ grpc::Status SocialNetworkServiceImpl::ProcessInvitation(grpc::ServerContext *co
     }
 
     if (!e8::ProcessInvitation(identity->user_id(), request->inviter_user_id(), request->accept(),
+                               DemoWebEnvironment()->CurrentHostId(),
+                               DemoWebEnvironment()->ClientPushMessagePublishers(),
+                               DemoWebEnvironment()->KeyGen(),
                                DemoWebEnvironment()->DemowebDatabase())) {
         return grpc::Status(grpc::StatusCode::FAILED_PRECONDITION, "Invitation does not exist.");
     }

@@ -10,10 +10,12 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'chat_message.pb.dart' as $11;
+import 'user_profile.pb.dart' as $13;
+import 'chat_message.pb.dart' as $14;
 
 class InvitationReceivedMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('InvitationReceivedMessage', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aOM<$13.UserPublicProfile>(1, 'inviter', subBuilder: $13.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -31,10 +33,22 @@ class InvitationReceivedMessage extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static InvitationReceivedMessage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<InvitationReceivedMessage>(create);
   static InvitationReceivedMessage _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $13.UserPublicProfile get inviter => $_getN(0);
+  @$pb.TagNumber(1)
+  set inviter($13.UserPublicProfile v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasInviter() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearInviter() => clearField(1);
+  @$pb.TagNumber(1)
+  $13.UserPublicProfile ensureInviter() => $_ensure(0);
 }
 
 class InvitationAcceptedMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('InvitationAcceptedMessage', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aOM<$13.UserPublicProfile>(1, 'invitee', subBuilder: $13.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -52,11 +66,22 @@ class InvitationAcceptedMessage extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static InvitationAcceptedMessage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<InvitationAcceptedMessage>(create);
   static InvitationAcceptedMessage _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $13.UserPublicProfile get invitee => $_getN(0);
+  @$pb.TagNumber(1)
+  set invitee($13.UserPublicProfile v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasInvitee() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearInvitee() => clearField(1);
+  @$pb.TagNumber(1)
+  $13.UserPublicProfile ensureInvitee() => $_ensure(0);
 }
 
 class UnreadChatMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UnreadChatMessage', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$11.ChatMessageThread>(1, 'messageThreads', $pb.PbFieldType.PM, subBuilder: $11.ChatMessageThread.create)
+    ..pc<$14.ChatMessageThread>(1, 'messageThreads', $pb.PbFieldType.PM, subBuilder: $14.ChatMessageThread.create)
     ..hasRequiredFields = false
   ;
 
@@ -76,24 +101,24 @@ class UnreadChatMessage extends $pb.GeneratedMessage {
   static UnreadChatMessage _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$11.ChatMessageThread> get messageThreads => $_getList(0);
+  $core.List<$14.ChatMessageThread> get messageThreads => $_getList(0);
 }
 
-enum RealTimeMessagenContent_NotificationContent {
+enum RealTimeMessageContent_NotificationContent {
   invitationReceived, 
   invitationAccepted, 
   unreadChat, 
   notSet
 }
 
-class RealTimeMessagenContent extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, RealTimeMessagenContent_NotificationContent> _RealTimeMessagenContent_NotificationContentByTag = {
-    1 : RealTimeMessagenContent_NotificationContent.invitationReceived,
-    2 : RealTimeMessagenContent_NotificationContent.invitationAccepted,
-    3 : RealTimeMessagenContent_NotificationContent.unreadChat,
-    0 : RealTimeMessagenContent_NotificationContent.notSet
+class RealTimeMessageContent extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, RealTimeMessageContent_NotificationContent> _RealTimeMessageContent_NotificationContentByTag = {
+    1 : RealTimeMessageContent_NotificationContent.invitationReceived,
+    2 : RealTimeMessageContent_NotificationContent.invitationAccepted,
+    3 : RealTimeMessageContent_NotificationContent.unreadChat,
+    0 : RealTimeMessageContent_NotificationContent.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('RealTimeMessagenContent', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('RealTimeMessageContent', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..oo(0, [1, 2, 3])
     ..aOM<InvitationReceivedMessage>(1, 'invitationReceived', subBuilder: InvitationReceivedMessage.create)
     ..aOM<InvitationAcceptedMessage>(2, 'invitationAccepted', subBuilder: InvitationAcceptedMessage.create)
@@ -101,22 +126,22 @@ class RealTimeMessagenContent extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  RealTimeMessagenContent._() : super();
-  factory RealTimeMessagenContent() => create();
-  factory RealTimeMessagenContent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory RealTimeMessagenContent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  RealTimeMessagenContent clone() => RealTimeMessagenContent()..mergeFromMessage(this);
-  RealTimeMessagenContent copyWith(void Function(RealTimeMessagenContent) updates) => super.copyWith((message) => updates(message as RealTimeMessagenContent));
+  RealTimeMessageContent._() : super();
+  factory RealTimeMessageContent() => create();
+  factory RealTimeMessageContent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RealTimeMessageContent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  RealTimeMessageContent clone() => RealTimeMessageContent()..mergeFromMessage(this);
+  RealTimeMessageContent copyWith(void Function(RealTimeMessageContent) updates) => super.copyWith((message) => updates(message as RealTimeMessageContent));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static RealTimeMessagenContent create() => RealTimeMessagenContent._();
-  RealTimeMessagenContent createEmptyInstance() => create();
-  static $pb.PbList<RealTimeMessagenContent> createRepeated() => $pb.PbList<RealTimeMessagenContent>();
+  static RealTimeMessageContent create() => RealTimeMessageContent._();
+  RealTimeMessageContent createEmptyInstance() => create();
+  static $pb.PbList<RealTimeMessageContent> createRepeated() => $pb.PbList<RealTimeMessageContent>();
   @$core.pragma('dart2js:noInline')
-  static RealTimeMessagenContent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RealTimeMessagenContent>(create);
-  static RealTimeMessagenContent _defaultInstance;
+  static RealTimeMessageContent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RealTimeMessageContent>(create);
+  static RealTimeMessageContent _defaultInstance;
 
-  RealTimeMessagenContent_NotificationContent whichNotificationContent() => _RealTimeMessagenContent_NotificationContentByTag[$_whichOneof(0)];
+  RealTimeMessageContent_NotificationContent whichNotificationContent() => _RealTimeMessageContent_NotificationContentByTag[$_whichOneof(0)];
   void clearNotificationContent() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -158,7 +183,7 @@ class RealTimeMessage extends $pb.GeneratedMessage {
     ..aInt64(1, 'realTimeMessageId')
     ..aInt64(2, 'createdAt')
     ..aInt64(3, 'targetUserId')
-    ..aOM<RealTimeMessagenContent>(4, 'content', subBuilder: RealTimeMessagenContent.create)
+    ..aOM<RealTimeMessageContent>(4, 'content', subBuilder: RealTimeMessageContent.create)
     ..hasRequiredFields = false
   ;
 
@@ -205,14 +230,14 @@ class RealTimeMessage extends $pb.GeneratedMessage {
   void clearTargetUserId() => clearField(3);
 
   @$pb.TagNumber(4)
-  RealTimeMessagenContent get content => $_getN(3);
+  RealTimeMessageContent get content => $_getN(3);
   @$pb.TagNumber(4)
-  set content(RealTimeMessagenContent v) { setField(4, v); }
+  set content(RealTimeMessageContent v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasContent() => $_has(3);
   @$pb.TagNumber(4)
   void clearContent() => clearField(4);
   @$pb.TagNumber(4)
-  RealTimeMessagenContent ensureContent() => $_ensure(3);
+  RealTimeMessageContent ensureContent() => $_ensure(3);
 }
 

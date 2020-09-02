@@ -10,13 +10,13 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'chat_message.pb.dart' as $11;
+import 'chat_message.pb.dart' as $14;
 import 'pagination.pb.dart' as $19;
 
 class SendChatMessageRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SendChatMessageRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
-    ..aOM<$11.ChatMessageEntry>(2, 'message', subBuilder: $11.ChatMessageEntry.create)
+    ..aOM<$14.ChatMessageEntry>(2, 'message', subBuilder: $14.ChatMessageEntry.create)
     ..hasRequiredFields = false
   ;
 
@@ -45,20 +45,20 @@ class SendChatMessageRequest extends $pb.GeneratedMessage {
   void clearChannelId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $11.ChatMessageEntry get message => $_getN(1);
+  $14.ChatMessageEntry get message => $_getN(1);
   @$pb.TagNumber(2)
-  set message($11.ChatMessageEntry v) { setField(2, v); }
+  set message($14.ChatMessageEntry v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasMessage() => $_has(1);
   @$pb.TagNumber(2)
   void clearMessage() => clearField(2);
   @$pb.TagNumber(2)
-  $11.ChatMessageEntry ensureMessage() => $_ensure(1);
+  $14.ChatMessageEntry ensureMessage() => $_ensure(1);
 }
 
 class SendChatMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SendChatMessageResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$11.ChatMessageThread>(1, 'updatedThread', subBuilder: $11.ChatMessageThread.create)
+    ..aOM<$14.ChatMessageThread>(1, 'updatedThread', subBuilder: $14.ChatMessageThread.create)
     ..hasRequiredFields = false
   ;
 
@@ -78,15 +78,15 @@ class SendChatMessageResponse extends $pb.GeneratedMessage {
   static SendChatMessageResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $11.ChatMessageThread get updatedThread => $_getN(0);
+  $14.ChatMessageThread get updatedThread => $_getN(0);
   @$pb.TagNumber(1)
-  set updatedThread($11.ChatMessageThread v) { setField(1, v); }
+  set updatedThread($14.ChatMessageThread v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasUpdatedThread() => $_has(0);
   @$pb.TagNumber(1)
   void clearUpdatedThread() => clearField(1);
   @$pb.TagNumber(1)
-  $11.ChatMessageThread ensureUpdatedThread() => $_ensure(0);
+  $14.ChatMessageThread ensureUpdatedThread() => $_ensure(0);
 }
 
 class GetChatMessageRequest extends $pb.GeneratedMessage {
@@ -134,7 +134,7 @@ class GetChatMessageRequest extends $pb.GeneratedMessage {
 
 class GetChatMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetChatMessageResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$11.ChatMessageThread>(1, 'threads', $pb.PbFieldType.PM, subBuilder: $11.ChatMessageThread.create)
+    ..pc<$14.ChatMessageThread>(1, 'threads', $pb.PbFieldType.PM, subBuilder: $14.ChatMessageThread.create)
     ..hasRequiredFields = false
   ;
 
@@ -154,6 +154,6 @@ class GetChatMessageResponse extends $pb.GeneratedMessage {
   static GetChatMessageResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$11.ChatMessageThread> get threads => $_getList(0);
+  $core.List<$14.ChatMessageThread> get threads => $_getList(0);
 }
 

@@ -23,6 +23,7 @@
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
@@ -41,7 +42,7 @@ namespace e8 {
  */
 std::optional<UserEntity> CreateUser(std::string const &security_key,
                                      std::vector<std::string> const &user_group_names,
-                                     std::optional<UserId> user_id, unsigned host_id,
+                                     std::optional<UserId> user_id, HostId const host_id,
                                      ConnectionReservoirInterface *db_conn);
 
 /**
@@ -57,7 +58,7 @@ std::optional<UserEntity> CreateUser(std::string const &security_key,
  * @return A newly created user with its associated unique ID if there is no error.
  */
 std::optional<UserEntity> CreateBaselineUser(std::string const &security_key,
-                                             std::optional<UserId> user_id, unsigned host_id,
+                                             std::optional<UserId> user_id, HostId const host_id,
                                              ConnectionReservoirInterface *db_conn);
 
 } // namespace e8

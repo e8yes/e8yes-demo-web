@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'real_time_message.pb.dart' as $12;
+import 'real_time_message.pb.dart' as $15;
 
 class SubscribeRealTimeMessageQueueRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SubscribeRealTimeMessageQueueRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -34,7 +34,7 @@ class SubscribeRealTimeMessageQueueRequest extends $pb.GeneratedMessage {
 
 class SubscribeRealTimeMessageQueueResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SubscribeRealTimeMessageQueueResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$12.RealTimeMessage>(1, 'message', subBuilder: $12.RealTimeMessage.create)
+    ..aOM<$15.RealTimeMessage>(1, 'message', subBuilder: $15.RealTimeMessage.create)
     ..hasRequiredFields = false
   ;
 
@@ -54,14 +54,14 @@ class SubscribeRealTimeMessageQueueResponse extends $pb.GeneratedMessage {
   static SubscribeRealTimeMessageQueueResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $12.RealTimeMessage get message => $_getN(0);
+  $15.RealTimeMessage get message => $_getN(0);
   @$pb.TagNumber(1)
-  set message($12.RealTimeMessage v) { setField(1, v); }
+  set message($15.RealTimeMessage v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasMessage() => $_has(0);
   @$pb.TagNumber(1)
   void clearMessage() => clearField(1);
   @$pb.TagNumber(1)
-  $12.RealTimeMessage ensureMessage() => $_ensure(0);
+  $15.RealTimeMessage ensureMessage() => $_ensure(0);
 }
 

@@ -25,9 +25,23 @@
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/module/create_user.h"
+#include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
 #include "proto_cc/user_relation.pb.h"
+
+class MockMessagePublisher : public e8::MessagePublisherInterface {
+  public:
+    MockMessagePublisher() = default;
+    ~MockMessagePublisher() = default;
+
+    bool Publish(e8::MessageKey /*key*/, e8::RealTimeMessage const &message) {
+        published_messages_.push_back(message);
+        return true;
+    }
+
+    std::vector<e8::RealTimeMessage> published_messages_;
+};
 
 bool SendInvitationStorageTest() {
     e8::DemoWebTestEnvironmentContext env;
@@ -39,9 +53,14 @@ bool SendInvitationStorageTest() {
         e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/2,
                        env.CurrentHostId(), env.DemowebDatabase());
 
-    bool result = e8::SendInvitation(*user1->id.Value(), *user2->id.Value(),
-                                     /*send_message_anyway=*/false, env.DemowebDatabase());
+    MockMessagePublisher publisher;
+    bool result = e8::SendInvitation(*user1->id.Value(), *user2->id.Value(), env.CurrentHostId(),
+                                     /*send_message_anyway=*/false,
+                                     std::vector<e8::MessagePublisherInterface *>{&publisher},
+                                     env.KeyGen(), env.DemowebDatabase());
     TEST_CONDITION(result);
+    TEST_CONDITION(publisher.published_messages_.size() == 1);
+    TEST_CONDITION(publisher.published_messages_[0].target_user_id() == *user2->id.Value());
 
     e8::SqlQueryBuilder forward_query;
     forward_query.QueryPiece(e8::TableNames::ContactRelation())
@@ -72,12 +91,19 @@ bool ProcessInvitationAcceptTest() {
         e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/2,
                        env.CurrentHostId(), env.DemowebDatabase());
 
-    e8::SendInvitation(*user1->id.Value(), *user2->id.Value(),
-                       /*send_message_anyway=*/false, env.DemowebDatabase());
+    e8::SendInvitation(*user1->id.Value(), *user2->id.Value(), env.CurrentHostId(),
+                       /*send_message_anyway=*/false,
+                       std::vector<e8::MessagePublisherInterface *>(), env.KeyGen(),
+                       env.DemowebDatabase());
 
-    bool result = e8::ProcessInvitation(*user2->id.Value(), *user1->id.Value(), /*accept=*/true,
-                                        env.DemowebDatabase());
+    MockMessagePublisher publisher;
+    bool result = e8::ProcessInvitation(*user2->id.Value(), *user1->id.Value(), env.CurrentHostId(),
+                                        /*accept=*/true,
+                                        std::vector<e8::MessagePublisherInterface *>{&publisher},
+                                        env.KeyGen(), env.DemowebDatabase());
     TEST_CONDITION(result);
+    TEST_CONDITION(publisher.published_messages_.size() == 1);
+    TEST_CONDITION(publisher.published_messages_[0].target_user_id() == *user1->id.Value());
 
     e8::SqlQueryBuilder forward_query;
     forward_query.QueryPiece(e8::TableNames::ContactRelation())

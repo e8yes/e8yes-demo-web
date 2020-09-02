@@ -20,18 +20,21 @@ syntax = "proto3";
 package e8;
 
 import "chat_message.proto";
+import "user_profile.proto";
 
 message InvitationReceivedMessage {
+    UserPublicProfile inviter = 1;
 }
 
 message InvitationAcceptedMessage {
+    UserPublicProfile invitee = 1;
 }
 
 message UnreadChatMessage {
     repeated ChatMessageThread message_threads = 1;
 }
 
-message RealTimeMessagenContent {
+message RealTimeMessageContent {
     oneof notification_content {
         InvitationReceivedMessage invitation_received = 1;
         InvitationAcceptedMessage invitation_accepted = 2;
@@ -43,5 +46,5 @@ message RealTimeMessage {
     int64 real_time_message_id = 1;
     int64 created_at = 2;
     int64 target_user_id = 3;
-    RealTimeMessagenContent content = 4;
+    RealTimeMessageContent content = 4;
 }

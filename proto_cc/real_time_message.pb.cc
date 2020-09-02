@@ -23,11 +23,14 @@ namespace protobuf_chat_5fmessage_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_chat_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_ChatMessageThread;
 }  // namespace protobuf_chat_5fmessage_2eproto
 namespace protobuf_real_5ftime_5fmessage_2eproto {
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_InvitationAcceptedMessage;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_InvitationReceivedMessage;
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_InvitationAcceptedMessage;
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_InvitationReceivedMessage;
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_UnreadChatMessage;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<3> scc_info_RealTimeMessagenContent;
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<3> scc_info_RealTimeMessageContent;
 }  // namespace protobuf_real_5ftime_5fmessage_2eproto
+namespace protobuf_user_5fprofile_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_user_5fprofile_2eproto ::google::protobuf::internal::SCCInfo<3> scc_info_UserPublicProfile;
+}  // namespace protobuf_user_5fprofile_2eproto
 namespace e8 {
 class InvitationReceivedMessageDefaultTypeInternal {
  public:
@@ -44,14 +47,14 @@ class UnreadChatMessageDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<UnreadChatMessage>
       _instance;
 } _UnreadChatMessage_default_instance_;
-class RealTimeMessagenContentDefaultTypeInternal {
+class RealTimeMessageContentDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RealTimeMessagenContent>
+  ::google::protobuf::internal::ExplicitlyConstructed<RealTimeMessageContent>
       _instance;
   const ::e8::InvitationReceivedMessage* invitation_received_;
   const ::e8::InvitationAcceptedMessage* invitation_accepted_;
   const ::e8::UnreadChatMessage* unread_chat_;
-} _RealTimeMessagenContent_default_instance_;
+} _RealTimeMessageContent_default_instance_;
 class RealTimeMessageDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<RealTimeMessage>
@@ -70,8 +73,9 @@ static void InitDefaultsInvitationReceivedMessage() {
   ::e8::InvitationReceivedMessage::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_InvitationReceivedMessage =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsInvitationReceivedMessage}, {}};
+::google::protobuf::internal::SCCInfo<1> scc_info_InvitationReceivedMessage =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsInvitationReceivedMessage}, {
+      &protobuf_user_5fprofile_2eproto::scc_info_UserPublicProfile.base,}};
 
 static void InitDefaultsInvitationAcceptedMessage() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -84,8 +88,9 @@ static void InitDefaultsInvitationAcceptedMessage() {
   ::e8::InvitationAcceptedMessage::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_InvitationAcceptedMessage =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsInvitationAcceptedMessage}, {}};
+::google::protobuf::internal::SCCInfo<1> scc_info_InvitationAcceptedMessage =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsInvitationAcceptedMessage}, {
+      &protobuf_user_5fprofile_2eproto::scc_info_UserPublicProfile.base,}};
 
 static void InitDefaultsUnreadChatMessage() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -102,19 +107,19 @@ static void InitDefaultsUnreadChatMessage() {
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsUnreadChatMessage}, {
       &protobuf_chat_5fmessage_2eproto::scc_info_ChatMessageThread.base,}};
 
-static void InitDefaultsRealTimeMessagenContent() {
+static void InitDefaultsRealTimeMessageContent() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_RealTimeMessagenContent_default_instance_;
-    new (ptr) ::e8::RealTimeMessagenContent();
+    void* ptr = &::e8::_RealTimeMessageContent_default_instance_;
+    new (ptr) ::e8::RealTimeMessageContent();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::RealTimeMessagenContent::InitAsDefaultInstance();
+  ::e8::RealTimeMessageContent::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<3> scc_info_RealTimeMessagenContent =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 3, InitDefaultsRealTimeMessagenContent}, {
+::google::protobuf::internal::SCCInfo<3> scc_info_RealTimeMessageContent =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 3, InitDefaultsRealTimeMessageContent}, {
       &protobuf_real_5ftime_5fmessage_2eproto::scc_info_InvitationReceivedMessage.base,
       &protobuf_real_5ftime_5fmessage_2eproto::scc_info_InvitationAcceptedMessage.base,
       &protobuf_real_5ftime_5fmessage_2eproto::scc_info_UnreadChatMessage.base,}};
@@ -132,13 +137,13 @@ static void InitDefaultsRealTimeMessage() {
 
 ::google::protobuf::internal::SCCInfo<1> scc_info_RealTimeMessage =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsRealTimeMessage}, {
-      &protobuf_real_5ftime_5fmessage_2eproto::scc_info_RealTimeMessagenContent.base,}};
+      &protobuf_real_5ftime_5fmessage_2eproto::scc_info_RealTimeMessageContent.base,}};
 
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_InvitationReceivedMessage.base);
   ::google::protobuf::internal::InitSCC(&scc_info_InvitationAcceptedMessage.base);
   ::google::protobuf::internal::InitSCC(&scc_info_UnreadChatMessage.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_RealTimeMessagenContent.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_RealTimeMessageContent.base);
   ::google::protobuf::internal::InitSCC(&scc_info_RealTimeMessage.base);
 }
 
@@ -150,11 +155,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::InvitationReceivedMessage, inviter_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::InvitationAcceptedMessage, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::InvitationAcceptedMessage, invitee_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UnreadChatMessage, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -162,14 +169,14 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::UnreadChatMessage, message_threads_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessagenContent, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessageContent, _internal_metadata_),
   ~0u,  // no _extensions_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessagenContent, _oneof_case_[0]),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessageContent, _oneof_case_[0]),
   ~0u,  // no _weak_field_map_
-  offsetof(::e8::RealTimeMessagenContentDefaultTypeInternal, invitation_received_),
-  offsetof(::e8::RealTimeMessagenContentDefaultTypeInternal, invitation_accepted_),
-  offsetof(::e8::RealTimeMessagenContentDefaultTypeInternal, unread_chat_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessagenContent, notification_content_),
+  offsetof(::e8::RealTimeMessageContentDefaultTypeInternal, invitation_received_),
+  offsetof(::e8::RealTimeMessageContentDefaultTypeInternal, invitation_accepted_),
+  offsetof(::e8::RealTimeMessageContentDefaultTypeInternal, unread_chat_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessageContent, notification_content_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessage, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -182,17 +189,17 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::InvitationReceivedMessage)},
-  { 5, -1, sizeof(::e8::InvitationAcceptedMessage)},
-  { 10, -1, sizeof(::e8::UnreadChatMessage)},
-  { 16, -1, sizeof(::e8::RealTimeMessagenContent)},
-  { 25, -1, sizeof(::e8::RealTimeMessage)},
+  { 6, -1, sizeof(::e8::InvitationAcceptedMessage)},
+  { 12, -1, sizeof(::e8::UnreadChatMessage)},
+  { 18, -1, sizeof(::e8::RealTimeMessageContent)},
+  { 27, -1, sizeof(::e8::RealTimeMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_InvitationReceivedMessage_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_InvitationAcceptedMessage_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_UnreadChatMessage_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_RealTimeMessagenContent_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_RealTimeMessageContent_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_RealTimeMessage_default_instance_),
 };
 
@@ -218,25 +225,29 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\027real_time_message.proto\022\002e8\032\022chat_mess"
-      "age.proto\"\033\n\031InvitationReceivedMessage\"\033"
-      "\n\031InvitationAcceptedMessage\"C\n\021UnreadCha"
-      "tMessage\022.\n\017message_threads\030\001 \003(\0132\025.e8.C"
-      "hatMessageThread\"\333\001\n\027RealTimeMessagenCon"
-      "tent\022<\n\023invitation_received\030\001 \001(\0132\035.e8.I"
-      "nvitationReceivedMessageH\000\022<\n\023invitation"
-      "_accepted\030\002 \001(\0132\035.e8.InvitationAcceptedM"
-      "essageH\000\022,\n\013unread_chat\030\003 \001(\0132\025.e8.Unrea"
-      "dChatMessageH\000B\026\n\024notification_content\"\211"
-      "\001\n\017RealTimeMessage\022\034\n\024real_time_message_"
-      "id\030\001 \001(\003\022\022\n\ncreated_at\030\002 \001(\003\022\026\n\016target_u"
-      "ser_id\030\003 \001(\003\022,\n\007content\030\004 \001(\0132\033.e8.RealT"
-      "imeMessagenContentb\006proto3"
+      "age.proto\032\022user_profile.proto\"C\n\031Invitat"
+      "ionReceivedMessage\022&\n\007inviter\030\001 \001(\0132\025.e8"
+      ".UserPublicProfile\"C\n\031InvitationAccepted"
+      "Message\022&\n\007invitee\030\001 \001(\0132\025.e8.UserPublic"
+      "Profile\"C\n\021UnreadChatMessage\022.\n\017message_"
+      "threads\030\001 \003(\0132\025.e8.ChatMessageThread\"\332\001\n"
+      "\026RealTimeMessageContent\022<\n\023invitation_re"
+      "ceived\030\001 \001(\0132\035.e8.InvitationReceivedMess"
+      "ageH\000\022<\n\023invitation_accepted\030\002 \001(\0132\035.e8."
+      "InvitationAcceptedMessageH\000\022,\n\013unread_ch"
+      "at\030\003 \001(\0132\025.e8.UnreadChatMessageH\000B\026\n\024not"
+      "ification_content\"\210\001\n\017RealTimeMessage\022\034\n"
+      "\024real_time_message_id\030\001 \001(\003\022\022\n\ncreated_a"
+      "t\030\002 \001(\003\022\026\n\016target_user_id\030\003 \001(\003\022+\n\007conte"
+      "nt\030\004 \001(\0132\032.e8.RealTimeMessageContentb\006pr"
+      "oto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 546);
+      descriptor, 644);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "real_time_message.proto", &protobuf_RegisterTypes);
   ::protobuf_chat_5fmessage_2eproto::AddDescriptors();
+  ::protobuf_user_5fprofile_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
@@ -255,8 +266,17 @@ namespace e8 {
 // ===================================================================
 
 void InvitationReceivedMessage::InitAsDefaultInstance() {
+  ::e8::_InvitationReceivedMessage_default_instance_._instance.get_mutable()->inviter_ = const_cast< ::e8::UserPublicProfile*>(
+      ::e8::UserPublicProfile::internal_default_instance());
+}
+void InvitationReceivedMessage::clear_inviter() {
+  if (GetArenaNoVirtual() == NULL && inviter_ != NULL) {
+    delete inviter_;
+  }
+  inviter_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int InvitationReceivedMessage::kInviterFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 InvitationReceivedMessage::InvitationReceivedMessage()
@@ -270,10 +290,16 @@ InvitationReceivedMessage::InvitationReceivedMessage(const InvitationReceivedMes
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_inviter()) {
+    inviter_ = new ::e8::UserPublicProfile(*from.inviter_);
+  } else {
+    inviter_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:e8.InvitationReceivedMessage)
 }
 
 void InvitationReceivedMessage::SharedCtor() {
+  inviter_ = NULL;
 }
 
 InvitationReceivedMessage::~InvitationReceivedMessage() {
@@ -282,6 +308,7 @@ InvitationReceivedMessage::~InvitationReceivedMessage() {
 }
 
 void InvitationReceivedMessage::SharedDtor() {
+  if (this != internal_default_instance()) delete inviter_;
 }
 
 void InvitationReceivedMessage::SetCachedSize(int size) const {
@@ -304,6 +331,10 @@ void InvitationReceivedMessage::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  if (GetArenaNoVirtual() == NULL && inviter_ != NULL) {
+    delete inviter_;
+  }
+  inviter_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -316,12 +347,29 @@ bool InvitationReceivedMessage::MergePartialFromCodedStream(
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .e8.UserPublicProfile inviter = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_inviter()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:e8.InvitationReceivedMessage)
@@ -338,6 +386,12 @@ void InvitationReceivedMessage::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  // .e8.UserPublicProfile inviter = 1;
+  if (this->has_inviter()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->_internal_inviter(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -351,6 +405,13 @@ void InvitationReceivedMessage::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:e8.InvitationReceivedMessage)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // .e8.UserPublicProfile inviter = 1;
+  if (this->has_inviter()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->_internal_inviter(), deterministic, target);
+  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -369,6 +430,13 @@ size_t InvitationReceivedMessage::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // .e8.UserPublicProfile inviter = 1;
+  if (this->has_inviter()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *inviter_);
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -396,6 +464,9 @@ void InvitationReceivedMessage::MergeFrom(const InvitationReceivedMessage& from)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.has_inviter()) {
+    mutable_inviter()->::e8::UserPublicProfile::MergeFrom(from.inviter());
+  }
 }
 
 void InvitationReceivedMessage::CopyFrom(const ::google::protobuf::Message& from) {
@@ -422,6 +493,7 @@ void InvitationReceivedMessage::Swap(InvitationReceivedMessage* other) {
 }
 void InvitationReceivedMessage::InternalSwap(InvitationReceivedMessage* other) {
   using std::swap;
+  swap(inviter_, other->inviter_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
@@ -434,8 +506,17 @@ void InvitationReceivedMessage::InternalSwap(InvitationReceivedMessage* other) {
 // ===================================================================
 
 void InvitationAcceptedMessage::InitAsDefaultInstance() {
+  ::e8::_InvitationAcceptedMessage_default_instance_._instance.get_mutable()->invitee_ = const_cast< ::e8::UserPublicProfile*>(
+      ::e8::UserPublicProfile::internal_default_instance());
+}
+void InvitationAcceptedMessage::clear_invitee() {
+  if (GetArenaNoVirtual() == NULL && invitee_ != NULL) {
+    delete invitee_;
+  }
+  invitee_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int InvitationAcceptedMessage::kInviteeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 InvitationAcceptedMessage::InvitationAcceptedMessage()
@@ -449,10 +530,16 @@ InvitationAcceptedMessage::InvitationAcceptedMessage(const InvitationAcceptedMes
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_invitee()) {
+    invitee_ = new ::e8::UserPublicProfile(*from.invitee_);
+  } else {
+    invitee_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:e8.InvitationAcceptedMessage)
 }
 
 void InvitationAcceptedMessage::SharedCtor() {
+  invitee_ = NULL;
 }
 
 InvitationAcceptedMessage::~InvitationAcceptedMessage() {
@@ -461,6 +548,7 @@ InvitationAcceptedMessage::~InvitationAcceptedMessage() {
 }
 
 void InvitationAcceptedMessage::SharedDtor() {
+  if (this != internal_default_instance()) delete invitee_;
 }
 
 void InvitationAcceptedMessage::SetCachedSize(int size) const {
@@ -483,6 +571,10 @@ void InvitationAcceptedMessage::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  if (GetArenaNoVirtual() == NULL && invitee_ != NULL) {
+    delete invitee_;
+  }
+  invitee_ = NULL;
   _internal_metadata_.Clear();
 }
 
@@ -495,12 +587,29 @@ bool InvitationAcceptedMessage::MergePartialFromCodedStream(
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .e8.UserPublicProfile invitee = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_invitee()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:e8.InvitationAcceptedMessage)
@@ -517,6 +626,12 @@ void InvitationAcceptedMessage::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  // .e8.UserPublicProfile invitee = 1;
+  if (this->has_invitee()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->_internal_invitee(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -530,6 +645,13 @@ void InvitationAcceptedMessage::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:e8.InvitationAcceptedMessage)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // .e8.UserPublicProfile invitee = 1;
+  if (this->has_invitee()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->_internal_invitee(), deterministic, target);
+  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -548,6 +670,13 @@ size_t InvitationAcceptedMessage::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // .e8.UserPublicProfile invitee = 1;
+  if (this->has_invitee()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *invitee_);
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -575,6 +704,9 @@ void InvitationAcceptedMessage::MergeFrom(const InvitationAcceptedMessage& from)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.has_invitee()) {
+    mutable_invitee()->::e8::UserPublicProfile::MergeFrom(from.invitee());
+  }
 }
 
 void InvitationAcceptedMessage::CopyFrom(const ::google::protobuf::Message& from) {
@@ -601,6 +733,7 @@ void InvitationAcceptedMessage::Swap(InvitationAcceptedMessage* other) {
 }
 void InvitationAcceptedMessage::InternalSwap(InvitationAcceptedMessage* other) {
   using std::swap;
+  swap(invitee_, other->invitee_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
@@ -844,15 +977,15 @@ void UnreadChatMessage::InternalSwap(UnreadChatMessage* other) {
 
 // ===================================================================
 
-void RealTimeMessagenContent::InitAsDefaultInstance() {
-  ::e8::_RealTimeMessagenContent_default_instance_.invitation_received_ = const_cast< ::e8::InvitationReceivedMessage*>(
+void RealTimeMessageContent::InitAsDefaultInstance() {
+  ::e8::_RealTimeMessageContent_default_instance_.invitation_received_ = const_cast< ::e8::InvitationReceivedMessage*>(
       ::e8::InvitationReceivedMessage::internal_default_instance());
-  ::e8::_RealTimeMessagenContent_default_instance_.invitation_accepted_ = const_cast< ::e8::InvitationAcceptedMessage*>(
+  ::e8::_RealTimeMessageContent_default_instance_.invitation_accepted_ = const_cast< ::e8::InvitationAcceptedMessage*>(
       ::e8::InvitationAcceptedMessage::internal_default_instance());
-  ::e8::_RealTimeMessagenContent_default_instance_.unread_chat_ = const_cast< ::e8::UnreadChatMessage*>(
+  ::e8::_RealTimeMessageContent_default_instance_.unread_chat_ = const_cast< ::e8::UnreadChatMessage*>(
       ::e8::UnreadChatMessage::internal_default_instance());
 }
-void RealTimeMessagenContent::set_allocated_invitation_received(::e8::InvitationReceivedMessage* invitation_received) {
+void RealTimeMessageContent::set_allocated_invitation_received(::e8::InvitationReceivedMessage* invitation_received) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   clear_notification_content();
   if (invitation_received) {
@@ -864,9 +997,9 @@ void RealTimeMessagenContent::set_allocated_invitation_received(::e8::Invitation
     set_has_invitation_received();
     notification_content_.invitation_received_ = invitation_received;
   }
-  // @@protoc_insertion_point(field_set_allocated:e8.RealTimeMessagenContent.invitation_received)
+  // @@protoc_insertion_point(field_set_allocated:e8.RealTimeMessageContent.invitation_received)
 }
-void RealTimeMessagenContent::set_allocated_invitation_accepted(::e8::InvitationAcceptedMessage* invitation_accepted) {
+void RealTimeMessageContent::set_allocated_invitation_accepted(::e8::InvitationAcceptedMessage* invitation_accepted) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   clear_notification_content();
   if (invitation_accepted) {
@@ -878,9 +1011,9 @@ void RealTimeMessagenContent::set_allocated_invitation_accepted(::e8::Invitation
     set_has_invitation_accepted();
     notification_content_.invitation_accepted_ = invitation_accepted;
   }
-  // @@protoc_insertion_point(field_set_allocated:e8.RealTimeMessagenContent.invitation_accepted)
+  // @@protoc_insertion_point(field_set_allocated:e8.RealTimeMessageContent.invitation_accepted)
 }
-void RealTimeMessagenContent::set_allocated_unread_chat(::e8::UnreadChatMessage* unread_chat) {
+void RealTimeMessageContent::set_allocated_unread_chat(::e8::UnreadChatMessage* unread_chat) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   clear_notification_content();
   if (unread_chat) {
@@ -892,22 +1025,22 @@ void RealTimeMessagenContent::set_allocated_unread_chat(::e8::UnreadChatMessage*
     set_has_unread_chat();
     notification_content_.unread_chat_ = unread_chat;
   }
-  // @@protoc_insertion_point(field_set_allocated:e8.RealTimeMessagenContent.unread_chat)
+  // @@protoc_insertion_point(field_set_allocated:e8.RealTimeMessageContent.unread_chat)
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RealTimeMessagenContent::kInvitationReceivedFieldNumber;
-const int RealTimeMessagenContent::kInvitationAcceptedFieldNumber;
-const int RealTimeMessagenContent::kUnreadChatFieldNumber;
+const int RealTimeMessageContent::kInvitationReceivedFieldNumber;
+const int RealTimeMessageContent::kInvitationAcceptedFieldNumber;
+const int RealTimeMessageContent::kUnreadChatFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-RealTimeMessagenContent::RealTimeMessagenContent()
+RealTimeMessageContent::RealTimeMessageContent()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_real_5ftime_5fmessage_2eproto::scc_info_RealTimeMessagenContent.base);
+      &protobuf_real_5ftime_5fmessage_2eproto::scc_info_RealTimeMessageContent.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(constructor:e8.RealTimeMessageContent)
 }
-RealTimeMessagenContent::RealTimeMessagenContent(const RealTimeMessagenContent& from)
+RealTimeMessageContent::RealTimeMessageContent(const RealTimeMessageContent& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -929,40 +1062,40 @@ RealTimeMessagenContent::RealTimeMessagenContent(const RealTimeMessagenContent& 
       break;
     }
   }
-  // @@protoc_insertion_point(copy_constructor:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(copy_constructor:e8.RealTimeMessageContent)
 }
 
-void RealTimeMessagenContent::SharedCtor() {
+void RealTimeMessageContent::SharedCtor() {
   clear_has_notification_content();
 }
 
-RealTimeMessagenContent::~RealTimeMessagenContent() {
-  // @@protoc_insertion_point(destructor:e8.RealTimeMessagenContent)
+RealTimeMessageContent::~RealTimeMessageContent() {
+  // @@protoc_insertion_point(destructor:e8.RealTimeMessageContent)
   SharedDtor();
 }
 
-void RealTimeMessagenContent::SharedDtor() {
+void RealTimeMessageContent::SharedDtor() {
   if (has_notification_content()) {
     clear_notification_content();
   }
 }
 
-void RealTimeMessagenContent::SetCachedSize(int size) const {
+void RealTimeMessageContent::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* RealTimeMessagenContent::descriptor() {
+const ::google::protobuf::Descriptor* RealTimeMessageContent::descriptor() {
   ::protobuf_real_5ftime_5fmessage_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_real_5ftime_5fmessage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const RealTimeMessagenContent& RealTimeMessagenContent::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_real_5ftime_5fmessage_2eproto::scc_info_RealTimeMessagenContent.base);
+const RealTimeMessageContent& RealTimeMessageContent::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_real_5ftime_5fmessage_2eproto::scc_info_RealTimeMessageContent.base);
   return *internal_default_instance();
 }
 
 
-void RealTimeMessagenContent::clear_notification_content() {
-// @@protoc_insertion_point(one_of_clear_start:e8.RealTimeMessagenContent)
+void RealTimeMessageContent::clear_notification_content() {
+// @@protoc_insertion_point(one_of_clear_start:e8.RealTimeMessageContent)
   switch (notification_content_case()) {
     case kInvitationReceived: {
       delete notification_content_.invitation_received_;
@@ -984,8 +1117,8 @@ void RealTimeMessagenContent::clear_notification_content() {
 }
 
 
-void RealTimeMessagenContent::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.RealTimeMessagenContent)
+void RealTimeMessageContent::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.RealTimeMessageContent)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -994,11 +1127,11 @@ void RealTimeMessagenContent::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool RealTimeMessagenContent::MergePartialFromCodedStream(
+bool RealTimeMessageContent::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(parse_start:e8.RealTimeMessageContent)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1052,17 +1185,17 @@ bool RealTimeMessagenContent::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(parse_success:e8.RealTimeMessageContent)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(parse_failure:e8.RealTimeMessageContent)
   return false;
 #undef DO_
 }
 
-void RealTimeMessagenContent::SerializeWithCachedSizes(
+void RealTimeMessageContent::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(serialize_start:e8.RealTimeMessageContent)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1088,13 +1221,13 @@ void RealTimeMessagenContent::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(serialize_end:e8.RealTimeMessageContent)
 }
 
-::google::protobuf::uint8* RealTimeMessagenContent::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* RealTimeMessageContent::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.RealTimeMessageContent)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1123,12 +1256,12 @@ void RealTimeMessagenContent::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.RealTimeMessageContent)
   return target;
 }
 
-size_t RealTimeMessagenContent::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.RealTimeMessagenContent)
+size_t RealTimeMessageContent::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.RealTimeMessageContent)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1167,23 +1300,23 @@ size_t RealTimeMessagenContent::ByteSizeLong() const {
   return total_size;
 }
 
-void RealTimeMessagenContent::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.RealTimeMessagenContent)
+void RealTimeMessageContent::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.RealTimeMessageContent)
   GOOGLE_DCHECK_NE(&from, this);
-  const RealTimeMessagenContent* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const RealTimeMessagenContent>(
+  const RealTimeMessageContent* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RealTimeMessageContent>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.RealTimeMessageContent)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.RealTimeMessagenContent)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.RealTimeMessageContent)
     MergeFrom(*source);
   }
 }
 
-void RealTimeMessagenContent::MergeFrom(const RealTimeMessagenContent& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.RealTimeMessagenContent)
+void RealTimeMessageContent::MergeFrom(const RealTimeMessageContent& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.RealTimeMessageContent)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1208,36 +1341,36 @@ void RealTimeMessagenContent::MergeFrom(const RealTimeMessagenContent& from) {
   }
 }
 
-void RealTimeMessagenContent::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.RealTimeMessagenContent)
+void RealTimeMessageContent::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.RealTimeMessageContent)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void RealTimeMessagenContent::CopyFrom(const RealTimeMessagenContent& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.RealTimeMessagenContent)
+void RealTimeMessageContent::CopyFrom(const RealTimeMessageContent& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.RealTimeMessageContent)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool RealTimeMessagenContent::IsInitialized() const {
+bool RealTimeMessageContent::IsInitialized() const {
   return true;
 }
 
-void RealTimeMessagenContent::Swap(RealTimeMessagenContent* other) {
+void RealTimeMessageContent::Swap(RealTimeMessageContent* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void RealTimeMessagenContent::InternalSwap(RealTimeMessagenContent* other) {
+void RealTimeMessageContent::InternalSwap(RealTimeMessageContent* other) {
   using std::swap;
   swap(notification_content_, other->notification_content_);
   swap(_oneof_case_[0], other->_oneof_case_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata RealTimeMessagenContent::GetMetadata() const {
+::google::protobuf::Metadata RealTimeMessageContent::GetMetadata() const {
   protobuf_real_5ftime_5fmessage_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_real_5ftime_5fmessage_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1246,8 +1379,8 @@ void RealTimeMessagenContent::InternalSwap(RealTimeMessagenContent* other) {
 // ===================================================================
 
 void RealTimeMessage::InitAsDefaultInstance() {
-  ::e8::_RealTimeMessage_default_instance_._instance.get_mutable()->content_ = const_cast< ::e8::RealTimeMessagenContent*>(
-      ::e8::RealTimeMessagenContent::internal_default_instance());
+  ::e8::_RealTimeMessage_default_instance_._instance.get_mutable()->content_ = const_cast< ::e8::RealTimeMessageContent*>(
+      ::e8::RealTimeMessageContent::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int RealTimeMessage::kRealTimeMessageIdFieldNumber;
@@ -1268,7 +1401,7 @@ RealTimeMessage::RealTimeMessage(const RealTimeMessage& from)
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_content()) {
-    content_ = new ::e8::RealTimeMessagenContent(*from.content_);
+    content_ = new ::e8::RealTimeMessageContent(*from.content_);
   } else {
     content_ = NULL;
   }
@@ -1375,7 +1508,7 @@ bool RealTimeMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .e8.RealTimeMessagenContent content = 4;
+      // .e8.RealTimeMessageContent content = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
@@ -1428,7 +1561,7 @@ void RealTimeMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->target_user_id(), output);
   }
 
-  // .e8.RealTimeMessagenContent content = 4;
+  // .e8.RealTimeMessageContent content = 4;
   if (this->has_content()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, this->_internal_content(), output);
@@ -1463,7 +1596,7 @@ void RealTimeMessage::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->target_user_id(), target);
   }
 
-  // .e8.RealTimeMessagenContent content = 4;
+  // .e8.RealTimeMessageContent content = 4;
   if (this->has_content()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
@@ -1487,7 +1620,7 @@ size_t RealTimeMessage::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .e8.RealTimeMessagenContent content = 4;
+  // .e8.RealTimeMessageContent content = 4;
   if (this->has_content()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
@@ -1543,7 +1676,7 @@ void RealTimeMessage::MergeFrom(const RealTimeMessage& from) {
   (void) cached_has_bits;
 
   if (from.has_content()) {
-    mutable_content()->::e8::RealTimeMessagenContent::MergeFrom(from.content());
+    mutable_content()->::e8::RealTimeMessageContent::MergeFrom(from.content());
   }
   if (from.real_time_message_id() != 0) {
     set_real_time_message_id(from.real_time_message_id());
@@ -1606,8 +1739,8 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::InvitationAcceptedMessage* A
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::UnreadChatMessage* Arena::CreateMaybeMessage< ::e8::UnreadChatMessage >(Arena* arena) {
   return Arena::CreateInternal< ::e8::UnreadChatMessage >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::RealTimeMessagenContent* Arena::CreateMaybeMessage< ::e8::RealTimeMessagenContent >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::RealTimeMessagenContent >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::RealTimeMessageContent* Arena::CreateMaybeMessage< ::e8::RealTimeMessageContent >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::RealTimeMessageContent >(arena);
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::RealTimeMessage* Arena::CreateMaybeMessage< ::e8::RealTimeMessage >(Arena* arena) {
   return Arena::CreateInternal< ::e8::RealTimeMessage >(arena);

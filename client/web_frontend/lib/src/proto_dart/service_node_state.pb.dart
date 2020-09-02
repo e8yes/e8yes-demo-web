@@ -10,11 +10,11 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'node.pb.dart' as $14;
+import 'node.pb.dart' as $17;
 
 class ReviseNodeStateRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ReviseNodeStateRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$14.NodeStateRevision>(1, 'revisions', $pb.PbFieldType.PM, subBuilder: $14.NodeStateRevision.create)
+    ..pc<$17.NodeStateRevision>(1, 'revisions', $pb.PbFieldType.PM, subBuilder: $17.NodeStateRevision.create)
     ..hasRequiredFields = false
   ;
 
@@ -34,7 +34,7 @@ class ReviseNodeStateRequest extends $pb.GeneratedMessage {
   static ReviseNodeStateRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$14.NodeStateRevision> get revisions => $_getList(0);
+  $core.List<$17.NodeStateRevision> get revisions => $_getList(0);
 }
 
 class ReviseNodeStateResponse extends $pb.GeneratedMessage {
@@ -112,7 +112,7 @@ class GetCurrentRevisionEpochResponse extends $pb.GeneratedMessage {
 
 class AddPeersRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddPeersRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$14.NodeState>(1, 'nodes', $pb.PbFieldType.PM, subBuilder: $14.NodeState.create)
+    ..pc<$17.NodeState>(1, 'nodes', $pb.PbFieldType.PM, subBuilder: $17.NodeState.create)
     ..hasRequiredFields = false
   ;
 
@@ -132,7 +132,7 @@ class AddPeersRequest extends $pb.GeneratedMessage {
   static AddPeersRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$14.NodeState> get nodes => $_getList(0);
+  $core.List<$17.NodeState> get nodes => $_getList(0);
 }
 
 class AddPeersResponse extends $pb.GeneratedMessage {

@@ -15,19 +15,35 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ctime>
 #include <vector>
 
-#include "demoweb_service/demoweb/module/pushable_message.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
+#include "demoweb_service/demoweb/module/push_message.h"
 #include "message_queue/publisher/publisher.h"
+#include "postgres/query_runner/sql_runner.h"
 #include "proto_cc/real_time_message.pb.h"
 
 namespace e8 {
 
-std::vector<bool> PushMessage(RealTimeMessage const &message,
-                              std::vector<MessagePublisherInterface *> const &publishers) {
+std::vector<bool> PushMessageContent(UserId const target_user_id,
+                                     RealTimeMessageContent const &message_content,
+                                     HostId const host_id,
+                                     std::vector<MessagePublisherInterface *> const &publishers) {
+    RealTimeMessage message;
+    message.set_real_time_message_id(TimeId(host_id));
+    message.set_target_user_id(target_user_id);
+
+    std::time_t timestamp;
+    std::time(&timestamp);
+    message.set_created_at(timestamp);
+
+    *message.mutable_content() = message_content;
+
     std::vector<bool> rcs;
     for (MessagePublisherInterface *publisher : publishers) {
-        bool rc = publisher->Publish(message.target_user_id(), message);
+        bool rc = publisher->Publish(target_user_id, message);
         rcs.push_back(rc);
     }
     return rcs;

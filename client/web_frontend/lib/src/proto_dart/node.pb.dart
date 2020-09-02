@@ -11,7 +11,7 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'node.pbenum.dart';
-import 'delta.pbenum.dart' as $13;
+import 'delta.pbenum.dart' as $16;
 
 export 'node.pbenum.dart';
 
@@ -78,7 +78,7 @@ class NodeStateRevision extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('NodeStateRevision', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'revisionEpoch')
     ..m<$core.String, NodeState>(3, 'nodes', entryClassName: 'NodeStateRevision.NodesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: NodeState.create, packageName: const $pb.PackageName('e8'))
-    ..m<$core.String, $13.DeltaOperation>(4, 'deltaOperations', entryClassName: 'NodeStateRevision.DeltaOperationsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OE, valueOf: $13.DeltaOperation.valueOf, enumValues: $13.DeltaOperation.values, packageName: const $pb.PackageName('e8'))
+    ..m<$core.String, $16.DeltaOperation>(4, 'deltaOperations', entryClassName: 'NodeStateRevision.DeltaOperationsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OE, valueOf: $16.DeltaOperation.valueOf, enumValues: $16.DeltaOperation.values, packageName: const $pb.PackageName('e8'))
     ..hasRequiredFields = false
   ;
 
@@ -110,6 +110,6 @@ class NodeStateRevision extends $pb.GeneratedMessage {
   $core.Map<$core.String, NodeState> get nodes => $_getMap(1);
 
   @$pb.TagNumber(4)
-  $core.Map<$core.String, $13.DeltaOperation> get deltaOperations => $_getMap(2);
+  $core.Map<$core.String, $16.DeltaOperation> get deltaOperations => $_getMap(2);
 }
 

@@ -10,12 +10,12 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'real_time_message.pb.dart' as $12;
+import 'real_time_message.pb.dart' as $15;
 
 class EnqueueMessageRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('EnqueueMessageRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'userId')
-    ..pc<$12.RealTimeMessage>(2, 'messages', $pb.PbFieldType.PM, subBuilder: $12.RealTimeMessage.create)
+    ..pc<$15.RealTimeMessage>(2, 'messages', $pb.PbFieldType.PM, subBuilder: $15.RealTimeMessage.create)
     ..hasRequiredFields = false
   ;
 
@@ -44,7 +44,7 @@ class EnqueueMessageRequest extends $pb.GeneratedMessage {
   void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<$12.RealTimeMessage> get messages => $_getList(1);
+  $core.List<$15.RealTimeMessage> get messages => $_getList(1);
 }
 
 class EnqueueMessageResponse extends $pb.GeneratedMessage {
@@ -121,7 +121,7 @@ class DequeueMessageRequest extends $pb.GeneratedMessage {
 
 class DequeueMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DequeueMessageResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$12.RealTimeMessage>(2, 'message', subBuilder: $12.RealTimeMessage.create)
+    ..aOM<$15.RealTimeMessage>(2, 'message', subBuilder: $15.RealTimeMessage.create)
     ..hasRequiredFields = false
   ;
 
@@ -141,14 +141,14 @@ class DequeueMessageResponse extends $pb.GeneratedMessage {
   static DequeueMessageResponse _defaultInstance;
 
   @$pb.TagNumber(2)
-  $12.RealTimeMessage get message => $_getN(0);
+  $15.RealTimeMessage get message => $_getN(0);
   @$pb.TagNumber(2)
-  set message($12.RealTimeMessage v) { setField(2, v); }
+  set message($15.RealTimeMessage v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasMessage() => $_has(0);
   @$pb.TagNumber(2)
   void clearMessage() => clearField(2);
   @$pb.TagNumber(2)
-  $12.RealTimeMessage ensureMessage() => $_ensure(0);
+  $15.RealTimeMessage ensureMessage() => $_ensure(0);
 }
 

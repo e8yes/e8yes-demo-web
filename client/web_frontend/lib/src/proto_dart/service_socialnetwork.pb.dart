@@ -10,11 +10,11 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'user_relation.pb.dart' as $16;
+import 'user_relation.pb.dart' as $12;
 import 'pagination.pb.dart' as $19;
-import 'user_profile.pb.dart' as $18;
+import 'user_profile.pb.dart' as $13;
 
-import 'user_relation.pbenum.dart' as $16;
+import 'user_relation.pbenum.dart' as $12;
 
 class GetUserRelationsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -51,7 +51,7 @@ class GetUserRelationsResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetUserRelationsResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'sourceUserId')
     ..aInt64(2, 'targetUserId')
-    ..pc<$16.UserRelationRecord>(3, 'userRelations', $pb.PbFieldType.PM, subBuilder: $16.UserRelationRecord.create)
+    ..pc<$12.UserRelationRecord>(3, 'userRelations', $pb.PbFieldType.PM, subBuilder: $12.UserRelationRecord.create)
     ..hasRequiredFields = false
   ;
 
@@ -89,7 +89,7 @@ class GetUserRelationsResponse extends $pb.GeneratedMessage {
   void clearTargetUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<$16.UserRelationRecord> get userRelations => $_getList(2);
+  $core.List<$12.UserRelationRecord> get userRelations => $_getList(2);
 }
 
 class SendInvitationRequest extends $pb.GeneratedMessage {
@@ -313,7 +313,7 @@ class DeleteContactResponse extends $pb.GeneratedMessage {
 class GetRelatedUserListRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetRelatedUserListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<$19.Pagination>(1, 'pagination', subBuilder: $19.Pagination.create)
-    ..pc<$16.UserRelation>(2, 'relationFilter', $pb.PbFieldType.PE, valueOf: $16.UserRelation.valueOf, enumValues: $16.UserRelation.values)
+    ..pc<$12.UserRelation>(2, 'relationFilter', $pb.PbFieldType.PE, valueOf: $12.UserRelation.valueOf, enumValues: $12.UserRelation.values)
     ..hasRequiredFields = false
   ;
 
@@ -344,12 +344,12 @@ class GetRelatedUserListRequest extends $pb.GeneratedMessage {
   $19.Pagination ensurePagination() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.List<$16.UserRelation> get relationFilter => $_getList(1);
+  $core.List<$12.UserRelation> get relationFilter => $_getList(1);
 }
 
 class GetRelatedUserListResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetRelatedUserListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$18.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $18.UserPublicProfile.create)
+    ..pc<$13.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -369,6 +369,6 @@ class GetRelatedUserListResponse extends $pb.GeneratedMessage {
   static GetRelatedUserListResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$18.UserPublicProfile> get userProfiles => $_getList(0);
+  $core.List<$13.UserPublicProfile> get userProfiles => $_getList(0);
 }
 

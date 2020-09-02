@@ -10,17 +10,17 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'nullable_primitives.pb.dart' as $15;
+import 'nullable_primitives.pb.dart' as $11;
 import 'pagination.pb.dart' as $19;
 import 'message_channel.pb.dart' as $20;
-import 'user_profile.pb.dart' as $18;
+import 'user_profile.pb.dart' as $13;
 
 class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOB(1, 'encrypted')
     ..aOB(2, 'closeGroupChannel')
-    ..aOM<$15.NullableString>(3, 'title', subBuilder: $15.NullableString.create)
-    ..aOM<$15.NullableString>(4, 'description', subBuilder: $15.NullableString.create)
+    ..aOM<$11.NullableString>(3, 'title', subBuilder: $11.NullableString.create)
+    ..aOM<$11.NullableString>(4, 'description', subBuilder: $11.NullableString.create)
     ..hasRequiredFields = false
   ;
 
@@ -58,26 +58,26 @@ class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   void clearCloseGroupChannel() => clearField(2);
 
   @$pb.TagNumber(3)
-  $15.NullableString get title => $_getN(2);
+  $11.NullableString get title => $_getN(2);
   @$pb.TagNumber(3)
-  set title($15.NullableString v) { setField(3, v); }
+  set title($11.NullableString v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasTitle() => $_has(2);
   @$pb.TagNumber(3)
   void clearTitle() => clearField(3);
   @$pb.TagNumber(3)
-  $15.NullableString ensureTitle() => $_ensure(2);
+  $11.NullableString ensureTitle() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $15.NullableString get description => $_getN(3);
+  $11.NullableString get description => $_getN(3);
   @$pb.TagNumber(4)
-  set description($15.NullableString v) { setField(4, v); }
+  set description($11.NullableString v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasDescription() => $_has(3);
   @$pb.TagNumber(4)
   void clearDescription() => clearField(4);
   @$pb.TagNumber(4)
-  $15.NullableString ensureDescription() => $_ensure(3);
+  $11.NullableString ensureDescription() => $_ensure(3);
 }
 
 class CreateMessageChannelResponse extends $pb.GeneratedMessage {
@@ -400,7 +400,7 @@ class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
 
 class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetMessageChannelMembersResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$18.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $18.UserPublicProfile.create)
+    ..pc<$13.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
     ..pc<$20.MessageChannelRelation>(2, 'channelRelations', $pb.PbFieldType.PM, subBuilder: $20.MessageChannelRelation.create)
     ..hasRequiredFields = false
   ;
@@ -421,7 +421,7 @@ class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   static GetMessageChannelMembersResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$18.UserPublicProfile> get userProfiles => $_getList(0);
+  $core.List<$13.UserPublicProfile> get userProfiles => $_getList(0);
 
   @$pb.TagNumber(2)
   $core.List<$20.MessageChannelRelation> get channelRelations => $_getList(1);

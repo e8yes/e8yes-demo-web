@@ -15,23 +15,49 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <cstdint>
 #include <ctime>
 #include <memory>
+#include <optional>
+#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/contact_relation_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
-#include "proto_cc/user_relation.pb.h"
+#include "demoweb_service/demoweb/module/push_message.h"
+#include "demoweb_service/demoweb/module/retrieve_user.h"
+#include "demoweb_service/demoweb/module/user_profile.h"
+#include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_runner.h"
+#include "proto_cc/real_time_message.pb.h"
+#include "proto_cc/user_relation.pb.h"
 
 namespace e8 {
+namespace {
 
-bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_anyway*/,
-                    ConnectionReservoirInterface *conns) {
-    bool status = true;
+UserPublicProfile FetchUserProfile(UserId const viewer_id, UserId const user_id,
+                                   KeyGeneratorInterface *key_gen,
+                                   ConnectionReservoirInterface *conns) {
+    std::optional<UserEntity> user = RetrieveUser(user_id, conns);
+    assert(user.has_value());
+
+    std::vector<UserPublicProfile> inviter_profile =
+        BuildPublicProfiles(viewer_id, std::vector<UserEntity>{*user}, key_gen, conns);
+    assert(inviter_profile.size() == 1);
+
+    return inviter_profile[0];
+}
+
+} // namespace
+
+bool SendInvitation(UserId inviter_id, UserId invitee_id, HostId const host_id,
+                    bool send_message_anyway,
+                    std::vector<MessagePublisherInterface *> const &publishers,
+                    KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
+    bool first_time_invitation = true;
 
     time_t timestamp;
     std::time(&timestamp);
@@ -46,7 +72,7 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_an
     int64_t updated_rows =
         Update(forward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
     if (updated_rows == 0) {
-        status = false;
+        first_time_invitation = false;
     }
 
     ContactRelationEntity backward_relation;
@@ -58,11 +84,21 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, bool /*send_message_an
 
     Update(backward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
 
-    return status;
+    // Send the invitation message.
+    if (send_message_anyway || first_time_invitation) {
+        RealTimeMessageContent message;
+        *message.mutable_invitation_received()->mutable_inviter() =
+            FetchUserProfile(invitee_id, inviter_id, key_gen, conns);
+
+        PushMessageContent(invitee_id, message, host_id, publishers);
+    }
+
+    return first_time_invitation;
 }
 
-bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
-                       ConnectionReservoirInterface *conns) {
+bool ProcessInvitation(UserId invitee_id, UserId inviter_id, HostId const host_id, bool accept,
+                       std::vector<MessagePublisherInterface *> const &publishers,
+                       KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
     SqlQueryBuilder::Placeholder<SqlLong> invitee_id_ph;
     SqlQueryBuilder::Placeholder<SqlLong> inviter_id_ph;
     SqlQueryBuilder::Placeholder<SqlInt> foward_relation_ph;
@@ -126,6 +162,13 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept,
 
         Update(rejection_relation, TableNames::ContactRelation(), /*replace=*/true, conns);
     }
+
+    // Send the invitation accepted message.
+    RealTimeMessageContent message;
+    *message.mutable_invitation_accepted()->mutable_invitee() =
+        FetchUserProfile(inviter_id, invitee_id, key_gen, conns);
+
+    PushMessageContent(inviter_id, message, host_id, publishers);
 
     return true;
 }

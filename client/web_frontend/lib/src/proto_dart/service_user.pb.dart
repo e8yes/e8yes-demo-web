@@ -10,9 +10,9 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'identity.pb.dart' as $17;
-import 'user_profile.pb.dart' as $18;
-import 'nullable_primitives.pb.dart' as $15;
+import 'identity.pb.dart' as $18;
+import 'user_profile.pb.dart' as $13;
+import 'nullable_primitives.pb.dart' as $11;
 import 'pagination.pb.dart' as $19;
 import 'file.pb.dart' as $10;
 
@@ -136,7 +136,7 @@ class AuthorizationRequest extends $pb.GeneratedMessage {
 
 class AuthorizationResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('AuthorizationResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$17.IdentitySignature>(1, 'signedIdentity', subBuilder: $17.IdentitySignature.create)
+    ..aOM<$18.IdentitySignature>(1, 'signedIdentity', subBuilder: $18.IdentitySignature.create)
     ..hasRequiredFields = false
   ;
 
@@ -156,15 +156,15 @@ class AuthorizationResponse extends $pb.GeneratedMessage {
   static AuthorizationResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $17.IdentitySignature get signedIdentity => $_getN(0);
+  $18.IdentitySignature get signedIdentity => $_getN(0);
   @$pb.TagNumber(1)
-  set signedIdentity($17.IdentitySignature v) { setField(1, v); }
+  set signedIdentity($18.IdentitySignature v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasSignedIdentity() => $_has(0);
   @$pb.TagNumber(1)
   void clearSignedIdentity() => clearField(1);
   @$pb.TagNumber(1)
-  $17.IdentitySignature ensureSignedIdentity() => $_ensure(0);
+  $18.IdentitySignature ensureSignedIdentity() => $_ensure(0);
 }
 
 class GetPublicProfileRequest extends $pb.GeneratedMessage {
@@ -200,7 +200,7 @@ class GetPublicProfileRequest extends $pb.GeneratedMessage {
 
 class GetPublicProfileResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetPublicProfileResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$18.UserPublicProfile>(1, 'profile', subBuilder: $18.UserPublicProfile.create)
+    ..aOM<$13.UserPublicProfile>(1, 'profile', subBuilder: $13.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -220,21 +220,21 @@ class GetPublicProfileResponse extends $pb.GeneratedMessage {
   static GetPublicProfileResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $18.UserPublicProfile get profile => $_getN(0);
+  $13.UserPublicProfile get profile => $_getN(0);
   @$pb.TagNumber(1)
-  set profile($18.UserPublicProfile v) { setField(1, v); }
+  set profile($13.UserPublicProfile v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasProfile() => $_has(0);
   @$pb.TagNumber(1)
   void clearProfile() => clearField(1);
   @$pb.TagNumber(1)
-  $18.UserPublicProfile ensureProfile() => $_ensure(0);
+  $13.UserPublicProfile ensureProfile() => $_ensure(0);
 }
 
 class UpdatePublicProfileRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UpdatePublicProfileRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$15.NullableString>(1, 'alias', subBuilder: $15.NullableString.create)
-    ..aOM<$15.NullableString>(2, 'biography', subBuilder: $15.NullableString.create)
+    ..aOM<$11.NullableString>(1, 'alias', subBuilder: $11.NullableString.create)
+    ..aOM<$11.NullableString>(2, 'biography', subBuilder: $11.NullableString.create)
     ..hasRequiredFields = false
   ;
 
@@ -254,31 +254,31 @@ class UpdatePublicProfileRequest extends $pb.GeneratedMessage {
   static UpdatePublicProfileRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $15.NullableString get alias => $_getN(0);
+  $11.NullableString get alias => $_getN(0);
   @$pb.TagNumber(1)
-  set alias($15.NullableString v) { setField(1, v); }
+  set alias($11.NullableString v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasAlias() => $_has(0);
   @$pb.TagNumber(1)
   void clearAlias() => clearField(1);
   @$pb.TagNumber(1)
-  $15.NullableString ensureAlias() => $_ensure(0);
+  $11.NullableString ensureAlias() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $15.NullableString get biography => $_getN(1);
+  $11.NullableString get biography => $_getN(1);
   @$pb.TagNumber(2)
-  set biography($15.NullableString v) { setField(2, v); }
+  set biography($11.NullableString v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBiography() => $_has(1);
   @$pb.TagNumber(2)
   void clearBiography() => clearField(2);
   @$pb.TagNumber(2)
-  $15.NullableString ensureBiography() => $_ensure(1);
+  $11.NullableString ensureBiography() => $_ensure(1);
 }
 
 class UpdatePublicProfileResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UpdatePublicProfileResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$18.UserPublicProfile>(1, 'profile', subBuilder: $18.UserPublicProfile.create)
+    ..aOM<$13.UserPublicProfile>(1, 'profile', subBuilder: $13.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -298,21 +298,21 @@ class UpdatePublicProfileResponse extends $pb.GeneratedMessage {
   static UpdatePublicProfileResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $18.UserPublicProfile get profile => $_getN(0);
+  $13.UserPublicProfile get profile => $_getN(0);
   @$pb.TagNumber(1)
-  set profile($18.UserPublicProfile v) { setField(1, v); }
+  set profile($13.UserPublicProfile v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasProfile() => $_has(0);
   @$pb.TagNumber(1)
   void clearProfile() => clearField(1);
   @$pb.TagNumber(1)
-  $18.UserPublicProfile ensureProfile() => $_ensure(0);
+  $13.UserPublicProfile ensureProfile() => $_ensure(0);
 }
 
 class SearchUserRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchUserRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$15.NullableString>(1, 'alias', subBuilder: $15.NullableString.create)
-    ..aOM<$15.NullableInt64>(2, 'userId', subBuilder: $15.NullableInt64.create)
+    ..aOM<$11.NullableString>(1, 'alias', subBuilder: $11.NullableString.create)
+    ..aOM<$11.NullableInt64>(2, 'userId', subBuilder: $11.NullableInt64.create)
     ..aOM<$19.Pagination>(3, 'pagination', subBuilder: $19.Pagination.create)
     ..hasRequiredFields = false
   ;
@@ -333,26 +333,26 @@ class SearchUserRequest extends $pb.GeneratedMessage {
   static SearchUserRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $15.NullableString get alias => $_getN(0);
+  $11.NullableString get alias => $_getN(0);
   @$pb.TagNumber(1)
-  set alias($15.NullableString v) { setField(1, v); }
+  set alias($11.NullableString v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasAlias() => $_has(0);
   @$pb.TagNumber(1)
   void clearAlias() => clearField(1);
   @$pb.TagNumber(1)
-  $15.NullableString ensureAlias() => $_ensure(0);
+  $11.NullableString ensureAlias() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $15.NullableInt64 get userId => $_getN(1);
+  $11.NullableInt64 get userId => $_getN(1);
   @$pb.TagNumber(2)
-  set userId($15.NullableInt64 v) { setField(2, v); }
+  set userId($11.NullableInt64 v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasUserId() => $_has(1);
   @$pb.TagNumber(2)
   void clearUserId() => clearField(2);
   @$pb.TagNumber(2)
-  $15.NullableInt64 ensureUserId() => $_ensure(1);
+  $11.NullableInt64 ensureUserId() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $19.Pagination get pagination => $_getN(2);
@@ -368,7 +368,7 @@ class SearchUserRequest extends $pb.GeneratedMessage {
 
 class SearchUserResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchUserResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$18.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $18.UserPublicProfile.create)
+    ..pc<$13.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -388,7 +388,7 @@ class SearchUserResponse extends $pb.GeneratedMessage {
   static SearchUserResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$18.UserPublicProfile> get userProfiles => $_getList(0);
+  $core.List<$13.UserPublicProfile> get userProfiles => $_getList(0);
 }
 
 class PrepareNewAvatarRequest extends $pb.GeneratedMessage {

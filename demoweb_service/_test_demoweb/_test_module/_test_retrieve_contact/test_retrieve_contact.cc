@@ -24,6 +24,7 @@
 #include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/retrieve_contact.h"
+#include "message_queue/publisher/publisher.h"
 #include "proto_cc/pagination.pb.h"
 #include "proto_cc/user_relation.pb.h"
 
@@ -38,7 +39,9 @@ bool GetRelatedUsersTest() {
                        env.CurrentHostId(), env.DemowebDatabase());
 
     e8::SendInvitation(*user1->id.Value(), *user2->id.Value(),
-                       /*send_message_anyway=*/false, env.DemowebDatabase());
+                       /*send_message_anyway=*/false, env.CurrentHostId(),
+                       std::vector<e8::MessagePublisherInterface *>(), env.KeyGen(),
+                       env.DemowebDatabase());
 
     std::vector<e8::UserEntity> inviters = e8::GetRelatedUsers(
         *user2->id.Value(),
