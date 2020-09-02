@@ -241,8 +241,10 @@ bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, Messagechan
     *channel_member.last_interaction_at.ValuePtr() = timestamp;
 
     int64_t num_rows =
-        Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/true, conns);
-    assert(num_rows);
+        Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/false, conns);
+    if (num_rows != 1) {
+        return false;
+    }
 
     return true;
 }

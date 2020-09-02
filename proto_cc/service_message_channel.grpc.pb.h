@@ -62,7 +62,7 @@ class MessageChannelService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateMessageChannelResponse>>(PrepareAsyncCreateMessageChannelRaw(context, request, cq));
     }
     // Add a user to the specified channel where the logged-in user is the
-    // administrator. The user may or may not be a member of the channel.
+    // administrator. The user should not already been a member of the channel.
     virtual ::grpc::Status AddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::e8::AddUserToMessageChannelResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddUserToMessageChannelResponse>> AsyncAddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddUserToMessageChannelResponse>>(AsyncAddUserToMessageChannelRaw(context, request, cq));
@@ -110,7 +110,7 @@ class MessageChannelService final {
       // administrator of this channel.
       virtual void CreateMessageChannel(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest* request, ::e8::CreateMessageChannelResponse* response, std::function<void(::grpc::Status)>) = 0;
       // Add a user to the specified channel where the logged-in user is the
-      // administrator. The user may or may not be a member of the channel.
+      // administrator. The user should not already been a member of the channel.
       virtual void AddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response, std::function<void(::grpc::Status)>) = 0;
       // Get an encryption key of the specified channel where the logged-in
       // user is a member.
@@ -231,7 +231,7 @@ class MessageChannelService final {
     // administrator of this channel.
     virtual ::grpc::Status CreateMessageChannel(::grpc::ServerContext* context, const ::e8::CreateMessageChannelRequest* request, ::e8::CreateMessageChannelResponse* response);
     // Add a user to the specified channel where the logged-in user is the
-    // administrator. The user may or may not be a member of the channel.
+    // administrator. The user should not already been a member of the channel.
     virtual ::grpc::Status AddUserToMessageChannel(::grpc::ServerContext* context, const ::e8::AddUserToMessageChannelRequest* request, ::e8::AddUserToMessageChannelResponse* response);
     // Get an encryption key of the specified channel where the logged-in
     // user is a member.

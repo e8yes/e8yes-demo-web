@@ -95,7 +95,7 @@ service MessageChannelService {
         (CreateMessageChannelResponse);
 
     // Add a user to the specified channel where the logged-in user is the
-    // administrator. The user may or may not be a member of the channel.
+    // administrator. The user should not already been a member of the channel.
     rpc AddUserToMessageChannel (AddUserToMessageChannelRequest) returns
         (AddUserToMessageChannelResponse);
 
