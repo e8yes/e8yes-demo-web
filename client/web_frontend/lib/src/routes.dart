@@ -6,11 +6,10 @@ import 'package:demoweb_app/src/contact_list_component.template.dart'
 import 'package:demoweb_app/src/context.dart';
 import 'package:demoweb_app/src/demo_list_component.template.dart'
     as demo_list_template;
-import 'package:demoweb_app/src/women_chat_component.template.dart'
-    as women_chat_template;
+import 'package:demoweb_app/src/wmchat_component.template.dart'
+    as wmchat_template;
 import 'package:demoweb_app/src/route_paths.dart';
 import 'package:fixnum/fixnum.dart';
-
 
 class Routes {
   static final account = RouteDefinition(
@@ -24,20 +23,18 @@ class Routes {
   );
 
   static final demoList = RouteDefinition(
-    routePath: RoutePaths.demoList,
-    component: demo_list_template.DemoListComponentNgFactory
-  );
+      routePath: RoutePaths.demoList,
+      component: demo_list_template.DemoListComponentNgFactory);
 
-  static final womenChat = RouteDefinition(
-    routePath: RoutePaths.womenChat,
-    component: women_chat_template.WomenChatComponentNgFactory
-  );
+  static final wmChat = RouteDefinition(
+      routePath: RoutePaths.wmChat,
+      component: wmchat_template.WMComponentNgFactory);
 
   static final all = <RouteDefinition>[
     account,
     contactList,
     demoList,
-    womenChat,
+    wmChat,
     RouteDefinition.redirect(
       path: '',
       redirectTo: RoutePaths.demoList.toUrl(),
