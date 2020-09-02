@@ -21,6 +21,8 @@
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "proto_cc/file.pb.h"
 
+// TODO: enrich this test suite.
+
 bool AllocateNewAvatarLocationTest() {
     std::string path = e8::profile_internal::AllocateNewAvatarLocation(
         "123", e8::FileFormat::FFMT_IMAGE_PNG, std::nullopt);

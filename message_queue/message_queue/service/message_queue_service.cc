@@ -53,6 +53,7 @@ grpc::Status MessageQueueServiceImpl::EnqueueMessage(grpc::ServerContext * /*con
 }
 
 // TODO: Make this functiont testable.
+// TODO: Add the option to abort the dequeue operation after certain amount of inactivity.
 grpc::Status MessageQueueServiceImpl::DequeueMessage(
     grpc::ServerContext * /*context*/,
     grpc::ServerReaderWriter<DequeueMessageResponse, DequeueMessageRequest> *stream) {

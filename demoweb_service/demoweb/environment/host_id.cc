@@ -34,7 +34,7 @@ HostId ParseHostIdFromHostName(std::string const &host_name) {
     std::smatch sm;
     std::regex_match(host_name, sm, re);
     assert(sm.size() == 2);
-    return static_cast<unsigned>(std::stoi(sm[1].str()));
+    return static_cast<HostId>(std::stoi(sm[1].str()));
 }
 
 } // namespace
