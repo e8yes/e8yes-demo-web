@@ -61,8 +61,8 @@ bool CreateAndListMessageChannelTest() {
     e8::Pagination page1;
     page1.set_page_number(0);
     page1.set_result_per_page(2);
-    std::vector<e8::JoinedInMessageChannel> retrieved_channel =
-        e8::GetJoinedInMessageChannels(kCreatorId, page1, env.DemowebDatabase());
+    std::vector<e8::JoinedInMessageChannel> retrieved_channel = e8::GetJoinedInMessageChannels(
+        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>(), page1, env.DemowebDatabase());
 
     TEST_CONDITION(retrieved_channel.size() == 1);
     TEST_CONDITION(*retrieved_channel[0].message_channel.id.Value() ==
@@ -72,6 +72,30 @@ bool CreateAndListMessageChannelTest() {
     TEST_CONDITION(*retrieved_channel[0].message_channel.encryption_enabled.Value() == false);
     TEST_CONDITION(*retrieved_channel[0].message_channel.close_group_channel.Value() == true);
     TEST_CONDITION(retrieved_channel[0].member_type == e8::MessageChannelMemberType::MCMT_ADMIN);
+
+    return true;
+}
+
+bool ListMessageChannelMemberFilterTest() {
+    e8::DemoWebTestEnvironmentContext env;
+
+    CreateNewChannelInfo channel_info = CreateNewChannel(&env);
+
+    e8::Pagination page1;
+    page1.set_page_number(0);
+    page1.set_result_per_page(2);
+    std::vector<e8::JoinedInMessageChannel> retrieved_channel = e8::GetJoinedInMessageChannels(
+        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>{kCreatorId}, page1,
+        env.DemowebDatabase());
+
+    TEST_CONDITION(retrieved_channel.size() == 1);
+    TEST_CONDITION(*retrieved_channel[0].message_channel.id.Value() ==
+                   *channel_info.message_channel.id.Value());
+
+    retrieved_channel = e8::GetJoinedInMessageChannels(
+        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>{kCreatorId, -1000L}, page1,
+        env.DemowebDatabase());
+    TEST_CONDITION(retrieved_channel.empty());
 
     return true;
 }
@@ -98,6 +122,7 @@ bool CreateAndListChannelMemberTest() {
 int main() {
     e8::BeginTestSuite("message_channel");
     e8::RunTest("CreateAndListMessageChannelTest", CreateAndListMessageChannelTest);
+    e8::RunTest("ListMessageChannelMemberFilterTest", ListMessageChannelMemberFilterTest);
     e8::RunTest("CreateAndListChannelMemberTest", CreateAndListChannelMemberTest);
     e8::EndTestSuite();
     return 0;

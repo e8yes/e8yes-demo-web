@@ -72,7 +72,8 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
 }
 
 std::vector<JoinedInMessageChannel>
-GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pagination,
+GetJoinedInMessageChannels(UserId const member_id, std::vector<UserId> const &has_member_ids,
+                           std::optional<Pagination> const &pagination,
                            ConnectionReservoirInterface *conns) {
     SqlQueryBuilder query;
     SqlQueryBuilder::Placeholder<SqlLong> member_id_ph;
@@ -82,8 +83,14 @@ GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pa
         .QueryPiece(TableNames::MessageChannelHasUser())
         .QueryPiece(" mchu ON mchu.channel_id=mc.id")
         .QueryPiece(" WHERE mchu.user_id=")
-        .Holder(&member_id_ph)
-        .QueryPiece(" ORDER BY mchu.last_interaction_at DESC");
+        .Holder(&member_id_ph);
+    if (!has_member_ids.empty()) {
+        SqlQueryBuilder::Placeholder<SqlLongArr> has_member_ids_ph;
+        query.QueryPiece(" AND mchu.user_id=ALL(").Holder(&has_member_ids_ph).QueryPiece(")");
+        query.SetValueToPlaceholder(has_member_ids_ph,
+                                    std::make_shared<SqlLongArr>(has_member_ids));
+    }
+    query.QueryPiece(" ORDER BY mchu.last_interaction_at DESC");
 
     query.SetValueToPlaceholder(member_id_ph, std::make_shared<SqlLong>(member_id));
 

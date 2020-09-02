@@ -26,9 +26,9 @@
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "proto_cc/message_channel.pb.h"
 #include "proto_cc/pagination.pb.h"
-#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
 
@@ -55,9 +55,13 @@ struct JoinedInMessageChannel {
  * member_id is a member of. It also returns the member type the user is assigned in each specific
  * message channel. The result list is ordered by the last interaction timestamp where the most
  * recently interacted message channels rank first.
+ *
+ * @param has_member_ids A filter to required that a returning message channel must have all of the
+ * specified members.
  */
 std::vector<JoinedInMessageChannel>
-GetJoinedInMessageChannels(UserId member_id, std::optional<Pagination> const &pagination,
+GetJoinedInMessageChannels(UserId const member_id, std::vector<UserId> const &has_member_ids,
+                           std::optional<Pagination> const &pagination,
                            ConnectionReservoirInterface *conns);
 
 /**
