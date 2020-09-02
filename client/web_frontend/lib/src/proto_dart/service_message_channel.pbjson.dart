@@ -64,6 +64,7 @@ const GetJoinedInMessageChannelsRequest$json = const {
   '1': 'GetJoinedInMessageChannelsRequest',
   '2': const [
     const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
+    const {'1': 'with_member_ids', '3': 2, '4': 3, '5': 3, '10': 'withMemberIds'},
   ],
 };
 

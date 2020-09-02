@@ -23,11 +23,11 @@
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
+#include "demoweb_service/demoweb/service/message_channel_service.h"
+#include "demoweb_service/demoweb/service/service_util.h"
 #include "proto_cc/identity.pb.h"
 #include "proto_cc/pagination.pb.h"
 #include "proto_cc/user_profile.pb.h"
-#include "demoweb_service/demoweb/service/message_channel_service.h"
-#include "demoweb_service/demoweb/service/service_util.h"
 
 namespace e8 {
 

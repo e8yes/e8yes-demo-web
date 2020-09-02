@@ -300,6 +300,7 @@ class LeaveMessageChannelResponse extends $pb.GeneratedMessage {
 class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetJoinedInMessageChannelsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<$19.Pagination>(1, 'pagination', subBuilder: $19.Pagination.create)
+    ..p<$fixnum.Int64>(2, 'withMemberIds', $pb.PbFieldType.P6)
     ..hasRequiredFields = false
   ;
 
@@ -328,6 +329,9 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   void clearPagination() => clearField(1);
   @$pb.TagNumber(1)
   $19.Pagination ensurePagination() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.List<$fixnum.Int64> get withMemberIds => $_getList(1);
 }
 
 class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {

@@ -344,6 +344,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetJoinedInMessageChannelsRequest, pagination_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetJoinedInMessageChannelsRequest, with_member_ids_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetJoinedInMessageChannelsResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -375,9 +376,9 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 40, -1, sizeof(::e8::LeaveMessageChannelRequest)},
   { 46, -1, sizeof(::e8::LeaveMessageChannelResponse)},
   { 51, -1, sizeof(::e8::GetJoinedInMessageChannelsRequest)},
-  { 57, -1, sizeof(::e8::GetJoinedInMessageChannelsResponse)},
-  { 63, -1, sizeof(::e8::GetMessageChannelMembersRequest)},
-  { 70, -1, sizeof(::e8::GetMessageChannelMembersResponse)},
+  { 58, -1, sizeof(::e8::GetJoinedInMessageChannelsResponse)},
+  { 64, -1, sizeof(::e8::GetMessageChannelMembersRequest)},
+  { 71, -1, sizeof(::e8::GetMessageChannelMembersResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -432,35 +433,35 @@ void AddDescriptorsImpl() {
       "tMessageChannelKeyResponse\022\023\n\013channel_ke"
       "y\030\003 \001(\t\"0\n\032LeaveMessageChannelRequest\022\022\n"
       "\nchannel_id\030\001 \001(\003\"\035\n\033LeaveMessageChannel"
-      "Response\"G\n!GetJoinedInMessageChannelsRe"
+      "Response\"`\n!GetJoinedInMessageChannelsRe"
       "quest\022\"\n\npagination\030\001 \001(\0132\016.e8.Paginatio"
-      "n\"J\n\"GetJoinedInMessageChannelsResponse\022"
-      "$\n\010channels\030\001 \003(\0132\022.e8.MessageChannel\"Y\n"
-      "\037GetMessageChannelMembersRequest\022\022\n\nchan"
-      "nel_id\030\001 \001(\003\022\"\n\npagination\030\002 \001(\0132\016.e8.Pa"
-      "gination\"\207\001\n GetMessageChannelMembersRes"
-      "ponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8.UserPu"
-      "blicProfile\0225\n\021channel_relations\030\002 \003(\0132\032"
-      ".e8.MessageChannelRelation2\343\004\n\025MessageCh"
-      "annelService\022Y\n\024CreateMessageChannel\022\037.e"
-      "8.CreateMessageChannelRequest\032 .e8.Creat"
-      "eMessageChannelResponse\022h\n\031AddMemberToMe"
-      "ssageChannel\022$.e8.AddMemberToMessageChan"
-      "nelRequest\032%.e8.AddMemberToMessageChanne"
-      "lResponse\022Y\n\024GetMessageChannelKey\022\037.e8.G"
-      "etMessageChannelKeyRequest\032 .e8.GetMessa"
-      "geChannelKeyResponse\022V\n\023LeaveMessageChan"
-      "nel\022\036.e8.LeaveMessageChannelRequest\032\037.e8"
-      ".LeaveMessageChannelResponse\022k\n\032GetJoine"
-      "dInMessageChannels\022%.e8.GetJoinedInMessa"
-      "geChannelsRequest\032&.e8.GetJoinedInMessag"
-      "eChannelsResponse\022e\n\030GetMessageChannelMe"
-      "mbers\022#.e8.GetMessageChannelMembersReque"
-      "st\032$.e8.GetMessageChannelMembersResponse"
-      "b\006proto3"
+      "n\022\027\n\017with_member_ids\030\002 \003(\003\"J\n\"GetJoinedI"
+      "nMessageChannelsResponse\022$\n\010channels\030\001 \003"
+      "(\0132\022.e8.MessageChannel\"Y\n\037GetMessageChan"
+      "nelMembersRequest\022\022\n\nchannel_id\030\001 \001(\003\022\"\n"
+      "\npagination\030\002 \001(\0132\016.e8.Pagination\"\207\001\n Ge"
+      "tMessageChannelMembersResponse\022,\n\ruser_p"
+      "rofiles\030\001 \003(\0132\025.e8.UserPublicProfile\0225\n\021"
+      "channel_relations\030\002 \003(\0132\032.e8.MessageChan"
+      "nelRelation2\343\004\n\025MessageChannelService\022Y\n"
+      "\024CreateMessageChannel\022\037.e8.CreateMessage"
+      "ChannelRequest\032 .e8.CreateMessageChannel"
+      "Response\022h\n\031AddMemberToMessageChannel\022$."
+      "e8.AddMemberToMessageChannelRequest\032%.e8"
+      ".AddMemberToMessageChannelResponse\022Y\n\024Ge"
+      "tMessageChannelKey\022\037.e8.GetMessageChanne"
+      "lKeyRequest\032 .e8.GetMessageChannelKeyRes"
+      "ponse\022V\n\023LeaveMessageChannel\022\036.e8.LeaveM"
+      "essageChannelRequest\032\037.e8.LeaveMessageCh"
+      "annelResponse\022k\n\032GetJoinedInMessageChann"
+      "els\022%.e8.GetJoinedInMessageChannelsReque"
+      "st\032&.e8.GetJoinedInMessageChannelsRespon"
+      "se\022e\n\030GetMessageChannelMembers\022#.e8.GetM"
+      "essageChannelMembersRequest\032$.e8.GetMess"
+      "ageChannelMembersResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1648);
+      descriptor, 1673);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_pagination_2eproto::AddDescriptors();
@@ -2443,6 +2444,7 @@ void GetJoinedInMessageChannelsRequest::clear_pagination() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int GetJoinedInMessageChannelsRequest::kPaginationFieldNumber;
+const int GetJoinedInMessageChannelsRequest::kWithMemberIdsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 GetJoinedInMessageChannelsRequest::GetJoinedInMessageChannelsRequest()
@@ -2454,7 +2456,8 @@ GetJoinedInMessageChannelsRequest::GetJoinedInMessageChannelsRequest()
 }
 GetJoinedInMessageChannelsRequest::GetJoinedInMessageChannelsRequest(const GetJoinedInMessageChannelsRequest& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
+      _internal_metadata_(NULL),
+      with_member_ids_(from.with_member_ids_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_pagination()) {
     pagination_ = new ::e8::Pagination(*from.pagination_);
@@ -2497,6 +2500,7 @@ void GetJoinedInMessageChannelsRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  with_member_ids_.Clear();
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
     delete pagination_;
   }
@@ -2520,6 +2524,25 @@ bool GetJoinedInMessageChannelsRequest::MergePartialFromCodedStream(
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_pagination()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated int64 with_member_ids = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, this->mutable_with_member_ids())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 1, 18u, input, this->mutable_with_member_ids())));
         } else {
           goto handle_unusual;
         }
@@ -2558,6 +2581,17 @@ void GetJoinedInMessageChannelsRequest::SerializeWithCachedSizes(
       1, this->_internal_pagination(), output);
   }
 
+  // repeated int64 with_member_ids = 2;
+  if (this->with_member_ids_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _with_member_ids_cached_byte_size_));
+  }
+  for (int i = 0, n = this->with_member_ids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64NoTag(
+      this->with_member_ids(i), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2579,6 +2613,19 @@ void GetJoinedInMessageChannelsRequest::SerializeWithCachedSizes(
         1, this->_internal_pagination(), deterministic, target);
   }
 
+  // repeated int64 with_member_ids = 2;
+  if (this->with_member_ids_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      2,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::int32>(
+            _with_member_ids_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteInt64NoTagToArray(this->with_member_ids_, target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -2596,6 +2643,22 @@ size_t GetJoinedInMessageChannelsRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // repeated int64 with_member_ids = 2;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int64Size(this->with_member_ids_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _with_member_ids_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
   // .e8.Pagination pagination = 1;
   if (this->has_pagination()) {
     total_size += 1 +
@@ -2630,6 +2693,7 @@ void GetJoinedInMessageChannelsRequest::MergeFrom(const GetJoinedInMessageChanne
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  with_member_ids_.MergeFrom(from.with_member_ids_);
   if (from.has_pagination()) {
     mutable_pagination()->::e8::Pagination::MergeFrom(from.pagination());
   }
@@ -2659,6 +2723,7 @@ void GetJoinedInMessageChannelsRequest::Swap(GetJoinedInMessageChannelsRequest* 
 }
 void GetJoinedInMessageChannelsRequest::InternalSwap(GetJoinedInMessageChannelsRequest* other) {
   using std::swap;
+  with_member_ids_.InternalSwap(&other->with_member_ids_);
   swap(pagination_, other->pagination_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }

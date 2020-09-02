@@ -63,6 +63,10 @@ message LeaveMessageChannelResponse {}
 
 message GetJoinedInMessageChannelsRequest {
     Pagination pagination = 1;
+
+    // Only retrieve message channels that contain all the members with the IDs
+    // in the following array.
+    repeated int64 with_member_ids = 2;
 }
 
 message GetJoinedInMessageChannelsResponse {
