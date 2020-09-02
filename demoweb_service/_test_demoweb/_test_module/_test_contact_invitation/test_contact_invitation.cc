@@ -61,6 +61,9 @@ bool SendInvitationStorageTest() {
     TEST_CONDITION(result);
     TEST_CONDITION(publisher.published_messages_.size() == 1);
     TEST_CONDITION(publisher.published_messages_[0].target_user_id() == *user2->id.Value());
+    TEST_CONDITION(publisher.published_messages_[0].real_time_message_id() != 0);
+    TEST_CONDITION(publisher.published_messages_[0].created_at() > 0);
+    TEST_CONDITION(publisher.published_messages_[0].content().has_invitation_received());
 
     e8::SqlQueryBuilder forward_query;
     forward_query.QueryPiece(e8::TableNames::ContactRelation())
@@ -104,6 +107,9 @@ bool ProcessInvitationAcceptTest() {
     TEST_CONDITION(result);
     TEST_CONDITION(publisher.published_messages_.size() == 1);
     TEST_CONDITION(publisher.published_messages_[0].target_user_id() == *user1->id.Value());
+    TEST_CONDITION(publisher.published_messages_[0].real_time_message_id() != 0);
+    TEST_CONDITION(publisher.published_messages_[0].created_at() > 0);
+    TEST_CONDITION(publisher.published_messages_[0].content().has_invitation_accepted());
 
     e8::SqlQueryBuilder forward_query;
     forward_query.QueryPiece(e8::TableNames::ContactRelation())
