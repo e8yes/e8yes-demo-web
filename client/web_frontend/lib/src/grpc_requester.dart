@@ -14,3 +14,21 @@
  * <p>You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
+
+import 'package:demoweb_app/src/connection_manager_interface.dart';
+import 'package:grpc/grpc_web.dart';
+
+class GrpcRequester {
+  final ConnectionManagerInterface _conn_mgr;
+
+  GrpcRequester(this._conn_mgr);
+
+  Future<Response> MakeRequest<Request, Response>(
+      Request request, String signature, Function requestCall) {
+    GrpcWebClientChannel channel = _conn_mgr.take();
+    Future<Response> res =
+        requestCall(request, CallOptions(metadata: {'a': signature}), channel);
+    _conn_mgr.put(channel);
+    return res;
+  }
+}
