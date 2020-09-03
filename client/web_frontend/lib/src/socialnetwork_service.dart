@@ -15,6 +15,7 @@ class SocialNetworkServiceImpl implements SocialNetworkServiceInterface {
     });
   }
 
+  @override
   Future<SendInvitationResponse> sendInvitation(
       SendInvitationRequest request, String signature) async {
     return demowebServiceRequester.MakeRequest(request, signature,
@@ -24,6 +25,7 @@ class SocialNetworkServiceImpl implements SocialNetworkServiceInterface {
     });
   }
 
+  @override
   Future<ProcessInvitationResponse> processInvitation(
       ProcessInvitationRequest request, String signature) async {
     return demowebServiceRequester.MakeRequest(request, signature,
@@ -33,6 +35,7 @@ class SocialNetworkServiceImpl implements SocialNetworkServiceInterface {
     });
   }
 
+  @override
   Future<GetRelatedUserListResponse> getRelatedUserList(
       GetRelatedUserListRequest request, String signature) async {
     return demowebServiceRequester.MakeRequest(request, signature,

@@ -21,14 +21,14 @@ import 'package:demoweb_app/src/proto_dart/service_message_channel.pb.dart';
 
 abstract class MessageChannelServiceInterface {
   Future<CreateMessageChannelResponse> createMessageChannel(
-      CreateMessageChannelRequest request);
+      CreateMessageChannelRequest request, String signature);
 
   Future<AddUserToMessageChannelResponse> addUserToMessageChannel(
-      AddUserToMessageChannelRequest request);
+      AddUserToMessageChannelRequest request, String signature);
 
   Future<GetJoinedInMessageChannelsResponse> getJoinedInMessageChannels(
-      GetJoinedInMessageChannelsRequest request);
+      GetJoinedInMessageChannelsRequest request, String signature);
 
   Future<GetMessageChannelMembersResponse> getMessageChannelMembers(
-      GetMessageChannelMembersRequest request);
+      GetMessageChannelMembersRequest request, String signature);
 }

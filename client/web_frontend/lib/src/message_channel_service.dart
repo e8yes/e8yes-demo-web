@@ -14,3 +14,49 @@
  * <p>You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
+
+import 'package:demoweb_app/src/context.dart';
+import 'package:demoweb_app/src/message_channel_service_interface.dart';
+import 'package:demoweb_app/src/proto_dart/service_message_channel.pbgrpc.dart';
+
+class MessageChannelServiceImpl extends MessageChannelServiceInterface {
+  @override
+  Future<CreateMessageChannelResponse> createMessageChannel(
+      CreateMessageChannelRequest request, String signature) {
+    return demowebServiceRequester.MakeRequest(request, signature,
+        (request, call_opts, channel) {
+      return MessageChannelServiceClient(channel)
+          .createMessageChannel(request, options: call_opts);
+    });
+  }
+
+  @override
+  Future<AddUserToMessageChannelResponse> addUserToMessageChannel(
+      AddUserToMessageChannelRequest request, String signature) {
+    return demowebServiceRequester.MakeRequest(request, signature,
+        (request, call_opts, channel) {
+      return MessageChannelServiceClient(channel)
+          .addUserToMessageChannel(request, options: call_opts);
+    });
+  }
+
+  @override
+  Future<GetJoinedInMessageChannelsResponse> getJoinedInMessageChannels(
+      GetJoinedInMessageChannelsRequest request, String signature) {
+    return demowebServiceRequester.MakeRequest(request, signature,
+        (request, call_opts, channel) {
+      return MessageChannelServiceClient(channel)
+          .getJoinedInMessageChannels(request, options: call_opts);
+    });
+  }
+
+  @override
+  Future<GetMessageChannelMembersResponse> getMessageChannelMembers(
+      GetMessageChannelMembersRequest request, String signature) {
+    return demowebServiceRequester.MakeRequest(request, signature,
+        (request, call_opts, channel) {
+      return MessageChannelServiceClient(channel)
+          .getMessageChannelMembers(request, options: call_opts);
+    });
+  }
+}
