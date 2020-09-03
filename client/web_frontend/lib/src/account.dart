@@ -4,7 +4,6 @@ import 'package:demoweb_app/src/authorization_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
 
 import 'package:demoweb_app/src/context.dart';
-import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import "package:demoweb_app/src/proto_dart/service_user.pb.dart";
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/security_key_generator.dart';
