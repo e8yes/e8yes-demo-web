@@ -5,7 +5,7 @@ import 'package:demoweb_app/src/proto_dart/service_message_subscriber.pbgrpc.dar
 
 class MessageSubscriberServiceImpl extends MessageSubscriberServiceInterface {
   @override
-  Future<SubscribeRealTimeMessageQueueResponse> SubscribeRealTimeMessageQueue(
+  Stream<SubscribeRealTimeMessageQueueResponse> subscribeRealTimeMessageQueue(
       SubscribeRealTimeMessageQueueRequest request, String signature) {
     return demowebServiceRequester.MakeRequest(request, signature,
         (request, call_opts, channel) {

@@ -23,10 +23,10 @@ class GrpcRequester {
 
   GrpcRequester(this._conn_mgr);
 
-  Future<Response> MakeRequest<Request, Response>(
+  Response MakeRequest<Request, Response>(
       Request request, String signature, Function requestCall) {
     GrpcWebClientChannel channel = _conn_mgr.take();
-    Future<Response> res =
+    Response res =
         requestCall(request, CallOptions(metadata: {'a': signature}), channel);
     _conn_mgr.put(channel);
     return res;

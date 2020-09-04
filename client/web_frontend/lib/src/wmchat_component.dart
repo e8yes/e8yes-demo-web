@@ -20,7 +20,7 @@ class WMComponent implements OnActivate {
   List<MessageChannel> message_channels = List<MessageChannel>();
   bool onLoadingMessageChannels = false;
 
-  MessageChannelServiceInterface message_channel_service_;
+  final MessageChannelServiceInterface message_channel_service_;
 
   WMComponent(this.message_channel_service_);
 
