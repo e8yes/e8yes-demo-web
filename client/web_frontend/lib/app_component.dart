@@ -3,6 +3,7 @@ import 'package:angular_router/angular_router.dart';
 import 'package:demoweb_app/src/account.dart';
 import 'package:demoweb_app/src/authorization_service.dart';
 import 'package:demoweb_app/src/authorization_service_interface.dart';
+import 'package:demoweb_app/src/fetch_realtime_message.dart';
 import 'package:demoweb_app/src/message_channel_service.dart';
 import 'package:demoweb_app/src/message_channel_service_interface.dart';
 import 'package:demoweb_app/src/navigation_component.dart';
@@ -35,5 +36,7 @@ class AppComponent {
 
   AppComponent(this._user_service, this._auth_service) {
     signIn(null, _user_service, _auth_service);
+
+    FetchRealTimeMessages(1);
   }
 }
