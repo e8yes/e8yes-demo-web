@@ -83,4 +83,57 @@ grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(
     return grpc::Status::OK;
 }
 
+grpc::Status MessageSubscriberServiceImpl::SubscriberRealTimeMessageQueueLP(
+    grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const * /*request*/,
+    SubscribeRealTimeMessageQueueResponse *response) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(
+        *context, kDemoWebUserAuthorizationKey, SubscriberEnvironment()->KeyGen(), &status);
+    if (!identity.has_value()) {
+        return status;
+    }
+
+    std::optional<NodeState> node = SubscriberEnvironment()->Distributor()->Distribute(
+        std::to_string(identity->user_id()), NDF_MESSAGE_QUEUE,
+        SubscriberEnvironment()->NodeStateStorage());
+    if (!node.has_value()) {
+        return grpc::Status(grpc::StatusCode::UNAVAILABLE,
+                            "No node is available for subscription.");
+    }
+
+    std::unique_ptr<MessageQueueService::Stub> stub = CREATE_GRPC_STUB(
+        MessageQueueService, *node, SubscriberEnvironment()->GetMessageQueueServicePort());
+
+    grpc::ClientContext client_context;
+
+    std::unique_ptr<grpc::ClientReaderWriter<DequeueMessageRequest, DequeueMessageResponse>>
+        stream = stub->DequeueMessage(&client_context);
+
+    DequeueMessageRequest dequeue_request;
+    dequeue_request.set_user_id(identity->user_id());
+    dequeue_request.set_previous_message_delivered(false);
+    dequeue_request.set_end_operation(false);
+
+    std::time_t begin;
+    std::time_t end;
+    std::time(&begin);
+    DequeueMessageResponse dequeue_response;
+    if (!stream->Write(dequeue_request) || !stream->Read(&dequeue_response)) {
+        return grpc::Status(grpc::StatusCode::INTERNAL, "Message queue stream is broken.");
+    }
+    std::time(&end);
+
+    if (end - begin > 30) {
+        *response->mutable_message() = dequeue_response.message();
+        dequeue_request.set_previous_message_delivered(true);
+    } else {
+        dequeue_request.set_previous_message_delivered(false);
+    }
+
+    dequeue_request.set_end_operation(true);
+    stream->Write(dequeue_request);
+
+    return grpc::Status::OK;
+}
+
 } // namespace e8

@@ -23,6 +23,7 @@ class CreateMessageChannelRequest extends $pb.GeneratedMessage {
     ..aOB(2, 'closeGroupChannel')
     ..aOM<$11.NullableString>(3, 'title', subBuilder: $11.NullableString.create)
     ..aOM<$11.NullableString>(4, 'description', subBuilder: $11.NullableString.create)
+    ..aInt64(5, 'memberIds')
     ..hasRequiredFields = false
   ;
 
@@ -80,6 +81,15 @@ class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   void clearDescription() => clearField(4);
   @$pb.TagNumber(4)
   $11.NullableString ensureDescription() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $fixnum.Int64 get memberIds => $_getI64(4);
+  @$pb.TagNumber(5)
+  set memberIds($fixnum.Int64 v) { $_setInt64(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasMemberIds() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearMemberIds() => clearField(5);
 }
 
 class CreateMessageChannelResponse extends $pb.GeneratedMessage {

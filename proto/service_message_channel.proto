@@ -26,9 +26,15 @@ import "user_profile.proto";
 
 message CreateMessageChannelRequest {
     bool encrypted = 1;
+
+    // Apply the close group access control rule to this channel.
     bool close_group_channel = 2;
+
     NullableString title = 3;
     NullableString description = 4;
+
+    // Initial members to add to the channel.
+    int64 member_ids = 5;
 }
 
 message CreateMessageChannelResponse {

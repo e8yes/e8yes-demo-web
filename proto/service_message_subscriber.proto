@@ -32,4 +32,8 @@ service MessageSubscriberService {
     // Subscribe to the real-time message queue. Identity is required.
     rpc SubscribeRealTimeMessageQueue (SubscribeRealTimeMessageQueueRequest)
         returns (stream SubscribeRealTimeMessageQueueResponse);
+
+    // Long polling version of the above function.
+    rpc SubscriberRealTimeMessageQueueLP (SubscribeRealTimeMessageQueueRequest)
+        returns (SubscribeRealTimeMessageQueueResponse);
 }
