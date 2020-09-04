@@ -12,17 +12,20 @@ enum WMMode { SEARCH_MESSAGE_CHANNEL, VIEW_MESSAGE_CHANNEL }
 @Component(
     selector: "wmchat",
     templateUrl: "wmchat_component.html",
+    styleUrls: ["wmchat_component.css"],
     directives: [coreDirectives, FooterComponent],
     exports: [WMMode])
 class WMComponent implements OnActivate {
   WMMode mode = WMMode.SEARCH_MESSAGE_CHANNEL;
 
-  List<MessageChannel> message_channels = List<MessageChannel>();
+  List<MessageChannel> messageChannels = List<MessageChannel>();
   bool onLoadingMessageChannels = false;
 
-  final MessageChannelServiceInterface message_channel_service_;
+  MessageChannel currentMessageChannel = null;
 
-  WMComponent(this.message_channel_service_);
+  final MessageChannelServiceInterface messageChannelService_;
+
+  WMComponent(this.messageChannelService_);
 
   void onActivate(_, RouterState current) async {
     final memberId = getIdPathVariable(current.parameters);
@@ -34,11 +37,22 @@ class WMComponent implements OnActivate {
     }
 
     onLoadingMessageChannels = true;
-    message_channel_service_
+    messageChannelService_
         .getJoinedInMessageChannels(request, credentialStorage.loadSignature())
         .then((GetJoinedInMessageChannelsResponse res) {
-      message_channels = res.channels;
+      messageChannels = res.channels;
       onLoadingMessageChannels = false;
     });
+  }
+
+  void onClickMessageChannel(MessageChannel channel) {
+    currentMessageChannel = channel;
+    mode = WMMode.VIEW_MESSAGE_CHANNEL;
+  }
+
+  String channelCreatedDateString(MessageChannel channel) {
+    return DateTime.fromMillisecondsSinceEpoch(channel.createdAt.toInt() * 1000)
+        .toLocal()
+        .toString();
   }
 }

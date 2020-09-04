@@ -6,12 +6,44 @@
     <div *ngIf="onLoadingMessageChannels">
         Loading...
     </div>
-    <div *ngIf="!onLoadingMessageChannels">
-        No message channel found.
+    <div *ngIf="!onLoadingMessageChannels" class="message-channel-list">
+        <label *ngIf="messageChannels.isEmpty" 
+           class="col-form-label section">
+           No message channel found.
+        </label>
+    
+        <ul class="list-group section">
+            <li *ngFor="let channel of messageChannels"
+                (click)="onClickMessageChannel(channel)"
+                class="list-group-item">
+                <label *ngIf="channel.hasTitle()">
+                    {{channel.title}}
+                </label>
+                <label *ngIf="!channel.hasTitle()">
+                    No title
+                </label>
+
+                <br>
+
+                <label *ngIf="channel.hasDescription()">
+                    {{channel.description}}
+                </label>
+                <label *ngIf="!channel.hasDescription()">
+                    No Description
+                </label>
+
+                <br>
+
+                <label>
+                    {{channelCreatedDateString(channel)}}
+                </label>
+            </li>
+        </ul>
     </div>
 </div>
 
 <div *ngIf="mode == WMMode.VIEW_MESSAGE_CHANNEL">
+    Not implemented.
 </div>
 
 <e8yes-footer></e8yes-footer>
