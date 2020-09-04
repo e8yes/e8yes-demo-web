@@ -19,7 +19,7 @@ namespace e8 {
 
 static const char* MessageSubscriberService_method_names[] = {
   "/e8.MessageSubscriberService/SubscribeRealTimeMessageQueue",
-  "/e8.MessageSubscriberService/SubscriberRealTimeMessageQueueLP",
+  "/e8.MessageSubscriberService/SubscribeRealTimeMessageQueueLP",
 };
 
 std::unique_ptr< MessageSubscriberService::Stub> MessageSubscriberService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -30,7 +30,7 @@ std::unique_ptr< MessageSubscriberService::Stub> MessageSubscriberService::NewSt
 
 MessageSubscriberService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_SubscribeRealTimeMessageQueue_(MessageSubscriberService_method_names[0], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscriberRealTimeMessageQueueLP_(MessageSubscriberService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeRealTimeMessageQueueLP_(MessageSubscriberService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::ClientReader< ::e8::SubscribeRealTimeMessageQueueResponse>* MessageSubscriberService::Stub::SubscribeRealTimeMessageQueueRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request) {
@@ -45,20 +45,20 @@ MessageSubscriberService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInter
   return ::grpc::internal::ClientAsyncReaderFactory< ::e8::SubscribeRealTimeMessageQueueResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeRealTimeMessageQueue_, context, request, false, nullptr);
 }
 
-::grpc::Status MessageSubscriberService::Stub::SubscriberRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::e8::SubscribeRealTimeMessageQueueResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SubscriberRealTimeMessageQueueLP_, context, request, response);
+::grpc::Status MessageSubscriberService::Stub::SubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::e8::SubscribeRealTimeMessageQueueResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SubscribeRealTimeMessageQueueLP_, context, request, response);
 }
 
-void MessageSubscriberService::Stub::experimental_async::SubscriberRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SubscriberRealTimeMessageQueueLP_, context, request, response, std::move(f));
+void MessageSubscriberService::Stub::experimental_async::SubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SubscribeRealTimeMessageQueueLP_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>* MessageSubscriberService::Stub::AsyncSubscriberRealTimeMessageQueueLPRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SubscribeRealTimeMessageQueueResponse>::Create(channel_.get(), cq, rpcmethod_SubscriberRealTimeMessageQueueLP_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>* MessageSubscriberService::Stub::AsyncSubscribeRealTimeMessageQueueLPRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SubscribeRealTimeMessageQueueResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeRealTimeMessageQueueLP_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>* MessageSubscriberService::Stub::PrepareAsyncSubscriberRealTimeMessageQueueLPRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SubscribeRealTimeMessageQueueResponse>::Create(channel_.get(), cq, rpcmethod_SubscriberRealTimeMessageQueueLP_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>* MessageSubscriberService::Stub::PrepareAsyncSubscribeRealTimeMessageQueueLPRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SubscribeRealTimeMessageQueueResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeRealTimeMessageQueueLP_, context, request, false);
 }
 
 MessageSubscriberService::Service::Service() {
@@ -71,7 +71,7 @@ MessageSubscriberService::Service::Service() {
       MessageSubscriberService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MessageSubscriberService::Service, ::e8::SubscribeRealTimeMessageQueueRequest, ::e8::SubscribeRealTimeMessageQueueResponse>(
-          std::mem_fn(&MessageSubscriberService::Service::SubscriberRealTimeMessageQueueLP), this)));
+          std::mem_fn(&MessageSubscriberService::Service::SubscribeRealTimeMessageQueueLP), this)));
 }
 
 MessageSubscriberService::Service::~Service() {
@@ -84,7 +84,7 @@ MessageSubscriberService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status MessageSubscriberService::Service::SubscriberRealTimeMessageQueueLP(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response) {
+::grpc::Status MessageSubscriberService::Service::SubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response) {
   (void) context;
   (void) request;
   (void) response;

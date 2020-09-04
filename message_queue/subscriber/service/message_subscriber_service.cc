@@ -83,7 +83,7 @@ grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(
     return grpc::Status::OK;
 }
 
-grpc::Status MessageSubscriberServiceImpl::SubscriberRealTimeMessageQueueLP(
+grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueueLP(
     grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const * /*request*/,
     SubscribeRealTimeMessageQueueResponse *response) {
     grpc::Status status;

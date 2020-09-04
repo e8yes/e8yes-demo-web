@@ -43,6 +43,6 @@ class AppComponent {
       this._message_subscriber_service) {
     signIn(null, _user_service, _auth_service);
 
-    fetchRealTimeMessages(1, _message_subscriber_service);
+    // fetchRealTimeMessages(1, _message_subscriber_service);
   }
 }

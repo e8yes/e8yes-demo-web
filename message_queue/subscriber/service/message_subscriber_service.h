@@ -38,9 +38,9 @@ class MessageSubscriberServiceImpl : public MessageSubscriberService::Service {
         grpc::ServerWriter<SubscribeRealTimeMessageQueueResponse> *writer) override;
 
     grpc::Status
-    SubscriberRealTimeMessageQueueLP(grpc::ServerContext *context,
-                                     SubscribeRealTimeMessageQueueRequest const *request,
-                                     SubscribeRealTimeMessageQueueResponse *response) override;
+    SubscribeRealTimeMessageQueueLP(grpc::ServerContext *context,
+                                    SubscribeRealTimeMessageQueueRequest const *request,
+                                    SubscribeRealTimeMessageQueueResponse *response) override;
 };
 
 } // namespace e8

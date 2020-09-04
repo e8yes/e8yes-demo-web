@@ -119,17 +119,17 @@ void AddDescriptorsImpl() {
       "real_time_message.proto\"&\n$SubscribeReal"
       "TimeMessageQueueRequest\"M\n%SubscribeReal"
       "TimeMessageQueueResponse\022$\n\007message\030\001 \001("
-      "\0132\023.e8.RealTimeMessage2\213\002\n\030MessageSubscr"
+      "\0132\023.e8.RealTimeMessage2\212\002\n\030MessageSubscr"
       "iberService\022v\n\035SubscribeRealTimeMessageQ"
       "ueue\022(.e8.SubscribeRealTimeMessageQueueR"
       "equest\032).e8.SubscribeRealTimeMessageQueu"
-      "eResponse0\001\022w\n SubscriberRealTimeMessage"
-      "QueueLP\022(.e8.SubscribeRealTimeMessageQue"
-      "ueRequest\032).e8.SubscribeRealTimeMessageQ"
-      "ueueResponseb\006proto3"
+      "eResponse0\001\022v\n\037SubscribeRealTimeMessageQ"
+      "ueueLP\022(.e8.SubscribeRealTimeMessageQueu"
+      "eRequest\032).e8.SubscribeRealTimeMessageQu"
+      "eueResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 460);
+      descriptor, 459);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_subscriber.proto", &protobuf_RegisterTypes);
   ::protobuf_real_5ftime_5fmessage_2eproto::AddDescriptors();
