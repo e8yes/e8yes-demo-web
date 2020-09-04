@@ -3,7 +3,12 @@
 <hr/>
 
 <div *ngIf="mode == WMMode.SEARCH_MESSAGE_CHANNEL">
-    No message channel found.
+    <div *ngIf="onLoadingMessageChannels">
+        Loading...
+    </div>
+    <div *ngIf="!onLoadingMessageChannels">
+        No message channel found.
+    </div>
 </div>
 
 <div *ngIf="mode == WMMode.VIEW_MESSAGE_CHANNEL">
