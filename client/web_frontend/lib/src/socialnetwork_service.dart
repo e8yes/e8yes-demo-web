@@ -40,7 +40,7 @@ class SocialNetworkServiceImpl implements SocialNetworkServiceInterface {
       GetRelatedUserListRequest request, String signature) async {
     return demowebServiceRequester.MakeRequest(request, signature,
         (request, call_opts, channel) {
-      SocialNetworkServiceClient(channel)
+      return SocialNetworkServiceClient(channel)
           .getRelatedUserList(request, options: call_opts);
     });
   }
