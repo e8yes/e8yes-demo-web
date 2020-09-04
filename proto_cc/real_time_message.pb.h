@@ -646,10 +646,10 @@ class RealTimeMessage : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // .e8.RealTimeMessageContent content = 4;
+  // .e8.RealTimeMessageContent content = 3;
   bool has_content() const;
   void clear_content();
-  static const int kContentFieldNumber = 4;
+  static const int kContentFieldNumber = 3;
   private:
   const ::e8::RealTimeMessageContent& _internal_content() const;
   public:
@@ -664,17 +664,23 @@ class RealTimeMessage : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::int64 real_time_message_id() const;
   void set_real_time_message_id(::google::protobuf::int64 value);
 
-  // int64 created_at = 2;
+  // int64 target_user_id = 2;
+  void clear_target_user_id();
+  static const int kTargetUserIdFieldNumber = 2;
+  ::google::protobuf::int64 target_user_id() const;
+  void set_target_user_id(::google::protobuf::int64 value);
+
+  // int64 created_at = 4;
   void clear_created_at();
-  static const int kCreatedAtFieldNumber = 2;
+  static const int kCreatedAtFieldNumber = 4;
   ::google::protobuf::int64 created_at() const;
   void set_created_at(::google::protobuf::int64 value);
 
-  // int64 target_user_id = 3;
-  void clear_target_user_id();
-  static const int kTargetUserIdFieldNumber = 3;
-  ::google::protobuf::int64 target_user_id() const;
-  void set_target_user_id(::google::protobuf::int64 value);
+  // bool pop_up = 5;
+  void clear_pop_up();
+  static const int kPopUpFieldNumber = 5;
+  bool pop_up() const;
+  void set_pop_up(bool value);
 
   // @@protoc_insertion_point(class_scope:e8.RealTimeMessage)
  private:
@@ -682,8 +688,9 @@ class RealTimeMessage : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::e8::RealTimeMessageContent* content_;
   ::google::protobuf::int64 real_time_message_id_;
-  ::google::protobuf::int64 created_at_;
   ::google::protobuf::int64 target_user_id_;
+  ::google::protobuf::int64 created_at_;
+  bool pop_up_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_real_5ftime_5fmessage_2eproto::TableStruct;
 };
@@ -992,21 +999,7 @@ inline void RealTimeMessage::set_real_time_message_id(::google::protobuf::int64 
   // @@protoc_insertion_point(field_set:e8.RealTimeMessage.real_time_message_id)
 }
 
-// int64 created_at = 2;
-inline void RealTimeMessage::clear_created_at() {
-  created_at_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 RealTimeMessage::created_at() const {
-  // @@protoc_insertion_point(field_get:e8.RealTimeMessage.created_at)
-  return created_at_;
-}
-inline void RealTimeMessage::set_created_at(::google::protobuf::int64 value) {
-  
-  created_at_ = value;
-  // @@protoc_insertion_point(field_set:e8.RealTimeMessage.created_at)
-}
-
-// int64 target_user_id = 3;
+// int64 target_user_id = 2;
 inline void RealTimeMessage::clear_target_user_id() {
   target_user_id_ = GOOGLE_LONGLONG(0);
 }
@@ -1020,7 +1013,7 @@ inline void RealTimeMessage::set_target_user_id(::google::protobuf::int64 value)
   // @@protoc_insertion_point(field_set:e8.RealTimeMessage.target_user_id)
 }
 
-// .e8.RealTimeMessageContent content = 4;
+// .e8.RealTimeMessageContent content = 3;
 inline bool RealTimeMessage::has_content() const {
   return this != internal_default_instance() && content_ != NULL;
 }
@@ -1072,6 +1065,34 @@ inline void RealTimeMessage::set_allocated_content(::e8::RealTimeMessageContent*
   }
   content_ = content;
   // @@protoc_insertion_point(field_set_allocated:e8.RealTimeMessage.content)
+}
+
+// int64 created_at = 4;
+inline void RealTimeMessage::clear_created_at() {
+  created_at_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 RealTimeMessage::created_at() const {
+  // @@protoc_insertion_point(field_get:e8.RealTimeMessage.created_at)
+  return created_at_;
+}
+inline void RealTimeMessage::set_created_at(::google::protobuf::int64 value) {
+  
+  created_at_ = value;
+  // @@protoc_insertion_point(field_set:e8.RealTimeMessage.created_at)
+}
+
+// bool pop_up = 5;
+inline void RealTimeMessage::clear_pop_up() {
+  pop_up_ = false;
+}
+inline bool RealTimeMessage::pop_up() const {
+  // @@protoc_insertion_point(field_get:e8.RealTimeMessage.pop_up)
+  return pop_up_;
+}
+inline void RealTimeMessage::set_pop_up(bool value) {
+  
+  pop_up_ = value;
+  // @@protoc_insertion_point(field_set:e8.RealTimeMessage.pop_up)
 }
 
 #ifdef __GNUC__

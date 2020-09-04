@@ -183,9 +183,10 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessage, real_time_message_id_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessage, created_at_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessage, target_user_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessage, content_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessage, created_at_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::RealTimeMessage, pop_up_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::InvitationReceivedMessage)},
@@ -236,14 +237,14 @@ void AddDescriptorsImpl() {
       "ageH\000\022<\n\023invitation_accepted\030\002 \001(\0132\035.e8."
       "InvitationAcceptedMessageH\000\022,\n\013unread_ch"
       "at\030\003 \001(\0132\025.e8.UnreadChatMessageH\000B\026\n\024not"
-      "ification_content\"\210\001\n\017RealTimeMessage\022\034\n"
-      "\024real_time_message_id\030\001 \001(\003\022\022\n\ncreated_a"
-      "t\030\002 \001(\003\022\026\n\016target_user_id\030\003 \001(\003\022+\n\007conte"
-      "nt\030\004 \001(\0132\032.e8.RealTimeMessageContentb\006pr"
-      "oto3"
+      "ification_content\"\230\001\n\017RealTimeMessage\022\034\n"
+      "\024real_time_message_id\030\001 \001(\003\022\026\n\016target_us"
+      "er_id\030\002 \001(\003\022+\n\007content\030\003 \001(\0132\032.e8.RealTi"
+      "meMessageContent\022\022\n\ncreated_at\030\004 \001(\003\022\016\n\006"
+      "pop_up\030\005 \001(\010b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 644);
+      descriptor, 660);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "real_time_message.proto", &protobuf_RegisterTypes);
   ::protobuf_chat_5fmessage_2eproto::AddDescriptors();
@@ -1384,9 +1385,10 @@ void RealTimeMessage::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int RealTimeMessage::kRealTimeMessageIdFieldNumber;
-const int RealTimeMessage::kCreatedAtFieldNumber;
 const int RealTimeMessage::kTargetUserIdFieldNumber;
 const int RealTimeMessage::kContentFieldNumber;
+const int RealTimeMessage::kCreatedAtFieldNumber;
+const int RealTimeMessage::kPopUpFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RealTimeMessage::RealTimeMessage()
@@ -1406,15 +1408,15 @@ RealTimeMessage::RealTimeMessage(const RealTimeMessage& from)
     content_ = NULL;
   }
   ::memcpy(&real_time_message_id_, &from.real_time_message_id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&target_user_id_) -
-    reinterpret_cast<char*>(&real_time_message_id_)) + sizeof(target_user_id_));
+    static_cast<size_t>(reinterpret_cast<char*>(&pop_up_) -
+    reinterpret_cast<char*>(&real_time_message_id_)) + sizeof(pop_up_));
   // @@protoc_insertion_point(copy_constructor:e8.RealTimeMessage)
 }
 
 void RealTimeMessage::SharedCtor() {
   ::memset(&content_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&target_user_id_) -
-      reinterpret_cast<char*>(&content_)) + sizeof(target_user_id_));
+      reinterpret_cast<char*>(&pop_up_) -
+      reinterpret_cast<char*>(&content_)) + sizeof(pop_up_));
 }
 
 RealTimeMessage::~RealTimeMessage() {
@@ -1451,8 +1453,8 @@ void RealTimeMessage::Clear() {
   }
   content_ = NULL;
   ::memset(&real_time_message_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&target_user_id_) -
-      reinterpret_cast<char*>(&real_time_message_id_)) + sizeof(target_user_id_));
+      reinterpret_cast<char*>(&pop_up_) -
+      reinterpret_cast<char*>(&real_time_message_id_)) + sizeof(pop_up_));
   _internal_metadata_.Clear();
 }
 
@@ -1480,24 +1482,10 @@ bool RealTimeMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 created_at = 2;
+      // int64 target_user_id = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &created_at_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int64 target_user_id = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
@@ -1508,12 +1496,40 @@ bool RealTimeMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .e8.RealTimeMessageContent content = 4;
-      case 4: {
+      // .e8.RealTimeMessageContent content = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_content()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 created_at = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &created_at_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool pop_up = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &pop_up_)));
         } else {
           goto handle_unusual;
         }
@@ -1551,20 +1567,25 @@ void RealTimeMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->real_time_message_id(), output);
   }
 
-  // int64 created_at = 2;
-  if (this->created_at() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->created_at(), output);
-  }
-
-  // int64 target_user_id = 3;
+  // int64 target_user_id = 2;
   if (this->target_user_id() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->target_user_id(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->target_user_id(), output);
   }
 
-  // .e8.RealTimeMessageContent content = 4;
+  // .e8.RealTimeMessageContent content = 3;
   if (this->has_content()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->_internal_content(), output);
+      3, this->_internal_content(), output);
+  }
+
+  // int64 created_at = 4;
+  if (this->created_at() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(4, this->created_at(), output);
+  }
+
+  // bool pop_up = 5;
+  if (this->pop_up() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->pop_up(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1586,21 +1607,26 @@ void RealTimeMessage::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->real_time_message_id(), target);
   }
 
-  // int64 created_at = 2;
-  if (this->created_at() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->created_at(), target);
-  }
-
-  // int64 target_user_id = 3;
+  // int64 target_user_id = 2;
   if (this->target_user_id() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->target_user_id(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->target_user_id(), target);
   }
 
-  // .e8.RealTimeMessageContent content = 4;
+  // .e8.RealTimeMessageContent content = 3;
   if (this->has_content()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        4, this->_internal_content(), deterministic, target);
+        3, this->_internal_content(), deterministic, target);
+  }
+
+  // int64 created_at = 4;
+  if (this->created_at() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(4, this->created_at(), target);
+  }
+
+  // bool pop_up = 5;
+  if (this->pop_up() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->pop_up(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1620,7 +1646,7 @@ size_t RealTimeMessage::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .e8.RealTimeMessageContent content = 4;
+  // .e8.RealTimeMessageContent content = 3;
   if (this->has_content()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
@@ -1634,18 +1660,23 @@ size_t RealTimeMessage::ByteSizeLong() const {
         this->real_time_message_id());
   }
 
-  // int64 created_at = 2;
+  // int64 target_user_id = 2;
+  if (this->target_user_id() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->target_user_id());
+  }
+
+  // int64 created_at = 4;
   if (this->created_at() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->created_at());
   }
 
-  // int64 target_user_id = 3;
-  if (this->target_user_id() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->target_user_id());
+  // bool pop_up = 5;
+  if (this->pop_up() != 0) {
+    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1681,11 +1712,14 @@ void RealTimeMessage::MergeFrom(const RealTimeMessage& from) {
   if (from.real_time_message_id() != 0) {
     set_real_time_message_id(from.real_time_message_id());
   }
+  if (from.target_user_id() != 0) {
+    set_target_user_id(from.target_user_id());
+  }
   if (from.created_at() != 0) {
     set_created_at(from.created_at());
   }
-  if (from.target_user_id() != 0) {
-    set_target_user_id(from.target_user_id());
+  if (from.pop_up() != 0) {
+    set_pop_up(from.pop_up());
   }
 }
 
@@ -1715,8 +1749,9 @@ void RealTimeMessage::InternalSwap(RealTimeMessage* other) {
   using std::swap;
   swap(content_, other->content_);
   swap(real_time_message_id_, other->real_time_message_id_);
-  swap(created_at_, other->created_at_);
   swap(target_user_id_, other->target_user_id_);
+  swap(created_at_, other->created_at_);
+  swap(pop_up_, other->pop_up_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

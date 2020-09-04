@@ -181,9 +181,10 @@ class RealTimeMessageContent extends $pb.GeneratedMessage {
 class RealTimeMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('RealTimeMessage', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'realTimeMessageId')
-    ..aInt64(2, 'createdAt')
-    ..aInt64(3, 'targetUserId')
-    ..aOM<RealTimeMessageContent>(4, 'content', subBuilder: RealTimeMessageContent.create)
+    ..aInt64(2, 'targetUserId')
+    ..aOM<RealTimeMessageContent>(3, 'content', subBuilder: RealTimeMessageContent.create)
+    ..aInt64(4, 'createdAt')
+    ..aOB(5, 'popUp')
     ..hasRequiredFields = false
   ;
 
@@ -212,32 +213,41 @@ class RealTimeMessage extends $pb.GeneratedMessage {
   void clearRealTimeMessageId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get createdAt => $_getI64(1);
+  $fixnum.Int64 get targetUserId => $_getI64(1);
   @$pb.TagNumber(2)
-  set createdAt($fixnum.Int64 v) { $_setInt64(1, v); }
+  set targetUserId($fixnum.Int64 v) { $_setInt64(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasCreatedAt() => $_has(1);
+  $core.bool hasTargetUserId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCreatedAt() => clearField(2);
+  void clearTargetUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get targetUserId => $_getI64(2);
+  RealTimeMessageContent get content => $_getN(2);
   @$pb.TagNumber(3)
-  set targetUserId($fixnum.Int64 v) { $_setInt64(2, v); }
+  set content(RealTimeMessageContent v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasTargetUserId() => $_has(2);
+  $core.bool hasContent() => $_has(2);
   @$pb.TagNumber(3)
-  void clearTargetUserId() => clearField(3);
+  void clearContent() => clearField(3);
+  @$pb.TagNumber(3)
+  RealTimeMessageContent ensureContent() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  RealTimeMessageContent get content => $_getN(3);
+  $fixnum.Int64 get createdAt => $_getI64(3);
   @$pb.TagNumber(4)
-  set content(RealTimeMessageContent v) { setField(4, v); }
+  set createdAt($fixnum.Int64 v) { $_setInt64(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasContent() => $_has(3);
+  $core.bool hasCreatedAt() => $_has(3);
   @$pb.TagNumber(4)
-  void clearContent() => clearField(4);
-  @$pb.TagNumber(4)
-  RealTimeMessageContent ensureContent() => $_ensure(3);
+  void clearCreatedAt() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.bool get popUp => $_getBF(4);
+  @$pb.TagNumber(5)
+  set popUp($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasPopUp() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearPopUp() => clearField(5);
 }
 

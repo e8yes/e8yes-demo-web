@@ -42,9 +42,10 @@ const RealTimeMessage$json = const {
   '1': 'RealTimeMessage',
   '2': const [
     const {'1': 'real_time_message_id', '3': 1, '4': 1, '5': 3, '10': 'realTimeMessageId'},
-    const {'1': 'created_at', '3': 2, '4': 1, '5': 3, '10': 'createdAt'},
-    const {'1': 'target_user_id', '3': 3, '4': 1, '5': 3, '10': 'targetUserId'},
-    const {'1': 'content', '3': 4, '4': 1, '5': 11, '6': '.e8.RealTimeMessageContent', '10': 'content'},
+    const {'1': 'target_user_id', '3': 2, '4': 1, '5': 3, '10': 'targetUserId'},
+    const {'1': 'content', '3': 3, '4': 1, '5': 11, '6': '.e8.RealTimeMessageContent', '10': 'content'},
+    const {'1': 'created_at', '3': 4, '4': 1, '5': 3, '10': 'createdAt'},
+    const {'1': 'pop_up', '3': 5, '4': 1, '5': 8, '10': 'popUp'},
   ],
 };
 

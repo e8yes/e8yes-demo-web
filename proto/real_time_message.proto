@@ -44,7 +44,8 @@ message RealTimeMessageContent {
 
 message RealTimeMessage {
     int64 real_time_message_id = 1;
-    int64 created_at = 2;
-    int64 target_user_id = 3;
-    RealTimeMessageContent content = 4;
+    int64 target_user_id = 2;
+    RealTimeMessageContent content = 3;
+    int64 created_at = 4;
+    bool pop_up = 5;
 }
