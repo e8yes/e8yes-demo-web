@@ -3,9 +3,24 @@
 <hr/>
 
 <div *ngIf="mode == WMMode.SEARCH_MESSAGE_CHANNEL">
+    <div>
+        <input #searchBox (input)="onKeyDownSearchMessageChannel(searchBox.value)"
+          class="searchbar" placeholder="Search message channels.." />
+
+        <button class="btn tool-bar-btn">+</button>
+          
+        <img *ngIf="onLoadingMessageChannels" 
+             src="icons/cpu.svg" 
+             width="40em" 
+             height="40em" />
+    </div>
+
+    <hr/>
+
     <div *ngIf="onLoadingMessageChannels">
         Loading...
     </div>
+    
     <div *ngIf="!onLoadingMessageChannels" class="message-channel-list">
         <label *ngIf="messageChannels.isEmpty" 
            class="col-form-label section">
@@ -17,25 +32,52 @@
                 (click)="onClickMessageChannel(channel)"
                 class="list-group-item">
                 <label *ngIf="channel.hasTitle()">
-                    {{channel.title}}
+                    {{channel.title}}:
                 </label>
                 <label *ngIf="!channel.hasTitle()">
-                    No title
+                    No title:
                 </label>
-
-                <br>
 
                 <label *ngIf="channel.hasDescription()">
                     {{channel.description}}
                 </label>
                 <label *ngIf="!channel.hasDescription()">
-                    No Description
+                    empty description
+                </label>
+
+                <br>
+
+                <label *ngIf="!channelAuxiliaryInfo(channel.channelId)
+                              .mostActiveUsers.isEmpty">
+                    Active members: 
+                    <span *ngFor="let member of 
+                                  channelAuxiliaryInfo(channel.channelId)
+                                  .mostActiveUsers">
+                        <label *ngIf="member.alias.hasValue()">
+                            {{member.alias.value}},
+                        </label>
+
+                        <label *ngIf="!member.alias.hasValue()">
+                            {{member.userId}},
+                        </label>
+                    </span>
+                    <label>...</label>
                 </label>
 
                 <br>
 
                 <label>
-                    {{channelCreatedDateString(channel)}}
+                    Last interacted at 
+                    {{
+                        dateToString(channelAuxiliaryInfo(channel.channelId).
+                                     channelLastInteractedAt)
+                    }}
+                </label>
+
+                <br>
+
+                <label>
+                    Created at {{dateToString(channel.createdAt)}}
                 </label>
             </li>
         </ul>
