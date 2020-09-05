@@ -23,8 +23,8 @@
 #include "demoweb_service/demoweb/environment/prod_environment_context.h"
 #include "distributor/store/default_node_state_store.h"
 #include "keygen/persistent_key_generator.h"
-#include "postgres/query_runner/connection/basic_connection_reservoir.h"
 #include "postgres/query_runner/connection/connection_factory.h"
+#include "postgres/query_runner/connection/pooled_connection_reservoir.h"
 #include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
@@ -35,7 +35,7 @@ DemoWebProductionEnvironmentContext::DemoWebProductionEnvironmentContext(
     InitDefaultNodeStateStoreProvider(node_state_db_path);
 
     ConnectionFactory fact(ConnectionFactory::PQ, db_hostname, kDemowebDatabaseName);
-    demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
+    demoweb_database_ = std::make_unique<PooledConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
 
     key_gen_ = std::make_unique<PersistentKeyGenerator>(db_hostname);

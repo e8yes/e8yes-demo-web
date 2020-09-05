@@ -22,15 +22,15 @@
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "keygen/persistent_key_generator.h"
-#include "postgres/query_runner/connection/basic_connection_reservoir.h"
 #include "postgres/query_runner/connection/connection_factory.h"
+#include "postgres/query_runner/connection/pooled_connection_reservoir.h"
 #include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
 
 DemoWebTestEnvironmentContext::DemoWebTestEnvironmentContext() {
     ConnectionFactory fact(ConnectionFactory::PQ, /*host_name=*/"localhost", kDemowebDatabaseName);
-    demoweb_database_ = std::make_unique<BasicConnectionReservoir>(fact);
+    demoweb_database_ = std::make_unique<PooledConnectionReservoir>(fact);
     SendHeartBeat(demoweb_database_.get());
     ClearAllTables(demoweb_database_.get());
 

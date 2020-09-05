@@ -29,10 +29,10 @@
 #include "common/container/lru_hash_map.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/persistent_key_generator.h"
-#include "postgres/query_runner/connection/basic_connection_reservoir.h"
 #include "postgres/query_runner/connection/connection_factory.h"
 #include "postgres/query_runner/connection/connection_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "postgres/query_runner/connection/pooled_connection_reservoir.h"
 #include "postgres/query_runner/reflection/sql_entity_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 #include "postgres/query_runner/sql_query_builder.h"
@@ -227,7 +227,7 @@ PersistentKeyGenerator::PersistentKeyGeneratorImpl::GenerateKey(KeyUser const &k
 
 PersistentKeyGenerator::PersistentKeyGenerator(std::string const &db_hostname,
                                                std::string const &db_name)
-    : impl(std::make_unique<PersistentKeyGeneratorImpl>(std::make_unique<BasicConnectionReservoir>(
+    : impl(std::make_unique<PersistentKeyGeneratorImpl>(std::make_unique<PooledConnectionReservoir>(
           ConnectionFactory(ConnectionFactory::PQ, db_hostname, db_name)))) {}
 
 PersistentKeyGenerator::~PersistentKeyGenerator() {}
