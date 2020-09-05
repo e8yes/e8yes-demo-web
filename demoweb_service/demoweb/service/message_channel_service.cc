@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <grpcpp/grpcpp.h>
 #include <optional>
 #include <string>
@@ -65,14 +66,19 @@ grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
         return status;
     }
 
-    std::vector<UserId> has_member_ids{request->with_member_ids().begin(),
-                                       request->with_member_ids().end()};
+    std::vector<UserId> contains_member_ids{request->with_member_ids().begin(),
+                                            request->with_member_ids().end()};
+    if (std::find(contains_member_ids.begin(), contains_member_ids.end(), identity->user_id()) ==
+        contains_member_ids.end()) {
+        contains_member_ids.push_back(identity->user_id());
+    }
+
     std::optional<Pagination> pagination =
         request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
 
-    std::vector<JoinedInMessageChannel> channels = ::e8::GetJoinedInMessageChannels(
-        identity->user_id(), has_member_ids, request->active_member_fetch_limit(), pagination,
-        DemoWebEnvironment()->DemowebDatabase());
+    std::vector<JoinedInMessageChannel> channels =
+        ::e8::SearchMessageChannels(contains_member_ids, request->active_member_fetch_limit(),
+                                    pagination, DemoWebEnvironment()->DemowebDatabase());
 
     std::vector<MessageChannel> results = ToMessageChannels(channels);
     *response->mutable_channels() = {results.begin(), results.end()};

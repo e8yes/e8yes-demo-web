@@ -158,32 +158,26 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
     return message_channel;
 }
 
-std::vector<JoinedInMessageChannel>
-GetJoinedInMessageChannels(UserId const member_id, std::vector<UserId> const &has_member_ids,
-                           unsigned active_member_fetch_limit,
-                           std::optional<Pagination> const &pagination,
-                           ConnectionReservoirInterface *conns) {
+std::vector<JoinedInMessageChannel> SearchMessageChannels(
+    std::vector<UserId> const &contains_member_ids, unsigned active_member_fetch_limit,
+    std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns) {
     // Query message channels.
     SqlQueryBuilder message_channel_query;
-    SqlQueryBuilder::Placeholder<SqlLong> member_id_ph;
     message_channel_query.QueryPiece(TableNames::MessageChannel())
         .QueryPiece(" mc")
         .QueryPiece(" JOIN ")
         .QueryPiece(TableNames::MessageChannelHasUser())
         .QueryPiece(" mchu ON mchu.channel_id=mc.id")
-        .QueryPiece(" WHERE mchu.user_id=")
-        .Holder(&member_id_ph);
-    if (!has_member_ids.empty()) {
+        .QueryPiece(" WHERE TRUE");
+    if (!contains_member_ids.empty()) {
         SqlQueryBuilder::Placeholder<SqlLongArr> has_member_ids_ph;
         message_channel_query.QueryPiece(" AND mchu.user_id=ALL(")
             .Holder(&has_member_ids_ph)
             .QueryPiece(")");
-        message_channel_query.SetValueToPlaceholder(has_member_ids_ph,
-                                                    std::make_shared<SqlLongArr>(has_member_ids));
+        message_channel_query.SetValueToPlaceholder(
+            has_member_ids_ph, std::make_shared<SqlLongArr>(contains_member_ids));
     }
     message_channel_query.QueryPiece(" ORDER BY mchu.last_interaction_at DESC");
-
-    message_channel_query.SetValueToPlaceholder(member_id_ph, std::make_shared<SqlLong>(member_id));
 
     if (pagination.has_value()) {
         SqlQueryBuilder::Placeholder<SqlInt> limit_ph;

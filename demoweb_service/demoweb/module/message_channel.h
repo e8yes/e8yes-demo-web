@@ -52,22 +52,20 @@ struct JoinedInMessageChannel {
 };
 
 /**
- * @brief GetJoinedInMessageChannels Get all the message channels that the user, pointed to by the
- * member_id, is a member of. It also returns the member type the user is assigned in each specific
- * message channel. Besides that, it provides the option to fetch the ID of the most active members
- * in this message channel. The result list is ordered by the last interaction timestamp where the
- * most recently interacted message channels rank first.
+ * @brief SearchMessageChannels Search all the message channels that satisfies the filtering
+ * conditions. Other than the message channel entity, it also returns the member type the user is
+ * assigned in each specific message channel as well as the option to fetch the ID of the most
+ * active members in this message channel. The result list is ordered by the last interaction
+ * timestamp where the most recently interacted message channels rank first.
  *
- * @param has_member_ids A filter to required that a returning message channel must have all of the
- * specified members.
+ * @param contains_member_ids A filter to required that a returning message channel must have all of
+ * the specified members.
  * @param active_member_fetch_limit Maximum number of active member user IDs to be fetched for each
  * message channel.
  */
-std::vector<JoinedInMessageChannel>
-GetJoinedInMessageChannels(UserId const member_id, std::vector<UserId> const &has_member_ids,
-                           unsigned active_member_fetch_limit,
-                           std::optional<Pagination> const &pagination,
-                           ConnectionReservoirInterface *conns);
+std::vector<JoinedInMessageChannel> SearchMessageChannels(
+    std::vector<UserId> const &contains_member_ids, unsigned active_member_fetch_limit,
+    std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns);
 
 /**
  * @brief ToMessageChannels Converts message channel entities with user joining information to
