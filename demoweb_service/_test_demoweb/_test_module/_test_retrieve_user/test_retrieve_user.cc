@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <optional>
 #include <vector>
 
@@ -41,6 +42,31 @@ bool RetrieveUserEntityTest() {
     std::optional<e8::UserEntity> retrieved = e8::RetrieveUser(/*user_id=*/123L, db_conns);
     TEST_CONDITION(retrieved.has_value());
     TEST_CONDITION(user0.id == retrieved.value().id);
+
+    return true;
+}
+
+bool RetrieveUserEntitiesTest() {
+    e8::DemoWebTestEnvironmentContext env;
+
+    e8::UserEntity user0 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*user_id=*/123L,
+                                                  env.CurrentHostId(), env.DemowebDatabase())
+                               .value();
+    e8::UserEntity user1 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*user_id=*/223L,
+                                                  env.CurrentHostId(), env.DemowebDatabase())
+                               .value();
+
+    std::vector<e8::UserEntity> retrieved = e8::RetrieveUsers(
+        /*user_ids=*/{*user0.id.Value(), *user1.id.Value()}, env.DemowebDatabase());
+    TEST_CONDITION(retrieved.size() == 2);
+    TEST_CONDITION(
+        std::find_if(retrieved.begin(), retrieved.end(), [&user0](e8::UserEntity const &user) {
+            return *user.id.Value() == *user0.id.Value();
+        }) != retrieved.end());
+    TEST_CONDITION(
+        std::find_if(retrieved.begin(), retrieved.end(), [&user1](e8::UserEntity const &user) {
+            return *user.id.Value() == *user1.id.Value();
+        }) != retrieved.end());
 
     return true;
 }
@@ -161,6 +187,7 @@ bool SearchUserByIdAliasTest() {
 int main() {
     e8::BeginTestSuite("retrieve_user");
     e8::RunTest("RetrieveUserEntityTest", RetrieveUserEntityTest);
+    e8::RunTest("RetrieveUserEntitiesTest", RetrieveUserEntitiesTest);
     e8::RunTest("SearchUserByIdPrefixTest", SearchUserByIdPrefixTest);
     e8::RunTest("SearchUserByIdAliasTest", SearchUserByIdAliasTest);
     e8::EndTestSuite();
