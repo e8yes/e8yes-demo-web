@@ -32,6 +32,7 @@
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 #include "file.pb.h"
+#include "user_profile.pb.h"
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_message_5fchannel_2eproto 
 
@@ -40,7 +41,7 @@ namespace protobuf_message_5fchannel_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[2];
+  static const ::google::protobuf::internal::ParseTable schema[3];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -51,6 +52,9 @@ namespace e8 {
 class MessageChannel;
 class MessageChannelDefaultTypeInternal;
 extern MessageChannelDefaultTypeInternal _MessageChannel_default_instance_;
+class MessageChannelOveriew;
+class MessageChannelOveriewDefaultTypeInternal;
+extern MessageChannelOveriewDefaultTypeInternal _MessageChannelOveriew_default_instance_;
 class MessageChannelRelation;
 class MessageChannelRelationDefaultTypeInternal;
 extern MessageChannelRelationDefaultTypeInternal _MessageChannelRelation_default_instance_;
@@ -58,6 +62,7 @@ extern MessageChannelRelationDefaultTypeInternal _MessageChannelRelation_default
 namespace google {
 namespace protobuf {
 template<> ::e8::MessageChannel* Arena::CreateMaybeMessage<::e8::MessageChannel>(Arena*);
+template<> ::e8::MessageChannelOveriew* Arena::CreateMaybeMessage<::e8::MessageChannelOveriew>(Arena*);
 template<> ::e8::MessageChannelRelation* Arena::CreateMaybeMessage<::e8::MessageChannelRelation>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -336,18 +341,6 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::e8::FileTokenAccess* mutable_avatar_preview_readonly_access();
   void set_allocated_avatar_preview_readonly_access(::e8::FileTokenAccess* avatar_preview_readonly_access);
 
-  // .e8.MessageChannelRelation relation = 7;
-  bool has_relation() const;
-  void clear_relation();
-  static const int kRelationFieldNumber = 7;
-  private:
-  const ::e8::MessageChannelRelation& _internal_relation() const;
-  public:
-  const ::e8::MessageChannelRelation& relation() const;
-  ::e8::MessageChannelRelation* release_relation();
-  ::e8::MessageChannelRelation* mutable_relation();
-  void set_allocated_relation(::e8::MessageChannelRelation* relation);
-
   // int64 channel_id = 1;
   void clear_channel_id();
   static const int kChannelIdFieldNumber = 1;
@@ -368,9 +361,150 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::ArenaStringPtr description_;
   ::e8::FileTokenAccess* avatar_readonly_access_;
   ::e8::FileTokenAccess* avatar_preview_readonly_access_;
-  ::e8::MessageChannelRelation* relation_;
   ::google::protobuf::int64 channel_id_;
   ::google::protobuf::int64 created_at_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_message_5fchannel_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class MessageChannelOveriew : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.MessageChannelOveriew) */ {
+ public:
+  MessageChannelOveriew();
+  virtual ~MessageChannelOveriew();
+
+  MessageChannelOveriew(const MessageChannelOveriew& from);
+
+  inline MessageChannelOveriew& operator=(const MessageChannelOveriew& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  MessageChannelOveriew(MessageChannelOveriew&& from) noexcept
+    : MessageChannelOveriew() {
+    *this = ::std::move(from);
+  }
+
+  inline MessageChannelOveriew& operator=(MessageChannelOveriew&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const MessageChannelOveriew& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const MessageChannelOveriew* internal_default_instance() {
+    return reinterpret_cast<const MessageChannelOveriew*>(
+               &_MessageChannelOveriew_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  void Swap(MessageChannelOveriew* other);
+  friend void swap(MessageChannelOveriew& a, MessageChannelOveriew& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline MessageChannelOveriew* New() const final {
+    return CreateMaybeMessage<MessageChannelOveriew>(NULL);
+  }
+
+  MessageChannelOveriew* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<MessageChannelOveriew>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const MessageChannelOveriew& from);
+  void MergeFrom(const MessageChannelOveriew& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(MessageChannelOveriew* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .e8.UserPublicProfile most_active_users = 4;
+  int most_active_users_size() const;
+  void clear_most_active_users();
+  static const int kMostActiveUsersFieldNumber = 4;
+  ::e8::UserPublicProfile* mutable_most_active_users(int index);
+  ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >*
+      mutable_most_active_users();
+  const ::e8::UserPublicProfile& most_active_users(int index) const;
+  ::e8::UserPublicProfile* add_most_active_users();
+  const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
+      most_active_users() const;
+
+  // .e8.MessageChannel channel = 1;
+  bool has_channel() const;
+  void clear_channel();
+  static const int kChannelFieldNumber = 1;
+  private:
+  const ::e8::MessageChannel& _internal_channel() const;
+  public:
+  const ::e8::MessageChannel& channel() const;
+  ::e8::MessageChannel* release_channel();
+  ::e8::MessageChannel* mutable_channel();
+  void set_allocated_channel(::e8::MessageChannel* channel);
+
+  // .e8.MessageChannelRelation channel_relation = 3;
+  bool has_channel_relation() const;
+  void clear_channel_relation();
+  static const int kChannelRelationFieldNumber = 3;
+  private:
+  const ::e8::MessageChannelRelation& _internal_channel_relation() const;
+  public:
+  const ::e8::MessageChannelRelation& channel_relation() const;
+  ::e8::MessageChannelRelation* release_channel_relation();
+  ::e8::MessageChannelRelation* mutable_channel_relation();
+  void set_allocated_channel_relation(::e8::MessageChannelRelation* channel_relation);
+
+  // int64 channel_last_interacted_at = 2;
+  void clear_channel_last_interacted_at();
+  static const int kChannelLastInteractedAtFieldNumber = 2;
+  ::google::protobuf::int64 channel_last_interacted_at() const;
+  void set_channel_last_interacted_at(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:e8.MessageChannelOveriew)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile > most_active_users_;
+  ::e8::MessageChannel* channel_;
+  ::e8::MessageChannelRelation* channel_relation_;
+  ::google::protobuf::int64 channel_last_interacted_at_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_message_5fchannel_2eproto::TableStruct;
 };
@@ -647,63 +781,164 @@ inline void MessageChannel::set_created_at(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:e8.MessageChannel.created_at)
 }
 
-// .e8.MessageChannelRelation relation = 7;
-inline bool MessageChannel::has_relation() const {
-  return this != internal_default_instance() && relation_ != NULL;
+// -------------------------------------------------------------------
+
+// MessageChannelOveriew
+
+// .e8.MessageChannel channel = 1;
+inline bool MessageChannelOveriew::has_channel() const {
+  return this != internal_default_instance() && channel_ != NULL;
 }
-inline void MessageChannel::clear_relation() {
-  if (GetArenaNoVirtual() == NULL && relation_ != NULL) {
-    delete relation_;
+inline void MessageChannelOveriew::clear_channel() {
+  if (GetArenaNoVirtual() == NULL && channel_ != NULL) {
+    delete channel_;
   }
-  relation_ = NULL;
+  channel_ = NULL;
 }
-inline const ::e8::MessageChannelRelation& MessageChannel::_internal_relation() const {
-  return *relation_;
+inline const ::e8::MessageChannel& MessageChannelOveriew::_internal_channel() const {
+  return *channel_;
 }
-inline const ::e8::MessageChannelRelation& MessageChannel::relation() const {
-  const ::e8::MessageChannelRelation* p = relation_;
-  // @@protoc_insertion_point(field_get:e8.MessageChannel.relation)
-  return p != NULL ? *p : *reinterpret_cast<const ::e8::MessageChannelRelation*>(
-      &::e8::_MessageChannelRelation_default_instance_);
+inline const ::e8::MessageChannel& MessageChannelOveriew::channel() const {
+  const ::e8::MessageChannel* p = channel_;
+  // @@protoc_insertion_point(field_get:e8.MessageChannelOveriew.channel)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::MessageChannel*>(
+      &::e8::_MessageChannel_default_instance_);
 }
-inline ::e8::MessageChannelRelation* MessageChannel::release_relation() {
-  // @@protoc_insertion_point(field_release:e8.MessageChannel.relation)
+inline ::e8::MessageChannel* MessageChannelOveriew::release_channel() {
+  // @@protoc_insertion_point(field_release:e8.MessageChannelOveriew.channel)
   
-  ::e8::MessageChannelRelation* temp = relation_;
-  relation_ = NULL;
+  ::e8::MessageChannel* temp = channel_;
+  channel_ = NULL;
   return temp;
 }
-inline ::e8::MessageChannelRelation* MessageChannel::mutable_relation() {
+inline ::e8::MessageChannel* MessageChannelOveriew::mutable_channel() {
   
-  if (relation_ == NULL) {
-    auto* p = CreateMaybeMessage<::e8::MessageChannelRelation>(GetArenaNoVirtual());
-    relation_ = p;
+  if (channel_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::MessageChannel>(GetArenaNoVirtual());
+    channel_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:e8.MessageChannel.relation)
-  return relation_;
+  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOveriew.channel)
+  return channel_;
 }
-inline void MessageChannel::set_allocated_relation(::e8::MessageChannelRelation* relation) {
+inline void MessageChannelOveriew::set_allocated_channel(::e8::MessageChannel* channel) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
-    delete relation_;
+    delete channel_;
   }
-  if (relation) {
+  if (channel) {
     ::google::protobuf::Arena* submessage_arena = NULL;
     if (message_arena != submessage_arena) {
-      relation = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, relation, submessage_arena);
+      channel = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, channel, submessage_arena);
     }
     
   } else {
     
   }
-  relation_ = relation;
-  // @@protoc_insertion_point(field_set_allocated:e8.MessageChannel.relation)
+  channel_ = channel;
+  // @@protoc_insertion_point(field_set_allocated:e8.MessageChannelOveriew.channel)
+}
+
+// int64 channel_last_interacted_at = 2;
+inline void MessageChannelOveriew::clear_channel_last_interacted_at() {
+  channel_last_interacted_at_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 MessageChannelOveriew::channel_last_interacted_at() const {
+  // @@protoc_insertion_point(field_get:e8.MessageChannelOveriew.channel_last_interacted_at)
+  return channel_last_interacted_at_;
+}
+inline void MessageChannelOveriew::set_channel_last_interacted_at(::google::protobuf::int64 value) {
+  
+  channel_last_interacted_at_ = value;
+  // @@protoc_insertion_point(field_set:e8.MessageChannelOveriew.channel_last_interacted_at)
+}
+
+// .e8.MessageChannelRelation channel_relation = 3;
+inline bool MessageChannelOveriew::has_channel_relation() const {
+  return this != internal_default_instance() && channel_relation_ != NULL;
+}
+inline void MessageChannelOveriew::clear_channel_relation() {
+  if (GetArenaNoVirtual() == NULL && channel_relation_ != NULL) {
+    delete channel_relation_;
+  }
+  channel_relation_ = NULL;
+}
+inline const ::e8::MessageChannelRelation& MessageChannelOveriew::_internal_channel_relation() const {
+  return *channel_relation_;
+}
+inline const ::e8::MessageChannelRelation& MessageChannelOveriew::channel_relation() const {
+  const ::e8::MessageChannelRelation* p = channel_relation_;
+  // @@protoc_insertion_point(field_get:e8.MessageChannelOveriew.channel_relation)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::MessageChannelRelation*>(
+      &::e8::_MessageChannelRelation_default_instance_);
+}
+inline ::e8::MessageChannelRelation* MessageChannelOveriew::release_channel_relation() {
+  // @@protoc_insertion_point(field_release:e8.MessageChannelOveriew.channel_relation)
+  
+  ::e8::MessageChannelRelation* temp = channel_relation_;
+  channel_relation_ = NULL;
+  return temp;
+}
+inline ::e8::MessageChannelRelation* MessageChannelOveriew::mutable_channel_relation() {
+  
+  if (channel_relation_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::MessageChannelRelation>(GetArenaNoVirtual());
+    channel_relation_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOveriew.channel_relation)
+  return channel_relation_;
+}
+inline void MessageChannelOveriew::set_allocated_channel_relation(::e8::MessageChannelRelation* channel_relation) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete channel_relation_;
+  }
+  if (channel_relation) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      channel_relation = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, channel_relation, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  channel_relation_ = channel_relation;
+  // @@protoc_insertion_point(field_set_allocated:e8.MessageChannelOveriew.channel_relation)
+}
+
+// repeated .e8.UserPublicProfile most_active_users = 4;
+inline int MessageChannelOveriew::most_active_users_size() const {
+  return most_active_users_.size();
+}
+inline ::e8::UserPublicProfile* MessageChannelOveriew::mutable_most_active_users(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOveriew.most_active_users)
+  return most_active_users_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >*
+MessageChannelOveriew::mutable_most_active_users() {
+  // @@protoc_insertion_point(field_mutable_list:e8.MessageChannelOveriew.most_active_users)
+  return &most_active_users_;
+}
+inline const ::e8::UserPublicProfile& MessageChannelOveriew::most_active_users(int index) const {
+  // @@protoc_insertion_point(field_get:e8.MessageChannelOveriew.most_active_users)
+  return most_active_users_.Get(index);
+}
+inline ::e8::UserPublicProfile* MessageChannelOveriew::add_most_active_users() {
+  // @@protoc_insertion_point(field_add:e8.MessageChannelOveriew.most_active_users)
+  return most_active_users_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
+MessageChannelOveriew::most_active_users() const {
+  // @@protoc_insertion_point(field_list:e8.MessageChannelOveriew.most_active_users)
+  return most_active_users_;
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 

@@ -31,7 +31,16 @@ const MessageChannel$json = const {
     const {'1': 'avatar_readonly_access', '3': 4, '4': 1, '5': 11, '6': '.e8.FileTokenAccess', '10': 'avatarReadonlyAccess'},
     const {'1': 'avatar_preview_readonly_access', '3': 5, '4': 1, '5': 11, '6': '.e8.FileTokenAccess', '10': 'avatarPreviewReadonlyAccess'},
     const {'1': 'created_at', '3': 6, '4': 1, '5': 3, '10': 'createdAt'},
-    const {'1': 'relation', '3': 7, '4': 1, '5': 11, '6': '.e8.MessageChannelRelation', '10': 'relation'},
+  ],
+};
+
+const MessageChannelOveriew$json = const {
+  '1': 'MessageChannelOveriew',
+  '2': const [
+    const {'1': 'channel', '3': 1, '4': 1, '5': 11, '6': '.e8.MessageChannel', '10': 'channel'},
+    const {'1': 'channel_last_interacted_at', '3': 2, '4': 1, '5': 3, '10': 'channelLastInteractedAt'},
+    const {'1': 'channel_relation', '3': 3, '4': 1, '5': 11, '6': '.e8.MessageChannelRelation', '10': 'channelRelation'},
+    const {'1': 'most_active_users', '3': 4, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'mostActiveUsers'},
   ],
 };
 

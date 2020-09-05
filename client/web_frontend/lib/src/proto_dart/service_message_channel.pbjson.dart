@@ -71,32 +71,11 @@ const GetJoinedInMessageChannelsRequest$json = const {
   ],
 };
 
-const MessageChannelAuxiliaries$json = const {
-  '1': 'MessageChannelAuxiliaries',
-  '2': const [
-    const {'1': 'join_at', '3': 1, '4': 1, '5': 3, '10': 'joinAt'},
-    const {'1': 'channel_last_interacted_at', '3': 2, '4': 1, '5': 3, '10': 'channelLastInteractedAt'},
-    const {'1': 'member_type', '3': 3, '4': 1, '5': 14, '6': '.e8.MessageChannelMemberType', '10': 'memberType'},
-    const {'1': 'most_active_users', '3': 4, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'mostActiveUsers'},
-  ],
-};
-
 const GetJoinedInMessageChannelsResponse$json = const {
   '1': 'GetJoinedInMessageChannelsResponse',
   '2': const [
-    const {'1': 'channels', '3': 1, '4': 3, '5': 11, '6': '.e8.MessageChannel', '10': 'channels'},
-    const {'1': 'auxiliaries', '3': 2, '4': 3, '5': 11, '6': '.e8.GetJoinedInMessageChannelsResponse.AuxiliariesEntry', '10': 'auxiliaries'},
+    const {'1': 'channels', '3': 1, '4': 3, '5': 11, '6': '.e8.MessageChannelOveriew', '10': 'channels'},
   ],
-  '3': const [GetJoinedInMessageChannelsResponse_AuxiliariesEntry$json],
-};
-
-const GetJoinedInMessageChannelsResponse_AuxiliariesEntry$json = const {
-  '1': 'AuxiliariesEntry',
-  '2': const [
-    const {'1': 'key', '3': 1, '4': 1, '5': 3, '10': 'key'},
-    const {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.e8.MessageChannelAuxiliaries', '10': 'value'},
-  ],
-  '7': const {'7': true},
 };
 
 const GetMessageChannelMembersRequest$json = const {

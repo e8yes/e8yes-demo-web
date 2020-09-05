@@ -23,19 +23,26 @@
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "proto_cc/pagination.pb.h"
 
 namespace e8 {
 
 /**
- * @brief RetrieveUser Retrieve user entity by user ID..
+ * @brief RetrieveUser Retrieve user entity by user ID.
  *
  * @param user_id ID of the user to be retrieved.
  * @param db_conns Connections to the DemoWeb DB server.
  * @return The user entity if exists.
  */
 std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterface *db_conns);
+
+/**
+ * @brief RetrieveUsers Similar to the above function, it fetches a set of users at the same time
+ * instead.
+ */
+std::vector<UserEntity> RetrieveUsers(std::vector<UserId> const &user_ids,
+                                      ConnectionReservoirInterface *db_conns);
 
 /**
  * @brief SearchUser Search for user entities condition on different optional filters. The search

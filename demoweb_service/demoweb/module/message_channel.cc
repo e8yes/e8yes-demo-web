@@ -32,11 +32,14 @@
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
+#include "demoweb_service/demoweb/module/retrieve_user.h"
+#include "demoweb_service/demoweb/module/user_profile.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
 #include "proto_cc/message_channel.pb.h"
 #include "proto_cc/pagination.pb.h"
+#include "proto_cc/user_profile.pb.h"
 
 namespace e8 {
 namespace {
@@ -123,6 +126,23 @@ FetchMostActiveMembers(std::vector<MessagechannelId> const &message_channel_ids,
     return result;
 }
 
+MessageChannel GetMessageChannel(SearchedMessageChannel const &searched_message_channel) {
+    MessageChannel proto_message;
+    proto_message.set_channel_id(*searched_message_channel.message_channel.id.Value());
+    proto_message.set_title(*searched_message_channel.message_channel.channel_name.Value());
+    proto_message.set_description(*searched_message_channel.message_channel.description.Value());
+    proto_message.set_created_at(*searched_message_channel.message_channel.created_at.Value());
+    return proto_message;
+}
+
+MessageChannelRelation
+GetMessageChannelRelation(SearchedMessageChannel const &searched_message_channel) {
+    MessageChannelRelation relation;
+    relation.set_join_at(searched_message_channel.join_at);
+    relation.set_member_type(searched_message_channel.member_type);
+    return relation;
+}
+
 } // namespace
 
 MessageChannelEntity CreateMessageChannel(UserId creator_id,
@@ -158,7 +178,7 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
     return message_channel;
 }
 
-std::vector<JoinedInMessageChannel> SearchMessageChannels(
+std::vector<SearchedMessageChannel> SearchMessageChannels(
     std::vector<UserId> const &contains_member_ids, unsigned active_member_fetch_limit,
     std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns) {
     // Query message channels.
@@ -205,11 +225,11 @@ std::vector<JoinedInMessageChannel> SearchMessageChannels(
     std::vector<std::vector<UserId>> most_active_member_ids =
         FetchMostActiveMembers(message_channel_ids, active_member_fetch_limit, conns);
 
-    std::vector<JoinedInMessageChannel> results(query_result.size());
+    std::vector<SearchedMessageChannel> results(query_result.size());
     for (unsigned i = 0; i < query_result.size(); i++) {
         auto const &entry = query_result[i];
 
-        JoinedInMessageChannel result;
+        SearchedMessageChannel result;
         result.message_channel = std::get<0>(entry);
         result.member_type =
             static_cast<MessageChannelMemberType>(*std::get<1>(entry).ownership.Value());
@@ -221,29 +241,46 @@ std::vector<JoinedInMessageChannel> SearchMessageChannels(
     return results;
 }
 
-std::vector<MessageChannel>
-ToMessageChannels(std::vector<JoinedInMessageChannel> const &joining_info) {
-    std::vector<MessageChannel> proto_messages(joining_info.size());
-
-    for (unsigned i = 0; i < joining_info.size(); i++) {
-        auto const &info = joining_info[i];
-
-        MessageChannel proto_message;
-        proto_message.set_channel_id(*info.message_channel.id.Value());
-        proto_message.set_title(*info.message_channel.channel_name.Value());
-        proto_message.set_description(*info.message_channel.description.Value());
-        proto_message.set_created_at(*info.message_channel.created_at.Value());
-
-        MessageChannelRelation relation;
-        relation.set_join_at(info.join_at);
-        relation.set_member_type(info.member_type);
-
-        *proto_message.mutable_relation() = relation;
-
-        proto_messages[i] = proto_message;
+std::vector<MessageChannelOveriew>
+ToMessageChannelOverviews(UserId const viewer_id,
+                          std::vector<SearchedMessageChannel> const &searched_message_channels,
+                          KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
+    // Construct member profiles.
+    std::unordered_map<UserId, UserPublicProfile> active_member_profiles;
+    std::vector<UserId> unique_active_member_ids;
+    for (auto const &searched_channel : searched_message_channels) {
+        for (UserId const member_id : searched_channel.most_active_member_ids) {
+            auto it = active_member_profiles.find(member_id);
+            if (it == active_member_profiles.end()) {
+                active_member_profiles[member_id] = UserPublicProfile();
+                unique_active_member_ids.push_back(member_id);
+            }
+        }
     }
 
-    return proto_messages;
+    std::vector<UserEntity> members = RetrieveUsers(unique_active_member_ids, conns);
+    std::vector<UserPublicProfile> member_profiles =
+        BuildPublicProfiles(viewer_id, members, key_gen, conns);
+    for (auto const &profile : member_profiles) {
+        active_member_profiles[profile.user_id()] = profile;
+    }
+
+    // Compose the overiew.
+    std::vector<MessageChannelOveriew> result(searched_message_channels.size());
+    for (unsigned i = 0; i < searched_message_channels.size(); ++i) {
+        MessageChannelOveriew overview;
+        *overview.mutable_channel() = GetMessageChannel(searched_message_channels[i]);
+        *overview.mutable_channel_relation() =
+            GetMessageChannelRelation(searched_message_channels[i]);
+        overview.set_channel_last_interacted_at(searched_message_channels[i].join_at);
+        for (auto const &member_id : searched_message_channels[i].most_active_member_ids) {
+            *overview.mutable_most_active_users()->Add() = active_member_profiles[member_id];
+        }
+
+        result[i] = overview;
+    }
+
+    return result;
 }
 
 std::vector<MessageChannelMember>

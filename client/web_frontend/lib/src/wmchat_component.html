@@ -22,37 +22,35 @@
     </div>
     
     <div *ngIf="!onLoadingMessageChannels" class="message-channel-list">
-        <label *ngIf="messageChannels.isEmpty" 
+        <label *ngIf="messageChannelOverviews.isEmpty" 
            class="col-form-label section">
            No message channel found.
         </label>
     
         <ul class="list-group section">
-            <li *ngFor="let channel of messageChannels"
-                (click)="onClickMessageChannel(channel)"
+            <li *ngFor="let overview of messageChannelOverviews"
+                (click)="onClickMessageChannel(overview)"
                 class="list-group-item">
-                <label *ngIf="channel.hasTitle()">
-                    {{channel.title}}:
+                <label *ngIf="overview.channel.hasTitle()">
+                    {{overview.channel.title}}:
                 </label>
-                <label *ngIf="!channel.hasTitle()">
+                <label *ngIf="!overview.channel.hasTitle()">
                     No title:
                 </label>
 
-                <label *ngIf="channel.hasDescription()">
-                    {{channel.description}}
+                <label *ngIf="overview.channel.hasDescription()">
+                    {{overview.channel.description}}
                 </label>
-                <label *ngIf="!channel.hasDescription()">
+                <label *ngIf="!overview.channel.hasDescription()">
                     empty description
                 </label>
 
                 <br>
 
-                <label *ngIf="!channelAuxiliaryInfo(channel.channelId)
-                              .mostActiveUsers.isEmpty">
+                <label *ngIf="!overview.mostActiveUsers.isEmpty">
                     Active members: 
                     <span *ngFor="let member of 
-                                  channelAuxiliaryInfo(channel.channelId)
-                                  .mostActiveUsers">
+                                  overview.mostActiveUsers">
                         <label *ngIf="member.alias.hasValue()">
                             {{member.alias.value}},
                         </label>
@@ -69,15 +67,14 @@
                 <label>
                     Last interacted at 
                     {{
-                        dateToString(channelAuxiliaryInfo(channel.channelId).
-                                     channelLastInteractedAt)
+                        dateToString(overview.channelLastInteractedAt)
                     }}
                 </label>
 
                 <br>
 
                 <label>
-                    Created at {{dateToString(channel.createdAt)}}
+                    Created at {{dateToString(overview.channel.createdAt)}}
                 </label>
             </li>
         </ul>

@@ -20,6 +20,7 @@ syntax = "proto3";
 package e8;
 
 import "file.proto";
+import "user_profile.proto";
 
 enum MessageChannelMemberType {
     MCMT_INVALID = 0;
@@ -39,5 +40,11 @@ message MessageChannel {
     FileTokenAccess avatar_readonly_access = 4;
     FileTokenAccess avatar_preview_readonly_access = 5;
     int64 created_at = 6;
-    MessageChannelRelation relation = 7;
+}
+
+message MessageChannelOveriew {
+    MessageChannel channel = 1;
+    int64 channel_last_interacted_at = 2;
+    MessageChannelRelation channel_relation = 3;
+    repeated UserPublicProfile most_active_users = 4;
 }

@@ -70,3 +70,8 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../../message_queue/common/ -lmessage_queu
 
 INCLUDEPATH += $$PWD/../../../../message_queue/common
 DEPENDPATH += $$PWD/../../../../message_queue/common
+
+LIBS += -pthread
+LIBS += -ldl
+LIBS += -lprotobuf
+LIBS += -lgrpc++

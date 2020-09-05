@@ -25,11 +25,11 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/retrieve_user.h"
-#include "proto_cc/pagination.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
+#include "proto_cc/pagination.pb.h"
 
 namespace e8 {
 
@@ -47,6 +47,27 @@ std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterf
     assert(results.size() == 1);
 
     return std::get<0>(results[0]);
+}
+
+std::vector<UserEntity> RetrieveUsers(std::vector<UserId> const &user_ids,
+                                      ConnectionReservoirInterface *db_conns) {
+    SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLongArr> user_ids_ph;
+    query.QueryPiece(TableNames::AUser())
+        .QueryPiece(" u WHERE u.id=ANY(")
+        .Holder(&user_ids_ph)
+        .QueryPiece(")");
+
+    query.SetValueToPlaceholder(user_ids_ph, std::make_shared<SqlLongArr>(user_ids));
+
+    std::vector<std::tuple<UserEntity>> query_result = Query<UserEntity>(query, {"u"}, db_conns);
+
+    std::vector<UserEntity> users(query_result.size());
+    for (unsigned i = 0; i < query_result.size(); ++i) {
+        users[i] = std::get<0>(query_result[i]);
+    }
+
+    return users;
 }
 
 std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,

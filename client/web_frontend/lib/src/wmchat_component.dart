@@ -19,12 +19,11 @@ enum WMMode { SEARCH_MESSAGE_CHANNEL, VIEW_MESSAGE_CHANNEL }
 class WMComponent implements OnActivate {
   WMMode mode = WMMode.SEARCH_MESSAGE_CHANNEL;
 
-  List<MessageChannel> messageChannels = List<MessageChannel>();
-  Map<Int64, MessageChannelAuxiliaries> messageChannelAuxiliaries =
-      Map<Int64, MessageChannelAuxiliaries>();
+  List<MessageChannelOveriew> messageChannelOverviews =
+      List<MessageChannelOveriew>();
   bool onLoadingMessageChannels = false;
 
-  MessageChannel currentMessageChannel = null;
+  MessageChannelOveriew currentMessageChannel = null;
 
   static const int _kActiveUsersFetchLimit = 5;
 
@@ -41,7 +40,7 @@ class WMComponent implements OnActivate {
 
   void onKeyDownSearchMessageChannel(String searchTerms) {}
 
-  void onClickMessageChannel(MessageChannel channel) {
+  void onClickMessageChannel(MessageChannelOveriew channel) {
     currentMessageChannel = channel;
     mode = WMMode.VIEW_MESSAGE_CHANNEL;
   }
@@ -50,10 +49,6 @@ class WMComponent implements OnActivate {
     return DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000)
         .toLocal()
         .toString();
-  }
-
-  MessageChannelAuxiliaries channelAuxiliaryInfo(Int64 channelId) {
-    return messageChannelAuxiliaries[channelId];
   }
 
   void _fetchMessageChannelList() {
@@ -68,8 +63,7 @@ class WMComponent implements OnActivate {
     messageChannelService_
         .getJoinedInMessageChannels(request, credentialStorage.loadSignature())
         .then((GetJoinedInMessageChannelsResponse res) {
-      messageChannels = res.channels;
-      messageChannelAuxiliaries = res.auxiliaries;
+      messageChannelOverviews = res.channels;
       onLoadingMessageChannels = false;
     });
   }

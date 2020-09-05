@@ -21,11 +21,13 @@
 #include <ctime>
 #include <optional>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
+#include "keygen/key_generator_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "proto_cc/message_channel.pb.h"
 #include "proto_cc/pagination.pb.h"
@@ -44,7 +46,7 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
                                           bool encrypted, bool close_group_channel, HostId host_id,
                                           ConnectionReservoirInterface *conns);
 
-struct JoinedInMessageChannel {
+struct SearchedMessageChannel {
     MessageChannelEntity message_channel;
     MessageChannelMemberType member_type;
     std::time_t join_at;
@@ -63,16 +65,18 @@ struct JoinedInMessageChannel {
  * @param active_member_fetch_limit Maximum number of active member user IDs to be fetched for each
  * message channel.
  */
-std::vector<JoinedInMessageChannel> SearchMessageChannels(
+std::vector<SearchedMessageChannel> SearchMessageChannels(
     std::vector<UserId> const &contains_member_ids, unsigned active_member_fetch_limit,
     std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns);
 
 /**
- * @brief ToMessageChannels Converts message channel entities with user joining information to
- * message channel proto messages.
+ * @brief ToMessageChannelOverviews Converts message channel entities with user joining information
+ * to message channel overview proto messages.
  */
-std::vector<MessageChannel>
-ToMessageChannels(std::vector<JoinedInMessageChannel> const &joining_info);
+std::vector<MessageChannelOveriew>
+ToMessageChannelOverviews(UserId const viewer_id,
+                          std::vector<SearchedMessageChannel> const &searched_message_channels,
+                          KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns);
 
 struct MessageChannelMember {
     UserEntity member;

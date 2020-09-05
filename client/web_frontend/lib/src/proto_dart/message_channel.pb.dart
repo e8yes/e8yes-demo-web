@@ -11,6 +11,7 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'file.pb.dart' as $10;
+import 'user_profile.pb.dart' as $13;
 
 import 'message_channel.pbenum.dart';
 
@@ -65,7 +66,6 @@ class MessageChannel extends $pb.GeneratedMessage {
     ..aOM<$10.FileTokenAccess>(4, 'avatarReadonlyAccess', subBuilder: $10.FileTokenAccess.create)
     ..aOM<$10.FileTokenAccess>(5, 'avatarPreviewReadonlyAccess', subBuilder: $10.FileTokenAccess.create)
     ..aInt64(6, 'createdAt')
-    ..aOM<MessageChannelRelation>(7, 'relation', subBuilder: MessageChannelRelation.create)
     ..hasRequiredFields = false
   ;
 
@@ -141,16 +141,64 @@ class MessageChannel extends $pb.GeneratedMessage {
   $core.bool hasCreatedAt() => $_has(5);
   @$pb.TagNumber(6)
   void clearCreatedAt() => clearField(6);
+}
 
-  @$pb.TagNumber(7)
-  MessageChannelRelation get relation => $_getN(6);
-  @$pb.TagNumber(7)
-  set relation(MessageChannelRelation v) { setField(7, v); }
-  @$pb.TagNumber(7)
-  $core.bool hasRelation() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearRelation() => clearField(7);
-  @$pb.TagNumber(7)
-  MessageChannelRelation ensureRelation() => $_ensure(6);
+class MessageChannelOveriew extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageChannelOveriew', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aOM<MessageChannel>(1, 'channel', subBuilder: MessageChannel.create)
+    ..aInt64(2, 'channelLastInteractedAt')
+    ..aOM<MessageChannelRelation>(3, 'channelRelation', subBuilder: MessageChannelRelation.create)
+    ..pc<$13.UserPublicProfile>(4, 'mostActiveUsers', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
+    ..hasRequiredFields = false
+  ;
+
+  MessageChannelOveriew._() : super();
+  factory MessageChannelOveriew() => create();
+  factory MessageChannelOveriew.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MessageChannelOveriew.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  MessageChannelOveriew clone() => MessageChannelOveriew()..mergeFromMessage(this);
+  MessageChannelOveriew copyWith(void Function(MessageChannelOveriew) updates) => super.copyWith((message) => updates(message as MessageChannelOveriew));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static MessageChannelOveriew create() => MessageChannelOveriew._();
+  MessageChannelOveriew createEmptyInstance() => create();
+  static $pb.PbList<MessageChannelOveriew> createRepeated() => $pb.PbList<MessageChannelOveriew>();
+  @$core.pragma('dart2js:noInline')
+  static MessageChannelOveriew getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MessageChannelOveriew>(create);
+  static MessageChannelOveriew _defaultInstance;
+
+  @$pb.TagNumber(1)
+  MessageChannel get channel => $_getN(0);
+  @$pb.TagNumber(1)
+  set channel(MessageChannel v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChannel() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChannel() => clearField(1);
+  @$pb.TagNumber(1)
+  MessageChannel ensureChannel() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get channelLastInteractedAt => $_getI64(1);
+  @$pb.TagNumber(2)
+  set channelLastInteractedAt($fixnum.Int64 v) { $_setInt64(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasChannelLastInteractedAt() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearChannelLastInteractedAt() => clearField(2);
+
+  @$pb.TagNumber(3)
+  MessageChannelRelation get channelRelation => $_getN(2);
+  @$pb.TagNumber(3)
+  set channelRelation(MessageChannelRelation v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasChannelRelation() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearChannelRelation() => clearField(3);
+  @$pb.TagNumber(3)
+  MessageChannelRelation ensureChannelRelation() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $core.List<$13.UserPublicProfile> get mostActiveUsers => $_getList(3);
 }
 

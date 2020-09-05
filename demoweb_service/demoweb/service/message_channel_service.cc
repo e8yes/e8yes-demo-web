@@ -76,11 +76,13 @@ grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
     std::optional<Pagination> pagination =
         request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
 
-    std::vector<JoinedInMessageChannel> channels =
+    std::vector<SearchedMessageChannel> channels =
         ::e8::SearchMessageChannels(contains_member_ids, request->active_member_fetch_limit(),
                                     pagination, DemoWebEnvironment()->DemowebDatabase());
 
-    std::vector<MessageChannel> results = ToMessageChannels(channels);
+    std::vector<MessageChannelOveriew> results =
+        ToMessageChannelOverviews(identity->user_id(), channels, DemoWebEnvironment()->KeyGen(),
+                                  DemoWebEnvironment()->DemowebDatabase());
     *response->mutable_channels() = {results.begin(), results.end()};
 
     return grpc::Status::OK;

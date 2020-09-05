@@ -12,8 +12,8 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'nullable_primitives.pb.dart' as $11;
 import 'pagination.pb.dart' as $19;
-import 'user_profile.pb.dart' as $13;
 import 'message_channel.pb.dart' as $20;
+import 'user_profile.pb.dart' as $13;
 
 import 'message_channel.pbenum.dart' as $20;
 
@@ -366,65 +366,9 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   void clearActiveMemberFetchLimit() => clearField(3);
 }
 
-class MessageChannelAuxiliaries extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageChannelAuxiliaries', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aInt64(1, 'joinAt')
-    ..aInt64(2, 'channelLastInteractedAt')
-    ..e<$20.MessageChannelMemberType>(3, 'memberType', $pb.PbFieldType.OE, defaultOrMaker: $20.MessageChannelMemberType.MCMT_INVALID, valueOf: $20.MessageChannelMemberType.valueOf, enumValues: $20.MessageChannelMemberType.values)
-    ..pc<$13.UserPublicProfile>(4, 'mostActiveUsers', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
-    ..hasRequiredFields = false
-  ;
-
-  MessageChannelAuxiliaries._() : super();
-  factory MessageChannelAuxiliaries() => create();
-  factory MessageChannelAuxiliaries.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory MessageChannelAuxiliaries.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  MessageChannelAuxiliaries clone() => MessageChannelAuxiliaries()..mergeFromMessage(this);
-  MessageChannelAuxiliaries copyWith(void Function(MessageChannelAuxiliaries) updates) => super.copyWith((message) => updates(message as MessageChannelAuxiliaries));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static MessageChannelAuxiliaries create() => MessageChannelAuxiliaries._();
-  MessageChannelAuxiliaries createEmptyInstance() => create();
-  static $pb.PbList<MessageChannelAuxiliaries> createRepeated() => $pb.PbList<MessageChannelAuxiliaries>();
-  @$core.pragma('dart2js:noInline')
-  static MessageChannelAuxiliaries getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MessageChannelAuxiliaries>(create);
-  static MessageChannelAuxiliaries _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $fixnum.Int64 get joinAt => $_getI64(0);
-  @$pb.TagNumber(1)
-  set joinAt($fixnum.Int64 v) { $_setInt64(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasJoinAt() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearJoinAt() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $fixnum.Int64 get channelLastInteractedAt => $_getI64(1);
-  @$pb.TagNumber(2)
-  set channelLastInteractedAt($fixnum.Int64 v) { $_setInt64(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasChannelLastInteractedAt() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearChannelLastInteractedAt() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $20.MessageChannelMemberType get memberType => $_getN(2);
-  @$pb.TagNumber(3)
-  set memberType($20.MessageChannelMemberType v) { setField(3, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasMemberType() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearMemberType() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.List<$13.UserPublicProfile> get mostActiveUsers => $_getList(3);
-}
-
 class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetJoinedInMessageChannelsResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$20.MessageChannel>(1, 'channels', $pb.PbFieldType.PM, subBuilder: $20.MessageChannel.create)
-    ..m<$fixnum.Int64, MessageChannelAuxiliaries>(2, 'auxiliaries', entryClassName: 'GetJoinedInMessageChannelsResponse.AuxiliariesEntry', keyFieldType: $pb.PbFieldType.O6, valueFieldType: $pb.PbFieldType.OM, valueCreator: MessageChannelAuxiliaries.create, packageName: const $pb.PackageName('e8'))
+    ..pc<$20.MessageChannelOveriew>(1, 'channels', $pb.PbFieldType.PM, subBuilder: $20.MessageChannelOveriew.create)
     ..hasRequiredFields = false
   ;
 
@@ -444,10 +388,7 @@ class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
   static GetJoinedInMessageChannelsResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$20.MessageChannel> get channels => $_getList(0);
-
-  @$pb.TagNumber(2)
-  $core.Map<$fixnum.Int64, MessageChannelAuxiliaries> get auxiliaries => $_getMap(1);
+  $core.List<$20.MessageChannelOveriew> get channels => $_getList(0);
 }
 
 class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
