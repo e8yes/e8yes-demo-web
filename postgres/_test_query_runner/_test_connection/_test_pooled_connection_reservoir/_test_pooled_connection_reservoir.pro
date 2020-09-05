@@ -13,8 +13,8 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 INCLUDEPATH += $$PWD/../../../../
 
-SOURCES +=  \
-    test_pq_connection.cc
+SOURCES += \
+    test_pooled_connection_reservoir.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../../query_runner/ -lquery_runner
 

@@ -28,6 +28,7 @@ SOURCES += \
     connection/connection_interface.cc \
     connection/connection_reservoir_interface.cc \
     connection/mock_connection.cc \
+    connection/pooled_connection_reservoir.cc \
     connection/pq_connection.cc \
     orm/data_collection.cc \
     orm/query_completion.cc \
@@ -46,6 +47,7 @@ HEADERS += \
     connection/connection_interface.h \
     connection/connection_reservoir_interface.h \
     connection/mock_connection.h \
+    connection/pooled_connection_reservoir.h \
     connection/pq_connection.h \
     orm/data_collection.h \
     orm/query_completion.h \
