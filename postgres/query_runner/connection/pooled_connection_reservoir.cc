@@ -50,6 +50,9 @@ ConnectionInterface *PooledConnectionReservoir::Take() {
     if (unused_pool_.empty()) {
         unused_pool_.emplace(
             DatedConnection(fact_.Create(), curr_timestamp + expiry_duration_secs_));
+    } else {
+        // Refresh the expiry timestamp for the connection that is about to be activated.
+        unused_pool_.front().expiry_timestamp = curr_timestamp + expiry_duration_secs_;
     }
 
     ConnectionInterface *conns = unused_pool_.front().conn.get();

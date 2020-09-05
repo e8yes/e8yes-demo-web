@@ -41,7 +41,8 @@ class PooledConnectionReservoir : public ConnectionReservoirInterface {
     /**
      * @brief PooledConnectionReservoir
      * @param max_conns The size limit of the connection pool.
-     * @param expiry_duration_secs The maximum lifespan of each connection in the pool.
+     * @param expiry_duration_secs The maximum amount of inactive duration each connection can hold
+     * to remain in the pool.
      */
     PooledConnectionReservoir(
         ConnectionFactory const &fact, unsigned const max_conns = kPooledConnectionSizeLimit,
