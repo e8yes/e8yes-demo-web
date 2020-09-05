@@ -106,15 +106,17 @@ FetchMostActiveMembers(std::vector<MessagechannelId> const &message_channel_ids,
                   });
 
         // Trim to the limit and write out the IDs.
-        std::vector<MessageChannelHasUserEntity>::const_iterator end_it;
+        std::vector<MessageChannelHasUserEntity>::iterator end_it;
         if (active_member_fetch_limit < members->size()) {
             end_it = members->begin() + active_member_fetch_limit;
+            result[i].resize(active_member_fetch_limit);
         } else {
             end_it = members->end();
+            result[i].resize(members->size());
         }
 
         std::transform(
-            members->begin(), members->end(), result[i].begin(),
+            members->begin(), end_it, result[i].begin(),
             [](MessageChannelHasUserEntity const &member) { return *member.user_id.Value(); });
     }
 

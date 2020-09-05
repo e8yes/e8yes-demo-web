@@ -62,18 +62,46 @@ bool CreateAndListMessageChannelTest() {
     e8::Pagination page1;
     page1.set_page_number(0);
     page1.set_result_per_page(2);
-    std::vector<e8::JoinedInMessageChannel> retrieved_channel = e8::GetJoinedInMessageChannels(
+    std::vector<e8::JoinedInMessageChannel> retrieved_channels = e8::GetJoinedInMessageChannels(
         kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>(), /*active_member_fetch_limit=*/0,
         page1, env.DemowebDatabase());
 
-    TEST_CONDITION(retrieved_channel.size() == 1);
-    TEST_CONDITION(*retrieved_channel[0].message_channel.id.Value() ==
+    TEST_CONDITION(retrieved_channels.size() == 1);
+    TEST_CONDITION(*retrieved_channels[0].message_channel.id.Value() ==
                    *channel_info.message_channel.id.Value());
-    TEST_CONDITION(*retrieved_channel[0].message_channel.channel_name.Value() == kChannelName);
-    TEST_CONDITION(*retrieved_channel[0].message_channel.description.Value() == kChannelDesc);
-    TEST_CONDITION(*retrieved_channel[0].message_channel.encryption_enabled.Value() == false);
-    TEST_CONDITION(*retrieved_channel[0].message_channel.close_group_channel.Value() == true);
-    TEST_CONDITION(retrieved_channel[0].member_type == e8::MessageChannelMemberType::MCMT_ADMIN);
+    TEST_CONDITION(*retrieved_channels[0].message_channel.channel_name.Value() == kChannelName);
+    TEST_CONDITION(*retrieved_channels[0].message_channel.description.Value() == kChannelDesc);
+    TEST_CONDITION(*retrieved_channels[0].message_channel.encryption_enabled.Value() == false);
+    TEST_CONDITION(*retrieved_channels[0].message_channel.close_group_channel.Value() == true);
+    TEST_CONDITION(retrieved_channels[0].member_type == e8::MessageChannelMemberType::MCMT_ADMIN);
+
+    return true;
+}
+
+bool ListMessageChannelWithMemberIdsTest() {
+    e8::DemoWebTestEnvironmentContext env;
+
+    CreateNewChannelInfo channel_info = CreateNewChannel(&env);
+
+    std::optional<e8::UserEntity> user = e8::CreateUser(
+        /*security_key=*/"", std::vector<std::string>(), /*user_id=*/2L, env.CurrentHostId(),
+        env.DemowebDatabase());
+
+    bool rc =
+        e8::AddUserToMessageChannel(/*viewer_id=*/1L, *channel_info.message_channel.id.Value(),
+                                    *user->id.Value(), e8::MCMT_ADMIN, env.DemowebDatabase());
+    TEST_CONDITION(rc == true);
+    std::vector<e8::JoinedInMessageChannel> retrieved_channels = e8::GetJoinedInMessageChannels(
+        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>(), /*active_member_fetch_limit=*/10,
+        std::nullopt, env.DemowebDatabase());
+    TEST_CONDITION(retrieved_channels.size() == 1);
+    TEST_CONDITION(retrieved_channels[0].most_active_member_ids.size() == 2);
+    TEST_CONDITION(std::find(retrieved_channels[0].most_active_member_ids.begin(),
+                             retrieved_channels[0].most_active_member_ids.end(),
+                             kCreatorId) != retrieved_channels[0].most_active_member_ids.end());
+    TEST_CONDITION(std::find(retrieved_channels[0].most_active_member_ids.begin(),
+                             retrieved_channels[0].most_active_member_ids.end(),
+                             2L) != retrieved_channels[0].most_active_member_ids.end());
 
     return true;
 }
@@ -184,6 +212,7 @@ int main() {
     e8::BeginTestSuite("message_channel");
     e8::RunTest("CreateAndListMessageChannelTest", CreateAndListMessageChannelTest);
     e8::RunTest("ListMessageChannelMemberFilterTest", ListMessageChannelMemberFilterTest);
+    e8::RunTest("ListMessageChannelWithMemberIdsTest", ListMessageChannelWithMemberIdsTest);
     e8::RunTest("CreateAndListChannelMemberTest", CreateAndListChannelMemberTest);
     e8::RunTest("AddUserToMessageChannelTest", AddUserToMessageChannelTest);
     e8::RunTest("AddUserToMessageChannelInsufficientPrivilegeTest",
