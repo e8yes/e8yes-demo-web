@@ -323,7 +323,7 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetJoinedInMessageChannelsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<$19.Pagination>(1, 'pagination', subBuilder: $19.Pagination.create)
     ..p<$fixnum.Int64>(2, 'withMemberIds', $pb.PbFieldType.P6)
-    ..a<$core.int>(3, 'fetchNumActiveUsers', $pb.PbFieldType.O3)
+    ..a<$core.int>(3, 'activeMemberFetchLimit', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -357,19 +357,21 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   $core.List<$fixnum.Int64> get withMemberIds => $_getList(1);
 
   @$pb.TagNumber(3)
-  $core.int get fetchNumActiveUsers => $_getIZ(2);
+  $core.int get activeMemberFetchLimit => $_getIZ(2);
   @$pb.TagNumber(3)
-  set fetchNumActiveUsers($core.int v) { $_setSignedInt32(2, v); }
+  set activeMemberFetchLimit($core.int v) { $_setSignedInt32(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasFetchNumActiveUsers() => $_has(2);
+  $core.bool hasActiveMemberFetchLimit() => $_has(2);
   @$pb.TagNumber(3)
-  void clearFetchNumActiveUsers() => clearField(3);
+  void clearActiveMemberFetchLimit() => clearField(3);
 }
 
 class MessageChannelAuxiliaries extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageChannelAuxiliaries', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aInt64(1, 'channelLastInteractedAt')
-    ..pc<$13.UserPublicProfile>(2, 'mostActiveUsers', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
+    ..aInt64(1, 'joinAt')
+    ..aInt64(2, 'channelLastInteractedAt')
+    ..e<$20.MessageChannelMemberType>(3, 'memberType', $pb.PbFieldType.OE, defaultOrMaker: $20.MessageChannelMemberType.MCMT_INVALID, valueOf: $20.MessageChannelMemberType.valueOf, enumValues: $20.MessageChannelMemberType.values)
+    ..pc<$13.UserPublicProfile>(4, 'mostActiveUsers', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
@@ -389,16 +391,34 @@ class MessageChannelAuxiliaries extends $pb.GeneratedMessage {
   static MessageChannelAuxiliaries _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get channelLastInteractedAt => $_getI64(0);
+  $fixnum.Int64 get joinAt => $_getI64(0);
   @$pb.TagNumber(1)
-  set channelLastInteractedAt($fixnum.Int64 v) { $_setInt64(0, v); }
+  set joinAt($fixnum.Int64 v) { $_setInt64(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChannelLastInteractedAt() => $_has(0);
+  $core.bool hasJoinAt() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChannelLastInteractedAt() => clearField(1);
+  void clearJoinAt() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<$13.UserPublicProfile> get mostActiveUsers => $_getList(1);
+  $fixnum.Int64 get channelLastInteractedAt => $_getI64(1);
+  @$pb.TagNumber(2)
+  set channelLastInteractedAt($fixnum.Int64 v) { $_setInt64(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasChannelLastInteractedAt() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearChannelLastInteractedAt() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $20.MessageChannelMemberType get memberType => $_getN(2);
+  @$pb.TagNumber(3)
+  set memberType($20.MessageChannelMemberType v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasMemberType() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMemberType() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<$13.UserPublicProfile> get mostActiveUsers => $_getList(3);
 }
 
 class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {

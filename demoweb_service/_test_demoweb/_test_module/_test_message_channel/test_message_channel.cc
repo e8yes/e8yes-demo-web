@@ -63,7 +63,8 @@ bool CreateAndListMessageChannelTest() {
     page1.set_page_number(0);
     page1.set_result_per_page(2);
     std::vector<e8::JoinedInMessageChannel> retrieved_channel = e8::GetJoinedInMessageChannels(
-        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>(), page1, env.DemowebDatabase());
+        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>(), /*active_member_fetch_limit=*/0,
+        page1, env.DemowebDatabase());
 
     TEST_CONDITION(retrieved_channel.size() == 1);
     TEST_CONDITION(*retrieved_channel[0].message_channel.id.Value() ==
@@ -86,16 +87,16 @@ bool ListMessageChannelMemberFilterTest() {
     page1.set_page_number(0);
     page1.set_result_per_page(2);
     std::vector<e8::JoinedInMessageChannel> retrieved_channel = e8::GetJoinedInMessageChannels(
-        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>{kCreatorId}, page1,
-        env.DemowebDatabase());
+        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>{kCreatorId},
+        /*active_member_fetch_limit=*/0, page1, env.DemowebDatabase());
 
     TEST_CONDITION(retrieved_channel.size() == 1);
     TEST_CONDITION(*retrieved_channel[0].message_channel.id.Value() ==
                    *channel_info.message_channel.id.Value());
 
     retrieved_channel = e8::GetJoinedInMessageChannels(
-        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>{kCreatorId, -1000L}, page1,
-        env.DemowebDatabase());
+        kCreatorId, /*has_member_ids=*/std::vector<e8::UserId>{kCreatorId, -1000L},
+        /*active_member_fetch_limit=*/0, page1, env.DemowebDatabase());
     TEST_CONDITION(retrieved_channel.empty());
 
     return true;

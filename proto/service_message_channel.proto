@@ -76,15 +76,21 @@ message GetJoinedInMessageChannelsRequest {
     repeated int64 with_member_ids = 2;
 
     // The maximum number of active users to fetch.
-    int32 fetch_num_active_users = 3;
+    int32 active_member_fetch_limit = 3;
 }
 
 message MessageChannelAuxiliaries {
+    // When did the logged-in user join the message channel?
+    int64 join_at = 1;
+
     // When did the logged-in user last interact with the message channel?
-    int64 channel_last_interacted_at = 1;
+    int64 channel_last_interacted_at = 2;
+
+    // What role does the logged-in user play in this channel.
+    MessageChannelMemberType member_type = 3;
 
     // The most active users in the message channel.
-    repeated UserPublicProfile most_active_users = 2;
+    repeated UserPublicProfile most_active_users = 4;
 }
 
 message GetJoinedInMessageChannelsResponse {

@@ -4,9 +4,7 @@ import 'package:demoweb_app/src/context.dart';
 import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/message_channel_service_interface.dart';
 import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
-import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_message_channel.pbgrpc.dart';
-import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/routes.dart';
 import 'package:fixnum/fixnum.dart';
 

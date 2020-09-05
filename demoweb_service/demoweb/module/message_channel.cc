@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <ctime>
@@ -22,6 +23,7 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
@@ -65,6 +67,60 @@ bool CanAdd(UserId const &viewer_id, MessagechannelId channel_id,
     return Exists(query, conns);
 }
 
+std::vector<std::vector<UserId>>
+FetchMostActiveMembers(std::vector<MessagechannelId> const &message_channel_ids,
+                       unsigned active_member_fetch_limit, ConnectionReservoirInterface *conns) {
+    if (active_member_fetch_limit == 0) {
+        return std::vector<std::vector<UserId>>(message_channel_ids.size());
+    }
+
+    SqlQueryBuilder member_query;
+    SqlQueryBuilder::Placeholder<SqlLongArr> channel_ids_ph;
+    member_query.QueryPiece(TableNames::MessageChannelHasUser())
+        .QueryPiece(" mchu WHERE mchu.channel_id=ANY(")
+        .Holder(&channel_ids_ph)
+        .QueryPiece(")");
+
+    member_query.SetValueToPlaceholder(channel_ids_ph,
+                                       std::make_shared<SqlLongArr>(message_channel_ids));
+
+    std::vector<std::tuple<MessageChannelHasUserEntity>> members =
+        Query<MessageChannelHasUserEntity>(member_query, {"mchu"}, conns);
+
+    // Group by channel ID.
+    std::unordered_map<MessagechannelId, std::vector<MessageChannelHasUserEntity>> group_by_channel;
+    for (auto const &entry : members) {
+        MessageChannelHasUserEntity const &member = std::get<0>(entry);
+        group_by_channel[*member.channel_id.Value()].push_back(member);
+    }
+
+    std::vector<std::vector<UserId>> result(message_channel_ids.size());
+    for (unsigned i = 0; i < message_channel_ids.size(); ++i) {
+        MessagechannelId channel_id = message_channel_ids[i];
+
+        // Use last interaction timestamp as a criteria for activeness.
+        std::vector<MessageChannelHasUserEntity> *members = &group_by_channel[channel_id];
+        std::sort(members->begin(), members->end(),
+                  [](MessageChannelHasUserEntity const &a, MessageChannelHasUserEntity const &b) {
+                      return *a.last_interaction_at.Value() > *b.last_interaction_at.Value();
+                  });
+
+        // Trim to the limit and write out the IDs.
+        std::vector<MessageChannelHasUserEntity>::const_iterator end_it;
+        if (active_member_fetch_limit < members->size()) {
+            end_it = members->begin() + active_member_fetch_limit;
+        } else {
+            end_it = members->end();
+        }
+
+        std::transform(
+            members->begin(), members->end(), result[i].begin(),
+            [](MessageChannelHasUserEntity const &member) { return *member.user_id.Value(); });
+    }
+
+    return result;
+}
+
 } // namespace
 
 MessageChannelEntity CreateMessageChannel(UserId creator_id,
@@ -102,11 +158,13 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
 
 std::vector<JoinedInMessageChannel>
 GetJoinedInMessageChannels(UserId const member_id, std::vector<UserId> const &has_member_ids,
+                           unsigned active_member_fetch_limit,
                            std::optional<Pagination> const &pagination,
                            ConnectionReservoirInterface *conns) {
-    SqlQueryBuilder query;
+    // Query message channels.
+    SqlQueryBuilder message_channel_query;
     SqlQueryBuilder::Placeholder<SqlLong> member_id_ph;
-    query.QueryPiece(TableNames::MessageChannel())
+    message_channel_query.QueryPiece(TableNames::MessageChannel())
         .QueryPiece(" mc")
         .QueryPiece(" JOIN ")
         .QueryPiece(TableNames::MessageChannelHasUser())
@@ -115,27 +173,41 @@ GetJoinedInMessageChannels(UserId const member_id, std::vector<UserId> const &ha
         .Holder(&member_id_ph);
     if (!has_member_ids.empty()) {
         SqlQueryBuilder::Placeholder<SqlLongArr> has_member_ids_ph;
-        query.QueryPiece(" AND mchu.user_id=ALL(").Holder(&has_member_ids_ph).QueryPiece(")");
-        query.SetValueToPlaceholder(has_member_ids_ph,
-                                    std::make_shared<SqlLongArr>(has_member_ids));
+        message_channel_query.QueryPiece(" AND mchu.user_id=ALL(")
+            .Holder(&has_member_ids_ph)
+            .QueryPiece(")");
+        message_channel_query.SetValueToPlaceholder(has_member_ids_ph,
+                                                    std::make_shared<SqlLongArr>(has_member_ids));
     }
-    query.QueryPiece(" ORDER BY mchu.last_interaction_at DESC");
+    message_channel_query.QueryPiece(" ORDER BY mchu.last_interaction_at DESC");
 
-    query.SetValueToPlaceholder(member_id_ph, std::make_shared<SqlLong>(member_id));
+    message_channel_query.SetValueToPlaceholder(member_id_ph, std::make_shared<SqlLong>(member_id));
 
     if (pagination.has_value()) {
         SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
         SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
-        query.QueryPiece(" LIMIT ").Holder(&limit_ph).QueryPiece(" OFFSET ").Holder(&offset_ph);
-        query.SetValueToPlaceholder(limit_ph,
-                                    std::make_shared<SqlInt>(pagination->result_per_page()));
-        query.SetValueToPlaceholder(
+        message_channel_query.QueryPiece(" LIMIT ")
+            .Holder(&limit_ph)
+            .QueryPiece(" OFFSET ")
+            .Holder(&offset_ph);
+        message_channel_query.SetValueToPlaceholder(
+            limit_ph, std::make_shared<SqlInt>(pagination->result_per_page()));
+        message_channel_query.SetValueToPlaceholder(
             offset_ph,
             std::make_shared<SqlInt>(pagination->page_number() * pagination->result_per_page()));
     }
 
     std::vector<std::tuple<MessageChannelEntity, MessageChannelHasUserEntity>> query_result =
-        Query<MessageChannelEntity, MessageChannelHasUserEntity>(query, {"mc", "mchu"}, conns);
+        Query<MessageChannelEntity, MessageChannelHasUserEntity>(message_channel_query,
+                                                                 {"mc", "mchu"}, conns);
+
+    // Fetch the most active members for each message channel.
+    std::vector<MessagechannelId> message_channel_ids(query_result.size());
+    for (unsigned i = 0; i < query_result.size(); i++) {
+        message_channel_ids[i] = *std::get<0>(query_result[i]).id.Value();
+    }
+    std::vector<std::vector<UserId>> most_active_member_ids =
+        FetchMostActiveMembers(message_channel_ids, active_member_fetch_limit, conns);
 
     std::vector<JoinedInMessageChannel> results(query_result.size());
     for (unsigned i = 0; i < query_result.size(); i++) {
@@ -145,6 +217,7 @@ GetJoinedInMessageChannels(UserId const member_id, std::vector<UserId> const &ha
         result.message_channel = std::get<0>(entry);
         result.member_type =
             static_cast<MessageChannelMemberType>(*std::get<1>(entry).ownership.Value());
+        result.most_active_member_ids = most_active_member_ids[i];
 
         results[i] = result;
     }
@@ -180,9 +253,9 @@ ToMessageChannels(std::vector<JoinedInMessageChannel> const &joining_info) {
 std::vector<MessageChannelMember>
 GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> const &pagination,
                          ConnectionReservoirInterface *conns) {
-    SqlQueryBuilder query;
+    SqlQueryBuilder message_channel_member_query;
     SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
-    query.QueryPiece(TableNames::AUser())
+    message_channel_member_query.QueryPiece(TableNames::AUser())
         .QueryPiece(" u")
         .QueryPiece(" JOIN ")
         .QueryPiece(TableNames::MessageChannelHasUser())
@@ -191,21 +264,26 @@ GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> 
         .Holder(&channel_id_ph)
         .QueryPiece(" ORDER BY mchu.last_interaction_at DESC");
 
-    query.SetValueToPlaceholder(channel_id_ph, std::make_shared<SqlLong>(channel_id));
+    message_channel_member_query.SetValueToPlaceholder(channel_id_ph,
+                                                       std::make_shared<SqlLong>(channel_id));
 
     if (pagination.has_value()) {
         SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
         SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
-        query.QueryPiece(" LIMIT ").Holder(&limit_ph).QueryPiece(" OFFSET ").Holder(&offset_ph);
-        query.SetValueToPlaceholder(limit_ph,
-                                    std::make_shared<SqlInt>(pagination->result_per_page()));
-        query.SetValueToPlaceholder(
+        message_channel_member_query.QueryPiece(" LIMIT ")
+            .Holder(&limit_ph)
+            .QueryPiece(" OFFSET ")
+            .Holder(&offset_ph);
+        message_channel_member_query.SetValueToPlaceholder(
+            limit_ph, std::make_shared<SqlInt>(pagination->result_per_page()));
+        message_channel_member_query.SetValueToPlaceholder(
             offset_ph,
             std::make_shared<SqlInt>(pagination->page_number() * pagination->result_per_page()));
     }
 
     std::vector<std::tuple<UserEntity, MessageChannelHasUserEntity>> query_result =
-        Query<UserEntity, MessageChannelHasUserEntity>(query, {"u", "mchu"}, conns);
+        Query<UserEntity, MessageChannelHasUserEntity>(message_channel_member_query, {"u", "mchu"},
+                                                       conns);
 
     std::vector<MessageChannelMember> results(query_result.size());
     for (unsigned i = 0; i < query_result.size(); i++) {

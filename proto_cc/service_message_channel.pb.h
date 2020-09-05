@@ -1108,11 +1108,11 @@ class GetJoinedInMessageChannelsRequest : public ::google::protobuf::Message /* 
   ::e8::Pagination* mutable_pagination();
   void set_allocated_pagination(::e8::Pagination* pagination);
 
-  // int32 fetch_num_active_users = 3;
-  void clear_fetch_num_active_users();
-  static const int kFetchNumActiveUsersFieldNumber = 3;
-  ::google::protobuf::int32 fetch_num_active_users() const;
-  void set_fetch_num_active_users(::google::protobuf::int32 value);
+  // int32 active_member_fetch_limit = 3;
+  void clear_active_member_fetch_limit();
+  static const int kActiveMemberFetchLimitFieldNumber = 3;
+  ::google::protobuf::int32 active_member_fetch_limit() const;
+  void set_active_member_fetch_limit(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:e8.GetJoinedInMessageChannelsRequest)
  private:
@@ -1121,7 +1121,7 @@ class GetJoinedInMessageChannelsRequest : public ::google::protobuf::Message /* 
   ::google::protobuf::RepeatedField< ::google::protobuf::int64 > with_member_ids_;
   mutable int _with_member_ids_cached_byte_size_;
   ::e8::Pagination* pagination_;
-  ::google::protobuf::int32 fetch_num_active_users_;
+  ::google::protobuf::int32 active_member_fetch_limit_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
 };
@@ -1214,10 +1214,10 @@ class MessageChannelAuxiliaries : public ::google::protobuf::Message /* @@protoc
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.UserPublicProfile most_active_users = 2;
+  // repeated .e8.UserPublicProfile most_active_users = 4;
   int most_active_users_size() const;
   void clear_most_active_users();
-  static const int kMostActiveUsersFieldNumber = 2;
+  static const int kMostActiveUsersFieldNumber = 4;
   ::e8::UserPublicProfile* mutable_most_active_users(int index);
   ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >*
       mutable_most_active_users();
@@ -1226,18 +1226,32 @@ class MessageChannelAuxiliaries : public ::google::protobuf::Message /* @@protoc
   const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
       most_active_users() const;
 
-  // int64 channel_last_interacted_at = 1;
+  // int64 join_at = 1;
+  void clear_join_at();
+  static const int kJoinAtFieldNumber = 1;
+  ::google::protobuf::int64 join_at() const;
+  void set_join_at(::google::protobuf::int64 value);
+
+  // int64 channel_last_interacted_at = 2;
   void clear_channel_last_interacted_at();
-  static const int kChannelLastInteractedAtFieldNumber = 1;
+  static const int kChannelLastInteractedAtFieldNumber = 2;
   ::google::protobuf::int64 channel_last_interacted_at() const;
   void set_channel_last_interacted_at(::google::protobuf::int64 value);
+
+  // .e8.MessageChannelMemberType member_type = 3;
+  void clear_member_type();
+  static const int kMemberTypeFieldNumber = 3;
+  ::e8::MessageChannelMemberType member_type() const;
+  void set_member_type(::e8::MessageChannelMemberType value);
 
   // @@protoc_insertion_point(class_scope:e8.MessageChannelAuxiliaries)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile > most_active_users_;
+  ::google::protobuf::int64 join_at_;
   ::google::protobuf::int64 channel_last_interacted_at_;
+  int member_type_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
 };
@@ -2035,25 +2049,39 @@ GetJoinedInMessageChannelsRequest::mutable_with_member_ids() {
   return &with_member_ids_;
 }
 
-// int32 fetch_num_active_users = 3;
-inline void GetJoinedInMessageChannelsRequest::clear_fetch_num_active_users() {
-  fetch_num_active_users_ = 0;
+// int32 active_member_fetch_limit = 3;
+inline void GetJoinedInMessageChannelsRequest::clear_active_member_fetch_limit() {
+  active_member_fetch_limit_ = 0;
 }
-inline ::google::protobuf::int32 GetJoinedInMessageChannelsRequest::fetch_num_active_users() const {
-  // @@protoc_insertion_point(field_get:e8.GetJoinedInMessageChannelsRequest.fetch_num_active_users)
-  return fetch_num_active_users_;
+inline ::google::protobuf::int32 GetJoinedInMessageChannelsRequest::active_member_fetch_limit() const {
+  // @@protoc_insertion_point(field_get:e8.GetJoinedInMessageChannelsRequest.active_member_fetch_limit)
+  return active_member_fetch_limit_;
 }
-inline void GetJoinedInMessageChannelsRequest::set_fetch_num_active_users(::google::protobuf::int32 value) {
+inline void GetJoinedInMessageChannelsRequest::set_active_member_fetch_limit(::google::protobuf::int32 value) {
   
-  fetch_num_active_users_ = value;
-  // @@protoc_insertion_point(field_set:e8.GetJoinedInMessageChannelsRequest.fetch_num_active_users)
+  active_member_fetch_limit_ = value;
+  // @@protoc_insertion_point(field_set:e8.GetJoinedInMessageChannelsRequest.active_member_fetch_limit)
 }
 
 // -------------------------------------------------------------------
 
 // MessageChannelAuxiliaries
 
-// int64 channel_last_interacted_at = 1;
+// int64 join_at = 1;
+inline void MessageChannelAuxiliaries::clear_join_at() {
+  join_at_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 MessageChannelAuxiliaries::join_at() const {
+  // @@protoc_insertion_point(field_get:e8.MessageChannelAuxiliaries.join_at)
+  return join_at_;
+}
+inline void MessageChannelAuxiliaries::set_join_at(::google::protobuf::int64 value) {
+  
+  join_at_ = value;
+  // @@protoc_insertion_point(field_set:e8.MessageChannelAuxiliaries.join_at)
+}
+
+// int64 channel_last_interacted_at = 2;
 inline void MessageChannelAuxiliaries::clear_channel_last_interacted_at() {
   channel_last_interacted_at_ = GOOGLE_LONGLONG(0);
 }
@@ -2067,7 +2095,21 @@ inline void MessageChannelAuxiliaries::set_channel_last_interacted_at(::google::
   // @@protoc_insertion_point(field_set:e8.MessageChannelAuxiliaries.channel_last_interacted_at)
 }
 
-// repeated .e8.UserPublicProfile most_active_users = 2;
+// .e8.MessageChannelMemberType member_type = 3;
+inline void MessageChannelAuxiliaries::clear_member_type() {
+  member_type_ = 0;
+}
+inline ::e8::MessageChannelMemberType MessageChannelAuxiliaries::member_type() const {
+  // @@protoc_insertion_point(field_get:e8.MessageChannelAuxiliaries.member_type)
+  return static_cast< ::e8::MessageChannelMemberType >(member_type_);
+}
+inline void MessageChannelAuxiliaries::set_member_type(::e8::MessageChannelMemberType value) {
+  
+  member_type_ = value;
+  // @@protoc_insertion_point(field_set:e8.MessageChannelAuxiliaries.member_type)
+}
+
+// repeated .e8.UserPublicProfile most_active_users = 4;
 inline int MessageChannelAuxiliaries::most_active_users_size() const {
   return most_active_users_.size();
 }

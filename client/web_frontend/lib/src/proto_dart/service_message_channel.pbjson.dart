@@ -67,15 +67,17 @@ const GetJoinedInMessageChannelsRequest$json = const {
   '2': const [
     const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
     const {'1': 'with_member_ids', '3': 2, '4': 3, '5': 3, '10': 'withMemberIds'},
-    const {'1': 'fetch_num_active_users', '3': 3, '4': 1, '5': 5, '10': 'fetchNumActiveUsers'},
+    const {'1': 'active_member_fetch_limit', '3': 3, '4': 1, '5': 5, '10': 'activeMemberFetchLimit'},
   ],
 };
 
 const MessageChannelAuxiliaries$json = const {
   '1': 'MessageChannelAuxiliaries',
   '2': const [
-    const {'1': 'channel_last_interacted_at', '3': 1, '4': 1, '5': 3, '10': 'channelLastInteractedAt'},
-    const {'1': 'most_active_users', '3': 2, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'mostActiveUsers'},
+    const {'1': 'join_at', '3': 1, '4': 1, '5': 3, '10': 'joinAt'},
+    const {'1': 'channel_last_interacted_at', '3': 2, '4': 1, '5': 3, '10': 'channelLastInteractedAt'},
+    const {'1': 'member_type', '3': 3, '4': 1, '5': 14, '6': '.e8.MessageChannelMemberType', '10': 'memberType'},
+    const {'1': 'most_active_users', '3': 4, '4': 3, '5': 11, '6': '.e8.UserPublicProfile', '10': 'mostActiveUsers'},
   ],
 };
 
