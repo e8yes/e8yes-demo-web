@@ -74,10 +74,24 @@ message GetJoinedInMessageChannelsRequest {
     // Only retrieve message channels that contain all the members with the IDs
     // in the following array.
     repeated int64 with_member_ids = 2;
+
+    // The maximum number of active users to fetch.
+    int32 fetch_num_active_users = 3;
+}
+
+message MessageChannelAuxiliaries {
+    // When did the logged-in user last interact with the message channel?
+    int64 channel_last_interacted_at = 1;
+
+    // The most active users in the message channel.
+    repeated UserPublicProfile most_active_users = 2;
 }
 
 message GetJoinedInMessageChannelsResponse {
     repeated MessageChannel channels = 1;
+
+    // A map of useful auxiliary information keyed by message channel ID.
+    map<int64, MessageChannelAuxiliaries> auxiliaries = 2;
 }
 
 
