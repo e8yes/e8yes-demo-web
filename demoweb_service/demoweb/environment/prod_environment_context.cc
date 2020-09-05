@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <memory>
 #include <vector>
 
@@ -36,7 +37,9 @@ DemoWebProductionEnvironmentContext::DemoWebProductionEnvironmentContext(
 
     ConnectionFactory fact(ConnectionFactory::PQ, db_hostname, kDemowebDatabaseName);
     demoweb_database_ = std::make_unique<PooledConnectionReservoir>(fact);
-    SendHeartBeat(demoweb_database_.get());
+
+    bool rc = SendHeartBeat(demoweb_database_.get());
+    assert(rc == true);
 
     key_gen_ = std::make_unique<PersistentKeyGenerator>(db_hostname);
 

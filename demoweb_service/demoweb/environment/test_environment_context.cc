@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <memory>
 #include <vector>
 
@@ -31,7 +32,10 @@ namespace e8 {
 DemoWebTestEnvironmentContext::DemoWebTestEnvironmentContext() {
     ConnectionFactory fact(ConnectionFactory::PQ, /*host_name=*/"localhost", kDemowebDatabaseName);
     demoweb_database_ = std::make_unique<PooledConnectionReservoir>(fact);
-    SendHeartBeat(demoweb_database_.get());
+
+    bool rc = SendHeartBeat(demoweb_database_.get());
+    assert(rc == true);
+
     ClearAllTables(demoweb_database_.get());
 
     key_gen_ = std::make_unique<PersistentKeyGenerator>(/*host_name=*/"localhost");

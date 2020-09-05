@@ -27,3 +27,4 @@ INCLUDEPATH += $$PWD/../../../../common/unit_test_util
 DEPENDPATH += $$PWD/../../../../common/unit_test_util
 
 LIBS += -lpqxx
+LIBS += -pthread

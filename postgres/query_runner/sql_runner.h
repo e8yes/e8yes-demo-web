@@ -118,7 +118,13 @@ std::unordered_set<std::string> Tables(ConnectionReservoirInterface *reservoir);
  * @param reservoir Connection reservoir to allocate database connections which point to the
  * database to send heart beat to.
  */
-void SendHeartBeat(ConnectionReservoirInterface *reservoir);
+bool SendHeartBeat(ConnectionReservoirInterface *reservoir);
+
+/**
+ * @brief SendHeartBeat Similar to the above function, but it takes in a raw connection instead of
+ * the connection reservoir interface.
+ */
+bool SendHeartBeat(ConnectionInterface *conn);
 
 /**
  * @brief TimeId Generate approximately unique integer ID from time. It has a resolution of

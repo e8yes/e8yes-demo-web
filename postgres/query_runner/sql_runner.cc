@@ -98,23 +98,44 @@ std::unordered_set<std::string> Tables(ConnectionReservoirInterface *reservoir) 
     return table_names;
 }
 
-void SendHeartBeat(ConnectionReservoirInterface *reservoir) {
+bool SendHeartBeat(ConnectionReservoirInterface *reservoir) {
     ConnectionInterface *conn = reservoir->Take();
 
     std::unique_ptr<ResultSetInterface> rs =
         conn->RunQuery("SELECT 1", ConnectionInterface::QueryParams());
 
     if (!rs->HasNext()) {
-        throw std::ios_base::failure("Heart beat results in an empty result set.");
+        reservoir->Put(conn);
+        return false;
     }
 
     SqlInt one("heart_beat");
     rs->SetField(0, &one);
     if (!one.Value().has_value() || one.Value().value() != 1) {
-        throw std::system_error();
+        reservoir->Put(conn);
+        return false;
     }
 
     reservoir->Put(conn);
+
+    return true;
+}
+
+bool SendHeartBeat(ConnectionInterface *conn) {
+    std::unique_ptr<ResultSetInterface> rs =
+        conn->RunQuery("SELECT 1", ConnectionInterface::QueryParams());
+
+    if (!rs->HasNext()) {
+        return false;
+    }
+
+    SqlInt one("heart_beat");
+    rs->SetField(0, &one);
+    if (!one.Value().has_value() || one.Value().value() != 1) {
+        return false;
+    }
+
+    return true;
 }
 
 int64_t TimeId(unsigned host_id) {
