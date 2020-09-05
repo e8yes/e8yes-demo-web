@@ -26,7 +26,7 @@ class WMComponent implements OnActivate {
 
   MessageChannel currentMessageChannel = null;
 
-  static const int _kNumActiveUsersLimit = 5;
+  static const int _kActiveUsersFetchLimit = 5;
 
   Int64 targetMemberId = null;
 
@@ -62,7 +62,7 @@ class WMComponent implements OnActivate {
     if (targetMemberId != null) {
       request.withMemberIds.add(targetMemberId);
     }
-    request.fetchNumActiveUsers = _kNumActiveUsersLimit;
+    request.activeMemberFetchLimit = _kActiveUsersFetchLimit;
 
     onLoadingMessageChannels = true;
     messageChannelService_
