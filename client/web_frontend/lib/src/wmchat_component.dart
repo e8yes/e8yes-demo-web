@@ -8,41 +8,51 @@ import 'package:demoweb_app/src/proto_dart/service_message_channel.pbgrpc.dart';
 import 'package:demoweb_app/src/routes.dart';
 import 'package:fixnum/fixnum.dart';
 
-enum WMMode { SEARCH_MESSAGE_CHANNEL, VIEW_MESSAGE_CHANNEL }
+enum WMMode {
+  SEARCH_MESSAGE_CHANNEL,
+  VIEW_MESSAGE_CHANNEL,
+}
+
+class StructuralControl {
+  WMMode mode = WMMode.SEARCH_MESSAGE_CHANNEL;
+  List<MessageChannelOveriew> messageChannelOverviews =
+      List<MessageChannelOveriew>();
+  bool onLoadingMessageChannels = false;
+  bool showAddMessageChannelPopup = false;
+}
 
 @Component(
     selector: "wmchat",
     templateUrl: "wmchat_component.html",
     styleUrls: ["wmchat_component.css"],
     directives: [coreDirectives, FooterComponent],
-    exports: [WMMode])
+    exports: [WMMode, StructuralControl])
 class WMComponent implements OnActivate {
-  WMMode mode = WMMode.SEARCH_MESSAGE_CHANNEL;
+  StructuralControl structuralControl = StructuralControl();
 
-  List<MessageChannelOveriew> messageChannelOverviews =
-      List<MessageChannelOveriew>();
-  bool onLoadingMessageChannels = false;
+  MessageChannelOveriew _currentMessageChannel = null;
+  Int64 _targetMemberId = null;
 
-  MessageChannelOveriew currentMessageChannel = null;
+  final MessageChannelServiceInterface _messageChannelService;
 
   static const int _kActiveUsersFetchLimit = 5;
 
-  Int64 targetMemberId = null;
-
-  final MessageChannelServiceInterface messageChannelService_;
-
-  WMComponent(this.messageChannelService_);
+  WMComponent(this._messageChannelService);
 
   void onActivate(_, RouterState current) async {
-    targetMemberId = getIdPathVariable(current.parameters);
+    _targetMemberId = getIdPathVariable(current.parameters);
     this._fetchMessageChannelList();
   }
 
   void onKeyDownSearchMessageChannel(String searchTerms) {}
 
+  void onClickCreateMessageChannel() {
+    structuralControl.showAddMessageChannelPopup = true;
+  }
+
   void onClickMessageChannel(MessageChannelOveriew channel) {
-    currentMessageChannel = channel;
-    mode = WMMode.VIEW_MESSAGE_CHANNEL;
+    _currentMessageChannel = channel;
+    structuralControl.mode = WMMode.VIEW_MESSAGE_CHANNEL;
   }
 
   String dateToString(Int64 timestamp) {
@@ -54,17 +64,17 @@ class WMComponent implements OnActivate {
   void _fetchMessageChannelList() {
     GetJoinedInMessageChannelsRequest request =
         GetJoinedInMessageChannelsRequest();
-    if (targetMemberId != null) {
-      request.withMemberIds.add(targetMemberId);
+    if (_targetMemberId != null) {
+      request.withMemberIds.add(_targetMemberId);
     }
     request.activeMemberFetchLimit = _kActiveUsersFetchLimit;
 
-    onLoadingMessageChannels = true;
-    messageChannelService_
+    structuralControl.onLoadingMessageChannels = true;
+    _messageChannelService
         .getJoinedInMessageChannels(request, credentialStorage.loadSignature())
         .then((GetJoinedInMessageChannelsResponse res) {
-      messageChannelOverviews = res.channels;
-      onLoadingMessageChannels = false;
+      structuralControl.messageChannelOverviews = res.channels;
+      structuralControl.onLoadingMessageChannels = false;
     });
   }
 }

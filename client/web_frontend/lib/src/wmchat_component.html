@@ -2,14 +2,65 @@
 
 <hr/>
 
-<div *ngIf="mode == WMMode.SEARCH_MESSAGE_CHANNEL">
+<div *ngIf="structuralControl.showAddMessageChannelPopup" 
+     class="modal.show"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add message channel</h5>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label class="col-form-label key-label">Title</label>
+                    <input placeholder="Optional" 
+                            class="value-label" />
+                </div>
+                
+                <div>
+                    <label class="col-form-label key-label">Description</label>
+                    <input placeholder="Optional" 
+                            class="value-label" />
+                </div>
+
+                <div>
+                    <label class="col-form-label key-label">Members</label>
+                    <span class="value-label">
+                        <input placeholder="Search contacts..." />
+                        <button class="btn">+</button>
+                    </span>
+                </div>
+
+                <div>
+                    <input type="checkbox" />
+                    <label class="col-form-label">Close group</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" 
+                        class="btn">
+                    Add
+                </button>
+                <button type="button"
+                        class="btn"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="structuralControl.mode == WMMode.SEARCH_MESSAGE_CHANNEL">
     <div>
         <input #searchBox (input)="onKeyDownSearchMessageChannel(searchBox.value)"
           class="searchbar" placeholder="Search message channels.." />
 
-        <button class="btn tool-bar-btn">+</button>
-          
-        <img *ngIf="onLoadingMessageChannels" 
+        <button (click)="onClickCreateMessageChannel"
+                class="btn">+</button>
+
+        <img *ngIf="structuralControl.onLoadingMessageChannels" 
              src="icons/cpu.svg" 
              width="40em" 
              height="40em" />
@@ -17,18 +68,19 @@
 
     <hr/>
 
-    <div *ngIf="onLoadingMessageChannels">
+    <div *ngIf="structuralControl.onLoadingMessageChannels">
         Loading...
     </div>
     
-    <div *ngIf="!onLoadingMessageChannels" class="message-channel-list">
-        <label *ngIf="messageChannelOverviews.isEmpty" 
+    <div *ngIf="!structuralControl.onLoadingMessageChannels" 
+         class="message-channel-list">
+        <label *ngIf="structuralControl.messageChannelOverviews.isEmpty" 
            class="col-form-label section">
            No message channel found.
         </label>
     
         <ul class="list-group section">
-            <li *ngFor="let overview of messageChannelOverviews"
+            <li *ngFor="let overview of structuralControl.messageChannelOverviews"
                 (click)="onClickMessageChannel(overview)"
                 class="list-group-item">
                 <label *ngIf="overview.channel.hasTitle()">
@@ -81,7 +133,7 @@
     </div>
 </div>
 
-<div *ngIf="mode == WMMode.VIEW_MESSAGE_CHANNEL">
+<div *ngIf="structuralControl.mode == WMMode.VIEW_MESSAGE_CHANNEL">
     Not implemented.
 </div>
 

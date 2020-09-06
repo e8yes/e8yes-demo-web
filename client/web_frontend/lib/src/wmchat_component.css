@@ -16,3 +16,12 @@
     border-radius: 8px;
     padding: 10px;
 }
+
+.key-label {
+    position: relative;
+}
+
+.value-label {
+    position: absolute;
+    left: 25%;
+}
