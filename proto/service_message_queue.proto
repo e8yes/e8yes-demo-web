@@ -34,6 +34,7 @@ message DequeueMessageRequest {
     int64 user_id = 1;
     bool previous_message_delivered = 2;
     bool end_operation = 3;
+    int32 wait_duration_secs = 4;
 }
 
 message DequeueMessageResponse {

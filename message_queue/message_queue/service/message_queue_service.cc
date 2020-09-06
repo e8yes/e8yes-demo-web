@@ -90,7 +90,13 @@ grpc::Status MessageQueueServiceImpl::DequeueMessage(
             continue;
         }
 
-        queue = MessageQueueStoreInstance()->BeginBlockingDequeue(user_id, &message);
+        queue = MessageQueueStoreInstance()->BeginBlockingDequeue(
+            user_id, request.wait_duration_secs(), &message);
+
+        if (queue == nullptr) {
+            current_status = grpc::Status(grpc::StatusCode::ABORTED, "Time out.");
+            continue;
+        }
 
         current_status = WriteToStream(message, stream);
     }

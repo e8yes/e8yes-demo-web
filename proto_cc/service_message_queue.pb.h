@@ -389,6 +389,12 @@ class DequeueMessageRequest : public ::google::protobuf::Message /* @@protoc_ins
   bool end_operation() const;
   void set_end_operation(bool value);
 
+  // int32 wait_duration_secs = 4;
+  void clear_wait_duration_secs();
+  static const int kWaitDurationSecsFieldNumber = 4;
+  ::google::protobuf::int32 wait_duration_secs() const;
+  void set_wait_duration_secs(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:e8.DequeueMessageRequest)
  private:
 
@@ -396,6 +402,7 @@ class DequeueMessageRequest : public ::google::protobuf::Message /* @@protoc_ins
   ::google::protobuf::int64 user_id_;
   bool previous_message_delivered_;
   bool end_operation_;
+  ::google::protobuf::int32 wait_duration_secs_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
 };
@@ -608,6 +615,20 @@ inline void DequeueMessageRequest::set_end_operation(bool value) {
   
   end_operation_ = value;
   // @@protoc_insertion_point(field_set:e8.DequeueMessageRequest.end_operation)
+}
+
+// int32 wait_duration_secs = 4;
+inline void DequeueMessageRequest::clear_wait_duration_secs() {
+  wait_duration_secs_ = 0;
+}
+inline ::google::protobuf::int32 DequeueMessageRequest::wait_duration_secs() const {
+  // @@protoc_insertion_point(field_get:e8.DequeueMessageRequest.wait_duration_secs)
+  return wait_duration_secs_;
+}
+inline void DequeueMessageRequest::set_wait_duration_secs(::google::protobuf::int32 value) {
+  
+  wait_duration_secs_ = value;
+  // @@protoc_insertion_point(field_set:e8.DequeueMessageRequest.wait_duration_secs)
 }
 
 // -------------------------------------------------------------------

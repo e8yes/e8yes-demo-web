@@ -36,11 +36,11 @@ static MessageQueueStore gMessageQueueStore;
 
 } // namespace
 
-MessageQueueStore::MessageQueue::MessageQueue() { sem_init(&sem, 0, 0); }
+MessageQueueStore::MessageQueue::MessageQueue() { sem_init(&queue_resource_count, 0, 0); }
 
-MessageQueueStore::MessageQueue::~MessageQueue() { sem_destroy(&sem); }
+MessageQueueStore::MessageQueue::~MessageQueue() { sem_destroy(&queue_resource_count); }
 
-MessageQueueStore::MessageQueue *MessageQueueStore::FetchQueue(MessageKey key) {
+MessageQueueStore::MessageQueue *MessageQueueStore::FetchQueue(MessageKey const key) {
     MessageQueue *queue;
 
     map_lock_.lock_shared();
@@ -61,23 +61,38 @@ MessageQueueStore::MessageQueue *MessageQueueStore::FetchQueue(MessageKey key) {
     return queue;
 }
 
-void MessageQueueStore::Enqueue(MessageKey key, RealTimeMessage const &message) {
+void MessageQueueStore::Enqueue(MessageKey const key, RealTimeMessage const &message) {
     MessageQueue *message_queue = FetchQueue(key);
 
-    message_queue->lock.lock();
+    message_queue->queue_lock.lock();
     message_queue->queue.push(message);
-    message_queue->lock.unlock();
+    message_queue->queue_lock.unlock();
 
-    sem_post(&message_queue->sem);
+    sem_post(&message_queue->queue_resource_count);
 }
 
-MessageQueueStore::MessageQueue *MessageQueueStore::BeginBlockingDequeue(MessageKey key,
+MessageQueueStore::MessageQueue *MessageQueueStore::BeginBlockingDequeue(MessageKey const key,
+                                                                         int const wait_for_secs,
                                                                          RealTimeMessage *message) {
     MessageQueue *message_queue = FetchQueue(key);
 
-    sem_wait(&message_queue->sem);
+    int rc;
+    if (wait_for_secs > 0) {
+        timespec ts;
+        ts.tv_sec = wait_for_secs;
+        ts.tv_nsec = 0;
+        rc = sem_timedwait(&message_queue->queue_resource_count, &ts);
+    } else {
+        rc = sem_wait(&message_queue->queue_resource_count);
+    }
 
-    message_queue->lock.lock();
+    if (rc == ETIMEDOUT) {
+        return nullptr;
+    }
+
+    assert(rc == 0);
+
+    message_queue->queue_lock.lock();
     *message = message_queue->queue.front();
 
     return message_queue;
@@ -89,9 +104,9 @@ void MessageQueueStore::EndBlockingDequeue(MessageQueue *message_queue, bool deq
     if (dequeue) {
         message_queue->queue.pop();
     } else {
-        sem_post(&message_queue->sem);
+        sem_post(&message_queue->queue_resource_count);
     }
-    message_queue->lock.unlock();
+    message_queue->queue_lock.unlock();
 }
 
 void MessageQueueStore::Clear() {

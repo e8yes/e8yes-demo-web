@@ -73,6 +73,7 @@ class DequeueMessageRequest extends $pb.GeneratedMessage {
     ..aInt64(1, 'userId')
     ..aOB(2, 'previousMessageDelivered')
     ..aOB(3, 'endOperation')
+    ..a<$core.int>(4, 'waitDurationSecs', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -117,6 +118,15 @@ class DequeueMessageRequest extends $pb.GeneratedMessage {
   $core.bool hasEndOperation() => $_has(2);
   @$pb.TagNumber(3)
   void clearEndOperation() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get waitDurationSecs => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set waitDurationSecs($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasWaitDurationSecs() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearWaitDurationSecs() => clearField(4);
 }
 
 class DequeueMessageResponse extends $pb.GeneratedMessage {

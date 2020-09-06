@@ -42,11 +42,13 @@ bool EnqueueAndDequeueTest() {
 
     e8::RealTimeMessage fetched_old_message;
     e8::MessageQueueStore::MessageQueue *queue =
-        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &fetched_old_message);
+        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, /*wait_for_secs=*/-1,
+                                                              &fetched_old_message);
     e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/true);
 
     e8::RealTimeMessage fetched_new_message;
-    queue = e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &fetched_new_message);
+    queue = e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, /*wait_for_secs=*/-1,
+                                                                  &fetched_new_message);
     e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/true);
 
     TEST_CONDITION(old_message.real_time_message_id() ==
@@ -74,7 +76,8 @@ bool DequeueFutureMessageTest() {
 
     e8::RealTimeMessage future_message;
     e8::MessageQueueStore::MessageQueue *queue =
-        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &future_message);
+        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, /*wait_for_secs=*/-1,
+                                                              &future_message);
     e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/true);
     TEST_CONDITION(future_message.real_time_message_id() == 10);
 
@@ -93,12 +96,14 @@ bool PeekOnlyTest() {
 
     e8::RealTimeMessage fetched_old_message;
     e8::MessageQueueStore::MessageQueue *queue =
-        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &fetched_old_message);
+        e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, /*wait_for_secs=*/-1,
+                                                              &fetched_old_message);
     e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/false);
     TEST_CONDITION(old_message.real_time_message_id() ==
                    fetched_old_message.real_time_message_id());
 
-    queue = e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, &fetched_old_message);
+    queue = e8::MessageQueueStoreInstance()->BeginBlockingDequeue(/*key=*/1, /*wait_for_secs=*/-1,
+                                                                  &fetched_old_message);
     e8::MessageQueueStoreInstance()->EndBlockingDequeue(queue, /*dequeue=*/true);
     TEST_CONDITION(old_message.real_time_message_id() ==
                    fetched_old_message.real_time_message_id());

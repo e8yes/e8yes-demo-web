@@ -19,6 +19,7 @@
 #define MESSAGE_QUEUE_STORE_H
 
 #include <cstdint>
+#include <ctime>
 #include <memory>
 #include <mutex>
 #include <optional>
@@ -44,8 +45,9 @@ class MessageQueueStore {
         ~MessageQueue();
 
         std::queue<RealTimeMessage> queue;
-        std::mutex lock;
-        sem_t sem;
+
+        std::mutex queue_lock;
+        sem_t queue_resource_count;
     };
 
     /**
@@ -56,7 +58,7 @@ class MessageQueueStore {
      * @param key A unique ID pointing to the queue to add message to.
      * @param message Message to be added.
      */
-    void Enqueue(MessageKey key, RealTimeMessage const &message);
+    void Enqueue(MessageKey const key, RealTimeMessage const &message);
 
     /**
      * @brief BlockingDequeue Read the oldest element from the queue pointed to by the key. If the
@@ -64,10 +66,13 @@ class MessageQueueStore {
      * this function will exclusively block concurrent access until EndBlockingDequeue() is called.
      *
      * @param key A unique ID pointing to the queue to read the message from.
+     * @param wait_for_secs The number of seconds to wait before returning an empty queue if there
+     * isn't anything coming into the queue for at least this duration.
      * @param message returns the The oldest message from the queue.
      * @return A pointer to the message queue pointed to by the message key.
      */
-    MessageQueue *BeginBlockingDequeue(MessageKey key, RealTimeMessage *message);
+    MessageQueue *BeginBlockingDequeue(MessageKey const key, int const wait_for_secs,
+                                       RealTimeMessage *message);
 
     /**
      * @brief EndBlockingDequeue Unblock the queue's concurrent access and potentially remove the
@@ -85,7 +90,7 @@ class MessageQueueStore {
     void Clear();
 
   private:
-    MessageQueue *FetchQueue(MessageKey key);
+    MessageQueue *FetchQueue(MessageKey const key);
 
     std::unordered_map<MessageKey, std::shared_ptr<MessageQueue>> queues_;
     std::shared_mutex map_lock_;

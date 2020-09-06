@@ -23,6 +23,7 @@ const DequeueMessageRequest$json = const {
     const {'1': 'user_id', '3': 1, '4': 1, '5': 3, '10': 'userId'},
     const {'1': 'previous_message_delivered', '3': 2, '4': 1, '5': 8, '10': 'previousMessageDelivered'},
     const {'1': 'end_operation', '3': 3, '4': 1, '5': 8, '10': 'endOperation'},
+    const {'1': 'wait_duration_secs', '3': 4, '4': 1, '5': 5, '10': 'waitDurationSecs'},
   ],
 };
 
