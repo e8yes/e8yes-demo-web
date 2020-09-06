@@ -78,15 +78,19 @@ MessageQueueStore::MessageQueue *MessageQueueStore::BeginBlockingDequeue(Message
 
     int rc;
     if (wait_for_secs > 0) {
+        std::time_t expiry_timestamp;
+        std::time(&expiry_timestamp);
+        expiry_timestamp += wait_for_secs;
+
         timespec ts;
-        ts.tv_sec = wait_for_secs;
+        ts.tv_sec = expiry_timestamp;
         ts.tv_nsec = 0;
         rc = sem_timedwait(&message_queue->queue_resource_count, &ts);
     } else {
         rc = sem_wait(&message_queue->queue_resource_count);
     }
 
-    if (rc == ETIMEDOUT) {
+    if (rc == -1 && errno == ETIMEDOUT) {
         return nullptr;
     }
 
