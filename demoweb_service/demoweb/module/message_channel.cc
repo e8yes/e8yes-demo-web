@@ -145,11 +145,10 @@ GetMessageChannelRelation(SearchedMessageChannel const &searched_message_channel
 
 } // namespace
 
-MessageChannelEntity CreateMessageChannel(UserId creator_id,
-                                          std::optional<std::string> const &channel_name,
-                                          std::optional<std::string> const &description,
-                                          bool encrypted, bool close_group_channel, HostId host_id,
-                                          ConnectionReservoirInterface *conns) {
+std::optional<MessageChannelEntity> CreateMessageChannel(
+    UserId creator_id, std::optional<std::string> const &channel_name,
+    std::optional<std::string> const &description, std::vector<UserId> const &to_be_member_ids,
+    bool encrypted, bool close_group_channel, HostId host_id, ConnectionReservoirInterface *conns) {
     std::time_t current_timestamp;
     std::time(&current_timestamp);
 
@@ -165,15 +164,16 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
         Update(message_channel, TableNames::MessageChannel(), /*replace=*/false, conns);
     assert(num_rows == 1);
 
-    MessageChannelHasUserEntity channel_user;
-    *channel_user.channel_id.ValuePtr() = message_channel.id.Value();
-    *channel_user.user_id.ValuePtr() = creator_id;
-    *channel_user.ownership.ValuePtr() = MessageChannelMemberType::MCMT_ADMIN;
-    *channel_user.created_at.ValuePtr() = current_timestamp;
-    *channel_user.last_interaction_at.ValuePtr() = current_timestamp;
+    bool rc = AddUserToMessageChannel(/*viewer_id=*/std::nullopt, *message_channel.id.Value(),
+                                      creator_id, MCMT_ADMIN, conns);
+    if (rc == false) {
+        return std::nullopt;
+    }
 
-    num_rows = Update(channel_user, TableNames::MessageChannelHasUser(), /*replace=*/false, conns);
-    assert(num_rows == 1);
+    for (UserId const user_id : to_be_member_ids) {
+        AddUserToMessageChannel(/*viewer_id=*/std::nullopt, *message_channel.id.Value(), user_id,
+                                MCMT_MEMBER, conns);
+    }
 
     return message_channel;
 }

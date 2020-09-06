@@ -12,7 +12,7 @@ const CreateMessageChannelRequest$json = const {
     const {'1': 'close_group_channel', '3': 2, '4': 1, '5': 8, '10': 'closeGroupChannel'},
     const {'1': 'title', '3': 3, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'title'},
     const {'1': 'description', '3': 4, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'description'},
-    const {'1': 'member_ids', '3': 5, '4': 1, '5': 3, '10': 'memberIds'},
+    const {'1': 'member_ids', '3': 5, '4': 3, '5': 3, '10': 'memberIds'},
   ],
 };
 

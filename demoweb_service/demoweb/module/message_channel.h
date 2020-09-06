@@ -40,11 +40,11 @@ namespace e8 {
  * "encrypted" parameter. The argument close_group_channel specifies a more relaxed close group RBAC
  * policy for what the members can do.
  */
-MessageChannelEntity CreateMessageChannel(UserId creator_id,
-                                          std::optional<std::string> const &channel_name,
-                                          std::optional<std::string> const &description,
-                                          bool encrypted, bool close_group_channel, HostId host_id,
-                                          ConnectionReservoirInterface *conns);
+std::optional<MessageChannelEntity>
+CreateMessageChannel(UserId creator_id, std::optional<std::string> const &channel_name,
+                     std::optional<std::string> const &description,
+                     std::vector<UserId> const &to_be_member_ids, bool encrypted,
+                     bool close_group_channel, HostId host_id, ConnectionReservoirInterface *conns);
 
 struct SearchedMessageChannel {
     MessageChannelEntity message_channel;

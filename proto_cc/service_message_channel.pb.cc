@@ -427,7 +427,7 @@ void AddDescriptorsImpl() {
       "ncrypted\030\001 \001(\010\022\033\n\023close_group_channel\030\002 "
       "\001(\010\022!\n\005title\030\003 \001(\0132\022.e8.NullableString\022\'"
       "\n\013description\030\004 \001(\0132\022.e8.NullableString\022"
-      "\022\n\nmember_ids\030\005 \001(\003\"2\n\034CreateMessageChan"
+      "\022\n\nmember_ids\030\005 \003(\003\"2\n\034CreateMessageChan"
       "nelResponse\022\022\n\nchannel_id\030\001 \001(\003\"x\n\036AddUs"
       "erToMessageChannelRequest\022\022\n\nchannel_id\030"
       "\001 \001(\003\022\017\n\007user_id\030\002 \001(\003\0221\n\013member_type\030\003 "
@@ -526,7 +526,8 @@ CreateMessageChannelRequest::CreateMessageChannelRequest()
 }
 CreateMessageChannelRequest::CreateMessageChannelRequest(const CreateMessageChannelRequest& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
+      _internal_metadata_(NULL),
+      member_ids_(from.member_ids_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_title()) {
     title_ = new ::e8::NullableString(*from.title_);
@@ -538,9 +539,9 @@ CreateMessageChannelRequest::CreateMessageChannelRequest(const CreateMessageChan
   } else {
     description_ = NULL;
   }
-  ::memcpy(&member_ids_, &from.member_ids_,
+  ::memcpy(&encrypted_, &from.encrypted_,
     static_cast<size_t>(reinterpret_cast<char*>(&close_group_channel_) -
-    reinterpret_cast<char*>(&member_ids_)) + sizeof(close_group_channel_));
+    reinterpret_cast<char*>(&encrypted_)) + sizeof(close_group_channel_));
   // @@protoc_insertion_point(copy_constructor:e8.CreateMessageChannelRequest)
 }
 
@@ -580,6 +581,7 @@ void CreateMessageChannelRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  member_ids_.Clear();
   if (GetArenaNoVirtual() == NULL && title_ != NULL) {
     delete title_;
   }
@@ -588,9 +590,9 @@ void CreateMessageChannelRequest::Clear() {
     delete description_;
   }
   description_ = NULL;
-  ::memset(&member_ids_, 0, static_cast<size_t>(
+  ::memset(&encrypted_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&close_group_channel_) -
-      reinterpret_cast<char*>(&member_ids_)) + sizeof(close_group_channel_));
+      reinterpret_cast<char*>(&encrypted_)) + sizeof(close_group_channel_));
   _internal_metadata_.Clear();
 }
 
@@ -656,14 +658,19 @@ bool CreateMessageChannelRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 member_ids = 5;
+      // repeated int64 member_ids = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &member_ids_)));
+                 input, this->mutable_member_ids())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 1, 42u, input, this->mutable_member_ids())));
         } else {
           goto handle_unusual;
         }
@@ -718,9 +725,15 @@ void CreateMessageChannelRequest::SerializeWithCachedSizes(
       4, this->_internal_description(), output);
   }
 
-  // int64 member_ids = 5;
-  if (this->member_ids() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(5, this->member_ids(), output);
+  // repeated int64 member_ids = 5;
+  if (this->member_ids_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(5, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _member_ids_cached_byte_size_));
+  }
+  for (int i = 0, n = this->member_ids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64NoTag(
+      this->member_ids(i), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -761,9 +774,17 @@ void CreateMessageChannelRequest::SerializeWithCachedSizes(
         4, this->_internal_description(), deterministic, target);
   }
 
-  // int64 member_ids = 5;
-  if (this->member_ids() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(5, this->member_ids(), target);
+  // repeated int64 member_ids = 5;
+  if (this->member_ids_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      5,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::int32>(
+            _member_ids_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteInt64NoTagToArray(this->member_ids_, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -783,6 +804,22 @@ size_t CreateMessageChannelRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // repeated int64 member_ids = 5;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int64Size(this->member_ids_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _member_ids_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
   // .e8.NullableString title = 3;
   if (this->has_title()) {
     total_size += 1 +
@@ -795,13 +832,6 @@ size_t CreateMessageChannelRequest::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *description_);
-  }
-
-  // int64 member_ids = 5;
-  if (this->member_ids() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->member_ids());
   }
 
   // bool encrypted = 1;
@@ -841,14 +871,12 @@ void CreateMessageChannelRequest::MergeFrom(const CreateMessageChannelRequest& f
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  member_ids_.MergeFrom(from.member_ids_);
   if (from.has_title()) {
     mutable_title()->::e8::NullableString::MergeFrom(from.title());
   }
   if (from.has_description()) {
     mutable_description()->::e8::NullableString::MergeFrom(from.description());
-  }
-  if (from.member_ids() != 0) {
-    set_member_ids(from.member_ids());
   }
   if (from.encrypted() != 0) {
     set_encrypted(from.encrypted());
@@ -882,9 +910,9 @@ void CreateMessageChannelRequest::Swap(CreateMessageChannelRequest* other) {
 }
 void CreateMessageChannelRequest::InternalSwap(CreateMessageChannelRequest* other) {
   using std::swap;
+  member_ids_.InternalSwap(&other->member_ids_);
   swap(title_, other->title_);
   swap(description_, other->description_);
-  swap(member_ids_, other->member_ids_);
   swap(encrypted_, other->encrypted_);
   swap(close_group_channel_, other->close_group_channel_);
   _internal_metadata_.Swap(&other->_internal_metadata_);

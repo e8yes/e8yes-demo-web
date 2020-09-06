@@ -194,6 +194,18 @@ class CreateMessageChannelRequest : public ::google::protobuf::Message /* @@prot
 
   // accessors -------------------------------------------------------
 
+  // repeated int64 member_ids = 5;
+  int member_ids_size() const;
+  void clear_member_ids();
+  static const int kMemberIdsFieldNumber = 5;
+  ::google::protobuf::int64 member_ids(int index) const;
+  void set_member_ids(int index, ::google::protobuf::int64 value);
+  void add_member_ids(::google::protobuf::int64 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+      member_ids() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+      mutable_member_ids();
+
   // .e8.NullableString title = 3;
   bool has_title() const;
   void clear_title();
@@ -218,12 +230,6 @@ class CreateMessageChannelRequest : public ::google::protobuf::Message /* @@prot
   ::e8::NullableString* mutable_description();
   void set_allocated_description(::e8::NullableString* description);
 
-  // int64 member_ids = 5;
-  void clear_member_ids();
-  static const int kMemberIdsFieldNumber = 5;
-  ::google::protobuf::int64 member_ids() const;
-  void set_member_ids(::google::protobuf::int64 value);
-
   // bool encrypted = 1;
   void clear_encrypted();
   static const int kEncryptedFieldNumber = 1;
@@ -240,9 +246,10 @@ class CreateMessageChannelRequest : public ::google::protobuf::Message /* @@prot
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 > member_ids_;
+  mutable int _member_ids_cached_byte_size_;
   ::e8::NullableString* title_;
   ::e8::NullableString* description_;
-  ::google::protobuf::int64 member_ids_;
   bool encrypted_;
   bool close_group_channel_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -1596,18 +1603,34 @@ inline void CreateMessageChannelRequest::set_allocated_description(::e8::Nullabl
   // @@protoc_insertion_point(field_set_allocated:e8.CreateMessageChannelRequest.description)
 }
 
-// int64 member_ids = 5;
-inline void CreateMessageChannelRequest::clear_member_ids() {
-  member_ids_ = GOOGLE_LONGLONG(0);
+// repeated int64 member_ids = 5;
+inline int CreateMessageChannelRequest::member_ids_size() const {
+  return member_ids_.size();
 }
-inline ::google::protobuf::int64 CreateMessageChannelRequest::member_ids() const {
+inline void CreateMessageChannelRequest::clear_member_ids() {
+  member_ids_.Clear();
+}
+inline ::google::protobuf::int64 CreateMessageChannelRequest::member_ids(int index) const {
   // @@protoc_insertion_point(field_get:e8.CreateMessageChannelRequest.member_ids)
+  return member_ids_.Get(index);
+}
+inline void CreateMessageChannelRequest::set_member_ids(int index, ::google::protobuf::int64 value) {
+  member_ids_.Set(index, value);
+  // @@protoc_insertion_point(field_set:e8.CreateMessageChannelRequest.member_ids)
+}
+inline void CreateMessageChannelRequest::add_member_ids(::google::protobuf::int64 value) {
+  member_ids_.Add(value);
+  // @@protoc_insertion_point(field_add:e8.CreateMessageChannelRequest.member_ids)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+CreateMessageChannelRequest::member_ids() const {
+  // @@protoc_insertion_point(field_list:e8.CreateMessageChannelRequest.member_ids)
   return member_ids_;
 }
-inline void CreateMessageChannelRequest::set_member_ids(::google::protobuf::int64 value) {
-  
-  member_ids_ = value;
-  // @@protoc_insertion_point(field_set:e8.CreateMessageChannelRequest.member_ids)
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+CreateMessageChannelRequest::mutable_member_ids() {
+  // @@protoc_insertion_point(field_mutable_list:e8.CreateMessageChannelRequest.member_ids)
+  return &member_ids_;
 }
 
 // -------------------------------------------------------------------

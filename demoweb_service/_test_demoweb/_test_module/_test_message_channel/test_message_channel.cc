@@ -16,6 +16,7 @@
  */
 
 #include <algorithm>
+#include <cassert>
 #include <optional>
 #include <string>
 #include <vector>
@@ -43,14 +44,15 @@ CreateNewChannelInfo CreateNewChannel(e8::DemoWebTestEnvironmentContext *env) {
         /*security_key=*/"", std::vector<std::string>(), kCreatorId, env->CurrentHostId(),
         env->DemowebDatabase());
 
-    e8::MessageChannelEntity channel = e8::CreateMessageChannel(
-        kCreatorId, kChannelName, kChannelDesc,
+    std::optional<e8::MessageChannelEntity> channel = e8::CreateMessageChannel(
+        kCreatorId, kChannelName, kChannelDesc, /*to_be_member_ids=*/std::vector<e8::UserId>(),
         /*encrypted=*/false,
         /*close_group_channel=*/true, env->CurrentHostId(), env->DemowebDatabase());
+    assert(channel.has_value());
 
     CreateNewChannelInfo info;
     info.creator = *user;
-    info.message_channel = channel;
+    info.message_channel = *channel;
     return info;
 }
 

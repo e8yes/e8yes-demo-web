@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
@@ -47,12 +48,18 @@ MessageChannelServiceImpl::CreateMessageChannel(grpc::ServerContext *context,
     std::optional<std::string> channel_desc =
         request->has_title() ? std::optional<std::string>(request->description().value())
                              : std::nullopt;
-    MessageChannelEntity channel = ::e8::CreateMessageChannel(
-        identity->user_id(), channel_title, channel_desc, request->encrypted(),
+    std::vector<UserId> to_be_member_ids{request->member_ids().begin(),
+                                         request->member_ids().end()};
+
+    std::optional<MessageChannelEntity> channel = ::e8::CreateMessageChannel(
+        identity->user_id(), channel_title, channel_desc, to_be_member_ids, request->encrypted(),
         request->close_group_channel(), DemoWebEnvironment()->CurrentHostId(),
         DemoWebEnvironment()->DemowebDatabase());
+    if (channel.has_value()) {
+        return grpc::Status(grpc::StatusCode::UNKNOWN, "Channel creation failed");
+    }
 
-    response->set_channel_id(*channel.id.Value());
+    response->set_channel_id(*channel->id.Value());
 
     return grpc::Status::OK;
 }

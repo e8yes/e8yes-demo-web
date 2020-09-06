@@ -34,7 +34,7 @@ message CreateMessageChannelRequest {
     NullableString description = 4;
 
     // Initial members to add to the channel.
-    int64 member_ids = 5;
+    repeated int64 member_ids = 5;
 }
 
 message CreateMessageChannelResponse {
