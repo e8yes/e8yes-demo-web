@@ -75,6 +75,7 @@ bool CreateAndListMessageChannelTest() {
     TEST_CONDITION(*retrieved_channels[0].message_channel.description.Value() == kChannelDesc);
     TEST_CONDITION(*retrieved_channels[0].message_channel.encryption_enabled.Value() == false);
     TEST_CONDITION(*retrieved_channels[0].message_channel.close_group_channel.Value() == true);
+    TEST_CONDITION(*retrieved_channels[0].message_channel.created_at.Value() > 0);
     TEST_CONDITION(retrieved_channels[0].member_type == e8::MessageChannelMemberType::MCMT_ADMIN);
 
     return true;
