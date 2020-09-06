@@ -13,6 +13,7 @@ import 'real_time_message.pb.dart' as $15;
 
 class SubscribeRealTimeMessageQueueRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SubscribeRealTimeMessageQueueRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..a<$core.int>(1, 'waitDurationSecs', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -30,6 +31,15 @@ class SubscribeRealTimeMessageQueueRequest extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static SubscribeRealTimeMessageQueueRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubscribeRealTimeMessageQueueRequest>(create);
   static SubscribeRealTimeMessageQueueRequest _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get waitDurationSecs => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set waitDurationSecs($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasWaitDurationSecs() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearWaitDurationSecs() => clearField(1);
 }
 
 class SubscribeRealTimeMessageQueueResponse extends $pb.GeneratedMessage {

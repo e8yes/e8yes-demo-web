@@ -22,6 +22,7 @@ package e8;
 import "real_time_message.proto";
 
 message SubscribeRealTimeMessageQueueRequest {
+    int32 wait_duration_secs = 1;
 }
 
 message SubscribeRealTimeMessageQueueResponse {

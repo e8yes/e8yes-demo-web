@@ -77,6 +77,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SubscribeRealTimeMessageQueueRequest, wait_duration_secs_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SubscribeRealTimeMessageQueueResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -86,7 +87,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::SubscribeRealTimeMessageQueueRequest)},
-  { 5, -1, sizeof(::e8::SubscribeRealTimeMessageQueueResponse)},
+  { 6, -1, sizeof(::e8::SubscribeRealTimeMessageQueueResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -116,20 +117,21 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n service_message_subscriber.proto\022\002e8\032\027"
-      "real_time_message.proto\"&\n$SubscribeReal"
-      "TimeMessageQueueRequest\"M\n%SubscribeReal"
-      "TimeMessageQueueResponse\022$\n\007message\030\001 \001("
-      "\0132\023.e8.RealTimeMessage2\212\002\n\030MessageSubscr"
-      "iberService\022v\n\035SubscribeRealTimeMessageQ"
-      "ueue\022(.e8.SubscribeRealTimeMessageQueueR"
-      "equest\032).e8.SubscribeRealTimeMessageQueu"
-      "eResponse0\001\022v\n\037SubscribeRealTimeMessageQ"
-      "ueueLP\022(.e8.SubscribeRealTimeMessageQueu"
-      "eRequest\032).e8.SubscribeRealTimeMessageQu"
-      "eueResponseb\006proto3"
+      "real_time_message.proto\"B\n$SubscribeReal"
+      "TimeMessageQueueRequest\022\032\n\022wait_duration"
+      "_secs\030\001 \001(\005\"M\n%SubscribeRealTimeMessageQ"
+      "ueueResponse\022$\n\007message\030\001 \001(\0132\023.e8.RealT"
+      "imeMessage2\212\002\n\030MessageSubscriberService\022"
+      "v\n\035SubscribeRealTimeMessageQueue\022(.e8.Su"
+      "bscribeRealTimeMessageQueueRequest\032).e8."
+      "SubscribeRealTimeMessageQueueResponse0\001\022"
+      "v\n\037SubscribeRealTimeMessageQueueLP\022(.e8."
+      "SubscribeRealTimeMessageQueueRequest\032).e"
+      "8.SubscribeRealTimeMessageQueueResponseb"
+      "\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 459);
+      descriptor, 487);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_subscriber.proto", &protobuf_RegisterTypes);
   ::protobuf_real_5ftime_5fmessage_2eproto::AddDescriptors();
@@ -153,6 +155,7 @@ namespace e8 {
 void SubscribeRealTimeMessageQueueRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int SubscribeRealTimeMessageQueueRequest::kWaitDurationSecsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SubscribeRealTimeMessageQueueRequest::SubscribeRealTimeMessageQueueRequest()
@@ -166,10 +169,12 @@ SubscribeRealTimeMessageQueueRequest::SubscribeRealTimeMessageQueueRequest(const
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  wait_duration_secs_ = from.wait_duration_secs_;
   // @@protoc_insertion_point(copy_constructor:e8.SubscribeRealTimeMessageQueueRequest)
 }
 
 void SubscribeRealTimeMessageQueueRequest::SharedCtor() {
+  wait_duration_secs_ = 0;
 }
 
 SubscribeRealTimeMessageQueueRequest::~SubscribeRealTimeMessageQueueRequest() {
@@ -200,6 +205,7 @@ void SubscribeRealTimeMessageQueueRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  wait_duration_secs_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -212,12 +218,31 @@ bool SubscribeRealTimeMessageQueueRequest::MergePartialFromCodedStream(
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 wait_duration_secs = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &wait_duration_secs_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:e8.SubscribeRealTimeMessageQueueRequest)
@@ -234,6 +259,11 @@ void SubscribeRealTimeMessageQueueRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  // int32 wait_duration_secs = 1;
+  if (this->wait_duration_secs() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->wait_duration_secs(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -247,6 +277,11 @@ void SubscribeRealTimeMessageQueueRequest::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:e8.SubscribeRealTimeMessageQueueRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // int32 wait_duration_secs = 1;
+  if (this->wait_duration_secs() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->wait_duration_secs(), target);
+  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -265,6 +300,13 @@ size_t SubscribeRealTimeMessageQueueRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // int32 wait_duration_secs = 1;
+  if (this->wait_duration_secs() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->wait_duration_secs());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -292,6 +334,9 @@ void SubscribeRealTimeMessageQueueRequest::MergeFrom(const SubscribeRealTimeMess
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.wait_duration_secs() != 0) {
+    set_wait_duration_secs(from.wait_duration_secs());
+  }
 }
 
 void SubscribeRealTimeMessageQueueRequest::CopyFrom(const ::google::protobuf::Message& from) {
@@ -318,6 +363,7 @@ void SubscribeRealTimeMessageQueueRequest::Swap(SubscribeRealTimeMessageQueueReq
 }
 void SubscribeRealTimeMessageQueueRequest::InternalSwap(SubscribeRealTimeMessageQueueRequest* other) {
   using std::swap;
+  swap(wait_duration_secs_, other->wait_duration_secs_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

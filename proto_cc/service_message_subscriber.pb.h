@@ -151,10 +151,17 @@ class SubscribeRealTimeMessageQueueRequest : public ::google::protobuf::Message 
 
   // accessors -------------------------------------------------------
 
+  // int32 wait_duration_secs = 1;
+  void clear_wait_duration_secs();
+  static const int kWaitDurationSecsFieldNumber = 1;
+  ::google::protobuf::int32 wait_duration_secs() const;
+  void set_wait_duration_secs(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:e8.SubscribeRealTimeMessageQueueRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 wait_duration_secs_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fsubscriber_2eproto::TableStruct;
 };
@@ -277,6 +284,20 @@ class SubscribeRealTimeMessageQueueResponse : public ::google::protobuf::Message
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
 // SubscribeRealTimeMessageQueueRequest
+
+// int32 wait_duration_secs = 1;
+inline void SubscribeRealTimeMessageQueueRequest::clear_wait_duration_secs() {
+  wait_duration_secs_ = 0;
+}
+inline ::google::protobuf::int32 SubscribeRealTimeMessageQueueRequest::wait_duration_secs() const {
+  // @@protoc_insertion_point(field_get:e8.SubscribeRealTimeMessageQueueRequest.wait_duration_secs)
+  return wait_duration_secs_;
+}
+inline void SubscribeRealTimeMessageQueueRequest::set_wait_duration_secs(::google::protobuf::int32 value) {
+  
+  wait_duration_secs_ = value;
+  // @@protoc_insertion_point(field_set:e8.SubscribeRealTimeMessageQueueRequest.wait_duration_secs)
+}
 
 // -------------------------------------------------------------------
 

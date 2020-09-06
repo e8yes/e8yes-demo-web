@@ -7,6 +7,9 @@
 
 const SubscribeRealTimeMessageQueueRequest$json = const {
   '1': 'SubscribeRealTimeMessageQueueRequest',
+  '2': const [
+    const {'1': 'wait_duration_secs', '3': 1, '4': 1, '5': 5, '10': 'waitDurationSecs'},
+  ],
 };
 
 const SubscribeRealTimeMessageQueueResponse$json = const {

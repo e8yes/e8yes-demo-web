@@ -38,7 +38,7 @@ namespace e8 {
 
 // TODO: Make this function testable.
 grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(
-    grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const * /*request*/,
+    grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const *request,
     grpc::ServerWriter<SubscribeRealTimeMessageQueueResponse> *writer) {
     grpc::Status status;
     std::optional<Identity> identity = ExtractIdentityFromContext(
@@ -65,6 +65,7 @@ grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(
 
     DequeueMessageRequest dequeue_request;
     dequeue_request.set_user_id(identity->user_id());
+    dequeue_request.set_wait_duration_secs(request->wait_duration_secs());
     dequeue_request.set_previous_message_delivered(false);
     dequeue_request.set_end_operation(false);
 
@@ -84,7 +85,7 @@ grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueue(
 }
 
 grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueueLP(
-    grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const * /*request*/,
+    grpc::ServerContext *context, SubscribeRealTimeMessageQueueRequest const *request,
     SubscribeRealTimeMessageQueueResponse *response) {
     grpc::Status status;
     std::optional<Identity> identity = ExtractIdentityFromContext(
@@ -111,6 +112,7 @@ grpc::Status MessageSubscriberServiceImpl::SubscribeRealTimeMessageQueueLP(
 
     DequeueMessageRequest dequeue_request;
     dequeue_request.set_user_id(identity->user_id());
+    dequeue_request.set_wait_duration_secs(request->wait_duration_secs());
     dequeue_request.set_previous_message_delivered(false);
     dequeue_request.set_end_operation(false);
 
