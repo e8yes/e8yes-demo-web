@@ -25,6 +25,7 @@
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/retrieve_user.h"
+#include "demoweb_service/demoweb/module/search_user.h"
 #include "demoweb_service/demoweb/module/user_identity.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/service/service_util.h"

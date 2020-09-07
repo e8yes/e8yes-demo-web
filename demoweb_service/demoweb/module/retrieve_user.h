@@ -24,7 +24,6 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
-#include "proto_cc/pagination.pb.h"
 
 namespace e8 {
 
@@ -43,24 +42,6 @@ std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterf
  */
 std::vector<UserEntity> RetrieveUsers(std::vector<UserId> const &user_ids,
                                       ConnectionReservoirInterface *db_conns);
-
-/**
- * @brief SearchUser Search for user entities condition on different optional filters. The search
- * result is ordered by last interaction timestamp between the viewer and the searched user in
- * descending order, user alias and ID in ascending order. If the viewer isn't present, the result
- * is ordered only by the user alias and user id in ascending order.
- *
- * @param user_id_prefix Filter by the prefix of the user ID.
- * @param alias_prefix Filter by the prefix of the user alias.
- * @param pagination Pagination constraint.
- * @param db_conns Connections to the DemoWeb DB server.
- * @return The search result is a list of user entities.
- */
-std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
-                                   std::optional<UserId> const &user_id_prefix,
-                                   std::optional<std::string> const &alias_prefix,
-                                   Pagination const &pagination,
-                                   ConnectionReservoirInterface *db_conns);
 
 } // namespace e8
 
