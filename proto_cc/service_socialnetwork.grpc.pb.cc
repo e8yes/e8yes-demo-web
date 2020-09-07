@@ -23,7 +23,7 @@ static const char* SocialNetworkService_method_names[] = {
   "/e8.SocialNetworkService/DeleteInvitation",
   "/e8.SocialNetworkService/ProcessInvitation",
   "/e8.SocialNetworkService/DeleteContact",
-  "/e8.SocialNetworkService/GetRelatedUserList",
+  "/e8.SocialNetworkService/SearchRelatedUserList",
 };
 
 std::unique_ptr< SocialNetworkService::Stub> SocialNetworkService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -38,7 +38,7 @@ SocialNetworkService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface
   , rpcmethod_DeleteInvitation_(SocialNetworkService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_ProcessInvitation_(SocialNetworkService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_DeleteContact_(SocialNetworkService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetRelatedUserList_(SocialNetworkService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SearchRelatedUserList_(SocialNetworkService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status SocialNetworkService::Stub::GetUserRelations(::grpc::ClientContext* context, const ::e8::GetUserRelationsRequest& request, ::e8::GetUserRelationsResponse* response) {
@@ -121,20 +121,20 @@ void SocialNetworkService::Stub::experimental_async::DeleteContact(::grpc::Clien
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeleteContactResponse>::Create(channel_.get(), cq, rpcmethod_DeleteContact_, context, request, false);
 }
 
-::grpc::Status SocialNetworkService::Stub::GetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::e8::GetRelatedUserListResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetRelatedUserList_, context, request, response);
+::grpc::Status SocialNetworkService::Stub::SearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::e8::SearchRelatedUserListResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SearchRelatedUserList_, context, request, response);
 }
 
-void SocialNetworkService::Stub::experimental_async::GetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetRelatedUserList_, context, request, response, std::move(f));
+void SocialNetworkService::Stub::experimental_async::SearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SearchRelatedUserList_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetRelatedUserListResponse>* SocialNetworkService::Stub::AsyncGetRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetRelatedUserListResponse>::Create(channel_.get(), cq, rpcmethod_GetRelatedUserList_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::SearchRelatedUserListResponse>* SocialNetworkService::Stub::AsyncSearchRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SearchRelatedUserListResponse>::Create(channel_.get(), cq, rpcmethod_SearchRelatedUserList_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetRelatedUserListResponse>* SocialNetworkService::Stub::PrepareAsyncGetRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetRelatedUserListResponse>::Create(channel_.get(), cq, rpcmethod_GetRelatedUserList_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::SearchRelatedUserListResponse>* SocialNetworkService::Stub::PrepareAsyncSearchRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SearchRelatedUserListResponse>::Create(channel_.get(), cq, rpcmethod_SearchRelatedUserList_, context, request, false);
 }
 
 SocialNetworkService::Service::Service() {
@@ -166,8 +166,8 @@ SocialNetworkService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       SocialNetworkService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::GetRelatedUserListRequest, ::e8::GetRelatedUserListResponse>(
-          std::mem_fn(&SocialNetworkService::Service::GetRelatedUserList), this)));
+      new ::grpc::internal::RpcMethodHandler< SocialNetworkService::Service, ::e8::SearchRelatedUserListRequest, ::e8::SearchRelatedUserListResponse>(
+          std::mem_fn(&SocialNetworkService::Service::SearchRelatedUserList), this)));
 }
 
 SocialNetworkService::Service::~Service() {
@@ -208,7 +208,7 @@ SocialNetworkService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status SocialNetworkService::Service::GetRelatedUserList(::grpc::ServerContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response) {
+::grpc::Status SocialNetworkService::Service::SearchRelatedUserList(::grpc::ServerContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response) {
   (void) context;
   (void) request;
   (void) response;

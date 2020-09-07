@@ -39,9 +39,9 @@ class SocialNetworkServiceImpl : public SocialNetworkService::Service {
     grpc::Status SendInvitation(grpc::ServerContext *context, SendInvitationRequest const *request,
                                 SendInvitationResponse *response) override;
 
-    grpc::Status GetRelatedUserList(grpc::ServerContext *context,
-                                    GetRelatedUserListRequest const *request,
-                                    GetRelatedUserListResponse *response) override;
+    grpc::Status SearchRelatedUserList(grpc::ServerContext *context,
+                                       SearchRelatedUserListRequest const *request,
+                                       SearchRelatedUserListResponse *response) override;
 
     grpc::Status ProcessInvitation(grpc::ServerContext *context,
                                    ProcessInvitationRequest const *request,

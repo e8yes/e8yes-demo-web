@@ -55,36 +55,36 @@ class ContactListComponent implements OnActivate {
   void onActivate(_, RouterState current) async {
     onLoadingInviterProfiles = true;
     _social_network_service
-        .getRelatedUserList(
-            GetRelatedUserListRequest()
+        .searchRelatedUserList(
+            SearchRelatedUserListRequest()
               ..pagination = inviterPagination
               ..relationFilter.add(UserRelation.URL_INVITATION_RECEIVED),
             credentialStorage.loadSignature())
-        .then((GetRelatedUserListResponse res) {
+        .then((SearchRelatedUserListResponse res) {
       inviterProfiles = res.userProfiles;
       onLoadingInviterProfiles = false;
     });
 
     onLoadingInviteeProfiles = true;
     _social_network_service
-        .getRelatedUserList(
-            GetRelatedUserListRequest()
+        .searchRelatedUserList(
+            SearchRelatedUserListRequest()
               ..pagination = inviterPagination
               ..relationFilter.add(UserRelation.URL_INVITATION_SENT),
             credentialStorage.loadSignature())
-        .then((GetRelatedUserListResponse res) {
+        .then((SearchRelatedUserListResponse res) {
       inviteeProfiles = res.userProfiles;
       onLoadingInviteeProfiles = false;
     });
 
     onLoadingContactProfiles = true;
     _social_network_service
-        .getRelatedUserList(
-            GetRelatedUserListRequest()
+        .searchRelatedUserList(
+            SearchRelatedUserListRequest()
               ..pagination = inviterPagination
               ..relationFilter.add(UserRelation.URL_CONTACT),
             credentialStorage.loadSignature())
-        .then((GetRelatedUserListResponse res) {
+        .then((SearchRelatedUserListResponse res) {
       contactProfiles = res.userProfiles;
       onLoadingContactProfiles = false;
     });

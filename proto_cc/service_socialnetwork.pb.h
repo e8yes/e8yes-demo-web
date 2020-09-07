@@ -61,12 +61,6 @@ extern DeleteInvitationRequestDefaultTypeInternal _DeleteInvitationRequest_defau
 class DeleteInvitationResponse;
 class DeleteInvitationResponseDefaultTypeInternal;
 extern DeleteInvitationResponseDefaultTypeInternal _DeleteInvitationResponse_default_instance_;
-class GetRelatedUserListRequest;
-class GetRelatedUserListRequestDefaultTypeInternal;
-extern GetRelatedUserListRequestDefaultTypeInternal _GetRelatedUserListRequest_default_instance_;
-class GetRelatedUserListResponse;
-class GetRelatedUserListResponseDefaultTypeInternal;
-extern GetRelatedUserListResponseDefaultTypeInternal _GetRelatedUserListResponse_default_instance_;
 class GetUserRelationsRequest;
 class GetUserRelationsRequestDefaultTypeInternal;
 extern GetUserRelationsRequestDefaultTypeInternal _GetUserRelationsRequest_default_instance_;
@@ -79,6 +73,12 @@ extern ProcessInvitationRequestDefaultTypeInternal _ProcessInvitationRequest_def
 class ProcessInvitationResponse;
 class ProcessInvitationResponseDefaultTypeInternal;
 extern ProcessInvitationResponseDefaultTypeInternal _ProcessInvitationResponse_default_instance_;
+class SearchRelatedUserListRequest;
+class SearchRelatedUserListRequestDefaultTypeInternal;
+extern SearchRelatedUserListRequestDefaultTypeInternal _SearchRelatedUserListRequest_default_instance_;
+class SearchRelatedUserListResponse;
+class SearchRelatedUserListResponseDefaultTypeInternal;
+extern SearchRelatedUserListResponseDefaultTypeInternal _SearchRelatedUserListResponse_default_instance_;
 class SendInvitationRequest;
 class SendInvitationRequestDefaultTypeInternal;
 extern SendInvitationRequestDefaultTypeInternal _SendInvitationRequest_default_instance_;
@@ -92,12 +92,12 @@ template<> ::e8::DeleteContactRequest* Arena::CreateMaybeMessage<::e8::DeleteCon
 template<> ::e8::DeleteContactResponse* Arena::CreateMaybeMessage<::e8::DeleteContactResponse>(Arena*);
 template<> ::e8::DeleteInvitationRequest* Arena::CreateMaybeMessage<::e8::DeleteInvitationRequest>(Arena*);
 template<> ::e8::DeleteInvitationResponse* Arena::CreateMaybeMessage<::e8::DeleteInvitationResponse>(Arena*);
-template<> ::e8::GetRelatedUserListRequest* Arena::CreateMaybeMessage<::e8::GetRelatedUserListRequest>(Arena*);
-template<> ::e8::GetRelatedUserListResponse* Arena::CreateMaybeMessage<::e8::GetRelatedUserListResponse>(Arena*);
 template<> ::e8::GetUserRelationsRequest* Arena::CreateMaybeMessage<::e8::GetUserRelationsRequest>(Arena*);
 template<> ::e8::GetUserRelationsResponse* Arena::CreateMaybeMessage<::e8::GetUserRelationsResponse>(Arena*);
 template<> ::e8::ProcessInvitationRequest* Arena::CreateMaybeMessage<::e8::ProcessInvitationRequest>(Arena*);
 template<> ::e8::ProcessInvitationResponse* Arena::CreateMaybeMessage<::e8::ProcessInvitationResponse>(Arena*);
+template<> ::e8::SearchRelatedUserListRequest* Arena::CreateMaybeMessage<::e8::SearchRelatedUserListRequest>(Arena*);
+template<> ::e8::SearchRelatedUserListResponse* Arena::CreateMaybeMessage<::e8::SearchRelatedUserListResponse>(Arena*);
 template<> ::e8::SendInvitationRequest* Arena::CreateMaybeMessage<::e8::SendInvitationRequest>(Arena*);
 template<> ::e8::SendInvitationResponse* Arena::CreateMaybeMessage<::e8::SendInvitationResponse>(Arena*);
 }  // namespace protobuf
@@ -1142,24 +1142,24 @@ class DeleteContactResponse : public ::google::protobuf::Message /* @@protoc_ins
 };
 // -------------------------------------------------------------------
 
-class GetRelatedUserListRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetRelatedUserListRequest) */ {
+class SearchRelatedUserListRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.SearchRelatedUserListRequest) */ {
  public:
-  GetRelatedUserListRequest();
-  virtual ~GetRelatedUserListRequest();
+  SearchRelatedUserListRequest();
+  virtual ~SearchRelatedUserListRequest();
 
-  GetRelatedUserListRequest(const GetRelatedUserListRequest& from);
+  SearchRelatedUserListRequest(const SearchRelatedUserListRequest& from);
 
-  inline GetRelatedUserListRequest& operator=(const GetRelatedUserListRequest& from) {
+  inline SearchRelatedUserListRequest& operator=(const SearchRelatedUserListRequest& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  GetRelatedUserListRequest(GetRelatedUserListRequest&& from) noexcept
-    : GetRelatedUserListRequest() {
+  SearchRelatedUserListRequest(SearchRelatedUserListRequest&& from) noexcept
+    : SearchRelatedUserListRequest() {
     *this = ::std::move(from);
   }
 
-  inline GetRelatedUserListRequest& operator=(GetRelatedUserListRequest&& from) noexcept {
+  inline SearchRelatedUserListRequest& operator=(SearchRelatedUserListRequest&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1169,34 +1169,34 @@ class GetRelatedUserListRequest : public ::google::protobuf::Message /* @@protoc
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetRelatedUserListRequest& default_instance();
+  static const SearchRelatedUserListRequest& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetRelatedUserListRequest* internal_default_instance() {
-    return reinterpret_cast<const GetRelatedUserListRequest*>(
-               &_GetRelatedUserListRequest_default_instance_);
+  static inline const SearchRelatedUserListRequest* internal_default_instance() {
+    return reinterpret_cast<const SearchRelatedUserListRequest*>(
+               &_SearchRelatedUserListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     10;
 
-  void Swap(GetRelatedUserListRequest* other);
-  friend void swap(GetRelatedUserListRequest& a, GetRelatedUserListRequest& b) {
+  void Swap(SearchRelatedUserListRequest* other);
+  friend void swap(SearchRelatedUserListRequest& a, SearchRelatedUserListRequest& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetRelatedUserListRequest* New() const final {
-    return CreateMaybeMessage<GetRelatedUserListRequest>(NULL);
+  inline SearchRelatedUserListRequest* New() const final {
+    return CreateMaybeMessage<SearchRelatedUserListRequest>(NULL);
   }
 
-  GetRelatedUserListRequest* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetRelatedUserListRequest>(arena);
+  SearchRelatedUserListRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<SearchRelatedUserListRequest>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetRelatedUserListRequest& from);
-  void MergeFrom(const GetRelatedUserListRequest& from);
+  void CopyFrom(const SearchRelatedUserListRequest& from);
+  void MergeFrom(const SearchRelatedUserListRequest& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -1213,7 +1213,7 @@ class GetRelatedUserListRequest : public ::google::protobuf::Message /* @@protoc
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetRelatedUserListRequest* other);
+  void InternalSwap(SearchRelatedUserListRequest* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1229,20 +1229,34 @@ class GetRelatedUserListRequest : public ::google::protobuf::Message /* @@protoc
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.UserRelation relation_filter = 2;
+  // repeated .e8.UserRelation relation_filter = 3;
   int relation_filter_size() const;
   void clear_relation_filter();
-  static const int kRelationFilterFieldNumber = 2;
+  static const int kRelationFilterFieldNumber = 3;
   ::e8::UserRelation relation_filter(int index) const;
   void set_relation_filter(int index, ::e8::UserRelation value);
   void add_relation_filter(::e8::UserRelation value);
   const ::google::protobuf::RepeatedField<int>& relation_filter() const;
   ::google::protobuf::RepeatedField<int>* mutable_relation_filter();
 
-  // .e8.Pagination pagination = 1;
+  // string search_terms = 1;
+  void clear_search_terms();
+  static const int kSearchTermsFieldNumber = 1;
+  const ::std::string& search_terms() const;
+  void set_search_terms(const ::std::string& value);
+  #if LANG_CXX11
+  void set_search_terms(::std::string&& value);
+  #endif
+  void set_search_terms(const char* value);
+  void set_search_terms(const char* value, size_t size);
+  ::std::string* mutable_search_terms();
+  ::std::string* release_search_terms();
+  void set_allocated_search_terms(::std::string* search_terms);
+
+  // .e8.Pagination pagination = 2;
   bool has_pagination() const;
   void clear_pagination();
-  static const int kPaginationFieldNumber = 1;
+  static const int kPaginationFieldNumber = 2;
   private:
   const ::e8::Pagination& _internal_pagination() const;
   public:
@@ -1251,36 +1265,37 @@ class GetRelatedUserListRequest : public ::google::protobuf::Message /* @@protoc
   ::e8::Pagination* mutable_pagination();
   void set_allocated_pagination(::e8::Pagination* pagination);
 
-  // @@protoc_insertion_point(class_scope:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(class_scope:e8.SearchRelatedUserListRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedField<int> relation_filter_;
   mutable int _relation_filter_cached_byte_size_;
+  ::google::protobuf::internal::ArenaStringPtr search_terms_;
   ::e8::Pagination* pagination_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class GetRelatedUserListResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetRelatedUserListResponse) */ {
+class SearchRelatedUserListResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.SearchRelatedUserListResponse) */ {
  public:
-  GetRelatedUserListResponse();
-  virtual ~GetRelatedUserListResponse();
+  SearchRelatedUserListResponse();
+  virtual ~SearchRelatedUserListResponse();
 
-  GetRelatedUserListResponse(const GetRelatedUserListResponse& from);
+  SearchRelatedUserListResponse(const SearchRelatedUserListResponse& from);
 
-  inline GetRelatedUserListResponse& operator=(const GetRelatedUserListResponse& from) {
+  inline SearchRelatedUserListResponse& operator=(const SearchRelatedUserListResponse& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  GetRelatedUserListResponse(GetRelatedUserListResponse&& from) noexcept
-    : GetRelatedUserListResponse() {
+  SearchRelatedUserListResponse(SearchRelatedUserListResponse&& from) noexcept
+    : SearchRelatedUserListResponse() {
     *this = ::std::move(from);
   }
 
-  inline GetRelatedUserListResponse& operator=(GetRelatedUserListResponse&& from) noexcept {
+  inline SearchRelatedUserListResponse& operator=(SearchRelatedUserListResponse&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1290,34 +1305,34 @@ class GetRelatedUserListResponse : public ::google::protobuf::Message /* @@proto
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetRelatedUserListResponse& default_instance();
+  static const SearchRelatedUserListResponse& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const GetRelatedUserListResponse* internal_default_instance() {
-    return reinterpret_cast<const GetRelatedUserListResponse*>(
-               &_GetRelatedUserListResponse_default_instance_);
+  static inline const SearchRelatedUserListResponse* internal_default_instance() {
+    return reinterpret_cast<const SearchRelatedUserListResponse*>(
+               &_SearchRelatedUserListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     11;
 
-  void Swap(GetRelatedUserListResponse* other);
-  friend void swap(GetRelatedUserListResponse& a, GetRelatedUserListResponse& b) {
+  void Swap(SearchRelatedUserListResponse* other);
+  friend void swap(SearchRelatedUserListResponse& a, SearchRelatedUserListResponse& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline GetRelatedUserListResponse* New() const final {
-    return CreateMaybeMessage<GetRelatedUserListResponse>(NULL);
+  inline SearchRelatedUserListResponse* New() const final {
+    return CreateMaybeMessage<SearchRelatedUserListResponse>(NULL);
   }
 
-  GetRelatedUserListResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<GetRelatedUserListResponse>(arena);
+  SearchRelatedUserListResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<SearchRelatedUserListResponse>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const GetRelatedUserListResponse& from);
-  void MergeFrom(const GetRelatedUserListResponse& from);
+  void CopyFrom(const SearchRelatedUserListResponse& from);
+  void MergeFrom(const SearchRelatedUserListResponse& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -1334,7 +1349,7 @@ class GetRelatedUserListResponse : public ::google::protobuf::Message /* @@proto
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetRelatedUserListResponse* other);
+  void InternalSwap(SearchRelatedUserListResponse* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1362,7 +1377,7 @@ class GetRelatedUserListResponse : public ::google::protobuf::Message /* @@proto
   const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
       user_profiles() const;
 
-  // @@protoc_insertion_point(class_scope:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(class_scope:e8.SearchRelatedUserListResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1572,38 +1587,91 @@ inline void DeleteContactResponse::set_deleted(bool value) {
 
 // -------------------------------------------------------------------
 
-// GetRelatedUserListRequest
+// SearchRelatedUserListRequest
 
-// .e8.Pagination pagination = 1;
-inline bool GetRelatedUserListRequest::has_pagination() const {
+// string search_terms = 1;
+inline void SearchRelatedUserListRequest::clear_search_terms() {
+  search_terms_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SearchRelatedUserListRequest::search_terms() const {
+  // @@protoc_insertion_point(field_get:e8.SearchRelatedUserListRequest.search_terms)
+  return search_terms_.GetNoArena();
+}
+inline void SearchRelatedUserListRequest::set_search_terms(const ::std::string& value) {
+  
+  search_terms_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.SearchRelatedUserListRequest.search_terms)
+}
+#if LANG_CXX11
+inline void SearchRelatedUserListRequest::set_search_terms(::std::string&& value) {
+  
+  search_terms_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.SearchRelatedUserListRequest.search_terms)
+}
+#endif
+inline void SearchRelatedUserListRequest::set_search_terms(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  search_terms_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.SearchRelatedUserListRequest.search_terms)
+}
+inline void SearchRelatedUserListRequest::set_search_terms(const char* value, size_t size) {
+  
+  search_terms_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.SearchRelatedUserListRequest.search_terms)
+}
+inline ::std::string* SearchRelatedUserListRequest::mutable_search_terms() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.SearchRelatedUserListRequest.search_terms)
+  return search_terms_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SearchRelatedUserListRequest::release_search_terms() {
+  // @@protoc_insertion_point(field_release:e8.SearchRelatedUserListRequest.search_terms)
+  
+  return search_terms_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SearchRelatedUserListRequest::set_allocated_search_terms(::std::string* search_terms) {
+  if (search_terms != NULL) {
+    
+  } else {
+    
+  }
+  search_terms_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), search_terms);
+  // @@protoc_insertion_point(field_set_allocated:e8.SearchRelatedUserListRequest.search_terms)
+}
+
+// .e8.Pagination pagination = 2;
+inline bool SearchRelatedUserListRequest::has_pagination() const {
   return this != internal_default_instance() && pagination_ != NULL;
 }
-inline const ::e8::Pagination& GetRelatedUserListRequest::_internal_pagination() const {
+inline const ::e8::Pagination& SearchRelatedUserListRequest::_internal_pagination() const {
   return *pagination_;
 }
-inline const ::e8::Pagination& GetRelatedUserListRequest::pagination() const {
+inline const ::e8::Pagination& SearchRelatedUserListRequest::pagination() const {
   const ::e8::Pagination* p = pagination_;
-  // @@protoc_insertion_point(field_get:e8.GetRelatedUserListRequest.pagination)
+  // @@protoc_insertion_point(field_get:e8.SearchRelatedUserListRequest.pagination)
   return p != NULL ? *p : *reinterpret_cast<const ::e8::Pagination*>(
       &::e8::_Pagination_default_instance_);
 }
-inline ::e8::Pagination* GetRelatedUserListRequest::release_pagination() {
-  // @@protoc_insertion_point(field_release:e8.GetRelatedUserListRequest.pagination)
+inline ::e8::Pagination* SearchRelatedUserListRequest::release_pagination() {
+  // @@protoc_insertion_point(field_release:e8.SearchRelatedUserListRequest.pagination)
   
   ::e8::Pagination* temp = pagination_;
   pagination_ = NULL;
   return temp;
 }
-inline ::e8::Pagination* GetRelatedUserListRequest::mutable_pagination() {
+inline ::e8::Pagination* SearchRelatedUserListRequest::mutable_pagination() {
   
   if (pagination_ == NULL) {
     auto* p = CreateMaybeMessage<::e8::Pagination>(GetArenaNoVirtual());
     pagination_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:e8.GetRelatedUserListRequest.pagination)
+  // @@protoc_insertion_point(field_mutable:e8.SearchRelatedUserListRequest.pagination)
   return pagination_;
 }
-inline void GetRelatedUserListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
+inline void SearchRelatedUserListRequest::set_allocated_pagination(::e8::Pagination* pagination) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete reinterpret_cast< ::google::protobuf::MessageLite*>(pagination_);
@@ -1619,67 +1687,67 @@ inline void GetRelatedUserListRequest::set_allocated_pagination(::e8::Pagination
     
   }
   pagination_ = pagination;
-  // @@protoc_insertion_point(field_set_allocated:e8.GetRelatedUserListRequest.pagination)
+  // @@protoc_insertion_point(field_set_allocated:e8.SearchRelatedUserListRequest.pagination)
 }
 
-// repeated .e8.UserRelation relation_filter = 2;
-inline int GetRelatedUserListRequest::relation_filter_size() const {
+// repeated .e8.UserRelation relation_filter = 3;
+inline int SearchRelatedUserListRequest::relation_filter_size() const {
   return relation_filter_.size();
 }
-inline void GetRelatedUserListRequest::clear_relation_filter() {
+inline void SearchRelatedUserListRequest::clear_relation_filter() {
   relation_filter_.Clear();
 }
-inline ::e8::UserRelation GetRelatedUserListRequest::relation_filter(int index) const {
-  // @@protoc_insertion_point(field_get:e8.GetRelatedUserListRequest.relation_filter)
+inline ::e8::UserRelation SearchRelatedUserListRequest::relation_filter(int index) const {
+  // @@protoc_insertion_point(field_get:e8.SearchRelatedUserListRequest.relation_filter)
   return static_cast< ::e8::UserRelation >(relation_filter_.Get(index));
 }
-inline void GetRelatedUserListRequest::set_relation_filter(int index, ::e8::UserRelation value) {
+inline void SearchRelatedUserListRequest::set_relation_filter(int index, ::e8::UserRelation value) {
   relation_filter_.Set(index, value);
-  // @@protoc_insertion_point(field_set:e8.GetRelatedUserListRequest.relation_filter)
+  // @@protoc_insertion_point(field_set:e8.SearchRelatedUserListRequest.relation_filter)
 }
-inline void GetRelatedUserListRequest::add_relation_filter(::e8::UserRelation value) {
+inline void SearchRelatedUserListRequest::add_relation_filter(::e8::UserRelation value) {
   relation_filter_.Add(value);
-  // @@protoc_insertion_point(field_add:e8.GetRelatedUserListRequest.relation_filter)
+  // @@protoc_insertion_point(field_add:e8.SearchRelatedUserListRequest.relation_filter)
 }
 inline const ::google::protobuf::RepeatedField<int>&
-GetRelatedUserListRequest::relation_filter() const {
-  // @@protoc_insertion_point(field_list:e8.GetRelatedUserListRequest.relation_filter)
+SearchRelatedUserListRequest::relation_filter() const {
+  // @@protoc_insertion_point(field_list:e8.SearchRelatedUserListRequest.relation_filter)
   return relation_filter_;
 }
 inline ::google::protobuf::RepeatedField<int>*
-GetRelatedUserListRequest::mutable_relation_filter() {
-  // @@protoc_insertion_point(field_mutable_list:e8.GetRelatedUserListRequest.relation_filter)
+SearchRelatedUserListRequest::mutable_relation_filter() {
+  // @@protoc_insertion_point(field_mutable_list:e8.SearchRelatedUserListRequest.relation_filter)
   return &relation_filter_;
 }
 
 // -------------------------------------------------------------------
 
-// GetRelatedUserListResponse
+// SearchRelatedUserListResponse
 
 // repeated .e8.UserPublicProfile user_profiles = 1;
-inline int GetRelatedUserListResponse::user_profiles_size() const {
+inline int SearchRelatedUserListResponse::user_profiles_size() const {
   return user_profiles_.size();
 }
-inline ::e8::UserPublicProfile* GetRelatedUserListResponse::mutable_user_profiles(int index) {
-  // @@protoc_insertion_point(field_mutable:e8.GetRelatedUserListResponse.user_profiles)
+inline ::e8::UserPublicProfile* SearchRelatedUserListResponse::mutable_user_profiles(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.SearchRelatedUserListResponse.user_profiles)
   return user_profiles_.Mutable(index);
 }
 inline ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >*
-GetRelatedUserListResponse::mutable_user_profiles() {
-  // @@protoc_insertion_point(field_mutable_list:e8.GetRelatedUserListResponse.user_profiles)
+SearchRelatedUserListResponse::mutable_user_profiles() {
+  // @@protoc_insertion_point(field_mutable_list:e8.SearchRelatedUserListResponse.user_profiles)
   return &user_profiles_;
 }
-inline const ::e8::UserPublicProfile& GetRelatedUserListResponse::user_profiles(int index) const {
-  // @@protoc_insertion_point(field_get:e8.GetRelatedUserListResponse.user_profiles)
+inline const ::e8::UserPublicProfile& SearchRelatedUserListResponse::user_profiles(int index) const {
+  // @@protoc_insertion_point(field_get:e8.SearchRelatedUserListResponse.user_profiles)
   return user_profiles_.Get(index);
 }
-inline ::e8::UserPublicProfile* GetRelatedUserListResponse::add_user_profiles() {
-  // @@protoc_insertion_point(field_add:e8.GetRelatedUserListResponse.user_profiles)
+inline ::e8::UserPublicProfile* SearchRelatedUserListResponse::add_user_profiles() {
+  // @@protoc_insertion_point(field_add:e8.SearchRelatedUserListResponse.user_profiles)
   return user_profiles_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
-GetRelatedUserListResponse::user_profiles() const {
-  // @@protoc_insertion_point(field_list:e8.GetRelatedUserListResponse.user_profiles)
+SearchRelatedUserListResponse::user_profiles() const {
+  // @@protoc_insertion_point(field_list:e8.SearchRelatedUserListResponse.user_profiles)
   return user_profiles_;
 }
 

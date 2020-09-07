@@ -76,9 +76,10 @@ grpc::Status SocialNetworkServiceImpl::SendInvitation(grpc::ServerContext *conte
     return grpc::Status::OK;
 }
 
-grpc::Status SocialNetworkServiceImpl::GetRelatedUserList(grpc::ServerContext *context,
-                                                          GetRelatedUserListRequest const *request,
-                                                          GetRelatedUserListResponse *response) {
+grpc::Status
+SocialNetworkServiceImpl::SearchRelatedUserList(grpc::ServerContext *context,
+                                                SearchRelatedUserListRequest const *request,
+                                                SearchRelatedUserListResponse *response) {
     grpc::Status status;
     std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
     if (!status.ok()) {

@@ -79,16 +79,16 @@ class DeleteContactResponseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<DeleteContactResponse>
       _instance;
 } _DeleteContactResponse_default_instance_;
-class GetRelatedUserListRequestDefaultTypeInternal {
+class SearchRelatedUserListRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<GetRelatedUserListRequest>
+  ::google::protobuf::internal::ExplicitlyConstructed<SearchRelatedUserListRequest>
       _instance;
-} _GetRelatedUserListRequest_default_instance_;
-class GetRelatedUserListResponseDefaultTypeInternal {
+} _SearchRelatedUserListRequest_default_instance_;
+class SearchRelatedUserListResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<GetRelatedUserListResponse>
+  ::google::protobuf::internal::ExplicitlyConstructed<SearchRelatedUserListResponse>
       _instance;
-} _GetRelatedUserListResponse_default_instance_;
+} _SearchRelatedUserListResponse_default_instance_;
 }  // namespace e8
 namespace protobuf_service_5fsocialnetwork_2eproto {
 static void InitDefaultsGetUserRelationsRequest() {
@@ -232,34 +232,34 @@ static void InitDefaultsDeleteContactResponse() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_DeleteContactResponse =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsDeleteContactResponse}, {}};
 
-static void InitDefaultsGetRelatedUserListRequest() {
+static void InitDefaultsSearchRelatedUserListRequest() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_GetRelatedUserListRequest_default_instance_;
-    new (ptr) ::e8::GetRelatedUserListRequest();
+    void* ptr = &::e8::_SearchRelatedUserListRequest_default_instance_;
+    new (ptr) ::e8::SearchRelatedUserListRequest();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::GetRelatedUserListRequest::InitAsDefaultInstance();
+  ::e8::SearchRelatedUserListRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_GetRelatedUserListRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetRelatedUserListRequest}, {
+::google::protobuf::internal::SCCInfo<1> scc_info_SearchRelatedUserListRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSearchRelatedUserListRequest}, {
       &protobuf_pagination_2eproto::scc_info_Pagination.base,}};
 
-static void InitDefaultsGetRelatedUserListResponse() {
+static void InitDefaultsSearchRelatedUserListResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_GetRelatedUserListResponse_default_instance_;
-    new (ptr) ::e8::GetRelatedUserListResponse();
+    void* ptr = &::e8::_SearchRelatedUserListResponse_default_instance_;
+    new (ptr) ::e8::SearchRelatedUserListResponse();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::GetRelatedUserListResponse::InitAsDefaultInstance();
+  ::e8::SearchRelatedUserListResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_GetRelatedUserListResponse =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetRelatedUserListResponse}, {
+::google::protobuf::internal::SCCInfo<1> scc_info_SearchRelatedUserListResponse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSearchRelatedUserListResponse}, {
       &protobuf_user_5fprofile_2eproto::scc_info_UserPublicProfile.base,}};
 
 void InitDefaults() {
@@ -273,8 +273,8 @@ void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_ProcessInvitationResponse.base);
   ::google::protobuf::internal::InitSCC(&scc_info_DeleteContactRequest.base);
   ::google::protobuf::internal::InitSCC(&scc_info_DeleteContactResponse.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_GetRelatedUserListRequest.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_GetRelatedUserListResponse.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_SearchRelatedUserListRequest.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_SearchRelatedUserListResponse.base);
 }
 
 ::google::protobuf::Metadata file_level_metadata[12];
@@ -341,18 +341,19 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DeleteContactResponse, deleted_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetRelatedUserListRequest, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchRelatedUserListRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetRelatedUserListRequest, pagination_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetRelatedUserListRequest, relation_filter_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchRelatedUserListRequest, search_terms_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchRelatedUserListRequest, pagination_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchRelatedUserListRequest, relation_filter_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetRelatedUserListResponse, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchRelatedUserListResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetRelatedUserListResponse, user_profiles_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchRelatedUserListResponse, user_profiles_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::GetUserRelationsRequest)},
@@ -365,8 +366,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 43, -1, sizeof(::e8::ProcessInvitationResponse)},
   { 48, -1, sizeof(::e8::DeleteContactRequest)},
   { 54, -1, sizeof(::e8::DeleteContactResponse)},
-  { 60, -1, sizeof(::e8::GetRelatedUserListRequest)},
-  { 67, -1, sizeof(::e8::GetRelatedUserListResponse)},
+  { 60, -1, sizeof(::e8::SearchRelatedUserListRequest)},
+  { 68, -1, sizeof(::e8::SearchRelatedUserListResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -380,8 +381,8 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_ProcessInvitationResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DeleteContactRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DeleteContactResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetRelatedUserListRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetRelatedUserListResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_SearchRelatedUserListRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_SearchRelatedUserListResponse_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -420,27 +421,28 @@ void AddDescriptorsImpl() {
       "accept\030\002 \001(\010\"\033\n\031ProcessInvitationRespons"
       "e\"7\n\024DeleteContactRequest\022\037\n\027deleted_con"
       "tact_user_id\030\001 \001(\003\"(\n\025DeleteContactRespo"
-      "nse\022\017\n\007deleted\030\001 \001(\010\"j\n\031GetRelatedUserLi"
-      "stRequest\022\"\n\npagination\030\001 \001(\0132\016.e8.Pagin"
-      "ation\022)\n\017relation_filter\030\002 \003(\0162\020.e8.User"
-      "Relation\"J\n\032GetRelatedUserListResponse\022,"
-      "\n\ruser_profiles\030\001 \003(\0132\025.e8.UserPublicPro"
-      "file2\352\003\n\024SocialNetworkService\022M\n\020GetUser"
-      "Relations\022\033.e8.GetUserRelationsRequest\032\034"
-      ".e8.GetUserRelationsResponse\022G\n\016SendInvi"
-      "tation\022\031.e8.SendInvitationRequest\032\032.e8.S"
-      "endInvitationResponse\022M\n\020DeleteInvitatio"
-      "n\022\033.e8.DeleteInvitationRequest\032\034.e8.Dele"
-      "teInvitationResponse\022P\n\021ProcessInvitatio"
-      "n\022\034.e8.ProcessInvitationRequest\032\035.e8.Pro"
-      "cessInvitationResponse\022D\n\rDeleteContact\022"
-      "\030.e8.DeleteContactRequest\032\031.e8.DeleteCon"
-      "tactResponse\022S\n\022GetRelatedUserList\022\035.e8."
-      "GetRelatedUserListRequest\032\036.e8.GetRelate"
-      "dUserListResponseb\006proto3"
+      "nse\022\017\n\007deleted\030\001 \001(\010\"\203\001\n\034SearchRelatedUs"
+      "erListRequest\022\024\n\014search_terms\030\001 \001(\t\022\"\n\np"
+      "agination\030\002 \001(\0132\016.e8.Pagination\022)\n\017relat"
+      "ion_filter\030\003 \003(\0162\020.e8.UserRelation\"M\n\035Se"
+      "archRelatedUserListResponse\022,\n\ruser_prof"
+      "iles\030\001 \003(\0132\025.e8.UserPublicProfile2\363\003\n\024So"
+      "cialNetworkService\022M\n\020GetUserRelations\022\033"
+      ".e8.GetUserRelationsRequest\032\034.e8.GetUser"
+      "RelationsResponse\022G\n\016SendInvitation\022\031.e8"
+      ".SendInvitationRequest\032\032.e8.SendInvitati"
+      "onResponse\022M\n\020DeleteInvitation\022\033.e8.Dele"
+      "teInvitationRequest\032\034.e8.DeleteInvitatio"
+      "nResponse\022P\n\021ProcessInvitation\022\034.e8.Proc"
+      "essInvitationRequest\032\035.e8.ProcessInvitat"
+      "ionResponse\022D\n\rDeleteContact\022\030.e8.Delete"
+      "ContactRequest\032\031.e8.DeleteContactRespons"
+      "e\022\\\n\025SearchRelatedUserList\022 .e8.SearchRe"
+      "latedUserListRequest\032!.e8.SearchRelatedU"
+      "serListResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1305);
+      descriptor, 1343);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_socialnetwork.proto", &protobuf_RegisterTypes);
   ::protobuf_user_5fprofile_2eproto::AddDescriptors();
@@ -2689,75 +2691,83 @@ void DeleteContactResponse::InternalSwap(DeleteContactResponse* other) {
 
 // ===================================================================
 
-void GetRelatedUserListRequest::InitAsDefaultInstance() {
-  ::e8::_GetRelatedUserListRequest_default_instance_._instance.get_mutable()->pagination_ = const_cast< ::e8::Pagination*>(
+void SearchRelatedUserListRequest::InitAsDefaultInstance() {
+  ::e8::_SearchRelatedUserListRequest_default_instance_._instance.get_mutable()->pagination_ = const_cast< ::e8::Pagination*>(
       ::e8::Pagination::internal_default_instance());
 }
-void GetRelatedUserListRequest::clear_pagination() {
+void SearchRelatedUserListRequest::clear_pagination() {
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
     delete pagination_;
   }
   pagination_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GetRelatedUserListRequest::kPaginationFieldNumber;
-const int GetRelatedUserListRequest::kRelationFilterFieldNumber;
+const int SearchRelatedUserListRequest::kSearchTermsFieldNumber;
+const int SearchRelatedUserListRequest::kPaginationFieldNumber;
+const int SearchRelatedUserListRequest::kRelationFilterFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-GetRelatedUserListRequest::GetRelatedUserListRequest()
+SearchRelatedUserListRequest::SearchRelatedUserListRequest()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fsocialnetwork_2eproto::scc_info_GetRelatedUserListRequest.base);
+      &protobuf_service_5fsocialnetwork_2eproto::scc_info_SearchRelatedUserListRequest.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(constructor:e8.SearchRelatedUserListRequest)
 }
-GetRelatedUserListRequest::GetRelatedUserListRequest(const GetRelatedUserListRequest& from)
+SearchRelatedUserListRequest::SearchRelatedUserListRequest(const SearchRelatedUserListRequest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       relation_filter_(from.relation_filter_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  search_terms_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.search_terms().size() > 0) {
+    search_terms_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.search_terms_);
+  }
   if (from.has_pagination()) {
     pagination_ = new ::e8::Pagination(*from.pagination_);
   } else {
     pagination_ = NULL;
   }
-  // @@protoc_insertion_point(copy_constructor:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(copy_constructor:e8.SearchRelatedUserListRequest)
 }
 
-void GetRelatedUserListRequest::SharedCtor() {
+void SearchRelatedUserListRequest::SharedCtor() {
+  search_terms_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   pagination_ = NULL;
 }
 
-GetRelatedUserListRequest::~GetRelatedUserListRequest() {
-  // @@protoc_insertion_point(destructor:e8.GetRelatedUserListRequest)
+SearchRelatedUserListRequest::~SearchRelatedUserListRequest() {
+  // @@protoc_insertion_point(destructor:e8.SearchRelatedUserListRequest)
   SharedDtor();
 }
 
-void GetRelatedUserListRequest::SharedDtor() {
+void SearchRelatedUserListRequest::SharedDtor() {
+  search_terms_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete pagination_;
 }
 
-void GetRelatedUserListRequest::SetCachedSize(int size) const {
+void SearchRelatedUserListRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* GetRelatedUserListRequest::descriptor() {
+const ::google::protobuf::Descriptor* SearchRelatedUserListRequest::descriptor() {
   ::protobuf_service_5fsocialnetwork_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fsocialnetwork_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const GetRelatedUserListRequest& GetRelatedUserListRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fsocialnetwork_2eproto::scc_info_GetRelatedUserListRequest.base);
+const SearchRelatedUserListRequest& SearchRelatedUserListRequest::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fsocialnetwork_2eproto::scc_info_SearchRelatedUserListRequest.base);
   return *internal_default_instance();
 }
 
 
-void GetRelatedUserListRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.GetRelatedUserListRequest)
+void SearchRelatedUserListRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.SearchRelatedUserListRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   relation_filter_.Clear();
+  search_terms_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
     delete pagination_;
   }
@@ -2765,20 +2775,36 @@ void GetRelatedUserListRequest::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool GetRelatedUserListRequest::MergePartialFromCodedStream(
+bool SearchRelatedUserListRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(parse_start:e8.SearchRelatedUserListRequest)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .e8.Pagination pagination = 1;
+      // string search_terms = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_search_terms()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->search_terms().data(), static_cast<int>(this->search_terms().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "e8.SearchRelatedUserListRequest.search_terms"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .e8.Pagination pagination = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_pagination()));
         } else {
@@ -2787,10 +2813,10 @@ bool GetRelatedUserListRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .e8.UserRelation relation_filter = 2;
-      case 2: {
+      // repeated .e8.UserRelation relation_filter = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           ::google::protobuf::uint32 length;
           DO_(input->ReadVarint32(&length));
           ::google::protobuf::io::CodedInputStream::Limit limit = input->PushLimit(static_cast<int>(length));
@@ -2804,7 +2830,7 @@ bool GetRelatedUserListRequest::MergePartialFromCodedStream(
           input->PopLimit(limit);
         } else if (
             static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -2828,30 +2854,40 @@ bool GetRelatedUserListRequest::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(parse_success:e8.SearchRelatedUserListRequest)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(parse_failure:e8.SearchRelatedUserListRequest)
   return false;
 #undef DO_
 }
 
-void GetRelatedUserListRequest::SerializeWithCachedSizes(
+void SearchRelatedUserListRequest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(serialize_start:e8.SearchRelatedUserListRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.Pagination pagination = 1;
-  if (this->has_pagination()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->_internal_pagination(), output);
+  // string search_terms = 1;
+  if (this->search_terms().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->search_terms().data(), static_cast<int>(this->search_terms().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.SearchRelatedUserListRequest.search_terms");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->search_terms(), output);
   }
 
-  // repeated .e8.UserRelation relation_filter = 2;
+  // .e8.Pagination pagination = 2;
+  if (this->has_pagination()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->_internal_pagination(), output);
+  }
+
+  // repeated .e8.UserRelation relation_filter = 3;
   if (this->relation_filter_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(
-      2,
+      3,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       output);
     output->WriteVarint32(
@@ -2866,27 +2902,38 @@ void GetRelatedUserListRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(serialize_end:e8.SearchRelatedUserListRequest)
 }
 
-::google::protobuf::uint8* GetRelatedUserListRequest::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* SearchRelatedUserListRequest::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.SearchRelatedUserListRequest)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.Pagination pagination = 1;
+  // string search_terms = 1;
+  if (this->search_terms().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->search_terms().data(), static_cast<int>(this->search_terms().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.SearchRelatedUserListRequest.search_terms");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->search_terms(), target);
+  }
+
+  // .e8.Pagination pagination = 2;
   if (this->has_pagination()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, this->_internal_pagination(), deterministic, target);
+        2, this->_internal_pagination(), deterministic, target);
   }
 
-  // repeated .e8.UserRelation relation_filter = 2;
+  // repeated .e8.UserRelation relation_filter = 3;
   if (this->relation_filter_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      2,
+      3,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(      static_cast< ::google::protobuf::uint32>(
@@ -2899,12 +2946,12 @@ void GetRelatedUserListRequest::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.SearchRelatedUserListRequest)
   return target;
 }
 
-size_t GetRelatedUserListRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.GetRelatedUserListRequest)
+size_t SearchRelatedUserListRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.SearchRelatedUserListRequest)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2912,7 +2959,7 @@ size_t GetRelatedUserListRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.UserRelation relation_filter = 2;
+  // repeated .e8.UserRelation relation_filter = 3;
   {
     size_t data_size = 0;
     unsigned int count = static_cast<unsigned int>(this->relation_filter_size());for (unsigned int i = 0; i < count; i++) {
@@ -2931,7 +2978,14 @@ size_t GetRelatedUserListRequest::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // .e8.Pagination pagination = 1;
+  // string search_terms = 1;
+  if (this->search_terms().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->search_terms());
+  }
+
+  // .e8.Pagination pagination = 2;
   if (this->has_pagination()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
@@ -2943,64 +2997,70 @@ size_t GetRelatedUserListRequest::ByteSizeLong() const {
   return total_size;
 }
 
-void GetRelatedUserListRequest::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.GetRelatedUserListRequest)
+void SearchRelatedUserListRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.SearchRelatedUserListRequest)
   GOOGLE_DCHECK_NE(&from, this);
-  const GetRelatedUserListRequest* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const GetRelatedUserListRequest>(
+  const SearchRelatedUserListRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const SearchRelatedUserListRequest>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.SearchRelatedUserListRequest)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.GetRelatedUserListRequest)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.SearchRelatedUserListRequest)
     MergeFrom(*source);
   }
 }
 
-void GetRelatedUserListRequest::MergeFrom(const GetRelatedUserListRequest& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.GetRelatedUserListRequest)
+void SearchRelatedUserListRequest::MergeFrom(const SearchRelatedUserListRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.SearchRelatedUserListRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   relation_filter_.MergeFrom(from.relation_filter_);
+  if (from.search_terms().size() > 0) {
+
+    search_terms_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.search_terms_);
+  }
   if (from.has_pagination()) {
     mutable_pagination()->::e8::Pagination::MergeFrom(from.pagination());
   }
 }
 
-void GetRelatedUserListRequest::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.GetRelatedUserListRequest)
+void SearchRelatedUserListRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.SearchRelatedUserListRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetRelatedUserListRequest::CopyFrom(const GetRelatedUserListRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.GetRelatedUserListRequest)
+void SearchRelatedUserListRequest::CopyFrom(const SearchRelatedUserListRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.SearchRelatedUserListRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetRelatedUserListRequest::IsInitialized() const {
+bool SearchRelatedUserListRequest::IsInitialized() const {
   return true;
 }
 
-void GetRelatedUserListRequest::Swap(GetRelatedUserListRequest* other) {
+void SearchRelatedUserListRequest::Swap(SearchRelatedUserListRequest* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void GetRelatedUserListRequest::InternalSwap(GetRelatedUserListRequest* other) {
+void SearchRelatedUserListRequest::InternalSwap(SearchRelatedUserListRequest* other) {
   using std::swap;
   relation_filter_.InternalSwap(&other->relation_filter_);
+  search_terms_.Swap(&other->search_terms_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   swap(pagination_, other->pagination_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata GetRelatedUserListRequest::GetMetadata() const {
+::google::protobuf::Metadata SearchRelatedUserListRequest::GetMetadata() const {
   protobuf_service_5fsocialnetwork_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fsocialnetwork_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -3008,57 +3068,57 @@ void GetRelatedUserListRequest::InternalSwap(GetRelatedUserListRequest* other) {
 
 // ===================================================================
 
-void GetRelatedUserListResponse::InitAsDefaultInstance() {
+void SearchRelatedUserListResponse::InitAsDefaultInstance() {
 }
-void GetRelatedUserListResponse::clear_user_profiles() {
+void SearchRelatedUserListResponse::clear_user_profiles() {
   user_profiles_.Clear();
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GetRelatedUserListResponse::kUserProfilesFieldNumber;
+const int SearchRelatedUserListResponse::kUserProfilesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-GetRelatedUserListResponse::GetRelatedUserListResponse()
+SearchRelatedUserListResponse::SearchRelatedUserListResponse()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_service_5fsocialnetwork_2eproto::scc_info_GetRelatedUserListResponse.base);
+      &protobuf_service_5fsocialnetwork_2eproto::scc_info_SearchRelatedUserListResponse.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(constructor:e8.SearchRelatedUserListResponse)
 }
-GetRelatedUserListResponse::GetRelatedUserListResponse(const GetRelatedUserListResponse& from)
+SearchRelatedUserListResponse::SearchRelatedUserListResponse(const SearchRelatedUserListResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       user_profiles_(from.user_profiles_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(copy_constructor:e8.SearchRelatedUserListResponse)
 }
 
-void GetRelatedUserListResponse::SharedCtor() {
+void SearchRelatedUserListResponse::SharedCtor() {
 }
 
-GetRelatedUserListResponse::~GetRelatedUserListResponse() {
-  // @@protoc_insertion_point(destructor:e8.GetRelatedUserListResponse)
+SearchRelatedUserListResponse::~SearchRelatedUserListResponse() {
+  // @@protoc_insertion_point(destructor:e8.SearchRelatedUserListResponse)
   SharedDtor();
 }
 
-void GetRelatedUserListResponse::SharedDtor() {
+void SearchRelatedUserListResponse::SharedDtor() {
 }
 
-void GetRelatedUserListResponse::SetCachedSize(int size) const {
+void SearchRelatedUserListResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* GetRelatedUserListResponse::descriptor() {
+const ::google::protobuf::Descriptor* SearchRelatedUserListResponse::descriptor() {
   ::protobuf_service_5fsocialnetwork_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fsocialnetwork_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const GetRelatedUserListResponse& GetRelatedUserListResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_service_5fsocialnetwork_2eproto::scc_info_GetRelatedUserListResponse.base);
+const SearchRelatedUserListResponse& SearchRelatedUserListResponse::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fsocialnetwork_2eproto::scc_info_SearchRelatedUserListResponse.base);
   return *internal_default_instance();
 }
 
 
-void GetRelatedUserListResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.GetRelatedUserListResponse)
+void SearchRelatedUserListResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.SearchRelatedUserListResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -3067,11 +3127,11 @@ void GetRelatedUserListResponse::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool GetRelatedUserListResponse::MergePartialFromCodedStream(
+bool SearchRelatedUserListResponse::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(parse_start:e8.SearchRelatedUserListResponse)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -3101,17 +3161,17 @@ bool GetRelatedUserListResponse::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(parse_success:e8.SearchRelatedUserListResponse)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(parse_failure:e8.SearchRelatedUserListResponse)
   return false;
 #undef DO_
 }
 
-void GetRelatedUserListResponse::SerializeWithCachedSizes(
+void SearchRelatedUserListResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(serialize_start:e8.SearchRelatedUserListResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3128,13 +3188,13 @@ void GetRelatedUserListResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(serialize_end:e8.SearchRelatedUserListResponse)
 }
 
-::google::protobuf::uint8* GetRelatedUserListResponse::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* SearchRelatedUserListResponse::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.SearchRelatedUserListResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3150,12 +3210,12 @@ void GetRelatedUserListResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.SearchRelatedUserListResponse)
   return target;
 }
 
-size_t GetRelatedUserListResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.GetRelatedUserListResponse)
+size_t SearchRelatedUserListResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.SearchRelatedUserListResponse)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -3179,23 +3239,23 @@ size_t GetRelatedUserListResponse::ByteSizeLong() const {
   return total_size;
 }
 
-void GetRelatedUserListResponse::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.GetRelatedUserListResponse)
+void SearchRelatedUserListResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.SearchRelatedUserListResponse)
   GOOGLE_DCHECK_NE(&from, this);
-  const GetRelatedUserListResponse* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const GetRelatedUserListResponse>(
+  const SearchRelatedUserListResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const SearchRelatedUserListResponse>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.SearchRelatedUserListResponse)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.GetRelatedUserListResponse)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.SearchRelatedUserListResponse)
     MergeFrom(*source);
   }
 }
 
-void GetRelatedUserListResponse::MergeFrom(const GetRelatedUserListResponse& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.GetRelatedUserListResponse)
+void SearchRelatedUserListResponse::MergeFrom(const SearchRelatedUserListResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.SearchRelatedUserListResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -3204,35 +3264,35 @@ void GetRelatedUserListResponse::MergeFrom(const GetRelatedUserListResponse& fro
   user_profiles_.MergeFrom(from.user_profiles_);
 }
 
-void GetRelatedUserListResponse::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.GetRelatedUserListResponse)
+void SearchRelatedUserListResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.SearchRelatedUserListResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetRelatedUserListResponse::CopyFrom(const GetRelatedUserListResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.GetRelatedUserListResponse)
+void SearchRelatedUserListResponse::CopyFrom(const SearchRelatedUserListResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.SearchRelatedUserListResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetRelatedUserListResponse::IsInitialized() const {
+bool SearchRelatedUserListResponse::IsInitialized() const {
   return true;
 }
 
-void GetRelatedUserListResponse::Swap(GetRelatedUserListResponse* other) {
+void SearchRelatedUserListResponse::Swap(SearchRelatedUserListResponse* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void GetRelatedUserListResponse::InternalSwap(GetRelatedUserListResponse* other) {
+void SearchRelatedUserListResponse::InternalSwap(SearchRelatedUserListResponse* other) {
   using std::swap;
   CastToBase(&user_profiles_)->InternalSwap(CastToBase(&other->user_profiles_));
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata GetRelatedUserListResponse::GetMetadata() const {
+::google::protobuf::Metadata SearchRelatedUserListResponse::GetMetadata() const {
   protobuf_service_5fsocialnetwork_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_service_5fsocialnetwork_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -3272,11 +3332,11 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::DeleteContactRequest* Arena:
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::DeleteContactResponse* Arena::CreateMaybeMessage< ::e8::DeleteContactResponse >(Arena* arena) {
   return Arena::CreateInternal< ::e8::DeleteContactResponse >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetRelatedUserListRequest* Arena::CreateMaybeMessage< ::e8::GetRelatedUserListRequest >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::GetRelatedUserListRequest >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::SearchRelatedUserListRequest* Arena::CreateMaybeMessage< ::e8::SearchRelatedUserListRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::SearchRelatedUserListRequest >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetRelatedUserListResponse* Arena::CreateMaybeMessage< ::e8::GetRelatedUserListResponse >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::GetRelatedUserListResponse >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::SearchRelatedUserListResponse* Arena::CreateMaybeMessage< ::e8::SearchRelatedUserListResponse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::SearchRelatedUserListResponse >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

@@ -65,12 +65,13 @@ message DeleteContactResponse {
 }
 
 
-message GetRelatedUserListRequest {
-    Pagination pagination = 1;
-    repeated UserRelation relation_filter = 2;
+message SearchRelatedUserListRequest {
+    string search_terms = 1;
+    Pagination pagination = 2;
+    repeated UserRelation relation_filter = 3;
 }
 
-message GetRelatedUserListResponse {
+message SearchRelatedUserListResponse {
     repeated UserPublicProfile user_profiles = 1;
 }
 
@@ -105,9 +106,9 @@ service SocialNetworkService {
     rpc DeleteContact (DeleteContactRequest) returns (DeleteContactResponse);
 
     /**
-     * Get the a list of user related to the logged-in user. The type of relation
-     * is specified by the constraints in the request. 
+     * Search the a list of user related to the logged-in user. The type of
+     * relation is specified by the constraints in the request. 
      */
-    rpc GetRelatedUserList (GetRelatedUserListRequest) returns 
-        (GetRelatedUserListResponse);
+    rpc SearchRelatedUserList (SearchRelatedUserListRequest) returns 
+        (SearchRelatedUserListResponse);
 }

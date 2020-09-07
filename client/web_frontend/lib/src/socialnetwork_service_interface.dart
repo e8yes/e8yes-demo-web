@@ -12,8 +12,8 @@ abstract class SocialNetworkServiceInterface {
   Future<ProcessInvitationResponse> processInvitation(
       ProcessInvitationRequest request, String signature);
 
-  Future<GetRelatedUserListResponse> getRelatedUserList(
-      GetRelatedUserListRequest request, String signature);
+  Future<SearchRelatedUserListResponse> searchRelatedUserList(
+      SearchRelatedUserListRequest request, String signature);
 
   Future<DeleteContactResponse> deleteContact(
       DeleteContactRequest request, String signature);

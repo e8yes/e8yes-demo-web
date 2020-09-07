@@ -36,12 +36,12 @@ class SocialNetworkServiceImpl implements SocialNetworkServiceInterface {
   }
 
   @override
-  Future<GetRelatedUserListResponse> getRelatedUserList(
-      GetRelatedUserListRequest request, String signature) async {
+  Future<SearchRelatedUserListResponse> searchRelatedUserList(
+      SearchRelatedUserListRequest request, String signature) async {
     return demowebServiceRequester.MakeRequest(request, signature,
         (request, call_opts, channel) {
       return SocialNetworkServiceClient(channel)
-          .getRelatedUserList(request, options: call_opts);
+          .searchRelatedUserList(request, options: call_opts);
     });
   }
 

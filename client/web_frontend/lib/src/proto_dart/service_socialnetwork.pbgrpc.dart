@@ -44,12 +44,12 @@ class SocialNetworkServiceClient extends $grpc.Client {
           ($8.DeleteContactRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $8.DeleteContactResponse.fromBuffer(value));
-  static final _$getRelatedUserList = $grpc.ClientMethod<
-          $8.GetRelatedUserListRequest, $8.GetRelatedUserListResponse>(
-      '/e8.SocialNetworkService/GetRelatedUserList',
-      ($8.GetRelatedUserListRequest value) => value.writeToBuffer(),
+  static final _$searchRelatedUserList = $grpc.ClientMethod<
+          $8.SearchRelatedUserListRequest, $8.SearchRelatedUserListResponse>(
+      '/e8.SocialNetworkService/SearchRelatedUserList',
+      ($8.SearchRelatedUserListRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
-          $8.GetRelatedUserListResponse.fromBuffer(value));
+          $8.SearchRelatedUserListResponse.fromBuffer(value));
 
   SocialNetworkServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions options})
@@ -100,11 +100,11 @@ class SocialNetworkServiceClient extends $grpc.Client {
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$8.GetRelatedUserListResponse> getRelatedUserList(
-      $8.GetRelatedUserListRequest request,
+  $grpc.ResponseFuture<$8.SearchRelatedUserListResponse> searchRelatedUserList(
+      $8.SearchRelatedUserListRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
-        _$getRelatedUserList, $async.Stream.fromIterable([request]),
+        _$searchRelatedUserList, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -159,15 +159,15 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $8.DeleteContactRequest.fromBuffer(value),
             ($8.DeleteContactResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$8.GetRelatedUserListRequest,
-            $8.GetRelatedUserListResponse>(
-        'GetRelatedUserList',
-        getRelatedUserList_Pre,
+    $addMethod($grpc.ServiceMethod<$8.SearchRelatedUserListRequest,
+            $8.SearchRelatedUserListResponse>(
+        'SearchRelatedUserList',
+        searchRelatedUserList_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $8.GetRelatedUserListRequest.fromBuffer(value),
-        ($8.GetRelatedUserListResponse value) => value.writeToBuffer()));
+            $8.SearchRelatedUserListRequest.fromBuffer(value),
+        ($8.SearchRelatedUserListResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$8.GetUserRelationsResponse> getUserRelations_Pre(
@@ -200,10 +200,10 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
     return deleteContact(call, await request);
   }
 
-  $async.Future<$8.GetRelatedUserListResponse> getRelatedUserList_Pre(
+  $async.Future<$8.SearchRelatedUserListResponse> searchRelatedUserList_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$8.GetRelatedUserListRequest> request) async {
-    return getRelatedUserList(call, await request);
+      $async.Future<$8.SearchRelatedUserListRequest> request) async {
+    return searchRelatedUserList(call, await request);
   }
 
   $async.Future<$8.GetUserRelationsResponse> getUserRelations(
@@ -216,6 +216,6 @@ abstract class SocialNetworkServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $8.ProcessInvitationRequest request);
   $async.Future<$8.DeleteContactResponse> deleteContact(
       $grpc.ServiceCall call, $8.DeleteContactRequest request);
-  $async.Future<$8.GetRelatedUserListResponse> getRelatedUserList(
-      $grpc.ServiceCall call, $8.GetRelatedUserListRequest request);
+  $async.Future<$8.SearchRelatedUserListResponse> searchRelatedUserList(
+      $grpc.ServiceCall call, $8.SearchRelatedUserListRequest request);
 }

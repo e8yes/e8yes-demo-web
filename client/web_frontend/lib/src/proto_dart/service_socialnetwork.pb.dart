@@ -320,63 +320,73 @@ class DeleteContactResponse extends $pb.GeneratedMessage {
   void clearDeleted() => clearField(1);
 }
 
-class GetRelatedUserListRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetRelatedUserListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$19.Pagination>(1, 'pagination', subBuilder: $19.Pagination.create)
-    ..pc<$12.UserRelation>(2, 'relationFilter', $pb.PbFieldType.PE, valueOf: $12.UserRelation.valueOf, enumValues: $12.UserRelation.values)
+class SearchRelatedUserListRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchRelatedUserListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aOS(1, 'searchTerms')
+    ..aOM<$19.Pagination>(2, 'pagination', subBuilder: $19.Pagination.create)
+    ..pc<$12.UserRelation>(3, 'relationFilter', $pb.PbFieldType.PE, valueOf: $12.UserRelation.valueOf, enumValues: $12.UserRelation.values)
     ..hasRequiredFields = false
   ;
 
-  GetRelatedUserListRequest._() : super();
-  factory GetRelatedUserListRequest() => create();
-  factory GetRelatedUserListRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetRelatedUserListRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetRelatedUserListRequest clone() => GetRelatedUserListRequest()..mergeFromMessage(this);
-  GetRelatedUserListRequest copyWith(void Function(GetRelatedUserListRequest) updates) => super.copyWith((message) => updates(message as GetRelatedUserListRequest));
+  SearchRelatedUserListRequest._() : super();
+  factory SearchRelatedUserListRequest() => create();
+  factory SearchRelatedUserListRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SearchRelatedUserListRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  SearchRelatedUserListRequest clone() => SearchRelatedUserListRequest()..mergeFromMessage(this);
+  SearchRelatedUserListRequest copyWith(void Function(SearchRelatedUserListRequest) updates) => super.copyWith((message) => updates(message as SearchRelatedUserListRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetRelatedUserListRequest create() => GetRelatedUserListRequest._();
-  GetRelatedUserListRequest createEmptyInstance() => create();
-  static $pb.PbList<GetRelatedUserListRequest> createRepeated() => $pb.PbList<GetRelatedUserListRequest>();
+  static SearchRelatedUserListRequest create() => SearchRelatedUserListRequest._();
+  SearchRelatedUserListRequest createEmptyInstance() => create();
+  static $pb.PbList<SearchRelatedUserListRequest> createRepeated() => $pb.PbList<SearchRelatedUserListRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetRelatedUserListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetRelatedUserListRequest>(create);
-  static GetRelatedUserListRequest _defaultInstance;
+  static SearchRelatedUserListRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SearchRelatedUserListRequest>(create);
+  static SearchRelatedUserListRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $19.Pagination get pagination => $_getN(0);
+  $core.String get searchTerms => $_getSZ(0);
   @$pb.TagNumber(1)
-  set pagination($19.Pagination v) { setField(1, v); }
+  set searchTerms($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasPagination() => $_has(0);
+  $core.bool hasSearchTerms() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPagination() => clearField(1);
-  @$pb.TagNumber(1)
-  $19.Pagination ensurePagination() => $_ensure(0);
+  void clearSearchTerms() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<$12.UserRelation> get relationFilter => $_getList(1);
+  $19.Pagination get pagination => $_getN(1);
+  @$pb.TagNumber(2)
+  set pagination($19.Pagination v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPagination() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPagination() => clearField(2);
+  @$pb.TagNumber(2)
+  $19.Pagination ensurePagination() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.List<$12.UserRelation> get relationFilter => $_getList(2);
 }
 
-class GetRelatedUserListResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetRelatedUserListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class SearchRelatedUserListResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchRelatedUserListResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..pc<$13.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
     ..hasRequiredFields = false
   ;
 
-  GetRelatedUserListResponse._() : super();
-  factory GetRelatedUserListResponse() => create();
-  factory GetRelatedUserListResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetRelatedUserListResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetRelatedUserListResponse clone() => GetRelatedUserListResponse()..mergeFromMessage(this);
-  GetRelatedUserListResponse copyWith(void Function(GetRelatedUserListResponse) updates) => super.copyWith((message) => updates(message as GetRelatedUserListResponse));
+  SearchRelatedUserListResponse._() : super();
+  factory SearchRelatedUserListResponse() => create();
+  factory SearchRelatedUserListResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SearchRelatedUserListResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  SearchRelatedUserListResponse clone() => SearchRelatedUserListResponse()..mergeFromMessage(this);
+  SearchRelatedUserListResponse copyWith(void Function(SearchRelatedUserListResponse) updates) => super.copyWith((message) => updates(message as SearchRelatedUserListResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetRelatedUserListResponse create() => GetRelatedUserListResponse._();
-  GetRelatedUserListResponse createEmptyInstance() => create();
-  static $pb.PbList<GetRelatedUserListResponse> createRepeated() => $pb.PbList<GetRelatedUserListResponse>();
+  static SearchRelatedUserListResponse create() => SearchRelatedUserListResponse._();
+  SearchRelatedUserListResponse createEmptyInstance() => create();
+  static $pb.PbList<SearchRelatedUserListResponse> createRepeated() => $pb.PbList<SearchRelatedUserListResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetRelatedUserListResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetRelatedUserListResponse>(create);
-  static GetRelatedUserListResponse _defaultInstance;
+  static SearchRelatedUserListResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SearchRelatedUserListResponse>(create);
+  static SearchRelatedUserListResponse _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.List<$13.UserPublicProfile> get userProfiles => $_getList(0);

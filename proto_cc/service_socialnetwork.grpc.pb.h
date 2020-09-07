@@ -99,14 +99,14 @@ class SocialNetworkService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeleteContactResponse>>(PrepareAsyncDeleteContactRaw(context, request, cq));
     }
     // *
-    // Get the a list of user related to the logged-in user. The type of relation
-    // is specified by the constraints in the request. 
-    virtual ::grpc::Status GetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::e8::GetRelatedUserListResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetRelatedUserListResponse>> AsyncGetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetRelatedUserListResponse>>(AsyncGetRelatedUserListRaw(context, request, cq));
+    // Search the a list of user related to the logged-in user. The type of
+    // relation is specified by the constraints in the request. 
+    virtual ::grpc::Status SearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::e8::SearchRelatedUserListResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchRelatedUserListResponse>> AsyncSearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchRelatedUserListResponse>>(AsyncSearchRelatedUserListRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetRelatedUserListResponse>> PrepareAsyncGetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetRelatedUserListResponse>>(PrepareAsyncGetRelatedUserListRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchRelatedUserListResponse>> PrepareAsyncSearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchRelatedUserListResponse>>(PrepareAsyncSearchRelatedUserListRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
@@ -128,9 +128,9 @@ class SocialNetworkService final {
       // Delete a contact relation for the logged-in user.
       virtual void DeleteContact(::grpc::ClientContext* context, const ::e8::DeleteContactRequest* request, ::e8::DeleteContactResponse* response, std::function<void(::grpc::Status)>) = 0;
       // *
-      // Get the a list of user related to the logged-in user. The type of relation
-      // is specified by the constraints in the request. 
-      virtual void GetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response, std::function<void(::grpc::Status)>) = 0;
+      // Search the a list of user related to the logged-in user. The type of
+      // relation is specified by the constraints in the request. 
+      virtual void SearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
@@ -144,8 +144,8 @@ class SocialNetworkService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::ProcessInvitationResponse>* PrepareAsyncProcessInvitationRaw(::grpc::ClientContext* context, const ::e8::ProcessInvitationRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeleteContactResponse>* AsyncDeleteContactRaw(::grpc::ClientContext* context, const ::e8::DeleteContactRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeleteContactResponse>* PrepareAsyncDeleteContactRaw(::grpc::ClientContext* context, const ::e8::DeleteContactRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetRelatedUserListResponse>* AsyncGetRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetRelatedUserListResponse>* PrepareAsyncGetRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchRelatedUserListResponse>* AsyncSearchRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::SearchRelatedUserListResponse>* PrepareAsyncSearchRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -185,12 +185,12 @@ class SocialNetworkService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeleteContactResponse>> PrepareAsyncDeleteContact(::grpc::ClientContext* context, const ::e8::DeleteContactRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeleteContactResponse>>(PrepareAsyncDeleteContactRaw(context, request, cq));
     }
-    ::grpc::Status GetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::e8::GetRelatedUserListResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetRelatedUserListResponse>> AsyncGetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetRelatedUserListResponse>>(AsyncGetRelatedUserListRaw(context, request, cq));
+    ::grpc::Status SearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::e8::SearchRelatedUserListResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SearchRelatedUserListResponse>> AsyncSearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SearchRelatedUserListResponse>>(AsyncSearchRelatedUserListRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetRelatedUserListResponse>> PrepareAsyncGetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetRelatedUserListResponse>>(PrepareAsyncGetRelatedUserListRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SearchRelatedUserListResponse>> PrepareAsyncSearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SearchRelatedUserListResponse>>(PrepareAsyncSearchRelatedUserListRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
@@ -200,7 +200,7 @@ class SocialNetworkService final {
       void DeleteInvitation(::grpc::ClientContext* context, const ::e8::DeleteInvitationRequest* request, ::e8::DeleteInvitationResponse* response, std::function<void(::grpc::Status)>) override;
       void ProcessInvitation(::grpc::ClientContext* context, const ::e8::ProcessInvitationRequest* request, ::e8::ProcessInvitationResponse* response, std::function<void(::grpc::Status)>) override;
       void DeleteContact(::grpc::ClientContext* context, const ::e8::DeleteContactRequest* request, ::e8::DeleteContactResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetRelatedUserList(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response, std::function<void(::grpc::Status)>) override;
+      void SearchRelatedUserList(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -222,14 +222,14 @@ class SocialNetworkService final {
     ::grpc::ClientAsyncResponseReader< ::e8::ProcessInvitationResponse>* PrepareAsyncProcessInvitationRaw(::grpc::ClientContext* context, const ::e8::ProcessInvitationRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::DeleteContactResponse>* AsyncDeleteContactRaw(::grpc::ClientContext* context, const ::e8::DeleteContactRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::DeleteContactResponse>* PrepareAsyncDeleteContactRaw(::grpc::ClientContext* context, const ::e8::DeleteContactRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::GetRelatedUserListResponse>* AsyncGetRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::GetRelatedUserListResponse>* PrepareAsyncGetRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::GetRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::SearchRelatedUserListResponse>* AsyncSearchRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::SearchRelatedUserListResponse>* PrepareAsyncSearchRelatedUserListRaw(::grpc::ClientContext* context, const ::e8::SearchRelatedUserListRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetUserRelations_;
     const ::grpc::internal::RpcMethod rpcmethod_SendInvitation_;
     const ::grpc::internal::RpcMethod rpcmethod_DeleteInvitation_;
     const ::grpc::internal::RpcMethod rpcmethod_ProcessInvitation_;
     const ::grpc::internal::RpcMethod rpcmethod_DeleteContact_;
-    const ::grpc::internal::RpcMethod rpcmethod_GetRelatedUserList_;
+    const ::grpc::internal::RpcMethod rpcmethod_SearchRelatedUserList_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -254,9 +254,9 @@ class SocialNetworkService final {
     // Delete a contact relation for the logged-in user.
     virtual ::grpc::Status DeleteContact(::grpc::ServerContext* context, const ::e8::DeleteContactRequest* request, ::e8::DeleteContactResponse* response);
     // *
-    // Get the a list of user related to the logged-in user. The type of relation
-    // is specified by the constraints in the request. 
-    virtual ::grpc::Status GetRelatedUserList(::grpc::ServerContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response);
+    // Search the a list of user related to the logged-in user. The type of
+    // relation is specified by the constraints in the request. 
+    virtual ::grpc::Status SearchRelatedUserList(::grpc::ServerContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetUserRelations : public BaseClass {
@@ -359,26 +359,26 @@ class SocialNetworkService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetRelatedUserList : public BaseClass {
+  class WithAsyncMethod_SearchRelatedUserList : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithAsyncMethod_GetRelatedUserList() {
+    WithAsyncMethod_SearchRelatedUserList() {
       ::grpc::Service::MarkMethodAsync(5);
     }
-    ~WithAsyncMethod_GetRelatedUserList() override {
+    ~WithAsyncMethod_SearchRelatedUserList() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetRelatedUserList(::grpc::ServerContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response) override {
+    ::grpc::Status SearchRelatedUserList(::grpc::ServerContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetRelatedUserList(::grpc::ServerContext* context, ::e8::GetRelatedUserListRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::GetRelatedUserListResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSearchRelatedUserList(::grpc::ServerContext* context, ::e8::SearchRelatedUserListRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::SearchRelatedUserListResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetUserRelations<WithAsyncMethod_SendInvitation<WithAsyncMethod_DeleteInvitation<WithAsyncMethod_ProcessInvitation<WithAsyncMethod_DeleteContact<WithAsyncMethod_GetRelatedUserList<Service > > > > > > AsyncService;
+  typedef WithAsyncMethod_GetUserRelations<WithAsyncMethod_SendInvitation<WithAsyncMethod_DeleteInvitation<WithAsyncMethod_ProcessInvitation<WithAsyncMethod_DeleteContact<WithAsyncMethod_SearchRelatedUserList<Service > > > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_GetUserRelations : public BaseClass {
    private:
@@ -465,18 +465,18 @@ class SocialNetworkService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_GetRelatedUserList : public BaseClass {
+  class WithGenericMethod_SearchRelatedUserList : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithGenericMethod_GetRelatedUserList() {
+    WithGenericMethod_SearchRelatedUserList() {
       ::grpc::Service::MarkMethodGeneric(5);
     }
-    ~WithGenericMethod_GetRelatedUserList() override {
+    ~WithGenericMethod_SearchRelatedUserList() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetRelatedUserList(::grpc::ServerContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response) override {
+    ::grpc::Status SearchRelatedUserList(::grpc::ServerContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -582,22 +582,22 @@ class SocialNetworkService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetRelatedUserList : public BaseClass {
+  class WithRawMethod_SearchRelatedUserList : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithRawMethod_GetRelatedUserList() {
+    WithRawMethod_SearchRelatedUserList() {
       ::grpc::Service::MarkMethodRaw(5);
     }
-    ~WithRawMethod_GetRelatedUserList() override {
+    ~WithRawMethod_SearchRelatedUserList() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetRelatedUserList(::grpc::ServerContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response) override {
+    ::grpc::Status SearchRelatedUserList(::grpc::ServerContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetRelatedUserList(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSearchRelatedUserList(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -702,28 +702,28 @@ class SocialNetworkService final {
     virtual ::grpc::Status StreamedDeleteContact(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::DeleteContactRequest,::e8::DeleteContactResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetRelatedUserList : public BaseClass {
+  class WithStreamedUnaryMethod_SearchRelatedUserList : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
-    WithStreamedUnaryMethod_GetRelatedUserList() {
+    WithStreamedUnaryMethod_SearchRelatedUserList() {
       ::grpc::Service::MarkMethodStreamed(5,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::GetRelatedUserListRequest, ::e8::GetRelatedUserListResponse>(std::bind(&WithStreamedUnaryMethod_GetRelatedUserList<BaseClass>::StreamedGetRelatedUserList, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::SearchRelatedUserListRequest, ::e8::SearchRelatedUserListResponse>(std::bind(&WithStreamedUnaryMethod_SearchRelatedUserList<BaseClass>::StreamedSearchRelatedUserList, this, std::placeholders::_1, std::placeholders::_2)));
     }
-    ~WithStreamedUnaryMethod_GetRelatedUserList() override {
+    ~WithStreamedUnaryMethod_SearchRelatedUserList() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetRelatedUserList(::grpc::ServerContext* context, const ::e8::GetRelatedUserListRequest* request, ::e8::GetRelatedUserListResponse* response) override {
+    ::grpc::Status SearchRelatedUserList(::grpc::ServerContext* context, const ::e8::SearchRelatedUserListRequest* request, ::e8::SearchRelatedUserListResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetRelatedUserList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::GetRelatedUserListRequest,::e8::GetRelatedUserListResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedSearchRelatedUserList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::SearchRelatedUserListRequest,::e8::SearchRelatedUserListResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetUserRelations<WithStreamedUnaryMethod_SendInvitation<WithStreamedUnaryMethod_DeleteInvitation<WithStreamedUnaryMethod_ProcessInvitation<WithStreamedUnaryMethod_DeleteContact<WithStreamedUnaryMethod_GetRelatedUserList<Service > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_GetUserRelations<WithStreamedUnaryMethod_SendInvitation<WithStreamedUnaryMethod_DeleteInvitation<WithStreamedUnaryMethod_ProcessInvitation<WithStreamedUnaryMethod_DeleteContact<WithStreamedUnaryMethod_SearchRelatedUserList<Service > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetUserRelations<WithStreamedUnaryMethod_SendInvitation<WithStreamedUnaryMethod_DeleteInvitation<WithStreamedUnaryMethod_ProcessInvitation<WithStreamedUnaryMethod_DeleteContact<WithStreamedUnaryMethod_GetRelatedUserList<Service > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetUserRelations<WithStreamedUnaryMethod_SendInvitation<WithStreamedUnaryMethod_DeleteInvitation<WithStreamedUnaryMethod_ProcessInvitation<WithStreamedUnaryMethod_DeleteContact<WithStreamedUnaryMethod_SearchRelatedUserList<Service > > > > > > StreamedService;
 };
 
 }  // namespace e8
