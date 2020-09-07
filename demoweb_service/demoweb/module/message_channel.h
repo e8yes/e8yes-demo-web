@@ -22,9 +22,11 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
+#include "demoweb_service/demoweb/common_entity/message_channel_has_user_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "keygen/key_generator_interface.h"
@@ -50,7 +52,7 @@ struct SearchedMessageChannel {
     MessageChannelEntity message_channel;
     MessageChannelMemberType member_type;
     std::time_t join_at;
-    std::vector<UserId> most_active_member_ids;
+    std::vector<MessageChannelHasUserEntity> most_active_members;
 };
 
 /**
@@ -65,9 +67,11 @@ struct SearchedMessageChannel {
  * @param active_member_fetch_limit Maximum number of active member user IDs to be fetched for each
  * message channel.
  */
-std::vector<SearchedMessageChannel> SearchMessageChannels(
-    std::vector<UserId> const &contains_member_ids, unsigned active_member_fetch_limit,
-    std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns);
+std::vector<SearchedMessageChannel>
+SearchMessageChannels(UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
+                      unsigned active_member_fetch_limit,
+                      std::optional<Pagination> const &pagination,
+                      ConnectionReservoirInterface *conns);
 
 /**
  * @brief ToMessageChannelOverviews Converts message channel entities with user joining information

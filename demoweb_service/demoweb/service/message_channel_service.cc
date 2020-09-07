@@ -19,6 +19,7 @@
 #include <grpcpp/grpcpp.h>
 #include <optional>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
@@ -73,19 +74,14 @@ grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
         return status;
     }
 
-    std::vector<UserId> contains_member_ids{request->with_member_ids().begin(),
-                                            request->with_member_ids().end()};
-    if (std::find(contains_member_ids.begin(), contains_member_ids.end(), identity->user_id()) ==
-        contains_member_ids.end()) {
-        contains_member_ids.push_back(identity->user_id());
-    }
-
+    std::unordered_set<UserId> contains_member_ids{request->with_member_ids().begin(),
+                                                   request->with_member_ids().end()};
     std::optional<Pagination> pagination =
         request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
 
-    std::vector<SearchedMessageChannel> channels =
-        ::e8::SearchMessageChannels(contains_member_ids, request->active_member_fetch_limit(),
-                                    pagination, DemoWebEnvironment()->DemowebDatabase());
+    std::vector<SearchedMessageChannel> channels = ::e8::SearchMessageChannels(
+        identity->user_id(), contains_member_ids, request->active_member_fetch_limit(), pagination,
+        DemoWebEnvironment()->DemowebDatabase());
 
     std::vector<MessageChannelOveriew> results =
         ToMessageChannelOverviews(identity->user_id(), channels, DemoWebEnvironment()->KeyGen(),
