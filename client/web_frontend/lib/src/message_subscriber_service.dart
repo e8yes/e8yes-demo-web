@@ -13,14 +13,4 @@ class MessageSubscriberServiceImpl extends MessageSubscriberServiceInterface {
           .subscribeRealTimeMessageQueue(request, options: call_opts);
     });
   }
-
-  @override
-  Future<SubscribeRealTimeMessageQueueResponse> subscribeRealTimeMessageQueueLP(
-      SubscribeRealTimeMessageQueueRequest request, String signature) {
-    return demowebServiceRequester.MakeRequest(request, signature,
-        (request, call_opts, channel) {
-      return MessageSubscriberServiceClient(channel)
-          .subscribeRealTimeMessageQueueLP(request, options: call_opts);
-    });
-  }
 }
