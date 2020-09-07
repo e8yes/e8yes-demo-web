@@ -26,8 +26,10 @@ class GrpcRequester {
   Response MakeRequest<Request, Response>(
       Request request, String signature, Function requestCall) {
     GrpcWebClientChannel channel = _conn_mgr.take();
-    Response res =
-        requestCall(request, CallOptions(metadata: {'a': signature}), channel);
+    Response res = requestCall(
+        request,
+        CallOptions(metadata: {'a': signature}, timeout: Duration(seconds: 60)),
+        channel);
     _conn_mgr.put(channel);
     return res;
   }

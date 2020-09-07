@@ -9,6 +9,8 @@ void fetchRealTimeMessages(
   Timer(Duration(seconds: interval), () {
     SubscribeRealTimeMessageQueueRequest request =
         SubscribeRealTimeMessageQueueRequest();
+    request.waitDurationSecs = 8;
+
     Stream<SubscribeRealTimeMessageQueueResponse> stream =
         service.subscribeRealTimeMessageQueue(
             request, credentialStorage.loadSignature());
@@ -20,7 +22,7 @@ void fetchRealTimeMessages(
       print(res.message);
     }).whenComplete(() {
       print("Complete");
-      fetchRealTimeMessages(3, service);
+      fetchRealTimeMessages(1, service);
     });
   });
 }

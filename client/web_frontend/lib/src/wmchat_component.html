@@ -15,13 +15,15 @@
                 <div>
                     <label class="col-form-label key-label">Title</label>
                     <input placeholder="Optional" 
-                            class="value-label" />
+                           [(ngModel)]="createMessageChannelForm.title"
+                           class="value-label" />
                 </div>
                 
                 <div>
                     <label class="col-form-label key-label">Description</label>
                     <input placeholder="Optional" 
-                            class="value-label" />
+                           [(ngModel)]="createMessageChannelForm.description"
+                           class="value-label" />
                 </div>
 
                 <div>
@@ -38,11 +40,19 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" 
+                <button *ngIf="!structuralControl.onCreatingMessageChannel"
+                        (click)="onClickConfirmCreateMessageChannel"
+                        type="button" 
                         class="btn">
                     Add
                 </button>
-                <button type="button"
+                <button *ngIf="structuralControl.onCreatingMessageChannel"
+                        class="btn">
+                    Creating...
+                </button>
+
+                <button (click)="onClickCancelCreateMessageChannel"
+                        type="button"
                         class="btn"
                         data-dismiss="modal">
                     Cancel
@@ -83,19 +93,21 @@
             <li *ngFor="let overview of structuralControl.messageChannelOverviews"
                 (click)="onClickMessageChannel(overview)"
                 class="list-group-item">
-                <label *ngIf="overview.channel.hasTitle()">
-                    {{overview.channel.title}}:
-                </label>
-                <label *ngIf="!overview.channel.hasTitle()">
-                    No title:
-                </label>
+                <h5 *ngIf="overview.channel.hasTitle()">
+                    {{overview.channel.title}}
+                </h5>
+                <h5 *ngIf="!overview.channel.hasTitle()">
+                    No title
+                </h5>
 
-                <label *ngIf="overview.channel.hasDescription()">
+                <br>
+
+                <p *ngIf="overview.channel.hasDescription()">
                     {{overview.channel.description}}
-                </label>
-                <label *ngIf="!overview.channel.hasDescription()">
+                </p>
+                <p *ngIf="!overview.channel.hasDescription()">
                     empty description
-                </label>
+                </p>
 
                 <br>
 
