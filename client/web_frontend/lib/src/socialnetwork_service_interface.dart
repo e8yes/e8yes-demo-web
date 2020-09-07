@@ -14,4 +14,7 @@ abstract class SocialNetworkServiceInterface {
 
   Future<GetRelatedUserListResponse> getRelatedUserList(
       GetRelatedUserListRequest request, String signature);
+
+  Future<DeleteContactResponse> deleteContact(
+      DeleteContactRequest request, String signature);
 }

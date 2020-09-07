@@ -44,4 +44,14 @@ class SocialNetworkServiceImpl implements SocialNetworkServiceInterface {
           .getRelatedUserList(request, options: call_opts);
     });
   }
+
+  @override
+  Future<DeleteContactResponse> deleteContact(
+      DeleteContactRequest request, String signature) async {
+    return demowebServiceRequester.MakeRequest(request, signature,
+        (request, call_opts, channel) {
+      return SocialNetworkServiceClient(channel)
+          .deleteContact(request, options: call_opts);
+    });
+  }
 }

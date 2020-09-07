@@ -98,7 +98,20 @@ class AccountComponent implements OnActivate {
     });
   }
 
-  void onClickDeleteContact() {}
+  void onClickDeleteContact() {
+    DeleteContactRequest req = DeleteContactRequest()
+      ..deletedContactUserId = _accountUserId;
+
+    onUpdateRelation = true;
+
+    _social_network_service
+        .deleteContact(req, credentialStorage.loadSignature())
+        .then((DeleteContactResponse res) {
+      this._fetchAccountProfile(_accountUserId);
+
+      onUpdateRelation = false;
+    });
+  }
 
   bool owner() {
     return _accountUserId == identityStorage.loadUserId();
