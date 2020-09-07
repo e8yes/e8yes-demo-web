@@ -21,13 +21,6 @@ class MessageSubscriberServiceClient extends $grpc.Client {
       ($0.SubscribeRealTimeMessageQueueRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
           $0.SubscribeRealTimeMessageQueueResponse.fromBuffer(value));
-  static final _$subscribeRealTimeMessageQueueLP = $grpc.ClientMethod<
-          $0.SubscribeRealTimeMessageQueueRequest,
-          $0.SubscribeRealTimeMessageQueueResponse>(
-      '/e8.MessageSubscriberService/SubscribeRealTimeMessageQueueLP',
-      ($0.SubscribeRealTimeMessageQueueRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) =>
-          $0.SubscribeRealTimeMessageQueueResponse.fromBuffer(value));
 
   MessageSubscriberServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions options})
@@ -41,16 +34,6 @@ class MessageSubscriberServiceClient extends $grpc.Client {
         _$subscribeRealTimeMessageQueue, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseStream(call);
-  }
-
-  $grpc.ResponseFuture<$0.SubscribeRealTimeMessageQueueResponse>
-      subscribeRealTimeMessageQueueLP(
-          $0.SubscribeRealTimeMessageQueueRequest request,
-          {$grpc.CallOptions options}) {
-    final call = $createCall(_$subscribeRealTimeMessageQueueLP,
-        $async.Stream.fromIterable([request]),
-        options: options);
-    return $grpc.ResponseFuture(call);
   }
 }
 
@@ -68,16 +51,6 @@ abstract class MessageSubscriberServiceBase extends $grpc.Service {
             $0.SubscribeRealTimeMessageQueueRequest.fromBuffer(value),
         ($0.SubscribeRealTimeMessageQueueResponse value) =>
             value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.SubscribeRealTimeMessageQueueRequest,
-            $0.SubscribeRealTimeMessageQueueResponse>(
-        'SubscribeRealTimeMessageQueueLP',
-        subscribeRealTimeMessageQueueLP_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) =>
-            $0.SubscribeRealTimeMessageQueueRequest.fromBuffer(value),
-        ($0.SubscribeRealTimeMessageQueueResponse value) =>
-            value.writeToBuffer()));
   }
 
   $async.Stream<$0.SubscribeRealTimeMessageQueueResponse>
@@ -88,18 +61,7 @@ abstract class MessageSubscriberServiceBase extends $grpc.Service {
     yield* subscribeRealTimeMessageQueue(call, await request);
   }
 
-  $async.Future<$0.SubscribeRealTimeMessageQueueResponse>
-      subscribeRealTimeMessageQueueLP_Pre(
-          $grpc.ServiceCall call,
-          $async.Future<$0.SubscribeRealTimeMessageQueueRequest>
-              request) async {
-    return subscribeRealTimeMessageQueueLP(call, await request);
-  }
-
   $async.Stream<$0.SubscribeRealTimeMessageQueueResponse>
       subscribeRealTimeMessageQueue($grpc.ServiceCall call,
-          $0.SubscribeRealTimeMessageQueueRequest request);
-  $async.Future<$0.SubscribeRealTimeMessageQueueResponse>
-      subscribeRealTimeMessageQueueLP($grpc.ServiceCall call,
           $0.SubscribeRealTimeMessageQueueRequest request);
 }

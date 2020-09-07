@@ -121,17 +121,14 @@ void AddDescriptorsImpl() {
       "TimeMessageQueueRequest\022\032\n\022wait_duration"
       "_secs\030\001 \001(\005\"M\n%SubscribeRealTimeMessageQ"
       "ueueResponse\022$\n\007message\030\001 \001(\0132\023.e8.RealT"
-      "imeMessage2\212\002\n\030MessageSubscriberService\022"
+      "imeMessage2\222\001\n\030MessageSubscriberService\022"
       "v\n\035SubscribeRealTimeMessageQueue\022(.e8.Su"
       "bscribeRealTimeMessageQueueRequest\032).e8."
-      "SubscribeRealTimeMessageQueueResponse0\001\022"
-      "v\n\037SubscribeRealTimeMessageQueueLP\022(.e8."
-      "SubscribeRealTimeMessageQueueRequest\032).e"
-      "8.SubscribeRealTimeMessageQueueResponseb"
+      "SubscribeRealTimeMessageQueueResponse0\001b"
       "\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 487);
+      descriptor, 367);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_subscriber.proto", &protobuf_RegisterTypes);
   ::protobuf_real_5ftime_5fmessage_2eproto::AddDescriptors();

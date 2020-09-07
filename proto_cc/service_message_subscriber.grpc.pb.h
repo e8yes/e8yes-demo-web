@@ -62,28 +62,16 @@ class MessageSubscriberService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>> PrepareAsyncSubscribeRealTimeMessageQueue(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>>(PrepareAsyncSubscribeRealTimeMessageQueueRaw(context, request, cq));
     }
-    // Long polling version of the above function.
-    virtual ::grpc::Status SubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::e8::SubscribeRealTimeMessageQueueResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>> AsyncSubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>>(AsyncSubscribeRealTimeMessageQueueLPRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>> PrepareAsyncSubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>>(PrepareAsyncSubscribeRealTimeMessageQueueLPRaw(context, request, cq));
-    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
       // Subscribe to the real-time message queue. Identity is required.
-      // Long polling version of the above function.
-      virtual void SubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
     virtual ::grpc::ClientReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>* SubscribeRealTimeMessageQueueRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>* AsyncSubscribeRealTimeMessageQueueRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>* PrepareAsyncSubscribeRealTimeMessageQueueRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>* AsyncSubscribeRealTimeMessageQueueLPRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::SubscribeRealTimeMessageQueueResponse>* PrepareAsyncSubscribeRealTimeMessageQueueLPRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -97,17 +85,9 @@ class MessageSubscriberService final {
     std::unique_ptr< ::grpc::ClientAsyncReader< ::e8::SubscribeRealTimeMessageQueueResponse>> PrepareAsyncSubscribeRealTimeMessageQueue(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::e8::SubscribeRealTimeMessageQueueResponse>>(PrepareAsyncSubscribeRealTimeMessageQueueRaw(context, request, cq));
     }
-    ::grpc::Status SubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::e8::SubscribeRealTimeMessageQueueResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>> AsyncSubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>>(AsyncSubscribeRealTimeMessageQueueLPRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>> PrepareAsyncSubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>>(PrepareAsyncSubscribeRealTimeMessageQueueLPRaw(context, request, cq));
-    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
-      void SubscribeRealTimeMessageQueueLP(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -122,10 +102,7 @@ class MessageSubscriberService final {
     ::grpc::ClientReader< ::e8::SubscribeRealTimeMessageQueueResponse>* SubscribeRealTimeMessageQueueRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request) override;
     ::grpc::ClientAsyncReader< ::e8::SubscribeRealTimeMessageQueueResponse>* AsyncSubscribeRealTimeMessageQueueRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::e8::SubscribeRealTimeMessageQueueResponse>* PrepareAsyncSubscribeRealTimeMessageQueueRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>* AsyncSubscribeRealTimeMessageQueueLPRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::e8::SubscribeRealTimeMessageQueueResponse>* PrepareAsyncSubscribeRealTimeMessageQueueLPRaw(::grpc::ClientContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeRealTimeMessageQueue_;
-    const ::grpc::internal::RpcMethod rpcmethod_SubscribeRealTimeMessageQueueLP_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -135,8 +112,6 @@ class MessageSubscriberService final {
     virtual ~Service();
     // Subscribe to the real-time message queue. Identity is required.
     virtual ::grpc::Status SubscribeRealTimeMessageQueue(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::grpc::ServerWriter< ::e8::SubscribeRealTimeMessageQueueResponse>* writer);
-    // Long polling version of the above function.
-    virtual ::grpc::Status SubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SubscribeRealTimeMessageQueue : public BaseClass {
@@ -158,27 +133,7 @@ class MessageSubscriberService final {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
-  template <class BaseClass>
-  class WithAsyncMethod_SubscribeRealTimeMessageQueueLP : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithAsyncMethod_SubscribeRealTimeMessageQueueLP() {
-      ::grpc::Service::MarkMethodAsync(1);
-    }
-    ~WithAsyncMethod_SubscribeRealTimeMessageQueueLP() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, ::e8::SubscribeRealTimeMessageQueueRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::SubscribeRealTimeMessageQueueResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  typedef WithAsyncMethod_SubscribeRealTimeMessageQueue<WithAsyncMethod_SubscribeRealTimeMessageQueueLP<Service > > AsyncService;
+  typedef WithAsyncMethod_SubscribeRealTimeMessageQueue<Service > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeRealTimeMessageQueue : public BaseClass {
    private:
@@ -192,23 +147,6 @@ class MessageSubscriberService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SubscribeRealTimeMessageQueue(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::grpc::ServerWriter< ::e8::SubscribeRealTimeMessageQueueResponse>* writer) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
-  class WithGenericMethod_SubscribeRealTimeMessageQueueLP : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithGenericMethod_SubscribeRealTimeMessageQueueLP() {
-      ::grpc::Service::MarkMethodGeneric(1);
-    }
-    ~WithGenericMethod_SubscribeRealTimeMessageQueueLP() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -233,47 +171,7 @@ class MessageSubscriberService final {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
-  template <class BaseClass>
-  class WithRawMethod_SubscribeRealTimeMessageQueueLP : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithRawMethod_SubscribeRealTimeMessageQueueLP() {
-      ::grpc::Service::MarkMethodRaw(1);
-    }
-    ~WithRawMethod_SubscribeRealTimeMessageQueueLP() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
-  class WithStreamedUnaryMethod_SubscribeRealTimeMessageQueueLP : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithStreamedUnaryMethod_SubscribeRealTimeMessageQueueLP() {
-      ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::e8::SubscribeRealTimeMessageQueueRequest, ::e8::SubscribeRealTimeMessageQueueResponse>(std::bind(&WithStreamedUnaryMethod_SubscribeRealTimeMessageQueueLP<BaseClass>::StreamedSubscribeRealTimeMessageQueueLP, this, std::placeholders::_1, std::placeholders::_2)));
-    }
-    ~WithStreamedUnaryMethod_SubscribeRealTimeMessageQueueLP() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status SubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, const ::e8::SubscribeRealTimeMessageQueueRequest* request, ::e8::SubscribeRealTimeMessageQueueResponse* response) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSubscribeRealTimeMessageQueueLP(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::SubscribeRealTimeMessageQueueRequest,::e8::SubscribeRealTimeMessageQueueResponse>* server_unary_streamer) = 0;
-  };
-  typedef WithStreamedUnaryMethod_SubscribeRealTimeMessageQueueLP<Service > StreamedUnaryService;
+  typedef Service StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeRealTimeMessageQueue : public BaseClass {
    private:
@@ -295,7 +193,7 @@ class MessageSubscriberService final {
     virtual ::grpc::Status StreamedSubscribeRealTimeMessageQueue(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::e8::SubscribeRealTimeMessageQueueRequest,::e8::SubscribeRealTimeMessageQueueResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeRealTimeMessageQueue<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_SubscribeRealTimeMessageQueue<WithStreamedUnaryMethod_SubscribeRealTimeMessageQueueLP<Service > > StreamedService;
+  typedef WithSplitStreamingMethod_SubscribeRealTimeMessageQueue<Service > StreamedService;
 };
 
 }  // namespace e8
