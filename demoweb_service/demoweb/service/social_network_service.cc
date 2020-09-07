@@ -126,4 +126,20 @@ grpc::Status SocialNetworkServiceImpl::ProcessInvitation(grpc::ServerContext *co
     return grpc::Status::OK;
 }
 
+grpc::Status SocialNetworkServiceImpl::DeleteContact(grpc::ServerContext *context,
+                                                     DeleteContactRequest const *request,
+                                                     DeleteContactResponse *response) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!status.ok()) {
+        return status;
+    }
+
+    bool deleted = e8::DeleteContact(identity->user_id(), request->deleted_contact_user_id(),
+                                     DemoWebEnvironment()->DemowebDatabase());
+    response->set_deleted(deleted);
+
+    return grpc::Status::OK;
+}
+
 } // namespace e8

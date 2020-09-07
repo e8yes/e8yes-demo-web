@@ -60,7 +60,9 @@ message DeleteContactRequest {
     int64 deleted_contact_user_id = 1;
 }
 
-message DeleteContactResponse {}
+message DeleteContactResponse {
+    bool deleted = 1;
+}
 
 
 message GetRelatedUserListRequest {

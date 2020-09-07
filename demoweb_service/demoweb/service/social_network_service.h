@@ -46,6 +46,9 @@ class SocialNetworkServiceImpl : public SocialNetworkService::Service {
     grpc::Status ProcessInvitation(grpc::ServerContext *context,
                                    ProcessInvitationRequest const *request,
                                    ProcessInvitationResponse *response) override;
+
+    grpc::Status DeleteContact(grpc::ServerContext *context, DeleteContactRequest const *request,
+                               DeleteContactResponse *response) override;
 };
 
 } // namespace e8

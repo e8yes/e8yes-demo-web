@@ -1126,10 +1126,17 @@ class DeleteContactResponse : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
+  // bool deleted = 1;
+  void clear_deleted();
+  static const int kDeletedFieldNumber = 1;
+  bool deleted() const;
+  void set_deleted(bool value);
+
   // @@protoc_insertion_point(class_scope:e8.DeleteContactResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool deleted_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
 };
@@ -1548,6 +1555,20 @@ inline void DeleteContactRequest::set_deleted_contact_user_id(::google::protobuf
 // -------------------------------------------------------------------
 
 // DeleteContactResponse
+
+// bool deleted = 1;
+inline void DeleteContactResponse::clear_deleted() {
+  deleted_ = false;
+}
+inline bool DeleteContactResponse::deleted() const {
+  // @@protoc_insertion_point(field_get:e8.DeleteContactResponse.deleted)
+  return deleted_;
+}
+inline void DeleteContactResponse::set_deleted(bool value) {
+  
+  deleted_ = value;
+  // @@protoc_insertion_point(field_set:e8.DeleteContactResponse.deleted)
+}
 
 // -------------------------------------------------------------------
 

@@ -339,6 +339,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::DeleteContactResponse, deleted_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetRelatedUserListRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -364,8 +365,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 43, -1, sizeof(::e8::ProcessInvitationResponse)},
   { 48, -1, sizeof(::e8::DeleteContactRequest)},
   { 54, -1, sizeof(::e8::DeleteContactResponse)},
-  { 59, -1, sizeof(::e8::GetRelatedUserListRequest)},
-  { 66, -1, sizeof(::e8::GetRelatedUserListResponse)},
+  { 60, -1, sizeof(::e8::GetRelatedUserListRequest)},
+  { 67, -1, sizeof(::e8::GetRelatedUserListResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -418,28 +419,28 @@ void AddDescriptorsImpl() {
       "tionRequest\022\027\n\017inviter_user_id\030\001 \001(\003\022\016\n\006"
       "accept\030\002 \001(\010\"\033\n\031ProcessInvitationRespons"
       "e\"7\n\024DeleteContactRequest\022\037\n\027deleted_con"
-      "tact_user_id\030\001 \001(\003\"\027\n\025DeleteContactRespo"
-      "nse\"j\n\031GetRelatedUserListRequest\022\"\n\npagi"
-      "nation\030\001 \001(\0132\016.e8.Pagination\022)\n\017relation"
-      "_filter\030\002 \003(\0162\020.e8.UserRelation\"J\n\032GetRe"
-      "latedUserListResponse\022,\n\ruser_profiles\030\001"
-      " \003(\0132\025.e8.UserPublicProfile2\352\003\n\024SocialNe"
-      "tworkService\022M\n\020GetUserRelations\022\033.e8.Ge"
-      "tUserRelationsRequest\032\034.e8.GetUserRelati"
-      "onsResponse\022G\n\016SendInvitation\022\031.e8.SendI"
-      "nvitationRequest\032\032.e8.SendInvitationResp"
-      "onse\022M\n\020DeleteInvitation\022\033.e8.DeleteInvi"
-      "tationRequest\032\034.e8.DeleteInvitationRespo"
-      "nse\022P\n\021ProcessInvitation\022\034.e8.ProcessInv"
-      "itationRequest\032\035.e8.ProcessInvitationRes"
-      "ponse\022D\n\rDeleteContact\022\030.e8.DeleteContac"
-      "tRequest\032\031.e8.DeleteContactResponse\022S\n\022G"
-      "etRelatedUserList\022\035.e8.GetRelatedUserLis"
-      "tRequest\032\036.e8.GetRelatedUserListResponse"
-      "b\006proto3"
+      "tact_user_id\030\001 \001(\003\"(\n\025DeleteContactRespo"
+      "nse\022\017\n\007deleted\030\001 \001(\010\"j\n\031GetRelatedUserLi"
+      "stRequest\022\"\n\npagination\030\001 \001(\0132\016.e8.Pagin"
+      "ation\022)\n\017relation_filter\030\002 \003(\0162\020.e8.User"
+      "Relation\"J\n\032GetRelatedUserListResponse\022,"
+      "\n\ruser_profiles\030\001 \003(\0132\025.e8.UserPublicPro"
+      "file2\352\003\n\024SocialNetworkService\022M\n\020GetUser"
+      "Relations\022\033.e8.GetUserRelationsRequest\032\034"
+      ".e8.GetUserRelationsResponse\022G\n\016SendInvi"
+      "tation\022\031.e8.SendInvitationRequest\032\032.e8.S"
+      "endInvitationResponse\022M\n\020DeleteInvitatio"
+      "n\022\033.e8.DeleteInvitationRequest\032\034.e8.Dele"
+      "teInvitationResponse\022P\n\021ProcessInvitatio"
+      "n\022\034.e8.ProcessInvitationRequest\032\035.e8.Pro"
+      "cessInvitationResponse\022D\n\rDeleteContact\022"
+      "\030.e8.DeleteContactRequest\032\031.e8.DeleteCon"
+      "tactResponse\022S\n\022GetRelatedUserList\022\035.e8."
+      "GetRelatedUserListRequest\032\036.e8.GetRelate"
+      "dUserListResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1288);
+      descriptor, 1305);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_socialnetwork.proto", &protobuf_RegisterTypes);
   ::protobuf_user_5fprofile_2eproto::AddDescriptors();
@@ -2470,6 +2471,7 @@ void DeleteContactRequest::InternalSwap(DeleteContactRequest* other) {
 void DeleteContactResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DeleteContactResponse::kDeletedFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 DeleteContactResponse::DeleteContactResponse()
@@ -2483,10 +2485,12 @@ DeleteContactResponse::DeleteContactResponse(const DeleteContactResponse& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  deleted_ = from.deleted_;
   // @@protoc_insertion_point(copy_constructor:e8.DeleteContactResponse)
 }
 
 void DeleteContactResponse::SharedCtor() {
+  deleted_ = false;
 }
 
 DeleteContactResponse::~DeleteContactResponse() {
@@ -2517,6 +2521,7 @@ void DeleteContactResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  deleted_ = false;
   _internal_metadata_.Clear();
 }
 
@@ -2529,12 +2534,31 @@ bool DeleteContactResponse::MergePartialFromCodedStream(
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // bool deleted = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &deleted_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:e8.DeleteContactResponse)
@@ -2551,6 +2575,11 @@ void DeleteContactResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  // bool deleted = 1;
+  if (this->deleted() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->deleted(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2564,6 +2593,11 @@ void DeleteContactResponse::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:e8.DeleteContactResponse)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // bool deleted = 1;
+  if (this->deleted() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->deleted(), target);
+  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -2582,6 +2616,11 @@ size_t DeleteContactResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // bool deleted = 1;
+  if (this->deleted() != 0) {
+    total_size += 1 + 1;
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -2609,6 +2648,9 @@ void DeleteContactResponse::MergeFrom(const DeleteContactResponse& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.deleted() != 0) {
+    set_deleted(from.deleted());
+  }
 }
 
 void DeleteContactResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2635,6 +2677,7 @@ void DeleteContactResponse::Swap(DeleteContactResponse* other) {
 }
 void DeleteContactResponse::InternalSwap(DeleteContactResponse* other) {
   using std::swap;
+  swap(deleted_, other->deleted_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

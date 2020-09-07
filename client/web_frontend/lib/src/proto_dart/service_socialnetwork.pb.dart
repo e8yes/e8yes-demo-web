@@ -291,6 +291,7 @@ class DeleteContactRequest extends $pb.GeneratedMessage {
 
 class DeleteContactResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DeleteContactResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aOB(1, 'deleted')
     ..hasRequiredFields = false
   ;
 
@@ -308,6 +309,15 @@ class DeleteContactResponse extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static DeleteContactResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteContactResponse>(create);
   static DeleteContactResponse _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get deleted => $_getBF(0);
+  @$pb.TagNumber(1)
+  set deleted($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasDeleted() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearDeleted() => clearField(1);
 }
 
 class GetRelatedUserListRequest extends $pb.GeneratedMessage {

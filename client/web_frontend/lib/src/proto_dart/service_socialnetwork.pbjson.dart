@@ -64,6 +64,9 @@ const DeleteContactRequest$json = const {
 
 const DeleteContactResponse$json = const {
   '1': 'DeleteContactResponse',
+  '2': const [
+    const {'1': 'deleted', '3': 1, '4': 1, '5': 8, '10': 'deleted'},
+  ],
 };
 
 const GetRelatedUserListRequest$json = const {
