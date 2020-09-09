@@ -33,7 +33,7 @@
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
-#include "demoweb_service/demoweb/module/retrieve_user.h"
+#include "demoweb_service/demoweb/module/user_storage.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_query_builder.h"

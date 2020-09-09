@@ -27,7 +27,7 @@
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/module/push_message.h"
-#include "demoweb_service/demoweb/module/retrieve_user.h"
+#include "demoweb_service/demoweb/module/user_storage.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"

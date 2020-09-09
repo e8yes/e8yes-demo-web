@@ -37,11 +37,11 @@ HEADERS += \
     module/message_channel.h \
     module/push_message.h \
     module/retrieve_contact.h \
-    module/retrieve_user.h \
     module/search_user.h \
     module/system_user_group.h \
     module/user_identity.h \
     module/user_profile.h \
+    module/user_storage.h \
     service/file_service.h \
     service/message_channel_service.h \
     service/service_util.h \
@@ -69,10 +69,10 @@ SOURCES += \
     module/message_channel.cc \
     module/push_message.cc \
     module/retrieve_contact.cc \
-    module/retrieve_user.cc \
     module/search_user.cc \
     module/user_identity.cc \
     module/user_profile.cc \
+    module/user_storage.cc \
     service/file_service.cc \
     service/message_channel_service.cc \
     service/service_util.cc \
