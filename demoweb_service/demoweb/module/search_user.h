@@ -20,11 +20,13 @@
 
 #include <optional>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "proto_cc/pagination.pb.h"
+#include "proto_cc/user_relation.pb.h"
 
 namespace e8 {
 
@@ -34,13 +36,18 @@ namespace e8 {
  * descending order, user alias and ID in ascending order. If the viewer isn't present, the result
  * is ordered only by the user alias and user id in ascending order.
  *
- * @param query_text Raw query text string.
+ * @param query_text Raw query text string. Empty string will return empty result. So don't confuse
+ * std::nullopt with empty string. An std::nullopt effectively turn of this text search option.
+ * @param oneof_user_relations specifies that the result must contain at least one of these
+ * directional relations from the viewer. If no viewer is provided, this filter is ignored.
  * @param pagination Pagination constraint.
  * @param db_conns Connections to the DemoWeb DB server.
  * @return The search result is a list of user entities.
  */
 std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
-                                   std::string const &query_text, Pagination const &pagination,
+                                   std::optional<std::string> const &query_text,
+                                   std::unordered_set<UserRelation> const &oneof_user_relations,
+                                   Pagination const &pagination,
                                    ConnectionReservoirInterface *db_conns);
 
 } // namespace e8

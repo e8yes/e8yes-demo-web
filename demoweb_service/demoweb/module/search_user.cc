@@ -20,6 +20,7 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <unordered_set>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
@@ -34,7 +35,9 @@
 namespace e8 {
 
 std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
-                                   std::string const &query_text, Pagination const &pagination,
+                                   std::optional<std::string> const &query_text,
+                                   std::unordered_set<UserRelation> const &oneof_user_relations,
+                                   Pagination const &pagination,
                                    ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     query.QueryPiece(TableNames::AUser());
@@ -49,6 +52,18 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
         query.QueryPiece(" AND cr.dst_user_id=u.id");
 
         query.SetValueToPlaceholder(viewer_id_ph, std::make_shared<SqlInt>(*viewer_id));
+
+        if (!oneof_user_relations.empty()) {
+            SqlQueryBuilder::Placeholder<SqlIntArr> oneof_user_relations_ph;
+            query.QueryPiece(" WHERE cr.relation=ANY(");
+            query.Holder(&oneof_user_relations_ph);
+            query.QueryPiece(")");
+
+            query.SetValueToPlaceholder(
+                oneof_user_relations_ph,
+                std::make_shared<SqlIntArr>(
+                    std::vector<int>{oneof_user_relations.begin(), oneof_user_relations.end()}));
+        }
     }
 
     if (viewer_id.has_value()) {
@@ -57,10 +72,24 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
         query.QueryPiece(" ORDER BY u.alias ASC, u.id ASC");
     }
 
-    std::vector<std::tuple<UserEntity>> query_results = Search<UserEntity>(
-        query, {"u"}, /*search_target_entity=*/"u", query_text,
-        /*prefix_search=*/true, /*rank_result=*/false, /*limit=*/pagination.result_per_page(),
-        /*offset=*/pagination.page_number() * pagination.result_per_page(), db_conns);
+    std::vector<std::tuple<UserEntity>> query_results;
+    if (query_text.has_value()) {
+        query_results = Search<UserEntity>(
+            query, {"u"}, /*search_target_entity=*/"u", *query_text,
+            /*prefix_search=*/true, /*rank_result=*/false, /*limit=*/pagination.result_per_page(),
+            /*offset=*/pagination.page_number() * pagination.result_per_page(), db_conns);
+    } else {
+        SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
+        SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
+        query.QueryPiece(" LIMIT ").Holder(&limit_ph).QueryPiece(" OFFSET ").Holder(&offset_ph);
+        query.SetValueToPlaceholder(limit_ph,
+                                    std::make_shared<SqlInt>(pagination.result_per_page()));
+        query.SetValueToPlaceholder(
+            offset_ph,
+            std::make_shared<SqlInt>(pagination.page_number() * pagination.result_per_page()));
+
+        query_results = Query<UserEntity>(query, {"u"}, db_conns);
+    }
 
     std::vector<UserEntity> results(query_results.size());
     for (unsigned i = 0; i < query_results.size(); i++) {

@@ -76,7 +76,7 @@ std::string ToSearchQuery(std::string const &target_collection, std::string cons
                           ConnectionInterface::QueryParams *query_params) {
     std::string pq_ts_query = full_text_query;
     TokenizePlainTextQuery(&pq_ts_query);
-    if (prefix_search) {
+    if (prefix_search && !pq_ts_query.empty()) {
         pq_ts_query += ":*";
     }
 

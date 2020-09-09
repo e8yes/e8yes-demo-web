@@ -19,6 +19,8 @@
 #include <grpcpp/grpcpp.h>
 #include <optional>
 #include <string>
+#include <unordered_set>
+#include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/pagination.h"
@@ -30,6 +32,10 @@
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/service/service_util.h"
 #include "demoweb_service/demoweb/service/user_service.h"
+#include "proto_cc/pagination.pb.h"
+#include "proto_cc/service_user.grpc.pb.h"
+#include "proto_cc/service_user.pb.h"
+#include "proto_cc/user_relation.pb.h"
 
 namespace e8 {
 
@@ -149,8 +155,9 @@ grpc::Status UserServiceImpl::Search(grpc::ServerContext *context, SearchUserReq
     }
 
     std::vector<UserEntity> user_entities =
-        SearchUser(identity->user_id(), request->query(), request->pagination(),
-                   DemoWebEnvironment()->DemowebDatabase());
+        SearchUser(identity->user_id(), request->query(),
+                   /*oneof_user_relations=*/std::unordered_set<UserRelation>(),
+                   request->pagination(), DemoWebEnvironment()->DemowebDatabase());
 
     std::vector<UserPublicProfile> profiles =
         BuildPublicProfiles(identity->user_id(), user_entities, DemoWebEnvironment()->KeyGen(),
