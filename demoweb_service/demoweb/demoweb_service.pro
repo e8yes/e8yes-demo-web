@@ -30,13 +30,13 @@ HEADERS += \
     environment/test_environment_context.h \
     module/baseline_user.h \
     module/contact_invitation.h \
+    module/contact_storage.h \
     module/file_access_validator.h \
     module/file_io.h \
     module/file_metadata.h \
     module/file_util.h \
     module/message_channel.h \
     module/push_message.h \
-    module/retrieve_contact.h \
     module/search_user.h \
     module/system_user_group.h \
     module/user_identity.h \
@@ -61,6 +61,7 @@ SOURCES += \
     environment/prod_environment_context.cc \
     environment/test_environment_context.cc \
     module/contact_invitation.cc \
+    module/contact_storage.cc \
     module/create_user.cc \
     module/file_access_validator.cc \
     module/file_io.cc \
@@ -68,7 +69,6 @@ SOURCES += \
     module/file_util.cc \
     module/message_channel.cc \
     module/push_message.cc \
-    module/retrieve_contact.cc \
     module/search_user.cc \
     module/user_identity.cc \
     module/user_profile.cc \

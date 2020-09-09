@@ -30,7 +30,7 @@
 #include "demoweb_service/demoweb/module/file_access_validator.h"
 #include "demoweb_service/demoweb/module/file_metadata.h"
 #include "demoweb_service/demoweb/module/file_util.h"
-#include "demoweb_service/demoweb/module/retrieve_contact.h"
+#include "demoweb_service/demoweb/module/contact_storage.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "proto_cc/file.pb.h"
 #include "proto_cc/user_profile.pb.h"

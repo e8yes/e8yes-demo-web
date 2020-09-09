@@ -21,15 +21,15 @@
 #include "common/unit_test_util/unit_test_util.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/module/baseline_user.h"
-#include "demoweb_service/demoweb/module/retrieve_contact.h"
+#include "demoweb_service/demoweb/module/contact_invitation.h"
+#include "demoweb_service/demoweb/module/contact_storage.h"
 #include "message_queue/publisher/publisher.h"
 #include "proto_cc/pagination.pb.h"
 #include "proto_cc/user_relation.pb.h"
 
 int main() {
-    e8::BeginTestSuite("retrieve_contact");
+    e8::BeginTestSuite("contact_storage");
     e8::EndTestSuite();
     return 0;
 }

@@ -13,8 +13,8 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 INCLUDEPATH += $$PWD/../../../../
 
-SOURCES +=  \
-    test_retrieve_contact.cc
+SOURCES += \
+    test_contact_storage.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/unit_test_util/ -lunit_test_util
 

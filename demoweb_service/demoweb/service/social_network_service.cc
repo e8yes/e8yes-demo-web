@@ -26,7 +26,7 @@
 #include "demoweb_service/demoweb/constant/pagination.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
-#include "demoweb_service/demoweb/module/retrieve_contact.h"
+#include "demoweb_service/demoweb/module/contact_storage.h"
 #include "demoweb_service/demoweb/module/search_user.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/service/service_util.h"
