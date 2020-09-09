@@ -20,6 +20,8 @@
 
 #include <cstdint>
 #include <initializer_list>
+#include <memory>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <unordered_set>
@@ -29,10 +31,19 @@
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/orm/data_collection.h"
 #include "postgres/query_runner/orm/query_completion.h"
+#include "postgres/query_runner/reflection/sql_primitives.h"
 #include "postgres/query_runner/resultset/result_set_interface.h"
 #include "postgres/query_runner/sql_query_builder.h"
 
 namespace e8 {
+namespace sql_runner_internal {
+
+std::string ToSearchQuery(std::string const &target_collection, std::string const &full_text_query,
+                          bool prefix_search, bool rank_result, std::optional<unsigned> limit,
+                          std::optional<unsigned> offset,
+                          ConnectionInterface::QueryParams *query_params);
+
+} // namespace sql_runner_internal
 
 /**
  * @brief Query Constructs and runs query with partial information provided and synchronously
@@ -61,6 +72,52 @@ Query(SqlQueryBuilder const &query, std::initializer_list<std::string> const &en
 
     ConnectionInterface *conn = reservoir->Take();
     std::unique_ptr<ResultSetInterface> rs = conn->RunQuery(select_query, query.QueryParams());
+
+    std::vector<std::tuple<EntityType, Others...>> results =
+        ToEntityTuples<EntityType, Others...>(rs.get());
+
+    reservoir->Put(conn);
+
+    return results;
+}
+
+/**
+ * @brief Search Similar to the Query() function above, it constructs a full text search query with
+ * partial information defining the collection of records to search from and synchronously returns
+ * the result.
+ *
+ * @param query The query which defines the collection to search from.
+ * @param entity_aliases A list of aliases corresponding to the entities specified in the template
+ * arguments.
+ * @param search_target_entity Target entity to be searched. It's expected that this entity has a
+ * TSVECTOR column named search_terms.
+ * @param full_text_query The raw full text query used to match against the record.
+ * @param prefix_search Whether to perform prefix search on the full text query.
+ * @param rank_result Whether to rank the search result.
+ * @param limit Pagination parameter.
+ * @param offset Pagination parameter.
+ * @param reservoir Connection reservoir to allocate database connections.
+ * @return The query result containing a list of query record. Every record is a tuple of
+ * entities in the order specified in the template.
+ */
+template <typename EntityType, typename... Others>
+std::vector<std::tuple<EntityType, Others...>>
+Search(SqlQueryBuilder const &query, std::initializer_list<std::string> const &entity_aliases,
+       std::string const &search_target_entity, std::string const &full_text_query,
+       bool prefix_search, bool rank_result, std::optional<unsigned> limit,
+       std::optional<unsigned> offset, ConnectionReservoirInterface *reservoir) {
+    std::string target_collection = CompleteSelectQuery<EntityType, Others...>(
+        query.PsqlQuery(), entity_aliases,
+        /*augmented_select_entries=*/
+        std::vector<std::string>{search_target_entity + ".search_terms"});
+
+    ConnectionInterface::QueryParams query_params = query.QueryParams();
+    std::string select_query =
+        sql_runner_internal::ToSearchQuery(target_collection, full_text_query, prefix_search,
+                                           rank_result, limit, offset, &query_params);
+
+    ConnectionInterface *conn = reservoir->Take();
+    std::unique_ptr<ResultSetInterface> rs = conn->RunQuery(select_query, query_params);
 
     std::vector<std::tuple<EntityType, Others...>> results =
         ToEntityTuples<EntityType, Others...>(rs.get());

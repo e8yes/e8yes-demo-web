@@ -74,11 +74,18 @@ CompleteSelectList(std::initializer_list<std::string>::const_iterator const &ent
  * @return A complete select SQL query.
  */
 template <typename EntityType, typename... Others>
-std::string CompleteSelectQuery(std::string const &query,
-                                std::initializer_list<std::string> const &entity_aliases) {
+std::string CompleteSelectQuery(
+    std::string const &query, std::initializer_list<std::string> const &entity_aliases,
+    std::vector<std::string> const &augmented_select_entries = std::vector<std::string>()) {
     std::string select_list = query_completion_internal::CompleteSelectList<EntityType, Others...>(
         entity_aliases.begin(), entity_aliases.end());
+
     assert(!select_list.empty());
+
+    for (auto const &select_entry : augmented_select_entries) {
+        select_list += "," + select_entry;
+    }
+
     return "SELECT " + select_list + " FROM " + query;
 }
 

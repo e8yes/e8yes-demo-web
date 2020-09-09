@@ -31,16 +31,81 @@
 #include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
-namespace {
+namespace sql_runner_internal {
 
-int64_t reverse_bytes(int64_t original) {
+int64_t ReverseBytes(int64_t original) {
     return (original & 0xFF) << 56 | ((original >> 8) & 0xFF) << 48 |
            ((original >> 16) & 0xFF) << 40 | ((original >> 24) & 0xFF) << 32 |
            ((original >> 32) & 0xFF) << 24 | ((original >> 40) & 0xFF) << 16 |
            ((original >> 48) & 0xFF) << 8 | ((original >> 56) & 0xFF);
 }
 
-} // namespace
+unsigned SkipWhiteSpaces(std::string const &text, unsigned i_reader) {
+    while (i_reader < text.size() && text[i_reader] == ' ') {
+        ++i_reader;
+    }
+    return i_reader;
+}
+
+void TokenizePlainTextQuery(std::string *plain_text) {
+    unsigned i_reader = SkipWhiteSpaces(*plain_text, /*i_reader=*/0);
+    unsigned i_writer = 0;
+
+    while (i_reader < plain_text->size()) {
+        (*plain_text)[i_writer] = (*plain_text)[i_reader];
+
+        if ((*plain_text)[i_reader] == ' ') {
+            i_reader = SkipWhiteSpaces(*plain_text, i_reader);
+            (*plain_text)[i_writer] = '&';
+            ++i_writer;
+        } else {
+            ++i_reader;
+            ++i_writer;
+        }
+    }
+
+    if (i_writer > 0 && (*plain_text)[i_writer - 1] == '&') {
+        plain_text->resize(i_writer - 1);
+    } else {
+        plain_text->resize(i_writer);
+    }
+}
+std::string ToSearchQuery(std::string const &target_collection, std::string const &full_text_query,
+                          bool prefix_search, bool rank_result, std::optional<unsigned> limit,
+                          std::optional<unsigned> offset,
+                          ConnectionInterface::QueryParams *query_params) {
+    std::string pq_ts_query = full_text_query;
+    TokenizePlainTextQuery(&pq_ts_query);
+    if (prefix_search) {
+        pq_ts_query += ":*";
+    }
+
+    // TODO: Make this full text argument parameterizable.
+    //    ConnectionInterface::QueryParams::SlotId full_text_slot = query_params->AllocateSlot();
+    //    query_params->SetParam(full_text_slot, std::make_shared<SqlStr>(pq_full_text_query));
+
+    std::string select_query = "SELECT target_collection.* FROM (" + target_collection +
+                               ") AS target_collection, TO_TSQUERY('" + pq_ts_query +
+                               "') AS q WHERE target_collection.search_terms @@ q";
+    if (rank_result) {
+        select_query += " ORDER BY TS_RANK_CD(target_collection.search_terms, q) DESC";
+    }
+
+    if (limit.has_value()) {
+        ConnectionInterface::QueryParams::SlotId limit_slot = query_params->AllocateSlot();
+        query_params->SetParam(limit_slot, std::make_shared<SqlInt>(*limit));
+        select_query += " LIMIT $" + std::to_string(limit_slot);
+    }
+    if (offset.has_value()) {
+        ConnectionInterface::QueryParams::SlotId offset_slot = query_params->AllocateSlot();
+        query_params->SetParam(offset_slot, std::make_shared<SqlInt>(*offset));
+        select_query += " OFFSET $" + std::to_string(offset_slot);
+    }
+
+    return select_query;
+}
+
+} // namespace sql_runner_internal
 
 uint64_t Update(SqlEntityInterface const &entity, std::string const &table_name, bool override,
                 ConnectionReservoirInterface *reservoir) {
@@ -144,7 +209,7 @@ int64_t TimeId(unsigned host_id) {
     auto dura = std::chrono::duration_cast<std::chrono::microseconds>(micros.time_since_epoch());
     int64_t timestamp = dura.count() - 1588490444394000L;
     int64_t unique_id = host_id * 0xFFFFFFFFFFFFF + timestamp;
-    return reverse_bytes(unique_id);
+    return sql_runner_internal::ReverseBytes(unique_id);
 }
 
 int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reservoir) {

@@ -34,7 +34,7 @@ class SqlQueryBuilder {
   public:
     SqlQueryBuilder() = default;
     ~SqlQueryBuilder() = default;
-    SqlQueryBuilder(SqlQueryBuilder const &) = delete;
+    SqlQueryBuilder(SqlQueryBuilder const &) = default;
 
     /**
      * @brief Append a query string piece.
