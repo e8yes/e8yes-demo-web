@@ -77,9 +77,8 @@ const UpdatePublicProfileResponse$json = const {
 const SearchUserRequest$json = const {
   '1': 'SearchUserRequest',
   '2': const [
-    const {'1': 'alias', '3': 1, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'alias'},
-    const {'1': 'user_id', '3': 2, '4': 1, '5': 11, '6': '.e8.NullableInt64', '10': 'userId'},
-    const {'1': 'pagination', '3': 3, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
+    const {'1': 'query', '3': 1, '4': 1, '5': 9, '10': 'query'},
+    const {'1': 'pagination', '3': 2, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
   ],
 };
 

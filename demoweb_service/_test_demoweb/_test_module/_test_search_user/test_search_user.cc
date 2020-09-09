@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <string>
 #include <vector>
 
 #include "common/unit_test_util/unit_test_util.h"
@@ -53,8 +54,7 @@ bool SearchUserByIdPrefixTest() {
     pagination.set_result_per_page(2);
     std::vector<e8::UserEntity> page0 =
         e8::SearchUser(std::optional<e8::UserId>(),
-                       /*user_id_prefix=*/123L,
-                       /*alias_prefix=*/std::nullopt, pagination, db_conns);
+                       /*query=*/std::to_string(123L), pagination, db_conns);
     TEST_CONDITION(page0.size() == 2);
     TEST_CONDITION(page0[0].id.Value().value() == 12300L);
     TEST_CONDITION(page0[1].id.Value().value() == 12301L);
@@ -63,8 +63,7 @@ bool SearchUserByIdPrefixTest() {
     pagination.set_result_per_page(2);
     std::vector<e8::UserEntity> page1 =
         e8::SearchUser(std::optional<e8::UserId>(),
-                       /*user_id_prefix=*/123L,
-                       /*alias_prefix=*/std::nullopt, pagination, db_conns);
+                       /*query=*/std::to_string(123L), pagination, db_conns);
     TEST_CONDITION(page1.size() == 2);
     TEST_CONDITION(page1[0].id.Value().value() == 12302L);
     TEST_CONDITION(page1[1].id.Value().value() == 12303L);
@@ -73,8 +72,7 @@ bool SearchUserByIdPrefixTest() {
     pagination.set_result_per_page(2);
     std::vector<e8::UserEntity> page2 =
         e8::SearchUser(std::optional<e8::UserId>(),
-                       /*user_id_prefix=*/123L,
-                       /*alias_prefix=*/std::nullopt, pagination, db_conns);
+                       /*query=*/std::to_string(123L), pagination, db_conns);
     TEST_CONDITION(page2.empty());
 
     return true;
@@ -87,55 +85,49 @@ bool SearchUserByIdAliasTest() {
     e8::UserEntity user0 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*user_id=*/1L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"John A", std::nullopt, &user0, db_conns);
+    e8::UpdateProfile(/*alias=*/"John Jr. A", std::nullopt, &user0, db_conns);
 
     e8::UserEntity user1 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*userId=*/2L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"John A", std::nullopt, &user1, db_conns);
+    e8::UpdateProfile(/*alias=*/"John Jr. A", std::nullopt, &user1, db_conns);
 
     e8::UserEntity user2 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*userId=*/3L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"John B", std::nullopt, &user2, db_conns);
+    e8::UpdateProfile(/*alias=*/"John Jr. B", std::nullopt, &user2, db_conns);
 
     e8::UserEntity user3 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*userId=*/4L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"John C", std::nullopt, &user3, db_conns);
+    e8::UpdateProfile(/*alias=*/"John Jr. C", std::nullopt, &user3, db_conns);
 
     e8::UserEntity user4 = e8::CreateBaselineUser(/*security_key=*/"PASS", /*userId=*/5L,
                                                   env.CurrentHostId(), db_conns)
                                .value();
-    e8::UpdateProfile(/*alias=*/"Stieve A", std::nullopt, &user4, db_conns);
+    e8::UpdateProfile(/*alias=*/"Stieve Jr. A", std::nullopt, &user4, db_conns);
 
     e8::Pagination pagination;
     pagination.set_page_number(0);
     pagination.set_result_per_page(2);
-    std::vector<e8::UserEntity> page0 =
-        e8::SearchUser(std::optional<e8::UserId>(),
-                       /*user_id_prefix=*/std::nullopt,
-                       /*alias_prefix=*/"John", pagination, db_conns);
+    std::vector<e8::UserEntity> page0 = e8::SearchUser(std::optional<e8::UserId>(),
+                                                       /*query=*/"John Jr.", pagination, db_conns);
     TEST_CONDITION(page0.size() == 2);
     TEST_CONDITION(page0[0].id.Value().value() == 1L);
     TEST_CONDITION(page0[1].id.Value().value() == 2L);
 
     pagination.set_page_number(1);
     pagination.set_result_per_page(2);
-    std::vector<e8::UserEntity> page1 =
-        e8::SearchUser(std::optional<e8::UserId>(),
-                       /*user_id_prefix=*/std::nullopt,
-                       /*alias_prefix=*/"John", pagination, db_conns);
+    std::vector<e8::UserEntity> page1 = e8::SearchUser(std::optional<e8::UserId>(),
+                                                       /*query=*/"John Jr.", pagination, db_conns);
     TEST_CONDITION(page1.size() == 2);
     TEST_CONDITION(page1[0].id.Value().value() == 3L);
     TEST_CONDITION(page1[1].id.Value().value() == 4L);
 
     pagination.set_page_number(2);
     pagination.set_result_per_page(2);
-    std::vector<e8::UserEntity> page2 =
-        e8::SearchUser(std::optional<e8::UserId>(),
-                       /*user_id_prefix=*/std::nullopt,
-                       /*alias_prefix=*/"John", pagination, db_conns);
+    std::vector<e8::UserEntity> page2 = e8::SearchUser(std::optional<e8::UserId>(),
+                                                       /*query=*/"John Jr.", pagination, db_conns);
     TEST_CONDITION(page2.empty());
 
     return true;

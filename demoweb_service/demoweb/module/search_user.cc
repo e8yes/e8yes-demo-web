@@ -34,9 +34,7 @@
 namespace e8 {
 
 std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
-                                   std::optional<UserId> const &user_id_prefix,
-                                   std::optional<std::string> const &alias_prefix,
-                                   Pagination const &pagination,
+                                   std::string const &query_text, Pagination const &pagination,
                                    ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     query.QueryPiece(TableNames::AUser());
@@ -53,40 +51,16 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
         query.SetValueToPlaceholder(viewer_id_ph, std::make_shared<SqlInt>(*viewer_id));
     }
 
-    query.QueryPiece(" WHERE FALSE");
-
-    if (user_id_prefix.has_value()) {
-        SqlQueryBuilder::Placeholder<SqlStr> user_id_prefix_ph;
-        query.QueryPiece(" OR u.id_str LIKE ").Holder(&user_id_prefix_ph);
-        query.SetValueToPlaceholder(
-            user_id_prefix_ph,
-            std::make_shared<SqlStr>(std::to_string(user_id_prefix.value()) + "%",
-                                     /*field_name=*/""));
-    }
-
-    if (alias_prefix.has_value()) {
-        SqlQueryBuilder::Placeholder<SqlStr> alias_prefix_ph;
-        query.QueryPiece(" OR u.alias LIKE ").Holder(&alias_prefix_ph);
-        query.SetValueToPlaceholder(alias_prefix_ph,
-                                    std::make_shared<SqlStr>(alias_prefix.value() + "%",
-                                                             /*field_name=*/""));
-    }
-
     if (viewer_id.has_value()) {
         query.QueryPiece(" ORDER BY cr.last_interaction_at DESC, u.alias ASC, u.id ASC");
     } else {
         query.QueryPiece(" ORDER BY u.alias ASC, u.id ASC");
     }
 
-    SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
-    SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
-    query.QueryPiece(" LIMIT ").Holder(&limit_ph).QueryPiece(" OFFSET ").Holder(&offset_ph);
-
-    query.SetValueToPlaceholder(limit_ph, std::make_shared<SqlInt>(pagination.result_per_page()));
-    query.SetValueToPlaceholder(offset_ph, std::make_shared<SqlInt>(pagination.page_number() *
-                                                                    pagination.result_per_page()));
-
-    std::vector<std::tuple<UserEntity>> query_results = Query<UserEntity>(query, {"u"}, db_conns);
+    std::vector<std::tuple<UserEntity>> query_results = Search<UserEntity>(
+        query, {"u"}, /*search_target_entity=*/"u", query_text,
+        /*prefix_search=*/true, /*rank_result=*/false, /*limit=*/pagination.result_per_page(),
+        /*offset=*/pagination.page_number() * pagination.result_per_page(), db_conns);
 
     std::vector<UserEntity> results(query_results.size());
     for (unsigned i = 0; i < query_results.size(); i++) {

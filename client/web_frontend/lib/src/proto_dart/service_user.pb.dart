@@ -311,9 +311,8 @@ class UpdatePublicProfileResponse extends $pb.GeneratedMessage {
 
 class SearchUserRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchUserRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$11.NullableString>(1, 'alias', subBuilder: $11.NullableString.create)
-    ..aOM<$11.NullableInt64>(2, 'userId', subBuilder: $11.NullableInt64.create)
-    ..aOM<$19.Pagination>(3, 'pagination', subBuilder: $19.Pagination.create)
+    ..aOS(1, 'query')
+    ..aOM<$19.Pagination>(2, 'pagination', subBuilder: $19.Pagination.create)
     ..hasRequiredFields = false
   ;
 
@@ -333,37 +332,24 @@ class SearchUserRequest extends $pb.GeneratedMessage {
   static SearchUserRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $11.NullableString get alias => $_getN(0);
+  $core.String get query => $_getSZ(0);
   @$pb.TagNumber(1)
-  set alias($11.NullableString v) { setField(1, v); }
+  set query($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasAlias() => $_has(0);
+  $core.bool hasQuery() => $_has(0);
   @$pb.TagNumber(1)
-  void clearAlias() => clearField(1);
-  @$pb.TagNumber(1)
-  $11.NullableString ensureAlias() => $_ensure(0);
+  void clearQuery() => clearField(1);
 
   @$pb.TagNumber(2)
-  $11.NullableInt64 get userId => $_getN(1);
+  $19.Pagination get pagination => $_getN(1);
   @$pb.TagNumber(2)
-  set userId($11.NullableInt64 v) { setField(2, v); }
+  set pagination($19.Pagination v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasUserId() => $_has(1);
+  $core.bool hasPagination() => $_has(1);
   @$pb.TagNumber(2)
-  void clearUserId() => clearField(2);
+  void clearPagination() => clearField(2);
   @$pb.TagNumber(2)
-  $11.NullableInt64 ensureUserId() => $_ensure(1);
-
-  @$pb.TagNumber(3)
-  $19.Pagination get pagination => $_getN(2);
-  @$pb.TagNumber(3)
-  set pagination($19.Pagination v) { setField(3, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasPagination() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearPagination() => clearField(3);
-  @$pb.TagNumber(3)
-  $19.Pagination ensurePagination() => $_ensure(2);
+  $19.Pagination ensurePagination() => $_ensure(1);
 }
 
 class SearchUserResponse extends $pb.GeneratedMessage {

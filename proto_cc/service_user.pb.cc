@@ -26,7 +26,6 @@ namespace protobuf_identity_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_identity_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_IdentitySignature;
 }  // namespace protobuf_identity_2eproto
 namespace protobuf_nullable_5fprimitives_2eproto {
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableInt64;
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableString;
 }  // namespace protobuf_nullable_5fprimitives_2eproto
 namespace protobuf_pagination_2eproto {
@@ -225,10 +224,8 @@ static void InitDefaultsSearchUserRequest() {
   ::e8::SearchUserRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<3> scc_info_SearchUserRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 3, InitDefaultsSearchUserRequest}, {
-      &protobuf_nullable_5fprimitives_2eproto::scc_info_NullableString.base,
-      &protobuf_nullable_5fprimitives_2eproto::scc_info_NullableInt64.base,
+::google::protobuf::internal::SCCInfo<1> scc_info_SearchUserRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSearchUserRequest}, {
       &protobuf_pagination_2eproto::scc_info_Pagination.base,}};
 
 static void InitDefaultsSearchUserResponse() {
@@ -350,8 +347,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchUserRequest, alias_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchUserRequest, user_id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchUserRequest, query_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchUserRequest, pagination_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::SearchUserResponse, _internal_metadata_),
@@ -382,9 +378,9 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 38, -1, sizeof(::e8::UpdatePublicProfileRequest)},
   { 45, -1, sizeof(::e8::UpdatePublicProfileResponse)},
   { 51, -1, sizeof(::e8::SearchUserRequest)},
-  { 59, -1, sizeof(::e8::SearchUserResponse)},
-  { 65, -1, sizeof(::e8::PrepareNewAvatarRequest)},
-  { 71, -1, sizeof(::e8::PrepareNewAvatarResponse)},
+  { 58, -1, sizeof(::e8::SearchUserResponse)},
+  { 64, -1, sizeof(::e8::PrepareNewAvatarRequest)},
+  { 70, -1, sizeof(::e8::PrepareNewAvatarResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -442,30 +438,29 @@ void AddDescriptorsImpl() {
       "\005alias\030\001 \001(\0132\022.e8.NullableString\022%\n\tbiog"
       "raphy\030\002 \001(\0132\022.e8.NullableString\"E\n\033Updat"
       "ePublicProfileResponse\022&\n\007profile\030\001 \001(\0132"
-      "\025.e8.UserPublicProfile\"~\n\021SearchUserRequ"
-      "est\022!\n\005alias\030\001 \001(\0132\022.e8.NullableString\022\""
-      "\n\007user_id\030\002 \001(\0132\021.e8.NullableInt64\022\"\n\npa"
-      "gination\030\003 \001(\0132\016.e8.Pagination\"B\n\022Search"
-      "UserResponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e8"
-      ".UserPublicProfile\">\n\027PrepareNewAvatarRe"
-      "quest\022#\n\013file_format\030\001 \001(\0162\016.e8.FileForm"
-      "at\"P\n\030PrepareNewAvatarResponse\0224\n\027avatar"
-      "_readwrite_access\030\001 \001(\0132\023.e8.FileTokenAc"
-      "cess2\275\003\n\013UserService\022=\n\010Register\022\027.e8.Re"
-      "gistrationRequest\032\030.e8.RegistrationRespo"
-      "nse\022@\n\tAuthorize\022\030.e8.AuthorizationReque"
-      "st\032\031.e8.AuthorizationResponse\022M\n\020GetPubl"
-      "icProfile\022\033.e8.GetPublicProfileRequest\032\034"
-      ".e8.GetPublicProfileResponse\022V\n\023UpdatePu"
-      "blicProfile\022\036.e8.UpdatePublicProfileRequ"
-      "est\032\037.e8.UpdatePublicProfileResponse\0227\n\006"
-      "Search\022\025.e8.SearchUserRequest\032\026.e8.Searc"
-      "hUserResponse\022M\n\020PrepareNewAvatar\022\033.e8.P"
-      "repareNewAvatarRequest\032\034.e8.PrepareNewAv"
-      "atarResponseb\006proto3"
+      "\025.e8.UserPublicProfile\"F\n\021SearchUserRequ"
+      "est\022\r\n\005query\030\001 \001(\t\022\"\n\npagination\030\002 \001(\0132\016"
+      ".e8.Pagination\"B\n\022SearchUserResponse\022,\n\r"
+      "user_profiles\030\001 \003(\0132\025.e8.UserPublicProfi"
+      "le\">\n\027PrepareNewAvatarRequest\022#\n\013file_fo"
+      "rmat\030\001 \001(\0162\016.e8.FileFormat\"P\n\030PrepareNew"
+      "AvatarResponse\0224\n\027avatar_readwrite_acces"
+      "s\030\001 \001(\0132\023.e8.FileTokenAccess2\275\003\n\013UserSer"
+      "vice\022=\n\010Register\022\027.e8.RegistrationReques"
+      "t\032\030.e8.RegistrationResponse\022@\n\tAuthorize"
+      "\022\030.e8.AuthorizationRequest\032\031.e8.Authoriz"
+      "ationResponse\022M\n\020GetPublicProfile\022\033.e8.G"
+      "etPublicProfileRequest\032\034.e8.GetPublicPro"
+      "fileResponse\022V\n\023UpdatePublicProfile\022\036.e8"
+      ".UpdatePublicProfileRequest\032\037.e8.UpdateP"
+      "ublicProfileResponse\0227\n\006Search\022\025.e8.Sear"
+      "chUserRequest\032\026.e8.SearchUserResponse\022M\n"
+      "\020PrepareNewAvatar\022\033.e8.PrepareNewAvatarR"
+      "equest\032\034.e8.PrepareNewAvatarResponseb\006pr"
+      "oto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1580);
+      descriptor, 1524);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_user.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -2520,24 +2515,8 @@ void UpdatePublicProfileResponse::InternalSwap(UpdatePublicProfileResponse* othe
 // ===================================================================
 
 void SearchUserRequest::InitAsDefaultInstance() {
-  ::e8::_SearchUserRequest_default_instance_._instance.get_mutable()->alias_ = const_cast< ::e8::NullableString*>(
-      ::e8::NullableString::internal_default_instance());
-  ::e8::_SearchUserRequest_default_instance_._instance.get_mutable()->user_id_ = const_cast< ::e8::NullableInt64*>(
-      ::e8::NullableInt64::internal_default_instance());
   ::e8::_SearchUserRequest_default_instance_._instance.get_mutable()->pagination_ = const_cast< ::e8::Pagination*>(
       ::e8::Pagination::internal_default_instance());
-}
-void SearchUserRequest::clear_alias() {
-  if (GetArenaNoVirtual() == NULL && alias_ != NULL) {
-    delete alias_;
-  }
-  alias_ = NULL;
-}
-void SearchUserRequest::clear_user_id() {
-  if (GetArenaNoVirtual() == NULL && user_id_ != NULL) {
-    delete user_id_;
-  }
-  user_id_ = NULL;
 }
 void SearchUserRequest::clear_pagination() {
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
@@ -2546,8 +2525,7 @@ void SearchUserRequest::clear_pagination() {
   pagination_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SearchUserRequest::kAliasFieldNumber;
-const int SearchUserRequest::kUserIdFieldNumber;
+const int SearchUserRequest::kQueryFieldNumber;
 const int SearchUserRequest::kPaginationFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -2562,15 +2540,9 @@ SearchUserRequest::SearchUserRequest(const SearchUserRequest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_alias()) {
-    alias_ = new ::e8::NullableString(*from.alias_);
-  } else {
-    alias_ = NULL;
-  }
-  if (from.has_user_id()) {
-    user_id_ = new ::e8::NullableInt64(*from.user_id_);
-  } else {
-    user_id_ = NULL;
+  query_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.query().size() > 0) {
+    query_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.query_);
   }
   if (from.has_pagination()) {
     pagination_ = new ::e8::Pagination(*from.pagination_);
@@ -2581,9 +2553,8 @@ SearchUserRequest::SearchUserRequest(const SearchUserRequest& from)
 }
 
 void SearchUserRequest::SharedCtor() {
-  ::memset(&alias_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&pagination_) -
-      reinterpret_cast<char*>(&alias_)) + sizeof(pagination_));
+  query_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  pagination_ = NULL;
 }
 
 SearchUserRequest::~SearchUserRequest() {
@@ -2592,8 +2563,7 @@ SearchUserRequest::~SearchUserRequest() {
 }
 
 void SearchUserRequest::SharedDtor() {
-  if (this != internal_default_instance()) delete alias_;
-  if (this != internal_default_instance()) delete user_id_;
+  query_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete pagination_;
 }
 
@@ -2617,14 +2587,7 @@ void SearchUserRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && alias_ != NULL) {
-    delete alias_;
-  }
-  alias_ = NULL;
-  if (GetArenaNoVirtual() == NULL && user_id_ != NULL) {
-    delete user_id_;
-  }
-  user_id_ = NULL;
+  query_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
     delete pagination_;
   }
@@ -2642,34 +2605,26 @@ bool SearchUserRequest::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .e8.NullableString alias = 1;
+      // string query = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_alias()));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_query()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->query().data(), static_cast<int>(this->query().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "e8.SearchUserRequest.query"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // .e8.NullableInt64 user_id = 2;
+      // .e8.Pagination pagination = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_user_id()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .e8.Pagination pagination = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_pagination()));
         } else {
@@ -2704,22 +2659,20 @@ void SearchUserRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.NullableString alias = 1;
-  if (this->has_alias()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->_internal_alias(), output);
+  // string query = 1;
+  if (this->query().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->query().data(), static_cast<int>(this->query().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.SearchUserRequest.query");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->query(), output);
   }
 
-  // .e8.NullableInt64 user_id = 2;
-  if (this->has_user_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->_internal_user_id(), output);
-  }
-
-  // .e8.Pagination pagination = 3;
+  // .e8.Pagination pagination = 2;
   if (this->has_pagination()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->_internal_pagination(), output);
+      2, this->_internal_pagination(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2736,25 +2689,22 @@ void SearchUserRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .e8.NullableString alias = 1;
-  if (this->has_alias()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->_internal_alias(), deterministic, target);
+  // string query = 1;
+  if (this->query().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->query().data(), static_cast<int>(this->query().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "e8.SearchUserRequest.query");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->query(), target);
   }
 
-  // .e8.NullableInt64 user_id = 2;
-  if (this->has_user_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        2, this->_internal_user_id(), deterministic, target);
-  }
-
-  // .e8.Pagination pagination = 3;
+  // .e8.Pagination pagination = 2;
   if (this->has_pagination()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        3, this->_internal_pagination(), deterministic, target);
+        2, this->_internal_pagination(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2774,21 +2724,14 @@ size_t SearchUserRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .e8.NullableString alias = 1;
-  if (this->has_alias()) {
+  // string query = 1;
+  if (this->query().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *alias_);
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->query());
   }
 
-  // .e8.NullableInt64 user_id = 2;
-  if (this->has_user_id()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *user_id_);
-  }
-
-  // .e8.Pagination pagination = 3;
+  // .e8.Pagination pagination = 2;
   if (this->has_pagination()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
@@ -2822,11 +2765,9 @@ void SearchUserRequest::MergeFrom(const SearchUserRequest& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_alias()) {
-    mutable_alias()->::e8::NullableString::MergeFrom(from.alias());
-  }
-  if (from.has_user_id()) {
-    mutable_user_id()->::e8::NullableInt64::MergeFrom(from.user_id());
+  if (from.query().size() > 0) {
+
+    query_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.query_);
   }
   if (from.has_pagination()) {
     mutable_pagination()->::e8::Pagination::MergeFrom(from.pagination());
@@ -2857,8 +2798,8 @@ void SearchUserRequest::Swap(SearchUserRequest* other) {
 }
 void SearchUserRequest::InternalSwap(SearchUserRequest* other) {
   using std::swap;
-  swap(alias_, other->alias_);
-  swap(user_id_, other->user_id_);
+  query_.Swap(&other->query_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   swap(pagination_, other->pagination_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }

@@ -34,16 +34,13 @@ namespace e8 {
  * descending order, user alias and ID in ascending order. If the viewer isn't present, the result
  * is ordered only by the user alias and user id in ascending order.
  *
- * @param user_id_prefix Filter by the prefix of the user ID.
- * @param alias_prefix Filter by the prefix of the user alias.
+ * @param query_text Raw query text string.
  * @param pagination Pagination constraint.
  * @param db_conns Connections to the DemoWeb DB server.
  * @return The search result is a list of user entities.
  */
 std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
-                                   std::optional<UserId> const &user_id_prefix,
-                                   std::optional<std::string> const &alias_prefix,
-                                   Pagination const &pagination,
+                                   std::string const &query_text, Pagination const &pagination,
                                    ConnectionReservoirInterface *db_conns);
 
 } // namespace e8

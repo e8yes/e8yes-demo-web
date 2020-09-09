@@ -72,12 +72,8 @@ message UpdatePublicProfileResponse {
 
 
 message SearchUserRequest {
-    // Optional. Could be a partial input.
-    NullableString alias = 1;
-    
-    // Optional. Could be a partial prefix input.
-    NullableInt64 user_id = 2;
-    Pagination pagination = 3;
+    string query = 1;
+    Pagination pagination = 2;
 }
 
 message SearchUserResponse {

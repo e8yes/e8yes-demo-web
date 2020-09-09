@@ -1137,34 +1137,24 @@ class SearchUserRequest : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // .e8.NullableString alias = 1;
-  bool has_alias() const;
-  void clear_alias();
-  static const int kAliasFieldNumber = 1;
-  private:
-  const ::e8::NullableString& _internal_alias() const;
-  public:
-  const ::e8::NullableString& alias() const;
-  ::e8::NullableString* release_alias();
-  ::e8::NullableString* mutable_alias();
-  void set_allocated_alias(::e8::NullableString* alias);
+  // string query = 1;
+  void clear_query();
+  static const int kQueryFieldNumber = 1;
+  const ::std::string& query() const;
+  void set_query(const ::std::string& value);
+  #if LANG_CXX11
+  void set_query(::std::string&& value);
+  #endif
+  void set_query(const char* value);
+  void set_query(const char* value, size_t size);
+  ::std::string* mutable_query();
+  ::std::string* release_query();
+  void set_allocated_query(::std::string* query);
 
-  // .e8.NullableInt64 user_id = 2;
-  bool has_user_id() const;
-  void clear_user_id();
-  static const int kUserIdFieldNumber = 2;
-  private:
-  const ::e8::NullableInt64& _internal_user_id() const;
-  public:
-  const ::e8::NullableInt64& user_id() const;
-  ::e8::NullableInt64* release_user_id();
-  ::e8::NullableInt64* mutable_user_id();
-  void set_allocated_user_id(::e8::NullableInt64* user_id);
-
-  // .e8.Pagination pagination = 3;
+  // .e8.Pagination pagination = 2;
   bool has_pagination() const;
   void clear_pagination();
-  static const int kPaginationFieldNumber = 3;
+  static const int kPaginationFieldNumber = 2;
   private:
   const ::e8::Pagination& _internal_pagination() const;
   public:
@@ -1177,8 +1167,7 @@ class SearchUserRequest : public ::google::protobuf::Message /* @@protoc_inserti
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::e8::NullableString* alias_;
-  ::e8::NullableInt64* user_id_;
+  ::google::protobuf::internal::ArenaStringPtr query_;
   ::e8::Pagination* pagination_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fuser_2eproto::TableStruct;
@@ -1949,103 +1938,60 @@ inline void UpdatePublicProfileResponse::set_allocated_profile(::e8::UserPublicP
 
 // SearchUserRequest
 
-// .e8.NullableString alias = 1;
-inline bool SearchUserRequest::has_alias() const {
-  return this != internal_default_instance() && alias_ != NULL;
+// string query = 1;
+inline void SearchUserRequest::clear_query() {
+  query_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::e8::NullableString& SearchUserRequest::_internal_alias() const {
-  return *alias_;
+inline const ::std::string& SearchUserRequest::query() const {
+  // @@protoc_insertion_point(field_get:e8.SearchUserRequest.query)
+  return query_.GetNoArena();
 }
-inline const ::e8::NullableString& SearchUserRequest::alias() const {
-  const ::e8::NullableString* p = alias_;
-  // @@protoc_insertion_point(field_get:e8.SearchUserRequest.alias)
-  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
-      &::e8::_NullableString_default_instance_);
-}
-inline ::e8::NullableString* SearchUserRequest::release_alias() {
-  // @@protoc_insertion_point(field_release:e8.SearchUserRequest.alias)
+inline void SearchUserRequest::set_query(const ::std::string& value) {
   
-  ::e8::NullableString* temp = alias_;
-  alias_ = NULL;
-  return temp;
+  query_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.SearchUserRequest.query)
 }
-inline ::e8::NullableString* SearchUserRequest::mutable_alias() {
+#if LANG_CXX11
+inline void SearchUserRequest::set_query(::std::string&& value) {
   
-  if (alias_ == NULL) {
-    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
-    alias_ = p;
-  }
-  // @@protoc_insertion_point(field_mutable:e8.SearchUserRequest.alias)
-  return alias_;
+  query_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.SearchUserRequest.query)
 }
-inline void SearchUserRequest::set_allocated_alias(::e8::NullableString* alias) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete reinterpret_cast< ::google::protobuf::MessageLite*>(alias_);
-  }
-  if (alias) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      alias = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, alias, submessage_arena);
-    }
+#endif
+inline void SearchUserRequest::set_query(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  query_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.SearchUserRequest.query)
+}
+inline void SearchUserRequest::set_query(const char* value, size_t size) {
+  
+  query_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.SearchUserRequest.query)
+}
+inline ::std::string* SearchUserRequest::mutable_query() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.SearchUserRequest.query)
+  return query_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SearchUserRequest::release_query() {
+  // @@protoc_insertion_point(field_release:e8.SearchUserRequest.query)
+  
+  return query_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SearchUserRequest::set_allocated_query(::std::string* query) {
+  if (query != NULL) {
     
   } else {
     
   }
-  alias_ = alias;
-  // @@protoc_insertion_point(field_set_allocated:e8.SearchUserRequest.alias)
+  query_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), query);
+  // @@protoc_insertion_point(field_set_allocated:e8.SearchUserRequest.query)
 }
 
-// .e8.NullableInt64 user_id = 2;
-inline bool SearchUserRequest::has_user_id() const {
-  return this != internal_default_instance() && user_id_ != NULL;
-}
-inline const ::e8::NullableInt64& SearchUserRequest::_internal_user_id() const {
-  return *user_id_;
-}
-inline const ::e8::NullableInt64& SearchUserRequest::user_id() const {
-  const ::e8::NullableInt64* p = user_id_;
-  // @@protoc_insertion_point(field_get:e8.SearchUserRequest.user_id)
-  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableInt64*>(
-      &::e8::_NullableInt64_default_instance_);
-}
-inline ::e8::NullableInt64* SearchUserRequest::release_user_id() {
-  // @@protoc_insertion_point(field_release:e8.SearchUserRequest.user_id)
-  
-  ::e8::NullableInt64* temp = user_id_;
-  user_id_ = NULL;
-  return temp;
-}
-inline ::e8::NullableInt64* SearchUserRequest::mutable_user_id() {
-  
-  if (user_id_ == NULL) {
-    auto* p = CreateMaybeMessage<::e8::NullableInt64>(GetArenaNoVirtual());
-    user_id_ = p;
-  }
-  // @@protoc_insertion_point(field_mutable:e8.SearchUserRequest.user_id)
-  return user_id_;
-}
-inline void SearchUserRequest::set_allocated_user_id(::e8::NullableInt64* user_id) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete reinterpret_cast< ::google::protobuf::MessageLite*>(user_id_);
-  }
-  if (user_id) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      user_id = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, user_id, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  user_id_ = user_id;
-  // @@protoc_insertion_point(field_set_allocated:e8.SearchUserRequest.user_id)
-}
-
-// .e8.Pagination pagination = 3;
+// .e8.Pagination pagination = 2;
 inline bool SearchUserRequest::has_pagination() const {
   return this != internal_default_instance() && pagination_ != NULL;
 }
