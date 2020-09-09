@@ -25,7 +25,7 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
-#include "demoweb_service/demoweb/module/create_user.h"
+#include "demoweb_service/demoweb/module/baseline_user.h"
 #include "demoweb_service/demoweb/module/search_user.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"

@@ -22,7 +22,7 @@
 #include "common/unit_test_util/unit_test_util.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module/create_user.h"
+#include "demoweb_service/demoweb/module/baseline_user.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/module/user_storage.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"

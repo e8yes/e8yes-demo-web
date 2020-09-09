@@ -28,8 +28,8 @@ HEADERS += \
     environment/host_id.h \
     environment/prod_environment_context.h \
     environment/test_environment_context.h \
+    module/baseline_user.h \
     module/contact_invitation.h \
-    module/create_user.h \
     module/file_access_validator.h \
     module/file_io.h \
     module/file_metadata.h \

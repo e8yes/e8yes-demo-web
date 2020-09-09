@@ -22,7 +22,7 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
-#include "demoweb_service/demoweb/module/create_user.h"
+#include "demoweb_service/demoweb/module/baseline_user.h"
 #include "demoweb_service/demoweb/module/retrieve_contact.h"
 #include "message_queue/publisher/publisher.h"
 #include "proto_cc/pagination.pb.h"
