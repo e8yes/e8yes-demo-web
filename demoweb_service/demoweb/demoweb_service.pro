@@ -60,9 +60,9 @@ SOURCES += \
     environment/host_id.cc \
     environment/prod_environment_context.cc \
     environment/test_environment_context.cc \
+    module/baseline_user.cc \
     module/contact_invitation.cc \
     module/contact_storage.cc \
-    module/create_user.cc \
     module/file_access_validator.cc \
     module/file_io.cc \
     module/file_metadata.cc \
