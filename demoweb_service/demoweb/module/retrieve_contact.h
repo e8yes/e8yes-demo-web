@@ -23,9 +23,9 @@
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "proto_cc/pagination.pb.h"
 #include "proto_cc/user_relation.pb.h"
-#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
 
@@ -40,17 +40,6 @@ using UserRelations = std::vector<UserRelationRecord>;
 std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_id,
                                                             std::vector<UserId> target_user_ids,
                                                             ConnectionReservoirInterface *conns);
-
-/**
- * @brief GetRelatedUsers Retrieve a list of users who satisfy the directed relation constraint
- * starting from the source user. That is, the user must possess at least one of the relations to
- * present in the returned result. The result is sorted based on the last interaction date of the
- * relation in descending order.
- */
-std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
-                                        std::vector<UserRelation> const &relations,
-                                        std::optional<Pagination> const &pagination,
-                                        ConnectionReservoirInterface *conns);
 
 } // namespace e8
 

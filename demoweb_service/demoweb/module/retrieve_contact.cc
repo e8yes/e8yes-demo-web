@@ -26,11 +26,11 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/retrieve_contact.h"
-#include "proto_cc/user_relation.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
+#include "proto_cc/user_relation.pb.h"
 
 namespace e8 {
 
@@ -92,56 +92,6 @@ std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_i
         Query<ContactRelationEntity>(query, {"cr"}, conns);
 
     return ParseAllRelations(result_set);
-}
-
-std::vector<UserEntity> GetRelatedUsers(UserId source_user_id,
-                                        std::vector<UserRelation> const &relations,
-                                        std::optional<Pagination> const &pagination,
-                                        ConnectionReservoirInterface *conns) {
-    SqlIntArr relations_ph_value(/*field_name=*/"");
-    *relations_ph_value.ValuePtr() = {relations.begin(), relations.end()};
-    SqlInt limit_ph_value(/*field_name=*/"");
-    SqlInt offset_ph_value(/*field_name=*/"");
-
-    SqlQueryBuilder query;
-
-    SqlQueryBuilder::Placeholder<SqlLong> source_user_id_ph;
-    SqlQueryBuilder::Placeholder<SqlIntArr> relations_ph;
-    SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
-    SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
-
-    query.QueryPiece(TableNames::AUser())
-        .QueryPiece(" u JOIN ")
-        .QueryPiece(TableNames::ContactRelation())
-        .QueryPiece(" cr ON u.id = cr.dst_user_id ")
-        .QueryPiece(" WHERE cr.src_user_id=")
-        .Holder(&source_user_id_ph)
-        .QueryPiece(" AND cr.relation=ANY(")
-        .Holder(&relations_ph)
-        .QueryPiece(") ORDER BY cr.last_interaction_at DESC");
-
-    query.SetValueToPlaceholder(source_user_id_ph, std::make_shared<SqlLong>(source_user_id));
-    query.SetValueToPlaceholder(relations_ph, std::make_shared<SqlIntArr>(std::vector<int>{
-                                                  relations.begin(), relations.end()}));
-
-    if (pagination.has_value()) {
-        query.QueryPiece(" LIMIT ").Holder(&limit_ph);
-        query.QueryPiece(" OFFSET ").Holder(&offset_ph);
-
-        query.SetValueToPlaceholder(limit_ph,
-                                    std::make_shared<SqlInt>(pagination->result_per_page()));
-        query.SetValueToPlaceholder(
-            offset_ph,
-            std::make_shared<SqlInt>(pagination->page_number() * pagination->result_per_page()));
-    }
-
-    std::vector<std::tuple<UserEntity>> result_set = Query<UserEntity>(query, {"u"}, conns);
-
-    std::vector<UserEntity> users(result_set.size());
-    for (unsigned i = 0; i < result_set.size(); i++) {
-        users[i] = std::get<0>(result_set[i]);
-    }
-    return users;
 }
 
 } // namespace e8

@@ -19,6 +19,7 @@
 #include <grpcpp/grpcpp.h>
 #include <optional>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
@@ -26,6 +27,7 @@
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
 #include "demoweb_service/demoweb/module/retrieve_contact.h"
+#include "demoweb_service/demoweb/module/search_user.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/service/service_util.h"
 #include "demoweb_service/demoweb/service/social_network_service.h"
@@ -91,16 +93,16 @@ SocialNetworkServiceImpl::SearchRelatedUserList(grpc::ServerContext *context,
         return status;
     }
 
-    std::vector<UserRelation> relation_filter(request->relation_filter_size());
-    for (int i = 0; i < request->relation_filter_size(); i++) {
-        relation_filter[i] = request->relation_filter(i);
+    std::unordered_set<UserRelation> relation_filter;
+    for (auto const relation : request->relation_filter()) {
+        relation_filter.insert(static_cast<UserRelation>(relation));
     }
-    std::vector<UserEntity> inviters =
-        GetRelatedUsers(identity.value().user_id(), relation_filter, request->pagination(),
-                        DemoWebEnvironment()->DemowebDatabase());
-    std::vector<UserPublicProfile> inviter_profiles =
-        BuildPublicProfiles(identity.value().user_id(), inviters, DemoWebEnvironment()->KeyGen(),
-                            DemoWebEnvironment()->DemowebDatabase());
+    std::vector<UserEntity> related_users =
+        SearchUser(identity.value().user_id(), request->search_terms(), relation_filter,
+                   request->pagination(), DemoWebEnvironment()->DemowebDatabase());
+    std::vector<UserPublicProfile> inviter_profiles = BuildPublicProfiles(
+        identity.value().user_id(), related_users, DemoWebEnvironment()->KeyGen(),
+        DemoWebEnvironment()->DemowebDatabase());
 
     *response->mutable_user_profiles() = {inviter_profiles.begin(), inviter_profiles.end()};
 

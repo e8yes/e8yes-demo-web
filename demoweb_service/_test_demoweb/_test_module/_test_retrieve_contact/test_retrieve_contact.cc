@@ -28,55 +28,8 @@
 #include "proto_cc/pagination.pb.h"
 #include "proto_cc/user_relation.pb.h"
 
-bool GetRelatedUsersTest() {
-    e8::DemoWebTestEnvironmentContext env;
-
-    std::optional<e8::UserEntity> user1 =
-        e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/1,
-                       env.CurrentHostId(), env.DemowebDatabase());
-    std::optional<e8::UserEntity> user2 =
-        e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/2,
-                       env.CurrentHostId(), env.DemowebDatabase());
-
-    e8::SendInvitation(*user1->id.Value(), *user2->id.Value(),
-                       /*send_message_anyway=*/false, env.CurrentHostId(),
-                       std::vector<e8::MessagePublisherInterface *>(), env.KeyGen(),
-                       env.DemowebDatabase());
-
-    std::vector<e8::UserEntity> inviters = e8::GetRelatedUsers(
-        *user2->id.Value(),
-        std::vector<e8::UserRelation>{e8::UserRelation::URL_INVITATION_RECEIVED},
-        std::optional<e8::Pagination>(), env.DemowebDatabase());
-    TEST_CONDITION(inviters.size() == 1);
-    TEST_CONDITION(inviters[0].id.Value().value() == 1);
-
-    // Check pagination effect.
-    e8::Pagination page1;
-    page1.set_page_number(0);
-    page1.set_result_per_page(2);
-
-    inviters = e8::GetRelatedUsers(
-        *user2->id.Value(),
-        std::vector<e8::UserRelation>{e8::UserRelation::URL_INVITATION_RECEIVED}, page1,
-        env.DemowebDatabase());
-    TEST_CONDITION(inviters.size() == 1);
-
-    e8::Pagination page2;
-    page2.set_page_number(1);
-    page2.set_result_per_page(2);
-
-    inviters = e8::GetRelatedUsers(
-        *user2->id.Value(),
-        std::vector<e8::UserRelation>{e8::UserRelation::URL_INVITATION_RECEIVED}, page2,
-        env.DemowebDatabase());
-    TEST_CONDITION(inviters.empty());
-
-    return true;
-}
-
 int main() {
     e8::BeginTestSuite("retrieve_contact");
-    e8::RunTest("GetRelatedUsersTest", GetRelatedUsersTest);
     e8::EndTestSuite();
     return 0;
 }
