@@ -130,37 +130,10 @@ bool ProcessInvitationAcceptTest() {
     return true;
 }
 
-bool DeleteContactTest() {
-    e8::DemoWebTestEnvironmentContext env;
-
-    std::optional<e8::UserEntity> user1 =
-        e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/1,
-                       env.CurrentHostId(), env.DemowebDatabase());
-    std::optional<e8::UserEntity> user2 =
-        e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/2,
-                       env.CurrentHostId(), env.DemowebDatabase());
-
-    bool rc = e8::CreateContact(*user1->id.Value(), *user2->id.Value(), env.DemowebDatabase());
-    TEST_CONDITION(rc == true);
-
-    rc = e8::DeleteContact(*user1->id.Value(), *user2->id.Value(), env.DemowebDatabase());
-    TEST_CONDITION(rc == true);
-
-    e8::SqlQueryBuilder forward_query;
-    forward_query.QueryPiece(e8::TableNames::ContactRelation())
-        .QueryPiece(" cr ")
-        .QueryPiece("WHERE cr.src_user_id=1 AND cr.dst_user_id=2 AND cr.relation=" +
-                    std::to_string(e8::UserRelation::URL_CONTACT));
-    bool exists_contact = e8::Exists(forward_query, env.DemowebDatabase());
-    TEST_CONDITION(exists_contact == false);
-
-    return true;
-}
-
 int main() {
     e8::BeginTestSuite("contact_invitation");
     e8::RunTest("SendInvitationStorageTest", SendInvitationStorageTest);
     e8::RunTest("ProcessInvitationAcceptTest", ProcessInvitationAcceptTest);
-    e8::RunTest("DeleteContactTest", DeleteContactTest);
+    e8::EndTestSuite();
     return 0;
 }

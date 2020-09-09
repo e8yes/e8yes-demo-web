@@ -53,30 +53,6 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, HostId const host_i
                        std::vector<MessagePublisherInterface *> const &publishers,
                        KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns);
 
-/**
- * @brief CreateContact Creates a contact between the inviter and invitee.
- *
- * @return true if the contact has not existed.
- */
-bool CreateContact(UserId const inviter_id, UserId const invitee_id,
-                   ConnectionReservoirInterface *conns);
-
-/**
- * @brief RejectContact Mark that the inviter is being rejected by the invitee.
- *
- * @return true if the rejection has not been marked before.
- */
-bool RejectContact(UserId const inviter_id, UserId const invitee_id,
-                   ConnectionReservoirInterface *conns);
-
-/**
- * @brief DeleteContact Delete a contact between the viewer and the target user.
- *
- * @return true if there's contact being deleted.
- */
-bool DeleteContact(UserId const viewer_id, UserId const target_user_id,
-                   ConnectionReservoirInterface *conns);
-
 } // namespace e8
 
 #endif // CONTACT_INVITATION_H

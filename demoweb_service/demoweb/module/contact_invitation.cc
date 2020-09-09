@@ -26,9 +26,10 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
+#include "demoweb_service/demoweb/module/contact_storage.h"
 #include "demoweb_service/demoweb/module/push_message.h"
-#include "demoweb_service/demoweb/module/user_storage.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
+#include "demoweb_service/demoweb/module/user_storage.h"
 #include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_runner.h"
@@ -148,78 +149,6 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, HostId const host_i
     PushMessageContent(inviter_id, message, host_id, publishers);
 
     return true;
-}
-
-bool CreateContact(UserId const inviter_id, UserId const invitee_id,
-                   ConnectionReservoirInterface *conns) {
-    std::time_t timestamp;
-    std::time(&timestamp);
-
-    ContactRelationEntity forward_relation;
-    *forward_relation.src_user_id.ValuePtr() = inviter_id;
-    *forward_relation.dst_user_id.ValuePtr() = invitee_id;
-    *forward_relation.relation.ValuePtr() = URL_CONTACT;
-    *forward_relation.created_at.ValuePtr() = timestamp;
-    *forward_relation.last_interaction_at.ValuePtr() = timestamp;
-
-    int64_t num_rows_updated = 0;
-    num_rows_updated +=
-        Update(forward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
-
-    ContactRelationEntity backward_relation;
-    *backward_relation.src_user_id.ValuePtr() = invitee_id;
-    *backward_relation.dst_user_id.ValuePtr() = inviter_id;
-    *backward_relation.relation.ValuePtr() = URL_CONTACT;
-    *backward_relation.created_at.ValuePtr() = timestamp;
-    *backward_relation.last_interaction_at.ValuePtr() = timestamp;
-
-    num_rows_updated +=
-        Update(backward_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
-
-    return num_rows_updated == 2;
-}
-
-bool RejectContact(UserId const inviter_id, UserId const invitee_id,
-                   ConnectionReservoirInterface *conns) {
-    std::time_t timestamp;
-    std::time(&timestamp);
-
-    ContactRelationEntity rejection_relation;
-    *rejection_relation.src_user_id.ValuePtr() = inviter_id;
-    *rejection_relation.dst_user_id.ValuePtr() = invitee_id;
-    *rejection_relation.relation.ValuePtr() = URL_INVITATION_REJECTED;
-    *rejection_relation.created_at.ValuePtr() = timestamp;
-    *rejection_relation.last_interaction_at.ValuePtr() = timestamp;
-
-    int64_t num_rows_updated =
-        Update(rejection_relation, TableNames::ContactRelation(), /*replace=*/false, conns);
-
-    return num_rows_updated == 1;
-}
-
-bool DeleteContact(UserId const viewer_id, UserId const target_user_id,
-                   ConnectionReservoirInterface *conns) {
-    SqlQueryBuilder query;
-    SqlQueryBuilder::Placeholder<SqlLong> user_id1_ph;
-    SqlQueryBuilder::Placeholder<SqlLong> user_id2_ph;
-    SqlQueryBuilder::Placeholder<SqlInt> relation_ph;
-    query.QueryPiece("WHERE ((src_user_id=")
-        .Holder(&user_id1_ph)
-        .QueryPiece(" AND dst_user_id=")
-        .Holder(&user_id2_ph)
-        .QueryPiece(") OR (dst_user_id=")
-        .Holder(&user_id1_ph)
-        .QueryPiece(" AND src_user_id=")
-        .Holder(&user_id2_ph)
-        .QueryPiece(")) AND relation=")
-        .Holder(&relation_ph);
-
-    query.SetValueToPlaceholder(user_id1_ph, std::make_shared<SqlLong>(viewer_id));
-    query.SetValueToPlaceholder(user_id2_ph, std::make_shared<SqlLong>(target_user_id));
-    query.SetValueToPlaceholder(relation_ph, std::make_shared<SqlInt>(URL_CONTACT));
-
-    int64_t num_rows = Delete(TableNames::ContactRelation(), query, conns);
-    return num_rows == 2;
 }
 
 } // namespace e8
