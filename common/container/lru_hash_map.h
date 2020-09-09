@@ -77,9 +77,11 @@ class LruHashMap {
      * exceeds the size limit, an LRU item will be evicted.
      *
      * @param key Unique key that maps to the value.
+     * @param cache_on Whether to cache the key-value pair. If not, it will always load from the
+     * source of truth.
      * @return The value mapped by the key if the key exists.
      */
-    std::optional<ValueType> Fetch(KeyType const &key);
+    std::optional<ValueType> Fetch(KeyType const &key, bool cache_on = true);
 
     /**
      * @brief clear Empties the cache to its original empty state. All the existing values will be
@@ -179,8 +181,12 @@ LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::LruHashMap(uint32_t max_size,
     : max_size_(max_size), on_fetch_(on_fetch), on_evict_(on_evict) {}
 
 template <typename KeyType, typename ValueType, typename OnFetch, typename OnEvict>
-std::optional<ValueType>
-LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::Fetch(KeyType const &key) {
+std::optional<ValueType> LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::Fetch(KeyType const &key,
+                                                                                 bool cache_on) {
+    if (!cache_on) {
+        return on_fetch_(key);
+    }
+
     mutex_.lock();
 
     auto it = cache_.find(key);
