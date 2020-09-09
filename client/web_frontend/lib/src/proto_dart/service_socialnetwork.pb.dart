@@ -11,6 +11,7 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'user_relation.pb.dart' as $12;
+import 'nullable_primitives.pb.dart' as $11;
 import 'pagination.pb.dart' as $19;
 import 'user_profile.pb.dart' as $13;
 
@@ -322,7 +323,7 @@ class DeleteContactResponse extends $pb.GeneratedMessage {
 
 class SearchRelatedUserListRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchRelatedUserListRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOS(1, 'searchTerms')
+    ..aOM<$11.NullableString>(1, 'searchTerms', subBuilder: $11.NullableString.create)
     ..aOM<$19.Pagination>(2, 'pagination', subBuilder: $19.Pagination.create)
     ..pc<$12.UserRelation>(3, 'relationFilter', $pb.PbFieldType.PE, valueOf: $12.UserRelation.valueOf, enumValues: $12.UserRelation.values)
     ..hasRequiredFields = false
@@ -344,13 +345,15 @@ class SearchRelatedUserListRequest extends $pb.GeneratedMessage {
   static SearchRelatedUserListRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get searchTerms => $_getSZ(0);
+  $11.NullableString get searchTerms => $_getN(0);
   @$pb.TagNumber(1)
-  set searchTerms($core.String v) { $_setString(0, v); }
+  set searchTerms($11.NullableString v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasSearchTerms() => $_has(0);
   @$pb.TagNumber(1)
   void clearSearchTerms() => clearField(1);
+  @$pb.TagNumber(1)
+  $11.NullableString ensureSearchTerms() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $19.Pagination get pagination => $_getN(1);

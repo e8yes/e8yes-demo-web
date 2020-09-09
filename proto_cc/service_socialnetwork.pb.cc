@@ -19,6 +19,9 @@
 #endif
 // @@protoc_insertion_point(includes)
 
+namespace protobuf_nullable_5fprimitives_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableString;
+}  // namespace protobuf_nullable_5fprimitives_2eproto
 namespace protobuf_pagination_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_pagination_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Pagination;
 }  // namespace protobuf_pagination_2eproto
@@ -243,8 +246,9 @@ static void InitDefaultsSearchRelatedUserListRequest() {
   ::e8::SearchRelatedUserListRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_SearchRelatedUserListRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSearchRelatedUserListRequest}, {
+::google::protobuf::internal::SCCInfo<2> scc_info_SearchRelatedUserListRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsSearchRelatedUserListRequest}, {
+      &protobuf_nullable_5fprimitives_2eproto::scc_info_NullableString.base,
       &protobuf_pagination_2eproto::scc_info_Pagination.base,}};
 
 static void InitDefaultsSearchRelatedUserListResponse() {
@@ -406,48 +410,50 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\033service_socialnetwork.proto\022\002e8\032\022user_"
-      "profile.proto\032\023user_relation.proto\032\020pagi"
-      "nation.proto\"1\n\027GetUserRelationsRequest\022"
-      "\026\n\016target_user_id\030\001 \001(\003\"z\n\030GetUserRelati"
-      "onsResponse\022\026\n\016source_user_id\030\001 \001(\003\022\026\n\016t"
-      "arget_user_id\030\002 \001(\003\022.\n\016user_relations\030\003 "
-      "\003(\0132\026.e8.UserRelationRecord\"0\n\025SendInvit"
-      "ationRequest\022\027\n\017invitee_user_id\030\001 \001(\003\"\030\n"
-      "\026SendInvitationResponse\"2\n\027DeleteInvitat"
-      "ionRequest\022\027\n\017invitee_user_id\030\001 \001(\003\"\032\n\030D"
-      "eleteInvitationResponse\"C\n\030ProcessInvita"
-      "tionRequest\022\027\n\017inviter_user_id\030\001 \001(\003\022\016\n\006"
-      "accept\030\002 \001(\010\"\033\n\031ProcessInvitationRespons"
-      "e\"7\n\024DeleteContactRequest\022\037\n\027deleted_con"
-      "tact_user_id\030\001 \001(\003\"(\n\025DeleteContactRespo"
-      "nse\022\017\n\007deleted\030\001 \001(\010\"\203\001\n\034SearchRelatedUs"
-      "erListRequest\022\024\n\014search_terms\030\001 \001(\t\022\"\n\np"
-      "agination\030\002 \001(\0132\016.e8.Pagination\022)\n\017relat"
-      "ion_filter\030\003 \003(\0162\020.e8.UserRelation\"M\n\035Se"
-      "archRelatedUserListResponse\022,\n\ruser_prof"
-      "iles\030\001 \003(\0132\025.e8.UserPublicProfile2\363\003\n\024So"
-      "cialNetworkService\022M\n\020GetUserRelations\022\033"
-      ".e8.GetUserRelationsRequest\032\034.e8.GetUser"
-      "RelationsResponse\022G\n\016SendInvitation\022\031.e8"
-      ".SendInvitationRequest\032\032.e8.SendInvitati"
-      "onResponse\022M\n\020DeleteInvitation\022\033.e8.Dele"
-      "teInvitationRequest\032\034.e8.DeleteInvitatio"
-      "nResponse\022P\n\021ProcessInvitation\022\034.e8.Proc"
-      "essInvitationRequest\032\035.e8.ProcessInvitat"
-      "ionResponse\022D\n\rDeleteContact\022\030.e8.Delete"
-      "ContactRequest\032\031.e8.DeleteContactRespons"
-      "e\022\\\n\025SearchRelatedUserList\022 .e8.SearchRe"
-      "latedUserListRequest\032!.e8.SearchRelatedU"
-      "serListResponseb\006proto3"
+      "\n\033service_socialnetwork.proto\022\002e8\032\031nulla"
+      "ble_primitives.proto\032\020pagination.proto\032\022"
+      "user_profile.proto\032\023user_relation.proto\""
+      "1\n\027GetUserRelationsRequest\022\026\n\016target_use"
+      "r_id\030\001 \001(\003\"z\n\030GetUserRelationsResponse\022\026"
+      "\n\016source_user_id\030\001 \001(\003\022\026\n\016target_user_id"
+      "\030\002 \001(\003\022.\n\016user_relations\030\003 \003(\0132\026.e8.User"
+      "RelationRecord\"0\n\025SendInvitationRequest\022"
+      "\027\n\017invitee_user_id\030\001 \001(\003\"\030\n\026SendInvitati"
+      "onResponse\"2\n\027DeleteInvitationRequest\022\027\n"
+      "\017invitee_user_id\030\001 \001(\003\"\032\n\030DeleteInvitati"
+      "onResponse\"C\n\030ProcessInvitationRequest\022\027"
+      "\n\017inviter_user_id\030\001 \001(\003\022\016\n\006accept\030\002 \001(\010\""
+      "\033\n\031ProcessInvitationResponse\"7\n\024DeleteCo"
+      "ntactRequest\022\037\n\027deleted_contact_user_id\030"
+      "\001 \001(\003\"(\n\025DeleteContactResponse\022\017\n\007delete"
+      "d\030\001 \001(\010\"\227\001\n\034SearchRelatedUserListRequest"
+      "\022(\n\014search_terms\030\001 \001(\0132\022.e8.NullableStri"
+      "ng\022\"\n\npagination\030\002 \001(\0132\016.e8.Pagination\022)"
+      "\n\017relation_filter\030\003 \003(\0162\020.e8.UserRelatio"
+      "n\"M\n\035SearchRelatedUserListResponse\022,\n\rus"
+      "er_profiles\030\001 \003(\0132\025.e8.UserPublicProfile"
+      "2\363\003\n\024SocialNetworkService\022M\n\020GetUserRela"
+      "tions\022\033.e8.GetUserRelationsRequest\032\034.e8."
+      "GetUserRelationsResponse\022G\n\016SendInvitati"
+      "on\022\031.e8.SendInvitationRequest\032\032.e8.SendI"
+      "nvitationResponse\022M\n\020DeleteInvitation\022\033."
+      "e8.DeleteInvitationRequest\032\034.e8.DeleteIn"
+      "vitationResponse\022P\n\021ProcessInvitation\022\034."
+      "e8.ProcessInvitationRequest\032\035.e8.Process"
+      "InvitationResponse\022D\n\rDeleteContact\022\030.e8"
+      ".DeleteContactRequest\032\031.e8.DeleteContact"
+      "Response\022\\\n\025SearchRelatedUserList\022 .e8.S"
+      "earchRelatedUserListRequest\032!.e8.SearchR"
+      "elatedUserListResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1343);
+      descriptor, 1390);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_socialnetwork.proto", &protobuf_RegisterTypes);
+  ::protobuf_nullable_5fprimitives_2eproto::AddDescriptors();
+  ::protobuf_pagination_2eproto::AddDescriptors();
   ::protobuf_user_5fprofile_2eproto::AddDescriptors();
   ::protobuf_user_5frelation_2eproto::AddDescriptors();
-  ::protobuf_pagination_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
@@ -2692,8 +2698,16 @@ void DeleteContactResponse::InternalSwap(DeleteContactResponse* other) {
 // ===================================================================
 
 void SearchRelatedUserListRequest::InitAsDefaultInstance() {
+  ::e8::_SearchRelatedUserListRequest_default_instance_._instance.get_mutable()->search_terms_ = const_cast< ::e8::NullableString*>(
+      ::e8::NullableString::internal_default_instance());
   ::e8::_SearchRelatedUserListRequest_default_instance_._instance.get_mutable()->pagination_ = const_cast< ::e8::Pagination*>(
       ::e8::Pagination::internal_default_instance());
+}
+void SearchRelatedUserListRequest::clear_search_terms() {
+  if (GetArenaNoVirtual() == NULL && search_terms_ != NULL) {
+    delete search_terms_;
+  }
+  search_terms_ = NULL;
 }
 void SearchRelatedUserListRequest::clear_pagination() {
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
@@ -2719,9 +2733,10 @@ SearchRelatedUserListRequest::SearchRelatedUserListRequest(const SearchRelatedUs
       _internal_metadata_(NULL),
       relation_filter_(from.relation_filter_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  search_terms_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.search_terms().size() > 0) {
-    search_terms_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.search_terms_);
+  if (from.has_search_terms()) {
+    search_terms_ = new ::e8::NullableString(*from.search_terms_);
+  } else {
+    search_terms_ = NULL;
   }
   if (from.has_pagination()) {
     pagination_ = new ::e8::Pagination(*from.pagination_);
@@ -2732,8 +2747,9 @@ SearchRelatedUserListRequest::SearchRelatedUserListRequest(const SearchRelatedUs
 }
 
 void SearchRelatedUserListRequest::SharedCtor() {
-  search_terms_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  pagination_ = NULL;
+  ::memset(&search_terms_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&pagination_) -
+      reinterpret_cast<char*>(&search_terms_)) + sizeof(pagination_));
 }
 
 SearchRelatedUserListRequest::~SearchRelatedUserListRequest() {
@@ -2742,7 +2758,7 @@ SearchRelatedUserListRequest::~SearchRelatedUserListRequest() {
 }
 
 void SearchRelatedUserListRequest::SharedDtor() {
-  search_terms_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete search_terms_;
   if (this != internal_default_instance()) delete pagination_;
 }
 
@@ -2767,7 +2783,10 @@ void SearchRelatedUserListRequest::Clear() {
   (void) cached_has_bits;
 
   relation_filter_.Clear();
-  search_terms_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && search_terms_ != NULL) {
+    delete search_terms_;
+  }
+  search_terms_ = NULL;
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
     delete pagination_;
   }
@@ -2785,16 +2804,12 @@ bool SearchRelatedUserListRequest::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string search_terms = 1;
+      // .e8.NullableString search_terms = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_search_terms()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->search_terms().data(), static_cast<int>(this->search_terms().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "e8.SearchRelatedUserListRequest.search_terms"));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_search_terms()));
         } else {
           goto handle_unusual;
         }
@@ -2868,14 +2883,10 @@ void SearchRelatedUserListRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string search_terms = 1;
-  if (this->search_terms().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->search_terms().data(), static_cast<int>(this->search_terms().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.SearchRelatedUserListRequest.search_terms");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->search_terms(), output);
+  // .e8.NullableString search_terms = 1;
+  if (this->has_search_terms()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->_internal_search_terms(), output);
   }
 
   // .e8.Pagination pagination = 2;
@@ -2912,15 +2923,11 @@ void SearchRelatedUserListRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string search_terms = 1;
-  if (this->search_terms().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->search_terms().data(), static_cast<int>(this->search_terms().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.SearchRelatedUserListRequest.search_terms");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->search_terms(), target);
+  // .e8.NullableString search_terms = 1;
+  if (this->has_search_terms()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->_internal_search_terms(), deterministic, target);
   }
 
   // .e8.Pagination pagination = 2;
@@ -2978,11 +2985,11 @@ size_t SearchRelatedUserListRequest::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // string search_terms = 1;
-  if (this->search_terms().size() > 0) {
+  // .e8.NullableString search_terms = 1;
+  if (this->has_search_terms()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->search_terms());
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *search_terms_);
   }
 
   // .e8.Pagination pagination = 2;
@@ -3020,9 +3027,8 @@ void SearchRelatedUserListRequest::MergeFrom(const SearchRelatedUserListRequest&
   (void) cached_has_bits;
 
   relation_filter_.MergeFrom(from.relation_filter_);
-  if (from.search_terms().size() > 0) {
-
-    search_terms_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.search_terms_);
+  if (from.has_search_terms()) {
+    mutable_search_terms()->::e8::NullableString::MergeFrom(from.search_terms());
   }
   if (from.has_pagination()) {
     mutable_pagination()->::e8::Pagination::MergeFrom(from.pagination());
@@ -3054,8 +3060,7 @@ void SearchRelatedUserListRequest::Swap(SearchRelatedUserListRequest* other) {
 void SearchRelatedUserListRequest::InternalSwap(SearchRelatedUserListRequest* other) {
   using std::swap;
   relation_filter_.InternalSwap(&other->relation_filter_);
-  search_terms_.Swap(&other->search_terms_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  swap(search_terms_, other->search_terms_);
   swap(pagination_, other->pagination_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }

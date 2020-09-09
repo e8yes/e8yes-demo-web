@@ -40,7 +40,7 @@ namespace protobuf_service_5fchat_5fmessage_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[4];
+  static const ::google::protobuf::internal::ParseTable schema[6];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -48,6 +48,12 @@ struct TableStruct {
 void AddDescriptors();
 }  // namespace protobuf_service_5fchat_5fmessage_2eproto
 namespace e8 {
+class CreateChatMessageThreadRequest;
+class CreateChatMessageThreadRequestDefaultTypeInternal;
+extern CreateChatMessageThreadRequestDefaultTypeInternal _CreateChatMessageThreadRequest_default_instance_;
+class CreateChatMessageThreadResponse;
+class CreateChatMessageThreadResponseDefaultTypeInternal;
+extern CreateChatMessageThreadResponseDefaultTypeInternal _CreateChatMessageThreadResponse_default_instance_;
 class GetChatMessageRequest;
 class GetChatMessageRequestDefaultTypeInternal;
 extern GetChatMessageRequestDefaultTypeInternal _GetChatMessageRequest_default_instance_;
@@ -63,6 +69,8 @@ extern SendChatMessageResponseDefaultTypeInternal _SendChatMessageResponse_defau
 }  // namespace e8
 namespace google {
 namespace protobuf {
+template<> ::e8::CreateChatMessageThreadRequest* Arena::CreateMaybeMessage<::e8::CreateChatMessageThreadRequest>(Arena*);
+template<> ::e8::CreateChatMessageThreadResponse* Arena::CreateMaybeMessage<::e8::CreateChatMessageThreadResponse>(Arena*);
 template<> ::e8::GetChatMessageRequest* Arena::CreateMaybeMessage<::e8::GetChatMessageRequest>(Arena*);
 template<> ::e8::GetChatMessageResponse* Arena::CreateMaybeMessage<::e8::GetChatMessageResponse>(Arena*);
 template<> ::e8::SendChatMessageRequest* Arena::CreateMaybeMessage<::e8::SendChatMessageRequest>(Arena*);
@@ -72,6 +80,227 @@ template<> ::e8::SendChatMessageResponse* Arena::CreateMaybeMessage<::e8::SendCh
 namespace e8 {
 
 // ===================================================================
+
+class CreateChatMessageThreadRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.CreateChatMessageThreadRequest) */ {
+ public:
+  CreateChatMessageThreadRequest();
+  virtual ~CreateChatMessageThreadRequest();
+
+  CreateChatMessageThreadRequest(const CreateChatMessageThreadRequest& from);
+
+  inline CreateChatMessageThreadRequest& operator=(const CreateChatMessageThreadRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  CreateChatMessageThreadRequest(CreateChatMessageThreadRequest&& from) noexcept
+    : CreateChatMessageThreadRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline CreateChatMessageThreadRequest& operator=(CreateChatMessageThreadRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const CreateChatMessageThreadRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const CreateChatMessageThreadRequest* internal_default_instance() {
+    return reinterpret_cast<const CreateChatMessageThreadRequest*>(
+               &_CreateChatMessageThreadRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  void Swap(CreateChatMessageThreadRequest* other);
+  friend void swap(CreateChatMessageThreadRequest& a, CreateChatMessageThreadRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline CreateChatMessageThreadRequest* New() const final {
+    return CreateMaybeMessage<CreateChatMessageThreadRequest>(NULL);
+  }
+
+  CreateChatMessageThreadRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<CreateChatMessageThreadRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const CreateChatMessageThreadRequest& from);
+  void MergeFrom(const CreateChatMessageThreadRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CreateChatMessageThreadRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string thread_title = 2;
+  void clear_thread_title();
+  static const int kThreadTitleFieldNumber = 2;
+  const ::std::string& thread_title() const;
+  void set_thread_title(const ::std::string& value);
+  #if LANG_CXX11
+  void set_thread_title(::std::string&& value);
+  #endif
+  void set_thread_title(const char* value);
+  void set_thread_title(const char* value, size_t size);
+  ::std::string* mutable_thread_title();
+  ::std::string* release_thread_title();
+  void set_allocated_thread_title(::std::string* thread_title);
+
+  // int64 channel_id = 1;
+  void clear_channel_id();
+  static const int kChannelIdFieldNumber = 1;
+  ::google::protobuf::int64 channel_id() const;
+  void set_channel_id(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:e8.CreateChatMessageThreadRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr thread_title_;
+  ::google::protobuf::int64 channel_id_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fchat_5fmessage_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class CreateChatMessageThreadResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.CreateChatMessageThreadResponse) */ {
+ public:
+  CreateChatMessageThreadResponse();
+  virtual ~CreateChatMessageThreadResponse();
+
+  CreateChatMessageThreadResponse(const CreateChatMessageThreadResponse& from);
+
+  inline CreateChatMessageThreadResponse& operator=(const CreateChatMessageThreadResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  CreateChatMessageThreadResponse(CreateChatMessageThreadResponse&& from) noexcept
+    : CreateChatMessageThreadResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline CreateChatMessageThreadResponse& operator=(CreateChatMessageThreadResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const CreateChatMessageThreadResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const CreateChatMessageThreadResponse* internal_default_instance() {
+    return reinterpret_cast<const CreateChatMessageThreadResponse*>(
+               &_CreateChatMessageThreadResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  void Swap(CreateChatMessageThreadResponse* other);
+  friend void swap(CreateChatMessageThreadResponse& a, CreateChatMessageThreadResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline CreateChatMessageThreadResponse* New() const final {
+    return CreateMaybeMessage<CreateChatMessageThreadResponse>(NULL);
+  }
+
+  CreateChatMessageThreadResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<CreateChatMessageThreadResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const CreateChatMessageThreadResponse& from);
+  void MergeFrom(const CreateChatMessageThreadResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CreateChatMessageThreadResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int64 thread_id = 1;
+  void clear_thread_id();
+  static const int kThreadIdFieldNumber = 1;
+  ::google::protobuf::int64 thread_id() const;
+  void set_thread_id(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:e8.CreateChatMessageThreadResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int64 thread_id_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fchat_5fmessage_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
 
 class SendChatMessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.SendChatMessageRequest) */ {
  public:
@@ -108,7 +337,7 @@ class SendChatMessageRequest : public ::google::protobuf::Message /* @@protoc_in
                &_SendChatMessageRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    2;
 
   void Swap(SendChatMessageRequest* other);
   friend void swap(SendChatMessageRequest& a, SendChatMessageRequest& b) {
@@ -172,18 +401,18 @@ class SendChatMessageRequest : public ::google::protobuf::Message /* @@protoc_in
   ::e8::ChatMessageEntry* mutable_message();
   void set_allocated_message(::e8::ChatMessageEntry* message);
 
-  // int64 channel_id = 1;
-  void clear_channel_id();
-  static const int kChannelIdFieldNumber = 1;
-  ::google::protobuf::int64 channel_id() const;
-  void set_channel_id(::google::protobuf::int64 value);
+  // int64 thread_id = 1;
+  void clear_thread_id();
+  static const int kThreadIdFieldNumber = 1;
+  ::google::protobuf::int64 thread_id() const;
+  void set_thread_id(::google::protobuf::int64 value);
 
   // @@protoc_insertion_point(class_scope:e8.SendChatMessageRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::e8::ChatMessageEntry* message_;
-  ::google::protobuf::int64 channel_id_;
+  ::google::protobuf::int64 thread_id_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fchat_5fmessage_2eproto::TableStruct;
 };
@@ -224,7 +453,7 @@ class SendChatMessageResponse : public ::google::protobuf::Message /* @@protoc_i
                &_SendChatMessageResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    3;
 
   void Swap(SendChatMessageResponse* other);
   friend void swap(SendChatMessageResponse& a, SendChatMessageResponse& b) {
@@ -333,7 +562,7 @@ class GetChatMessageRequest : public ::google::protobuf::Message /* @@protoc_ins
                &_GetChatMessageRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    4;
 
   void Swap(GetChatMessageRequest* other);
   friend void swap(GetChatMessageRequest& a, GetChatMessageRequest& b) {
@@ -449,7 +678,7 @@ class GetChatMessageResponse : public ::google::protobuf::Message /* @@protoc_in
                &_GetChatMessageResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    5;
 
   void Swap(GetChatMessageResponse* other);
   friend void swap(GetChatMessageResponse& a, GetChatMessageResponse& b) {
@@ -530,20 +759,109 @@ class GetChatMessageResponse : public ::google::protobuf::Message /* @@protoc_in
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// SendChatMessageRequest
+// CreateChatMessageThreadRequest
 
 // int64 channel_id = 1;
-inline void SendChatMessageRequest::clear_channel_id() {
+inline void CreateChatMessageThreadRequest::clear_channel_id() {
   channel_id_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 SendChatMessageRequest::channel_id() const {
-  // @@protoc_insertion_point(field_get:e8.SendChatMessageRequest.channel_id)
+inline ::google::protobuf::int64 CreateChatMessageThreadRequest::channel_id() const {
+  // @@protoc_insertion_point(field_get:e8.CreateChatMessageThreadRequest.channel_id)
   return channel_id_;
 }
-inline void SendChatMessageRequest::set_channel_id(::google::protobuf::int64 value) {
+inline void CreateChatMessageThreadRequest::set_channel_id(::google::protobuf::int64 value) {
   
   channel_id_ = value;
-  // @@protoc_insertion_point(field_set:e8.SendChatMessageRequest.channel_id)
+  // @@protoc_insertion_point(field_set:e8.CreateChatMessageThreadRequest.channel_id)
+}
+
+// string thread_title = 2;
+inline void CreateChatMessageThreadRequest::clear_thread_title() {
+  thread_title_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& CreateChatMessageThreadRequest::thread_title() const {
+  // @@protoc_insertion_point(field_get:e8.CreateChatMessageThreadRequest.thread_title)
+  return thread_title_.GetNoArena();
+}
+inline void CreateChatMessageThreadRequest::set_thread_title(const ::std::string& value) {
+  
+  thread_title_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.CreateChatMessageThreadRequest.thread_title)
+}
+#if LANG_CXX11
+inline void CreateChatMessageThreadRequest::set_thread_title(::std::string&& value) {
+  
+  thread_title_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.CreateChatMessageThreadRequest.thread_title)
+}
+#endif
+inline void CreateChatMessageThreadRequest::set_thread_title(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  thread_title_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.CreateChatMessageThreadRequest.thread_title)
+}
+inline void CreateChatMessageThreadRequest::set_thread_title(const char* value, size_t size) {
+  
+  thread_title_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.CreateChatMessageThreadRequest.thread_title)
+}
+inline ::std::string* CreateChatMessageThreadRequest::mutable_thread_title() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.CreateChatMessageThreadRequest.thread_title)
+  return thread_title_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* CreateChatMessageThreadRequest::release_thread_title() {
+  // @@protoc_insertion_point(field_release:e8.CreateChatMessageThreadRequest.thread_title)
+  
+  return thread_title_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void CreateChatMessageThreadRequest::set_allocated_thread_title(::std::string* thread_title) {
+  if (thread_title != NULL) {
+    
+  } else {
+    
+  }
+  thread_title_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), thread_title);
+  // @@protoc_insertion_point(field_set_allocated:e8.CreateChatMessageThreadRequest.thread_title)
+}
+
+// -------------------------------------------------------------------
+
+// CreateChatMessageThreadResponse
+
+// int64 thread_id = 1;
+inline void CreateChatMessageThreadResponse::clear_thread_id() {
+  thread_id_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 CreateChatMessageThreadResponse::thread_id() const {
+  // @@protoc_insertion_point(field_get:e8.CreateChatMessageThreadResponse.thread_id)
+  return thread_id_;
+}
+inline void CreateChatMessageThreadResponse::set_thread_id(::google::protobuf::int64 value) {
+  
+  thread_id_ = value;
+  // @@protoc_insertion_point(field_set:e8.CreateChatMessageThreadResponse.thread_id)
+}
+
+// -------------------------------------------------------------------
+
+// SendChatMessageRequest
+
+// int64 thread_id = 1;
+inline void SendChatMessageRequest::clear_thread_id() {
+  thread_id_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 SendChatMessageRequest::thread_id() const {
+  // @@protoc_insertion_point(field_get:e8.SendChatMessageRequest.thread_id)
+  return thread_id_;
+}
+inline void SendChatMessageRequest::set_thread_id(::google::protobuf::int64 value) {
+  
+  thread_id_ = value;
+  // @@protoc_insertion_point(field_set:e8.SendChatMessageRequest.thread_id)
 }
 
 // .e8.ChatMessageEntry message = 2;
@@ -746,6 +1064,10 @@ GetChatMessageResponse::threads() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

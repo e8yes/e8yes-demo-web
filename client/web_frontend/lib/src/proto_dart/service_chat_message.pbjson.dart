@@ -5,10 +5,25 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
+const CreateChatMessageThreadRequest$json = const {
+  '1': 'CreateChatMessageThreadRequest',
+  '2': const [
+    const {'1': 'channel_id', '3': 1, '4': 1, '5': 3, '10': 'channelId'},
+    const {'1': 'thread_title', '3': 2, '4': 1, '5': 9, '10': 'threadTitle'},
+  ],
+};
+
+const CreateChatMessageThreadResponse$json = const {
+  '1': 'CreateChatMessageThreadResponse',
+  '2': const [
+    const {'1': 'thread_id', '3': 1, '4': 1, '5': 3, '10': 'threadId'},
+  ],
+};
+
 const SendChatMessageRequest$json = const {
   '1': 'SendChatMessageRequest',
   '2': const [
-    const {'1': 'channel_id', '3': 1, '4': 1, '5': 3, '10': 'channelId'},
+    const {'1': 'thread_id', '3': 1, '4': 1, '5': 3, '10': 'threadId'},
     const {'1': 'message', '3': 2, '4': 1, '5': 11, '6': '.e8.ChatMessageEntry', '10': 'message'},
   ],
 };

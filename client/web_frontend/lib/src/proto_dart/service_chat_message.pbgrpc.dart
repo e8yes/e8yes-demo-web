@@ -14,6 +14,13 @@ import 'service_chat_message.pb.dart' as $3;
 export 'service_chat_message.pb.dart';
 
 class ChatMessageServiceClient extends $grpc.Client {
+  static final _$createChatMessageThread = $grpc.ClientMethod<
+          $3.CreateChatMessageThreadRequest,
+          $3.CreateChatMessageThreadResponse>(
+      '/e8.ChatMessageService/CreateChatMessageThread',
+      ($3.CreateChatMessageThreadRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $3.CreateChatMessageThreadResponse.fromBuffer(value));
   static final _$sendChatMessage =
       $grpc.ClientMethod<$3.SendChatMessageRequest, $3.SendChatMessageResponse>(
           '/e8.ChatMessageService/SendChatMessage',
@@ -30,6 +37,15 @@ class ChatMessageServiceClient extends $grpc.Client {
   ChatMessageServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions options})
       : super(channel, options: options);
+
+  $grpc.ResponseFuture<$3.CreateChatMessageThreadResponse>
+      createChatMessageThread($3.CreateChatMessageThreadRequest request,
+          {$grpc.CallOptions options}) {
+    final call = $createCall(
+        _$createChatMessageThread, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
 
   $grpc.ResponseFuture<$3.SendChatMessageResponse> sendChatMessage(
       $3.SendChatMessageRequest request,
@@ -54,6 +70,15 @@ abstract class ChatMessageServiceBase extends $grpc.Service {
   $core.String get $name => 'e8.ChatMessageService';
 
   ChatMessageServiceBase() {
+    $addMethod($grpc.ServiceMethod<$3.CreateChatMessageThreadRequest,
+            $3.CreateChatMessageThreadResponse>(
+        'CreateChatMessageThread',
+        createChatMessageThread_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $3.CreateChatMessageThreadRequest.fromBuffer(value),
+        ($3.CreateChatMessageThreadResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.SendChatMessageRequest,
             $3.SendChatMessageResponse>(
         'SendChatMessage',
@@ -74,6 +99,12 @@ abstract class ChatMessageServiceBase extends $grpc.Service {
         ($3.GetChatMessageResponse value) => value.writeToBuffer()));
   }
 
+  $async.Future<$3.CreateChatMessageThreadResponse> createChatMessageThread_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$3.CreateChatMessageThreadRequest> request) async {
+    return createChatMessageThread(call, await request);
+  }
+
   $async.Future<$3.SendChatMessageResponse> sendChatMessage_Pre(
       $grpc.ServiceCall call,
       $async.Future<$3.SendChatMessageRequest> request) async {
@@ -86,6 +117,8 @@ abstract class ChatMessageServiceBase extends $grpc.Service {
     return getChatMessage(call, await request);
   }
 
+  $async.Future<$3.CreateChatMessageThreadResponse> createChatMessageThread(
+      $grpc.ServiceCall call, $3.CreateChatMessageThreadRequest request);
   $async.Future<$3.SendChatMessageResponse> sendChatMessage(
       $grpc.ServiceCall call, $3.SendChatMessageRequest request);
   $async.Future<$3.GetChatMessageResponse> getChatMessage(

@@ -22,14 +22,25 @@ package e8;
 import "pagination.proto";
 import "chat_message.proto";
 
-message SendChatMessageRequest {
+message CreateChatMessageThreadRequest {
     int64 channel_id = 1;
+    string thread_title = 2;
+}
+
+message CreateChatMessageThreadResponse {
+    int64 thread_id = 1;
+}
+
+
+message SendChatMessageRequest {
+    int64 thread_id = 1;
     ChatMessageEntry message = 2;
 }
 
 message SendChatMessageResponse {
     ChatMessageThread updated_thread = 1;
 }
+
 
 message GetChatMessageRequest {
     int64 channel_id = 1;
@@ -40,7 +51,12 @@ message GetChatMessageResponse {
     repeated ChatMessageThread threads = 1;
 }
 
+
 service ChatMessageService {
+    // Create a new message thread in the specified channel.
+    rpc CreateChatMessageThread (CreateChatMessageThreadRequest) returns
+        (CreateChatMessageThreadResponse);
+
     // Send a chat message to the message channel where the logged-in user
     // is the sender.
     rpc SendChatMessage (SendChatMessageRequest) returns 

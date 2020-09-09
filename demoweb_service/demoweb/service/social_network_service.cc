@@ -97,9 +97,13 @@ SocialNetworkServiceImpl::SearchRelatedUserList(grpc::ServerContext *context,
     for (auto const relation : request->relation_filter()) {
         relation_filter.insert(static_cast<UserRelation>(relation));
     }
+    std::optional<std::string> search_terms =
+        request->has_search_terms() ? std::optional<std::string>(request->search_terms().value())
+                                    : std::nullopt;
+
     std::vector<UserEntity> related_users =
-        SearchUser(identity.value().user_id(), request->search_terms(), relation_filter,
-                   request->pagination(), DemoWebEnvironment()->DemowebDatabase());
+        SearchUser(identity.value().user_id(), search_terms, relation_filter, request->pagination(),
+                   DemoWebEnvironment()->DemowebDatabase());
     std::vector<UserPublicProfile> inviter_profiles = BuildPublicProfiles(
         identity.value().user_id(), related_users, DemoWebEnvironment()->KeyGen(),
         DemoWebEnvironment()->DemowebDatabase());

@@ -18,6 +18,7 @@
 namespace e8 {
 
 static const char* ChatMessageService_method_names[] = {
+  "/e8.ChatMessageService/CreateChatMessageThread",
   "/e8.ChatMessageService/SendChatMessage",
   "/e8.ChatMessageService/GetChatMessage",
 };
@@ -29,9 +30,26 @@ std::unique_ptr< ChatMessageService::Stub> ChatMessageService::NewStub(const std
 }
 
 ChatMessageService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_SendChatMessage_(ChatMessageService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetChatMessage_(ChatMessageService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_CreateChatMessageThread_(ChatMessageService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SendChatMessage_(ChatMessageService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetChatMessage_(ChatMessageService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
+
+::grpc::Status ChatMessageService::Stub::CreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::e8::CreateChatMessageThreadResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_CreateChatMessageThread_, context, request, response);
+}
+
+void ChatMessageService::Stub::experimental_async::CreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_CreateChatMessageThread_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::CreateChatMessageThreadResponse>* ChatMessageService::Stub::AsyncCreateChatMessageThreadRaw(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::CreateChatMessageThreadResponse>::Create(channel_.get(), cq, rpcmethod_CreateChatMessageThread_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::CreateChatMessageThreadResponse>* ChatMessageService::Stub::PrepareAsyncCreateChatMessageThreadRaw(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::CreateChatMessageThreadResponse>::Create(channel_.get(), cq, rpcmethod_CreateChatMessageThread_, context, request, false);
+}
 
 ::grpc::Status ChatMessageService::Stub::SendChatMessage(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest& request, ::e8::SendChatMessageResponse* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SendChatMessage_, context, request, response);
@@ -69,16 +87,28 @@ ChatMessageService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ChatMessageService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ChatMessageService::Service, ::e8::CreateChatMessageThreadRequest, ::e8::CreateChatMessageThreadResponse>(
+          std::mem_fn(&ChatMessageService::Service::CreateChatMessageThread), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ChatMessageService_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ChatMessageService::Service, ::e8::SendChatMessageRequest, ::e8::SendChatMessageResponse>(
           std::mem_fn(&ChatMessageService::Service::SendChatMessage), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ChatMessageService_method_names[1],
+      ChatMessageService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ChatMessageService::Service, ::e8::GetChatMessageRequest, ::e8::GetChatMessageResponse>(
           std::mem_fn(&ChatMessageService::Service::GetChatMessage), this)));
 }
 
 ChatMessageService::Service::~Service() {
+}
+
+::grpc::Status ChatMessageService::Service::CreateChatMessageThread(::grpc::ServerContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
 ::grpc::Status ChatMessageService::Service::SendChatMessage(::grpc::ServerContext* context, const ::e8::SendChatMessageRequest* request, ::e8::SendChatMessageResponse* response) {

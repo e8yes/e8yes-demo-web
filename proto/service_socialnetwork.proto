@@ -19,9 +19,10 @@ syntax = "proto3";
 
 package e8;
 
+import "nullable_primitives.proto";
+import "pagination.proto";
 import "user_profile.proto";
 import "user_relation.proto";
-import "pagination.proto";
 
 message GetUserRelationsRequest {
     // Source user is the logged in user.
@@ -66,7 +67,7 @@ message DeleteContactResponse {
 
 
 message SearchRelatedUserListRequest {
-    string search_terms = 1;
+    NullableString search_terms = 1;
     Pagination pagination = 2;
     repeated UserRelation relation_filter = 3;
 }

@@ -72,7 +72,7 @@ const DeleteContactResponse$json = const {
 const SearchRelatedUserListRequest$json = const {
   '1': 'SearchRelatedUserListRequest',
   '2': const [
-    const {'1': 'search_terms', '3': 1, '4': 1, '5': 9, '10': 'searchTerms'},
+    const {'1': 'search_terms', '3': 1, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'searchTerms'},
     const {'1': 'pagination', '3': 2, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
     const {'1': 'relation_filter', '3': 3, '4': 3, '5': 14, '6': '.e8.UserRelation', '10': 'relationFilter'},
   ],

@@ -52,6 +52,14 @@ class ChatMessageService final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
+    // Create a new message thread in the specified channel.
+    virtual ::grpc::Status CreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::e8::CreateChatMessageThreadResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateChatMessageThreadResponse>> AsyncCreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateChatMessageThreadResponse>>(AsyncCreateChatMessageThreadRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateChatMessageThreadResponse>> PrepareAsyncCreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateChatMessageThreadResponse>>(PrepareAsyncCreateChatMessageThreadRaw(context, request, cq));
+    }
     // Send a chat message to the message channel where the logged-in user
     // is the sender.
     virtual ::grpc::Status SendChatMessage(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest& request, ::e8::SendChatMessageResponse* response) = 0;
@@ -72,6 +80,8 @@ class ChatMessageService final {
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
+      // Create a new message thread in the specified channel.
+      virtual void CreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response, std::function<void(::grpc::Status)>) = 0;
       // Send a chat message to the message channel where the logged-in user
       // is the sender.
       virtual void SendChatMessage(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest* request, ::e8::SendChatMessageResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -80,6 +90,8 @@ class ChatMessageService final {
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateChatMessageThreadResponse>* AsyncCreateChatMessageThreadRaw(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::CreateChatMessageThreadResponse>* PrepareAsyncCreateChatMessageThreadRaw(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::SendChatMessageResponse>* AsyncSendChatMessageRaw(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::SendChatMessageResponse>* PrepareAsyncSendChatMessageRaw(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetChatMessageResponse>* AsyncGetChatMessageRaw(::grpc::ClientContext* context, const ::e8::GetChatMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -88,6 +100,13 @@ class ChatMessageService final {
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    ::grpc::Status CreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::e8::CreateChatMessageThreadResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateChatMessageThreadResponse>> AsyncCreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateChatMessageThreadResponse>>(AsyncCreateChatMessageThreadRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateChatMessageThreadResponse>> PrepareAsyncCreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::CreateChatMessageThreadResponse>>(PrepareAsyncCreateChatMessageThreadRaw(context, request, cq));
+    }
     ::grpc::Status SendChatMessage(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest& request, ::e8::SendChatMessageResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SendChatMessageResponse>> AsyncSendChatMessage(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::SendChatMessageResponse>>(AsyncSendChatMessageRaw(context, request, cq));
@@ -105,6 +124,7 @@ class ChatMessageService final {
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
+      void CreateChatMessageThread(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response, std::function<void(::grpc::Status)>) override;
       void SendChatMessage(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest* request, ::e8::SendChatMessageResponse* response, std::function<void(::grpc::Status)>) override;
       void GetChatMessage(::grpc::ClientContext* context, const ::e8::GetChatMessageRequest* request, ::e8::GetChatMessageResponse* response, std::function<void(::grpc::Status)>) override;
      private:
@@ -118,10 +138,13 @@ class ChatMessageService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
+    ::grpc::ClientAsyncResponseReader< ::e8::CreateChatMessageThreadResponse>* AsyncCreateChatMessageThreadRaw(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::CreateChatMessageThreadResponse>* PrepareAsyncCreateChatMessageThreadRaw(::grpc::ClientContext* context, const ::e8::CreateChatMessageThreadRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::SendChatMessageResponse>* AsyncSendChatMessageRaw(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::SendChatMessageResponse>* PrepareAsyncSendChatMessageRaw(::grpc::ClientContext* context, const ::e8::SendChatMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::GetChatMessageResponse>* AsyncGetChatMessageRaw(::grpc::ClientContext* context, const ::e8::GetChatMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::GetChatMessageResponse>* PrepareAsyncGetChatMessageRaw(::grpc::ClientContext* context, const ::e8::GetChatMessageRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_CreateChatMessageThread_;
     const ::grpc::internal::RpcMethod rpcmethod_SendChatMessage_;
     const ::grpc::internal::RpcMethod rpcmethod_GetChatMessage_;
   };
@@ -131,6 +154,8 @@ class ChatMessageService final {
    public:
     Service();
     virtual ~Service();
+    // Create a new message thread in the specified channel.
+    virtual ::grpc::Status CreateChatMessageThread(::grpc::ServerContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response);
     // Send a chat message to the message channel where the logged-in user
     // is the sender.
     virtual ::grpc::Status SendChatMessage(::grpc::ServerContext* context, const ::e8::SendChatMessageRequest* request, ::e8::SendChatMessageResponse* response);
@@ -138,12 +163,32 @@ class ChatMessageService final {
     virtual ::grpc::Status GetChatMessage(::grpc::ServerContext* context, const ::e8::GetChatMessageRequest* request, ::e8::GetChatMessageResponse* response);
   };
   template <class BaseClass>
+  class WithAsyncMethod_CreateChatMessageThread : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_CreateChatMessageThread() {
+      ::grpc::Service::MarkMethodAsync(0);
+    }
+    ~WithAsyncMethod_CreateChatMessageThread() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CreateChatMessageThread(::grpc::ServerContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestCreateChatMessageThread(::grpc::ServerContext* context, ::e8::CreateChatMessageThreadRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::CreateChatMessageThreadResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_SendChatMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_SendChatMessage() {
-      ::grpc::Service::MarkMethodAsync(0);
+      ::grpc::Service::MarkMethodAsync(1);
     }
     ~WithAsyncMethod_SendChatMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -154,7 +199,7 @@ class ChatMessageService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSendChatMessage(::grpc::ServerContext* context, ::e8::SendChatMessageRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::SendChatMessageResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -163,7 +208,7 @@ class ChatMessageService final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_GetChatMessage() {
-      ::grpc::Service::MarkMethodAsync(1);
+      ::grpc::Service::MarkMethodAsync(2);
     }
     ~WithAsyncMethod_GetChatMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -174,17 +219,34 @@ class ChatMessageService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetChatMessage(::grpc::ServerContext* context, ::e8::GetChatMessageRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::GetChatMessageResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SendChatMessage<WithAsyncMethod_GetChatMessage<Service > > AsyncService;
+  typedef WithAsyncMethod_CreateChatMessageThread<WithAsyncMethod_SendChatMessage<WithAsyncMethod_GetChatMessage<Service > > > AsyncService;
+  template <class BaseClass>
+  class WithGenericMethod_CreateChatMessageThread : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_CreateChatMessageThread() {
+      ::grpc::Service::MarkMethodGeneric(0);
+    }
+    ~WithGenericMethod_CreateChatMessageThread() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CreateChatMessageThread(::grpc::ServerContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
   template <class BaseClass>
   class WithGenericMethod_SendChatMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_SendChatMessage() {
-      ::grpc::Service::MarkMethodGeneric(0);
+      ::grpc::Service::MarkMethodGeneric(1);
     }
     ~WithGenericMethod_SendChatMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -201,7 +263,7 @@ class ChatMessageService final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_GetChatMessage() {
-      ::grpc::Service::MarkMethodGeneric(1);
+      ::grpc::Service::MarkMethodGeneric(2);
     }
     ~WithGenericMethod_GetChatMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -213,12 +275,32 @@ class ChatMessageService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_CreateChatMessageThread : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithRawMethod_CreateChatMessageThread() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_CreateChatMessageThread() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CreateChatMessageThread(::grpc::ServerContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestCreateChatMessageThread(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_SendChatMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithRawMethod_SendChatMessage() {
-      ::grpc::Service::MarkMethodRaw(0);
+      ::grpc::Service::MarkMethodRaw(1);
     }
     ~WithRawMethod_SendChatMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -229,7 +311,7 @@ class ChatMessageService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSendChatMessage(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -238,7 +320,7 @@ class ChatMessageService final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithRawMethod_GetChatMessage() {
-      ::grpc::Service::MarkMethodRaw(1);
+      ::grpc::Service::MarkMethodRaw(2);
     }
     ~WithRawMethod_GetChatMessage() override {
       BaseClassMustBeDerivedFromService(this);
@@ -249,8 +331,28 @@ class ChatMessageService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetChatMessage(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_CreateChatMessageThread : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_CreateChatMessageThread() {
+      ::grpc::Service::MarkMethodStreamed(0,
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::CreateChatMessageThreadRequest, ::e8::CreateChatMessageThreadResponse>(std::bind(&WithStreamedUnaryMethod_CreateChatMessageThread<BaseClass>::StreamedCreateChatMessageThread, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_CreateChatMessageThread() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status CreateChatMessageThread(::grpc::ServerContext* context, const ::e8::CreateChatMessageThreadRequest* request, ::e8::CreateChatMessageThreadResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedCreateChatMessageThread(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::CreateChatMessageThreadRequest,::e8::CreateChatMessageThreadResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SendChatMessage : public BaseClass {
@@ -258,7 +360,7 @@ class ChatMessageService final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_SendChatMessage() {
-      ::grpc::Service::MarkMethodStreamed(0,
+      ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler< ::e8::SendChatMessageRequest, ::e8::SendChatMessageResponse>(std::bind(&WithStreamedUnaryMethod_SendChatMessage<BaseClass>::StreamedSendChatMessage, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_SendChatMessage() override {
@@ -278,7 +380,7 @@ class ChatMessageService final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_GetChatMessage() {
-      ::grpc::Service::MarkMethodStreamed(1,
+      ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler< ::e8::GetChatMessageRequest, ::e8::GetChatMessageResponse>(std::bind(&WithStreamedUnaryMethod_GetChatMessage<BaseClass>::StreamedGetChatMessage, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_GetChatMessage() override {
@@ -292,9 +394,9 @@ class ChatMessageService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetChatMessage(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::GetChatMessageRequest,::e8::GetChatMessageResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SendChatMessage<WithStreamedUnaryMethod_GetChatMessage<Service > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_CreateChatMessageThread<WithStreamedUnaryMethod_SendChatMessage<WithStreamedUnaryMethod_GetChatMessage<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SendChatMessage<WithStreamedUnaryMethod_GetChatMessage<Service > > StreamedService;
+  typedef WithStreamedUnaryMethod_CreateChatMessageThread<WithStreamedUnaryMethod_SendChatMessage<WithStreamedUnaryMethod_GetChatMessage<Service > > > StreamedService;
 };
 
 }  // namespace e8

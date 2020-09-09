@@ -13,9 +13,81 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'chat_message.pb.dart' as $14;
 import 'pagination.pb.dart' as $19;
 
+class CreateChatMessageThreadRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateChatMessageThreadRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aInt64(1, 'channelId')
+    ..aOS(2, 'threadTitle')
+    ..hasRequiredFields = false
+  ;
+
+  CreateChatMessageThreadRequest._() : super();
+  factory CreateChatMessageThreadRequest() => create();
+  factory CreateChatMessageThreadRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateChatMessageThreadRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  CreateChatMessageThreadRequest clone() => CreateChatMessageThreadRequest()..mergeFromMessage(this);
+  CreateChatMessageThreadRequest copyWith(void Function(CreateChatMessageThreadRequest) updates) => super.copyWith((message) => updates(message as CreateChatMessageThreadRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CreateChatMessageThreadRequest create() => CreateChatMessageThreadRequest._();
+  CreateChatMessageThreadRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateChatMessageThreadRequest> createRepeated() => $pb.PbList<CreateChatMessageThreadRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CreateChatMessageThreadRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateChatMessageThreadRequest>(create);
+  static CreateChatMessageThreadRequest _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get channelId => $_getI64(0);
+  @$pb.TagNumber(1)
+  set channelId($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChannelId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChannelId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get threadTitle => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set threadTitle($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasThreadTitle() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearThreadTitle() => clearField(2);
+}
+
+class CreateChatMessageThreadResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateChatMessageThreadResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aInt64(1, 'threadId')
+    ..hasRequiredFields = false
+  ;
+
+  CreateChatMessageThreadResponse._() : super();
+  factory CreateChatMessageThreadResponse() => create();
+  factory CreateChatMessageThreadResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateChatMessageThreadResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  CreateChatMessageThreadResponse clone() => CreateChatMessageThreadResponse()..mergeFromMessage(this);
+  CreateChatMessageThreadResponse copyWith(void Function(CreateChatMessageThreadResponse) updates) => super.copyWith((message) => updates(message as CreateChatMessageThreadResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CreateChatMessageThreadResponse create() => CreateChatMessageThreadResponse._();
+  CreateChatMessageThreadResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateChatMessageThreadResponse> createRepeated() => $pb.PbList<CreateChatMessageThreadResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CreateChatMessageThreadResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateChatMessageThreadResponse>(create);
+  static CreateChatMessageThreadResponse _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get threadId => $_getI64(0);
+  @$pb.TagNumber(1)
+  set threadId($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasThreadId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearThreadId() => clearField(1);
+}
+
 class SendChatMessageRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SendChatMessageRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aInt64(1, 'channelId')
+    ..aInt64(1, 'threadId')
     ..aOM<$14.ChatMessageEntry>(2, 'message', subBuilder: $14.ChatMessageEntry.create)
     ..hasRequiredFields = false
   ;
@@ -36,13 +108,13 @@ class SendChatMessageRequest extends $pb.GeneratedMessage {
   static SendChatMessageRequest _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get channelId => $_getI64(0);
+  $fixnum.Int64 get threadId => $_getI64(0);
   @$pb.TagNumber(1)
-  set channelId($fixnum.Int64 v) { $_setInt64(0, v); }
+  set threadId($fixnum.Int64 v) { $_setInt64(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChannelId() => $_has(0);
+  $core.bool hasThreadId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChannelId() => clearField(1);
+  void clearThreadId() => clearField(1);
 
   @$pb.TagNumber(2)
   $14.ChatMessageEntry get message => $_getN(1);

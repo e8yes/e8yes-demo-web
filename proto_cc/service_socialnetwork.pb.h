@@ -30,9 +30,10 @@
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
+#include "nullable_primitives.pb.h"
+#include "pagination.pb.h"
 #include "user_profile.pb.h"
 #include "user_relation.pb.h"
-#include "pagination.pb.h"
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_service_5fsocialnetwork_2eproto 
 
@@ -1239,19 +1240,17 @@ class SearchRelatedUserListRequest : public ::google::protobuf::Message /* @@pro
   const ::google::protobuf::RepeatedField<int>& relation_filter() const;
   ::google::protobuf::RepeatedField<int>* mutable_relation_filter();
 
-  // string search_terms = 1;
+  // .e8.NullableString search_terms = 1;
+  bool has_search_terms() const;
   void clear_search_terms();
   static const int kSearchTermsFieldNumber = 1;
-  const ::std::string& search_terms() const;
-  void set_search_terms(const ::std::string& value);
-  #if LANG_CXX11
-  void set_search_terms(::std::string&& value);
-  #endif
-  void set_search_terms(const char* value);
-  void set_search_terms(const char* value, size_t size);
-  ::std::string* mutable_search_terms();
-  ::std::string* release_search_terms();
-  void set_allocated_search_terms(::std::string* search_terms);
+  private:
+  const ::e8::NullableString& _internal_search_terms() const;
+  public:
+  const ::e8::NullableString& search_terms() const;
+  ::e8::NullableString* release_search_terms();
+  ::e8::NullableString* mutable_search_terms();
+  void set_allocated_search_terms(::e8::NullableString* search_terms);
 
   // .e8.Pagination pagination = 2;
   bool has_pagination() const;
@@ -1271,7 +1270,7 @@ class SearchRelatedUserListRequest : public ::google::protobuf::Message /* @@pro
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedField<int> relation_filter_;
   mutable int _relation_filter_cached_byte_size_;
-  ::google::protobuf::internal::ArenaStringPtr search_terms_;
+  ::e8::NullableString* search_terms_;
   ::e8::Pagination* pagination_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fsocialnetwork_2eproto::TableStruct;
@@ -1589,56 +1588,51 @@ inline void DeleteContactResponse::set_deleted(bool value) {
 
 // SearchRelatedUserListRequest
 
-// string search_terms = 1;
-inline void SearchRelatedUserListRequest::clear_search_terms() {
-  search_terms_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// .e8.NullableString search_terms = 1;
+inline bool SearchRelatedUserListRequest::has_search_terms() const {
+  return this != internal_default_instance() && search_terms_ != NULL;
 }
-inline const ::std::string& SearchRelatedUserListRequest::search_terms() const {
+inline const ::e8::NullableString& SearchRelatedUserListRequest::_internal_search_terms() const {
+  return *search_terms_;
+}
+inline const ::e8::NullableString& SearchRelatedUserListRequest::search_terms() const {
+  const ::e8::NullableString* p = search_terms_;
   // @@protoc_insertion_point(field_get:e8.SearchRelatedUserListRequest.search_terms)
-  return search_terms_.GetNoArena();
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
+      &::e8::_NullableString_default_instance_);
 }
-inline void SearchRelatedUserListRequest::set_search_terms(const ::std::string& value) {
-  
-  search_terms_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:e8.SearchRelatedUserListRequest.search_terms)
-}
-#if LANG_CXX11
-inline void SearchRelatedUserListRequest::set_search_terms(::std::string&& value) {
-  
-  search_terms_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:e8.SearchRelatedUserListRequest.search_terms)
-}
-#endif
-inline void SearchRelatedUserListRequest::set_search_terms(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  search_terms_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:e8.SearchRelatedUserListRequest.search_terms)
-}
-inline void SearchRelatedUserListRequest::set_search_terms(const char* value, size_t size) {
-  
-  search_terms_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:e8.SearchRelatedUserListRequest.search_terms)
-}
-inline ::std::string* SearchRelatedUserListRequest::mutable_search_terms() {
-  
-  // @@protoc_insertion_point(field_mutable:e8.SearchRelatedUserListRequest.search_terms)
-  return search_terms_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SearchRelatedUserListRequest::release_search_terms() {
+inline ::e8::NullableString* SearchRelatedUserListRequest::release_search_terms() {
   // @@protoc_insertion_point(field_release:e8.SearchRelatedUserListRequest.search_terms)
   
-  return search_terms_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::e8::NullableString* temp = search_terms_;
+  search_terms_ = NULL;
+  return temp;
 }
-inline void SearchRelatedUserListRequest::set_allocated_search_terms(::std::string* search_terms) {
-  if (search_terms != NULL) {
+inline ::e8::NullableString* SearchRelatedUserListRequest::mutable_search_terms() {
+  
+  if (search_terms_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
+    search_terms_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.SearchRelatedUserListRequest.search_terms)
+  return search_terms_;
+}
+inline void SearchRelatedUserListRequest::set_allocated_search_terms(::e8::NullableString* search_terms) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(search_terms_);
+  }
+  if (search_terms) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      search_terms = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, search_terms, submessage_arena);
+    }
     
   } else {
     
   }
-  search_terms_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), search_terms);
+  search_terms_ = search_terms;
   // @@protoc_insertion_point(field_set_allocated:e8.SearchRelatedUserListRequest.search_terms)
 }
 
