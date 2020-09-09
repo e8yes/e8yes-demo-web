@@ -37,8 +37,8 @@ namespace e8 {
  * @return true if it an invitation has not been sent before or it hasn't been accepted, otherwise,
  * false.
  */
-bool SendInvitation(UserId inviter_id, UserId invitee_id, HostId const host_id,
-                    bool send_message_anyway,
+bool SendInvitation(UserId inviter_id, UserId invitee_id, bool send_message_anyway,
+                    HostId const host_id,
                     std::vector<MessagePublisherInterface *> const &publishers,
                     KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns);
 
@@ -49,7 +49,7 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, HostId const host_id,
  *
  * @return false if the invitation can't be found.
  */
-bool ProcessInvitation(UserId invitee_id, UserId inviter_id, HostId const host_id, bool accept,
+bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept, HostId const host_id,
                        std::vector<MessagePublisherInterface *> const &publishers,
                        KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns);
 

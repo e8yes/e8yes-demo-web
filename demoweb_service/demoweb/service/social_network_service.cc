@@ -104,11 +104,11 @@ SocialNetworkServiceImpl::SearchRelatedUserList(grpc::ServerContext *context,
     std::vector<UserEntity> related_users =
         SearchUser(identity.value().user_id(), search_terms, relation_filter, request->pagination(),
                    DemoWebEnvironment()->DemowebDatabase());
-    std::vector<UserPublicProfile> inviter_profiles = BuildPublicProfiles(
+    std::vector<UserPublicProfile> related_profiles = BuildPublicProfiles(
         identity.value().user_id(), related_users, DemoWebEnvironment()->KeyGen(),
         DemoWebEnvironment()->DemowebDatabase());
 
-    *response->mutable_user_profiles() = {inviter_profiles.begin(), inviter_profiles.end()};
+    *response->mutable_user_profiles() = {related_profiles.begin(), related_profiles.end()};
 
     return grpc::Status::OK;
 }

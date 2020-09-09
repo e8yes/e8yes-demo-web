@@ -54,8 +54,8 @@ bool SendInvitationStorageTest() {
                        env.CurrentHostId(), env.DemowebDatabase());
 
     MockMessagePublisher publisher;
-    bool result = e8::SendInvitation(*user1->id.Value(), *user2->id.Value(), env.CurrentHostId(),
-                                     /*send_message_anyway=*/false,
+    bool result = e8::SendInvitation(*user1->id.Value(), *user2->id.Value(),
+                                     /*send_message_anyway=*/false, env.CurrentHostId(),
                                      std::vector<e8::MessagePublisherInterface *>{&publisher},
                                      env.KeyGen(), env.DemowebDatabase());
     TEST_CONDITION(result);
@@ -94,14 +94,14 @@ bool ProcessInvitationAcceptTest() {
         e8::CreateUser(/*security_key=*/"key", std::vector<std::string>(), /*user_id=*/2,
                        env.CurrentHostId(), env.DemowebDatabase());
 
-    e8::SendInvitation(*user1->id.Value(), *user2->id.Value(), env.CurrentHostId(),
-                       /*send_message_anyway=*/false,
+    e8::SendInvitation(*user1->id.Value(), *user2->id.Value(),
+                       /*send_message_anyway=*/false, env.CurrentHostId(),
                        std::vector<e8::MessagePublisherInterface *>(), env.KeyGen(),
                        env.DemowebDatabase());
 
     MockMessagePublisher publisher;
-    bool result = e8::ProcessInvitation(*user2->id.Value(), *user1->id.Value(), env.CurrentHostId(),
-                                        /*accept=*/true,
+    bool result = e8::ProcessInvitation(*user2->id.Value(), *user1->id.Value(),
+                                        /*accept=*/true, env.CurrentHostId(),
                                         std::vector<e8::MessagePublisherInterface *>{&publisher},
                                         env.KeyGen(), env.DemowebDatabase());
     TEST_CONDITION(result);

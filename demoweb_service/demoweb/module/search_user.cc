@@ -51,7 +51,7 @@ std::vector<UserEntity> SearchUser(std::optional<UserId> const &viewer_id,
         query.QueryPiece(" cr ON cr.src_user_id=").Holder(&viewer_id_ph);
         query.QueryPiece(" AND cr.dst_user_id=u.id");
 
-        query.SetValueToPlaceholder(viewer_id_ph, std::make_shared<SqlInt>(*viewer_id));
+        query.SetValueToPlaceholder(viewer_id_ph, std::make_shared<SqlLong>(*viewer_id));
 
         if (!oneof_user_relations.empty()) {
             SqlQueryBuilder::Placeholder<SqlIntArr> oneof_user_relations_ph;

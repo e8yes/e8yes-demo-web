@@ -54,8 +54,8 @@ UserPublicProfile FetchUserProfile(UserId const viewer_id, UserId const user_id,
 
 } // namespace
 
-bool SendInvitation(UserId inviter_id, UserId invitee_id, HostId const host_id,
-                    bool send_message_anyway,
+bool SendInvitation(UserId inviter_id, UserId invitee_id, bool send_message_anyway,
+                    HostId const host_id,
                     std::vector<MessagePublisherInterface *> const &publishers,
                     KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
     bool first_time_invitation = true;
@@ -97,7 +97,7 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, HostId const host_id,
     return first_time_invitation;
 }
 
-bool ProcessInvitation(UserId invitee_id, UserId inviter_id, HostId const host_id, bool accept,
+bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept, HostId const host_id,
                        std::vector<MessagePublisherInterface *> const &publishers,
                        KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
     SqlQueryBuilder::Placeholder<SqlLong> invitee_id_ph;
