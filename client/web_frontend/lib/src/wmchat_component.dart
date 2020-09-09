@@ -25,8 +25,8 @@ class StructuralControl {
 }
 
 class CreateMessageChannelForm {
-  String title;
-  String description;
+  String title = "";
+  String description = "";
 }
 
 @Component(
