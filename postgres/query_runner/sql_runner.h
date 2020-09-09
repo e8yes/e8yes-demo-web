@@ -117,7 +117,10 @@ Search(SqlQueryBuilder const &query, std::initializer_list<std::string> const &e
                                            rank_result, limit, offset, &query_params);
 
     ConnectionInterface *conn = reservoir->Take();
-    std::unique_ptr<ResultSetInterface> rs = conn->RunQuery(select_query, query_params);
+
+    // TODO: turn caching one when the search query can be parameterized.
+    std::unique_ptr<ResultSetInterface> rs =
+        conn->RunQuery(select_query, query_params, /*cache_on=*/false);
 
     std::vector<std::tuple<EntityType, Others...>> results =
         ToEntityTuples<EntityType, Others...>(rs.get());
