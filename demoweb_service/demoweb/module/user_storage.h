@@ -28,20 +28,20 @@
 namespace e8 {
 
 /**
- * @brief RetrieveUser Retrieve user entity by user ID.
+ * @brief FetchUser Fetch user entity by user ID.
  *
  * @param user_id ID of the user to be retrieved.
  * @param db_conns Connections to the DemoWeb DB server.
  * @return The user entity if exists.
  */
-std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterface *db_conns);
+std::optional<UserEntity> FetchUser(UserId user_id, ConnectionReservoirInterface *db_conns);
 
 /**
- * @brief RetrieveUsers Similar to the above function, it fetches a set of users at the same time
+ * @brief FetchUsers Similar to the above function, it fetches a set of users at the same time
  * instead.
  */
-std::vector<UserEntity> RetrieveUsers(std::vector<UserId> const &user_ids,
-                                      ConnectionReservoirInterface *db_conns);
+std::vector<UserEntity> FetchUsers(std::vector<UserId> const &user_ids,
+                                   ConnectionReservoirInterface *db_conns);
 
 } // namespace e8
 

@@ -32,7 +32,7 @@
 
 namespace e8 {
 
-std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterface *db_conns) {
+std::optional<UserEntity> FetchUser(UserId user_id, ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     SqlQueryBuilder::Placeholder<SqlLong> user_id_ph;
     query.QueryPiece(TableNames::AUser()).QueryPiece(" u WHERE u.id=").Holder(&user_id_ph);
@@ -48,8 +48,8 @@ std::optional<UserEntity> RetrieveUser(UserId user_id, ConnectionReservoirInterf
     return std::get<0>(results[0]);
 }
 
-std::vector<UserEntity> RetrieveUsers(std::vector<UserId> const &user_ids,
-                                      ConnectionReservoirInterface *db_conns) {
+std::vector<UserEntity> FetchUsers(std::vector<UserId> const &user_ids,
+                                   ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;
     SqlQueryBuilder::Placeholder<SqlLongArr> user_ids_ph;
     query.QueryPiece(TableNames::AUser())

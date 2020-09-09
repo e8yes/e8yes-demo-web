@@ -41,7 +41,7 @@ namespace {
 UserPublicProfile FetchUserProfile(UserId const viewer_id, UserId const user_id,
                                    KeyGeneratorInterface *key_gen,
                                    ConnectionReservoirInterface *conns) {
-    std::optional<UserEntity> user = RetrieveUser(user_id, conns);
+    std::optional<UserEntity> user = FetchUser(user_id, conns);
     assert(user.has_value());
 
     std::vector<UserPublicProfile> inviter_profile =

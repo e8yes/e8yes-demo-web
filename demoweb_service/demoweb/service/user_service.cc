@@ -62,7 +62,7 @@ grpc::Status UserServiceImpl::Authorize(grpc::ServerContext * /*context*/,
                                         AuthorizationRequest const *request,
                                         AuthorizationResponse *response) {
     std::optional<UserEntity> user =
-        RetrieveUser(request->user_id(), DemoWebEnvironment()->DemowebDatabase());
+        FetchUser(request->user_id(), DemoWebEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
         return grpc::Status(grpc::StatusCode::NOT_FOUND,
                             "User ID=" + std::to_string(request->user_id()) + " doesn't exist.");
@@ -88,7 +88,7 @@ grpc::Status UserServiceImpl::GetPublicProfile(grpc::ServerContext *context,
     std::optional<Identity> identity = ExtractIdentityFromContext(*context, nullptr);
 
     std::optional<UserEntity> user =
-        RetrieveUser(request->user_id(), DemoWebEnvironment()->DemowebDatabase());
+        FetchUser(request->user_id(), DemoWebEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
         return grpc::Status(grpc::StatusCode::NOT_FOUND,
                             "User ID=" + std::to_string(request->user_id()) + " doesn't exist.");
@@ -120,7 +120,7 @@ grpc::Status UserServiceImpl::UpdatePublicProfile(grpc::ServerContext *context,
     }
     UserId user_id = identity.value().user_id();
 
-    std::optional<UserEntity> user = RetrieveUser(user_id, DemoWebEnvironment()->DemowebDatabase());
+    std::optional<UserEntity> user = FetchUser(user_id, DemoWebEnvironment()->DemowebDatabase());
     if (!user.has_value()) {
         return grpc::Status(grpc::StatusCode::NOT_FOUND,
                             "User ID=" + std::to_string(user_id) + " doesn't exist.");
@@ -177,7 +177,7 @@ grpc::Status UserServiceImpl::PrepareNewAvatar(grpc::ServerContext *context,
     }
 
     std::optional<UserEntity> user =
-        RetrieveUser(identity.value().user_id(), DemoWebEnvironment()->DemowebDatabase());
+        FetchUser(identity.value().user_id(), DemoWebEnvironment()->DemowebDatabase());
     assert(user.has_value());
 
     if (!AcceptableProfileAvatarFileFormat(request->file_format())) {

@@ -281,7 +281,7 @@ ToMessageChannelOverviews(UserId const viewer_id,
         }
     }
 
-    std::vector<UserEntity> members = RetrieveUsers(unique_active_member_ids, conns);
+    std::vector<UserEntity> members = FetchUsers(unique_active_member_ids, conns);
     std::vector<UserPublicProfile> member_profiles =
         BuildPublicProfiles(viewer_id, members, key_gen, conns);
     for (auto const &profile : member_profiles) {

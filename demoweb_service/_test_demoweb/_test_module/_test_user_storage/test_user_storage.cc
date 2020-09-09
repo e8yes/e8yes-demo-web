@@ -39,7 +39,7 @@ bool RetrieveUserEntityTest() {
                                                   env.CurrentHostId(), db_conns)
                                .value();
 
-    std::optional<e8::UserEntity> retrieved = e8::RetrieveUser(/*user_id=*/123L, db_conns);
+    std::optional<e8::UserEntity> retrieved = e8::FetchUser(/*user_id=*/123L, db_conns);
     TEST_CONDITION(retrieved.has_value());
     TEST_CONDITION(user0.id == retrieved.value().id);
 
@@ -56,7 +56,7 @@ bool RetrieveUserEntitiesTest() {
                                                   env.CurrentHostId(), env.DemowebDatabase())
                                .value();
 
-    std::vector<e8::UserEntity> retrieved = e8::RetrieveUsers(
+    std::vector<e8::UserEntity> retrieved = e8::FetchUsers(
         /*user_ids=*/{*user0.id.Value(), *user1.id.Value()}, env.DemowebDatabase());
     TEST_CONDITION(retrieved.size() == 2);
     TEST_CONDITION(
