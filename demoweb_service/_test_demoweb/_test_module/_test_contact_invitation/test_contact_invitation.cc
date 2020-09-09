@@ -24,7 +24,7 @@
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module/contact_invitation.h"
-#include "demoweb_service/demoweb/module/create_user.h"
+#include "demoweb_service/demoweb/module/user_storage.h"
 #include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"

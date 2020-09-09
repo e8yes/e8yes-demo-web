@@ -23,9 +23,27 @@
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
+
+/**
+ * @brief CreateUser Create a user of arbitrary group.
+ *
+ * @param security_key Security key associated with new user.
+ * @param user_group_names Name of the groups the user will be in.
+ * @param user_id Optional ID to create user with.
+ *  If the ID is specified and the user with such ID exists, this function will return a nullopt.
+ *  If the ID is empty, this function will generate a unique user ID.
+ * @param zero-offset ID of the host machine the service is currently running on.
+ * @param db_conn Connection to the DB server.
+ * @return A newly created user with its associated unique ID if there is no error.
+ */
+std::optional<UserEntity> CreateUser(std::string const &security_key,
+                                     std::vector<std::string> const &user_group_names,
+                                     std::optional<UserId> user_id, HostId const host_id,
+                                     ConnectionReservoirInterface *db_conn);
 
 /**
  * @brief FetchUser Fetch user entity by user ID.

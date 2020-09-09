@@ -16,6 +16,7 @@
  */
 
 #include <cassert>
+#include <ctime>
 #include <memory>
 #include <optional>
 #include <string>
@@ -24,6 +25,10 @@
 
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
+#include "demoweb_service/demoweb/module/create_user.h"
+#include "demoweb_service/demoweb/module/system_user_group.h"
+#include "demoweb_service/demoweb/module/user_identity.h"
 #include "demoweb_service/demoweb/module/user_storage.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
@@ -31,6 +36,39 @@
 #include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
+
+std::optional<UserEntity> CreateUser(std::string const &security_key,
+                                     std::vector<std::string> const &user_group_names,
+                                     std::optional<UserId> user_id, HostId const host_id,
+                                     ConnectionReservoirInterface *db_conn) {
+    if (!user_id.has_value()) {
+        user_id = TimeId(host_id);
+    }
+
+    UserEntity user;
+    *user.id.ValuePtr() = user_id.value();
+    *user.id_str.ValuePtr() = std::to_string(user_id.value());
+
+    // Stores a irreversibly hashed security key.
+    std::optional<SecurityKeyHash> security_hash = DigestSecurityKey(security_key);
+    assert(security_hash.has_value());
+    *user.security_key_hash.ValuePtr() = security_hash.value();
+    *user.group_names.ValuePtr() = user_group_names;
+    *user.active_level.ValuePtr() = 0;
+
+    std::time_t timestamp;
+    std::time(&timestamp);
+    *user.created_at.ValuePtr() = timestamp;
+
+    uint64_t num_rows_affected = Update(user, TableNames::AUser(), /*overrdie=*/false, db_conn);
+    if (num_rows_affected == 0) {
+        return std::nullopt;
+    }
+
+    assert(num_rows_affected == 1);
+
+    return user;
+}
 
 std::optional<UserEntity> FetchUser(UserId user_id, ConnectionReservoirInterface *db_conns) {
     SqlQueryBuilder query;

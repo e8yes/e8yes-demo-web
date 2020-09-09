@@ -22,8 +22,8 @@
 #include "common/unit_test_util/unit_test_util.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/file_access_validator.h"
+#include "demoweb_service/demoweb/module/user_storage.h"
 #include "proto_cc/identity.pb.h"
 
 bool AccessTokenValidationTest() {

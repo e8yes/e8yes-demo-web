@@ -26,8 +26,8 @@
 #include "demoweb_service/demoweb/common_entity/message_channel_has_user_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module/create_user.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
+#include "demoweb_service/demoweb/module/user_storage.h"
 #include "proto_cc/message_channel.pb.h"
 #include "proto_cc/pagination.pb.h"
 
