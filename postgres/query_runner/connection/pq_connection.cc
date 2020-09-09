@@ -90,13 +90,13 @@ PqConnection::PqConnection(std::string const &host_name, std::string const &db_n
 
 PqConnection::~PqConnection() {}
 
-std::unique_ptr<ResultSetInterface> PqConnection::RunQuery(ParameterizedQuery const &query,
-                                                           QueryParams const &params) {
-    std::optional<StatementId> id = impl_->statement_cache.Fetch(query);
+std::unique_ptr<ResultSetInterface>
+PqConnection::RunQuery(ParameterizedQuery const &query, QueryParams const &params, bool cache_on) {
+    std::optional<StatementId> id = impl_->statement_cache.Fetch(query, cache_on);
     assert(id.has_value());
 
     pqxx::work query_work(*impl_->conn);
-    pqxx::prepare::invocation invocation = query_work.prepared(std::to_string(id.value()));
+    pqxx::prepare::invocation invocation = query_work.prepared(std::to_string(*id));
     for (auto const &[slot_id, param] : params.Parameters()) {
         // slot_ids are iterated in ascending order which ensures the correct order of the export.
         param->ExportToInvocation(&invocation);
@@ -105,21 +105,26 @@ std::unique_ptr<ResultSetInterface> PqConnection::RunQuery(ParameterizedQuery co
     auto rs = std::make_unique<PqResultSet>(invocation.exec());
     query_work.commit();
 
+    impl_->statement_cache.Finish(*id, cache_on);
+
     return rs;
 }
 
-uint64_t PqConnection::RunUpdate(ParameterizedQuery const &query, QueryParams const &params) {
-    std::optional<StatementId> id = impl_->statement_cache.Fetch(query);
+uint64_t PqConnection::RunUpdate(ParameterizedQuery const &query, QueryParams const &params,
+                                 bool cache_on) {
+    std::optional<StatementId> id = impl_->statement_cache.Fetch(query, cache_on);
     assert(id.has_value());
 
     pqxx::work update_work(*impl_->conn);
-    pqxx::prepare::invocation invocation = update_work.prepared(std::to_string(id.value()));
+    pqxx::prepare::invocation invocation = update_work.prepared(std::to_string(*id));
     for (auto const &[slot_id, param] : params.Parameters()) {
         param->ExportToInvocation(&invocation);
     }
 
     pqxx::result rs = invocation.exec();
     update_work.commit();
+
+    impl_->statement_cache.Finish(*id, cache_on);
 
     return rs.affected_rows();
 }

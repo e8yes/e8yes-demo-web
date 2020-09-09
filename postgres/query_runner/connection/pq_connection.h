@@ -39,8 +39,12 @@ class PqConnection : public ConnectionInterface {
     PqConnection(PqConnection const &) = delete;
 
     std::unique_ptr<ResultSetInterface> RunQuery(ParameterizedQuery const &query,
-                                                 QueryParams const &params) override;
-    uint64_t RunUpdate(ParameterizedQuery const &query, QueryParams const &params) override;
+                                                 QueryParams const &params,
+                                                 bool cache_on = true) override;
+
+    uint64_t RunUpdate(ParameterizedQuery const &query, QueryParams const &params,
+                       bool cache_on = true) override;
+
     bool IsClosed() const override;
 
   private:

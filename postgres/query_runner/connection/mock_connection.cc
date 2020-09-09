@@ -43,7 +43,7 @@ bool MockConnection::MockUpdateSetting::operator==(MockUpdateSetting const &rhs)
 }
 
 void MockConnection::SetQueryResult(ParameterizedQuery const &query, QueryParams const &params,
-                                      MockResultSet const &result) {
+                                    MockResultSet const &result) {
     MockQuerySetting setting(query, params, result);
 
     auto it = std::find(mock_query_results_.begin(), mock_query_results_.end(), setting);
@@ -55,7 +55,7 @@ void MockConnection::SetQueryResult(ParameterizedQuery const &query, QueryParams
 }
 
 void MockConnection::SetUpdateResult(ParameterizedQuery const &query, QueryParams const &params,
-                                       uint64_t const &num_rows_affected) {
+                                     uint64_t const &num_rows_affected) {
     MockUpdateSetting setting(query, params, num_rows_affected);
 
     auto it = std::find(mock_update_results_.begin(), mock_update_results_.end(), setting);
@@ -69,7 +69,8 @@ void MockConnection::SetUpdateResult(ParameterizedQuery const &query, QueryParam
 void MockConnection::SetClosed(bool closed) { closed_ = closed; }
 
 std::unique_ptr<ResultSetInterface> MockConnection::RunQuery(ParameterizedQuery const &query,
-                                                              QueryParams const &params) {
+                                                             QueryParams const &params,
+                                                             bool /*cache_on*/) {
     auto it = std::find_if(mock_query_results_.begin(), mock_query_results_.end(),
                            [&query, &params](MockQuerySetting const &setting) {
                                return query == setting.query &&
@@ -80,7 +81,8 @@ std::unique_ptr<ResultSetInterface> MockConnection::RunQuery(ParameterizedQuery 
     return std::make_unique<MockResultSet>(it->result);
 }
 
-uint64_t MockConnection::RunUpdate(ParameterizedQuery const &query, QueryParams const &params) {
+uint64_t MockConnection::RunUpdate(ParameterizedQuery const &query, QueryParams const &params,
+                                   bool /*cache_on*/) {
     auto it = std::find_if(mock_update_results_.begin(), mock_update_results_.end(),
                            [&query, &params](MockUpdateSetting const &setting) {
                                return query == setting.query &&

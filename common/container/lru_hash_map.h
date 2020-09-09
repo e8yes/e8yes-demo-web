@@ -84,6 +84,12 @@ class LruHashMap {
     std::optional<ValueType> Fetch(KeyType const &key, bool cache_on = true);
 
     /**
+     * @brief Finish Cleans up resources after finished using the fetched value. This should be
+     * called at the point when the value will never be used afterwards after every Fetch() call.
+     */
+    void Finish(ValueType const &value, bool cache_on = true);
+
+    /**
      * @brief clear Empties the cache to its original empty state. All the existing values will be
      * evicted.
      */
@@ -210,6 +216,14 @@ std::optional<ValueType> LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::Fetch
 
     mutex_.unlock();
     return item->value;
+}
+
+template <typename KeyType, typename ValueType, typename OnFetch, typename OnEvict>
+void LruHashMap<KeyType, ValueType, OnFetch, OnEvict>::Finish(ValueType const &value,
+                                                              bool cache_on) {
+    if (!cache_on) {
+        on_evict_(value);
+    }
 }
 
 template <typename KeyType, typename ValueType, typename OnFetch, typename OnEvict>

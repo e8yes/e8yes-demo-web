@@ -111,19 +111,24 @@ class ConnectionInterface {
      *
      * @param query Query to run.
      * @param params Parameters for the query.
+     * @param cache_on Whether to cache the statement to reduce the preparation time for future
+     * call of the same query.
      * @return Query's result set.
      */
-    virtual std::unique_ptr<ResultSetInterface> RunQuery(ParameterizedQuery const &query,
-                                                         QueryParams const &params) = 0;
+    virtual std::unique_ptr<ResultSetInterface>
+    RunQuery(ParameterizedQuery const &query, QueryParams const &params, bool cache_on = true) = 0;
 
     /**
      * @brief Run a parameterized update query.
      *
      * @param query Update query to run.
      * @param params Parameters for the query.
+     * @param cache_on Whether to cache the statement to reduce the preparation time for future
+     * call of the same query.
      * @return The number of rows updated by the query.
      */
-    virtual uint64_t RunUpdate(ParameterizedQuery const &query, QueryParams const &params) = 0;
+    virtual uint64_t RunUpdate(ParameterizedQuery const &query, QueryParams const &params,
+                               bool cache_on = true) = 0;
 
     /**
      * @brief Check if the connection is closed
