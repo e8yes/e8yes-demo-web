@@ -25,7 +25,8 @@ namespace e8 {
  */
 enum SystemUserGroup { SUPER_USER_GROUP, BASELINE_USER_GROUP };
 
-static char const *kSystemUserGroupStrings[] = {"SUPER_USER_GROUP", "BASELINE_USER_GROUP"};
+static constexpr char const *kSystemUserGroupStrings[] = {"SUPER_USER_GROUP",
+                                                          "BASELINE_USER_GROUP"};
 
 } // namespace e8
 
