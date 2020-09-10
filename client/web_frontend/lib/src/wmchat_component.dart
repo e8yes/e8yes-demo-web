@@ -6,8 +6,13 @@ import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/message_channel_service_interface.dart';
 import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
+import 'package:demoweb_app/src/proto_dart/pagination.pbserver.dart';
 import 'package:demoweb_app/src/proto_dart/service_message_channel.pbgrpc.dart';
+import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pb.dart';
+import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/routes.dart';
+import 'package:demoweb_app/src/socialnetwork_service_interface.dart';
+import 'package:demoweb_app/src/sync_search_result.dart';
 import 'package:fixnum/fixnum.dart';
 
 enum WMMode {
@@ -19,14 +24,17 @@ class StructuralControl {
   WMMode mode = WMMode.SEARCH_MESSAGE_CHANNEL;
   List<MessageChannelOveriew> messageChannelOverviews =
       List<MessageChannelOveriew>();
+  List<UserPublicProfile> searchedContacts = List<UserPublicProfile>();
   bool onLoadingMessageChannels = false;
   bool showAddMessageChannelPopup = false;
   bool onCreatingMessageChannel = false;
+  bool onLoadingSearchedContact = false;
 }
 
 class CreateMessageChannelForm {
   String title = "";
   String description = "";
+  List<UserPublicProfile> members = List<UserPublicProfile>();
 }
 
 @Component(
@@ -44,10 +52,13 @@ class WMComponent implements OnActivate {
   Int64 _targetMemberId = null;
 
   final MessageChannelServiceInterface _messageChannelService;
+  final SocialNetworkServiceInterface _socialNetworkService;
+  final SearchResultSync<SearchRelatedUserListResponse> _searchSync =
+      SearchResultSync<SearchRelatedUserListResponse>();
 
   static const int _kActiveUsersFetchLimit = 5;
 
-  WMComponent(this._messageChannelService);
+  WMComponent(this._messageChannelService, this._socialNetworkService);
 
   void onActivate(_, RouterState current) async {
     _targetMemberId = getIdPathVariable(current.parameters);
@@ -64,6 +75,29 @@ class WMComponent implements OnActivate {
     structuralControl.showAddMessageChannelPopup = false;
   }
 
+  void onKeyDownSearchContact(String searchInput) {
+    SearchRelatedUserListRequest req = SearchRelatedUserListRequest();
+    req.searchTerms = (NullableString()..value = searchInput);
+    req.pagination = (Pagination()
+      ..resultPerPage = 10
+      ..pageNumber = 0);
+
+    structuralControl.onLoadingSearchedContact = true;
+    Future<SearchRelatedUserListResponse> currentSearchFuture =
+        _socialNetworkService.searchRelatedUserList(
+            req, credentialStorage.loadSignature());
+    _searchSync.takeLatestFuture(currentSearchFuture,
+        (SearchRelatedUserListResponse res) {
+      structuralControl.searchedContacts = res.userProfiles;
+      structuralControl.onLoadingSearchedContact = false;
+    });
+  }
+
+  void onClickSearchContact(UserPublicProfile to_be_member) {
+    structuralControl.searchedContacts.clear();
+    createMessageChannelForm.members.add(to_be_member);
+  }
+
   void onClickConfirmCreateMessageChannel() {
     createMessageChannelForm.title.replaceAll(" ", "");
     createMessageChannelForm.description.replaceAll(" ", "");
@@ -76,6 +110,9 @@ class WMComponent implements OnActivate {
     if (createMessageChannelForm.description.isNotEmpty) {
       request.description =
           (NullableString()..value = createMessageChannelForm.description);
+    }
+    for (UserPublicProfile member in createMessageChannelForm.members) {
+      request.memberIds.add(member.userId);
     }
 
     structuralControl.onCreatingMessageChannel = true;

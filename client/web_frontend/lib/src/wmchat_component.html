@@ -29,9 +29,37 @@
                 <div>
                     <label class="col-form-label key-label">Members</label>
                     <span class="value-label">
-                        <input placeholder="Search contacts..." />
-                        <button class="btn">+</button>
+                        <!-- Display the search list -->
+                        <li *ngFor="let contact of structuralControl.searchedContacts"
+                            (click)="onClickSearchContact(contact)"
+                            class="list-group-item">
+                            <span>{{contact.userId}}</span>
+                            <span *ngIf="contact.hasAlias()">
+                                ({{contact.alias.value}})
+                            </span>
+                            <span *ngIf="!contact.hasAlias()">
+                                (no alias)
+                            </span>
+                        </li>
+
+                        <input #searchBox
+                               class="searchbar"
+                               (input)="onKeyDownSearchContact(searchBox.value)"
+                               placeholder="Search contacts..." />
                     </span>
+                    <div class="member-list">
+                        <!-- Display members -->
+                        <li *ngFor="let member of createMessageChannelForm.members"
+                            class="list-group-item">
+                            <span>{{member.userId}}</span>
+                            <span *ngIf="member.hasAlias()">
+                                ({{member.alias.value}})
+                            </span>
+                            <span *ngIf="!member.hasAlias()">
+                                (no alias)
+                            </span>
+                        </li>
+                    </div>
                 </div>
 
                 <div>
