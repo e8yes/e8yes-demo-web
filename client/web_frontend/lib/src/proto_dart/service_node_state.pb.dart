@@ -202,3 +202,49 @@ class DeletePeersResponse extends $pb.GeneratedMessage {
   static DeletePeersResponse _defaultInstance;
 }
 
+class GetNodeStatesRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetNodeStatesRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  GetNodeStatesRequest._() : super();
+  factory GetNodeStatesRequest() => create();
+  factory GetNodeStatesRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetNodeStatesRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetNodeStatesRequest clone() => GetNodeStatesRequest()..mergeFromMessage(this);
+  GetNodeStatesRequest copyWith(void Function(GetNodeStatesRequest) updates) => super.copyWith((message) => updates(message as GetNodeStatesRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetNodeStatesRequest create() => GetNodeStatesRequest._();
+  GetNodeStatesRequest createEmptyInstance() => create();
+  static $pb.PbList<GetNodeStatesRequest> createRepeated() => $pb.PbList<GetNodeStatesRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetNodeStatesRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetNodeStatesRequest>(create);
+  static GetNodeStatesRequest _defaultInstance;
+}
+
+class GetNodeStatesResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetNodeStatesResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..pc<$17.NodeState>(1, 'nodes', $pb.PbFieldType.PM, subBuilder: $17.NodeState.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetNodeStatesResponse._() : super();
+  factory GetNodeStatesResponse() => create();
+  factory GetNodeStatesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetNodeStatesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetNodeStatesResponse clone() => GetNodeStatesResponse()..mergeFromMessage(this);
+  GetNodeStatesResponse copyWith(void Function(GetNodeStatesResponse) updates) => super.copyWith((message) => updates(message as GetNodeStatesResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetNodeStatesResponse create() => GetNodeStatesResponse._();
+  GetNodeStatesResponse createEmptyInstance() => create();
+  static $pb.PbList<GetNodeStatesResponse> createRepeated() => $pb.PbList<GetNodeStatesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetNodeStatesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetNodeStatesResponse>(create);
+  static GetNodeStatesResponse _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$17.NodeState> get nodes => $_getList(0);
+}
+

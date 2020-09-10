@@ -53,6 +53,14 @@ message DeletePeersResponse {
 }
 
 
+message GetNodeStatesRequest {
+}
+
+message GetNodeStatesResponse {
+    repeated NodeState nodes = 1;
+}
+
+
 service NodeStateService {
     // Applies incremental updates to the node state snapshot.
     rpc ReviseNodeState (ReviseNodeStateRequest) returns (ReviseNodeStateResponse);
@@ -65,4 +73,7 @@ service NodeStateService {
 
     // Delete a peer that was previously added to the current node.
     rpc DeletePeers (DeletePeersRequest) returns (DeletePeersResponse);
+
+    // Get the current node state snapshot.
+    rpc GetNodeStates (GetNodeStatesRequest) returns (GetNodeStatesResponse);
 }

@@ -39,7 +39,7 @@ namespace protobuf_service_5fnode_5fstate_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[8];
+  static const ::google::protobuf::internal::ParseTable schema[10];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -65,6 +65,12 @@ extern GetCurrentRevisionEpochRequestDefaultTypeInternal _GetCurrentRevisionEpoc
 class GetCurrentRevisionEpochResponse;
 class GetCurrentRevisionEpochResponseDefaultTypeInternal;
 extern GetCurrentRevisionEpochResponseDefaultTypeInternal _GetCurrentRevisionEpochResponse_default_instance_;
+class GetNodeStatesRequest;
+class GetNodeStatesRequestDefaultTypeInternal;
+extern GetNodeStatesRequestDefaultTypeInternal _GetNodeStatesRequest_default_instance_;
+class GetNodeStatesResponse;
+class GetNodeStatesResponseDefaultTypeInternal;
+extern GetNodeStatesResponseDefaultTypeInternal _GetNodeStatesResponse_default_instance_;
 class ReviseNodeStateRequest;
 class ReviseNodeStateRequestDefaultTypeInternal;
 extern ReviseNodeStateRequestDefaultTypeInternal _ReviseNodeStateRequest_default_instance_;
@@ -80,6 +86,8 @@ template<> ::e8::DeletePeersRequest* Arena::CreateMaybeMessage<::e8::DeletePeers
 template<> ::e8::DeletePeersResponse* Arena::CreateMaybeMessage<::e8::DeletePeersResponse>(Arena*);
 template<> ::e8::GetCurrentRevisionEpochRequest* Arena::CreateMaybeMessage<::e8::GetCurrentRevisionEpochRequest>(Arena*);
 template<> ::e8::GetCurrentRevisionEpochResponse* Arena::CreateMaybeMessage<::e8::GetCurrentRevisionEpochResponse>(Arena*);
+template<> ::e8::GetNodeStatesRequest* Arena::CreateMaybeMessage<::e8::GetNodeStatesRequest>(Arena*);
+template<> ::e8::GetNodeStatesResponse* Arena::CreateMaybeMessage<::e8::GetNodeStatesResponse>(Arena*);
 template<> ::e8::ReviseNodeStateRequest* Arena::CreateMaybeMessage<::e8::ReviseNodeStateRequest>(Arena*);
 template<> ::e8::ReviseNodeStateResponse* Arena::CreateMaybeMessage<::e8::ReviseNodeStateResponse>(Arena*);
 }  // namespace protobuf
@@ -910,6 +918,211 @@ class DeletePeersResponse : public ::google::protobuf::Message /* @@protoc_inser
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class GetNodeStatesRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetNodeStatesRequest) */ {
+ public:
+  GetNodeStatesRequest();
+  virtual ~GetNodeStatesRequest();
+
+  GetNodeStatesRequest(const GetNodeStatesRequest& from);
+
+  inline GetNodeStatesRequest& operator=(const GetNodeStatesRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  GetNodeStatesRequest(GetNodeStatesRequest&& from) noexcept
+    : GetNodeStatesRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetNodeStatesRequest& operator=(GetNodeStatesRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetNodeStatesRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GetNodeStatesRequest* internal_default_instance() {
+    return reinterpret_cast<const GetNodeStatesRequest*>(
+               &_GetNodeStatesRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  void Swap(GetNodeStatesRequest* other);
+  friend void swap(GetNodeStatesRequest& a, GetNodeStatesRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GetNodeStatesRequest* New() const final {
+    return CreateMaybeMessage<GetNodeStatesRequest>(NULL);
+  }
+
+  GetNodeStatesRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetNodeStatesRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const GetNodeStatesRequest& from);
+  void MergeFrom(const GetNodeStatesRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetNodeStatesRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:e8.GetNodeStatesRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class GetNodeStatesResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetNodeStatesResponse) */ {
+ public:
+  GetNodeStatesResponse();
+  virtual ~GetNodeStatesResponse();
+
+  GetNodeStatesResponse(const GetNodeStatesResponse& from);
+
+  inline GetNodeStatesResponse& operator=(const GetNodeStatesResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  GetNodeStatesResponse(GetNodeStatesResponse&& from) noexcept
+    : GetNodeStatesResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline GetNodeStatesResponse& operator=(GetNodeStatesResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetNodeStatesResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GetNodeStatesResponse* internal_default_instance() {
+    return reinterpret_cast<const GetNodeStatesResponse*>(
+               &_GetNodeStatesResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    9;
+
+  void Swap(GetNodeStatesResponse* other);
+  friend void swap(GetNodeStatesResponse& a, GetNodeStatesResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GetNodeStatesResponse* New() const final {
+    return CreateMaybeMessage<GetNodeStatesResponse>(NULL);
+  }
+
+  GetNodeStatesResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetNodeStatesResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const GetNodeStatesResponse& from);
+  void MergeFrom(const GetNodeStatesResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetNodeStatesResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .e8.NodeState nodes = 1;
+  int nodes_size() const;
+  void clear_nodes();
+  static const int kNodesFieldNumber = 1;
+  ::e8::NodeState* mutable_nodes(int index);
+  ::google::protobuf::RepeatedPtrField< ::e8::NodeState >*
+      mutable_nodes();
+  const ::e8::NodeState& nodes(int index) const;
+  ::e8::NodeState* add_nodes();
+  const ::google::protobuf::RepeatedPtrField< ::e8::NodeState >&
+      nodes() const;
+
+  // @@protoc_insertion_point(class_scope:e8.GetNodeStatesResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::e8::NodeState > nodes_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -1086,9 +1299,48 @@ DeletePeersRequest::mutable_node_names() {
 
 // DeletePeersResponse
 
+// -------------------------------------------------------------------
+
+// GetNodeStatesRequest
+
+// -------------------------------------------------------------------
+
+// GetNodeStatesResponse
+
+// repeated .e8.NodeState nodes = 1;
+inline int GetNodeStatesResponse::nodes_size() const {
+  return nodes_.size();
+}
+inline ::e8::NodeState* GetNodeStatesResponse::mutable_nodes(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.GetNodeStatesResponse.nodes)
+  return nodes_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::e8::NodeState >*
+GetNodeStatesResponse::mutable_nodes() {
+  // @@protoc_insertion_point(field_mutable_list:e8.GetNodeStatesResponse.nodes)
+  return &nodes_;
+}
+inline const ::e8::NodeState& GetNodeStatesResponse::nodes(int index) const {
+  // @@protoc_insertion_point(field_get:e8.GetNodeStatesResponse.nodes)
+  return nodes_.Get(index);
+}
+inline ::e8::NodeState* GetNodeStatesResponse::add_nodes() {
+  // @@protoc_insertion_point(field_add:e8.GetNodeStatesResponse.nodes)
+  return nodes_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::e8::NodeState >&
+GetNodeStatesResponse::nodes() const {
+  // @@protoc_insertion_point(field_list:e8.GetNodeStatesResponse.nodes)
+  return nodes_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

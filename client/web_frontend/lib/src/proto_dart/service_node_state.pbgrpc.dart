@@ -39,6 +39,12 @@ class NodeStateServiceClient extends $grpc.Client {
           ($1.DeletePeersRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.DeletePeersResponse.fromBuffer(value));
+  static final _$getNodeStates =
+      $grpc.ClientMethod<$1.GetNodeStatesRequest, $1.GetNodeStatesResponse>(
+          '/e8.NodeStateService/GetNodeStates',
+          ($1.GetNodeStatesRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $1.GetNodeStatesResponse.fromBuffer(value));
 
   NodeStateServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions options})
@@ -74,6 +80,15 @@ class NodeStateServiceClient extends $grpc.Client {
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$deletePeers, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
+
+  $grpc.ResponseFuture<$1.GetNodeStatesResponse> getNodeStates(
+      $1.GetNodeStatesRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(
+        _$getNodeStates, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -117,6 +132,15 @@ abstract class NodeStateServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $1.DeletePeersRequest.fromBuffer(value),
             ($1.DeletePeersResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$1.GetNodeStatesRequest, $1.GetNodeStatesResponse>(
+            'GetNodeStates',
+            getNodeStates_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $1.GetNodeStatesRequest.fromBuffer(value),
+            ($1.GetNodeStatesResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$1.ReviseNodeStateResponse> reviseNodeState_Pre(
@@ -141,6 +165,12 @@ abstract class NodeStateServiceBase extends $grpc.Service {
     return deletePeers(call, await request);
   }
 
+  $async.Future<$1.GetNodeStatesResponse> getNodeStates_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$1.GetNodeStatesRequest> request) async {
+    return getNodeStates(call, await request);
+  }
+
   $async.Future<$1.ReviseNodeStateResponse> reviseNodeState(
       $grpc.ServiceCall call, $1.ReviseNodeStateRequest request);
   $async.Future<$1.GetCurrentRevisionEpochResponse> getCurrentRevisionEpoch(
@@ -149,4 +179,6 @@ abstract class NodeStateServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.AddPeersRequest request);
   $async.Future<$1.DeletePeersResponse> deletePeers(
       $grpc.ServiceCall call, $1.DeletePeersRequest request);
+  $async.Future<$1.GetNodeStatesResponse> getNodeStates(
+      $grpc.ServiceCall call, $1.GetNodeStatesRequest request);
 }

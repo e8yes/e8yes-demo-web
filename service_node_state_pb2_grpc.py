@@ -34,6 +34,11 @@ class NodeStateServiceStub(object):
         request_serializer=service__node__state__pb2.DeletePeersRequest.SerializeToString,
         response_deserializer=service__node__state__pb2.DeletePeersResponse.FromString,
         )
+    self.GetNodeStates = channel.unary_unary(
+        '/e8.NodeStateService/GetNodeStates',
+        request_serializer=service__node__state__pb2.GetNodeStatesRequest.SerializeToString,
+        response_deserializer=service__node__state__pb2.GetNodeStatesResponse.FromString,
+        )
 
 
 class NodeStateServiceServicer(object):
@@ -68,6 +73,13 @@ class NodeStateServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def GetNodeStates(self, request, context):
+    """Get the current node state snapshot.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_NodeStateServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -90,6 +102,11 @@ def add_NodeStateServiceServicer_to_server(servicer, server):
           servicer.DeletePeers,
           request_deserializer=service__node__state__pb2.DeletePeersRequest.FromString,
           response_serializer=service__node__state__pb2.DeletePeersResponse.SerializeToString,
+      ),
+      'GetNodeStates': grpc.unary_unary_rpc_method_handler(
+          servicer.GetNodeStates,
+          request_deserializer=service__node__state__pb2.GetNodeStatesRequest.FromString,
+          response_serializer=service__node__state__pb2.GetNodeStatesResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

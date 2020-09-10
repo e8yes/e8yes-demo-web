@@ -49,3 +49,14 @@ const DeletePeersResponse$json = const {
   '1': 'DeletePeersResponse',
 };
 
+const GetNodeStatesRequest$json = const {
+  '1': 'GetNodeStatesRequest',
+};
+
+const GetNodeStatesResponse$json = const {
+  '1': 'GetNodeStatesResponse',
+  '2': const [
+    const {'1': 'nodes', '3': 1, '4': 3, '5': 11, '6': '.e8.NodeState', '10': 'nodes'},
+  ],
+};
+

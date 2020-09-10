@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='e8',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x18service_node_state.proto\x12\x02\x65\x38\x1a\nnode.proto\"B\n\x16ReviseNodeStateRequest\x12(\n\trevisions\x18\x01 \x03(\x0b\x32\x15.e8.NodeStateRevision\"\x19\n\x17ReviseNodeStateResponse\" \n\x1eGetCurrentRevisionEpochRequest\"9\n\x1fGetCurrentRevisionEpochResponse\x12\x16\n\x0erevision_epoch\x18\x01 \x01(\x03\"/\n\x0f\x41\x64\x64PeersRequest\x12\x1c\n\x05nodes\x18\x01 \x03(\x0b\x32\r.e8.NodeState\"\x12\n\x10\x41\x64\x64PeersResponse\"(\n\x12\x44\x65letePeersRequest\x12\x12\n\nnode_names\x18\x01 \x03(\t\"\x15\n\x13\x44\x65letePeersResponse2\xb9\x02\n\x10NodeStateService\x12J\n\x0fReviseNodeState\x12\x1a.e8.ReviseNodeStateRequest\x1a\x1b.e8.ReviseNodeStateResponse\x12\x62\n\x17GetCurrentRevisionEpoch\x12\".e8.GetCurrentRevisionEpochRequest\x1a#.e8.GetCurrentRevisionEpochResponse\x12\x35\n\x08\x41\x64\x64Peers\x12\x13.e8.AddPeersRequest\x1a\x14.e8.AddPeersResponse\x12>\n\x0b\x44\x65letePeers\x12\x16.e8.DeletePeersRequest\x1a\x17.e8.DeletePeersResponseb\x06proto3')
+  serialized_pb=_b('\n\x18service_node_state.proto\x12\x02\x65\x38\x1a\nnode.proto\"B\n\x16ReviseNodeStateRequest\x12(\n\trevisions\x18\x01 \x03(\x0b\x32\x15.e8.NodeStateRevision\"\x19\n\x17ReviseNodeStateResponse\" \n\x1eGetCurrentRevisionEpochRequest\"9\n\x1fGetCurrentRevisionEpochResponse\x12\x16\n\x0erevision_epoch\x18\x01 \x01(\x03\"/\n\x0f\x41\x64\x64PeersRequest\x12\x1c\n\x05nodes\x18\x01 \x03(\x0b\x32\r.e8.NodeState\"\x12\n\x10\x41\x64\x64PeersResponse\"(\n\x12\x44\x65letePeersRequest\x12\x12\n\nnode_names\x18\x01 \x03(\t\"\x15\n\x13\x44\x65letePeersResponse\"\x16\n\x14GetNodeStatesRequest\"5\n\x15GetNodeStatesResponse\x12\x1c\n\x05nodes\x18\x01 \x03(\x0b\x32\r.e8.NodeState2\xff\x02\n\x10NodeStateService\x12J\n\x0fReviseNodeState\x12\x1a.e8.ReviseNodeStateRequest\x1a\x1b.e8.ReviseNodeStateResponse\x12\x62\n\x17GetCurrentRevisionEpoch\x12\".e8.GetCurrentRevisionEpochRequest\x1a#.e8.GetCurrentRevisionEpochResponse\x12\x35\n\x08\x41\x64\x64Peers\x12\x13.e8.AddPeersRequest\x1a\x14.e8.AddPeersResponse\x12>\n\x0b\x44\x65letePeers\x12\x16.e8.DeletePeersRequest\x1a\x17.e8.DeletePeersResponse\x12\x44\n\rGetNodeStates\x12\x18.e8.GetNodeStatesRequest\x1a\x19.e8.GetNodeStatesResponseb\x06proto3')
   ,
   dependencies=[node__pb2.DESCRIPTOR,])
 
@@ -246,8 +246,64 @@ _DELETEPEERSRESPONSE = _descriptor.Descriptor(
   serialized_end=364,
 )
 
+
+_GETNODESTATESREQUEST = _descriptor.Descriptor(
+  name='GetNodeStatesRequest',
+  full_name='e8.GetNodeStatesRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=366,
+  serialized_end=388,
+)
+
+
+_GETNODESTATESRESPONSE = _descriptor.Descriptor(
+  name='GetNodeStatesResponse',
+  full_name='e8.GetNodeStatesResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='nodes', full_name='e8.GetNodeStatesResponse.nodes', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=390,
+  serialized_end=443,
+)
+
 _REVISENODESTATEREQUEST.fields_by_name['revisions'].message_type = node__pb2._NODESTATEREVISION
 _ADDPEERSREQUEST.fields_by_name['nodes'].message_type = node__pb2._NODESTATE
+_GETNODESTATESRESPONSE.fields_by_name['nodes'].message_type = node__pb2._NODESTATE
 DESCRIPTOR.message_types_by_name['ReviseNodeStateRequest'] = _REVISENODESTATEREQUEST
 DESCRIPTOR.message_types_by_name['ReviseNodeStateResponse'] = _REVISENODESTATERESPONSE
 DESCRIPTOR.message_types_by_name['GetCurrentRevisionEpochRequest'] = _GETCURRENTREVISIONEPOCHREQUEST
@@ -256,6 +312,8 @@ DESCRIPTOR.message_types_by_name['AddPeersRequest'] = _ADDPEERSREQUEST
 DESCRIPTOR.message_types_by_name['AddPeersResponse'] = _ADDPEERSRESPONSE
 DESCRIPTOR.message_types_by_name['DeletePeersRequest'] = _DELETEPEERSREQUEST
 DESCRIPTOR.message_types_by_name['DeletePeersResponse'] = _DELETEPEERSRESPONSE
+DESCRIPTOR.message_types_by_name['GetNodeStatesRequest'] = _GETNODESTATESREQUEST
+DESCRIPTOR.message_types_by_name['GetNodeStatesResponse'] = _GETNODESTATESRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ReviseNodeStateRequest = _reflection.GeneratedProtocolMessageType('ReviseNodeStateRequest', (_message.Message,), dict(
@@ -314,6 +372,20 @@ DeletePeersResponse = _reflection.GeneratedProtocolMessageType('DeletePeersRespo
   ))
 _sym_db.RegisterMessage(DeletePeersResponse)
 
+GetNodeStatesRequest = _reflection.GeneratedProtocolMessageType('GetNodeStatesRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETNODESTATESREQUEST,
+  __module__ = 'service_node_state_pb2'
+  # @@protoc_insertion_point(class_scope:e8.GetNodeStatesRequest)
+  ))
+_sym_db.RegisterMessage(GetNodeStatesRequest)
+
+GetNodeStatesResponse = _reflection.GeneratedProtocolMessageType('GetNodeStatesResponse', (_message.Message,), dict(
+  DESCRIPTOR = _GETNODESTATESRESPONSE,
+  __module__ = 'service_node_state_pb2'
+  # @@protoc_insertion_point(class_scope:e8.GetNodeStatesResponse)
+  ))
+_sym_db.RegisterMessage(GetNodeStatesResponse)
+
 
 
 _NODESTATESERVICE = _descriptor.ServiceDescriptor(
@@ -322,8 +394,8 @@ _NODESTATESERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=367,
-  serialized_end=680,
+  serialized_start=446,
+  serialized_end=829,
   methods=[
   _descriptor.MethodDescriptor(
     name='ReviseNodeState',
@@ -359,6 +431,15 @@ _NODESTATESERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_DELETEPEERSREQUEST,
     output_type=_DELETEPEERSRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetNodeStates',
+    full_name='e8.NodeStateService.GetNodeStates',
+    index=4,
+    containing_service=None,
+    input_type=_GETNODESTATESREQUEST,
+    output_type=_GETNODESTATESRESPONSE,
     serialized_options=None,
   ),
 ])

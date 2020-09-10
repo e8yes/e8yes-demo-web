@@ -84,6 +84,14 @@ class NodeStateService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>> PrepareAsyncDeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>>(PrepareAsyncDeletePeersRaw(context, request, cq));
     }
+    // Get the current node state snapshot.
+    virtual ::grpc::Status GetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::e8::GetNodeStatesResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetNodeStatesResponse>> AsyncGetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetNodeStatesResponse>>(AsyncGetNodeStatesRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetNodeStatesResponse>> PrepareAsyncGetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetNodeStatesResponse>>(PrepareAsyncGetNodeStatesRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
@@ -95,6 +103,8 @@ class NodeStateService final {
       virtual void AddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response, std::function<void(::grpc::Status)>) = 0;
       // Delete a peer that was previously added to the current node.
       virtual void DeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response, std::function<void(::grpc::Status)>) = 0;
+      // Get the current node state snapshot.
+      virtual void GetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
@@ -106,6 +116,8 @@ class NodeStateService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::AddPeersResponse>* PrepareAsyncAddPeersRaw(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>* AsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::DeletePeersResponse>* PrepareAsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetNodeStatesResponse>* AsyncGetNodeStatesRaw(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetNodeStatesResponse>* PrepareAsyncGetNodeStatesRaw(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -138,6 +150,13 @@ class NodeStateService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>> PrepareAsyncDeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>>(PrepareAsyncDeletePeersRaw(context, request, cq));
     }
+    ::grpc::Status GetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::e8::GetNodeStatesResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetNodeStatesResponse>> AsyncGetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetNodeStatesResponse>>(AsyncGetNodeStatesRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetNodeStatesResponse>> PrepareAsyncGetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetNodeStatesResponse>>(PrepareAsyncGetNodeStatesRaw(context, request, cq));
+    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
@@ -145,6 +164,7 @@ class NodeStateService final {
       void GetCurrentRevisionEpoch(::grpc::ClientContext* context, const ::e8::GetCurrentRevisionEpochRequest* request, ::e8::GetCurrentRevisionEpochResponse* response, std::function<void(::grpc::Status)>) override;
       void AddPeers(::grpc::ClientContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response, std::function<void(::grpc::Status)>) override;
       void DeletePeers(::grpc::ClientContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -164,10 +184,13 @@ class NodeStateService final {
     ::grpc::ClientAsyncResponseReader< ::e8::AddPeersResponse>* PrepareAsyncAddPeersRaw(::grpc::ClientContext* context, const ::e8::AddPeersRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>* AsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::DeletePeersResponse>* PrepareAsyncDeletePeersRaw(::grpc::ClientContext* context, const ::e8::DeletePeersRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::GetNodeStatesResponse>* AsyncGetNodeStatesRaw(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::GetNodeStatesResponse>* PrepareAsyncGetNodeStatesRaw(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_ReviseNodeState_;
     const ::grpc::internal::RpcMethod rpcmethod_GetCurrentRevisionEpoch_;
     const ::grpc::internal::RpcMethod rpcmethod_AddPeers_;
     const ::grpc::internal::RpcMethod rpcmethod_DeletePeers_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetNodeStates_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -183,6 +206,8 @@ class NodeStateService final {
     virtual ::grpc::Status AddPeers(::grpc::ServerContext* context, const ::e8::AddPeersRequest* request, ::e8::AddPeersResponse* response);
     // Delete a peer that was previously added to the current node.
     virtual ::grpc::Status DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response);
+    // Get the current node state snapshot.
+    virtual ::grpc::Status GetNodeStates(::grpc::ServerContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_ReviseNodeState : public BaseClass {
@@ -264,7 +289,27 @@ class NodeStateService final {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_ReviseNodeState<WithAsyncMethod_GetCurrentRevisionEpoch<WithAsyncMethod_AddPeers<WithAsyncMethod_DeletePeers<Service > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_GetNodeStates : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_GetNodeStates() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_GetNodeStates() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetNodeStates(::grpc::ServerContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetNodeStates(::grpc::ServerContext* context, ::e8::GetNodeStatesRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::GetNodeStatesResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_ReviseNodeState<WithAsyncMethod_GetCurrentRevisionEpoch<WithAsyncMethod_AddPeers<WithAsyncMethod_DeletePeers<WithAsyncMethod_GetNodeStates<Service > > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_ReviseNodeState : public BaseClass {
    private:
@@ -329,6 +374,23 @@ class NodeStateService final {
     }
     // disable synchronous version of this method
     ::grpc::Status DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetNodeStates : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetNodeStates() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_GetNodeStates() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetNodeStates(::grpc::ServerContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -414,6 +476,26 @@ class NodeStateService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_GetNodeStates : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithRawMethod_GetNodeStates() {
+      ::grpc::Service::MarkMethodRaw(4);
+    }
+    ~WithRawMethod_GetNodeStates() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetNodeStates(::grpc::ServerContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetNodeStates(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_ReviseNodeState : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
@@ -493,9 +575,29 @@ class NodeStateService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedDeletePeers(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::DeletePeersRequest,::e8::DeletePeersResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_ReviseNodeState<WithStreamedUnaryMethod_GetCurrentRevisionEpoch<WithStreamedUnaryMethod_AddPeers<WithStreamedUnaryMethod_DeletePeers<Service > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetNodeStates : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetNodeStates() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::GetNodeStatesRequest, ::e8::GetNodeStatesResponse>(std::bind(&WithStreamedUnaryMethod_GetNodeStates<BaseClass>::StreamedGetNodeStates, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetNodeStates() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetNodeStates(::grpc::ServerContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetNodeStates(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::GetNodeStatesRequest,::e8::GetNodeStatesResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_ReviseNodeState<WithStreamedUnaryMethod_GetCurrentRevisionEpoch<WithStreamedUnaryMethod_AddPeers<WithStreamedUnaryMethod_DeletePeers<WithStreamedUnaryMethod_GetNodeStates<Service > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_ReviseNodeState<WithStreamedUnaryMethod_GetCurrentRevisionEpoch<WithStreamedUnaryMethod_AddPeers<WithStreamedUnaryMethod_DeletePeers<Service > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_ReviseNodeState<WithStreamedUnaryMethod_GetCurrentRevisionEpoch<WithStreamedUnaryMethod_AddPeers<WithStreamedUnaryMethod_DeletePeers<WithStreamedUnaryMethod_GetNodeStates<Service > > > > > StreamedService;
 };
 
 }  // namespace e8

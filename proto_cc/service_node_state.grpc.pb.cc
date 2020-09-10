@@ -22,6 +22,7 @@ static const char* NodeStateService_method_names[] = {
   "/e8.NodeStateService/GetCurrentRevisionEpoch",
   "/e8.NodeStateService/AddPeers",
   "/e8.NodeStateService/DeletePeers",
+  "/e8.NodeStateService/GetNodeStates",
 };
 
 std::unique_ptr< NodeStateService::Stub> NodeStateService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -35,6 +36,7 @@ NodeStateService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& c
   , rpcmethod_GetCurrentRevisionEpoch_(NodeStateService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_AddPeers_(NodeStateService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_DeletePeers_(NodeStateService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetNodeStates_(NodeStateService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status NodeStateService::Stub::ReviseNodeState(::grpc::ClientContext* context, const ::e8::ReviseNodeStateRequest& request, ::e8::ReviseNodeStateResponse* response) {
@@ -101,6 +103,22 @@ void NodeStateService::Stub::experimental_async::DeletePeers(::grpc::ClientConte
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::DeletePeersResponse>::Create(channel_.get(), cq, rpcmethod_DeletePeers_, context, request, false);
 }
 
+::grpc::Status NodeStateService::Stub::GetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::e8::GetNodeStatesResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetNodeStates_, context, request, response);
+}
+
+void NodeStateService::Stub::experimental_async::GetNodeStates(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetNodeStates_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::GetNodeStatesResponse>* NodeStateService::Stub::AsyncGetNodeStatesRaw(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetNodeStatesResponse>::Create(channel_.get(), cq, rpcmethod_GetNodeStates_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::GetNodeStatesResponse>* NodeStateService::Stub::PrepareAsyncGetNodeStatesRaw(::grpc::ClientContext* context, const ::e8::GetNodeStatesRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetNodeStatesResponse>::Create(channel_.get(), cq, rpcmethod_GetNodeStates_, context, request, false);
+}
+
 NodeStateService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       NodeStateService_method_names[0],
@@ -122,6 +140,11 @@ NodeStateService::Service::Service() {
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< NodeStateService::Service, ::e8::DeletePeersRequest, ::e8::DeletePeersResponse>(
           std::mem_fn(&NodeStateService::Service::DeletePeers), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      NodeStateService_method_names[4],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< NodeStateService::Service, ::e8::GetNodeStatesRequest, ::e8::GetNodeStatesResponse>(
+          std::mem_fn(&NodeStateService::Service::GetNodeStates), this)));
 }
 
 NodeStateService::Service::~Service() {
@@ -149,6 +172,13 @@ NodeStateService::Service::~Service() {
 }
 
 ::grpc::Status NodeStateService::Service::DeletePeers(::grpc::ServerContext* context, const ::e8::DeletePeersRequest* request, ::e8::DeletePeersResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status NodeStateService::Service::GetNodeStates(::grpc::ServerContext* context, const ::e8::GetNodeStatesRequest* request, ::e8::GetNodeStatesResponse* response) {
   (void) context;
   (void) request;
   (void) response;
