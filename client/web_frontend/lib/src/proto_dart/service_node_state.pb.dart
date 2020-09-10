@@ -225,7 +225,7 @@ class GetNodeStatesRequest extends $pb.GeneratedMessage {
 
 class GetNodeStatesResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetNodeStatesResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$17.NodeState>(1, 'nodes', $pb.PbFieldType.PM, subBuilder: $17.NodeState.create)
+    ..m<$core.String, $17.NodeState>(1, 'nodes', entryClassName: 'GetNodeStatesResponse.NodesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: $17.NodeState.create, packageName: const $pb.PackageName('e8'))
     ..hasRequiredFields = false
   ;
 
@@ -245,6 +245,6 @@ class GetNodeStatesResponse extends $pb.GeneratedMessage {
   static GetNodeStatesResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$17.NodeState> get nodes => $_getList(0);
+  $core.Map<$core.String, $17.NodeState> get nodes => $_getMap(0);
 }
 

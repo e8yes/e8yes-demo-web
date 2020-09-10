@@ -23,6 +23,9 @@ namespace protobuf_node_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_node_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NodeState;
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_node_2eproto ::google::protobuf::internal::SCCInfo<2> scc_info_NodeStateRevision;
 }  // namespace protobuf_node_2eproto
+namespace protobuf_service_5fnode_5fstate_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_service_5fnode_5fstate_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_GetNodeStatesResponse_NodesEntry_DoNotUse;
+}  // namespace protobuf_service_5fnode_5fstate_2eproto
 namespace e8 {
 class ReviseNodeStateRequestDefaultTypeInternal {
  public:
@@ -69,6 +72,11 @@ class GetNodeStatesRequestDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<GetNodeStatesRequest>
       _instance;
 } _GetNodeStatesRequest_default_instance_;
+class GetNodeStatesResponse_NodesEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<GetNodeStatesResponse_NodesEntry_DoNotUse>
+      _instance;
+} _GetNodeStatesResponse_NodesEntry_DoNotUse_default_instance_;
 class GetNodeStatesResponseDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<GetNodeStatesResponse>
@@ -204,6 +212,20 @@ static void InitDefaultsGetNodeStatesRequest() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_GetNodeStatesRequest =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetNodeStatesRequest}, {}};
 
+static void InitDefaultsGetNodeStatesResponse_NodesEntry_DoNotUse() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_GetNodeStatesResponse_NodesEntry_DoNotUse_default_instance_;
+    new (ptr) ::e8::GetNodeStatesResponse_NodesEntry_DoNotUse();
+  }
+  ::e8::GetNodeStatesResponse_NodesEntry_DoNotUse::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<1> scc_info_GetNodeStatesResponse_NodesEntry_DoNotUse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetNodeStatesResponse_NodesEntry_DoNotUse}, {
+      &protobuf_node_2eproto::scc_info_NodeState.base,}};
+
 static void InitDefaultsGetNodeStatesResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -217,7 +239,7 @@ static void InitDefaultsGetNodeStatesResponse() {
 
 ::google::protobuf::internal::SCCInfo<1> scc_info_GetNodeStatesResponse =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetNodeStatesResponse}, {
-      &protobuf_node_2eproto::scc_info_NodeState.base,}};
+      &protobuf_service_5fnode_5fstate_2eproto::scc_info_GetNodeStatesResponse_NodesEntry_DoNotUse.base,}};
 
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_ReviseNodeStateRequest.base);
@@ -229,10 +251,11 @@ void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_DeletePeersRequest.base);
   ::google::protobuf::internal::InitSCC(&scc_info_DeletePeersResponse.base);
   ::google::protobuf::internal::InitSCC(&scc_info_GetNodeStatesRequest.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_GetNodeStatesResponse_NodesEntry_DoNotUse.base);
   ::google::protobuf::internal::InitSCC(&scc_info_GetNodeStatesResponse.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[10];
+::google::protobuf::Metadata file_level_metadata[11];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -284,6 +307,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetNodeStatesResponse_NodesEntry_DoNotUse, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetNodeStatesResponse_NodesEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetNodeStatesResponse_NodesEntry_DoNotUse, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetNodeStatesResponse_NodesEntry_DoNotUse, value_),
+  0,
+  1,
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetNodeStatesResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -301,7 +333,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 33, -1, sizeof(::e8::DeletePeersRequest)},
   { 39, -1, sizeof(::e8::DeletePeersResponse)},
   { 44, -1, sizeof(::e8::GetNodeStatesRequest)},
-  { 49, -1, sizeof(::e8::GetNodeStatesResponse)},
+  { 49, 56, sizeof(::e8::GetNodeStatesResponse_NodesEntry_DoNotUse)},
+  { 58, -1, sizeof(::e8::GetNodeStatesResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -314,6 +347,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DeletePeersRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DeletePeersResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetNodeStatesRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetNodeStatesResponse_NodesEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetNodeStatesResponse_default_instance_),
 };
 
@@ -332,7 +366,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 10);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 11);
 }
 
 void AddDescriptorsImpl() {
@@ -347,21 +381,24 @@ void AddDescriptorsImpl() {
       "rsRequest\022\034\n\005nodes\030\001 \003(\0132\r.e8.NodeState\""
       "\022\n\020AddPeersResponse\"(\n\022DeletePeersReques"
       "t\022\022\n\nnode_names\030\001 \003(\t\"\025\n\023DeletePeersResp"
-      "onse\"\026\n\024GetNodeStatesRequest\"5\n\025GetNodeS"
-      "tatesResponse\022\034\n\005nodes\030\001 \003(\0132\r.e8.NodeSt"
-      "ate2\377\002\n\020NodeStateService\022J\n\017ReviseNodeSt"
-      "ate\022\032.e8.ReviseNodeStateRequest\032\033.e8.Rev"
-      "iseNodeStateResponse\022b\n\027GetCurrentRevisi"
-      "onEpoch\022\".e8.GetCurrentRevisionEpochRequ"
-      "est\032#.e8.GetCurrentRevisionEpochResponse"
-      "\0225\n\010AddPeers\022\023.e8.AddPeersRequest\032\024.e8.A"
-      "ddPeersResponse\022>\n\013DeletePeers\022\026.e8.Dele"
-      "tePeersRequest\032\027.e8.DeletePeersResponse\022"
-      "D\n\rGetNodeStates\022\030.e8.GetNodeStatesReque"
-      "st\032\031.e8.GetNodeStatesResponseb\006proto3"
+      "onse\"\026\n\024GetNodeStatesRequest\"\211\001\n\025GetNode"
+      "StatesResponse\0223\n\005nodes\030\001 \003(\0132$.e8.GetNo"
+      "deStatesResponse.NodesEntry\032;\n\nNodesEntr"
+      "y\022\013\n\003key\030\001 \001(\t\022\034\n\005value\030\002 \001(\0132\r.e8.NodeS"
+      "tate:\0028\0012\377\002\n\020NodeStateService\022J\n\017ReviseN"
+      "odeState\022\032.e8.ReviseNodeStateRequest\032\033.e"
+      "8.ReviseNodeStateResponse\022b\n\027GetCurrentR"
+      "evisionEpoch\022\".e8.GetCurrentRevisionEpoc"
+      "hRequest\032#.e8.GetCurrentRevisionEpochRes"
+      "ponse\0225\n\010AddPeers\022\023.e8.AddPeersRequest\032\024"
+      ".e8.AddPeersResponse\022>\n\013DeletePeers\022\026.e8"
+      ".DeletePeersRequest\032\027.e8.DeletePeersResp"
+      "onse\022D\n\rGetNodeStates\022\030.e8.GetNodeStates"
+      "Request\032\031.e8.GetNodeStatesResponseb\006prot"
+      "o3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 837);
+      descriptor, 922);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_node_state.proto", &protobuf_RegisterTypes);
   ::protobuf_node_2eproto::AddDescriptors();
@@ -2198,6 +2235,23 @@ void GetNodeStatesRequest::InternalSwap(GetNodeStatesRequest* other) {
 
 // ===================================================================
 
+GetNodeStatesResponse_NodesEntry_DoNotUse::GetNodeStatesResponse_NodesEntry_DoNotUse() {}
+GetNodeStatesResponse_NodesEntry_DoNotUse::GetNodeStatesResponse_NodesEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+void GetNodeStatesResponse_NodesEntry_DoNotUse::MergeFrom(const GetNodeStatesResponse_NodesEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::google::protobuf::Metadata GetNodeStatesResponse_NodesEntry_DoNotUse::GetMetadata() const {
+  ::protobuf_service_5fnode_5fstate_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_service_5fnode_5fstate_2eproto::file_level_metadata[9];
+}
+void GetNodeStatesResponse_NodesEntry_DoNotUse::MergeFrom(
+    const ::google::protobuf::Message& other) {
+  ::google::protobuf::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
 void GetNodeStatesResponse::InitAsDefaultInstance() {
 }
 void GetNodeStatesResponse::clear_nodes() {
@@ -2216,9 +2270,9 @@ GetNodeStatesResponse::GetNodeStatesResponse()
 }
 GetNodeStatesResponse::GetNodeStatesResponse(const GetNodeStatesResponse& from)
   : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
-      nodes_(from.nodes_) {
+      _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  nodes_.MergeFrom(from.nodes_);
   // @@protoc_insertion_point(copy_constructor:e8.GetNodeStatesResponse)
 }
 
@@ -2267,12 +2321,23 @@ bool GetNodeStatesResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .e8.NodeState nodes = 1;
+      // map<string, .e8.NodeState> nodes = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-                input, add_nodes()));
+          GetNodeStatesResponse_NodesEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
+              GetNodeStatesResponse_NodesEntry_DoNotUse,
+              ::std::string, ::e8::NodeState,
+              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+              ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+              0 >,
+            ::google::protobuf::Map< ::std::string, ::e8::NodeState > > parser(&nodes_);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, &parser));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            parser.key().data(), static_cast<int>(parser.key().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "e8.GetNodeStatesResponse.NodesEntry.key"));
         } else {
           goto handle_unusual;
         }
@@ -2305,13 +2370,53 @@ void GetNodeStatesResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .e8.NodeState nodes = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->nodes_size()); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1,
-      this->nodes(static_cast<int>(i)),
-      output);
+  // map<string, .e8.NodeState> nodes = 1;
+  if (!this->nodes().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "e8.GetNodeStatesResponse.NodesEntry.key");
+      }
+    };
+
+    if (output->IsSerializationDeterministic() &&
+        this->nodes().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->nodes().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::e8::NodeState >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+          it = this->nodes().begin();
+          it != this->nodes().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::std::unique_ptr<GetNodeStatesResponse_NodesEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(nodes_.NewEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            1, *entry, output);
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::std::unique_ptr<GetNodeStatesResponse_NodesEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+          it = this->nodes().begin();
+          it != this->nodes().end(); ++it) {
+        entry.reset(nodes_.NewEntryWrapper(
+            it->first, it->second));
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+            1, *entry, output);
+        Utf8Check::Check(&*it);
+      }
+    }
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2328,12 +2433,57 @@ void GetNodeStatesResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .e8.NodeState nodes = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->nodes_size()); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->nodes(static_cast<int>(i)), deterministic, target);
+  // map<string, .e8.NodeState> nodes = 1;
+  if (!this->nodes().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "e8.GetNodeStatesResponse.NodesEntry.key");
+      }
+    };
+
+    if (deterministic &&
+        this->nodes().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->nodes().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::e8::NodeState >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+          it = this->nodes().begin();
+          it != this->nodes().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      ::std::unique_ptr<GetNodeStatesResponse_NodesEntry_DoNotUse> entry;
+      for (size_type i = 0; i < n; i++) {
+        entry.reset(nodes_.NewEntryWrapper(
+            items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       1, *entry, deterministic, target);
+;
+        Utf8Check::Check(items[static_cast<ptrdiff_t>(i)]);
+      }
+    } else {
+      ::std::unique_ptr<GetNodeStatesResponse_NodesEntry_DoNotUse> entry;
+      for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+          it = this->nodes().begin();
+          it != this->nodes().end(); ++it) {
+        entry.reset(nodes_.NewEntryWrapper(
+            it->first, it->second));
+        target = ::google::protobuf::internal::WireFormatLite::
+                   InternalWriteMessageNoVirtualToArray(
+                       1, *entry, deterministic, target);
+;
+        Utf8Check::Check(&*it);
+      }
+    }
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2353,14 +2503,17 @@ size_t GetNodeStatesResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.NodeState nodes = 1;
+  // map<string, .e8.NodeState> nodes = 1;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->nodes_size());
   {
-    unsigned int count = static_cast<unsigned int>(this->nodes_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->nodes(static_cast<int>(i)));
+    ::std::unique_ptr<GetNodeStatesResponse_NodesEntry_DoNotUse> entry;
+    for (::google::protobuf::Map< ::std::string, ::e8::NodeState >::const_iterator
+        it = this->nodes().begin();
+        it != this->nodes().end(); ++it) {
+      entry.reset(nodes_.NewEntryWrapper(it->first, it->second));
+      total_size += ::google::protobuf::internal::WireFormatLite::
+          MessageSizeNoVirtual(*entry);
     }
   }
 
@@ -2418,7 +2571,7 @@ void GetNodeStatesResponse::Swap(GetNodeStatesResponse* other) {
 }
 void GetNodeStatesResponse::InternalSwap(GetNodeStatesResponse* other) {
   using std::swap;
-  CastToBase(&nodes_)->InternalSwap(CastToBase(&other->nodes_));
+  nodes_.Swap(&other->nodes_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
@@ -2458,6 +2611,9 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::DeletePeersResponse* Arena::
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetNodeStatesRequest* Arena::CreateMaybeMessage< ::e8::GetNodeStatesRequest >(Arena* arena) {
   return Arena::CreateInternal< ::e8::GetNodeStatesRequest >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetNodeStatesResponse_NodesEntry_DoNotUse* Arena::CreateMaybeMessage< ::e8::GetNodeStatesResponse_NodesEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::GetNodeStatesResponse_NodesEntry_DoNotUse >(arena);
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetNodeStatesResponse* Arena::CreateMaybeMessage< ::e8::GetNodeStatesResponse >(Arena* arena) {
   return Arena::CreateInternal< ::e8::GetNodeStatesResponse >(arena);

@@ -52,6 +52,9 @@ class NodeStateServiceImpl : public NodeStateService::Service {
     grpc::Status DeletePeers(grpc::ServerContext *context, DeletePeersRequest const *request,
                              DeletePeersResponse *response) override;
 
+    grpc::Status GetNodeStates(grpc::ServerContext *context, GetNodeStatesRequest const *request,
+                               GetNodeStatesResponse *response) override;
+
   private:
     std::unique_ptr<NodeStateStoreInterface> node_states_;
     std::unique_ptr<PeerStoreInterface> peers_;

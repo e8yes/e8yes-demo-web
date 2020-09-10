@@ -108,4 +108,15 @@ grpc::Status NodeStateServiceImpl::DeletePeers(grpc::ServerContext * /*context*/
     return grpc::Status::OK;
 }
 
+grpc::Status NodeStateServiceImpl::GetNodeStates(grpc::ServerContext * /*context*/,
+                                                 GetNodeStatesRequest const * /*request*/,
+                                                 GetNodeStatesResponse *response) {
+    for (auto const &[node_name, node_state] :
+         node_states_->Nodes(/*node_function=*/std::nullopt, /*node_status=*/std::nullopt)) {
+        (*response->mutable_nodes())[node_name] = node_state;
+    }
+
+    return grpc::Status::OK;
+}
+
 } // namespace e8

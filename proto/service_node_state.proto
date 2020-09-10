@@ -57,7 +57,7 @@ message GetNodeStatesRequest {
 }
 
 message GetNodeStatesResponse {
-    repeated NodeState nodes = 1;
+    map<string, NodeState> nodes = 1;
 }
 
 

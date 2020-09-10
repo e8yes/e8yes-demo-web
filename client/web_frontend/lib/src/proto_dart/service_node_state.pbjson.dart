@@ -56,7 +56,17 @@ const GetNodeStatesRequest$json = const {
 const GetNodeStatesResponse$json = const {
   '1': 'GetNodeStatesResponse',
   '2': const [
-    const {'1': 'nodes', '3': 1, '4': 3, '5': 11, '6': '.e8.NodeState', '10': 'nodes'},
+    const {'1': 'nodes', '3': 1, '4': 3, '5': 11, '6': '.e8.GetNodeStatesResponse.NodesEntry', '10': 'nodes'},
   ],
+  '3': const [GetNodeStatesResponse_NodesEntry$json],
+};
+
+const GetNodeStatesResponse_NodesEntry$json = const {
+  '1': 'NodesEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.e8.NodeState', '10': 'value'},
+  ],
+  '7': const {'7': true},
 };
 

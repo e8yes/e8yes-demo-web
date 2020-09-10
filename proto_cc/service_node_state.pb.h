@@ -29,6 +29,9 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/map.h>  // IWYU pragma: export
+#include <google/protobuf/map_entry.h>
+#include <google/protobuf/map_field_inl.h>
 #include <google/protobuf/unknown_field_set.h>
 #include "node.pb.h"
 // @@protoc_insertion_point(includes)
@@ -39,7 +42,7 @@ namespace protobuf_service_5fnode_5fstate_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[10];
+  static const ::google::protobuf::internal::ParseTable schema[11];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -71,6 +74,9 @@ extern GetNodeStatesRequestDefaultTypeInternal _GetNodeStatesRequest_default_ins
 class GetNodeStatesResponse;
 class GetNodeStatesResponseDefaultTypeInternal;
 extern GetNodeStatesResponseDefaultTypeInternal _GetNodeStatesResponse_default_instance_;
+class GetNodeStatesResponse_NodesEntry_DoNotUse;
+class GetNodeStatesResponse_NodesEntry_DoNotUseDefaultTypeInternal;
+extern GetNodeStatesResponse_NodesEntry_DoNotUseDefaultTypeInternal _GetNodeStatesResponse_NodesEntry_DoNotUse_default_instance_;
 class ReviseNodeStateRequest;
 class ReviseNodeStateRequestDefaultTypeInternal;
 extern ReviseNodeStateRequestDefaultTypeInternal _ReviseNodeStateRequest_default_instance_;
@@ -88,6 +94,7 @@ template<> ::e8::GetCurrentRevisionEpochRequest* Arena::CreateMaybeMessage<::e8:
 template<> ::e8::GetCurrentRevisionEpochResponse* Arena::CreateMaybeMessage<::e8::GetCurrentRevisionEpochResponse>(Arena*);
 template<> ::e8::GetNodeStatesRequest* Arena::CreateMaybeMessage<::e8::GetNodeStatesRequest>(Arena*);
 template<> ::e8::GetNodeStatesResponse* Arena::CreateMaybeMessage<::e8::GetNodeStatesResponse>(Arena*);
+template<> ::e8::GetNodeStatesResponse_NodesEntry_DoNotUse* Arena::CreateMaybeMessage<::e8::GetNodeStatesResponse_NodesEntry_DoNotUse>(Arena*);
 template<> ::e8::ReviseNodeStateRequest* Arena::CreateMaybeMessage<::e8::ReviseNodeStateRequest>(Arena*);
 template<> ::e8::ReviseNodeStateResponse* Arena::CreateMaybeMessage<::e8::ReviseNodeStateResponse>(Arena*);
 }  // namespace protobuf
@@ -1016,6 +1023,27 @@ class GetNodeStatesRequest : public ::google::protobuf::Message /* @@protoc_inse
 };
 // -------------------------------------------------------------------
 
+class GetNodeStatesResponse_NodesEntry_DoNotUse : public ::google::protobuf::internal::MapEntry<GetNodeStatesResponse_NodesEntry_DoNotUse, 
+    ::std::string, ::e8::NodeState,
+    ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+    ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::google::protobuf::internal::MapEntry<GetNodeStatesResponse_NodesEntry_DoNotUse, 
+    ::std::string, ::e8::NodeState,
+    ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+    ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  GetNodeStatesResponse_NodesEntry_DoNotUse();
+  GetNodeStatesResponse_NodesEntry_DoNotUse(::google::protobuf::Arena* arena);
+  void MergeFrom(const GetNodeStatesResponse_NodesEntry_DoNotUse& other);
+  static const GetNodeStatesResponse_NodesEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const GetNodeStatesResponse_NodesEntry_DoNotUse*>(&_GetNodeStatesResponse_NodesEntry_DoNotUse_default_instance_); }
+  void MergeFrom(const ::google::protobuf::Message& other) final;
+  ::google::protobuf::Metadata GetMetadata() const;
+};
+
+// -------------------------------------------------------------------
+
 class GetNodeStatesResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetNodeStatesResponse) */ {
  public:
   GetNodeStatesResponse();
@@ -1051,7 +1079,7 @@ class GetNodeStatesResponse : public ::google::protobuf::Message /* @@protoc_ins
                &_GetNodeStatesResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   void Swap(GetNodeStatesResponse* other);
   friend void swap(GetNodeStatesResponse& a, GetNodeStatesResponse& b) {
@@ -1101,25 +1129,28 @@ class GetNodeStatesResponse : public ::google::protobuf::Message /* @@protoc_ins
 
   // nested types ----------------------------------------------------
 
+
   // accessors -------------------------------------------------------
 
-  // repeated .e8.NodeState nodes = 1;
+  // map<string, .e8.NodeState> nodes = 1;
   int nodes_size() const;
   void clear_nodes();
   static const int kNodesFieldNumber = 1;
-  ::e8::NodeState* mutable_nodes(int index);
-  ::google::protobuf::RepeatedPtrField< ::e8::NodeState >*
-      mutable_nodes();
-  const ::e8::NodeState& nodes(int index) const;
-  ::e8::NodeState* add_nodes();
-  const ::google::protobuf::RepeatedPtrField< ::e8::NodeState >&
+  const ::google::protobuf::Map< ::std::string, ::e8::NodeState >&
       nodes() const;
+  ::google::protobuf::Map< ::std::string, ::e8::NodeState >*
+      mutable_nodes();
 
   // @@protoc_insertion_point(class_scope:e8.GetNodeStatesResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::e8::NodeState > nodes_;
+  ::google::protobuf::internal::MapField<
+      GetNodeStatesResponse_NodesEntry_DoNotUse,
+      ::std::string, ::e8::NodeState,
+      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > nodes_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fnode_5fstate_2eproto::TableStruct;
 };
@@ -1305,38 +1336,30 @@ DeletePeersRequest::mutable_node_names() {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 // GetNodeStatesResponse
 
-// repeated .e8.NodeState nodes = 1;
+// map<string, .e8.NodeState> nodes = 1;
 inline int GetNodeStatesResponse::nodes_size() const {
   return nodes_.size();
 }
-inline ::e8::NodeState* GetNodeStatesResponse::mutable_nodes(int index) {
-  // @@protoc_insertion_point(field_mutable:e8.GetNodeStatesResponse.nodes)
-  return nodes_.Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField< ::e8::NodeState >*
-GetNodeStatesResponse::mutable_nodes() {
-  // @@protoc_insertion_point(field_mutable_list:e8.GetNodeStatesResponse.nodes)
-  return &nodes_;
-}
-inline const ::e8::NodeState& GetNodeStatesResponse::nodes(int index) const {
-  // @@protoc_insertion_point(field_get:e8.GetNodeStatesResponse.nodes)
-  return nodes_.Get(index);
-}
-inline ::e8::NodeState* GetNodeStatesResponse::add_nodes() {
-  // @@protoc_insertion_point(field_add:e8.GetNodeStatesResponse.nodes)
-  return nodes_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::e8::NodeState >&
+inline const ::google::protobuf::Map< ::std::string, ::e8::NodeState >&
 GetNodeStatesResponse::nodes() const {
-  // @@protoc_insertion_point(field_list:e8.GetNodeStatesResponse.nodes)
-  return nodes_;
+  // @@protoc_insertion_point(field_map:e8.GetNodeStatesResponse.nodes)
+  return nodes_.GetMap();
+}
+inline ::google::protobuf::Map< ::std::string, ::e8::NodeState >*
+GetNodeStatesResponse::mutable_nodes() {
+  // @@protoc_insertion_point(field_mutable_map:e8.GetNodeStatesResponse.nodes)
+  return nodes_.MutableMap();
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
