@@ -30,6 +30,7 @@
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
+#include "message_queue_stats.pb.h"
 #include "real_time_message.pb.h"
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_service_5fmessage_5fqueue_2eproto 
@@ -39,7 +40,7 @@ namespace protobuf_service_5fmessage_5fqueue_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[6];
+  static const ::google::protobuf::internal::ParseTable schema[8];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -59,6 +60,12 @@ extern EnqueueMessageRequestDefaultTypeInternal _EnqueueMessageRequest_default_i
 class EnqueueMessageResponse;
 class EnqueueMessageResponseDefaultTypeInternal;
 extern EnqueueMessageResponseDefaultTypeInternal _EnqueueMessageResponse_default_instance_;
+class GetQueueStatsRequest;
+class GetQueueStatsRequestDefaultTypeInternal;
+extern GetQueueStatsRequestDefaultTypeInternal _GetQueueStatsRequest_default_instance_;
+class GetQueueStatsResponse;
+class GetQueueStatsResponseDefaultTypeInternal;
+extern GetQueueStatsResponseDefaultTypeInternal _GetQueueStatsResponse_default_instance_;
 class ListQueueMessageRequest;
 class ListQueueMessageRequestDefaultTypeInternal;
 extern ListQueueMessageRequestDefaultTypeInternal _ListQueueMessageRequest_default_instance_;
@@ -72,6 +79,8 @@ template<> ::e8::DequeueMessageRequest* Arena::CreateMaybeMessage<::e8::DequeueM
 template<> ::e8::DequeueMessageResponse* Arena::CreateMaybeMessage<::e8::DequeueMessageResponse>(Arena*);
 template<> ::e8::EnqueueMessageRequest* Arena::CreateMaybeMessage<::e8::EnqueueMessageRequest>(Arena*);
 template<> ::e8::EnqueueMessageResponse* Arena::CreateMaybeMessage<::e8::EnqueueMessageResponse>(Arena*);
+template<> ::e8::GetQueueStatsRequest* Arena::CreateMaybeMessage<::e8::GetQueueStatsRequest>(Arena*);
+template<> ::e8::GetQueueStatsResponse* Arena::CreateMaybeMessage<::e8::GetQueueStatsResponse>(Arena*);
 template<> ::e8::ListQueueMessageRequest* Arena::CreateMaybeMessage<::e8::ListQueueMessageRequest>(Arena*);
 template<> ::e8::ListQueueMessageResponse* Arena::CreateMaybeMessage<::e8::ListQueueMessageResponse>(Arena*);
 }  // namespace protobuf
@@ -735,6 +744,211 @@ class ListQueueMessageResponse : public ::google::protobuf::Message /* @@protoc_
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class GetQueueStatsRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetQueueStatsRequest) */ {
+ public:
+  GetQueueStatsRequest();
+  virtual ~GetQueueStatsRequest();
+
+  GetQueueStatsRequest(const GetQueueStatsRequest& from);
+
+  inline GetQueueStatsRequest& operator=(const GetQueueStatsRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  GetQueueStatsRequest(GetQueueStatsRequest&& from) noexcept
+    : GetQueueStatsRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetQueueStatsRequest& operator=(GetQueueStatsRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetQueueStatsRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GetQueueStatsRequest* internal_default_instance() {
+    return reinterpret_cast<const GetQueueStatsRequest*>(
+               &_GetQueueStatsRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  void Swap(GetQueueStatsRequest* other);
+  friend void swap(GetQueueStatsRequest& a, GetQueueStatsRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GetQueueStatsRequest* New() const final {
+    return CreateMaybeMessage<GetQueueStatsRequest>(NULL);
+  }
+
+  GetQueueStatsRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetQueueStatsRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const GetQueueStatsRequest& from);
+  void MergeFrom(const GetQueueStatsRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetQueueStatsRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:e8.GetQueueStatsRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class GetQueueStatsResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.GetQueueStatsResponse) */ {
+ public:
+  GetQueueStatsResponse();
+  virtual ~GetQueueStatsResponse();
+
+  GetQueueStatsResponse(const GetQueueStatsResponse& from);
+
+  inline GetQueueStatsResponse& operator=(const GetQueueStatsResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  GetQueueStatsResponse(GetQueueStatsResponse&& from) noexcept
+    : GetQueueStatsResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline GetQueueStatsResponse& operator=(GetQueueStatsResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetQueueStatsResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const GetQueueStatsResponse* internal_default_instance() {
+    return reinterpret_cast<const GetQueueStatsResponse*>(
+               &_GetQueueStatsResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  void Swap(GetQueueStatsResponse* other);
+  friend void swap(GetQueueStatsResponse& a, GetQueueStatsResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GetQueueStatsResponse* New() const final {
+    return CreateMaybeMessage<GetQueueStatsResponse>(NULL);
+  }
+
+  GetQueueStatsResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<GetQueueStatsResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const GetQueueStatsResponse& from);
+  void MergeFrom(const GetQueueStatsResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GetQueueStatsResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .e8.MessageQueueStats stats = 1;
+  bool has_stats() const;
+  void clear_stats();
+  static const int kStatsFieldNumber = 1;
+  private:
+  const ::e8::MessageQueueStats& _internal_stats() const;
+  public:
+  const ::e8::MessageQueueStats& stats() const;
+  ::e8::MessageQueueStats* release_stats();
+  ::e8::MessageQueueStats* mutable_stats();
+  void set_allocated_stats(::e8::MessageQueueStats* stats);
+
+  // @@protoc_insertion_point(class_scope:e8.GetQueueStatsResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::e8::MessageQueueStats* stats_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -952,9 +1166,69 @@ ListQueueMessageResponse::messages() const {
   return messages_;
 }
 
+// -------------------------------------------------------------------
+
+// GetQueueStatsRequest
+
+// -------------------------------------------------------------------
+
+// GetQueueStatsResponse
+
+// .e8.MessageQueueStats stats = 1;
+inline bool GetQueueStatsResponse::has_stats() const {
+  return this != internal_default_instance() && stats_ != NULL;
+}
+inline const ::e8::MessageQueueStats& GetQueueStatsResponse::_internal_stats() const {
+  return *stats_;
+}
+inline const ::e8::MessageQueueStats& GetQueueStatsResponse::stats() const {
+  const ::e8::MessageQueueStats* p = stats_;
+  // @@protoc_insertion_point(field_get:e8.GetQueueStatsResponse.stats)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::MessageQueueStats*>(
+      &::e8::_MessageQueueStats_default_instance_);
+}
+inline ::e8::MessageQueueStats* GetQueueStatsResponse::release_stats() {
+  // @@protoc_insertion_point(field_release:e8.GetQueueStatsResponse.stats)
+  
+  ::e8::MessageQueueStats* temp = stats_;
+  stats_ = NULL;
+  return temp;
+}
+inline ::e8::MessageQueueStats* GetQueueStatsResponse::mutable_stats() {
+  
+  if (stats_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::MessageQueueStats>(GetArenaNoVirtual());
+    stats_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.GetQueueStatsResponse.stats)
+  return stats_;
+}
+inline void GetQueueStatsResponse::set_allocated_stats(::e8::MessageQueueStats* stats) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(stats_);
+  }
+  if (stats) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      stats = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, stats, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  stats_ = stats;
+  // @@protoc_insertion_point(field_set_allocated:e8.GetQueueStatsResponse.stats)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

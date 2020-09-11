@@ -19,6 +19,9 @@
 #endif
 // @@protoc_insertion_point(includes)
 
+namespace protobuf_message_5fqueue_5fstats_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_message_5fqueue_5fstats_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessageQueueStats;
+}  // namespace protobuf_message_5fqueue_5fstats_2eproto
 namespace protobuf_real_5ftime_5fmessage_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_real_5ftime_5fmessage_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_RealTimeMessage;
 }  // namespace protobuf_real_5ftime_5fmessage_2eproto
@@ -53,6 +56,16 @@ class ListQueueMessageResponseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<ListQueueMessageResponse>
       _instance;
 } _ListQueueMessageResponse_default_instance_;
+class GetQueueStatsRequestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<GetQueueStatsRequest>
+      _instance;
+} _GetQueueStatsRequest_default_instance_;
+class GetQueueStatsResponseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<GetQueueStatsResponse>
+      _instance;
+} _GetQueueStatsResponse_default_instance_;
 }  // namespace e8
 namespace protobuf_service_5fmessage_5fqueue_2eproto {
 static void InitDefaultsEnqueueMessageRequest() {
@@ -142,6 +155,35 @@ static void InitDefaultsListQueueMessageResponse() {
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsListQueueMessageResponse}, {
       &protobuf_real_5ftime_5fmessage_2eproto::scc_info_RealTimeMessage.base,}};
 
+static void InitDefaultsGetQueueStatsRequest() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_GetQueueStatsRequest_default_instance_;
+    new (ptr) ::e8::GetQueueStatsRequest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::e8::GetQueueStatsRequest::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<0> scc_info_GetQueueStatsRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGetQueueStatsRequest}, {}};
+
+static void InitDefaultsGetQueueStatsResponse() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::e8::_GetQueueStatsResponse_default_instance_;
+    new (ptr) ::e8::GetQueueStatsResponse();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::e8::GetQueueStatsResponse::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<1> scc_info_GetQueueStatsResponse =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetQueueStatsResponse}, {
+      &protobuf_message_5fqueue_5fstats_2eproto::scc_info_MessageQueueStats.base,}};
+
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_EnqueueMessageRequest.base);
   ::google::protobuf::internal::InitSCC(&scc_info_EnqueueMessageResponse.base);
@@ -149,9 +191,11 @@ void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_DequeueMessageResponse.base);
   ::google::protobuf::internal::InitSCC(&scc_info_ListQueueMessageRequest.base);
   ::google::protobuf::internal::InitSCC(&scc_info_ListQueueMessageResponse.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_GetQueueStatsRequest.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_GetQueueStatsResponse.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[6];
+::google::protobuf::Metadata file_level_metadata[8];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -193,6 +237,17 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::ListQueueMessageResponse, messages_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetQueueStatsRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetQueueStatsResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetQueueStatsResponse, stats_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::EnqueueMessageRequest)},
@@ -201,6 +256,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 21, -1, sizeof(::e8::DequeueMessageResponse)},
   { 27, -1, sizeof(::e8::ListQueueMessageRequest)},
   { 33, -1, sizeof(::e8::ListQueueMessageResponse)},
+  { 39, -1, sizeof(::e8::GetQueueStatsRequest)},
+  { 44, -1, sizeof(::e8::GetQueueStatsResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -210,6 +267,8 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_DequeueMessageResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_ListQueueMessageRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_ListQueueMessageResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetQueueStatsRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_GetQueueStatsResponse_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -227,36 +286,41 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 6);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 8);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\033service_message_queue.proto\022\002e8\032\027real_"
-      "time_message.proto\"O\n\025EnqueueMessageRequ"
-      "est\022\017\n\007user_id\030\001 \001(\003\022%\n\010messages\030\002 \003(\0132\023"
-      ".e8.RealTimeMessage\"\030\n\026EnqueueMessageRes"
-      "ponse\"\177\n\025DequeueMessageRequest\022\017\n\007user_i"
-      "d\030\001 \001(\003\022\"\n\032previous_message_delivered\030\002 "
-      "\001(\010\022\025\n\rend_operation\030\003 \001(\010\022\032\n\022wait_durat"
-      "ion_secs\030\004 \001(\005\">\n\026DequeueMessageResponse"
-      "\022$\n\007message\030\001 \001(\0132\023.e8.RealTimeMessage\"*"
-      "\n\027ListQueueMessageRequest\022\017\n\007user_id\030\001 \001"
-      "(\003\"A\n\030ListQueueMessageResponse\022%\n\010messag"
-      "es\030\001 \003(\0132\023.e8.RealTimeMessage2\372\001\n\023Messag"
-      "eQueueService\022G\n\016EnqueueMessage\022\031.e8.Enq"
-      "ueueMessageRequest\032\032.e8.EnqueueMessageRe"
-      "sponse\022K\n\016DequeueMessage\022\031.e8.DequeueMes"
-      "sageRequest\032\032.e8.DequeueMessageResponse("
-      "\0010\001\022M\n\020ListQueueMessage\022\033.e8.ListQueueMe"
-      "ssageRequest\032\034.e8.ListQueueMessageRespon"
-      "seb\006proto3"
+      "\n\033service_message_queue.proto\022\002e8\032\031messa"
+      "ge_queue_stats.proto\032\027real_time_message."
+      "proto\"O\n\025EnqueueMessageRequest\022\017\n\007user_i"
+      "d\030\001 \001(\003\022%\n\010messages\030\002 \003(\0132\023.e8.RealTimeM"
+      "essage\"\030\n\026EnqueueMessageResponse\"\177\n\025Dequ"
+      "eueMessageRequest\022\017\n\007user_id\030\001 \001(\003\022\"\n\032pr"
+      "evious_message_delivered\030\002 \001(\010\022\025\n\rend_op"
+      "eration\030\003 \001(\010\022\032\n\022wait_duration_secs\030\004 \001("
+      "\005\">\n\026DequeueMessageResponse\022$\n\007message\030\001"
+      " \001(\0132\023.e8.RealTimeMessage\"*\n\027ListQueueMe"
+      "ssageRequest\022\017\n\007user_id\030\001 \001(\003\"A\n\030ListQue"
+      "ueMessageResponse\022%\n\010messages\030\001 \003(\0132\023.e8"
+      ".RealTimeMessage\"\026\n\024GetQueueStatsRequest"
+      "\"=\n\025GetQueueStatsResponse\022$\n\005stats\030\001 \001(\013"
+      "2\025.e8.MessageQueueStats2\300\002\n\023MessageQueue"
+      "Service\022G\n\016EnqueueMessage\022\031.e8.EnqueueMe"
+      "ssageRequest\032\032.e8.EnqueueMessageResponse"
+      "\022K\n\016DequeueMessage\022\031.e8.DequeueMessageRe"
+      "quest\032\032.e8.DequeueMessageResponse(\0010\001\022M\n"
+      "\020ListQueueMessage\022\033.e8.ListQueueMessageR"
+      "equest\032\034.e8.ListQueueMessageResponse\022D\n\r"
+      "GetQueueStats\022\030.e8.GetQueueStatsRequest\032"
+      "\031.e8.GetQueueStatsResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 730);
+      descriptor, 914);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_queue.proto", &protobuf_RegisterTypes);
+  ::protobuf_message_5fqueue_5fstats_2eproto::AddDescriptors();
   ::protobuf_real_5ftime_5fmessage_2eproto::AddDescriptors();
 }
 
@@ -1751,6 +1815,425 @@ void ListQueueMessageResponse::InternalSwap(ListQueueMessageResponse* other) {
 }
 
 
+// ===================================================================
+
+void GetQueueStatsRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+GetQueueStatsRequest::GetQueueStatsRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_service_5fmessage_5fqueue_2eproto::scc_info_GetQueueStatsRequest.base);
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:e8.GetQueueStatsRequest)
+}
+GetQueueStatsRequest::GetQueueStatsRequest(const GetQueueStatsRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:e8.GetQueueStatsRequest)
+}
+
+void GetQueueStatsRequest::SharedCtor() {
+}
+
+GetQueueStatsRequest::~GetQueueStatsRequest() {
+  // @@protoc_insertion_point(destructor:e8.GetQueueStatsRequest)
+  SharedDtor();
+}
+
+void GetQueueStatsRequest::SharedDtor() {
+}
+
+void GetQueueStatsRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ::google::protobuf::Descriptor* GetQueueStatsRequest::descriptor() {
+  ::protobuf_service_5fmessage_5fqueue_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_service_5fmessage_5fqueue_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const GetQueueStatsRequest& GetQueueStatsRequest::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fmessage_5fqueue_2eproto::scc_info_GetQueueStatsRequest.base);
+  return *internal_default_instance();
+}
+
+
+void GetQueueStatsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.GetQueueStatsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear();
+}
+
+bool GetQueueStatsRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:e8.GetQueueStatsRequest)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:e8.GetQueueStatsRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:e8.GetQueueStatsRequest)
+  return false;
+#undef DO_
+}
+
+void GetQueueStatsRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:e8.GetQueueStatsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:e8.GetQueueStatsRequest)
+}
+
+::google::protobuf::uint8* GetQueueStatsRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:e8.GetQueueStatsRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:e8.GetQueueStatsRequest)
+  return target;
+}
+
+size_t GetQueueStatsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.GetQueueStatsRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void GetQueueStatsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.GetQueueStatsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const GetQueueStatsRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const GetQueueStatsRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.GetQueueStatsRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.GetQueueStatsRequest)
+    MergeFrom(*source);
+  }
+}
+
+void GetQueueStatsRequest::MergeFrom(const GetQueueStatsRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.GetQueueStatsRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void GetQueueStatsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.GetQueueStatsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GetQueueStatsRequest::CopyFrom(const GetQueueStatsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.GetQueueStatsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetQueueStatsRequest::IsInitialized() const {
+  return true;
+}
+
+void GetQueueStatsRequest::Swap(GetQueueStatsRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void GetQueueStatsRequest::InternalSwap(GetQueueStatsRequest* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+}
+
+::google::protobuf::Metadata GetQueueStatsRequest::GetMetadata() const {
+  protobuf_service_5fmessage_5fqueue_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_service_5fmessage_5fqueue_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void GetQueueStatsResponse::InitAsDefaultInstance() {
+  ::e8::_GetQueueStatsResponse_default_instance_._instance.get_mutable()->stats_ = const_cast< ::e8::MessageQueueStats*>(
+      ::e8::MessageQueueStats::internal_default_instance());
+}
+void GetQueueStatsResponse::clear_stats() {
+  if (GetArenaNoVirtual() == NULL && stats_ != NULL) {
+    delete stats_;
+  }
+  stats_ = NULL;
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int GetQueueStatsResponse::kStatsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+GetQueueStatsResponse::GetQueueStatsResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_service_5fmessage_5fqueue_2eproto::scc_info_GetQueueStatsResponse.base);
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:e8.GetQueueStatsResponse)
+}
+GetQueueStatsResponse::GetQueueStatsResponse(const GetQueueStatsResponse& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_stats()) {
+    stats_ = new ::e8::MessageQueueStats(*from.stats_);
+  } else {
+    stats_ = NULL;
+  }
+  // @@protoc_insertion_point(copy_constructor:e8.GetQueueStatsResponse)
+}
+
+void GetQueueStatsResponse::SharedCtor() {
+  stats_ = NULL;
+}
+
+GetQueueStatsResponse::~GetQueueStatsResponse() {
+  // @@protoc_insertion_point(destructor:e8.GetQueueStatsResponse)
+  SharedDtor();
+}
+
+void GetQueueStatsResponse::SharedDtor() {
+  if (this != internal_default_instance()) delete stats_;
+}
+
+void GetQueueStatsResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const ::google::protobuf::Descriptor* GetQueueStatsResponse::descriptor() {
+  ::protobuf_service_5fmessage_5fqueue_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_service_5fmessage_5fqueue_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const GetQueueStatsResponse& GetQueueStatsResponse::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_service_5fmessage_5fqueue_2eproto::scc_info_GetQueueStatsResponse.base);
+  return *internal_default_instance();
+}
+
+
+void GetQueueStatsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.GetQueueStatsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && stats_ != NULL) {
+    delete stats_;
+  }
+  stats_ = NULL;
+  _internal_metadata_.Clear();
+}
+
+bool GetQueueStatsResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:e8.GetQueueStatsResponse)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .e8.MessageQueueStats stats = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_stats()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:e8.GetQueueStatsResponse)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:e8.GetQueueStatsResponse)
+  return false;
+#undef DO_
+}
+
+void GetQueueStatsResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:e8.GetQueueStatsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .e8.MessageQueueStats stats = 1;
+  if (this->has_stats()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->_internal_stats(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:e8.GetQueueStatsResponse)
+}
+
+::google::protobuf::uint8* GetQueueStatsResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:e8.GetQueueStatsResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .e8.MessageQueueStats stats = 1;
+  if (this->has_stats()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->_internal_stats(), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:e8.GetQueueStatsResponse)
+  return target;
+}
+
+size_t GetQueueStatsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.GetQueueStatsResponse)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .e8.MessageQueueStats stats = 1;
+  if (this->has_stats()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *stats_);
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void GetQueueStatsResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.GetQueueStatsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const GetQueueStatsResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const GetQueueStatsResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.GetQueueStatsResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.GetQueueStatsResponse)
+    MergeFrom(*source);
+  }
+}
+
+void GetQueueStatsResponse::MergeFrom(const GetQueueStatsResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.GetQueueStatsResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_stats()) {
+    mutable_stats()->::e8::MessageQueueStats::MergeFrom(from.stats());
+  }
+}
+
+void GetQueueStatsResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.GetQueueStatsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GetQueueStatsResponse::CopyFrom(const GetQueueStatsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.GetQueueStatsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetQueueStatsResponse::IsInitialized() const {
+  return true;
+}
+
+void GetQueueStatsResponse::Swap(GetQueueStatsResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void GetQueueStatsResponse::InternalSwap(GetQueueStatsResponse* other) {
+  using std::swap;
+  swap(stats_, other->stats_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+}
+
+::google::protobuf::Metadata GetQueueStatsResponse::GetMetadata() const {
+  protobuf_service_5fmessage_5fqueue_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_service_5fmessage_5fqueue_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace e8
 namespace google {
@@ -1772,6 +2255,12 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::ListQueueMessageRequest* Are
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::ListQueueMessageResponse* Arena::CreateMaybeMessage< ::e8::ListQueueMessageResponse >(Arena* arena) {
   return Arena::CreateInternal< ::e8::ListQueueMessageResponse >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetQueueStatsRequest* Arena::CreateMaybeMessage< ::e8::GetQueueStatsRequest >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::GetQueueStatsRequest >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::GetQueueStatsResponse* Arena::CreateMaybeMessage< ::e8::GetQueueStatsResponse >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::GetQueueStatsResponse >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

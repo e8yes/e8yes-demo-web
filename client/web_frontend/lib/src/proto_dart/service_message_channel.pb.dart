@@ -12,10 +12,10 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'nullable_primitives.pb.dart' as $11;
 import 'pagination.pb.dart' as $19;
-import 'message_channel.pb.dart' as $20;
+import 'message_channel.pb.dart' as $21;
 import 'user_profile.pb.dart' as $13;
 
-import 'message_channel.pbenum.dart' as $20;
+import 'message_channel.pbenum.dart' as $21;
 
 class CreateMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CreateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -121,7 +121,7 @@ class AddUserToMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddUserToMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
     ..aInt64(2, 'userId')
-    ..e<$20.MessageChannelMemberType>(3, 'memberType', $pb.PbFieldType.OE, defaultOrMaker: $20.MessageChannelMemberType.MCMT_INVALID, valueOf: $20.MessageChannelMemberType.valueOf, enumValues: $20.MessageChannelMemberType.values)
+    ..e<$21.MessageChannelMemberType>(3, 'memberType', $pb.PbFieldType.OE, defaultOrMaker: $21.MessageChannelMemberType.MCMT_INVALID, valueOf: $21.MessageChannelMemberType.valueOf, enumValues: $21.MessageChannelMemberType.values)
     ..hasRequiredFields = false
   ;
 
@@ -159,9 +159,9 @@ class AddUserToMessageChannelRequest extends $pb.GeneratedMessage {
   void clearUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $20.MessageChannelMemberType get memberType => $_getN(2);
+  $21.MessageChannelMemberType get memberType => $_getN(2);
   @$pb.TagNumber(3)
-  set memberType($20.MessageChannelMemberType v) { setField(3, v); }
+  set memberType($21.MessageChannelMemberType v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasMemberType() => $_has(2);
   @$pb.TagNumber(3)
@@ -362,7 +362,7 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
 
 class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetJoinedInMessageChannelsResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$20.MessageChannelOveriew>(1, 'channels', $pb.PbFieldType.PM, subBuilder: $20.MessageChannelOveriew.create)
+    ..pc<$21.MessageChannelOveriew>(1, 'channels', $pb.PbFieldType.PM, subBuilder: $21.MessageChannelOveriew.create)
     ..hasRequiredFields = false
   ;
 
@@ -382,7 +382,7 @@ class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
   static GetJoinedInMessageChannelsResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$20.MessageChannelOveriew> get channels => $_getList(0);
+  $core.List<$21.MessageChannelOveriew> get channels => $_getList(0);
 }
 
 class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
@@ -431,7 +431,7 @@ class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {
 class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetMessageChannelMembersResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..pc<$13.UserPublicProfile>(1, 'userProfiles', $pb.PbFieldType.PM, subBuilder: $13.UserPublicProfile.create)
-    ..pc<$20.MessageChannelRelation>(2, 'channelRelations', $pb.PbFieldType.PM, subBuilder: $20.MessageChannelRelation.create)
+    ..pc<$21.MessageChannelRelation>(2, 'channelRelations', $pb.PbFieldType.PM, subBuilder: $21.MessageChannelRelation.create)
     ..hasRequiredFields = false
   ;
 
@@ -454,6 +454,6 @@ class GetMessageChannelMembersResponse extends $pb.GeneratedMessage {
   $core.List<$13.UserPublicProfile> get userProfiles => $_getList(0);
 
   @$pb.TagNumber(2)
-  $core.List<$20.MessageChannelRelation> get channelRelations => $_getList(1);
+  $core.List<$21.MessageChannelRelation> get channelRelations => $_getList(1);
 }
 

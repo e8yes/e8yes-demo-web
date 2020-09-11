@@ -11,6 +11,7 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'real_time_message.pb.dart' as $15;
+import 'message_queue_stats.pb.dart' as $20;
 
 class EnqueueMessageRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('EnqueueMessageRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
@@ -216,5 +217,59 @@ class ListQueueMessageResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<$15.RealTimeMessage> get messages => $_getList(0);
+}
+
+class GetQueueStatsRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetQueueStatsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  GetQueueStatsRequest._() : super();
+  factory GetQueueStatsRequest() => create();
+  factory GetQueueStatsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetQueueStatsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetQueueStatsRequest clone() => GetQueueStatsRequest()..mergeFromMessage(this);
+  GetQueueStatsRequest copyWith(void Function(GetQueueStatsRequest) updates) => super.copyWith((message) => updates(message as GetQueueStatsRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetQueueStatsRequest create() => GetQueueStatsRequest._();
+  GetQueueStatsRequest createEmptyInstance() => create();
+  static $pb.PbList<GetQueueStatsRequest> createRepeated() => $pb.PbList<GetQueueStatsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetQueueStatsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetQueueStatsRequest>(create);
+  static GetQueueStatsRequest _defaultInstance;
+}
+
+class GetQueueStatsResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetQueueStatsResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aOM<$20.MessageQueueStats>(1, 'stats', subBuilder: $20.MessageQueueStats.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetQueueStatsResponse._() : super();
+  factory GetQueueStatsResponse() => create();
+  factory GetQueueStatsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetQueueStatsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetQueueStatsResponse clone() => GetQueueStatsResponse()..mergeFromMessage(this);
+  GetQueueStatsResponse copyWith(void Function(GetQueueStatsResponse) updates) => super.copyWith((message) => updates(message as GetQueueStatsResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetQueueStatsResponse create() => GetQueueStatsResponse._();
+  GetQueueStatsResponse createEmptyInstance() => create();
+  static $pb.PbList<GetQueueStatsResponse> createRepeated() => $pb.PbList<GetQueueStatsResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetQueueStatsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetQueueStatsResponse>(create);
+  static GetQueueStatsResponse _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $20.MessageQueueStats get stats => $_getN(0);
+  @$pb.TagNumber(1)
+  set stats($20.MessageQueueStats v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStats() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStats() => clearField(1);
+  @$pb.TagNumber(1)
+  $20.MessageQueueStats ensureStats() => $_ensure(0);
 }
 

@@ -32,6 +32,12 @@ class MessageQueueServiceClient extends $grpc.Client {
       ($4.ListQueueMessageRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
           $4.ListQueueMessageResponse.fromBuffer(value));
+  static final _$getQueueStats =
+      $grpc.ClientMethod<$4.GetQueueStatsRequest, $4.GetQueueStatsResponse>(
+          '/e8.MessageQueueService/GetQueueStats',
+          ($4.GetQueueStatsRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $4.GetQueueStatsResponse.fromBuffer(value));
 
   MessageQueueServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions options})
@@ -58,6 +64,15 @@ class MessageQueueServiceClient extends $grpc.Client {
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$listQueueMessage, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
+
+  $grpc.ResponseFuture<$4.GetQueueStatsResponse> getQueueStats(
+      $4.GetQueueStatsRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(
+        _$getQueueStats, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -94,6 +109,15 @@ abstract class MessageQueueServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $4.ListQueueMessageRequest.fromBuffer(value),
         ($4.ListQueueMessageResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$4.GetQueueStatsRequest, $4.GetQueueStatsResponse>(
+            'GetQueueStats',
+            getQueueStats_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $4.GetQueueStatsRequest.fromBuffer(value),
+            ($4.GetQueueStatsResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$4.EnqueueMessageResponse> enqueueMessage_Pre(
@@ -108,10 +132,18 @@ abstract class MessageQueueServiceBase extends $grpc.Service {
     return listQueueMessage(call, await request);
   }
 
+  $async.Future<$4.GetQueueStatsResponse> getQueueStats_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$4.GetQueueStatsRequest> request) async {
+    return getQueueStats(call, await request);
+  }
+
   $async.Future<$4.EnqueueMessageResponse> enqueueMessage(
       $grpc.ServiceCall call, $4.EnqueueMessageRequest request);
   $async.Stream<$4.DequeueMessageResponse> dequeueMessage(
       $grpc.ServiceCall call, $async.Stream<$4.DequeueMessageRequest> request);
   $async.Future<$4.ListQueueMessageResponse> listQueueMessage(
       $grpc.ServiceCall call, $4.ListQueueMessageRequest request);
+  $async.Future<$4.GetQueueStatsResponse> getQueueStats(
+      $grpc.ServiceCall call, $4.GetQueueStatsRequest request);
 }

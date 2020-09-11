@@ -76,11 +76,19 @@ class MessageQueueService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::ListQueueMessageResponse>> PrepareAsyncListQueueMessage(::grpc::ClientContext* context, const ::e8::ListQueueMessageRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::ListQueueMessageResponse>>(PrepareAsyncListQueueMessageRaw(context, request, cq));
     }
+    virtual ::grpc::Status GetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::e8::GetQueueStatsResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetQueueStatsResponse>> AsyncGetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetQueueStatsResponse>>(AsyncGetQueueStatsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetQueueStatsResponse>> PrepareAsyncGetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetQueueStatsResponse>>(PrepareAsyncGetQueueStatsRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
       virtual void EnqueueMessage(::grpc::ClientContext* context, const ::e8::EnqueueMessageRequest* request, ::e8::EnqueueMessageResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ListQueueMessage(::grpc::ClientContext* context, const ::e8::ListQueueMessageRequest* request, ::e8::ListQueueMessageResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
@@ -91,6 +99,8 @@ class MessageQueueService final {
     virtual ::grpc::ClientAsyncReaderWriterInterface< ::e8::DequeueMessageRequest, ::e8::DequeueMessageResponse>* PrepareAsyncDequeueMessageRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::ListQueueMessageResponse>* AsyncListQueueMessageRaw(::grpc::ClientContext* context, const ::e8::ListQueueMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::ListQueueMessageResponse>* PrepareAsyncListQueueMessageRaw(::grpc::ClientContext* context, const ::e8::ListQueueMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetQueueStatsResponse>* AsyncGetQueueStatsRaw(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::e8::GetQueueStatsResponse>* PrepareAsyncGetQueueStatsRaw(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -118,11 +128,19 @@ class MessageQueueService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::ListQueueMessageResponse>> PrepareAsyncListQueueMessage(::grpc::ClientContext* context, const ::e8::ListQueueMessageRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::ListQueueMessageResponse>>(PrepareAsyncListQueueMessageRaw(context, request, cq));
     }
+    ::grpc::Status GetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::e8::GetQueueStatsResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetQueueStatsResponse>> AsyncGetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetQueueStatsResponse>>(AsyncGetQueueStatsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetQueueStatsResponse>> PrepareAsyncGetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::e8::GetQueueStatsResponse>>(PrepareAsyncGetQueueStatsRaw(context, request, cq));
+    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
       void EnqueueMessage(::grpc::ClientContext* context, const ::e8::EnqueueMessageRequest* request, ::e8::EnqueueMessageResponse* response, std::function<void(::grpc::Status)>) override;
       void ListQueueMessage(::grpc::ClientContext* context, const ::e8::ListQueueMessageRequest* request, ::e8::ListQueueMessageResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -141,9 +159,12 @@ class MessageQueueService final {
     ::grpc::ClientAsyncReaderWriter< ::e8::DequeueMessageRequest, ::e8::DequeueMessageResponse>* PrepareAsyncDequeueMessageRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::ListQueueMessageResponse>* AsyncListQueueMessageRaw(::grpc::ClientContext* context, const ::e8::ListQueueMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::e8::ListQueueMessageResponse>* PrepareAsyncListQueueMessageRaw(::grpc::ClientContext* context, const ::e8::ListQueueMessageRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::GetQueueStatsResponse>* AsyncGetQueueStatsRaw(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::e8::GetQueueStatsResponse>* PrepareAsyncGetQueueStatsRaw(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_EnqueueMessage_;
     const ::grpc::internal::RpcMethod rpcmethod_DequeueMessage_;
     const ::grpc::internal::RpcMethod rpcmethod_ListQueueMessage_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetQueueStats_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -154,6 +175,7 @@ class MessageQueueService final {
     virtual ::grpc::Status EnqueueMessage(::grpc::ServerContext* context, const ::e8::EnqueueMessageRequest* request, ::e8::EnqueueMessageResponse* response);
     virtual ::grpc::Status DequeueMessage(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::e8::DequeueMessageResponse, ::e8::DequeueMessageRequest>* stream);
     virtual ::grpc::Status ListQueueMessage(::grpc::ServerContext* context, const ::e8::ListQueueMessageRequest* request, ::e8::ListQueueMessageResponse* response);
+    virtual ::grpc::Status GetQueueStats(::grpc::ServerContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_EnqueueMessage : public BaseClass {
@@ -215,7 +237,27 @@ class MessageQueueService final {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_EnqueueMessage<WithAsyncMethod_DequeueMessage<WithAsyncMethod_ListQueueMessage<Service > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_GetQueueStats : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_GetQueueStats() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_GetQueueStats() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetQueueStats(::grpc::ServerContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetQueueStats(::grpc::ServerContext* context, ::e8::GetQueueStatsRequest* request, ::grpc::ServerAsyncResponseWriter< ::e8::GetQueueStatsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_EnqueueMessage<WithAsyncMethod_DequeueMessage<WithAsyncMethod_ListQueueMessage<WithAsyncMethod_GetQueueStats<Service > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_EnqueueMessage : public BaseClass {
    private:
@@ -263,6 +305,23 @@ class MessageQueueService final {
     }
     // disable synchronous version of this method
     ::grpc::Status ListQueueMessage(::grpc::ServerContext* context, const ::e8::ListQueueMessageRequest* request, ::e8::ListQueueMessageResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetQueueStats : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_GetQueueStats() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_GetQueueStats() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetQueueStats(::grpc::ServerContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -328,6 +387,26 @@ class MessageQueueService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_GetQueueStats : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithRawMethod_GetQueueStats() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_GetQueueStats() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetQueueStats(::grpc::ServerContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetQueueStats(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_EnqueueMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
@@ -367,9 +446,29 @@ class MessageQueueService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedListQueueMessage(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::ListQueueMessageRequest,::e8::ListQueueMessageResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_EnqueueMessage<WithStreamedUnaryMethod_ListQueueMessage<Service > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetQueueStats : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_GetQueueStats() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::StreamedUnaryHandler< ::e8::GetQueueStatsRequest, ::e8::GetQueueStatsResponse>(std::bind(&WithStreamedUnaryMethod_GetQueueStats<BaseClass>::StreamedGetQueueStats, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_GetQueueStats() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetQueueStats(::grpc::ServerContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetQueueStats(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::e8::GetQueueStatsRequest,::e8::GetQueueStatsResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_EnqueueMessage<WithStreamedUnaryMethod_ListQueueMessage<WithStreamedUnaryMethod_GetQueueStats<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_EnqueueMessage<WithStreamedUnaryMethod_ListQueueMessage<Service > > StreamedService;
+  typedef WithStreamedUnaryMethod_EnqueueMessage<WithStreamedUnaryMethod_ListQueueMessage<WithStreamedUnaryMethod_GetQueueStats<Service > > > StreamedService;
 };
 
 }  // namespace e8

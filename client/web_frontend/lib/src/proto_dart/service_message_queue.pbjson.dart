@@ -48,3 +48,14 @@ const ListQueueMessageResponse$json = const {
   ],
 };
 
+const GetQueueStatsRequest$json = const {
+  '1': 'GetQueueStatsRequest',
+};
+
+const GetQueueStatsResponse$json = const {
+  '1': 'GetQueueStatsResponse',
+  '2': const [
+    const {'1': 'stats', '3': 1, '4': 1, '5': 11, '6': '.e8.MessageQueueStats', '10': 'stats'},
+  ],
+};
+

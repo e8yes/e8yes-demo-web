@@ -1,7 +1,7 @@
 CONFIG -= qt
 
 TEMPLATE = lib
-DEFINES += IDENTITY_LIBRARY
+DEFINES += PROTO_CC_LIBRARY
 CONFIG += c++17
 
 QMAKE_CXXFLAGS += -std=c++17
@@ -10,7 +10,7 @@ QMAKE_CXXFLAGS_RELEASE += -O3 -flto
 QMAKE_LDFLAGS_RELEASE += -O3 -flto
 
 DEFINES += DEMOWEBLIB_LIBRARY
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 HEADERS += \
     chat_message.grpc.pb.h \
@@ -27,6 +27,8 @@ HEADERS += \
     invitation_status.pb.h \
     message_channel.grpc.pb.h \
     message_channel.pb.h \
+    message_queue_stats.grpc.pb.h \
+    message_queue_stats.pb.h \
     message_type.grpc.pb.h \
     message_type.pb.h \
     node.grpc.pb.h \
@@ -61,7 +63,6 @@ HEADERS += \
     user_profile.pb.h \
     user_relation.grpc.pb.h \
     user_relation.pb.h
-
 SOURCES += \
     chat_message.grpc.pb.cc \
     chat_message.pb.cc \
@@ -77,6 +78,8 @@ SOURCES += \
     invitation_status.pb.cc \
     message_channel.grpc.pb.cc \
     message_channel.pb.cc \
+    message_queue_stats.grpc.pb.cc \
+    message_queue_stats.pb.cc \
     message_type.grpc.pb.cc \
     message_type.pb.cc \
     node.grpc.pb.cc \

@@ -21,6 +21,7 @@ static const char* MessageQueueService_method_names[] = {
   "/e8.MessageQueueService/EnqueueMessage",
   "/e8.MessageQueueService/DequeueMessage",
   "/e8.MessageQueueService/ListQueueMessage",
+  "/e8.MessageQueueService/GetQueueStats",
 };
 
 std::unique_ptr< MessageQueueService::Stub> MessageQueueService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -33,6 +34,7 @@ MessageQueueService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>
   : channel_(channel), rpcmethod_EnqueueMessage_(MessageQueueService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_DequeueMessage_(MessageQueueService_method_names[1], ::grpc::internal::RpcMethod::BIDI_STREAMING, channel)
   , rpcmethod_ListQueueMessage_(MessageQueueService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetQueueStats_(MessageQueueService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MessageQueueService::Stub::EnqueueMessage(::grpc::ClientContext* context, const ::e8::EnqueueMessageRequest& request, ::e8::EnqueueMessageResponse* response) {
@@ -79,6 +81,22 @@ void MessageQueueService::Stub::experimental_async::ListQueueMessage(::grpc::Cli
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::ListQueueMessageResponse>::Create(channel_.get(), cq, rpcmethod_ListQueueMessage_, context, request, false);
 }
 
+::grpc::Status MessageQueueService::Stub::GetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::e8::GetQueueStatsResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetQueueStats_, context, request, response);
+}
+
+void MessageQueueService::Stub::experimental_async::GetQueueStats(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetQueueStats_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::GetQueueStatsResponse>* MessageQueueService::Stub::AsyncGetQueueStatsRaw(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetQueueStatsResponse>::Create(channel_.get(), cq, rpcmethod_GetQueueStats_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::GetQueueStatsResponse>* MessageQueueService::Stub::PrepareAsyncGetQueueStatsRaw(::grpc::ClientContext* context, const ::e8::GetQueueStatsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetQueueStatsResponse>::Create(channel_.get(), cq, rpcmethod_GetQueueStats_, context, request, false);
+}
+
 MessageQueueService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MessageQueueService_method_names[0],
@@ -95,6 +113,11 @@ MessageQueueService::Service::Service() {
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MessageQueueService::Service, ::e8::ListQueueMessageRequest, ::e8::ListQueueMessageResponse>(
           std::mem_fn(&MessageQueueService::Service::ListQueueMessage), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MessageQueueService_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MessageQueueService::Service, ::e8::GetQueueStatsRequest, ::e8::GetQueueStatsResponse>(
+          std::mem_fn(&MessageQueueService::Service::GetQueueStats), this)));
 }
 
 MessageQueueService::Service::~Service() {
@@ -114,6 +137,13 @@ MessageQueueService::Service::~Service() {
 }
 
 ::grpc::Status MessageQueueService::Service::ListQueueMessage(::grpc::ServerContext* context, const ::e8::ListQueueMessageRequest* request, ::e8::ListQueueMessageResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MessageQueueService::Service::GetQueueStats(::grpc::ServerContext* context, const ::e8::GetQueueStatsRequest* request, ::e8::GetQueueStatsResponse* response) {
   (void) context;
   (void) request;
   (void) response;

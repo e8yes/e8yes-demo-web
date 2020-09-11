@@ -19,6 +19,7 @@ syntax = "proto3";
 
 package e8;
 
+import "message_queue_stats.proto";
 import "real_time_message.proto";
 
 message EnqueueMessageRequest {
@@ -53,6 +54,14 @@ message ListQueueMessageResponse {
 }
 
 
+message GetQueueStatsRequest {
+}
+
+message GetQueueStatsResponse {
+    MessageQueueStats stats = 1;
+}
+
+
 // A user oriented message queue.
 service MessageQueueService {
     rpc EnqueueMessage (EnqueueMessageRequest)
@@ -63,4 +72,7 @@ service MessageQueueService {
 
     rpc ListQueueMessage (ListQueueMessageRequest)
         returns (ListQueueMessageResponse);
+
+    rpc GetQueueStats (GetQueueStatsRequest) 
+        returns (GetQueueStatsResponse);
 }
