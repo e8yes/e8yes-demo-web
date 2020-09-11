@@ -30,7 +30,21 @@ const DequeueMessageRequest$json = const {
 const DequeueMessageResponse$json = const {
   '1': 'DequeueMessageResponse',
   '2': const [
-    const {'1': 'message', '3': 2, '4': 1, '5': 11, '6': '.e8.RealTimeMessage', '10': 'message'},
+    const {'1': 'message', '3': 1, '4': 1, '5': 11, '6': '.e8.RealTimeMessage', '10': 'message'},
+  ],
+};
+
+const ListQueueMessageRequest$json = const {
+  '1': 'ListQueueMessageRequest',
+  '2': const [
+    const {'1': 'user_id', '3': 1, '4': 1, '5': 3, '10': 'userId'},
+  ],
+};
+
+const ListQueueMessageResponse$json = const {
+  '1': 'ListQueueMessageResponse',
+  '2': const [
+    const {'1': 'messages', '3': 1, '4': 3, '5': 11, '6': '.e8.RealTimeMessage', '10': 'messages'},
   ],
 };
 

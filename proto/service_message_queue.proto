@@ -40,14 +40,27 @@ message DequeueMessageRequest {
 }
 
 message DequeueMessageResponse {
-    RealTimeMessage message = 2;
+    RealTimeMessage message = 1;
 }
+
+
+message ListQueueMessageRequest {
+    int64 user_id = 1;
+}
+
+message ListQueueMessageResponse {
+    repeated RealTimeMessage messages = 1;
+}
+
 
 // A user oriented message queue.
 service MessageQueueService {
-    rpc EnqueueMessage (EnqueueMessageRequest) 
+    rpc EnqueueMessage (EnqueueMessageRequest)
         returns (EnqueueMessageResponse);
 
-    rpc DequeueMessage (stream DequeueMessageRequest) 
+    rpc DequeueMessage (stream DequeueMessageRequest)
         returns (stream DequeueMessageResponse);
+
+    rpc ListQueueMessage (ListQueueMessageRequest)
+        returns (ListQueueMessageResponse);
 }

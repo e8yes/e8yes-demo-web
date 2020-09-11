@@ -39,7 +39,7 @@ namespace protobuf_service_5fmessage_5fqueue_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[4];
+  static const ::google::protobuf::internal::ParseTable schema[6];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -59,6 +59,12 @@ extern EnqueueMessageRequestDefaultTypeInternal _EnqueueMessageRequest_default_i
 class EnqueueMessageResponse;
 class EnqueueMessageResponseDefaultTypeInternal;
 extern EnqueueMessageResponseDefaultTypeInternal _EnqueueMessageResponse_default_instance_;
+class ListQueueMessageRequest;
+class ListQueueMessageRequestDefaultTypeInternal;
+extern ListQueueMessageRequestDefaultTypeInternal _ListQueueMessageRequest_default_instance_;
+class ListQueueMessageResponse;
+class ListQueueMessageResponseDefaultTypeInternal;
+extern ListQueueMessageResponseDefaultTypeInternal _ListQueueMessageResponse_default_instance_;
 }  // namespace e8
 namespace google {
 namespace protobuf {
@@ -66,6 +72,8 @@ template<> ::e8::DequeueMessageRequest* Arena::CreateMaybeMessage<::e8::DequeueM
 template<> ::e8::DequeueMessageResponse* Arena::CreateMaybeMessage<::e8::DequeueMessageResponse>(Arena*);
 template<> ::e8::EnqueueMessageRequest* Arena::CreateMaybeMessage<::e8::EnqueueMessageRequest>(Arena*);
 template<> ::e8::EnqueueMessageResponse* Arena::CreateMaybeMessage<::e8::EnqueueMessageResponse>(Arena*);
+template<> ::e8::ListQueueMessageRequest* Arena::CreateMaybeMessage<::e8::ListQueueMessageRequest>(Arena*);
+template<> ::e8::ListQueueMessageResponse* Arena::CreateMaybeMessage<::e8::ListQueueMessageResponse>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace e8 {
@@ -495,10 +503,10 @@ class DequeueMessageResponse : public ::google::protobuf::Message /* @@protoc_in
 
   // accessors -------------------------------------------------------
 
-  // .e8.RealTimeMessage message = 2;
+  // .e8.RealTimeMessage message = 1;
   bool has_message() const;
   void clear_message();
-  static const int kMessageFieldNumber = 2;
+  static const int kMessageFieldNumber = 1;
   private:
   const ::e8::RealTimeMessage& _internal_message() const;
   public:
@@ -512,6 +520,218 @@ class DequeueMessageResponse : public ::google::protobuf::Message /* @@protoc_in
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::e8::RealTimeMessage* message_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ListQueueMessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.ListQueueMessageRequest) */ {
+ public:
+  ListQueueMessageRequest();
+  virtual ~ListQueueMessageRequest();
+
+  ListQueueMessageRequest(const ListQueueMessageRequest& from);
+
+  inline ListQueueMessageRequest& operator=(const ListQueueMessageRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ListQueueMessageRequest(ListQueueMessageRequest&& from) noexcept
+    : ListQueueMessageRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline ListQueueMessageRequest& operator=(ListQueueMessageRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ListQueueMessageRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ListQueueMessageRequest* internal_default_instance() {
+    return reinterpret_cast<const ListQueueMessageRequest*>(
+               &_ListQueueMessageRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  void Swap(ListQueueMessageRequest* other);
+  friend void swap(ListQueueMessageRequest& a, ListQueueMessageRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ListQueueMessageRequest* New() const final {
+    return CreateMaybeMessage<ListQueueMessageRequest>(NULL);
+  }
+
+  ListQueueMessageRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ListQueueMessageRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ListQueueMessageRequest& from);
+  void MergeFrom(const ListQueueMessageRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ListQueueMessageRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int64 user_id = 1;
+  void clear_user_id();
+  static const int kUserIdFieldNumber = 1;
+  ::google::protobuf::int64 user_id() const;
+  void set_user_id(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:e8.ListQueueMessageRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int64 user_id_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ListQueueMessageResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.ListQueueMessageResponse) */ {
+ public:
+  ListQueueMessageResponse();
+  virtual ~ListQueueMessageResponse();
+
+  ListQueueMessageResponse(const ListQueueMessageResponse& from);
+
+  inline ListQueueMessageResponse& operator=(const ListQueueMessageResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ListQueueMessageResponse(ListQueueMessageResponse&& from) noexcept
+    : ListQueueMessageResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ListQueueMessageResponse& operator=(ListQueueMessageResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ListQueueMessageResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ListQueueMessageResponse* internal_default_instance() {
+    return reinterpret_cast<const ListQueueMessageResponse*>(
+               &_ListQueueMessageResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  void Swap(ListQueueMessageResponse* other);
+  friend void swap(ListQueueMessageResponse& a, ListQueueMessageResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ListQueueMessageResponse* New() const final {
+    return CreateMaybeMessage<ListQueueMessageResponse>(NULL);
+  }
+
+  ListQueueMessageResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ListQueueMessageResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ListQueueMessageResponse& from);
+  void MergeFrom(const ListQueueMessageResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ListQueueMessageResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .e8.RealTimeMessage messages = 1;
+  int messages_size() const;
+  void clear_messages();
+  static const int kMessagesFieldNumber = 1;
+  ::e8::RealTimeMessage* mutable_messages(int index);
+  ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage >*
+      mutable_messages();
+  const ::e8::RealTimeMessage& messages(int index) const;
+  ::e8::RealTimeMessage* add_messages();
+  const ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage >&
+      messages() const;
+
+  // @@protoc_insertion_point(class_scope:e8.ListQueueMessageResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage > messages_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fqueue_2eproto::TableStruct;
 };
@@ -635,7 +855,7 @@ inline void DequeueMessageRequest::set_wait_duration_secs(::google::protobuf::in
 
 // DequeueMessageResponse
 
-// .e8.RealTimeMessage message = 2;
+// .e8.RealTimeMessage message = 1;
 inline bool DequeueMessageResponse::has_message() const {
   return this != internal_default_instance() && message_ != NULL;
 }
@@ -683,9 +903,62 @@ inline void DequeueMessageResponse::set_allocated_message(::e8::RealTimeMessage*
   // @@protoc_insertion_point(field_set_allocated:e8.DequeueMessageResponse.message)
 }
 
+// -------------------------------------------------------------------
+
+// ListQueueMessageRequest
+
+// int64 user_id = 1;
+inline void ListQueueMessageRequest::clear_user_id() {
+  user_id_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 ListQueueMessageRequest::user_id() const {
+  // @@protoc_insertion_point(field_get:e8.ListQueueMessageRequest.user_id)
+  return user_id_;
+}
+inline void ListQueueMessageRequest::set_user_id(::google::protobuf::int64 value) {
+  
+  user_id_ = value;
+  // @@protoc_insertion_point(field_set:e8.ListQueueMessageRequest.user_id)
+}
+
+// -------------------------------------------------------------------
+
+// ListQueueMessageResponse
+
+// repeated .e8.RealTimeMessage messages = 1;
+inline int ListQueueMessageResponse::messages_size() const {
+  return messages_.size();
+}
+inline ::e8::RealTimeMessage* ListQueueMessageResponse::mutable_messages(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.ListQueueMessageResponse.messages)
+  return messages_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage >*
+ListQueueMessageResponse::mutable_messages() {
+  // @@protoc_insertion_point(field_mutable_list:e8.ListQueueMessageResponse.messages)
+  return &messages_;
+}
+inline const ::e8::RealTimeMessage& ListQueueMessageResponse::messages(int index) const {
+  // @@protoc_insertion_point(field_get:e8.ListQueueMessageResponse.messages)
+  return messages_.Get(index);
+}
+inline ::e8::RealTimeMessage* ListQueueMessageResponse::add_messages() {
+  // @@protoc_insertion_point(field_add:e8.ListQueueMessageResponse.messages)
+  return messages_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::e8::RealTimeMessage >&
+ListQueueMessageResponse::messages() const {
+  // @@protoc_insertion_point(field_list:e8.ListQueueMessageResponse.messages)
+  return messages_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

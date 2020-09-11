@@ -131,7 +131,7 @@ class DequeueMessageRequest extends $pb.GeneratedMessage {
 
 class DequeueMessageResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DequeueMessageResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..aOM<$15.RealTimeMessage>(2, 'message', subBuilder: $15.RealTimeMessage.create)
+    ..aOM<$15.RealTimeMessage>(1, 'message', subBuilder: $15.RealTimeMessage.create)
     ..hasRequiredFields = false
   ;
 
@@ -150,15 +150,71 @@ class DequeueMessageResponse extends $pb.GeneratedMessage {
   static DequeueMessageResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DequeueMessageResponse>(create);
   static DequeueMessageResponse _defaultInstance;
 
-  @$pb.TagNumber(2)
+  @$pb.TagNumber(1)
   $15.RealTimeMessage get message => $_getN(0);
-  @$pb.TagNumber(2)
-  set message($15.RealTimeMessage v) { setField(2, v); }
-  @$pb.TagNumber(2)
+  @$pb.TagNumber(1)
+  set message($15.RealTimeMessage v) { setField(1, v); }
+  @$pb.TagNumber(1)
   $core.bool hasMessage() => $_has(0);
-  @$pb.TagNumber(2)
-  void clearMessage() => clearField(2);
-  @$pb.TagNumber(2)
+  @$pb.TagNumber(1)
+  void clearMessage() => clearField(1);
+  @$pb.TagNumber(1)
   $15.RealTimeMessage ensureMessage() => $_ensure(0);
+}
+
+class ListQueueMessageRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ListQueueMessageRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aInt64(1, 'userId')
+    ..hasRequiredFields = false
+  ;
+
+  ListQueueMessageRequest._() : super();
+  factory ListQueueMessageRequest() => create();
+  factory ListQueueMessageRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListQueueMessageRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ListQueueMessageRequest clone() => ListQueueMessageRequest()..mergeFromMessage(this);
+  ListQueueMessageRequest copyWith(void Function(ListQueueMessageRequest) updates) => super.copyWith((message) => updates(message as ListQueueMessageRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ListQueueMessageRequest create() => ListQueueMessageRequest._();
+  ListQueueMessageRequest createEmptyInstance() => create();
+  static $pb.PbList<ListQueueMessageRequest> createRepeated() => $pb.PbList<ListQueueMessageRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ListQueueMessageRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListQueueMessageRequest>(create);
+  static ListQueueMessageRequest _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get userId => $_getI64(0);
+  @$pb.TagNumber(1)
+  set userId($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => clearField(1);
+}
+
+class ListQueueMessageResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ListQueueMessageResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..pc<$15.RealTimeMessage>(1, 'messages', $pb.PbFieldType.PM, subBuilder: $15.RealTimeMessage.create)
+    ..hasRequiredFields = false
+  ;
+
+  ListQueueMessageResponse._() : super();
+  factory ListQueueMessageResponse() => create();
+  factory ListQueueMessageResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListQueueMessageResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ListQueueMessageResponse clone() => ListQueueMessageResponse()..mergeFromMessage(this);
+  ListQueueMessageResponse copyWith(void Function(ListQueueMessageResponse) updates) => super.copyWith((message) => updates(message as ListQueueMessageResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ListQueueMessageResponse create() => ListQueueMessageResponse._();
+  ListQueueMessageResponse createEmptyInstance() => create();
+  static $pb.PbList<ListQueueMessageResponse> createRepeated() => $pb.PbList<ListQueueMessageResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ListQueueMessageResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListQueueMessageResponse>(create);
+  static ListQueueMessageResponse _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$15.RealTimeMessage> get messages => $_getList(0);
 }
 
