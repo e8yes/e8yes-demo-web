@@ -9,7 +9,7 @@ void fetchRealTimeMessages(
   Timer(Duration(seconds: interval), () {
     SubscribeRealTimeMessageQueueRequest request =
         SubscribeRealTimeMessageQueueRequest();
-    request.waitDurationSecs = 8;
+    request.waitDurationSecs = 60;
 
     Stream<SubscribeRealTimeMessageQueueResponse> stream =
         service.subscribeRealTimeMessageQueue(
