@@ -42,7 +42,7 @@ namespace protobuf_service_5fmessage_5fchannel_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[12];
+  static const ::google::protobuf::internal::ParseTable schema[14];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -86,6 +86,12 @@ extern LeaveMessageChannelRequestDefaultTypeInternal _LeaveMessageChannelRequest
 class LeaveMessageChannelResponse;
 class LeaveMessageChannelResponseDefaultTypeInternal;
 extern LeaveMessageChannelResponseDefaultTypeInternal _LeaveMessageChannelResponse_default_instance_;
+class UpdateMessageChannelRequest;
+class UpdateMessageChannelRequestDefaultTypeInternal;
+extern UpdateMessageChannelRequestDefaultTypeInternal _UpdateMessageChannelRequest_default_instance_;
+class UpdateMessageChannelResponse;
+class UpdateMessageChannelResponseDefaultTypeInternal;
+extern UpdateMessageChannelResponseDefaultTypeInternal _UpdateMessageChannelResponse_default_instance_;
 }  // namespace e8
 namespace google {
 namespace protobuf {
@@ -101,6 +107,8 @@ template<> ::e8::GetMessageChannelMembersRequest* Arena::CreateMaybeMessage<::e8
 template<> ::e8::GetMessageChannelMembersResponse* Arena::CreateMaybeMessage<::e8::GetMessageChannelMembersResponse>(Arena*);
 template<> ::e8::LeaveMessageChannelRequest* Arena::CreateMaybeMessage<::e8::LeaveMessageChannelRequest>(Arena*);
 template<> ::e8::LeaveMessageChannelResponse* Arena::CreateMaybeMessage<::e8::LeaveMessageChannelResponse>(Arena*);
+template<> ::e8::UpdateMessageChannelRequest* Arena::CreateMaybeMessage<::e8::UpdateMessageChannelRequest>(Arena*);
+template<> ::e8::UpdateMessageChannelResponse* Arena::CreateMaybeMessage<::e8::UpdateMessageChannelResponse>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace e8 {
@@ -360,6 +368,245 @@ class CreateMessageChannelResponse : public ::google::protobuf::Message /* @@pro
 };
 // -------------------------------------------------------------------
 
+class UpdateMessageChannelRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.UpdateMessageChannelRequest) */ {
+ public:
+  UpdateMessageChannelRequest();
+  virtual ~UpdateMessageChannelRequest();
+
+  UpdateMessageChannelRequest(const UpdateMessageChannelRequest& from);
+
+  inline UpdateMessageChannelRequest& operator=(const UpdateMessageChannelRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  UpdateMessageChannelRequest(UpdateMessageChannelRequest&& from) noexcept
+    : UpdateMessageChannelRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline UpdateMessageChannelRequest& operator=(UpdateMessageChannelRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UpdateMessageChannelRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UpdateMessageChannelRequest* internal_default_instance() {
+    return reinterpret_cast<const UpdateMessageChannelRequest*>(
+               &_UpdateMessageChannelRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  void Swap(UpdateMessageChannelRequest* other);
+  friend void swap(UpdateMessageChannelRequest& a, UpdateMessageChannelRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UpdateMessageChannelRequest* New() const final {
+    return CreateMaybeMessage<UpdateMessageChannelRequest>(NULL);
+  }
+
+  UpdateMessageChannelRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<UpdateMessageChannelRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const UpdateMessageChannelRequest& from);
+  void MergeFrom(const UpdateMessageChannelRequest& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UpdateMessageChannelRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated int64 member_ids = 4;
+  int member_ids_size() const;
+  void clear_member_ids();
+  static const int kMemberIdsFieldNumber = 4;
+  ::google::protobuf::int64 member_ids(int index) const;
+  void set_member_ids(int index, ::google::protobuf::int64 value);
+  void add_member_ids(::google::protobuf::int64 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+      member_ids() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+      mutable_member_ids();
+
+  // .e8.NullableString title = 2;
+  bool has_title() const;
+  void clear_title();
+  static const int kTitleFieldNumber = 2;
+  private:
+  const ::e8::NullableString& _internal_title() const;
+  public:
+  const ::e8::NullableString& title() const;
+  ::e8::NullableString* release_title();
+  ::e8::NullableString* mutable_title();
+  void set_allocated_title(::e8::NullableString* title);
+
+  // .e8.NullableString description = 3;
+  bool has_description() const;
+  void clear_description();
+  static const int kDescriptionFieldNumber = 3;
+  private:
+  const ::e8::NullableString& _internal_description() const;
+  public:
+  const ::e8::NullableString& description() const;
+  ::e8::NullableString* release_description();
+  ::e8::NullableString* mutable_description();
+  void set_allocated_description(::e8::NullableString* description);
+
+  // int64 channel_id = 1;
+  void clear_channel_id();
+  static const int kChannelIdFieldNumber = 1;
+  ::google::protobuf::int64 channel_id() const;
+  void set_channel_id(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:e8.UpdateMessageChannelRequest)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 > member_ids_;
+  mutable int _member_ids_cached_byte_size_;
+  ::e8::NullableString* title_;
+  ::e8::NullableString* description_;
+  ::google::protobuf::int64 channel_id_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UpdateMessageChannelResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.UpdateMessageChannelResponse) */ {
+ public:
+  UpdateMessageChannelResponse();
+  virtual ~UpdateMessageChannelResponse();
+
+  UpdateMessageChannelResponse(const UpdateMessageChannelResponse& from);
+
+  inline UpdateMessageChannelResponse& operator=(const UpdateMessageChannelResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  UpdateMessageChannelResponse(UpdateMessageChannelResponse&& from) noexcept
+    : UpdateMessageChannelResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline UpdateMessageChannelResponse& operator=(UpdateMessageChannelResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UpdateMessageChannelResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UpdateMessageChannelResponse* internal_default_instance() {
+    return reinterpret_cast<const UpdateMessageChannelResponse*>(
+               &_UpdateMessageChannelResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  void Swap(UpdateMessageChannelResponse* other);
+  friend void swap(UpdateMessageChannelResponse& a, UpdateMessageChannelResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UpdateMessageChannelResponse* New() const final {
+    return CreateMaybeMessage<UpdateMessageChannelResponse>(NULL);
+  }
+
+  UpdateMessageChannelResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<UpdateMessageChannelResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const UpdateMessageChannelResponse& from);
+  void MergeFrom(const UpdateMessageChannelResponse& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UpdateMessageChannelResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:e8.UpdateMessageChannelResponse)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class AddUserToMessageChannelRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.AddUserToMessageChannelRequest) */ {
  public:
   AddUserToMessageChannelRequest();
@@ -395,7 +642,7 @@ class AddUserToMessageChannelRequest : public ::google::protobuf::Message /* @@p
                &_AddUserToMessageChannelRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    4;
 
   void Swap(AddUserToMessageChannelRequest* other);
   friend void swap(AddUserToMessageChannelRequest& a, AddUserToMessageChannelRequest& b) {
@@ -512,7 +759,7 @@ class AddUserToMessageChannelResponse : public ::google::protobuf::Message /* @@
                &_AddUserToMessageChannelResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    5;
 
   void Swap(AddUserToMessageChannelResponse* other);
   friend void swap(AddUserToMessageChannelResponse& a, AddUserToMessageChannelResponse& b) {
@@ -608,7 +855,7 @@ class GetMessageChannelKeyRequest : public ::google::protobuf::Message /* @@prot
                &_GetMessageChannelKeyRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    6;
 
   void Swap(GetMessageChannelKeyRequest* other);
   friend void swap(GetMessageChannelKeyRequest& a, GetMessageChannelKeyRequest& b) {
@@ -718,7 +965,7 @@ class GetMessageChannelKeyResponse : public ::google::protobuf::Message /* @@pro
                &_GetMessageChannelKeyResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    7;
 
   void Swap(GetMessageChannelKeyResponse* other);
   friend void swap(GetMessageChannelKeyResponse& a, GetMessageChannelKeyResponse& b) {
@@ -829,7 +1076,7 @@ class LeaveMessageChannelRequest : public ::google::protobuf::Message /* @@proto
                &_LeaveMessageChannelRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    8;
 
   void Swap(LeaveMessageChannelRequest* other);
   friend void swap(LeaveMessageChannelRequest& a, LeaveMessageChannelRequest& b) {
@@ -932,7 +1179,7 @@ class LeaveMessageChannelResponse : public ::google::protobuf::Message /* @@prot
                &_LeaveMessageChannelResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    9;
 
   void Swap(LeaveMessageChannelResponse* other);
   friend void swap(LeaveMessageChannelResponse& a, LeaveMessageChannelResponse& b) {
@@ -1028,7 +1275,7 @@ class GetJoinedInMessageChannelsRequest : public ::google::protobuf::Message /* 
                &_GetJoinedInMessageChannelsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    10;
 
   void Swap(GetJoinedInMessageChannelsRequest* other);
   friend void swap(GetJoinedInMessageChannelsRequest& a, GetJoinedInMessageChannelsRequest& b) {
@@ -1158,7 +1405,7 @@ class GetJoinedInMessageChannelsResponse : public ::google::protobuf::Message /*
                &_GetJoinedInMessageChannelsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    11;
 
   void Swap(GetJoinedInMessageChannelsResponse* other);
   friend void swap(GetJoinedInMessageChannelsResponse& a, GetJoinedInMessageChannelsResponse& b) {
@@ -1267,7 +1514,7 @@ class GetMessageChannelMembersRequest : public ::google::protobuf::Message /* @@
                &_GetMessageChannelMembersRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    12;
 
   void Swap(GetMessageChannelMembersRequest* other);
   friend void swap(GetMessageChannelMembersRequest& a, GetMessageChannelMembersRequest& b) {
@@ -1383,7 +1630,7 @@ class GetMessageChannelMembersResponse : public ::google::protobuf::Message /* @
                &_GetMessageChannelMembersResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    13;
 
   void Swap(GetMessageChannelMembersResponse* other);
   friend void swap(GetMessageChannelMembersResponse& a, GetMessageChannelMembersResponse& b) {
@@ -1650,6 +1897,154 @@ inline void CreateMessageChannelResponse::set_channel_id(::google::protobuf::int
   channel_id_ = value;
   // @@protoc_insertion_point(field_set:e8.CreateMessageChannelResponse.channel_id)
 }
+
+// -------------------------------------------------------------------
+
+// UpdateMessageChannelRequest
+
+// int64 channel_id = 1;
+inline void UpdateMessageChannelRequest::clear_channel_id() {
+  channel_id_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 UpdateMessageChannelRequest::channel_id() const {
+  // @@protoc_insertion_point(field_get:e8.UpdateMessageChannelRequest.channel_id)
+  return channel_id_;
+}
+inline void UpdateMessageChannelRequest::set_channel_id(::google::protobuf::int64 value) {
+  
+  channel_id_ = value;
+  // @@protoc_insertion_point(field_set:e8.UpdateMessageChannelRequest.channel_id)
+}
+
+// .e8.NullableString title = 2;
+inline bool UpdateMessageChannelRequest::has_title() const {
+  return this != internal_default_instance() && title_ != NULL;
+}
+inline const ::e8::NullableString& UpdateMessageChannelRequest::_internal_title() const {
+  return *title_;
+}
+inline const ::e8::NullableString& UpdateMessageChannelRequest::title() const {
+  const ::e8::NullableString* p = title_;
+  // @@protoc_insertion_point(field_get:e8.UpdateMessageChannelRequest.title)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
+      &::e8::_NullableString_default_instance_);
+}
+inline ::e8::NullableString* UpdateMessageChannelRequest::release_title() {
+  // @@protoc_insertion_point(field_release:e8.UpdateMessageChannelRequest.title)
+  
+  ::e8::NullableString* temp = title_;
+  title_ = NULL;
+  return temp;
+}
+inline ::e8::NullableString* UpdateMessageChannelRequest::mutable_title() {
+  
+  if (title_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
+    title_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.UpdateMessageChannelRequest.title)
+  return title_;
+}
+inline void UpdateMessageChannelRequest::set_allocated_title(::e8::NullableString* title) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(title_);
+  }
+  if (title) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      title = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, title, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  title_ = title;
+  // @@protoc_insertion_point(field_set_allocated:e8.UpdateMessageChannelRequest.title)
+}
+
+// .e8.NullableString description = 3;
+inline bool UpdateMessageChannelRequest::has_description() const {
+  return this != internal_default_instance() && description_ != NULL;
+}
+inline const ::e8::NullableString& UpdateMessageChannelRequest::_internal_description() const {
+  return *description_;
+}
+inline const ::e8::NullableString& UpdateMessageChannelRequest::description() const {
+  const ::e8::NullableString* p = description_;
+  // @@protoc_insertion_point(field_get:e8.UpdateMessageChannelRequest.description)
+  return p != NULL ? *p : *reinterpret_cast<const ::e8::NullableString*>(
+      &::e8::_NullableString_default_instance_);
+}
+inline ::e8::NullableString* UpdateMessageChannelRequest::release_description() {
+  // @@protoc_insertion_point(field_release:e8.UpdateMessageChannelRequest.description)
+  
+  ::e8::NullableString* temp = description_;
+  description_ = NULL;
+  return temp;
+}
+inline ::e8::NullableString* UpdateMessageChannelRequest::mutable_description() {
+  
+  if (description_ == NULL) {
+    auto* p = CreateMaybeMessage<::e8::NullableString>(GetArenaNoVirtual());
+    description_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:e8.UpdateMessageChannelRequest.description)
+  return description_;
+}
+inline void UpdateMessageChannelRequest::set_allocated_description(::e8::NullableString* description) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(description_);
+  }
+  if (description) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      description = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, description, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  description_ = description;
+  // @@protoc_insertion_point(field_set_allocated:e8.UpdateMessageChannelRequest.description)
+}
+
+// repeated int64 member_ids = 4;
+inline int UpdateMessageChannelRequest::member_ids_size() const {
+  return member_ids_.size();
+}
+inline void UpdateMessageChannelRequest::clear_member_ids() {
+  member_ids_.Clear();
+}
+inline ::google::protobuf::int64 UpdateMessageChannelRequest::member_ids(int index) const {
+  // @@protoc_insertion_point(field_get:e8.UpdateMessageChannelRequest.member_ids)
+  return member_ids_.Get(index);
+}
+inline void UpdateMessageChannelRequest::set_member_ids(int index, ::google::protobuf::int64 value) {
+  member_ids_.Set(index, value);
+  // @@protoc_insertion_point(field_set:e8.UpdateMessageChannelRequest.member_ids)
+}
+inline void UpdateMessageChannelRequest::add_member_ids(::google::protobuf::int64 value) {
+  member_ids_.Add(value);
+  // @@protoc_insertion_point(field_add:e8.UpdateMessageChannelRequest.member_ids)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+UpdateMessageChannelRequest::member_ids() const {
+  // @@protoc_insertion_point(field_list:e8.UpdateMessageChannelRequest.member_ids)
+  return member_ids_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+UpdateMessageChannelRequest::mutable_member_ids() {
+  // @@protoc_insertion_point(field_mutable_list:e8.UpdateMessageChannelRequest.member_ids)
+  return &member_ids_;
+}
+
+// -------------------------------------------------------------------
+
+// UpdateMessageChannelResponse
 
 // -------------------------------------------------------------------
 
@@ -2066,6 +2461,10 @@ GetMessageChannelMembersResponse::channel_relations() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

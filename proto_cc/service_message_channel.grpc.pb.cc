@@ -19,6 +19,7 @@ namespace e8 {
 
 static const char* MessageChannelService_method_names[] = {
   "/e8.MessageChannelService/CreateMessageChannel",
+  "/e8.MessageChannelService/UpdateMessageChannel",
   "/e8.MessageChannelService/AddUserToMessageChannel",
   "/e8.MessageChannelService/GetMessageChannelKey",
   "/e8.MessageChannelService/LeaveMessageChannel",
@@ -34,11 +35,12 @@ std::unique_ptr< MessageChannelService::Stub> MessageChannelService::NewStub(con
 
 MessageChannelService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_CreateMessageChannel_(MessageChannelService_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_AddUserToMessageChannel_(MessageChannelService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetMessageChannelKey_(MessageChannelService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_LeaveMessageChannel_(MessageChannelService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetJoinedInMessageChannels_(MessageChannelService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetMessageChannelMembers_(MessageChannelService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_UpdateMessageChannel_(MessageChannelService_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_AddUserToMessageChannel_(MessageChannelService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetMessageChannelKey_(MessageChannelService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_LeaveMessageChannel_(MessageChannelService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetJoinedInMessageChannels_(MessageChannelService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetMessageChannelMembers_(MessageChannelService_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MessageChannelService::Stub::CreateMessageChannel(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest& request, ::e8::CreateMessageChannelResponse* response) {
@@ -55,6 +57,22 @@ void MessageChannelService::Stub::experimental_async::CreateMessageChannel(::grp
 
 ::grpc::ClientAsyncResponseReader< ::e8::CreateMessageChannelResponse>* MessageChannelService::Stub::PrepareAsyncCreateMessageChannelRaw(::grpc::ClientContext* context, const ::e8::CreateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::CreateMessageChannelResponse>::Create(channel_.get(), cq, rpcmethod_CreateMessageChannel_, context, request, false);
+}
+
+::grpc::Status MessageChannelService::Stub::UpdateMessageChannel(::grpc::ClientContext* context, const ::e8::UpdateMessageChannelRequest& request, ::e8::UpdateMessageChannelResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_UpdateMessageChannel_, context, request, response);
+}
+
+void MessageChannelService::Stub::experimental_async::UpdateMessageChannel(::grpc::ClientContext* context, const ::e8::UpdateMessageChannelRequest* request, ::e8::UpdateMessageChannelResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_UpdateMessageChannel_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::UpdateMessageChannelResponse>* MessageChannelService::Stub::AsyncUpdateMessageChannelRaw(::grpc::ClientContext* context, const ::e8::UpdateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::UpdateMessageChannelResponse>::Create(channel_.get(), cq, rpcmethod_UpdateMessageChannel_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::e8::UpdateMessageChannelResponse>* MessageChannelService::Stub::PrepareAsyncUpdateMessageChannelRaw(::grpc::ClientContext* context, const ::e8::UpdateMessageChannelRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::UpdateMessageChannelResponse>::Create(channel_.get(), cq, rpcmethod_UpdateMessageChannel_, context, request, false);
 }
 
 ::grpc::Status MessageChannelService::Stub::AddUserToMessageChannel(::grpc::ClientContext* context, const ::e8::AddUserToMessageChannelRequest& request, ::e8::AddUserToMessageChannelResponse* response) {
@@ -146,25 +164,30 @@ MessageChannelService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MessageChannelService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::UpdateMessageChannelRequest, ::e8::UpdateMessageChannelResponse>(
+          std::mem_fn(&MessageChannelService::Service::UpdateMessageChannel), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MessageChannelService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::AddUserToMessageChannelRequest, ::e8::AddUserToMessageChannelResponse>(
           std::mem_fn(&MessageChannelService::Service::AddUserToMessageChannel), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MessageChannelService_method_names[2],
+      MessageChannelService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::GetMessageChannelKeyRequest, ::e8::GetMessageChannelKeyResponse>(
           std::mem_fn(&MessageChannelService::Service::GetMessageChannelKey), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MessageChannelService_method_names[3],
+      MessageChannelService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::LeaveMessageChannelRequest, ::e8::LeaveMessageChannelResponse>(
           std::mem_fn(&MessageChannelService::Service::LeaveMessageChannel), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MessageChannelService_method_names[4],
+      MessageChannelService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::GetJoinedInMessageChannelsRequest, ::e8::GetJoinedInMessageChannelsResponse>(
           std::mem_fn(&MessageChannelService::Service::GetJoinedInMessageChannels), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MessageChannelService_method_names[5],
+      MessageChannelService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::GetMessageChannelMembersRequest, ::e8::GetMessageChannelMembersResponse>(
           std::mem_fn(&MessageChannelService::Service::GetMessageChannelMembers), this)));
@@ -174,6 +197,13 @@ MessageChannelService::Service::~Service() {
 }
 
 ::grpc::Status MessageChannelService::Service::CreateMessageChannel(::grpc::ServerContext* context, const ::e8::CreateMessageChannelRequest* request, ::e8::CreateMessageChannelResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MessageChannelService::Service::UpdateMessageChannel(::grpc::ServerContext* context, const ::e8::UpdateMessageChannelRequest* request, ::e8::UpdateMessageChannelResponse* response) {
   (void) context;
   (void) request;
   (void) response;

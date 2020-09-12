@@ -20,6 +20,12 @@ class MessageChannelServiceClient extends $grpc.Client {
       ($7.CreateMessageChannelRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
           $7.CreateMessageChannelResponse.fromBuffer(value));
+  static final _$updateMessageChannel = $grpc.ClientMethod<
+          $7.UpdateMessageChannelRequest, $7.UpdateMessageChannelResponse>(
+      '/e8.MessageChannelService/UpdateMessageChannel',
+      ($7.UpdateMessageChannelRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $7.UpdateMessageChannelResponse.fromBuffer(value));
   static final _$addUserToMessageChannel = $grpc.ClientMethod<
           $7.AddUserToMessageChannelRequest,
           $7.AddUserToMessageChannelResponse>(
@@ -63,6 +69,15 @@ class MessageChannelServiceClient extends $grpc.Client {
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$createMessageChannel, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
+
+  $grpc.ResponseFuture<$7.UpdateMessageChannelResponse> updateMessageChannel(
+      $7.UpdateMessageChannelRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(
+        _$updateMessageChannel, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -126,6 +141,15 @@ abstract class MessageChannelServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $7.CreateMessageChannelRequest.fromBuffer(value),
         ($7.CreateMessageChannelResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$7.UpdateMessageChannelRequest,
+            $7.UpdateMessageChannelResponse>(
+        'UpdateMessageChannel',
+        updateMessageChannel_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $7.UpdateMessageChannelRequest.fromBuffer(value),
+        ($7.UpdateMessageChannelResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$7.AddUserToMessageChannelRequest,
             $7.AddUserToMessageChannelResponse>(
         'AddUserToMessageChannel',
@@ -180,6 +204,12 @@ abstract class MessageChannelServiceBase extends $grpc.Service {
     return createMessageChannel(call, await request);
   }
 
+  $async.Future<$7.UpdateMessageChannelResponse> updateMessageChannel_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$7.UpdateMessageChannelRequest> request) async {
+    return updateMessageChannel(call, await request);
+  }
+
   $async.Future<$7.AddUserToMessageChannelResponse> addUserToMessageChannel_Pre(
       $grpc.ServiceCall call,
       $async.Future<$7.AddUserToMessageChannelRequest> request) async {
@@ -212,6 +242,8 @@ abstract class MessageChannelServiceBase extends $grpc.Service {
 
   $async.Future<$7.CreateMessageChannelResponse> createMessageChannel(
       $grpc.ServiceCall call, $7.CreateMessageChannelRequest request);
+  $async.Future<$7.UpdateMessageChannelResponse> updateMessageChannel(
+      $grpc.ServiceCall call, $7.UpdateMessageChannelRequest request);
   $async.Future<$7.AddUserToMessageChannelResponse> addUserToMessageChannel(
       $grpc.ServiceCall call, $7.AddUserToMessageChannelRequest request);
   $async.Future<$7.GetMessageChannelKeyResponse> getMessageChannelKey(

@@ -42,6 +42,19 @@ message CreateMessageChannelResponse {
 }
 
 
+message UpdateMessageChannelRequest {
+    int64 channel_id = 1;
+
+    NullableString title = 2;
+    NullableString description = 3;
+
+    // The new set of channel members.
+    repeated int64 member_ids = 4;
+}
+
+message UpdateMessageChannelResponse {}
+
+
 message AddUserToMessageChannelRequest {
     int64 channel_id = 1;
     int64 user_id = 2;
@@ -100,8 +113,13 @@ message GetMessageChannelMembersResponse {
 service MessageChannelService {
     // Create a new message channel. The logged-in user will be the 
     // administrator of this channel.
-    rpc CreateMessageChannel (CreateMessageChannelRequest) returns 
+    rpc CreateMessageChannel (CreateMessageChannelRequest) returns
         (CreateMessageChannelResponse);
+    
+    // Update an existing message channel. It allows the administrator to
+    // modify the set of channel members, channel title and channel description.
+    rpc UpdateMessageChannel (UpdateMessageChannelRequest) returns
+        (UpdateMessageChannelResponse);
 
     // Add a user to the specified channel where the logged-in user is the
     // administrator. The user should not already been a member of the channel.

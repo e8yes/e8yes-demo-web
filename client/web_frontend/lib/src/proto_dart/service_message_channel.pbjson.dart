@@ -23,6 +23,20 @@ const CreateMessageChannelResponse$json = const {
   ],
 };
 
+const UpdateMessageChannelRequest$json = const {
+  '1': 'UpdateMessageChannelRequest',
+  '2': const [
+    const {'1': 'channel_id', '3': 1, '4': 1, '5': 3, '10': 'channelId'},
+    const {'1': 'title', '3': 2, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'title'},
+    const {'1': 'description', '3': 3, '4': 1, '5': 11, '6': '.e8.NullableString', '10': 'description'},
+    const {'1': 'member_ids', '3': 4, '4': 3, '5': 3, '10': 'memberIds'},
+  ],
+};
+
+const UpdateMessageChannelResponse$json = const {
+  '1': 'UpdateMessageChannelResponse',
+};
+
 const AddUserToMessageChannelRequest$json = const {
   '1': 'AddUserToMessageChannelRequest',
   '2': const [

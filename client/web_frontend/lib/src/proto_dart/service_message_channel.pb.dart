@@ -117,6 +117,86 @@ class CreateMessageChannelResponse extends $pb.GeneratedMessage {
   void clearChannelId() => clearField(1);
 }
 
+class UpdateMessageChannelRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('UpdateMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..aInt64(1, 'channelId')
+    ..aOM<$11.NullableString>(2, 'title', subBuilder: $11.NullableString.create)
+    ..aOM<$11.NullableString>(3, 'description', subBuilder: $11.NullableString.create)
+    ..p<$fixnum.Int64>(4, 'memberIds', $pb.PbFieldType.P6)
+    ..hasRequiredFields = false
+  ;
+
+  UpdateMessageChannelRequest._() : super();
+  factory UpdateMessageChannelRequest() => create();
+  factory UpdateMessageChannelRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UpdateMessageChannelRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  UpdateMessageChannelRequest clone() => UpdateMessageChannelRequest()..mergeFromMessage(this);
+  UpdateMessageChannelRequest copyWith(void Function(UpdateMessageChannelRequest) updates) => super.copyWith((message) => updates(message as UpdateMessageChannelRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UpdateMessageChannelRequest create() => UpdateMessageChannelRequest._();
+  UpdateMessageChannelRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateMessageChannelRequest> createRepeated() => $pb.PbList<UpdateMessageChannelRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateMessageChannelRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdateMessageChannelRequest>(create);
+  static UpdateMessageChannelRequest _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get channelId => $_getI64(0);
+  @$pb.TagNumber(1)
+  set channelId($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChannelId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChannelId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $11.NullableString get title => $_getN(1);
+  @$pb.TagNumber(2)
+  set title($11.NullableString v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTitle() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTitle() => clearField(2);
+  @$pb.TagNumber(2)
+  $11.NullableString ensureTitle() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $11.NullableString get description => $_getN(2);
+  @$pb.TagNumber(3)
+  set description($11.NullableString v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDescription() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDescription() => clearField(3);
+  @$pb.TagNumber(3)
+  $11.NullableString ensureDescription() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $core.List<$fixnum.Int64> get memberIds => $_getList(3);
+}
+
+class UpdateMessageChannelResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('UpdateMessageChannelResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdateMessageChannelResponse._() : super();
+  factory UpdateMessageChannelResponse() => create();
+  factory UpdateMessageChannelResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UpdateMessageChannelResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  UpdateMessageChannelResponse clone() => UpdateMessageChannelResponse()..mergeFromMessage(this);
+  UpdateMessageChannelResponse copyWith(void Function(UpdateMessageChannelResponse) updates) => super.copyWith((message) => updates(message as UpdateMessageChannelResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UpdateMessageChannelResponse create() => UpdateMessageChannelResponse._();
+  UpdateMessageChannelResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdateMessageChannelResponse> createRepeated() => $pb.PbList<UpdateMessageChannelResponse>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateMessageChannelResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdateMessageChannelResponse>(create);
+  static UpdateMessageChannelResponse _defaultInstance;
+}
+
 class AddUserToMessageChannelRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('AddUserToMessageChannelRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aInt64(1, 'channelId')
