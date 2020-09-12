@@ -123,8 +123,11 @@ int main(int argc, char *argv[]) {
     std::string grpc_web_proxy =
         e8::ReadFlag(kGrpcWebProxyFlag, std::string(), e8::FromString<std::string>);
     if (!grpc_web_proxy.empty()) {
-        std::string cmd = grpc_web_proxy + " --backend_addr=localhost:50051 --run_tls_server=false "
-                                           "--server_http_debug_port=8000 --allow_all_origins &";
+        std::string cmd =
+            grpc_web_proxy +
+            " --backend_addr=localhost:50051 --run_tls_server=false "
+            "--server_http_debug_port=8000 --allow_all_origins --server_http_max_read_timeout=130s "
+            "--server_http_max_write_timeout=130s &";
         int _ = std::system(cmd.c_str());
         (void)_;
     }
