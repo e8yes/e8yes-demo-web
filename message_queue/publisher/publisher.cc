@@ -51,6 +51,7 @@ bool E8MessagePublisher::Publish(MessageKey key, RealTimeMessage const &message)
     grpc::ClientContext context;
 
     EnqueueMessageRequest request;
+    request.set_user_id(key);
     *request.mutable_messages()->Add() = message;
 
     EnqueueMessageResponse response;
