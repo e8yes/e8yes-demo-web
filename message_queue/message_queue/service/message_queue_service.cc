@@ -109,4 +109,20 @@ grpc::Status MessageQueueServiceImpl::DequeueMessage(
     return current_status;
 }
 
+grpc::Status MessageQueueServiceImpl::ListQueueMessage(grpc::ServerContext * /*context*/,
+                                                       ListQueueMessageRequest const *request,
+                                                       ListQueueMessageResponse *response) {
+    std::vector<RealTimeMessage> messages =
+        MessageQueueStoreInstance()->ListQueue(request->user_id());
+    *response->mutable_messages() = {messages.begin(), messages.end()};
+    return grpc::Status::OK;
+}
+
+grpc::Status MessageQueueServiceImpl::GetQueueStats(grpc::ServerContext * /*context*/,
+                                                    GetQueueStatsRequest const * /*request*/,
+                                                    GetQueueStatsResponse *response) {
+    *response->mutable_stats() = MessageQueueStoreInstance()->QueueStats();
+    return grpc::Status::OK;
+}
+
 } // namespace e8

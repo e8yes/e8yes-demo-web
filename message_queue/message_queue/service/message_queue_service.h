@@ -39,6 +39,13 @@ class MessageQueueServiceImpl : public MessageQueueService::Service {
     grpc::Status DequeueMessage(
         grpc::ServerContext *context,
         grpc::ServerReaderWriter<DequeueMessageResponse, DequeueMessageRequest> *stream) override;
+
+    grpc::Status ListQueueMessage(grpc::ServerContext *context,
+                                  ListQueueMessageRequest const *request,
+                                  ListQueueMessageResponse *response) override;
+
+    grpc::Status GetQueueStats(grpc::ServerContext *context, GetQueueStatsRequest const *request,
+                               GetQueueStatsResponse *response) override;
 };
 
 } // namespace e8

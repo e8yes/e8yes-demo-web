@@ -20,16 +20,17 @@
 
 #include <cstdint>
 #include <ctime>
+#include <deque>
 #include <memory>
 #include <mutex>
 #include <optional>
-#include <queue>
 #include <semaphore.h>
 #include <shared_mutex>
 #include <unordered_map>
 #include <vector>
 
 #include "message_queue/common/entity.h"
+#include "proto_cc/message_queue_stats.pb.h"
 #include "proto_cc/real_time_message.pb.h"
 
 namespace e8 {
@@ -44,7 +45,7 @@ class MessageQueueStore {
         MessageQueue();
         ~MessageQueue();
 
-        std::queue<RealTimeMessage> queue;
+        std::deque<RealTimeMessage> queue;
 
         std::mutex queue_lock;
         sem_t queue_resource_count;
@@ -85,9 +86,19 @@ class MessageQueueStore {
     void EndBlockingDequeue(MessageQueue *message_queue, bool dequeue);
 
     /**
+     * @brief ListQueue Returns all the messages in the queue pointed by the key.
+     */
+    std::vector<RealTimeMessage> ListQueue(MessageKey const key);
+
+    /**
      * @brief Clear Delete all the message queues.
      */
     void Clear();
+
+    /**
+     * @brief QueueStats Calculate the current statistics of all queues.
+     */
+    MessageQueueStats QueueStats();
 
   private:
     MessageQueue *FetchQueue(MessageKey const key);

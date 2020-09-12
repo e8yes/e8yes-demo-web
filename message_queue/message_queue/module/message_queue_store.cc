@@ -18,10 +18,10 @@
 #include <cassert>
 #include <chrono>
 #include <cstdint>
+#include <deque>
 #include <memory>
 #include <mutex>
 #include <optional>
-#include <queue>
 #include <semaphore.h>
 #include <thread>
 #include <unordered_map>
@@ -65,7 +65,7 @@ void MessageQueueStore::Enqueue(MessageKey const key, RealTimeMessage const &mes
     MessageQueue *message_queue = FetchQueue(key);
 
     message_queue->queue_lock.lock();
-    message_queue->queue.push(message);
+    message_queue->queue.push_back(message);
     message_queue->queue_lock.unlock();
 
     sem_post(&message_queue->queue_resource_count);
@@ -106,17 +106,55 @@ void MessageQueueStore::EndBlockingDequeue(MessageQueue *message_queue, bool deq
     assert(message_queue != nullptr);
 
     if (dequeue) {
-        message_queue->queue.pop();
+        message_queue->queue.pop_front();
     } else {
         sem_post(&message_queue->queue_resource_count);
     }
     message_queue->queue_lock.unlock();
 }
 
+std::vector<RealTimeMessage> MessageQueueStore::ListQueue(MessageKey const key) {
+    MessageQueue *message_queue = FetchQueue(key);
+
+    message_queue->queue_lock.lock();
+    std::vector<RealTimeMessage> messages{message_queue->queue.begin(), message_queue->queue.end()};
+    message_queue->queue_lock.unlock();
+
+    return messages;
+}
+
 void MessageQueueStore::Clear() {
     map_lock_.lock();
     queues_.clear();
     map_lock_.unlock();
+}
+
+MessageQueueStats MessageQueueStore::QueueStats() {
+    MessageQueueStats stats;
+
+    map_lock_.lock();
+
+    stats.set_total_num_queues(queues_.size());
+
+    for (auto const &[key, queue] : queues_) {
+        unsigned length = queue->queue.size();
+
+        if (length == 0) {
+            stats.set_num_queues_length_0(stats.num_queues_length_0() + 1);
+        } else if (length >= 1 && length <= 10) {
+            stats.set_num_queues_length_1_10(stats.num_queues_length_1_10() + 1);
+        } else if (length >= 11 && length <= 100) {
+            stats.set_num_queues_length_11_100(stats.num_queues_length_11_100() + 1);
+        } else if (length >= 101 && length <= 1000) {
+            stats.set_num_queues_length_101_1000(stats.num_queues_length_101_1000() + 1);
+        } else {
+            stats.set_num_queues_length_gte_1001(stats.num_queues_length_gte_1001() + 1);
+        }
+    }
+
+    map_lock_.unlock();
+
+    return stats;
 }
 
 MessageQueueStore *MessageQueueStoreInstance() { return &gMessageQueueStore; }
