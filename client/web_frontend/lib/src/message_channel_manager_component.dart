@@ -33,12 +33,12 @@ class CreateMessageChannelForm {
 }
 
 @Component(
-    selector: "message-channel",
-    templateUrl: "message_channel_component.html",
-    styleUrls: ["message_channel_component.css"],
+    selector: "message-channel-manager",
+    templateUrl: "message_channel_manager_component.html",
+    styleUrls: ["message_channel_manager_component.css"],
     directives: [coreDirectives, formDirectives, FooterComponent],
     exports: [MessageChannelStructuralControl, CreateMessageChannelForm])
-class MessageChannelComponent implements OnInit {
+class MessageChannelManagerComponent implements OnInit {
   MessageChannelStructuralControl structuralControl =
       MessageChannelStructuralControl();
   CreateMessageChannelForm createMessageChannelForm =
@@ -61,7 +61,7 @@ class MessageChannelComponent implements OnInit {
 
   static const int _kActiveUsersFetchLimit = 5;
 
-  MessageChannelComponent(
+  MessageChannelManagerComponent(
       this._messageChannelService, this._socialNetworkService) {}
 
   @override

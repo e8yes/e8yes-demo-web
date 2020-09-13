@@ -3,9 +3,10 @@
 <hr/>
 
 <div *ngIf="searchMessageChannelMode()">
-    <message-channel [targetMemberId]="targetMemberId"
-                     (currentMessageChannel)="onCurrentMessageChannelChange($event)">
-    </message-channel>
+    <message-channel-manager 
+        [targetMemberId]="targetMemberId"
+        (currentMessageChannel)="onCurrentMessageChannelChange($event)">
+    </message-channel-manager>
 </div>
 
 <div *ngIf="viewMessageChannelMode()">
