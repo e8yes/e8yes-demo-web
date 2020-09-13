@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_router/angular_router.dart';
+import 'package:demoweb_app/src/chat_component.dart';
 import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/message_channel_component.dart';
 import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
@@ -17,13 +18,14 @@ import 'package:fixnum/fixnum.dart';
     coreDirectives,
     formDirectives,
     FooterComponent,
+    ChatComponent,
     MessageChannelComponent
   ],
 )
 class WMComponent implements OnActivate {
   Int64 targetMemberId = null;
 
-  MessageChannelOveriew _currentMessageChannel;
+  MessageChannelOveriew currentMessageChannel;
 
   WMComponent();
 
@@ -31,16 +33,16 @@ class WMComponent implements OnActivate {
     targetMemberId = getIdPathVariable(current.parameters);
   }
 
-  bool searchMessageChnnalMode() {
-    return _currentMessageChannel == null;
+  bool searchMessageChannelMode() {
+    return currentMessageChannel == null;
   }
 
   bool viewMessageChannelMode() {
-    return _currentMessageChannel != null;
+    return currentMessageChannel != null;
   }
 
   void onCurrentMessageChannelChange(
       MessageChannelOveriew currentMessageChannel) {
-    _currentMessageChannel = currentMessageChannel;
+    this.currentMessageChannel = currentMessageChannel;
   }
 }

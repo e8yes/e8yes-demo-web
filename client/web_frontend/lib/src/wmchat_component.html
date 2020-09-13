@@ -2,14 +2,15 @@
 
 <hr/>
 
-<div *ngIf="searchMessageChnnalMode()">
+<div *ngIf="searchMessageChannelMode()">
     <message-channel [targetMemberId]="targetMemberId"
                      (currentMessageChannel)="onCurrentMessageChannelChange($event)">
     </message-channel>
 </div>
 
 <div *ngIf="viewMessageChannelMode()">
-    Not implemented.
+    <chat [messageChannel]="currentMessageChannel">
+    </chat>
 </div>
 
 <e8yes-footer></e8yes-footer>
