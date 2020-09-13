@@ -1,0 +1,9 @@
+.key-label {
+    position: relative;
+}
+
+.value-label {
+    position: absolute;
+    left: 25%;
+    z-index: 10;
+}
