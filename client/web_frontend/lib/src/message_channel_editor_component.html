@@ -1,0 +1,86 @@
+<div class="modal.show"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add message channel</h5>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label class="col-form-label key-label">Title</label>
+                    <input placeholder="Optional" 
+                           [(ngModel)]="editMessageChannelForm.title"
+                           class="value-label" />
+                </div>
+                
+                <div>
+                    <label class="col-form-label key-label">Description</label>
+                    <input placeholder="Optional" 
+                           [(ngModel)]="editMessageChannelForm.description"
+                           class="value-label" />
+                </div>
+
+                <div>
+                    <label class="col-form-label key-label">Members</label>
+                    <span class="value-label">
+                        <!-- Display the search list -->
+                        <li *ngFor="let contact of structuralControl.searchedContacts"
+                            (click)="onClickSearchContact(contact)"
+                            class="list-group-item">
+                            <span>{{contact.userId}}</span>
+                            <span *ngIf="contact.hasAlias()">
+                                ({{contact.alias.value}})
+                            </span>
+                            <span *ngIf="!contact.hasAlias()">
+                                (no alias)
+                            </span>
+                        </li>
+
+                        <input #searchBox
+                               class="searchbar"
+                               (input)="onKeyDownSearchContact(searchBox.value)"
+                               placeholder="Search contacts..." />
+                    </span>
+                    <div class="member-list">
+                        <!-- Display members -->
+                        <li *ngFor="let member of editMessageChannelForm.members"
+                            class="list-group-item">
+                            <span>{{member.userId}}</span>
+                            <span *ngIf="member.hasAlias()">
+                                ({{member.alias.value}})
+                            </span>
+                            <span *ngIf="!member.hasAlias()">
+                                (no alias)
+                            </span>
+                        </li>
+                    </div>
+                </div>
+
+                <div>
+                    <input type="checkbox" />
+                    <label class="col-form-label">Close group</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="!structuralControl.onEditingMessageChannel"
+                        (click)="onClickConfirmCreateMessageChannel"
+                        type="button" 
+                        class="btn">
+                    Add
+                </button>
+                <button *ngIf="structuralControl.onEditingMessageChannel"
+                        class="btn">
+                    Creating...
+                </button>
+
+                <button (click)="onClickCancelEditMessageChannel"
+                        type="button"
+                        class="btn"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

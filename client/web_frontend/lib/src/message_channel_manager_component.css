@@ -16,21 +16,3 @@
     border-radius: 8px;
     padding: 10px;
 }
-
-.key-label {
-    position: relative;
-}
-
-.value-label {
-    position: absolute;
-    left: 25%;
-    z-index: 10;
-}
-
-.member-list {
-    position: relative;
-    margin-top: 2em;
-    left: 10%;
-    width: 70%;
-    z-index: 1;
-}
