@@ -1,0 +1,47 @@
+<h5 *ngIf="messageChannel.channel.hasTitle()">
+    {{messageChannel.channel.title}}
+</h5>
+<h5 *ngIf="!messageChannel.channel.hasTitle()">
+    No title
+</h5>
+
+<br>
+
+<p *ngIf="messageChannel.channel.hasDescription()">
+    {{messageChannel.channel.description}}
+</p>
+<p *ngIf="!messageChannel.channel.hasDescription()">
+    empty description
+</p>
+
+<br>
+
+<label *ngIf="!messageChannel.mostActiveUsers.isEmpty">
+    Active members: 
+    <span *ngFor="let member of 
+                  messageChannel.mostActiveUsers">
+        <label *ngIf="member.alias.hasValue()">
+            {{member.alias.value}},
+        </label>
+
+        <label *ngIf="!member.alias.hasValue()">
+            {{member.userId}},
+        </label>
+    </span>
+    <label>...</label>
+</label>
+
+<br>
+
+<label>
+    Last interacted at 
+    {{
+        dateToString(messageChannel.channelLastInteractedAt)
+    }}
+</label>
+
+<br>
+
+<label>
+    Created at {{dateToString(messageChannel.channel.createdAt)}}
+</label>

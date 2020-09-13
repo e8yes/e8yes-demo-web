@@ -116,53 +116,8 @@
         <li *ngFor="let overview of structuralControl.messageChannelOverviews"
             (click)="onClickMessageChannel(overview)"
             class="list-group-item">
-            <h5 *ngIf="overview.channel.hasTitle()">
-                {{overview.channel.title}}
-            </h5>
-            <h5 *ngIf="!overview.channel.hasTitle()">
-                No title
-            </h5>
-
-            <br>
-
-            <p *ngIf="overview.channel.hasDescription()">
-                {{overview.channel.description}}
-            </p>
-            <p *ngIf="!overview.channel.hasDescription()">
-                empty description
-            </p>
-
-            <br>
-
-            <label *ngIf="!overview.mostActiveUsers.isEmpty">
-                Active members: 
-                <span *ngFor="let member of 
-                              overview.mostActiveUsers">
-                    <label *ngIf="member.alias.hasValue()">
-                        {{member.alias.value}},
-                    </label>
-
-                    <label *ngIf="!member.alias.hasValue()">
-                        {{member.userId}},
-                    </label>
-                </span>
-                <label>...</label>
-            </label>
-
-            <br>
-
-            <label>
-                Last interacted at 
-                {{
-                    dateToString(overview.channelLastInteractedAt)
-                }}
-            </label>
-
-            <br>
-
-            <label>
-                Created at {{dateToString(overview.channel.createdAt)}}
-            </label>
+            <message-channel-overview [messageChannel]="overview">
+            </message-channel-overview>
         </li>
     </ul>
 </div>

@@ -5,6 +5,7 @@ import 'package:angular/core.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:demoweb_app/src/context.dart';
 import 'package:demoweb_app/src/footer_component.dart';
+import 'package:demoweb_app/src/message_channel_overview_component.dart';
 import 'package:demoweb_app/src/message_channel_service_interface.dart';
 import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
@@ -35,9 +36,19 @@ class CreateMessageChannelForm {
 @Component(
     selector: "message-channel-manager",
     templateUrl: "message_channel_manager_component.html",
-    styleUrls: ["message_channel_manager_component.css"],
-    directives: [coreDirectives, formDirectives, FooterComponent],
-    exports: [MessageChannelStructuralControl, CreateMessageChannelForm])
+    styleUrls: [
+      "message_channel_manager_component.css"
+    ],
+    directives: [
+      coreDirectives,
+      formDirectives,
+      FooterComponent,
+      MessageChannelOverviewComponent
+    ],
+    exports: [
+      MessageChannelStructuralControl,
+      CreateMessageChannelForm
+    ])
 class MessageChannelManagerComponent implements OnInit {
   MessageChannelStructuralControl structuralControl =
       MessageChannelStructuralControl();
@@ -132,12 +143,6 @@ class MessageChannelManagerComponent implements OnInit {
 
   void onClickMessageChannel(MessageChannelOveriew channel) {
     currentMessageChannelStreamController.add(channel);
-  }
-
-  String dateToString(Int64 timestamp) {
-    return DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000)
-        .toLocal()
-        .toString();
   }
 
   void _fetchMessageChannelList() {
