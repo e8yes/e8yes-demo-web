@@ -403,6 +403,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetJoinedInMessageChannelsRequest, pagination_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetJoinedInMessageChannelsRequest, with_member_ids_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetJoinedInMessageChannelsRequest, active_member_fetch_limit_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetJoinedInMessageChannelsRequest, channel_ids_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::GetJoinedInMessageChannelsResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -436,9 +437,9 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 56, -1, sizeof(::e8::LeaveMessageChannelRequest)},
   { 62, -1, sizeof(::e8::LeaveMessageChannelResponse)},
   { 67, -1, sizeof(::e8::GetJoinedInMessageChannelsRequest)},
-  { 75, -1, sizeof(::e8::GetJoinedInMessageChannelsResponse)},
-  { 81, -1, sizeof(::e8::GetMessageChannelMembersRequest)},
-  { 88, -1, sizeof(::e8::GetMessageChannelMembersResponse)},
+  { 76, -1, sizeof(::e8::GetJoinedInMessageChannelsResponse)},
+  { 82, -1, sizeof(::e8::GetMessageChannelMembersRequest)},
+  { 89, -1, sizeof(::e8::GetMessageChannelMembersResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -501,39 +502,39 @@ void AddDescriptorsImpl() {
       "\005\"3\n\034GetMessageChannelKeyResponse\022\023\n\013cha"
       "nnel_key\030\003 \001(\t\"0\n\032LeaveMessageChannelReq"
       "uest\022\022\n\nchannel_id\030\001 \001(\003\"\035\n\033LeaveMessage"
-      "ChannelResponse\"\203\001\n!GetJoinedInMessageCh"
+      "ChannelResponse\"\230\001\n!GetJoinedInMessageCh"
       "annelsRequest\022\"\n\npagination\030\001 \001(\0132\016.e8.P"
       "agination\022\027\n\017with_member_ids\030\002 \003(\003\022!\n\031ac"
-      "tive_member_fetch_limit\030\003 \001(\005\"Q\n\"GetJoin"
-      "edInMessageChannelsResponse\022+\n\010channels\030"
-      "\001 \003(\0132\031.e8.MessageChannelOveriew\"Y\n\037GetM"
-      "essageChannelMembersRequest\022\022\n\nchannel_i"
-      "d\030\001 \001(\003\022\"\n\npagination\030\002 \001(\0132\016.e8.Paginat"
-      "ion\"\207\001\n GetMessageChannelMembersResponse"
-      "\022,\n\ruser_profiles\030\001 \003(\0132\025.e8.UserPublicP"
-      "rofile\0225\n\021channel_relations\030\002 \003(\0132\032.e8.M"
-      "essageChannelRelation2\270\005\n\025MessageChannel"
-      "Service\022Y\n\024CreateMessageChannel\022\037.e8.Cre"
-      "ateMessageChannelRequest\032 .e8.CreateMess"
-      "ageChannelResponse\022Y\n\024UpdateMessageChann"
-      "el\022\037.e8.UpdateMessageChannelRequest\032 .e8"
-      ".UpdateMessageChannelResponse\022b\n\027AddUser"
-      "ToMessageChannel\022\".e8.AddUserToMessageCh"
-      "annelRequest\032#.e8.AddUserToMessageChanne"
-      "lResponse\022Y\n\024GetMessageChannelKey\022\037.e8.G"
-      "etMessageChannelKeyRequest\032 .e8.GetMessa"
-      "geChannelKeyResponse\022V\n\023LeaveMessageChan"
-      "nel\022\036.e8.LeaveMessageChannelRequest\032\037.e8"
-      ".LeaveMessageChannelResponse\022k\n\032GetJoine"
-      "dInMessageChannels\022%.e8.GetJoinedInMessa"
-      "geChannelsRequest\032&.e8.GetJoinedInMessag"
-      "eChannelsResponse\022e\n\030GetMessageChannelMe"
-      "mbers\022#.e8.GetMessageChannelMembersReque"
-      "st\032$.e8.GetMessageChannelMembersResponse"
-      "b\006proto3"
+      "tive_member_fetch_limit\030\003 \001(\005\022\023\n\013channel"
+      "_ids\030\004 \003(\003\"Q\n\"GetJoinedInMessageChannels"
+      "Response\022+\n\010channels\030\001 \003(\0132\031.e8.MessageC"
+      "hannelOveriew\"Y\n\037GetMessageChannelMember"
+      "sRequest\022\022\n\nchannel_id\030\001 \001(\003\022\"\n\npaginati"
+      "on\030\002 \001(\0132\016.e8.Pagination\"\207\001\n GetMessageC"
+      "hannelMembersResponse\022,\n\ruser_profiles\030\001"
+      " \003(\0132\025.e8.UserPublicProfile\0225\n\021channel_r"
+      "elations\030\002 \003(\0132\032.e8.MessageChannelRelati"
+      "on2\270\005\n\025MessageChannelService\022Y\n\024CreateMe"
+      "ssageChannel\022\037.e8.CreateMessageChannelRe"
+      "quest\032 .e8.CreateMessageChannelResponse\022"
+      "Y\n\024UpdateMessageChannel\022\037.e8.UpdateMessa"
+      "geChannelRequest\032 .e8.UpdateMessageChann"
+      "elResponse\022b\n\027AddUserToMessageChannel\022\"."
+      "e8.AddUserToMessageChannelRequest\032#.e8.A"
+      "ddUserToMessageChannelResponse\022Y\n\024GetMes"
+      "sageChannelKey\022\037.e8.GetMessageChannelKey"
+      "Request\032 .e8.GetMessageChannelKeyRespons"
+      "e\022V\n\023LeaveMessageChannel\022\036.e8.LeaveMessa"
+      "geChannelRequest\032\037.e8.LeaveMessageChanne"
+      "lResponse\022k\n\032GetJoinedInMessageChannels\022"
+      "%.e8.GetJoinedInMessageChannelsRequest\032&"
+      ".e8.GetJoinedInMessageChannelsResponse\022e"
+      "\n\030GetMessageChannelMembers\022#.e8.GetMessa"
+      "geChannelMembersRequest\032$.e8.GetMessageC"
+      "hannelMembersResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2048);
+      descriptor, 2069);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_pagination_2eproto::AddDescriptors();
@@ -3198,6 +3199,7 @@ void GetJoinedInMessageChannelsRequest::clear_pagination() {
 const int GetJoinedInMessageChannelsRequest::kPaginationFieldNumber;
 const int GetJoinedInMessageChannelsRequest::kWithMemberIdsFieldNumber;
 const int GetJoinedInMessageChannelsRequest::kActiveMemberFetchLimitFieldNumber;
+const int GetJoinedInMessageChannelsRequest::kChannelIdsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 GetJoinedInMessageChannelsRequest::GetJoinedInMessageChannelsRequest()
@@ -3210,7 +3212,8 @@ GetJoinedInMessageChannelsRequest::GetJoinedInMessageChannelsRequest()
 GetJoinedInMessageChannelsRequest::GetJoinedInMessageChannelsRequest(const GetJoinedInMessageChannelsRequest& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
-      with_member_ids_(from.with_member_ids_) {
+      with_member_ids_(from.with_member_ids_),
+      channel_ids_(from.channel_ids_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_pagination()) {
     pagination_ = new ::e8::Pagination(*from.pagination_);
@@ -3257,6 +3260,7 @@ void GetJoinedInMessageChannelsRequest::Clear() {
   (void) cached_has_bits;
 
   with_member_ids_.Clear();
+  channel_ids_.Clear();
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
     delete pagination_;
   }
@@ -3320,6 +3324,25 @@ bool GetJoinedInMessageChannelsRequest::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated int64 channel_ids = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, this->mutable_channel_ids())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 1, 34u, input, this->mutable_channel_ids())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -3368,6 +3391,17 @@ void GetJoinedInMessageChannelsRequest::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->active_member_fetch_limit(), output);
   }
 
+  // repeated int64 channel_ids = 4;
+  if (this->channel_ids_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _channel_ids_cached_byte_size_));
+  }
+  for (int i = 0, n = this->channel_ids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64NoTag(
+      this->channel_ids(i), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -3407,6 +3441,19 @@ void GetJoinedInMessageChannelsRequest::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->active_member_fetch_limit(), target);
   }
 
+  // repeated int64 channel_ids = 4;
+  if (this->channel_ids_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      4,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::int32>(
+            _channel_ids_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteInt64NoTagToArray(this->channel_ids_, target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -3436,6 +3483,22 @@ size_t GetJoinedInMessageChannelsRequest::ByteSizeLong() const {
     int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
     GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
     _with_member_ids_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  // repeated int64 channel_ids = 4;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int64Size(this->channel_ids_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _channel_ids_cached_byte_size_ = cached_size;
     GOOGLE_SAFE_CONCURRENT_WRITES_END();
     total_size += data_size;
   }
@@ -3482,6 +3545,7 @@ void GetJoinedInMessageChannelsRequest::MergeFrom(const GetJoinedInMessageChanne
   (void) cached_has_bits;
 
   with_member_ids_.MergeFrom(from.with_member_ids_);
+  channel_ids_.MergeFrom(from.channel_ids_);
   if (from.has_pagination()) {
     mutable_pagination()->::e8::Pagination::MergeFrom(from.pagination());
   }
@@ -3515,6 +3579,7 @@ void GetJoinedInMessageChannelsRequest::Swap(GetJoinedInMessageChannelsRequest* 
 void GetJoinedInMessageChannelsRequest::InternalSwap(GetJoinedInMessageChannelsRequest* other) {
   using std::swap;
   with_member_ids_.InternalSwap(&other->with_member_ids_);
+  channel_ids_.InternalSwap(&other->channel_ids_);
   swap(pagination_, other->pagination_);
   swap(active_member_fetch_limit_, other->active_member_fetch_limit_);
   _internal_metadata_.Swap(&other->_internal_metadata_);

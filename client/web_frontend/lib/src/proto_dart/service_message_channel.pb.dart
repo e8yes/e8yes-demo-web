@@ -398,6 +398,7 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
     ..aOM<$19.Pagination>(1, 'pagination', subBuilder: $19.Pagination.create)
     ..p<$fixnum.Int64>(2, 'withMemberIds', $pb.PbFieldType.P6)
     ..a<$core.int>(3, 'activeMemberFetchLimit', $pb.PbFieldType.O3)
+    ..p<$fixnum.Int64>(4, 'channelIds', $pb.PbFieldType.P6)
     ..hasRequiredFields = false
   ;
 
@@ -438,6 +439,9 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   $core.bool hasActiveMemberFetchLimit() => $_has(2);
   @$pb.TagNumber(3)
   void clearActiveMemberFetchLimit() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<$fixnum.Int64> get channelIds => $_getList(3);
 }
 
 class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {

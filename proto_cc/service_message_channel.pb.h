@@ -1339,6 +1339,18 @@ class GetJoinedInMessageChannelsRequest : public ::google::protobuf::Message /* 
   ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
       mutable_with_member_ids();
 
+  // repeated int64 channel_ids = 4;
+  int channel_ids_size() const;
+  void clear_channel_ids();
+  static const int kChannelIdsFieldNumber = 4;
+  ::google::protobuf::int64 channel_ids(int index) const;
+  void set_channel_ids(int index, ::google::protobuf::int64 value);
+  void add_channel_ids(::google::protobuf::int64 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+      channel_ids() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+      mutable_channel_ids();
+
   // .e8.Pagination pagination = 1;
   bool has_pagination() const;
   void clear_pagination();
@@ -1363,6 +1375,8 @@ class GetJoinedInMessageChannelsRequest : public ::google::protobuf::Message /* 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int64 > with_member_ids_;
   mutable int _with_member_ids_cached_byte_size_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 > channel_ids_;
+  mutable int _channel_ids_cached_byte_size_;
   ::e8::Pagination* pagination_;
   ::google::protobuf::int32 active_member_fetch_limit_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -2301,6 +2315,36 @@ inline void GetJoinedInMessageChannelsRequest::set_active_member_fetch_limit(::g
   
   active_member_fetch_limit_ = value;
   // @@protoc_insertion_point(field_set:e8.GetJoinedInMessageChannelsRequest.active_member_fetch_limit)
+}
+
+// repeated int64 channel_ids = 4;
+inline int GetJoinedInMessageChannelsRequest::channel_ids_size() const {
+  return channel_ids_.size();
+}
+inline void GetJoinedInMessageChannelsRequest::clear_channel_ids() {
+  channel_ids_.Clear();
+}
+inline ::google::protobuf::int64 GetJoinedInMessageChannelsRequest::channel_ids(int index) const {
+  // @@protoc_insertion_point(field_get:e8.GetJoinedInMessageChannelsRequest.channel_ids)
+  return channel_ids_.Get(index);
+}
+inline void GetJoinedInMessageChannelsRequest::set_channel_ids(int index, ::google::protobuf::int64 value) {
+  channel_ids_.Set(index, value);
+  // @@protoc_insertion_point(field_set:e8.GetJoinedInMessageChannelsRequest.channel_ids)
+}
+inline void GetJoinedInMessageChannelsRequest::add_channel_ids(::google::protobuf::int64 value) {
+  channel_ids_.Add(value);
+  // @@protoc_insertion_point(field_add:e8.GetJoinedInMessageChannelsRequest.channel_ids)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+GetJoinedInMessageChannelsRequest::channel_ids() const {
+  // @@protoc_insertion_point(field_list:e8.GetJoinedInMessageChannelsRequest.channel_ids)
+  return channel_ids_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+GetJoinedInMessageChannelsRequest::mutable_channel_ids() {
+  // @@protoc_insertion_point(field_mutable_list:e8.GetJoinedInMessageChannelsRequest.channel_ids)
+  return &channel_ids_;
 }
 
 // -------------------------------------------------------------------

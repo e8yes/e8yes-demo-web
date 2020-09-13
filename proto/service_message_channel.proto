@@ -90,6 +90,9 @@ message GetJoinedInMessageChannelsRequest {
 
     // The maximum number of active users to fetch.
     int32 active_member_fetch_limit = 3;
+
+    // Filter by a set of channel IDs.
+    repeated int64 channel_ids = 4;
 }
 
 message GetJoinedInMessageChannelsResponse {
