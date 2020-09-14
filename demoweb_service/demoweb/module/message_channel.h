@@ -71,7 +71,7 @@ struct SearchedMessageChannel {
  */
 std::vector<SearchedMessageChannel> SearchMessageChannels(
     UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
-    std::unordered_set<MessagechannelId> const &any_channel_ids, unsigned active_member_fetch_limit,
+    std::unordered_set<MessageChannelId> const &any_channel_ids, unsigned active_member_fetch_limit,
     std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns);
 
 /**
@@ -95,7 +95,7 @@ struct MessageChannelMember {
  * interacted users rank first.
  */
 std::vector<MessageChannelMember>
-GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> const &pagination,
+GetMessageChannelMembers(MessageChannelId channel_id, std::optional<Pagination> const &pagination,
                          ConnectionReservoirInterface *conns);
 
 /**
@@ -109,7 +109,7 @@ GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> 
  * @param member_type The requested member type.
  * @return Whether the viewer has sufficient privilege to perform this operation.
  */
-bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessagechannelId channel_id,
+bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessageChannelId channel_id,
                              UserId const user_id, MessageChannelMemberType const member_type,
                              ConnectionReservoirInterface *conns);
 

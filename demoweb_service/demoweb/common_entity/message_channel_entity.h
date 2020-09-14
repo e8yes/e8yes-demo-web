@@ -25,7 +25,7 @@
 
 namespace e8 {
 
-using MessagechannelId = int64_t;
+using MessageChannelId = int64_t;
 
 /**
  * @brief The MessageChannelEntity class C++ class representation of the database table

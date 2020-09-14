@@ -45,7 +45,7 @@
 namespace e8 {
 namespace {
 
-bool CanAdd(UserId const &viewer_id, MessagechannelId channel_id,
+bool CanAdd(UserId const &viewer_id, MessageChannelId channel_id,
             MessageChannelMemberType const requesting_member_type,
             ConnectionReservoirInterface *conns) {
     SqlQueryBuilder query;
@@ -72,7 +72,7 @@ bool CanAdd(UserId const &viewer_id, MessagechannelId channel_id,
 }
 
 std::vector<std::vector<MessageChannelHasUserEntity>>
-FetchMostActiveMembers(std::vector<MessagechannelId> const &message_channel_ids,
+FetchMostActiveMembers(std::vector<MessageChannelId> const &message_channel_ids,
                        unsigned active_member_fetch_limit, ConnectionReservoirInterface *conns) {
     if (active_member_fetch_limit == 0) {
         return std::vector<std::vector<MessageChannelHasUserEntity>>(message_channel_ids.size());
@@ -92,7 +92,7 @@ FetchMostActiveMembers(std::vector<MessagechannelId> const &message_channel_ids,
         Query<MessageChannelHasUserEntity>(member_query, {"mchu"}, conns);
 
     // Group by channel ID.
-    std::unordered_map<MessagechannelId, std::vector<MessageChannelHasUserEntity>> group_by_channel;
+    std::unordered_map<MessageChannelId, std::vector<MessageChannelHasUserEntity>> group_by_channel;
     for (auto const &entry : members) {
         MessageChannelHasUserEntity const &member = std::get<0>(entry);
         group_by_channel[*member.channel_id.Value()].push_back(member);
@@ -100,7 +100,7 @@ FetchMostActiveMembers(std::vector<MessagechannelId> const &message_channel_ids,
 
     std::vector<std::vector<MessageChannelHasUserEntity>> result(message_channel_ids.size());
     for (unsigned i = 0; i < message_channel_ids.size(); ++i) {
-        MessagechannelId channel_id = message_channel_ids[i];
+        MessageChannelId channel_id = message_channel_ids[i];
 
         // Use last interaction timestamp as a criteria for activeness.
         std::vector<MessageChannelHasUserEntity> *members = &group_by_channel[channel_id];
@@ -179,7 +179,7 @@ std::optional<MessageChannelEntity> CreateMessageChannel(
 
 std::vector<SearchedMessageChannel> SearchMessageChannels(
     UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
-    std::unordered_set<MessagechannelId> const &any_channel_ids, unsigned active_member_fetch_limit,
+    std::unordered_set<MessageChannelId> const &any_channel_ids, unsigned active_member_fetch_limit,
     std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns) {
     // Build a list of required members each searched channel must contain.
     std::vector<UserId> must_have_user_ids{contains_member_ids.begin(), contains_member_ids.end()};
@@ -209,7 +209,7 @@ std::vector<SearchedMessageChannel> SearchMessageChannels(
             .Holder(&any_channel_ids_ph)
             .QueryPiece(")");
         message_channel_query.SetValueToPlaceholder(
-            any_channel_ids_ph, std::make_shared<SqlLongArr>(std::vector<MessagechannelId>{
+            any_channel_ids_ph, std::make_shared<SqlLongArr>(std::vector<MessageChannelId>{
                                     any_channel_ids.begin(), any_channel_ids.end()}));
     }
 
@@ -248,7 +248,7 @@ std::vector<SearchedMessageChannel> SearchMessageChannels(
             message_channel_query, {"qualified_channel", "viewer"}, conns);
 
     // Fetch the most active members for each message channel.
-    std::vector<MessagechannelId> message_channel_ids(channel_and_viewer.size());
+    std::vector<MessageChannelId> message_channel_ids(channel_and_viewer.size());
     for (unsigned i = 0; i < channel_and_viewer.size(); i++) {
         message_channel_ids[i] = *std::get<0>(channel_and_viewer[i]).id.Value();
     }
@@ -318,7 +318,7 @@ ToMessageChannelOverviews(UserId const viewer_id,
 }
 
 std::vector<MessageChannelMember>
-GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> const &pagination,
+GetMessageChannelMembers(MessageChannelId channel_id, std::optional<Pagination> const &pagination,
                          ConnectionReservoirInterface *conns) {
     SqlQueryBuilder message_channel_member_query;
     SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
@@ -368,7 +368,7 @@ GetMessageChannelMembers(MessagechannelId channel_id, std::optional<Pagination> 
     return results;
 }
 
-bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessagechannelId channel_id,
+bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessageChannelId channel_id,
                              UserId const user_id, MessageChannelMemberType const member_type,
                              ConnectionReservoirInterface *conns) {
     if (viewer_id.has_value() && !CanAdd(*viewer_id, channel_id, member_type, conns)) {

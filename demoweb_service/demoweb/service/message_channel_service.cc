@@ -78,7 +78,7 @@ MessageChannelServiceImpl::SearchMessageChannels(grpc::ServerContext *context,
 
     std::unordered_set<UserId> contains_member_ids{request->with_member_ids().begin(),
                                                    request->with_member_ids().end()};
-    std::unordered_set<MessagechannelId> any_channel_ids{request->channel_ids().begin(),
+    std::unordered_set<MessageChannelId> any_channel_ids{request->channel_ids().begin(),
                                                          request->channel_ids().end()};
     std::optional<Pagination> pagination =
         request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
