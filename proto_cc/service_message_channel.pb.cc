@@ -258,9 +258,10 @@ static void InitDefaultsSearchMessageChannelsRequest() {
   ::e8::SearchMessageChannelsRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_SearchMessageChannelsRequest =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSearchMessageChannelsRequest}, {
-      &protobuf_pagination_2eproto::scc_info_Pagination.base,}};
+::google::protobuf::internal::SCCInfo<2> scc_info_SearchMessageChannelsRequest =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsSearchMessageChannelsRequest}, {
+      &protobuf_pagination_2eproto::scc_info_Pagination.base,
+      &protobuf_nullable_5fprimitives_2eproto::scc_info_NullableString.base,}};
 
 static void InitDefaultsSearchMessageChannelsResponse() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -503,39 +504,40 @@ void AddDescriptorsImpl() {
       "\005\"3\n\034GetMessageChannelKeyResponse\022\023\n\013cha"
       "nnel_key\030\003 \001(\t\"0\n\032LeaveMessageChannelReq"
       "uest\022\022\n\nchannel_id\030\001 \001(\003\"\035\n\033LeaveMessage"
-      "ChannelResponse\"\250\001\n\034SearchMessageChannel"
+      "ChannelResponse\"\274\001\n\034SearchMessageChannel"
       "sRequest\022\"\n\npagination\030\001 \001(\0132\016.e8.Pagina"
       "tion\022\027\n\017with_member_ids\030\002 \003(\003\022!\n\031active_"
       "member_fetch_limit\030\003 \001(\005\022\023\n\013channel_ids\030"
-      "\004 \003(\003\022\023\n\013search_text\030\005 \001(\t\"M\n\035SearchMess"
-      "ageChannelsResponse\022,\n\010channels\030\001 \003(\0132\032."
-      "e8.MessageChannelOverview\"Y\n\037GetMessageC"
-      "hannelMembersRequest\022\022\n\nchannel_id\030\001 \001(\003"
-      "\022\"\n\npagination\030\002 \001(\0132\016.e8.Pagination\"\207\001\n"
-      " GetMessageChannelMembersResponse\022,\n\ruse"
-      "r_profiles\030\001 \003(\0132\025.e8.UserPublicProfile\022"
-      "5\n\021channel_relations\030\002 \003(\0132\032.e8.MessageC"
-      "hannelRelation2\251\005\n\025MessageChannelService"
-      "\022Y\n\024CreateMessageChannel\022\037.e8.CreateMess"
-      "ageChannelRequest\032 .e8.CreateMessageChan"
-      "nelResponse\022Y\n\024UpdateMessageChannel\022\037.e8"
-      ".UpdateMessageChannelRequest\032 .e8.Update"
-      "MessageChannelResponse\022b\n\027AddUserToMessa"
-      "geChannel\022\".e8.AddUserToMessageChannelRe"
-      "quest\032#.e8.AddUserToMessageChannelRespon"
-      "se\022Y\n\024GetMessageChannelKey\022\037.e8.GetMessa"
-      "geChannelKeyRequest\032 .e8.GetMessageChann"
-      "elKeyResponse\022V\n\023LeaveMessageChannel\022\036.e"
-      "8.LeaveMessageChannelRequest\032\037.e8.LeaveM"
-      "essageChannelResponse\022\\\n\025SearchMessageCh"
-      "annels\022 .e8.SearchMessageChannelsRequest"
-      "\032!.e8.SearchMessageChannelsResponse\022e\n\030G"
-      "etMessageChannelMembers\022#.e8.GetMessageC"
-      "hannelMembersRequest\032$.e8.GetMessageChan"
-      "nelMembersResponseb\006proto3"
+      "\004 \003(\003\022\'\n\013search_text\030\005 \001(\0132\022.e8.Nullable"
+      "String\"M\n\035SearchMessageChannelsResponse\022"
+      ",\n\010channels\030\001 \003(\0132\032.e8.MessageChannelOve"
+      "rview\"Y\n\037GetMessageChannelMembersRequest"
+      "\022\022\n\nchannel_id\030\001 \001(\003\022\"\n\npagination\030\002 \001(\013"
+      "2\016.e8.Pagination\"\207\001\n GetMessageChannelMe"
+      "mbersResponse\022,\n\ruser_profiles\030\001 \003(\0132\025.e"
+      "8.UserPublicProfile\0225\n\021channel_relations"
+      "\030\002 \003(\0132\032.e8.MessageChannelRelation2\251\005\n\025M"
+      "essageChannelService\022Y\n\024CreateMessageCha"
+      "nnel\022\037.e8.CreateMessageChannelRequest\032 ."
+      "e8.CreateMessageChannelResponse\022Y\n\024Updat"
+      "eMessageChannel\022\037.e8.UpdateMessageChanne"
+      "lRequest\032 .e8.UpdateMessageChannelRespon"
+      "se\022b\n\027AddUserToMessageChannel\022\".e8.AddUs"
+      "erToMessageChannelRequest\032#.e8.AddUserTo"
+      "MessageChannelResponse\022Y\n\024GetMessageChan"
+      "nelKey\022\037.e8.GetMessageChannelKeyRequest\032"
+      " .e8.GetMessageChannelKeyResponse\022V\n\023Lea"
+      "veMessageChannel\022\036.e8.LeaveMessageChanne"
+      "lRequest\032\037.e8.LeaveMessageChannelRespons"
+      "e\022\\\n\025SearchMessageChannels\022 .e8.SearchMe"
+      "ssageChannelsRequest\032!.e8.SearchMessageC"
+      "hannelsResponse\022e\n\030GetMessageChannelMemb"
+      "ers\022#.e8.GetMessageChannelMembersRequest"
+      "\032$.e8.GetMessageChannelMembersResponseb\006"
+      "proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2066);
+      descriptor, 2086);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_pagination_2eproto::AddDescriptors();
@@ -3189,12 +3191,20 @@ void LeaveMessageChannelResponse::InternalSwap(LeaveMessageChannelResponse* othe
 void SearchMessageChannelsRequest::InitAsDefaultInstance() {
   ::e8::_SearchMessageChannelsRequest_default_instance_._instance.get_mutable()->pagination_ = const_cast< ::e8::Pagination*>(
       ::e8::Pagination::internal_default_instance());
+  ::e8::_SearchMessageChannelsRequest_default_instance_._instance.get_mutable()->search_text_ = const_cast< ::e8::NullableString*>(
+      ::e8::NullableString::internal_default_instance());
 }
 void SearchMessageChannelsRequest::clear_pagination() {
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
     delete pagination_;
   }
   pagination_ = NULL;
+}
+void SearchMessageChannelsRequest::clear_search_text() {
+  if (GetArenaNoVirtual() == NULL && search_text_ != NULL) {
+    delete search_text_;
+  }
+  search_text_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int SearchMessageChannelsRequest::kPaginationFieldNumber;
@@ -3217,21 +3227,21 @@ SearchMessageChannelsRequest::SearchMessageChannelsRequest(const SearchMessageCh
       with_member_ids_(from.with_member_ids_),
       channel_ids_(from.channel_ids_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  search_text_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.search_text().size() > 0) {
-    search_text_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.search_text_);
-  }
   if (from.has_pagination()) {
     pagination_ = new ::e8::Pagination(*from.pagination_);
   } else {
     pagination_ = NULL;
+  }
+  if (from.has_search_text()) {
+    search_text_ = new ::e8::NullableString(*from.search_text_);
+  } else {
+    search_text_ = NULL;
   }
   active_member_fetch_limit_ = from.active_member_fetch_limit_;
   // @@protoc_insertion_point(copy_constructor:e8.SearchMessageChannelsRequest)
 }
 
 void SearchMessageChannelsRequest::SharedCtor() {
-  search_text_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&pagination_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&active_member_fetch_limit_) -
       reinterpret_cast<char*>(&pagination_)) + sizeof(active_member_fetch_limit_));
@@ -3243,8 +3253,8 @@ SearchMessageChannelsRequest::~SearchMessageChannelsRequest() {
 }
 
 void SearchMessageChannelsRequest::SharedDtor() {
-  search_text_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete pagination_;
+  if (this != internal_default_instance()) delete search_text_;
 }
 
 void SearchMessageChannelsRequest::SetCachedSize(int size) const {
@@ -3269,11 +3279,14 @@ void SearchMessageChannelsRequest::Clear() {
 
   with_member_ids_.Clear();
   channel_ids_.Clear();
-  search_text_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && pagination_ != NULL) {
     delete pagination_;
   }
   pagination_ = NULL;
+  if (GetArenaNoVirtual() == NULL && search_text_ != NULL) {
+    delete search_text_;
+  }
+  search_text_ = NULL;
   active_member_fetch_limit_ = 0;
   _internal_metadata_.Clear();
 }
@@ -3352,16 +3365,12 @@ bool SearchMessageChannelsRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // string search_text = 5;
+      // .e8.NullableString search_text = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_search_text()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->search_text().data(), static_cast<int>(this->search_text().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "e8.SearchMessageChannelsRequest.search_text"));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_search_text()));
         } else {
           goto handle_unusual;
         }
@@ -3427,14 +3436,10 @@ void SearchMessageChannelsRequest::SerializeWithCachedSizes(
       this->channel_ids(i), output);
   }
 
-  // string search_text = 5;
-  if (this->search_text().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->search_text().data(), static_cast<int>(this->search_text().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.SearchMessageChannelsRequest.search_text");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      5, this->search_text(), output);
+  // .e8.NullableString search_text = 5;
+  if (this->has_search_text()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      5, this->_internal_search_text(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -3489,15 +3494,11 @@ void SearchMessageChannelsRequest::SerializeWithCachedSizes(
       WriteInt64NoTagToArray(this->channel_ids_, target);
   }
 
-  // string search_text = 5;
-  if (this->search_text().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->search_text().data(), static_cast<int>(this->search_text().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "e8.SearchMessageChannelsRequest.search_text");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->search_text(), target);
+  // .e8.NullableString search_text = 5;
+  if (this->has_search_text()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        5, this->_internal_search_text(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -3549,18 +3550,18 @@ size_t SearchMessageChannelsRequest::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // string search_text = 5;
-  if (this->search_text().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->search_text());
-  }
-
   // .e8.Pagination pagination = 1;
   if (this->has_pagination()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *pagination_);
+  }
+
+  // .e8.NullableString search_text = 5;
+  if (this->has_search_text()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *search_text_);
   }
 
   // int32 active_member_fetch_limit = 3;
@@ -3599,12 +3600,11 @@ void SearchMessageChannelsRequest::MergeFrom(const SearchMessageChannelsRequest&
 
   with_member_ids_.MergeFrom(from.with_member_ids_);
   channel_ids_.MergeFrom(from.channel_ids_);
-  if (from.search_text().size() > 0) {
-
-    search_text_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.search_text_);
-  }
   if (from.has_pagination()) {
     mutable_pagination()->::e8::Pagination::MergeFrom(from.pagination());
+  }
+  if (from.has_search_text()) {
+    mutable_search_text()->::e8::NullableString::MergeFrom(from.search_text());
   }
   if (from.active_member_fetch_limit() != 0) {
     set_active_member_fetch_limit(from.active_member_fetch_limit());
@@ -3637,9 +3637,8 @@ void SearchMessageChannelsRequest::InternalSwap(SearchMessageChannelsRequest* ot
   using std::swap;
   with_member_ids_.InternalSwap(&other->with_member_ids_);
   channel_ids_.InternalSwap(&other->channel_ids_);
-  search_text_.Swap(&other->search_text_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
   swap(pagination_, other->pagination_);
+  swap(search_text_, other->search_text_);
   swap(active_member_fetch_limit_, other->active_member_fetch_limit_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }

@@ -66,12 +66,14 @@ struct SearchedMessageChannel {
  * the specified members.
  * @param any_channel_ids A filter to required that a returning message channel must have a channel
  * ID in this set. If this set is empty, then this parameter is ignored.
+ * @param query_text Use raw text to search on channel title and description.
  * @param active_member_fetch_limit Maximum number of active member user IDs to be fetched for each
  * message channel.
  */
 std::vector<SearchedMessageChannel> SearchMessageChannels(
     UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
-    std::unordered_set<MessageChannelId> const &any_channel_ids, unsigned active_member_fetch_limit,
+    std::unordered_set<MessageChannelId> const &any_channel_ids,
+    std::optional<std::string> const &query_text, unsigned active_member_fetch_limit,
     std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns);
 
 /**

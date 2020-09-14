@@ -80,11 +80,14 @@ MessageChannelServiceImpl::SearchMessageChannels(grpc::ServerContext *context,
                                                    request->with_member_ids().end()};
     std::unordered_set<MessageChannelId> any_channel_ids{request->channel_ids().begin(),
                                                          request->channel_ids().end()};
+    std::optional<std::string> query_text =
+        request->has_search_text() ? std::optional<std::string>(request->search_text().value())
+                                   : std::nullopt;
     std::optional<Pagination> pagination =
         request->has_pagination() ? std::optional<Pagination>(request->pagination()) : std::nullopt;
 
     std::vector<SearchedMessageChannel> channels = ::e8::SearchMessageChannels(
-        identity->user_id(), contains_member_ids, any_channel_ids,
+        identity->user_id(), contains_member_ids, any_channel_ids, query_text,
         request->active_member_fetch_limit(), pagination, DemoWebEnvironment()->DemowebDatabase());
 
     std::vector<MessageChannelOverview> results =

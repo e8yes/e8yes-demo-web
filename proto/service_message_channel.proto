@@ -95,7 +95,7 @@ message SearchMessageChannelsRequest {
     repeated int64 channel_ids = 4;
 
     // Search by text query string.
-    string search_text = 5;
+    NullableString search_text = 5;
 }
 
 message SearchMessageChannelsResponse {

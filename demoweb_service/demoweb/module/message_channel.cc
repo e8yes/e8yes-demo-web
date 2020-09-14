@@ -179,7 +179,8 @@ std::optional<MessageChannelEntity> CreateMessageChannel(
 
 std::vector<SearchedMessageChannel> SearchMessageChannels(
     UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
-    std::unordered_set<MessageChannelId> const &any_channel_ids, unsigned active_member_fetch_limit,
+    std::unordered_set<MessageChannelId> const &any_channel_ids,
+    std::optional<std::string> const &query_text, unsigned active_member_fetch_limit,
     std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns) {
     // Build a list of required members each searched channel must contain.
     std::vector<UserId> must_have_user_ids{contains_member_ids.begin(), contains_member_ids.end()};
@@ -229,23 +230,31 @@ std::vector<SearchedMessageChannel> SearchMessageChannels(
         must_have_user_count_ph, std::make_shared<SqlInt>(must_have_user_ids.size()));
     message_channel_query.SetValueToPlaceholder(viewer_id_ph, std::make_shared<SqlLong>(viewer_id));
 
-    if (pagination.has_value()) {
-        SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
-        SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
-        message_channel_query.QueryPiece(" LIMIT ")
-            .Holder(&limit_ph)
-            .QueryPiece(" OFFSET ")
-            .Holder(&offset_ph);
-        message_channel_query.SetValueToPlaceholder(
-            limit_ph, std::make_shared<SqlInt>(pagination->result_per_page()));
-        message_channel_query.SetValueToPlaceholder(
-            offset_ph,
-            std::make_shared<SqlInt>(pagination->page_number() * pagination->result_per_page()));
-    }
+    std::vector<std::tuple<MessageChannelEntity, MessageChannelHasUserEntity>> channel_and_viewer;
 
-    std::vector<std::tuple<MessageChannelEntity, MessageChannelHasUserEntity>> channel_and_viewer =
-        Query<MessageChannelEntity, MessageChannelHasUserEntity>(
+    if (query_text.has_value()) {
+        channel_and_viewer = Search<MessageChannelEntity, MessageChannelHasUserEntity>(
+            message_channel_query, /*entity_aliases=*/{"qualified_channel", "viewer"},
+            /*search_target_entity=*/{"qualified_channel"}, *query_text, /*prefix_search=*/true,
+            /*rank_result=*/false, pagination->result_per_page(),
+            pagination->result_per_page() * pagination->page_number(), conns);
+    } else {
+        if (pagination.has_value()) {
+            SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
+            SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
+            message_channel_query.QueryPiece(" LIMIT ")
+                .Holder(&limit_ph)
+                .QueryPiece(" OFFSET ")
+                .Holder(&offset_ph);
+            message_channel_query.SetValueToPlaceholder(
+                limit_ph, std::make_shared<SqlInt>(pagination->result_per_page()));
+            message_channel_query.SetValueToPlaceholder(
+                offset_ph, std::make_shared<SqlInt>(pagination->page_number() *
+                                                    pagination->result_per_page()));
+        }
+        channel_and_viewer = Query<MessageChannelEntity, MessageChannelHasUserEntity>(
             message_channel_query, {"qualified_channel", "viewer"}, conns);
+    }
 
     // Fetch the most active members for each message channel.
     std::vector<MessageChannelId> message_channel_ids(channel_and_viewer.size());
