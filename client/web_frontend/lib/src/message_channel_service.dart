@@ -41,12 +41,12 @@ class MessageChannelServiceImpl extends MessageChannelServiceInterface {
   }
 
   @override
-  Future<GetJoinedInMessageChannelsResponse> getJoinedInMessageChannels(
-      GetJoinedInMessageChannelsRequest request, String signature) {
+  Future<SearchMessageChannelsResponse> searchMessageChannels(
+      SearchMessageChannelsRequest request, String signature) {
     return demowebServiceRequester.MakeRequest(request, signature,
         (request, call_opts, channel) {
       return MessageChannelServiceClient(channel)
-          .getJoinedInMessageChannels(request, options: call_opts);
+          .searchMessageChannels(request, options: call_opts);
     });
   }
 

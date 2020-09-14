@@ -23,7 +23,7 @@ static const char* MessageChannelService_method_names[] = {
   "/e8.MessageChannelService/AddUserToMessageChannel",
   "/e8.MessageChannelService/GetMessageChannelKey",
   "/e8.MessageChannelService/LeaveMessageChannel",
-  "/e8.MessageChannelService/GetJoinedInMessageChannels",
+  "/e8.MessageChannelService/SearchMessageChannels",
   "/e8.MessageChannelService/GetMessageChannelMembers",
 };
 
@@ -39,7 +39,7 @@ MessageChannelService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterfac
   , rpcmethod_AddUserToMessageChannel_(MessageChannelService_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetMessageChannelKey_(MessageChannelService_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_LeaveMessageChannel_(MessageChannelService_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetJoinedInMessageChannels_(MessageChannelService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SearchMessageChannels_(MessageChannelService_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetMessageChannelMembers_(MessageChannelService_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
@@ -123,20 +123,20 @@ void MessageChannelService::Stub::experimental_async::LeaveMessageChannel(::grpc
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::LeaveMessageChannelResponse>::Create(channel_.get(), cq, rpcmethod_LeaveMessageChannel_, context, request, false);
 }
 
-::grpc::Status MessageChannelService::Stub::GetJoinedInMessageChannels(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest& request, ::e8::GetJoinedInMessageChannelsResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetJoinedInMessageChannels_, context, request, response);
+::grpc::Status MessageChannelService::Stub::SearchMessageChannels(::grpc::ClientContext* context, const ::e8::SearchMessageChannelsRequest& request, ::e8::SearchMessageChannelsResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_SearchMessageChannels_, context, request, response);
 }
 
-void MessageChannelService::Stub::experimental_async::GetJoinedInMessageChannels(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest* request, ::e8::GetJoinedInMessageChannelsResponse* response, std::function<void(::grpc::Status)> f) {
-  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_GetJoinedInMessageChannels_, context, request, response, std::move(f));
+void MessageChannelService::Stub::experimental_async::SearchMessageChannels(::grpc::ClientContext* context, const ::e8::SearchMessageChannelsRequest* request, ::e8::SearchMessageChannelsResponse* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_SearchMessageChannels_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetJoinedInMessageChannelsResponse>* MessageChannelService::Stub::AsyncGetJoinedInMessageChannelsRaw(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetJoinedInMessageChannelsResponse>::Create(channel_.get(), cq, rpcmethod_GetJoinedInMessageChannels_, context, request, true);
+::grpc::ClientAsyncResponseReader< ::e8::SearchMessageChannelsResponse>* MessageChannelService::Stub::AsyncSearchMessageChannelsRaw(::grpc::ClientContext* context, const ::e8::SearchMessageChannelsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SearchMessageChannelsResponse>::Create(channel_.get(), cq, rpcmethod_SearchMessageChannels_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::e8::GetJoinedInMessageChannelsResponse>* MessageChannelService::Stub::PrepareAsyncGetJoinedInMessageChannelsRaw(::grpc::ClientContext* context, const ::e8::GetJoinedInMessageChannelsRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::GetJoinedInMessageChannelsResponse>::Create(channel_.get(), cq, rpcmethod_GetJoinedInMessageChannels_, context, request, false);
+::grpc::ClientAsyncResponseReader< ::e8::SearchMessageChannelsResponse>* MessageChannelService::Stub::PrepareAsyncSearchMessageChannelsRaw(::grpc::ClientContext* context, const ::e8::SearchMessageChannelsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::e8::SearchMessageChannelsResponse>::Create(channel_.get(), cq, rpcmethod_SearchMessageChannels_, context, request, false);
 }
 
 ::grpc::Status MessageChannelService::Stub::GetMessageChannelMembers(::grpc::ClientContext* context, const ::e8::GetMessageChannelMembersRequest& request, ::e8::GetMessageChannelMembersResponse* response) {
@@ -184,8 +184,8 @@ MessageChannelService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MessageChannelService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::GetJoinedInMessageChannelsRequest, ::e8::GetJoinedInMessageChannelsResponse>(
-          std::mem_fn(&MessageChannelService::Service::GetJoinedInMessageChannels), this)));
+      new ::grpc::internal::RpcMethodHandler< MessageChannelService::Service, ::e8::SearchMessageChannelsRequest, ::e8::SearchMessageChannelsResponse>(
+          std::mem_fn(&MessageChannelService::Service::SearchMessageChannels), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MessageChannelService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
@@ -231,7 +231,7 @@ MessageChannelService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status MessageChannelService::Service::GetJoinedInMessageChannels(::grpc::ServerContext* context, const ::e8::GetJoinedInMessageChannelsRequest* request, ::e8::GetJoinedInMessageChannelsResponse* response) {
+::grpc::Status MessageChannelService::Service::SearchMessageChannels(::grpc::ServerContext* context, const ::e8::SearchMessageChannelsRequest* request, ::e8::SearchMessageChannelsResponse* response) {
   (void) context;
   (void) request;
   (void) response;

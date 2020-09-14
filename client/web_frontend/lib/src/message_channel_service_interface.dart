@@ -26,8 +26,8 @@ abstract class MessageChannelServiceInterface {
   Future<AddUserToMessageChannelResponse> addUserToMessageChannel(
       AddUserToMessageChannelRequest request, String signature);
 
-  Future<GetJoinedInMessageChannelsResponse> getJoinedInMessageChannels(
-      GetJoinedInMessageChannelsRequest request, String signature);
+  Future<SearchMessageChannelsResponse> searchMessageChannels(
+      SearchMessageChannelsRequest request, String signature);
 
   Future<GetMessageChannelMembersResponse> getMessageChannelMembers(
       GetMessageChannelMembersRequest request, String signature);

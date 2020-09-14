@@ -393,8 +393,8 @@ class LeaveMessageChannelResponse extends $pb.GeneratedMessage {
   static LeaveMessageChannelResponse _defaultInstance;
 }
 
-class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetJoinedInMessageChannelsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class SearchMessageChannelsRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchMessageChannelsRequest', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<$19.Pagination>(1, 'pagination', subBuilder: $19.Pagination.create)
     ..p<$fixnum.Int64>(2, 'withMemberIds', $pb.PbFieldType.P6)
     ..a<$core.int>(3, 'activeMemberFetchLimit', $pb.PbFieldType.O3)
@@ -402,20 +402,20 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  GetJoinedInMessageChannelsRequest._() : super();
-  factory GetJoinedInMessageChannelsRequest() => create();
-  factory GetJoinedInMessageChannelsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetJoinedInMessageChannelsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetJoinedInMessageChannelsRequest clone() => GetJoinedInMessageChannelsRequest()..mergeFromMessage(this);
-  GetJoinedInMessageChannelsRequest copyWith(void Function(GetJoinedInMessageChannelsRequest) updates) => super.copyWith((message) => updates(message as GetJoinedInMessageChannelsRequest));
+  SearchMessageChannelsRequest._() : super();
+  factory SearchMessageChannelsRequest() => create();
+  factory SearchMessageChannelsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SearchMessageChannelsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  SearchMessageChannelsRequest clone() => SearchMessageChannelsRequest()..mergeFromMessage(this);
+  SearchMessageChannelsRequest copyWith(void Function(SearchMessageChannelsRequest) updates) => super.copyWith((message) => updates(message as SearchMessageChannelsRequest));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetJoinedInMessageChannelsRequest create() => GetJoinedInMessageChannelsRequest._();
-  GetJoinedInMessageChannelsRequest createEmptyInstance() => create();
-  static $pb.PbList<GetJoinedInMessageChannelsRequest> createRepeated() => $pb.PbList<GetJoinedInMessageChannelsRequest>();
+  static SearchMessageChannelsRequest create() => SearchMessageChannelsRequest._();
+  SearchMessageChannelsRequest createEmptyInstance() => create();
+  static $pb.PbList<SearchMessageChannelsRequest> createRepeated() => $pb.PbList<SearchMessageChannelsRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetJoinedInMessageChannelsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetJoinedInMessageChannelsRequest>(create);
-  static GetJoinedInMessageChannelsRequest _defaultInstance;
+  static SearchMessageChannelsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SearchMessageChannelsRequest>(create);
+  static SearchMessageChannelsRequest _defaultInstance;
 
   @$pb.TagNumber(1)
   $19.Pagination get pagination => $_getN(0);
@@ -444,26 +444,26 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
   $core.List<$fixnum.Int64> get channelIds => $_getList(3);
 }
 
-class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetJoinedInMessageChannelsResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class SearchMessageChannelsResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('SearchMessageChannelsResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..pc<$21.MessageChannelOverview>(1, 'channels', $pb.PbFieldType.PM, subBuilder: $21.MessageChannelOverview.create)
     ..hasRequiredFields = false
   ;
 
-  GetJoinedInMessageChannelsResponse._() : super();
-  factory GetJoinedInMessageChannelsResponse() => create();
-  factory GetJoinedInMessageChannelsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetJoinedInMessageChannelsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GetJoinedInMessageChannelsResponse clone() => GetJoinedInMessageChannelsResponse()..mergeFromMessage(this);
-  GetJoinedInMessageChannelsResponse copyWith(void Function(GetJoinedInMessageChannelsResponse) updates) => super.copyWith((message) => updates(message as GetJoinedInMessageChannelsResponse));
+  SearchMessageChannelsResponse._() : super();
+  factory SearchMessageChannelsResponse() => create();
+  factory SearchMessageChannelsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SearchMessageChannelsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  SearchMessageChannelsResponse clone() => SearchMessageChannelsResponse()..mergeFromMessage(this);
+  SearchMessageChannelsResponse copyWith(void Function(SearchMessageChannelsResponse) updates) => super.copyWith((message) => updates(message as SearchMessageChannelsResponse));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetJoinedInMessageChannelsResponse create() => GetJoinedInMessageChannelsResponse._();
-  GetJoinedInMessageChannelsResponse createEmptyInstance() => create();
-  static $pb.PbList<GetJoinedInMessageChannelsResponse> createRepeated() => $pb.PbList<GetJoinedInMessageChannelsResponse>();
+  static SearchMessageChannelsResponse create() => SearchMessageChannelsResponse._();
+  SearchMessageChannelsResponse createEmptyInstance() => create();
+  static $pb.PbList<SearchMessageChannelsResponse> createRepeated() => $pb.PbList<SearchMessageChannelsResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetJoinedInMessageChannelsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetJoinedInMessageChannelsResponse>(create);
-  static GetJoinedInMessageChannelsResponse _defaultInstance;
+  static SearchMessageChannelsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SearchMessageChannelsResponse>(create);
+  static SearchMessageChannelsResponse _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.List<$21.MessageChannelOverview> get channels => $_getList(0);

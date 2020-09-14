@@ -76,8 +76,8 @@ const LeaveMessageChannelResponse$json = const {
   '1': 'LeaveMessageChannelResponse',
 };
 
-const GetJoinedInMessageChannelsRequest$json = const {
-  '1': 'GetJoinedInMessageChannelsRequest',
+const SearchMessageChannelsRequest$json = const {
+  '1': 'SearchMessageChannelsRequest',
   '2': const [
     const {'1': 'pagination', '3': 1, '4': 1, '5': 11, '6': '.e8.Pagination', '10': 'pagination'},
     const {'1': 'with_member_ids', '3': 2, '4': 3, '5': 3, '10': 'withMemberIds'},
@@ -86,8 +86,8 @@ const GetJoinedInMessageChannelsRequest$json = const {
   ],
 };
 
-const GetJoinedInMessageChannelsResponse$json = const {
-  '1': 'GetJoinedInMessageChannelsResponse',
+const SearchMessageChannelsResponse$json = const {
+  '1': 'SearchMessageChannelsResponse',
   '2': const [
     const {'1': 'channels', '3': 1, '4': 3, '5': 11, '6': '.e8.MessageChannelOverview', '10': 'channels'},
   ],

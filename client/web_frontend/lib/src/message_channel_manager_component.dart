@@ -78,8 +78,7 @@ class MessageChannelManagerComponent implements OnInit {
   }
 
   void _fetchMessageChannelList() {
-    GetJoinedInMessageChannelsRequest request =
-        GetJoinedInMessageChannelsRequest();
+    SearchMessageChannelsRequest request = SearchMessageChannelsRequest();
     if (targetMemberId != null) {
       request.withMemberIds.add(targetMemberId);
     }
@@ -87,8 +86,8 @@ class MessageChannelManagerComponent implements OnInit {
 
     structuralControl.onLoadingMessageChannels = true;
     _messageChannelService
-        .getJoinedInMessageChannels(request, credentialStorage.loadSignature())
-        .then((GetJoinedInMessageChannelsResponse res) {
+        .searchMessageChannels(request, credentialStorage.loadSignature())
+        .then((SearchMessageChannelsResponse res) {
       structuralControl.messageChannelOverviews = res.channels;
       structuralControl.onLoadingMessageChannels = false;
     });

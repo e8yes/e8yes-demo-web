@@ -81,7 +81,7 @@ message LeaveMessageChannelRequest {
 message LeaveMessageChannelResponse {}
 
 
-message GetJoinedInMessageChannelsRequest {
+message SearchMessageChannelsRequest {
     Pagination pagination = 1;
 
     // Only retrieve message channels that contain all the members with the IDs
@@ -95,7 +95,7 @@ message GetJoinedInMessageChannelsRequest {
     repeated int64 channel_ids = 4;
 }
 
-message GetJoinedInMessageChannelsResponse {
+message SearchMessageChannelsResponse {
     repeated MessageChannelOverview channels = 1;
 }
 
@@ -138,9 +138,9 @@ service MessageChannelService {
     rpc LeaveMessageChannel (LeaveMessageChannelRequest) returns
         (LeaveMessageChannelResponse);
 
-    // Get a list of channels that the logged-in user is a member of.
-    rpc GetJoinedInMessageChannels (GetJoinedInMessageChannelsRequest) returns
-        (GetJoinedInMessageChannelsResponse);
+    // Search from the list of channels that the logged-in user is a member of.
+    rpc SearchMessageChannels (SearchMessageChannelsRequest) returns
+        (SearchMessageChannelsResponse);
 
     // Get information about the members in the specified channel.
     rpc GetMessageChannelMembers (GetMessageChannelMembersRequest) 

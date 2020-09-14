@@ -36,9 +36,9 @@ class MessageChannelServiceImpl : public MessageChannelService::Service {
                                       CreateMessageChannelRequest const *request,
                                       CreateMessageChannelResponse *response) override;
 
-    grpc::Status GetJoinedInMessageChannels(grpc::ServerContext *context,
-                                            GetJoinedInMessageChannelsRequest const *request,
-                                            GetJoinedInMessageChannelsResponse *response) override;
+    grpc::Status SearchMessageChannels(grpc::ServerContext *context,
+                                       SearchMessageChannelsRequest const *request,
+                                       SearchMessageChannelsResponse *response) override;
 
     grpc::Status GetMessageChannelMembers(grpc::ServerContext *context,
                                           GetMessageChannelMembersRequest const *request,

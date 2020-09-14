@@ -65,9 +65,10 @@ MessageChannelServiceImpl::CreateMessageChannel(grpc::ServerContext *context,
     return grpc::Status::OK;
 }
 
-grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
-    grpc::ServerContext *context, GetJoinedInMessageChannelsRequest const *request,
-    GetJoinedInMessageChannelsResponse *response) {
+grpc::Status
+MessageChannelServiceImpl::SearchMessageChannels(grpc::ServerContext *context,
+                                                 SearchMessageChannelsRequest const *request,
+                                                 SearchMessageChannelsResponse *response) {
     grpc::Status status;
     std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
     if (!identity.has_value()) {
