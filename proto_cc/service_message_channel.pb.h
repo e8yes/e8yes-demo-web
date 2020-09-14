@@ -1351,6 +1351,20 @@ class SearchMessageChannelsRequest : public ::google::protobuf::Message /* @@pro
   ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
       mutable_channel_ids();
 
+  // string search_text = 5;
+  void clear_search_text();
+  static const int kSearchTextFieldNumber = 5;
+  const ::std::string& search_text() const;
+  void set_search_text(const ::std::string& value);
+  #if LANG_CXX11
+  void set_search_text(::std::string&& value);
+  #endif
+  void set_search_text(const char* value);
+  void set_search_text(const char* value, size_t size);
+  ::std::string* mutable_search_text();
+  ::std::string* release_search_text();
+  void set_allocated_search_text(::std::string* search_text);
+
   // .e8.Pagination pagination = 1;
   bool has_pagination() const;
   void clear_pagination();
@@ -1377,6 +1391,7 @@ class SearchMessageChannelsRequest : public ::google::protobuf::Message /* @@pro
   mutable int _with_member_ids_cached_byte_size_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int64 > channel_ids_;
   mutable int _channel_ids_cached_byte_size_;
+  ::google::protobuf::internal::ArenaStringPtr search_text_;
   ::e8::Pagination* pagination_;
   ::google::protobuf::int32 active_member_fetch_limit_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -2345,6 +2360,59 @@ inline ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
 SearchMessageChannelsRequest::mutable_channel_ids() {
   // @@protoc_insertion_point(field_mutable_list:e8.SearchMessageChannelsRequest.channel_ids)
   return &channel_ids_;
+}
+
+// string search_text = 5;
+inline void SearchMessageChannelsRequest::clear_search_text() {
+  search_text_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SearchMessageChannelsRequest::search_text() const {
+  // @@protoc_insertion_point(field_get:e8.SearchMessageChannelsRequest.search_text)
+  return search_text_.GetNoArena();
+}
+inline void SearchMessageChannelsRequest::set_search_text(const ::std::string& value) {
+  
+  search_text_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:e8.SearchMessageChannelsRequest.search_text)
+}
+#if LANG_CXX11
+inline void SearchMessageChannelsRequest::set_search_text(::std::string&& value) {
+  
+  search_text_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:e8.SearchMessageChannelsRequest.search_text)
+}
+#endif
+inline void SearchMessageChannelsRequest::set_search_text(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  search_text_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:e8.SearchMessageChannelsRequest.search_text)
+}
+inline void SearchMessageChannelsRequest::set_search_text(const char* value, size_t size) {
+  
+  search_text_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:e8.SearchMessageChannelsRequest.search_text)
+}
+inline ::std::string* SearchMessageChannelsRequest::mutable_search_text() {
+  
+  // @@protoc_insertion_point(field_mutable:e8.SearchMessageChannelsRequest.search_text)
+  return search_text_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SearchMessageChannelsRequest::release_search_text() {
+  // @@protoc_insertion_point(field_release:e8.SearchMessageChannelsRequest.search_text)
+  
+  return search_text_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SearchMessageChannelsRequest::set_allocated_search_text(::std::string* search_text) {
+  if (search_text != NULL) {
+    
+  } else {
+    
+  }
+  search_text_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), search_text);
+  // @@protoc_insertion_point(field_set_allocated:e8.SearchMessageChannelsRequest.search_text)
 }
 
 // -------------------------------------------------------------------

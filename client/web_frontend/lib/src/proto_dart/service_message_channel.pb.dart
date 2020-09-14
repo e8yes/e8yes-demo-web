@@ -399,6 +399,7 @@ class SearchMessageChannelsRequest extends $pb.GeneratedMessage {
     ..p<$fixnum.Int64>(2, 'withMemberIds', $pb.PbFieldType.P6)
     ..a<$core.int>(3, 'activeMemberFetchLimit', $pb.PbFieldType.O3)
     ..p<$fixnum.Int64>(4, 'channelIds', $pb.PbFieldType.P6)
+    ..aOS(5, 'searchText')
     ..hasRequiredFields = false
   ;
 
@@ -442,6 +443,15 @@ class SearchMessageChannelsRequest extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(4)
   $core.List<$fixnum.Int64> get channelIds => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.String get searchText => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set searchText($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasSearchText() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSearchText() => clearField(5);
 }
 
 class SearchMessageChannelsResponse extends $pb.GeneratedMessage {

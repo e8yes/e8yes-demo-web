@@ -83,6 +83,7 @@ const SearchMessageChannelsRequest$json = const {
     const {'1': 'with_member_ids', '3': 2, '4': 3, '5': 3, '10': 'withMemberIds'},
     const {'1': 'active_member_fetch_limit', '3': 3, '4': 1, '5': 5, '10': 'activeMemberFetchLimit'},
     const {'1': 'channel_ids', '3': 4, '4': 3, '5': 3, '10': 'channelIds'},
+    const {'1': 'search_text', '3': 5, '4': 1, '5': 9, '10': 'searchText'},
   ],
 };
 

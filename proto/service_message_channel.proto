@@ -93,6 +93,9 @@ message SearchMessageChannelsRequest {
 
     // Filter by a set of channel IDs.
     repeated int64 channel_ids = 4;
+
+    // Search by text query string.
+    string search_text = 5;
 }
 
 message SearchMessageChannelsResponse {
