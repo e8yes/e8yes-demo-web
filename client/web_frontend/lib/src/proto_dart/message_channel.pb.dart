@@ -143,8 +143,8 @@ class MessageChannel extends $pb.GeneratedMessage {
   void clearCreatedAt() => clearField(6);
 }
 
-class MessageChannelOveriew extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageChannelOveriew', package: const $pb.PackageName('e8'), createEmptyInstance: create)
+class MessageChannelOverview extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageChannelOverview', package: const $pb.PackageName('e8'), createEmptyInstance: create)
     ..aOM<MessageChannel>(1, 'channel', subBuilder: MessageChannel.create)
     ..aInt64(2, 'channelLastInteractedAt')
     ..aOM<MessageChannelRelation>(3, 'channelRelation', subBuilder: MessageChannelRelation.create)
@@ -152,20 +152,20 @@ class MessageChannelOveriew extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  MessageChannelOveriew._() : super();
-  factory MessageChannelOveriew() => create();
-  factory MessageChannelOveriew.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory MessageChannelOveriew.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  MessageChannelOveriew clone() => MessageChannelOveriew()..mergeFromMessage(this);
-  MessageChannelOveriew copyWith(void Function(MessageChannelOveriew) updates) => super.copyWith((message) => updates(message as MessageChannelOveriew));
+  MessageChannelOverview._() : super();
+  factory MessageChannelOverview() => create();
+  factory MessageChannelOverview.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MessageChannelOverview.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  MessageChannelOverview clone() => MessageChannelOverview()..mergeFromMessage(this);
+  MessageChannelOverview copyWith(void Function(MessageChannelOverview) updates) => super.copyWith((message) => updates(message as MessageChannelOverview));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static MessageChannelOveriew create() => MessageChannelOveriew._();
-  MessageChannelOveriew createEmptyInstance() => create();
-  static $pb.PbList<MessageChannelOveriew> createRepeated() => $pb.PbList<MessageChannelOveriew>();
+  static MessageChannelOverview create() => MessageChannelOverview._();
+  MessageChannelOverview createEmptyInstance() => create();
+  static $pb.PbList<MessageChannelOverview> createRepeated() => $pb.PbList<MessageChannelOverview>();
   @$core.pragma('dart2js:noInline')
-  static MessageChannelOveriew getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MessageChannelOveriew>(create);
-  static MessageChannelOveriew _defaultInstance;
+  static MessageChannelOverview getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MessageChannelOverview>(create);
+  static MessageChannelOverview _defaultInstance;
 
   @$pb.TagNumber(1)
   MessageChannel get channel => $_getN(0);

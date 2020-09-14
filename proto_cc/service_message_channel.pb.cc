@@ -21,7 +21,7 @@
 
 namespace protobuf_message_5fchannel_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_message_5fchannel_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_MessageChannelRelation;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_message_5fchannel_2eproto ::google::protobuf::internal::SCCInfo<3> scc_info_MessageChannelOveriew;
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_message_5fchannel_2eproto ::google::protobuf::internal::SCCInfo<3> scc_info_MessageChannelOverview;
 }  // namespace protobuf_message_5fchannel_2eproto
 namespace protobuf_nullable_5fprimitives_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_nullable_5fprimitives_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_NullableString;
@@ -275,7 +275,7 @@ static void InitDefaultsGetJoinedInMessageChannelsResponse() {
 
 ::google::protobuf::internal::SCCInfo<1> scc_info_GetJoinedInMessageChannelsResponse =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGetJoinedInMessageChannelsResponse}, {
-      &protobuf_message_5fchannel_2eproto::scc_info_MessageChannelOveriew.base,}};
+      &protobuf_message_5fchannel_2eproto::scc_info_MessageChannelOverview.base,}};
 
 static void InitDefaultsGetMessageChannelMembersRequest() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -506,35 +506,35 @@ void AddDescriptorsImpl() {
       "annelsRequest\022\"\n\npagination\030\001 \001(\0132\016.e8.P"
       "agination\022\027\n\017with_member_ids\030\002 \003(\003\022!\n\031ac"
       "tive_member_fetch_limit\030\003 \001(\005\022\023\n\013channel"
-      "_ids\030\004 \003(\003\"Q\n\"GetJoinedInMessageChannels"
-      "Response\022+\n\010channels\030\001 \003(\0132\031.e8.MessageC"
-      "hannelOveriew\"Y\n\037GetMessageChannelMember"
-      "sRequest\022\022\n\nchannel_id\030\001 \001(\003\022\"\n\npaginati"
-      "on\030\002 \001(\0132\016.e8.Pagination\"\207\001\n GetMessageC"
-      "hannelMembersResponse\022,\n\ruser_profiles\030\001"
-      " \003(\0132\025.e8.UserPublicProfile\0225\n\021channel_r"
-      "elations\030\002 \003(\0132\032.e8.MessageChannelRelati"
-      "on2\270\005\n\025MessageChannelService\022Y\n\024CreateMe"
-      "ssageChannel\022\037.e8.CreateMessageChannelRe"
-      "quest\032 .e8.CreateMessageChannelResponse\022"
-      "Y\n\024UpdateMessageChannel\022\037.e8.UpdateMessa"
-      "geChannelRequest\032 .e8.UpdateMessageChann"
-      "elResponse\022b\n\027AddUserToMessageChannel\022\"."
-      "e8.AddUserToMessageChannelRequest\032#.e8.A"
-      "ddUserToMessageChannelResponse\022Y\n\024GetMes"
-      "sageChannelKey\022\037.e8.GetMessageChannelKey"
-      "Request\032 .e8.GetMessageChannelKeyRespons"
-      "e\022V\n\023LeaveMessageChannel\022\036.e8.LeaveMessa"
-      "geChannelRequest\032\037.e8.LeaveMessageChanne"
-      "lResponse\022k\n\032GetJoinedInMessageChannels\022"
-      "%.e8.GetJoinedInMessageChannelsRequest\032&"
-      ".e8.GetJoinedInMessageChannelsResponse\022e"
-      "\n\030GetMessageChannelMembers\022#.e8.GetMessa"
-      "geChannelMembersRequest\032$.e8.GetMessageC"
-      "hannelMembersResponseb\006proto3"
+      "_ids\030\004 \003(\003\"R\n\"GetJoinedInMessageChannels"
+      "Response\022,\n\010channels\030\001 \003(\0132\032.e8.MessageC"
+      "hannelOverview\"Y\n\037GetMessageChannelMembe"
+      "rsRequest\022\022\n\nchannel_id\030\001 \001(\003\022\"\n\npaginat"
+      "ion\030\002 \001(\0132\016.e8.Pagination\"\207\001\n GetMessage"
+      "ChannelMembersResponse\022,\n\ruser_profiles\030"
+      "\001 \003(\0132\025.e8.UserPublicProfile\0225\n\021channel_"
+      "relations\030\002 \003(\0132\032.e8.MessageChannelRelat"
+      "ion2\270\005\n\025MessageChannelService\022Y\n\024CreateM"
+      "essageChannel\022\037.e8.CreateMessageChannelR"
+      "equest\032 .e8.CreateMessageChannelResponse"
+      "\022Y\n\024UpdateMessageChannel\022\037.e8.UpdateMess"
+      "ageChannelRequest\032 .e8.UpdateMessageChan"
+      "nelResponse\022b\n\027AddUserToMessageChannel\022\""
+      ".e8.AddUserToMessageChannelRequest\032#.e8."
+      "AddUserToMessageChannelResponse\022Y\n\024GetMe"
+      "ssageChannelKey\022\037.e8.GetMessageChannelKe"
+      "yRequest\032 .e8.GetMessageChannelKeyRespon"
+      "se\022V\n\023LeaveMessageChannel\022\036.e8.LeaveMess"
+      "ageChannelRequest\032\037.e8.LeaveMessageChann"
+      "elResponse\022k\n\032GetJoinedInMessageChannels"
+      "\022%.e8.GetJoinedInMessageChannelsRequest\032"
+      "&.e8.GetJoinedInMessageChannelsResponse\022"
+      "e\n\030GetMessageChannelMembers\022#.e8.GetMess"
+      "ageChannelMembersRequest\032$.e8.GetMessage"
+      "ChannelMembersResponseb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2069);
+      descriptor, 2070);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "service_message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_pagination_2eproto::AddDescriptors();
@@ -3662,7 +3662,7 @@ bool GetJoinedInMessageChannelsResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .e8.MessageChannelOveriew channels = 1;
+      // repeated .e8.MessageChannelOverview channels = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
@@ -3700,7 +3700,7 @@ void GetJoinedInMessageChannelsResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .e8.MessageChannelOveriew channels = 1;
+  // repeated .e8.MessageChannelOverview channels = 1;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->channels_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -3723,7 +3723,7 @@ void GetJoinedInMessageChannelsResponse::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .e8.MessageChannelOveriew channels = 1;
+  // repeated .e8.MessageChannelOverview channels = 1;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->channels_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -3748,7 +3748,7 @@ size_t GetJoinedInMessageChannelsResponse::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .e8.MessageChannelOveriew channels = 1;
+  // repeated .e8.MessageChannelOverview channels = 1;
   {
     unsigned int count = static_cast<unsigned int>(this->channels_size());
     total_size += 1UL * count;

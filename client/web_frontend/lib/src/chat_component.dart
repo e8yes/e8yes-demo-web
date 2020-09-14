@@ -15,5 +15,5 @@ import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
 )
 class ChatComponent {
   @Input()
-  MessageChannelOveriew messageChannel;
+  MessageChannelOverview messageChannel;
 }

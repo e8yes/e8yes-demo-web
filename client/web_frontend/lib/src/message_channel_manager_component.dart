@@ -13,8 +13,8 @@ import 'package:demoweb_app/src/proto_dart/service_message_channel.pb.dart';
 import 'package:fixnum/fixnum.dart';
 
 class MessageChannelStructuralControl {
-  List<MessageChannelOveriew> messageChannelOverviews =
-      List<MessageChannelOveriew>();
+  List<MessageChannelOverview> messageChannelOverviews =
+      List<MessageChannelOverview>();
   bool onLoadingMessageChannels = false;
   bool showAddMessageChannelPopup = false;
 }
@@ -42,11 +42,11 @@ class MessageChannelManagerComponent implements OnInit {
   @Input()
   Int64 targetMemberId;
 
-  StreamController<MessageChannelOveriew>
+  StreamController<MessageChannelOverview>
       currentMessageChannelStreamController =
-      StreamController<MessageChannelOveriew>();
+      StreamController<MessageChannelOverview>();
   @Output()
-  Stream<MessageChannelOveriew> get currentMessageChannel =>
+  Stream<MessageChannelOverview> get currentMessageChannel =>
       currentMessageChannelStreamController.stream;
 
   final MessageChannelServiceInterface _messageChannelService;
@@ -73,7 +73,7 @@ class MessageChannelManagerComponent implements OnInit {
     }
   }
 
-  void onClickMessageChannel(MessageChannelOveriew channel) {
+  void onClickMessageChannel(MessageChannelOverview channel) {
     currentMessageChannelStreamController.add(channel);
   }
 

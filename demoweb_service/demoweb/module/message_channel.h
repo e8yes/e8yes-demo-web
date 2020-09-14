@@ -77,7 +77,7 @@ SearchMessageChannels(UserId const viewer_id, std::unordered_set<UserId> const &
  * @brief ToMessageChannelOverviews Converts message channel entities with user joining information
  * to message channel overview proto messages.
  */
-std::vector<MessageChannelOveriew>
+std::vector<MessageChannelOverview>
 ToMessageChannelOverviews(UserId const viewer_id,
                           std::vector<SearchedMessageChannel> const &searched_message_channels,
                           KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns);

@@ -1471,23 +1471,23 @@ class GetJoinedInMessageChannelsResponse : public ::google::protobuf::Message /*
 
   // accessors -------------------------------------------------------
 
-  // repeated .e8.MessageChannelOveriew channels = 1;
+  // repeated .e8.MessageChannelOverview channels = 1;
   int channels_size() const;
   void clear_channels();
   static const int kChannelsFieldNumber = 1;
-  ::e8::MessageChannelOveriew* mutable_channels(int index);
-  ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOveriew >*
+  ::e8::MessageChannelOverview* mutable_channels(int index);
+  ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOverview >*
       mutable_channels();
-  const ::e8::MessageChannelOveriew& channels(int index) const;
-  ::e8::MessageChannelOveriew* add_channels();
-  const ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOveriew >&
+  const ::e8::MessageChannelOverview& channels(int index) const;
+  ::e8::MessageChannelOverview* add_channels();
+  const ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOverview >&
       channels() const;
 
   // @@protoc_insertion_point(class_scope:e8.GetJoinedInMessageChannelsResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOveriew > channels_;
+  ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOverview > channels_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_service_5fmessage_5fchannel_2eproto::TableStruct;
 };
@@ -2351,28 +2351,28 @@ GetJoinedInMessageChannelsRequest::mutable_channel_ids() {
 
 // GetJoinedInMessageChannelsResponse
 
-// repeated .e8.MessageChannelOveriew channels = 1;
+// repeated .e8.MessageChannelOverview channels = 1;
 inline int GetJoinedInMessageChannelsResponse::channels_size() const {
   return channels_.size();
 }
-inline ::e8::MessageChannelOveriew* GetJoinedInMessageChannelsResponse::mutable_channels(int index) {
+inline ::e8::MessageChannelOverview* GetJoinedInMessageChannelsResponse::mutable_channels(int index) {
   // @@protoc_insertion_point(field_mutable:e8.GetJoinedInMessageChannelsResponse.channels)
   return channels_.Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOveriew >*
+inline ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOverview >*
 GetJoinedInMessageChannelsResponse::mutable_channels() {
   // @@protoc_insertion_point(field_mutable_list:e8.GetJoinedInMessageChannelsResponse.channels)
   return &channels_;
 }
-inline const ::e8::MessageChannelOveriew& GetJoinedInMessageChannelsResponse::channels(int index) const {
+inline const ::e8::MessageChannelOverview& GetJoinedInMessageChannelsResponse::channels(int index) const {
   // @@protoc_insertion_point(field_get:e8.GetJoinedInMessageChannelsResponse.channels)
   return channels_.Get(index);
 }
-inline ::e8::MessageChannelOveriew* GetJoinedInMessageChannelsResponse::add_channels() {
+inline ::e8::MessageChannelOverview* GetJoinedInMessageChannelsResponse::add_channels() {
   // @@protoc_insertion_point(field_add:e8.GetJoinedInMessageChannelsResponse.channels)
   return channels_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOveriew >&
+inline const ::google::protobuf::RepeatedPtrField< ::e8::MessageChannelOverview >&
 GetJoinedInMessageChannelsResponse::channels() const {
   // @@protoc_insertion_point(field_list:e8.GetJoinedInMessageChannelsResponse.channels)
   return channels_;

@@ -89,7 +89,7 @@ const GetJoinedInMessageChannelsRequest$json = const {
 const GetJoinedInMessageChannelsResponse$json = const {
   '1': 'GetJoinedInMessageChannelsResponse',
   '2': const [
-    const {'1': 'channels', '3': 1, '4': 3, '5': 11, '6': '.e8.MessageChannelOveriew', '10': 'channels'},
+    const {'1': 'channels', '3': 1, '4': 3, '5': 11, '6': '.e8.MessageChannelOverview', '10': 'channels'},
   ],
 };
 

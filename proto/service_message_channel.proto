@@ -96,7 +96,7 @@ message GetJoinedInMessageChannelsRequest {
 }
 
 message GetJoinedInMessageChannelsResponse {
-    repeated MessageChannelOveriew channels = 1;
+    repeated MessageChannelOverview channels = 1;
 }
 
 

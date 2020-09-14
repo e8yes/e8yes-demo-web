@@ -40,11 +40,11 @@ class MessageChannelDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<MessageChannel>
       _instance;
 } _MessageChannel_default_instance_;
-class MessageChannelOveriewDefaultTypeInternal {
+class MessageChannelOverviewDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<MessageChannelOveriew>
+  ::google::protobuf::internal::ExplicitlyConstructed<MessageChannelOverview>
       _instance;
-} _MessageChannelOveriew_default_instance_;
+} _MessageChannelOverview_default_instance_;
 }  // namespace e8
 namespace protobuf_message_5fchannel_2eproto {
 static void InitDefaultsMessageChannelRelation() {
@@ -76,19 +76,19 @@ static void InitDefaultsMessageChannel() {
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsMessageChannel}, {
       &protobuf_file_2eproto::scc_info_FileTokenAccess.base,}};
 
-static void InitDefaultsMessageChannelOveriew() {
+static void InitDefaultsMessageChannelOverview() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::e8::_MessageChannelOveriew_default_instance_;
-    new (ptr) ::e8::MessageChannelOveriew();
+    void* ptr = &::e8::_MessageChannelOverview_default_instance_;
+    new (ptr) ::e8::MessageChannelOverview();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::e8::MessageChannelOveriew::InitAsDefaultInstance();
+  ::e8::MessageChannelOverview::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<3> scc_info_MessageChannelOveriew =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 3, InitDefaultsMessageChannelOveriew}, {
+::google::protobuf::internal::SCCInfo<3> scc_info_MessageChannelOverview =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 3, InitDefaultsMessageChannelOverview}, {
       &protobuf_message_5fchannel_2eproto::scc_info_MessageChannel.base,
       &protobuf_message_5fchannel_2eproto::scc_info_MessageChannelRelation.base,
       &protobuf_user_5fprofile_2eproto::scc_info_UserPublicProfile.base,}};
@@ -96,7 +96,7 @@ static void InitDefaultsMessageChannelOveriew() {
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_MessageChannelRelation.base);
   ::google::protobuf::internal::InitSCC(&scc_info_MessageChannel.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_MessageChannelOveriew.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_MessageChannelOverview.base);
 }
 
 ::google::protobuf::Metadata file_level_metadata[3];
@@ -122,25 +122,25 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, avatar_preview_readonly_access_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannel, created_at_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOveriew, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOverview, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOveriew, channel_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOveriew, channel_last_interacted_at_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOveriew, channel_relation_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOveriew, most_active_users_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOverview, channel_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOverview, channel_last_interacted_at_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOverview, channel_relation_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::e8::MessageChannelOverview, most_active_users_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::e8::MessageChannelRelation)},
   { 7, -1, sizeof(::e8::MessageChannel)},
-  { 18, -1, sizeof(::e8::MessageChannelOveriew)},
+  { 18, -1, sizeof(::e8::MessageChannelOverview)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_MessageChannelRelation_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_MessageChannel_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_MessageChannelOveriew_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::e8::_MessageChannelOverview_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -173,17 +173,17 @@ void AddDescriptorsImpl() {
       "eadonly_access\030\004 \001(\0132\023.e8.FileTokenAcces"
       "s\022;\n\036avatar_preview_readonly_access\030\005 \001("
       "\0132\023.e8.FileTokenAccess\022\022\n\ncreated_at\030\006 \001"
-      "(\003\"\310\001\n\025MessageChannelOveriew\022#\n\007channel\030"
-      "\001 \001(\0132\022.e8.MessageChannel\022\"\n\032channel_las"
-      "t_interacted_at\030\002 \001(\003\0224\n\020channel_relatio"
-      "n\030\003 \001(\0132\032.e8.MessageChannelRelation\0220\n\021m"
-      "ost_active_users\030\004 \003(\0132\025.e8.UserPublicPr"
-      "ofile*M\n\030MessageChannelMemberType\022\020\n\014MCM"
-      "T_INVALID\020\000\022\017\n\013MCMT_MEMBER\020\001\022\016\n\nMCMT_ADM"
-      "IN\020\002b\006proto3"
+      "(\003\"\311\001\n\026MessageChannelOverview\022#\n\007channel"
+      "\030\001 \001(\0132\022.e8.MessageChannel\022\"\n\032channel_la"
+      "st_interacted_at\030\002 \001(\003\0224\n\020channel_relati"
+      "on\030\003 \001(\0132\032.e8.MessageChannelRelation\0220\n\021"
+      "most_active_users\030\004 \003(\0132\025.e8.UserPublicP"
+      "rofile*M\n\030MessageChannelMemberType\022\020\n\014MC"
+      "MT_INVALID\020\000\022\017\n\013MCMT_MEMBER\020\001\022\016\n\nMCMT_AD"
+      "MIN\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 652);
+      descriptor, 653);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message_channel.proto", &protobuf_RegisterTypes);
   ::protobuf_file_2eproto::AddDescriptors();
@@ -978,30 +978,30 @@ void MessageChannel::InternalSwap(MessageChannel* other) {
 
 // ===================================================================
 
-void MessageChannelOveriew::InitAsDefaultInstance() {
-  ::e8::_MessageChannelOveriew_default_instance_._instance.get_mutable()->channel_ = const_cast< ::e8::MessageChannel*>(
+void MessageChannelOverview::InitAsDefaultInstance() {
+  ::e8::_MessageChannelOverview_default_instance_._instance.get_mutable()->channel_ = const_cast< ::e8::MessageChannel*>(
       ::e8::MessageChannel::internal_default_instance());
-  ::e8::_MessageChannelOveriew_default_instance_._instance.get_mutable()->channel_relation_ = const_cast< ::e8::MessageChannelRelation*>(
+  ::e8::_MessageChannelOverview_default_instance_._instance.get_mutable()->channel_relation_ = const_cast< ::e8::MessageChannelRelation*>(
       ::e8::MessageChannelRelation::internal_default_instance());
 }
-void MessageChannelOveriew::clear_most_active_users() {
+void MessageChannelOverview::clear_most_active_users() {
   most_active_users_.Clear();
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int MessageChannelOveriew::kChannelFieldNumber;
-const int MessageChannelOveriew::kChannelLastInteractedAtFieldNumber;
-const int MessageChannelOveriew::kChannelRelationFieldNumber;
-const int MessageChannelOveriew::kMostActiveUsersFieldNumber;
+const int MessageChannelOverview::kChannelFieldNumber;
+const int MessageChannelOverview::kChannelLastInteractedAtFieldNumber;
+const int MessageChannelOverview::kChannelRelationFieldNumber;
+const int MessageChannelOverview::kMostActiveUsersFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-MessageChannelOveriew::MessageChannelOveriew()
+MessageChannelOverview::MessageChannelOverview()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_message_5fchannel_2eproto::scc_info_MessageChannelOveriew.base);
+      &protobuf_message_5fchannel_2eproto::scc_info_MessageChannelOverview.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(constructor:e8.MessageChannelOverview)
 }
-MessageChannelOveriew::MessageChannelOveriew(const MessageChannelOveriew& from)
+MessageChannelOverview::MessageChannelOverview(const MessageChannelOverview& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       most_active_users_(from.most_active_users_) {
@@ -1017,41 +1017,41 @@ MessageChannelOveriew::MessageChannelOveriew(const MessageChannelOveriew& from)
     channel_relation_ = NULL;
   }
   channel_last_interacted_at_ = from.channel_last_interacted_at_;
-  // @@protoc_insertion_point(copy_constructor:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(copy_constructor:e8.MessageChannelOverview)
 }
 
-void MessageChannelOveriew::SharedCtor() {
+void MessageChannelOverview::SharedCtor() {
   ::memset(&channel_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&channel_last_interacted_at_) -
       reinterpret_cast<char*>(&channel_)) + sizeof(channel_last_interacted_at_));
 }
 
-MessageChannelOveriew::~MessageChannelOveriew() {
-  // @@protoc_insertion_point(destructor:e8.MessageChannelOveriew)
+MessageChannelOverview::~MessageChannelOverview() {
+  // @@protoc_insertion_point(destructor:e8.MessageChannelOverview)
   SharedDtor();
 }
 
-void MessageChannelOveriew::SharedDtor() {
+void MessageChannelOverview::SharedDtor() {
   if (this != internal_default_instance()) delete channel_;
   if (this != internal_default_instance()) delete channel_relation_;
 }
 
-void MessageChannelOveriew::SetCachedSize(int size) const {
+void MessageChannelOverview::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* MessageChannelOveriew::descriptor() {
+const ::google::protobuf::Descriptor* MessageChannelOverview::descriptor() {
   ::protobuf_message_5fchannel_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_message_5fchannel_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const MessageChannelOveriew& MessageChannelOveriew::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_message_5fchannel_2eproto::scc_info_MessageChannelOveriew.base);
+const MessageChannelOverview& MessageChannelOverview::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_message_5fchannel_2eproto::scc_info_MessageChannelOverview.base);
   return *internal_default_instance();
 }
 
 
-void MessageChannelOveriew::Clear() {
-// @@protoc_insertion_point(message_clear_start:e8.MessageChannelOveriew)
+void MessageChannelOverview::Clear() {
+// @@protoc_insertion_point(message_clear_start:e8.MessageChannelOverview)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1069,11 +1069,11 @@ void MessageChannelOveriew::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool MessageChannelOveriew::MergePartialFromCodedStream(
+bool MessageChannelOverview::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(parse_start:e8.MessageChannelOverview)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1141,17 +1141,17 @@ bool MessageChannelOveriew::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(parse_success:e8.MessageChannelOverview)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(parse_failure:e8.MessageChannelOverview)
   return false;
 #undef DO_
 }
 
-void MessageChannelOveriew::SerializeWithCachedSizes(
+void MessageChannelOverview::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(serialize_start:e8.MessageChannelOverview)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1185,13 +1185,13 @@ void MessageChannelOveriew::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(serialize_end:e8.MessageChannelOverview)
 }
 
-::google::protobuf::uint8* MessageChannelOveriew::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* MessageChannelOverview::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(serialize_to_array_start:e8.MessageChannelOverview)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1226,12 +1226,12 @@ void MessageChannelOveriew::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(serialize_to_array_end:e8.MessageChannelOverview)
   return target;
 }
 
-size_t MessageChannelOveriew::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:e8.MessageChannelOveriew)
+size_t MessageChannelOverview::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:e8.MessageChannelOverview)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1276,23 +1276,23 @@ size_t MessageChannelOveriew::ByteSizeLong() const {
   return total_size;
 }
 
-void MessageChannelOveriew::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:e8.MessageChannelOveriew)
+void MessageChannelOverview::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:e8.MessageChannelOverview)
   GOOGLE_DCHECK_NE(&from, this);
-  const MessageChannelOveriew* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const MessageChannelOveriew>(
+  const MessageChannelOverview* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const MessageChannelOverview>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:e8.MessageChannelOverview)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:e8.MessageChannelOverview)
     MergeFrom(*source);
   }
 }
 
-void MessageChannelOveriew::MergeFrom(const MessageChannelOveriew& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:e8.MessageChannelOveriew)
+void MessageChannelOverview::MergeFrom(const MessageChannelOverview& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:e8.MessageChannelOverview)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1310,29 +1310,29 @@ void MessageChannelOveriew::MergeFrom(const MessageChannelOveriew& from) {
   }
 }
 
-void MessageChannelOveriew::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:e8.MessageChannelOveriew)
+void MessageChannelOverview::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:e8.MessageChannelOverview)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void MessageChannelOveriew::CopyFrom(const MessageChannelOveriew& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:e8.MessageChannelOveriew)
+void MessageChannelOverview::CopyFrom(const MessageChannelOverview& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:e8.MessageChannelOverview)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool MessageChannelOveriew::IsInitialized() const {
+bool MessageChannelOverview::IsInitialized() const {
   return true;
 }
 
-void MessageChannelOveriew::Swap(MessageChannelOveriew* other) {
+void MessageChannelOverview::Swap(MessageChannelOverview* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void MessageChannelOveriew::InternalSwap(MessageChannelOveriew* other) {
+void MessageChannelOverview::InternalSwap(MessageChannelOverview* other) {
   using std::swap;
   CastToBase(&most_active_users_)->InternalSwap(CastToBase(&other->most_active_users_));
   swap(channel_, other->channel_);
@@ -1341,7 +1341,7 @@ void MessageChannelOveriew::InternalSwap(MessageChannelOveriew* other) {
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata MessageChannelOveriew::GetMetadata() const {
+::google::protobuf::Metadata MessageChannelOverview::GetMetadata() const {
   protobuf_message_5fchannel_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_message_5fchannel_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -1357,8 +1357,8 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::MessageChannelRelation* Aren
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::MessageChannel* Arena::CreateMaybeMessage< ::e8::MessageChannel >(Arena* arena) {
   return Arena::CreateInternal< ::e8::MessageChannel >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::MessageChannelOveriew* Arena::CreateMaybeMessage< ::e8::MessageChannelOveriew >(Arena* arena) {
-  return Arena::CreateInternal< ::e8::MessageChannelOveriew >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::e8::MessageChannelOverview* Arena::CreateMaybeMessage< ::e8::MessageChannelOverview >(Arena* arena) {
+  return Arena::CreateInternal< ::e8::MessageChannelOverview >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

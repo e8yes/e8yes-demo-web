@@ -37,7 +37,7 @@ class EditMessageChannelForm {
 )
 class MessageChannelEditorComponent {
   @Input()
-  MessageChannelOveriew messageChannel;
+  MessageChannelOverview messageChannel;
 
   StreamController<bool> editCompletionTriggerStreamController =
       StreamController<bool>();

@@ -236,7 +236,7 @@ bool ToMessageChannelOverviewsTest() {
                                   /*contains_member_ids=*/{}, /*active_member_fetch_limit=*/10,
                                   std::nullopt, env.DemowebDatabase());
 
-    std::vector<e8::MessageChannelOveriew> overviews = e8::ToMessageChannelOverviews(
+    std::vector<e8::MessageChannelOverview> overviews = e8::ToMessageChannelOverviews(
         kCreatorId, retrieved_channels, env.KeyGen(), env.DemowebDatabase());
 
     TEST_CONDITION(overviews.size() == 1);

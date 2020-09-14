@@ -83,7 +83,7 @@ grpc::Status MessageChannelServiceImpl::GetJoinedInMessageChannels(
         identity->user_id(), contains_member_ids, request->active_member_fetch_limit(), pagination,
         DemoWebEnvironment()->DemowebDatabase());
 
-    std::vector<MessageChannelOveriew> results =
+    std::vector<MessageChannelOverview> results =
         ToMessageChannelOverviews(identity->user_id(), channels, DemoWebEnvironment()->KeyGen(),
                                   DemoWebEnvironment()->DemowebDatabase());
     *response->mutable_channels() = {results.begin(), results.end()};

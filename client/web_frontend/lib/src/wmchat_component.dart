@@ -25,7 +25,7 @@ import 'package:fixnum/fixnum.dart';
 class WMComponent implements OnActivate {
   Int64 targetMemberId = null;
 
-  MessageChannelOveriew currentMessageChannel;
+  MessageChannelOverview currentMessageChannel;
 
   WMComponent();
 
@@ -42,7 +42,7 @@ class WMComponent implements OnActivate {
   }
 
   void onCurrentMessageChannelChange(
-      MessageChannelOveriew currentMessageChannel) {
+      MessageChannelOverview currentMessageChannel) {
     this.currentMessageChannel = currentMessageChannel;
   }
 }

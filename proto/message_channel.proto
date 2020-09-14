@@ -42,7 +42,7 @@ message MessageChannel {
     int64 created_at = 6;
 }
 
-message MessageChannelOveriew {
+message MessageChannelOverview {
     MessageChannel channel = 1;
     int64 channel_last_interacted_at = 2;
     MessageChannelRelation channel_relation = 3;

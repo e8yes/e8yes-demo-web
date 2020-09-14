@@ -446,7 +446,7 @@ class GetJoinedInMessageChannelsRequest extends $pb.GeneratedMessage {
 
 class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetJoinedInMessageChannelsResponse', package: const $pb.PackageName('e8'), createEmptyInstance: create)
-    ..pc<$21.MessageChannelOveriew>(1, 'channels', $pb.PbFieldType.PM, subBuilder: $21.MessageChannelOveriew.create)
+    ..pc<$21.MessageChannelOverview>(1, 'channels', $pb.PbFieldType.PM, subBuilder: $21.MessageChannelOverview.create)
     ..hasRequiredFields = false
   ;
 
@@ -466,7 +466,7 @@ class GetJoinedInMessageChannelsResponse extends $pb.GeneratedMessage {
   static GetJoinedInMessageChannelsResponse _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$21.MessageChannelOveriew> get channels => $_getList(0);
+  $core.List<$21.MessageChannelOverview> get channels => $_getList(0);
 }
 
 class GetMessageChannelMembersRequest extends $pb.GeneratedMessage {

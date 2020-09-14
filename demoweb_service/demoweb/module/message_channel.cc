@@ -263,7 +263,7 @@ SearchMessageChannels(UserId const viewer_id, std::unordered_set<UserId> const &
     return results;
 }
 
-std::vector<MessageChannelOveriew>
+std::vector<MessageChannelOverview>
 ToMessageChannelOverviews(UserId const viewer_id,
                           std::vector<SearchedMessageChannel> const &searched_message_channels,
                           KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
@@ -289,9 +289,9 @@ ToMessageChannelOverviews(UserId const viewer_id,
     }
 
     // Compose the overiew.
-    std::vector<MessageChannelOveriew> result(searched_message_channels.size());
+    std::vector<MessageChannelOverview> result(searched_message_channels.size());
     for (unsigned i = 0; i < searched_message_channels.size(); ++i) {
-        MessageChannelOveriew overview;
+        MessageChannelOverview overview;
         *overview.mutable_channel() = GetMessageChannel(searched_message_channels[i]);
         *overview.mutable_channel_relation() =
             GetMessageChannelRelation(searched_message_channels[i]);

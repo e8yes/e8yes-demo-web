@@ -52,9 +52,9 @@ namespace e8 {
 class MessageChannel;
 class MessageChannelDefaultTypeInternal;
 extern MessageChannelDefaultTypeInternal _MessageChannel_default_instance_;
-class MessageChannelOveriew;
-class MessageChannelOveriewDefaultTypeInternal;
-extern MessageChannelOveriewDefaultTypeInternal _MessageChannelOveriew_default_instance_;
+class MessageChannelOverview;
+class MessageChannelOverviewDefaultTypeInternal;
+extern MessageChannelOverviewDefaultTypeInternal _MessageChannelOverview_default_instance_;
 class MessageChannelRelation;
 class MessageChannelRelationDefaultTypeInternal;
 extern MessageChannelRelationDefaultTypeInternal _MessageChannelRelation_default_instance_;
@@ -62,7 +62,7 @@ extern MessageChannelRelationDefaultTypeInternal _MessageChannelRelation_default
 namespace google {
 namespace protobuf {
 template<> ::e8::MessageChannel* Arena::CreateMaybeMessage<::e8::MessageChannel>(Arena*);
-template<> ::e8::MessageChannelOveriew* Arena::CreateMaybeMessage<::e8::MessageChannelOveriew>(Arena*);
+template<> ::e8::MessageChannelOverview* Arena::CreateMaybeMessage<::e8::MessageChannelOverview>(Arena*);
 template<> ::e8::MessageChannelRelation* Arena::CreateMaybeMessage<::e8::MessageChannelRelation>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -368,24 +368,24 @@ class MessageChannel : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
-class MessageChannelOveriew : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.MessageChannelOveriew) */ {
+class MessageChannelOverview : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:e8.MessageChannelOverview) */ {
  public:
-  MessageChannelOveriew();
-  virtual ~MessageChannelOveriew();
+  MessageChannelOverview();
+  virtual ~MessageChannelOverview();
 
-  MessageChannelOveriew(const MessageChannelOveriew& from);
+  MessageChannelOverview(const MessageChannelOverview& from);
 
-  inline MessageChannelOveriew& operator=(const MessageChannelOveriew& from) {
+  inline MessageChannelOverview& operator=(const MessageChannelOverview& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  MessageChannelOveriew(MessageChannelOveriew&& from) noexcept
-    : MessageChannelOveriew() {
+  MessageChannelOverview(MessageChannelOverview&& from) noexcept
+    : MessageChannelOverview() {
     *this = ::std::move(from);
   }
 
-  inline MessageChannelOveriew& operator=(MessageChannelOveriew&& from) noexcept {
+  inline MessageChannelOverview& operator=(MessageChannelOverview&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -395,34 +395,34 @@ class MessageChannelOveriew : public ::google::protobuf::Message /* @@protoc_ins
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const MessageChannelOveriew& default_instance();
+  static const MessageChannelOverview& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const MessageChannelOveriew* internal_default_instance() {
-    return reinterpret_cast<const MessageChannelOveriew*>(
-               &_MessageChannelOveriew_default_instance_);
+  static inline const MessageChannelOverview* internal_default_instance() {
+    return reinterpret_cast<const MessageChannelOverview*>(
+               &_MessageChannelOverview_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     2;
 
-  void Swap(MessageChannelOveriew* other);
-  friend void swap(MessageChannelOveriew& a, MessageChannelOveriew& b) {
+  void Swap(MessageChannelOverview* other);
+  friend void swap(MessageChannelOverview& a, MessageChannelOverview& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline MessageChannelOveriew* New() const final {
-    return CreateMaybeMessage<MessageChannelOveriew>(NULL);
+  inline MessageChannelOverview* New() const final {
+    return CreateMaybeMessage<MessageChannelOverview>(NULL);
   }
 
-  MessageChannelOveriew* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<MessageChannelOveriew>(arena);
+  MessageChannelOverview* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<MessageChannelOverview>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const MessageChannelOveriew& from);
-  void MergeFrom(const MessageChannelOveriew& from);
+  void CopyFrom(const MessageChannelOverview& from);
+  void MergeFrom(const MessageChannelOverview& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -439,7 +439,7 @@ class MessageChannelOveriew : public ::google::protobuf::Message /* @@protoc_ins
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(MessageChannelOveriew* other);
+  void InternalSwap(MessageChannelOverview* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -497,7 +497,7 @@ class MessageChannelOveriew : public ::google::protobuf::Message /* @@protoc_ins
   ::google::protobuf::int64 channel_last_interacted_at() const;
   void set_channel_last_interacted_at(::google::protobuf::int64 value);
 
-  // @@protoc_insertion_point(class_scope:e8.MessageChannelOveriew)
+  // @@protoc_insertion_point(class_scope:e8.MessageChannelOverview)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -783,44 +783,44 @@ inline void MessageChannel::set_created_at(::google::protobuf::int64 value) {
 
 // -------------------------------------------------------------------
 
-// MessageChannelOveriew
+// MessageChannelOverview
 
 // .e8.MessageChannel channel = 1;
-inline bool MessageChannelOveriew::has_channel() const {
+inline bool MessageChannelOverview::has_channel() const {
   return this != internal_default_instance() && channel_ != NULL;
 }
-inline void MessageChannelOveriew::clear_channel() {
+inline void MessageChannelOverview::clear_channel() {
   if (GetArenaNoVirtual() == NULL && channel_ != NULL) {
     delete channel_;
   }
   channel_ = NULL;
 }
-inline const ::e8::MessageChannel& MessageChannelOveriew::_internal_channel() const {
+inline const ::e8::MessageChannel& MessageChannelOverview::_internal_channel() const {
   return *channel_;
 }
-inline const ::e8::MessageChannel& MessageChannelOveriew::channel() const {
+inline const ::e8::MessageChannel& MessageChannelOverview::channel() const {
   const ::e8::MessageChannel* p = channel_;
-  // @@protoc_insertion_point(field_get:e8.MessageChannelOveriew.channel)
+  // @@protoc_insertion_point(field_get:e8.MessageChannelOverview.channel)
   return p != NULL ? *p : *reinterpret_cast<const ::e8::MessageChannel*>(
       &::e8::_MessageChannel_default_instance_);
 }
-inline ::e8::MessageChannel* MessageChannelOveriew::release_channel() {
-  // @@protoc_insertion_point(field_release:e8.MessageChannelOveriew.channel)
+inline ::e8::MessageChannel* MessageChannelOverview::release_channel() {
+  // @@protoc_insertion_point(field_release:e8.MessageChannelOverview.channel)
   
   ::e8::MessageChannel* temp = channel_;
   channel_ = NULL;
   return temp;
 }
-inline ::e8::MessageChannel* MessageChannelOveriew::mutable_channel() {
+inline ::e8::MessageChannel* MessageChannelOverview::mutable_channel() {
   
   if (channel_ == NULL) {
     auto* p = CreateMaybeMessage<::e8::MessageChannel>(GetArenaNoVirtual());
     channel_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOveriew.channel)
+  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOverview.channel)
   return channel_;
 }
-inline void MessageChannelOveriew::set_allocated_channel(::e8::MessageChannel* channel) {
+inline void MessageChannelOverview::set_allocated_channel(::e8::MessageChannel* channel) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete channel_;
@@ -836,59 +836,59 @@ inline void MessageChannelOveriew::set_allocated_channel(::e8::MessageChannel* c
     
   }
   channel_ = channel;
-  // @@protoc_insertion_point(field_set_allocated:e8.MessageChannelOveriew.channel)
+  // @@protoc_insertion_point(field_set_allocated:e8.MessageChannelOverview.channel)
 }
 
 // int64 channel_last_interacted_at = 2;
-inline void MessageChannelOveriew::clear_channel_last_interacted_at() {
+inline void MessageChannelOverview::clear_channel_last_interacted_at() {
   channel_last_interacted_at_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 MessageChannelOveriew::channel_last_interacted_at() const {
-  // @@protoc_insertion_point(field_get:e8.MessageChannelOveriew.channel_last_interacted_at)
+inline ::google::protobuf::int64 MessageChannelOverview::channel_last_interacted_at() const {
+  // @@protoc_insertion_point(field_get:e8.MessageChannelOverview.channel_last_interacted_at)
   return channel_last_interacted_at_;
 }
-inline void MessageChannelOveriew::set_channel_last_interacted_at(::google::protobuf::int64 value) {
+inline void MessageChannelOverview::set_channel_last_interacted_at(::google::protobuf::int64 value) {
   
   channel_last_interacted_at_ = value;
-  // @@protoc_insertion_point(field_set:e8.MessageChannelOveriew.channel_last_interacted_at)
+  // @@protoc_insertion_point(field_set:e8.MessageChannelOverview.channel_last_interacted_at)
 }
 
 // .e8.MessageChannelRelation channel_relation = 3;
-inline bool MessageChannelOveriew::has_channel_relation() const {
+inline bool MessageChannelOverview::has_channel_relation() const {
   return this != internal_default_instance() && channel_relation_ != NULL;
 }
-inline void MessageChannelOveriew::clear_channel_relation() {
+inline void MessageChannelOverview::clear_channel_relation() {
   if (GetArenaNoVirtual() == NULL && channel_relation_ != NULL) {
     delete channel_relation_;
   }
   channel_relation_ = NULL;
 }
-inline const ::e8::MessageChannelRelation& MessageChannelOveriew::_internal_channel_relation() const {
+inline const ::e8::MessageChannelRelation& MessageChannelOverview::_internal_channel_relation() const {
   return *channel_relation_;
 }
-inline const ::e8::MessageChannelRelation& MessageChannelOveriew::channel_relation() const {
+inline const ::e8::MessageChannelRelation& MessageChannelOverview::channel_relation() const {
   const ::e8::MessageChannelRelation* p = channel_relation_;
-  // @@protoc_insertion_point(field_get:e8.MessageChannelOveriew.channel_relation)
+  // @@protoc_insertion_point(field_get:e8.MessageChannelOverview.channel_relation)
   return p != NULL ? *p : *reinterpret_cast<const ::e8::MessageChannelRelation*>(
       &::e8::_MessageChannelRelation_default_instance_);
 }
-inline ::e8::MessageChannelRelation* MessageChannelOveriew::release_channel_relation() {
-  // @@protoc_insertion_point(field_release:e8.MessageChannelOveriew.channel_relation)
+inline ::e8::MessageChannelRelation* MessageChannelOverview::release_channel_relation() {
+  // @@protoc_insertion_point(field_release:e8.MessageChannelOverview.channel_relation)
   
   ::e8::MessageChannelRelation* temp = channel_relation_;
   channel_relation_ = NULL;
   return temp;
 }
-inline ::e8::MessageChannelRelation* MessageChannelOveriew::mutable_channel_relation() {
+inline ::e8::MessageChannelRelation* MessageChannelOverview::mutable_channel_relation() {
   
   if (channel_relation_ == NULL) {
     auto* p = CreateMaybeMessage<::e8::MessageChannelRelation>(GetArenaNoVirtual());
     channel_relation_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOveriew.channel_relation)
+  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOverview.channel_relation)
   return channel_relation_;
 }
-inline void MessageChannelOveriew::set_allocated_channel_relation(::e8::MessageChannelRelation* channel_relation) {
+inline void MessageChannelOverview::set_allocated_channel_relation(::e8::MessageChannelRelation* channel_relation) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete channel_relation_;
@@ -904,33 +904,33 @@ inline void MessageChannelOveriew::set_allocated_channel_relation(::e8::MessageC
     
   }
   channel_relation_ = channel_relation;
-  // @@protoc_insertion_point(field_set_allocated:e8.MessageChannelOveriew.channel_relation)
+  // @@protoc_insertion_point(field_set_allocated:e8.MessageChannelOverview.channel_relation)
 }
 
 // repeated .e8.UserPublicProfile most_active_users = 4;
-inline int MessageChannelOveriew::most_active_users_size() const {
+inline int MessageChannelOverview::most_active_users_size() const {
   return most_active_users_.size();
 }
-inline ::e8::UserPublicProfile* MessageChannelOveriew::mutable_most_active_users(int index) {
-  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOveriew.most_active_users)
+inline ::e8::UserPublicProfile* MessageChannelOverview::mutable_most_active_users(int index) {
+  // @@protoc_insertion_point(field_mutable:e8.MessageChannelOverview.most_active_users)
   return most_active_users_.Mutable(index);
 }
 inline ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >*
-MessageChannelOveriew::mutable_most_active_users() {
-  // @@protoc_insertion_point(field_mutable_list:e8.MessageChannelOveriew.most_active_users)
+MessageChannelOverview::mutable_most_active_users() {
+  // @@protoc_insertion_point(field_mutable_list:e8.MessageChannelOverview.most_active_users)
   return &most_active_users_;
 }
-inline const ::e8::UserPublicProfile& MessageChannelOveriew::most_active_users(int index) const {
-  // @@protoc_insertion_point(field_get:e8.MessageChannelOveriew.most_active_users)
+inline const ::e8::UserPublicProfile& MessageChannelOverview::most_active_users(int index) const {
+  // @@protoc_insertion_point(field_get:e8.MessageChannelOverview.most_active_users)
   return most_active_users_.Get(index);
 }
-inline ::e8::UserPublicProfile* MessageChannelOveriew::add_most_active_users() {
-  // @@protoc_insertion_point(field_add:e8.MessageChannelOveriew.most_active_users)
+inline ::e8::UserPublicProfile* MessageChannelOverview::add_most_active_users() {
+  // @@protoc_insertion_point(field_add:e8.MessageChannelOverview.most_active_users)
   return most_active_users_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::e8::UserPublicProfile >&
-MessageChannelOveriew::most_active_users() const {
-  // @@protoc_insertion_point(field_list:e8.MessageChannelOveriew.most_active_users)
+MessageChannelOverview::most_active_users() const {
+  // @@protoc_insertion_point(field_list:e8.MessageChannelOverview.most_active_users)
   return most_active_users_;
 }
 

@@ -14,7 +14,7 @@ import 'package:fixnum/fixnum.dart';
 )
 class MessageChannelOverviewComponent {
   @Input()
-  MessageChannelOveriew messageChannel;
+  MessageChannelOverview messageChannel;
 
   @Input()
   bool showDates = true;

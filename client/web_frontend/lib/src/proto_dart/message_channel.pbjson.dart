@@ -34,8 +34,8 @@ const MessageChannel$json = const {
   ],
 };
 
-const MessageChannelOveriew$json = const {
-  '1': 'MessageChannelOveriew',
+const MessageChannelOverview$json = const {
+  '1': 'MessageChannelOverview',
   '2': const [
     const {'1': 'channel', '3': 1, '4': 1, '5': 11, '6': '.e8.MessageChannel', '10': 'channel'},
     const {'1': 'channel_last_interacted_at', '3': 2, '4': 1, '5': 3, '10': 'channelLastInteractedAt'},
