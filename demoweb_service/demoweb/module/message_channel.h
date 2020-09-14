@@ -64,14 +64,15 @@ struct SearchedMessageChannel {
  *
  * @param contains_member_ids A filter to required that a returning message channel must have all of
  * the specified members.
+ * @param any_channel_ids A filter to required that a returning message channel must have a channel
+ * ID in this set. If this set is empty, then this parameter is ignored.
  * @param active_member_fetch_limit Maximum number of active member user IDs to be fetched for each
  * message channel.
  */
-std::vector<SearchedMessageChannel>
-SearchMessageChannels(UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
-                      unsigned active_member_fetch_limit,
-                      std::optional<Pagination> const &pagination,
-                      ConnectionReservoirInterface *conns);
+std::vector<SearchedMessageChannel> SearchMessageChannels(
+    UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
+    std::unordered_set<MessagechannelId> const &any_channel_ids, unsigned active_member_fetch_limit,
+    std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns);
 
 /**
  * @brief ToMessageChannelOverviews Converts message channel entities with user joining information

@@ -67,6 +67,7 @@ bool CreateAndListMessageChannelTest() {
     page1.set_result_per_page(2);
     std::vector<e8::SearchedMessageChannel> retrieved_channels =
         e8::SearchMessageChannels(kCreatorId, /*contains_member_ids=*/{},
+                                  /*any_channel_ids=*/{},
                                   /*active_member_fetch_limit=*/0, page1, env.DemowebDatabase());
 
     TEST_CONDITION(retrieved_channels.size() == 1);
@@ -96,10 +97,10 @@ bool ListMessageChannelWithMemberIdsTest() {
                                     *user->id.Value(), e8::MCMT_ADMIN, env.DemowebDatabase());
     TEST_CONDITION(rc == true);
 
-    std::vector<e8::SearchedMessageChannel> retrieved_channels =
-        e8::SearchMessageChannels(kCreatorId,
-                                  /*contains_member_ids=*/{}, /*active_member_fetch_limit=*/10,
-                                  std::nullopt, env.DemowebDatabase());
+    std::vector<e8::SearchedMessageChannel> retrieved_channels = e8::SearchMessageChannels(
+        kCreatorId,
+        /*contains_member_ids=*/{}, /*any_channel_ids=*/{}, /*active_member_fetch_limit=*/10,
+        std::nullopt, env.DemowebDatabase());
     TEST_CONDITION(retrieved_channels.size() == 1);
     TEST_CONDITION(retrieved_channels[0].most_active_members.size() == 2);
     TEST_CONDITION(std::find_if(retrieved_channels[0].most_active_members.begin(),
@@ -113,9 +114,9 @@ bool ListMessageChannelWithMemberIdsTest() {
                                     return *member.user_id.Value() == 2L;
                                 }) != retrieved_channels[0].most_active_members.end());
 
-    retrieved_channels = e8::SearchMessageChannels(kCreatorId, /*contains_member_ids=*/{},
-                                                   /*active_member_fetch_limit=*/1, std::nullopt,
-                                                   env.DemowebDatabase());
+    retrieved_channels = e8::SearchMessageChannels(
+        kCreatorId, /*contains_member_ids=*/{}, /*any_channel_ids=*/{},
+        /*active_member_fetch_limit=*/1, std::nullopt, env.DemowebDatabase());
     TEST_CONDITION(retrieved_channels.size() == 1);
     TEST_CONDITION(retrieved_channels[0].most_active_members.size() == 1);
 
@@ -132,17 +133,44 @@ bool ListMessageChannelMemberFilterTest() {
     page1.set_result_per_page(2);
     std::vector<e8::SearchedMessageChannel> retrieved_channel =
         e8::SearchMessageChannels(kCreatorId,
-                                  /*contains_member_ids=*/{},
+                                  /*contains_member_ids=*/{}, /*any_channel_ids=*/{},
                                   /*active_member_fetch_limit=*/0, page1, env.DemowebDatabase());
 
     TEST_CONDITION(retrieved_channel.size() == 1);
     TEST_CONDITION(*retrieved_channel[0].message_channel.id.Value() ==
                    *channel_info.message_channel.id.Value());
 
-    retrieved_channel =
-        e8::SearchMessageChannels(kCreatorId,
-                                  /*contains_member_ids=*/{kCreatorId, -1000L},
-                                  /*active_member_fetch_limit=*/0, page1, env.DemowebDatabase());
+    retrieved_channel = e8::SearchMessageChannels(
+        kCreatorId,
+        /*contains_member_ids=*/{kCreatorId, -1000L}, /*any_channel_ids=*/{},
+        /*active_member_fetch_limit=*/0, page1, env.DemowebDatabase());
+    TEST_CONDITION(retrieved_channel.empty());
+
+    return true;
+}
+
+bool ListMessageChannelIdFilterTest() {
+    e8::DemoWebTestEnvironmentContext env;
+
+    CreateNewChannelInfo channel1 = CreateNewChannel(&env);
+    CreateNewChannelInfo channel2 = CreateNewChannel(&env);
+
+    e8::Pagination page1;
+    page1.set_page_number(0);
+    page1.set_result_per_page(2);
+    std::vector<e8::SearchedMessageChannel> retrieved_channel = e8::SearchMessageChannels(
+        kCreatorId,
+        /*contains_member_ids=*/{}, /*any_channel_ids=*/{*channel1.message_channel.id.Value()},
+        /*active_member_fetch_limit=*/0, page1, env.DemowebDatabase());
+
+    TEST_CONDITION(retrieved_channel.size() == 1);
+    TEST_CONDITION(*retrieved_channel[0].message_channel.id.Value() ==
+                   *channel1.message_channel.id.Value());
+
+    retrieved_channel = e8::SearchMessageChannels(
+        kCreatorId,
+        /*contains_member_ids=*/{kCreatorId, -1000L}, /*any_channel_ids=*/{},
+        /*active_member_fetch_limit=*/0, page1, env.DemowebDatabase());
     TEST_CONDITION(retrieved_channel.empty());
 
     return true;
@@ -231,10 +259,10 @@ bool ToMessageChannelOverviewsTest() {
 
     CreateNewChannelInfo channel_info = CreateNewChannel(&env);
 
-    std::vector<e8::SearchedMessageChannel> retrieved_channels =
-        e8::SearchMessageChannels(kCreatorId,
-                                  /*contains_member_ids=*/{}, /*active_member_fetch_limit=*/10,
-                                  std::nullopt, env.DemowebDatabase());
+    std::vector<e8::SearchedMessageChannel> retrieved_channels = e8::SearchMessageChannels(
+        kCreatorId,
+        /*contains_member_ids=*/{}, /*any_channel_ids=*/{}, /*active_member_fetch_limit=*/10,
+        std::nullopt, env.DemowebDatabase());
 
     std::vector<e8::MessageChannelOverview> overviews = e8::ToMessageChannelOverviews(
         kCreatorId, retrieved_channels, env.KeyGen(), env.DemowebDatabase());
@@ -253,6 +281,7 @@ int main() {
     e8::BeginTestSuite("message_channel");
     e8::RunTest("CreateAndListMessageChannelTest", CreateAndListMessageChannelTest);
     e8::RunTest("ListMessageChannelMemberFilterTest", ListMessageChannelMemberFilterTest);
+    e8::RunTest("ListMessageChannelIdFilterTest", ListMessageChannelIdFilterTest);
     e8::RunTest("ListMessageChannelWithMemberIdsTest", ListMessageChannelWithMemberIdsTest);
     e8::RunTest("CreateAndListChannelMemberTest", CreateAndListChannelMemberTest);
     e8::RunTest("AddUserToMessageChannelTest", AddUserToMessageChannelTest);

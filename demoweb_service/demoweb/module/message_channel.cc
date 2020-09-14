@@ -33,8 +33,8 @@
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
-#include "demoweb_service/demoweb/module/user_storage.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
+#include "demoweb_service/demoweb/module/user_storage.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
@@ -177,11 +177,10 @@ std::optional<MessageChannelEntity> CreateMessageChannel(
     return message_channel;
 }
 
-std::vector<SearchedMessageChannel>
-SearchMessageChannels(UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
-                      unsigned active_member_fetch_limit,
-                      std::optional<Pagination> const &pagination,
-                      ConnectionReservoirInterface *conns) {
+std::vector<SearchedMessageChannel> SearchMessageChannels(
+    UserId const viewer_id, std::unordered_set<UserId> const &contains_member_ids,
+    std::unordered_set<MessagechannelId> const &any_channel_ids, unsigned active_member_fetch_limit,
+    std::optional<Pagination> const &pagination, ConnectionReservoirInterface *conns) {
     // Build a list of required members each searched channel must contain.
     std::vector<UserId> must_have_user_ids{contains_member_ids.begin(), contains_member_ids.end()};
     if (contains_member_ids.find(viewer_id) == contains_member_ids.end()) {
@@ -202,8 +201,19 @@ SearchMessageChannels(UserId const viewer_id, std::unordered_set<UserId> const &
         .QueryPiece(" WHERE")
         .QueryPiece(" required_member.user_id=ANY(")
         .Holder(&contains_member_ids_ph)
-        .QueryPiece(")")
-        .QueryPiece(" GROUP BY mc.id HAVING COUNT(required_member.user_id)=")
+        .QueryPiece(")");
+
+    if (!any_channel_ids.empty()) {
+        SqlQueryBuilder::Placeholder<SqlLongArr> any_channel_ids_ph;
+        message_channel_query.QueryPiece(" AND mc.id=ANY(")
+            .Holder(&any_channel_ids_ph)
+            .QueryPiece(")");
+        message_channel_query.SetValueToPlaceholder(
+            any_channel_ids_ph, std::make_shared<SqlLongArr>(std::vector<MessagechannelId>{
+                                    any_channel_ids.begin(), any_channel_ids.end()}));
+    }
+
+    message_channel_query.QueryPiece(" GROUP BY mc.id HAVING COUNT(required_member.user_id)=")
         .Holder(&must_have_user_count_ph)
         .QueryPiece(") AS qualified_channel")
         .QueryPiece(" JOIN ")
