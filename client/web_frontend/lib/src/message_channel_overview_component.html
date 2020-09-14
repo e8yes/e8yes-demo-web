@@ -33,15 +33,19 @@
 
 <br>
 
-<label>
-    Last interacted at 
-    {{
-        dateToString(messageChannel.channelLastInteractedAt)
-    }}
-</label>
-
-<br>
-
-<label>
-    Created at {{dateToString(messageChannel.channel.createdAt)}}
-</label>
+<div *ngIf="showDates">
+    <div>
+        <label>
+            Last interacted at 
+            {{
+                dateToString(messageChannel.channelLastInteractedAt)
+            }}
+        </label>
+    </div>
+    
+    <div>
+        <label>
+            Created at {{dateToString(messageChannel.channel.createdAt)}}
+        </label>
+    </div>
+</div>

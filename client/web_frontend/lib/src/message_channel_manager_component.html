@@ -35,7 +35,9 @@
         <li *ngFor="let overview of structuralControl.messageChannelOverviews"
             (click)="onClickMessageChannel(overview)"
             class="list-group-item">
-            <message-channel-overview [messageChannel]="overview">
+            <message-channel-overview 
+                [messageChannel]="overview"
+                [showDates]="true">
             </message-channel-overview>
         </li>
     </ul>

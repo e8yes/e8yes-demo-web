@@ -16,6 +16,9 @@ class MessageChannelOverviewComponent {
   @Input()
   MessageChannelOveriew messageChannel;
 
+  @Input()
+  bool showDates = true;
+
   String dateToString(Int64 timestamp) {
     return DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000)
         .toLocal()
