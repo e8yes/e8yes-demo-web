@@ -19,6 +19,7 @@
 #include <memory>
 #include <optional>
 
+#include "distributor/distributor/grpc_stub.h"
 #include "distributor/mutation_propagator/propagator.h"
 #include "node_state/module/grpc_propagator.h"
 #include "proto_cc/node.pb.h"
