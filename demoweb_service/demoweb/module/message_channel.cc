@@ -403,4 +403,21 @@ bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessageChan
     return true;
 }
 
+bool UserInMessageChannel(UserId const user_id, MessageChannelId const channel_id,
+                          ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
+    SqlQueryBuilder::Placeholder<SqlLong> member_id_ph;
+    query.QueryPiece(TableNames::MessageChannelHasUser())
+        .QueryPiece(" member WHERE member.channel_id=")
+        .Holder(&channel_id_ph)
+        .QueryPiece(" AND member.user_id=")
+        .Holder(&member_id_ph);
+
+    query.SetValueToPlaceholder(channel_id_ph, std::make_shared<SqlLong>(channel_id));
+    query.SetValueToPlaceholder(member_id_ph, std::make_shared<SqlLong>(user_id));
+
+    return Exists(query, conns);
+}
+
 } // namespace e8

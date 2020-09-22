@@ -115,6 +115,13 @@ bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessageChan
                              UserId const user_id, MessageChannelMemberType const member_type,
                              ConnectionReservoirInterface *conns);
 
+/**
+ * @brief UserInMessageChannel Check if a user specified by the user_id is a member of the message
+ * channel specified by the channel_id.
+ */
+bool UserInMessageChannel(UserId const user_id, MessageChannelId const channel_id,
+                          ConnectionReservoirInterface *conns);
+
 } // namespace e8
 
 #endif // MESSAGE_CHANNEL_H

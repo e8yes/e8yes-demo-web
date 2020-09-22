@@ -317,6 +317,22 @@ bool ToMessageChannelOverviewsTest() {
     return true;
 }
 
+bool MessageChannelMembershipTest() {
+    e8::DemoWebTestEnvironmentContext env;
+
+    CreateNewChannelInfo channel_info = CreateChannel1(&env);
+
+    bool should_exist = e8::UserInMessageChannel(
+        kCreatorId, *channel_info.message_channel.id.Value(), env.DemowebDatabase());
+    TEST_CONDITION(should_exist);
+
+    bool should_not_exist = !e8::UserInMessageChannel(
+        /*user_id*/ 123456L, *channel_info.message_channel.id.Value(), env.DemowebDatabase());
+    TEST_CONDITION(should_not_exist);
+
+    return true;
+}
+
 int main() {
     e8::BeginTestSuite("message_channel");
     e8::RunTest("CreateAndListMessageChannelTest", CreateAndListMessageChannelTest);
@@ -329,6 +345,7 @@ int main() {
     e8::RunTest("AddUserToMessageChannelInsufficientPrivilegeTest",
                 AddUserToMessageChannelInsufficientPrivilegeTest);
     e8::RunTest("ToMessageChannelOverviewsTest", ToMessageChannelOverviewsTest);
+    e8::RunTest("MessageChannelMembershipTest", MessageChannelMembershipTest);
     e8::EndTestSuite();
     return 0;
 }
