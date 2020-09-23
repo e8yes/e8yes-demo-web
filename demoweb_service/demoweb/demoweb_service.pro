@@ -18,6 +18,8 @@ HEADERS += \
     common_entity/file_metadata_entity.h \
     common_entity/message_channel_entity.h \
     common_entity/message_channel_has_user_entity.h \
+    common_entity/message_entity.h \
+    common_entity/message_group_entity.h \
     common_entity/user_entity.h \
     common_entity/user_group_entity.h \
     common_entity/user_group_has_file_entity.h \
@@ -29,6 +31,8 @@ HEADERS += \
     environment/prod_environment_context.h \
     environment/test_environment_context.h \
     module/baseline_user.h \
+    module/chat_message.h \
+    module/chat_message_group.h \
     module/contact_invitation.h \
     module/contact_storage.h \
     module/file_access_validator.h \
@@ -42,6 +46,9 @@ HEADERS += \
     module/user_identity.h \
     module/user_profile.h \
     module/user_storage.h \
+    pbac/message_channel_attributes.h \
+    pbac/message_channel_member_attributes.h \
+    pbac/message_channel_pbac.h \
     service/file_service.h \
     service/message_channel_service.h \
     service/service_util.h \
@@ -53,6 +60,8 @@ SOURCES += \
     common_entity/file_metadata_entity.cc \
     common_entity/message_channel_entity.cc \
     common_entity/message_channel_has_user_entity.cc \
+    common_entity/message_entity.cc \
+    common_entity/message_group_entity.cc \
     common_entity/user_entity.cc \
     common_entity/user_group_entity.cc \
     common_entity/user_group_has_file_entity.cc \
@@ -61,6 +70,8 @@ SOURCES += \
     environment/prod_environment_context.cc \
     environment/test_environment_context.cc \
     module/baseline_user.cc \
+    module/chat_message.cc \
+    module/chat_message_group.cc \
     module/contact_invitation.cc \
     module/contact_storage.cc \
     module/file_access_validator.cc \
@@ -73,6 +84,9 @@ SOURCES += \
     module/user_identity.cc \
     module/user_profile.cc \
     module/user_storage.cc \
+    pbac/message_channel_attributes.cc \
+    pbac/message_channel_member_attributes.cc \
+    pbac/message_channel_pbac.cc \
     service/file_service.cc \
     service/message_channel_service.cc \
     service/service_util.cc \
