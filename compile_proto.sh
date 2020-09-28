@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir -p proto_cc
+mkdir -p client/web_frontend/lib/src/proto_dart
+
 protoc --cpp_out=./proto_cc \
        --grpc_out=./proto_cc \
        --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` \
