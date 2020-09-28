@@ -20,6 +20,9 @@ hs_err_pid*
 build-*/
 build/*
 
+# Generated files
+proto_cc/*
+
 # Exclude the boostrap script.
 !build/*.sh
 
