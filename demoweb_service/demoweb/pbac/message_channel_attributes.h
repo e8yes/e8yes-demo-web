@@ -18,20 +18,31 @@
 #ifndef MESSAGE_CHANNEL_ATTRIBUTES_H
 #define MESSAGE_CHANNEL_ATTRIBUTES_H
 
+#include <optional>
+
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "postgres/query_runner/reflection/sql_entity_interface.h"
+#include "postgres/query_runner/reflection/sql_primitives.h"
 
 namespace e8 {
 
-struct MessageChannelAttributes {
-    bool close_group_channel;
+struct MessageChannelAttributes : public SqlEntityInterface {
+    MessageChannelAttributes();
+    MessageChannelAttributes(MessageChannelAttributes const &other);
+
+    MessageChannelAttributes &operator=(MessageChannelAttributes const &rhs);
+
+    SqlBool close_group_channel = SqlBool("close_group_channel");
 };
 
 /**
- * @brief ExtractMessageChannelAttributes
- * @param channel_id
- * @return
+ * @brief ExtractMessageChannelAttributes Extract message channel's attributes needed for access
+ * control.
  */
-MessageChannelAttributes ExtractMessageChannelAttributes(MessageChannelId const channel_id);
+std::optional<MessageChannelAttributes>
+ExtractMessageChannelAttributes(MessageChannelId const channel_id,
+                                ConnectionReservoirInterface *conns);
 
 } // namespace e8
 
