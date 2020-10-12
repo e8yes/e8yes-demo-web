@@ -593,6 +593,38 @@ class SqlByteArr : public SqlPrimitiveInterface {
     std::string value_;
 };
 
+/**
+ * @brief The SqlEnum class
+ */
+template <typename EnumType> class SqlEnum : public SqlInt {
+  public:
+    explicit SqlEnum(std::string const &field_name);
+    explicit SqlEnum(SqlEnum<EnumType> const &value, std::string const &field_name);
+
+    SqlEnum(SqlEnum<EnumType> const &) = default;
+    ~SqlEnum() override;
+
+    void ExportToInvocation(pqxx::prepare::invocation *invocation) const override;
+    void ImportFromField(pqxx::field const &field) override;
+
+    SqlPrimitiveInterface &operator=(SqlPrimitiveInterface const &rhs) override;
+    bool operator==(SqlPrimitiveInterface const &rhs) const override;
+    bool operator!=(SqlPrimitiveInterface const &rhs) const override;
+    bool operator<(SqlPrimitiveInterface const &rhs) const override;
+
+    SqlEnum<EnumType> &operator=(SqlEnum<EnumType> const &rhs);
+
+    /**
+     * @brief value The internally stored C++ enum.
+     */
+    EnumType const &Value() const;
+
+    /**
+     * @brief value_ptr Mutable version of the above function.
+     */
+    EnumType *ValuePtr();
+};
+
 } // namespace e8
 
 #endif // SQL_PRIMITIVES_H
