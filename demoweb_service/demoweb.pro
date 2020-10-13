@@ -10,6 +10,7 @@ SUBDIRS = \
     _test_demoweb/_test_module/_test_file_access_validator/_test_file_access_validator.pro \
     _test_demoweb/_test_module/_test_contact_invitation/_test_contact_invitation.pro \
     _test_demoweb/_test_module/_test_contact_storage/_test_contact_storage.pro \
-    _test_demoweb/_test_module/_test_search_user/_test_search_user.pro
+    _test_demoweb/_test_module/_test_search_user/_test_search_user.pro \
+    _test_demoweb/_test_pbac/_test_message_channel_attributes/_test_message_channel_attributes.pro
 
 CONFIG += ordered

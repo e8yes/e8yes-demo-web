@@ -50,7 +50,7 @@ ExtractMessageChannelAttributes(MessageChannelId const channel_id,
     SqlQueryBuilder attribute_query;
     SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
     attribute_query.QueryPiece(TableNames::MessageChannel())
-        .QueryPiece("mc WHERE mc.id=")
+        .QueryPiece(" mc WHERE mc.id=")
         .Holder(&channel_id_ph);
 
     attribute_query.SetValueToPlaceholder(channel_id_ph, std::make_shared<SqlLong>(channel_id));
