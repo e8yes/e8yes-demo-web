@@ -65,7 +65,7 @@ bool TestExtractMessageChannelAttributes() {
     return true;
 }
 
-bool TestExtractMessageChannelAttributesNonExistingChannel() {
+bool ExtractMessageChannelAttributesNonExistingChannelTest() {
     e8::DemoWebTestEnvironmentContext env;
 
     std::optional<e8::MessageChannelAttributes> attrs = e8::ExtractMessageChannelAttributes(
@@ -79,8 +79,8 @@ bool TestExtractMessageChannelAttributesNonExistingChannel() {
 int main() {
     e8::BeginTestSuite("message_channel_attributes");
     e8::RunTest("TestExtractMessageChannelAttributes", TestExtractMessageChannelAttributes);
-    e8::RunTest("TestExtractMessageChannelAttributesNonExistingChannel",
-                TestExtractMessageChannelAttributesNonExistingChannel);
+    e8::RunTest("ExtractMessageChannelAttributesNonExistingChannelTest",
+                ExtractMessageChannelAttributesNonExistingChannelTest);
     e8::EndTestSuite();
     return 0;
 }
