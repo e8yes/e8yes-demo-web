@@ -21,7 +21,8 @@ build-*/
 build/*
 
 # Generated files
-proto_cc/*
+proto_cc/*.h
+proto_cc/*.cc
 
 # Exclude the boostrap script.
 !build/*.sh
