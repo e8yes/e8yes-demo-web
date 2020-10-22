@@ -60,7 +60,13 @@ bool MessageChannelPbacImpl::AllowUpdateChannelMetadata(UserId const operator_us
 
 bool MessageChannelPbacImpl::AllowDeleteChannel(UserId const operator_user_id,
                                                 MessageChannelId const target_channel_id) {
-    return this->AllowUpdateChannelMetadata(operator_user_id, target_channel_id);
+    std::optional<MessageChannelMemberAttributes> operator_attrs =
+        ExtractMessageChannelMemberAttributes(target_channel_id, operator_user_id, conns_);
+    if (!operator_attrs.has_value()) {
+        return false;
+    }
+
+    return operator_attrs->member_type == MCMT_ADMIN;
 }
 
 bool MessageChannelPbacImpl::AllowUpdateChannelMembership(UserId const operator_user_id,
