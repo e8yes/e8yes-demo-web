@@ -21,7 +21,7 @@
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
-#include "demoweb_service/demoweb/module/message_channel.h"
+#include "demoweb_service/demoweb/module/message_channel_storage.h"
 #include "demoweb_service/demoweb/module/user_storage.h"
 #include "demoweb_service/demoweb/pbac/message_channel_attributes.h"
 
@@ -41,10 +41,13 @@ CreateNewChannelInfo CreateChannel(e8::DemoWebTestEnvironmentContext *env) {
         env->DemowebDatabase());
 
     std::optional<e8::MessageChannelEntity> channel = e8::CreateMessageChannel(
-        kCreatorId, kChannelName, kChannelDesc, /*to_be_member_ids=*/std::vector<e8::UserId>(),
+        kChannelName, kChannelDesc,
         /*encrypted=*/false,
         /*close_group_channel=*/true, env->CurrentHostId(), env->DemowebDatabase());
     assert(channel.has_value());
+
+    e8::CreateMessageChannelMembership(*channel->id.Value(), kCreatorId, e8::MCMT_ADMIN,
+                                       env->DemowebDatabase());
 
     CreateNewChannelInfo info;
     info.creator = *user;
