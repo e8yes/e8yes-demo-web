@@ -33,6 +33,7 @@
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
+#include "demoweb_service/demoweb/module/message_channel_storage.h"
 #include "demoweb_service/demoweb/module/user_profile.h"
 #include "demoweb_service/demoweb/module/user_storage.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
@@ -151,17 +152,8 @@ std::optional<MessageChannelEntity> CreateMessageChannel(
     std::time_t current_timestamp;
     std::time(&current_timestamp);
 
-    MessageChannelEntity message_channel;
-    *message_channel.id.ValuePtr() = TimeId(host_id);
-    *message_channel.channel_name.ValuePtr() = channel_name;
-    *message_channel.description.ValuePtr() = description;
-    *message_channel.encryption_enabled.ValuePtr() = encrypted;
-    *message_channel.close_group_channel.ValuePtr() = close_group_channel;
-    *message_channel.created_at.ValuePtr() = current_timestamp;
-
-    int64_t num_rows =
-        Update(message_channel, TableNames::MessageChannel(), /*replace=*/false, conns);
-    assert(num_rows == 1);
+    MessageChannelEntity message_channel = CreateMessageChannel(
+        channel_name, description, encrypted, close_group_channel, host_id, conns);
 
     bool rc = AddUserToMessageChannel(/*viewer_id=*/std::nullopt, *message_channel.id.Value(),
                                       creator_id, MCMT_ADMIN, conns);
@@ -383,24 +375,7 @@ bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessageChan
     if (viewer_id.has_value() && !CanAdd(*viewer_id, channel_id, member_type, conns)) {
         return false;
     }
-
-    MessageChannelHasUserEntity channel_member;
-    *channel_member.channel_id.ValuePtr() = channel_id;
-    *channel_member.user_id.ValuePtr() = user_id;
-    *channel_member.ownership.ValuePtr() = member_type;
-
-    std::time_t timestamp;
-    std::time(&timestamp);
-    *channel_member.created_at.ValuePtr() = timestamp;
-    *channel_member.last_interaction_at.ValuePtr() = timestamp;
-
-    int64_t num_rows =
-        Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/false, conns);
-    if (num_rows != 1) {
-        return false;
-    }
-
-    return true;
+    return CreateMessageChannelMembership(channel_id, user_id, member_type, conns);
 }
 
 bool UserInMessageChannel(UserId const user_id, MessageChannelId const channel_id,
