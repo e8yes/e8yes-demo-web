@@ -39,10 +39,18 @@ MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &chan
                                           ConnectionReservoirInterface *conns);
 
 /**
+ * @brief CreateMessageChannelMembership Create a new membership of a message channel specified by
+ * the (channel_id, user_id) pair.
+ */
+bool CreateMessageChannelMembership(MessageChannelId const channel_id, UserId const user_id,
+                                    MessageChannelMemberType const member_type,
+                                    ConnectionReservoirInterface *conns);
+
+/**
  * @brief UpdateMessageChannelMembership Update a membership of a message channel specified by the
  * (channel_id, user_id) pair.
  */
-void UpdateMessageChannelMembership(MessageChannelId channel_id, UserId const user_id,
+void UpdateMessageChannelMembership(MessageChannelId const channel_id, UserId const user_id,
                                     MessageChannelMemberType const member_type,
                                     ConnectionReservoirInterface *conns);
 

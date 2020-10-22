@@ -16,6 +16,8 @@
  */
 
 #include <cassert>
+#include <cstdint>
+#include <ctime>
 #include <optional>
 #include <string>
 
@@ -29,6 +31,25 @@
 #include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
+namespace {
+
+MessageChannelHasUserEntity MessageChannelMembership(MessageChannelId channel_id,
+                                                     UserId const user_id,
+                                                     MessageChannelMemberType const member_type) {
+    MessageChannelHasUserEntity channel_member;
+    *channel_member.channel_id.ValuePtr() = channel_id;
+    *channel_member.user_id.ValuePtr() = user_id;
+    *channel_member.ownership.ValuePtr() = member_type;
+
+    std::time_t timestamp;
+    std::time(&timestamp);
+    *channel_member.created_at.ValuePtr() = timestamp;
+    *channel_member.last_interaction_at.ValuePtr() = timestamp;
+
+    return channel_member;
+}
+
+} // namespace
 
 MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &channel_name,
                                           std::optional<std::string> const &description,
@@ -53,19 +74,22 @@ MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &chan
     return message_channel;
 }
 
+bool CreateMessageChannelMembership(MessageChannelId const channel_id, UserId const user_id,
+                                    MessageChannelMemberType const member_type,
+                                    ConnectionReservoirInterface *conns) {
+    MessageChannelHasUserEntity channel_member =
+        MessageChannelMembership(channel_id, user_id, member_type);
+    int64_t num_rows =
+        Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/false, conns);
+
+    return num_rows == 1;
+}
+
 void UpdateMessageChannelMembership(MessageChannelId channel_id, UserId const user_id,
                                     MessageChannelMemberType const member_type,
                                     ConnectionReservoirInterface *conns) {
-    MessageChannelHasUserEntity channel_member;
-    *channel_member.channel_id.ValuePtr() = channel_id;
-    *channel_member.user_id.ValuePtr() = user_id;
-    *channel_member.ownership.ValuePtr() = member_type;
-
-    std::time_t timestamp;
-    std::time(&timestamp);
-    *channel_member.created_at.ValuePtr() = timestamp;
-    *channel_member.last_interaction_at.ValuePtr() = timestamp;
-
+    MessageChannelHasUserEntity channel_member =
+        MessageChannelMembership(channel_id, user_id, member_type);
     int64_t num_rows =
         Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/true, conns);
 
