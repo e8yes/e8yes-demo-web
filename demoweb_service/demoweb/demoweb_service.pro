@@ -40,6 +40,7 @@ HEADERS += \
     module/file_metadata.h \
     module/file_util.h \
     module/message_channel.h \
+    module/message_channel_storage.h \
     module/push_message.h \
     module/search_user.h \
     module/system_user_group.h \
@@ -79,6 +80,7 @@ SOURCES += \
     module/file_metadata.cc \
     module/file_util.cc \
     module/message_channel.cc \
+    module/message_channel_storage.cc \
     module/push_message.cc \
     module/search_user.cc \
     module/user_identity.cc \
