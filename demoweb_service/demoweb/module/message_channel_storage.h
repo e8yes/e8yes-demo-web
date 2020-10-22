@@ -25,6 +25,7 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "proto_cc/message_channel.pb.h"
 
 namespace e8 {
 
@@ -36,6 +37,14 @@ MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &chan
                                           std::optional<std::string> const &description,
                                           bool encrypted, bool close_group_channel, HostId host_id,
                                           ConnectionReservoirInterface *conns);
+
+/**
+ * @brief UpdateMessageChannelMembership Update a membership of a message channel specified by the
+ * (channel_id, user_id) pair.
+ */
+void UpdateMessageChannelMembership(MessageChannelId channel_id, UserId const user_id,
+                                    MessageChannelMemberType const member_type,
+                                    ConnectionReservoirInterface *conns);
 
 } // namespace e8
 

@@ -15,10 +15,12 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <optional>
 #include <string>
 
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
+#include "demoweb_service/demoweb/common_entity/message_channel_has_user_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
@@ -49,6 +51,25 @@ MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &chan
     assert(num_rows == 1);
 
     return message_channel;
+}
+
+void UpdateMessageChannelMembership(MessageChannelId channel_id, UserId const user_id,
+                                    MessageChannelMemberType const member_type,
+                                    ConnectionReservoirInterface *conns) {
+    MessageChannelHasUserEntity channel_member;
+    *channel_member.channel_id.ValuePtr() = channel_id;
+    *channel_member.user_id.ValuePtr() = user_id;
+    *channel_member.ownership.ValuePtr() = member_type;
+
+    std::time_t timestamp;
+    std::time(&timestamp);
+    *channel_member.created_at.ValuePtr() = timestamp;
+    *channel_member.last_interaction_at.ValuePtr() = timestamp;
+
+    int64_t num_rows =
+        Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/true, conns);
+
+    assert(num_rows == 1);
 }
 
 } // namespace e8
