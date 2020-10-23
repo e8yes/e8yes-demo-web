@@ -27,6 +27,17 @@
 #include "proto_cc/message_channel.pb.h"
 
 namespace e8 {
+namespace {
+
+unsigned AdminCount(std::unordered_map<UserId, MessageChannelMemberAttributes> const &members) {
+    unsigned num_admins = 0;
+    for (auto const &[_, member] : members) {
+        num_admins += member.member_type == MCMT_ADMIN;
+    }
+    return num_admins;
+}
+
+} // namespace
 
 MessageChannelPbacInterface::MessageChannelPbacInterface() {}
 
@@ -71,7 +82,7 @@ bool MessageChannelPbacImpl::AllowDeleteChannel(UserId const operator_user_id,
 
 bool MessageChannelPbacImpl::AllowUpdateChannelMembership(UserId const operator_user_id,
                                                           MessageChannelId const target_channel_id,
-                                                          UserId const /*user_to_be_updated*/,
+                                                          UserId const user_to_be_updated,
                                                           MessageChannelMemberType member_type) {
     std::optional<MessageChannelAttributes> channel_attrs =
         ExtractMessageChannelAttributes(target_channel_id, conns_);
@@ -79,21 +90,41 @@ bool MessageChannelPbacImpl::AllowUpdateChannelMembership(UserId const operator_
         return false;
     }
 
-    std::optional<MessageChannelMemberAttributes> operator_attrs =
-        ExtractMessageChannelMemberAttributes(target_channel_id, operator_user_id, conns_);
-    if (!operator_attrs.has_value()) {
+    std::unordered_map<UserId, MessageChannelMemberAttributes> member_attrs =
+        ExtractMessageChannelMemberAttributes(target_channel_id, conns_);
+    auto operator_attr_it = member_attrs.find(operator_user_id);
+    if (operator_attr_it == member_attrs.end()) {
+        // Operator must as least be a member.
         return false;
     }
 
     switch (member_type) {
-    case MCMT_ADMIN:
-        return operator_attrs->member_type == MCMT_ADMIN;
+    case MCMT_ADMIN: {
+        // Adding a new admin or promotion.
+        return operator_attr_it->second.member_type == MCMT_ADMIN;
+    }
 
-    case MCMT_MEMBER:
-        if (*channel_attrs->close_group_channel.Value()) {
+    case MCMT_MEMBER: {
+        auto to_be_updatec_attr_it = member_attrs.find(user_to_be_updated);
+
+        if (to_be_updatec_attr_it != member_attrs.end()) {
+            // Demotion.
+            if (operator_attr_it->second.member_type != MCMT_ADMIN) {
+                return false;
+            }
+
+            if (to_be_updatec_attr_it->second.member_type == MCMT_ADMIN &&
+                AdminCount(member_attrs) == 1) {
+                // Can't demote the last admin in the message channel.
+                return false;
+            }
+
             return true;
         }
-        return operator_attrs->member_type == MCMT_ADMIN;
+
+        return *channel_attrs->close_group_channel.Value() ||
+               operator_attr_it->second.member_type == MCMT_ADMIN;
+    }
 
     case MCMT_INVALID:
     default:
@@ -104,12 +135,6 @@ bool MessageChannelPbacImpl::AllowUpdateChannelMembership(UserId const operator_
 bool MessageChannelPbacImpl::AllowDeleteMemberFromChannel(UserId const operator_user_id,
                                                           MessageChannelId const target_channel_id,
                                                           UserId const user_to_be_removed) {
-    std::optional<MessageChannelAttributes> channel_attrs =
-        ExtractMessageChannelAttributes(target_channel_id, conns_);
-    if (!channel_attrs.has_value()) {
-        return false;
-    }
-
     std::unordered_map<UserId, MessageChannelMemberAttributes> member_attrs =
         ExtractMessageChannelMemberAttributes(target_channel_id, conns_);
     auto operator_attr_it = member_attrs.find(operator_user_id);
@@ -122,14 +147,13 @@ bool MessageChannelPbacImpl::AllowDeleteMemberFromChannel(UserId const operator_
         return false;
     }
 
-    if (operator_attr_it->second.member_type != MCMT_ADMIN) {
-        return false;
-    }
-    if (operator_user_id == user_to_be_removed && member_attrs.size() == 1) {
+    if (to_be_removed_attr_it->second.member_type == MCMT_ADMIN && AdminCount(member_attrs) == 1) {
+        // Can't remove the only admin.
         return false;
     }
 
-    return true;
+    return operator_user_id == user_to_be_removed ||
+           operator_attr_it->second.member_type == MCMT_ADMIN;
 }
 
 } // namespace e8

@@ -84,7 +84,7 @@ class MessageChannelPbacImpl : public MessageChannelPbacInterface {
 
     bool AllowUpdateChannelMembership(UserId const operator_user_id,
                                       MessageChannelId const target_channel_id,
-                                      UserId const user_to_be_added,
+                                      UserId const user_to_be_updated,
                                       MessageChannelMemberType member_type) override;
 
     bool AllowDeleteMemberFromChannel(UserId const operator_user_id,
