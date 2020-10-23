@@ -22,6 +22,7 @@
 #include "constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/environment/prod_environment_context.h"
+#include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
 #include "distributor/store/default_node_state_store.h"
 #include "keygen/persistent_key_generator.h"
 #include "postgres/query_runner/connection/connection_factory.h"
@@ -47,6 +48,8 @@ DemoWebProductionEnvironmentContext::DemoWebProductionEnvironmentContext(
 
     e8_message_publisher_ =
         std::make_unique<E8MessagePublisher>(DefaultNodeStateStore(), message_queue_port);
+
+    message_channel_pbac_ = std::make_unique<MessageChannelPbacImpl>(demoweb_database_.get());
 }
 
 DemoWebEnvironmentContextInterface::Environment
@@ -65,6 +68,10 @@ e8::KeyGeneratorInterface *DemoWebProductionEnvironmentContext::KeyGen() { retur
 std::vector<MessagePublisherInterface *>
 DemoWebProductionEnvironmentContext::ClientPushMessagePublishers() {
     return std::vector<MessagePublisherInterface *>{e8_message_publisher_.get()};
+}
+
+MessageChannelPbacInterface *DemoWebProductionEnvironmentContext::MessageChannelPbac() {
+    return message_channel_pbac_.get();
 }
 
 } // namespace e8

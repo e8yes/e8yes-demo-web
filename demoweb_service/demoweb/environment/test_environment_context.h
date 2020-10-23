@@ -24,6 +24,7 @@
 
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
+#include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
 #include "keygen/key_generator_interface.h"
 #include "message_queue/publisher/publisher.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
@@ -49,9 +50,12 @@ class DemoWebTestEnvironmentContext : public DemoWebEnvironmentContextInterface 
 
     std::vector<MessagePublisherInterface *> ClientPushMessagePublishers() override;
 
+    MessageChannelPbacInterface *MessageChannelPbac() override;
+
   private:
     std::unique_ptr<ConnectionReservoirInterface> demoweb_database_;
     std::unique_ptr<KeyGeneratorInterface> key_gen_;
+    std::unique_ptr<MessageChannelPbacInterface> message_channel_pbac_;
     unsigned host_id_;
     int32_t padding_;
 };

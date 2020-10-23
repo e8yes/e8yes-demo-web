@@ -46,32 +46,6 @@
 namespace e8 {
 namespace {
 
-bool CanAdd(UserId const &viewer_id, MessageChannelId channel_id,
-            MessageChannelMemberType const requesting_member_type,
-            ConnectionReservoirInterface *conns) {
-    SqlQueryBuilder query;
-    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
-    SqlQueryBuilder::Placeholder<SqlLong> viewer_id_ph;
-    query.QueryPiece(TableNames::MessageChannelHasUser())
-        .QueryPiece(" viewer WHERE viewer.channel_id=")
-        .Holder(&channel_id_ph)
-        .QueryPiece(" AND viewer.user_id=")
-        .Holder(&viewer_id_ph);
-
-    if (requesting_member_type == MCMT_ADMIN) {
-        // Only admin can add another person as admin.
-        SqlQueryBuilder::Placeholder<SqlInt> admin_member_type_ph;
-        query.QueryPiece(" AND viewer.ownership=").Holder(&admin_member_type_ph);
-        query.SetValueToPlaceholder(admin_member_type_ph,
-                                    std::make_shared<SqlInt>(MessageChannelMemberType::MCMT_ADMIN));
-    }
-
-    query.SetValueToPlaceholder(channel_id_ph, std::make_shared<SqlLong>(channel_id));
-    query.SetValueToPlaceholder(viewer_id_ph, std::make_shared<SqlLong>(viewer_id));
-
-    return Exists(query, conns);
-}
-
 std::vector<std::vector<MessageChannelHasUserEntity>>
 FetchMostActiveMembers(std::vector<MessageChannelId> const &message_channel_ids,
                        unsigned active_member_fetch_limit, ConnectionReservoirInterface *conns) {
@@ -145,25 +119,28 @@ GetMessageChannelRelation(SearchedMessageChannel const &searched_message_channel
 
 } // namespace
 
-std::optional<MessageChannelEntity> CreateMessageChannel(
-    UserId creator_id, std::optional<std::string> const &channel_name,
-    std::optional<std::string> const &description, std::vector<UserId> const &to_be_member_ids,
-    bool encrypted, bool close_group_channel, HostId host_id, ConnectionReservoirInterface *conns) {
+std::optional<MessageChannelEntity>
+CreateMessageChannel(UserId creator_id, std::optional<std::string> const &channel_name,
+                     std::optional<std::string> const &description,
+                     std::vector<UserId> const &to_be_member_ids, bool const encrypted,
+                     bool const close_group_channel, HostId const host_id,
+                     MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
     std::time_t current_timestamp;
     std::time(&current_timestamp);
 
     MessageChannelEntity message_channel = CreateMessageChannel(
         channel_name, description, encrypted, close_group_channel, host_id, conns);
 
-    bool rc = AddUserToMessageChannel(/*viewer_id=*/std::nullopt, *message_channel.id.Value(),
-                                      creator_id, MCMT_ADMIN, conns);
+    bool rc = UpdateMessageChannelMembership(
+        /*viewer_id=*/std::nullopt, *message_channel.id.Value(), creator_id, MCMT_ADMIN, pbac,
+        conns);
     if (rc == false) {
         return std::nullopt;
     }
 
     for (UserId const user_id : to_be_member_ids) {
-        AddUserToMessageChannel(/*viewer_id=*/std::nullopt, *message_channel.id.Value(), user_id,
-                                MCMT_MEMBER, conns);
+        UpdateMessageChannelMembership(/*viewer_id=*/std::nullopt, *message_channel.id.Value(),
+                                       user_id, MCMT_MEMBER, pbac, conns);
     }
 
     return message_channel;
@@ -369,10 +346,13 @@ GetMessageChannelMembers(MessageChannelId channel_id, std::optional<Pagination> 
     return results;
 }
 
-bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessageChannelId channel_id,
-                             UserId const user_id, MessageChannelMemberType const member_type,
-                             ConnectionReservoirInterface *conns) {
-    if (viewer_id.has_value() && !CanAdd(*viewer_id, channel_id, member_type, conns)) {
+bool UpdateMessageChannelMembership(std::optional<UserId> const &viewer_id,
+                                    MessageChannelId channel_id, UserId const user_id,
+                                    MessageChannelMemberType const member_type,
+                                    MessageChannelPbacInterface *pbac,
+                                    ConnectionReservoirInterface *conns) {
+    if (viewer_id.has_value() &&
+        !pbac->AllowUpdateChannelMembership(*viewer_id, channel_id, user_id, member_type)) {
         return false;
     }
     return CreateMessageChannelMembership(channel_id, user_id, member_type, conns);

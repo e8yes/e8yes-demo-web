@@ -53,7 +53,8 @@ MessageChannelHasUserEntity MessageChannelMembership(MessageChannelId channel_id
 
 MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &channel_name,
                                           std::optional<std::string> const &description,
-                                          bool encrypted, bool close_group_channel, HostId host_id,
+                                          bool const encrypted, bool const close_group_channel,
+                                          HostId const host_id,
                                           ConnectionReservoirInterface *conns) {
 
     std::time_t current_timestamp;

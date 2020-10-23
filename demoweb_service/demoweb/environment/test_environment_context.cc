@@ -22,6 +22,7 @@
 #include "constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
+#include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
 #include "keygen/persistent_key_generator.h"
 #include "postgres/query_runner/connection/connection_factory.h"
 #include "postgres/query_runner/connection/pooled_connection_reservoir.h"
@@ -39,6 +40,8 @@ DemoWebTestEnvironmentContext::DemoWebTestEnvironmentContext() {
     ClearAllTables(demoweb_database_.get());
 
     key_gen_ = std::make_unique<PersistentKeyGenerator>(/*host_name=*/"localhost");
+
+    message_channel_pbac_ = std::make_unique<MessageChannelPbacImpl>(demoweb_database_.get());
 
     host_id_ = 0;
 }
@@ -59,6 +62,10 @@ KeyGeneratorInterface *DemoWebTestEnvironmentContext::KeyGen() { return key_gen_
 std::vector<MessagePublisherInterface *>
 DemoWebTestEnvironmentContext::ClientPushMessagePublishers() {
     return std::vector<MessagePublisherInterface *>();
+}
+
+MessageChannelPbacInterface *DemoWebTestEnvironmentContext::MessageChannelPbac() {
+    return message_channel_pbac_.get();
 }
 
 } // namespace e8

@@ -56,7 +56,7 @@ MessageChannelServiceImpl::CreateMessageChannel(grpc::ServerContext *context,
     std::optional<MessageChannelEntity> channel = ::e8::CreateMessageChannel(
         identity->user_id(), channel_title, channel_desc, to_be_member_ids, request->encrypted(),
         request->close_group_channel(), DemoWebEnvironment()->CurrentHostId(),
-        DemoWebEnvironment()->DemowebDatabase());
+        DemoWebEnvironment()->MessageChannelPbac(), DemoWebEnvironment()->DemowebDatabase());
     if (!channel.has_value()) {
         return grpc::Status(grpc::StatusCode::UNKNOWN, "Channel creation failed");
     }
@@ -148,9 +148,9 @@ MessageChannelServiceImpl::AddUserToMessageChannel(grpc::ServerContext *context,
         return status;
     }
 
-    if (!e8::AddUserToMessageChannel(identity->user_id(), request->channel_id(), request->user_id(),
-                                     request->member_type(),
-                                     DemoWebEnvironment()->DemowebDatabase())) {
+    if (!e8::UpdateMessageChannelMembership(
+            identity->user_id(), request->channel_id(), request->user_id(), request->member_type(),
+            DemoWebEnvironment()->MessageChannelPbac(), DemoWebEnvironment()->DemowebDatabase())) {
         return grpc::Status(
             grpc::StatusCode::PERMISSION_DENIED,
             "Can't add the person as a channel member with the requested privilege.");

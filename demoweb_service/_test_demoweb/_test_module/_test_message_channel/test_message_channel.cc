@@ -27,6 +27,7 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
 #include "demoweb_service/demoweb/module/message_channel.h"
+#include "demoweb_service/demoweb/module/message_channel_storage.h"
 #include "demoweb_service/demoweb/module/user_storage.h"
 #include "proto_cc/message_channel.pb.h"
 #include "proto_cc/pagination.pb.h"
@@ -50,10 +51,14 @@ CreateNewChannelInfo CreateChannel1(e8::DemoWebTestEnvironmentContext *env) {
         env->DemowebDatabase());
 
     std::optional<e8::MessageChannelEntity> channel = e8::CreateMessageChannel(
-        kCreatorId, kChannel1Name, kChannel1Desc, /*to_be_member_ids=*/std::vector<e8::UserId>(),
+        kChannel1Name, kChannel1Desc,
         /*encrypted=*/false,
         /*close_group_channel=*/true, env->CurrentHostId(), env->DemowebDatabase());
     assert(channel.has_value());
+
+    bool rc = e8::CreateMessageChannelMembership(*channel->id.Value(), kCreatorId, e8::MCMT_ADMIN,
+                                                 env->DemowebDatabase());
+    assert(rc == true);
 
     CreateNewChannelInfo info;
     info.creator = *user;
@@ -67,10 +72,14 @@ CreateNewChannelInfo CreateChannel2(e8::DemoWebTestEnvironmentContext *env) {
         env->DemowebDatabase());
 
     std::optional<e8::MessageChannelEntity> channel = e8::CreateMessageChannel(
-        kCreatorId, kChannel2Name, kChannel2Desc, /*to_be_member_ids=*/std::vector<e8::UserId>(),
+        kChannel2Name, kChannel2Desc,
         /*encrypted=*/false,
         /*close_group_channel=*/true, env->CurrentHostId(), env->DemowebDatabase());
     assert(channel.has_value());
+
+    bool rc = e8::CreateMessageChannelMembership(*channel->id.Value(), kCreatorId, e8::MCMT_ADMIN,
+                                                 env->DemowebDatabase());
+    assert(rc == true);
 
     CreateNewChannelInfo info;
     info.creator = *user;
@@ -113,9 +122,9 @@ bool ListMessageChannelWithMemberIdsTest() {
         /*security_key=*/"", std::vector<std::string>(), /*user_id=*/2L, env.CurrentHostId(),
         env.DemowebDatabase());
 
-    bool rc =
-        e8::AddUserToMessageChannel(/*viewer_id=*/1L, *channel_info.message_channel.id.Value(),
-                                    *user->id.Value(), e8::MCMT_ADMIN, env.DemowebDatabase());
+    bool rc = e8::UpdateMessageChannelMembership(
+        /*viewer_id=*/1L, *channel_info.message_channel.id.Value(), *user->id.Value(),
+        e8::MCMT_ADMIN, env.MessageChannelPbac(), env.DemowebDatabase());
     TEST_CONDITION(rc == true);
 
     std::vector<e8::SearchedMessageChannel> retrieved_channels = e8::SearchMessageChannels(
@@ -244,9 +253,9 @@ bool AddUserToMessageChannelTest() {
         /*security_key=*/"", std::vector<std::string>(), /*user_id=*/2L, env.CurrentHostId(),
         env.DemowebDatabase());
 
-    bool rc =
-        e8::AddUserToMessageChannel(/*viewer_id=*/1L, *channel_info.message_channel.id.Value(),
-                                    *user->id.Value(), e8::MCMT_ADMIN, env.DemowebDatabase());
+    bool rc = e8::UpdateMessageChannelMembership(
+        /*viewer_id=*/1L, *channel_info.message_channel.id.Value(), *user->id.Value(),
+        e8::MCMT_ADMIN, env.MessageChannelPbac(), env.DemowebDatabase());
     TEST_CONDITION(rc == true);
 
     std::vector<e8::MessageChannelMember> retrieved_members =
@@ -277,13 +286,14 @@ bool AddUserToMessageChannelInsufficientPrivilegeTest() {
         /*security_key=*/"", std::vector<std::string>(), /*user_id=*/3L, env.CurrentHostId(),
         env.DemowebDatabase());
 
-    bool rc =
-        e8::AddUserToMessageChannel(/*viewer_id=*/1L, *channel_info.message_channel.id.Value(),
-                                    *user->id.Value(), e8::MCMT_MEMBER, env.DemowebDatabase());
+    bool rc = e8::UpdateMessageChannelMembership(
+        /*viewer_id=*/1L, *channel_info.message_channel.id.Value(), *user->id.Value(),
+        e8::MCMT_MEMBER, env.MessageChannelPbac(), env.DemowebDatabase());
     TEST_CONDITION(rc == true);
 
-    rc = e8::AddUserToMessageChannel(/*viewer_id=*/2L, *channel_info.message_channel.id.Value(),
-                                     *user2->id.Value(), e8::MCMT_ADMIN, env.DemowebDatabase());
+    rc = e8::UpdateMessageChannelMembership(
+        /*viewer_id=*/2L, *channel_info.message_channel.id.Value(), *user2->id.Value(),
+        e8::MCMT_ADMIN, env.MessageChannelPbac(), env.DemowebDatabase());
     TEST_CONDITION(rc == false);
 
     std::vector<e8::MessageChannelMember> retrieved_members =

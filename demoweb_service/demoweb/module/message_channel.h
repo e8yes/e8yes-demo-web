@@ -29,6 +29,7 @@
 #include "demoweb_service/demoweb/common_entity/message_channel_has_user_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
+#include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
 #include "keygen/key_generator_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "proto_cc/message_channel.pb.h"
@@ -45,8 +46,9 @@ namespace e8 {
 std::optional<MessageChannelEntity>
 CreateMessageChannel(UserId creator_id, std::optional<std::string> const &channel_name,
                      std::optional<std::string> const &description,
-                     std::vector<UserId> const &to_be_member_ids, bool encrypted,
-                     bool close_group_channel, HostId host_id, ConnectionReservoirInterface *conns);
+                     std::vector<UserId> const &to_be_member_ids, bool const encrypted,
+                     bool const close_group_channel, HostId const host_id,
+                     MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns);
 
 struct SearchedMessageChannel {
     MessageChannelEntity message_channel;
@@ -101,19 +103,22 @@ GetMessageChannelMembers(MessageChannelId channel_id, std::optional<Pagination> 
                          ConnectionReservoirInterface *conns);
 
 /**
- * @brief AddUserToMessageChannel Add a user to the specified message channel. The user is assumed
- * to be absent from the message channel, or this function will fail. The viewer, if specified, must
- * be a member of the channel for this call to be successful. If the requested member_type is an
- * admin, then the viewer must be an admin also.
+ * @brief UpdateMessageChannelMembership Add/update a user to the specified message channel. Please
+ * refer to the specific PBAC to see how exactly access control is evaluated. Set viewer_id to
+ * nullopt to turn off access control evaluation.
  *
  * @param channel_id ID of the target message channel to add the user to.
  * @param user_id ID of the user to be added.
  * @param member_type The requested member type.
+ * @param pbac Policy based access controller for message channel.
+ * @param conns Database connections.
  * @return Whether the viewer has sufficient privilege to perform this operation.
  */
-bool AddUserToMessageChannel(std::optional<UserId> const &viewer_id, MessageChannelId channel_id,
-                             UserId const user_id, MessageChannelMemberType const member_type,
-                             ConnectionReservoirInterface *conns);
+bool UpdateMessageChannelMembership(std::optional<UserId> const &viewer_id,
+                                    MessageChannelId channel_id, UserId const user_id,
+                                    MessageChannelMemberType const member_type,
+                                    MessageChannelPbacInterface *pbac,
+                                    ConnectionReservoirInterface *conns);
 
 /**
  * @brief UserInMessageChannel Check if a user specified by the user_id is a member of the message
