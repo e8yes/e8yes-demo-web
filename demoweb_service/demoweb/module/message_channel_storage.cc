@@ -33,9 +33,9 @@
 namespace e8 {
 namespace {
 
-MessageChannelHasUserEntity MessageChannelMembership(MessageChannelId channel_id,
-                                                     UserId const user_id,
-                                                     MessageChannelMemberType const member_type) {
+MessageChannelHasUserEntity
+ToMessageChannelHasUserEntity(MessageChannelId channel_id, UserId const user_id,
+                              MessageChannelMemberType const member_type) {
     MessageChannelHasUserEntity channel_member;
     *channel_member.channel_id.ValuePtr() = channel_id;
     *channel_member.user_id.ValuePtr() = user_id;
@@ -79,7 +79,7 @@ bool CreateMessageChannelMembership(MessageChannelId const channel_id, UserId co
                                     MessageChannelMemberType const member_type,
                                     ConnectionReservoirInterface *conns) {
     MessageChannelHasUserEntity channel_member =
-        MessageChannelMembership(channel_id, user_id, member_type);
+        ToMessageChannelHasUserEntity(channel_id, user_id, member_type);
     int64_t num_rows =
         Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/false, conns);
 
@@ -90,7 +90,7 @@ void UpdateMessageChannelMembership(MessageChannelId channel_id, UserId const us
                                     MessageChannelMemberType const member_type,
                                     ConnectionReservoirInterface *conns) {
     MessageChannelHasUserEntity channel_member =
-        MessageChannelMembership(channel_id, user_id, member_type);
+        ToMessageChannelHasUserEntity(channel_id, user_id, member_type);
     int64_t num_rows =
         Update(channel_member, TableNames::MessageChannelHasUser(), /*replace=*/true, conns);
 

@@ -375,4 +375,60 @@ bool UserInMessageChannel(UserId const user_id, MessageChannelId const channel_i
     return Exists(query, conns);
 }
 
+MessageChannelMembershipDelta ComputeMessageChannelMembershipDelta(
+    MessageChannelId const channel_id,
+    std::vector<MessageChannelMembership> const &proposed_memberships,
+    ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder message_channel_member_query;
+    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
+    message_channel_member_query.QueryPiece(TableNames::MessageChannelHasUser())
+        .QueryPiece(" mchu")
+        .QueryPiece(" WHERE mchu.channel_id=")
+        .Holder(&channel_id_ph);
+
+    message_channel_member_query.SetValueToPlaceholder(channel_id_ph,
+                                                       std::make_shared<SqlLong>(channel_id));
+
+    std::vector<std::tuple<MessageChannelHasUserEntity>> members =
+        Query<MessageChannelHasUserEntity>(message_channel_member_query, {"mchu"}, conns);
+    std::unordered_map<UserId, MessageChannelHasUserEntity> current_members;
+    for (auto const &member : members) {
+        MessageChannelHasUserEntity const &entity = std::get<0>(member);
+        current_members[*entity.user_id.Value()] = entity;
+    }
+
+    std::unordered_map<UserId, MessageChannelMembership> proposed_members;
+    for (auto const &membership : proposed_memberships) {
+        proposed_members[membership.user_id()] = membership;
+    }
+
+    MessageChannelMembershipDelta delta;
+    for (auto const &[member_id, current_member] : current_members) {
+        auto it = proposed_members.find(member_id);
+        if (it == proposed_members.end()) {
+            // To be removed.
+            MessageChannelMembership to_be_removed;
+            to_be_removed.set_user_id(*current_member.user_id.Value());
+            to_be_removed.set_channel_id(*current_member.channel_id.Value());
+            to_be_removed.set_member_type(
+                static_cast<MessageChannelMemberType>(*current_member.ownership.Value()));
+            delta.to_be_removed.push_back(to_be_removed);
+        } else {
+            if (it->second.member_type() != *current_member.ownership.Value()) {
+                // To be modified.
+                delta.to_be_modified.push_back(it->second);
+            }
+        }
+    }
+    for (auto const &[proposed_member_id, proposed_member] : proposed_members) {
+        auto it = current_members.find(proposed_member_id);
+        if (it == current_members.end()) {
+            // To be added.
+            delta.to_be_added.push_back(proposed_member);
+        }
+    }
+
+    return delta;
+}
+
 } // namespace e8
