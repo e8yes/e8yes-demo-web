@@ -48,8 +48,8 @@ message UpdateMessageChannelRequest {
     NullableString title = 2;
     NullableString description = 3;
 
-    // The new set of channel members.
-    repeated int64 member_ids = 4;
+    // The new set of channel memberships.
+    repeated MessageChannelMembership memberships = 4;
 }
 
 message UpdateMessageChannelResponse {}
