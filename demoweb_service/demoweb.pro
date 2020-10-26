@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = \
+    _test_demoweb/_test_module/_test_message_channel_storage \
     demoweb/demoweb_service.pro \
     demoweb/demoweb_service_main.pro \
     _test_demoweb/_test_module/_test_baseline_user/_test_baseline_user.pro \
