@@ -20,6 +20,7 @@
 #include <ctime>
 #include <optional>
 #include <string>
+#include <tuple>
 
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/message_channel_has_user_entity.h"
@@ -73,6 +74,48 @@ MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &chan
     assert(num_rows == 1);
 
     return message_channel;
+}
+
+std::optional<MessageChannelEntity> FetchMessageChannel(MessageChannelId const &channel_id,
+                                                        ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder message_channel_query;
+    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
+    message_channel_query.QueryPiece(TableNames::MessageChannel())
+        .QueryPiece(" mc WHERE mc.id=")
+        .Holder(&channel_id_ph);
+
+    message_channel_query.SetValueToPlaceholder(channel_id_ph,
+                                                std::make_shared<SqlLong>(channel_id));
+
+    std::vector<std::tuple<MessageChannelEntity>> channel =
+        Query<MessageChannelEntity>(message_channel_query, {"mc"}, conns);
+
+    if (channel.empty()) {
+        return std::nullopt;
+    }
+
+    return std::get<0>(channel[0]);
+}
+
+std::optional<MessageChannelEntity> UpdateMessageChannel(
+    MessageChannelId const &channel_id, std::optional<std::string> const &channel_name,
+    std::optional<std::string> const &description, ConnectionReservoirInterface *conns) {
+    std::optional<MessageChannelEntity> channel = FetchMessageChannel(channel_id, conns);
+    if (!channel.has_value()) {
+        return std::nullopt;
+    }
+
+    if (channel_name.has_value()) {
+        *channel->channel_name.ValuePtr() = *channel_name;
+    }
+    if (description.has_value()) {
+        *channel->description.ValuePtr() = *description;
+    }
+
+    uint64_t num_rows = Update(*channel, TableNames::MessageChannel(), /*replace=*/true, conns);
+    assert(num_rows == 1);
+
+    return channel;
 }
 
 bool CreateMessageChannelMembership(MessageChannelId const channel_id, UserId const user_id,

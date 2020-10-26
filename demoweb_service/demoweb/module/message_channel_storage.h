@@ -40,6 +40,21 @@ MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &chan
                                           ConnectionReservoirInterface *conns);
 
 /**
+ * @brief FetchMessageChannel Fetch the persisted message channel by ID.
+ * @return The message channel if it exists, otherwise, nullopt.
+ */
+std::optional<MessageChannelEntity> FetchMessageChannel(MessageChannelId const &channel_id,
+                                                        ConnectionReservoirInterface *conns);
+
+/**
+ * @brief UpdateMessageChannel Updates the message channel's metadata specified by the channel ID.
+ * @return The updated message channel if it exists, otherwise, nullopt.
+ */
+std::optional<MessageChannelEntity> UpdateMessageChannel(
+    MessageChannelId const &channel_id, std::optional<std::string> const &channel_name,
+    std::optional<std::string> const &description, ConnectionReservoirInterface *conns);
+
+/**
  * @brief CreateMessageChannelMembership Create a new membership of a message channel specified by
  * the (channel_id, user_id) pair.
  *
