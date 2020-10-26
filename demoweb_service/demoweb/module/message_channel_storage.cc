@@ -105,12 +105,8 @@ std::optional<MessageChannelEntity> UpdateMessageChannel(
         return std::nullopt;
     }
 
-    if (channel_name.has_value()) {
-        *channel->channel_name.ValuePtr() = *channel_name;
-    }
-    if (description.has_value()) {
-        *channel->description.ValuePtr() = *description;
-    }
+    *channel->channel_name.ValuePtr() = *channel_name;
+    *channel->description.ValuePtr() = *description;
 
     uint64_t num_rows = Update(*channel, TableNames::MessageChannel(), /*replace=*/true, conns);
     assert(num_rows == 1);

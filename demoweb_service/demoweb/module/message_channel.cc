@@ -200,6 +200,16 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
     return message_channel;
 }
 
+std::optional<MessageChannelEntity> UpdateMessageChannelMetadata(
+    UserId const viewer_id, MessageChannelId const channel_id,
+    std::optional<std::string> const &channel_name, std::optional<std::string> const &description,
+    MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
+    if (!pbac->AllowUpdateChannelMetadata(viewer_id, channel_id)) {
+        return std::nullopt;
+    }
+    return UpdateMessageChannel(channel_id, channel_name, description, conns);
+}
+
 bool UpdateMessageChannelMembership(
     UserId const viewer_id, MessageChannelId const channel_id,
     std::vector<MessageChannelMembership> const &proposed_memberships,

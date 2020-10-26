@@ -81,6 +81,23 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
                                           ConnectionReservoirInterface *conns);
 
 /**
+ * @brief UpdateMessageChannelMetadata Updates a message channel's metadata. Please refer to the
+ * specific PBAC to see how exactly access control is evaluated.
+ *
+ * @param viewer_id ID of the viewer to issue the message channel update.
+ * @param channel_id ID of the message channel to be updated.
+ * @param channel_name New message channel name, nullable.
+ * @param description New message channel description, nullable.
+ * @param pbac Policy based access controller for message channel.
+ * @param conns Database connections.
+ * @return The updated message channel if no error occurs.
+ */
+std::optional<MessageChannelEntity> UpdateMessageChannelMetadata(
+    UserId const viewer_id, MessageChannelId const channel_id,
+    std::optional<std::string> const &channel_name, std::optional<std::string> const &description,
+    MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns);
+
+/**
  * @brief UpdateMessageChannelMembership Add/Update/Remove a user to/from the specified message
  * channel. Please refer to the specific PBAC to see how exactly access control is evaluated.
  *
