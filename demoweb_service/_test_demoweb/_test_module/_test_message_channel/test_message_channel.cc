@@ -312,6 +312,28 @@ bool UpdateMessageChannelMembershipTest() {
     return true;
 }
 
+bool UpdateMessageChannelMetadataTest() {
+    e8::DemoWebTestEnvironmentContext env;
+
+    CreateNewChannelInfo channel_info = CreateChannel1(&env);
+
+    std::optional<e8::MessageChannelEntity> updated = e8::UpdateMessageChannelMetadata(
+        kRegularMemberId, *channel_info.message_channel.id.Value(),
+        /*channel_name=*/"new channel name",
+        /*description=*/"new description", env.MessageChannelPbac(), env.DemowebDatabase());
+
+    TEST_CONDITION(updated.has_value());
+    TEST_CONDITION(*updated->id.Value() == *channel_info.message_channel.id.Value());
+    TEST_CONDITION(*updated->encryption_enabled.Value() ==
+                   *channel_info.message_channel.encryption_enabled.Value());
+    TEST_CONDITION(*updated->close_group_channel.Value() ==
+                   *channel_info.message_channel.close_group_channel.Value());
+    TEST_CONDITION(*updated->channel_name.Value() == "new channel name");
+    TEST_CONDITION(*updated->description.Value() == "new description");
+
+    return true;
+}
+
 bool ToMessageChannelOverviewsTest() {
     e8::DemoWebTestEnvironmentContext env;
 
@@ -426,7 +448,8 @@ int main() {
     e8::RunTest("ListMessageChannelQueryTextFilterTest", ListMessageChannelQueryTextFilterTest);
     e8::RunTest("ListMessageChannelWithMemberIdsTest", ListMessageChannelWithMemberIdsTest);
     e8::RunTest("CreateAndListChannelMemberTest", CreateAndListChannelMemberTest);
-    e8::RunTest("AddUserToMessageChannelTest", UpdateMessageChannelMembershipTest);
+    e8::RunTest("UpdateMessageChannelMembershipTest", UpdateMessageChannelMembershipTest);
+    e8::RunTest("UpdateMessageChannelMetadataTest", UpdateMessageChannelMetadataTest);
     e8::RunTest("ToMessageChannelOverviewsTest", ToMessageChannelOverviewsTest);
     e8::RunTest("MessageChannelMembershipTest", MessageChannelMembershipTest);
     e8::RunTest("ComputeMessageChannelMembershipDeltaTest",
