@@ -127,11 +127,6 @@ service MessageChannelService {
     rpc UpdateMessageChannel (UpdateMessageChannelRequest) returns
         (UpdateMessageChannelResponse);
 
-    // Add a user to the specified channel where the logged-in user is the
-    // administrator. The user should not already been a member of the channel.
-    rpc AddUserToMessageChannel (AddUserToMessageChannelRequest) returns
-        (AddUserToMessageChannelResponse);
-
     // Get an encryption key of the specified channel where the logged-in
     // user is a member.
     rpc GetMessageChannelKey (GetMessageChannelKeyRequest) returns
