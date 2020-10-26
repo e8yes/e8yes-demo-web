@@ -36,6 +36,35 @@
 #include "proto_cc/pagination.pb.h"
 
 namespace e8 {
+namespace message_channel_internal {
+
+/**
+ * @brief The MessageChannelMembershipDelta struct The difference between the proposed memberships
+ * and the current memberships
+ */
+struct MessageChannelMembershipDelta {
+    // Memberships to be updated towards the current records.
+    std::vector<MessageChannelMembership> to_be_modified;
+
+    // Memberships to be amended.
+    std::vector<MessageChannelMembership> to_be_added;
+
+    // Current memberships that need to be removed.
+    std::vector<MessageChannelMembership> to_be_removed;
+};
+
+/**
+ * @brief ComputeMessageChannelMembershipDelta Compute the difference between the
+ * proposed_memberships and the current memberships in the specified message channel.
+ *
+ * @return See the structure MessageChannelMembershipDelta above.
+ */
+MessageChannelMembershipDelta ComputeMessageChannelMembershipDelta(
+    MessageChannelId const channel_id,
+    std::vector<MessageChannelMembership> const &proposed_memberships,
+    ConnectionReservoirInterface *conns);
+
+} // namespace message_channel_internal
 
 /**
  * @brief CreateMessageChannel Create a new message channel. A message channel allows communication
@@ -43,12 +72,30 @@ namespace e8 {
  * "encrypted" parameter. The argument close_group_channel specifies a more relaxed close group RBAC
  * policy for what the members can do.
  */
-std::optional<MessageChannelEntity>
-CreateMessageChannel(UserId creator_id, std::optional<std::string> const &channel_name,
-                     std::optional<std::string> const &description,
-                     std::vector<UserId> const &to_be_member_ids, bool const encrypted,
-                     bool const close_group_channel, HostId const host_id,
-                     MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns);
+MessageChannelEntity CreateMessageChannel(UserId creator_id,
+                                          std::optional<std::string> const &channel_name,
+                                          std::optional<std::string> const &description,
+                                          std::vector<UserId> const &to_be_member_ids,
+                                          bool const encrypted, bool const close_group_channel,
+                                          HostId const host_id,
+                                          ConnectionReservoirInterface *conns);
+
+/**
+ * @brief UpdateMessageChannelMembership Add/Update/Remove a user to/from the specified message
+ * channel. Please refer to the specific PBAC to see how exactly access control is evaluated.
+ *
+ * @param viewer_id ID of the viewer to apply the delta.
+ * @param proposed_memberships The new set of memberships to be set towards the channels. These
+ * memberships can involve in exactly one message channel.
+ * @param pbac Policy based access controller for message channel.
+ * @param conns Database connections.
+ * @return Whether the viewer has sufficient privilege to perform this operation. The allowed
+ * updates to the message channel will proceed even though some operations may have failed.
+ */
+bool UpdateMessageChannelMembership(
+    UserId const viewer_id, MessageChannelId const channel_id,
+    std::vector<MessageChannelMembership> const &proposed_memberships,
+    MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns);
 
 struct SearchedMessageChannel {
     MessageChannelEntity message_channel;
@@ -103,55 +150,11 @@ GetMessageChannelMembers(MessageChannelId channel_id, std::optional<Pagination> 
                          ConnectionReservoirInterface *conns);
 
 /**
- * @brief UpdateMessageChannelMembership Add/update a user to the specified message channel. Please
- * refer to the specific PBAC to see how exactly access control is evaluated. Set viewer_id to
- * nullopt to turn off access control evaluation.
- *
- * @param channel_id ID of the target message channel to add the user to.
- * @param user_id ID of the user to be added.
- * @param member_type The requested member type.
- * @param pbac Policy based access controller for message channel.
- * @param conns Database connections.
- * @return Whether the viewer has sufficient privilege to perform this operation.
- */
-bool UpdateMessageChannelMembership(std::optional<UserId> const &viewer_id,
-                                    MessageChannelId channel_id, UserId const user_id,
-                                    MessageChannelMemberType const member_type,
-                                    MessageChannelPbacInterface *pbac,
-                                    ConnectionReservoirInterface *conns);
-
-/**
  * @brief UserInMessageChannel Check if a user specified by the user_id is a member of the message
  * channel specified by the channel_id.
  */
 bool UserInMessageChannel(UserId const user_id, MessageChannelId const channel_id,
                           ConnectionReservoirInterface *conns);
-
-/**
- * @brief The MessageChannelMembershipDelta struct The difference between the proposed memberships
- * and the current memberships
- */
-struct MessageChannelMembershipDelta {
-    // Memberships to be updated towards the current records.
-    std::vector<MessageChannelMembership> to_be_modified;
-
-    // Memberships to be amended.
-    std::vector<MessageChannelMembership> to_be_added;
-
-    // Current memberships that need to be removed.
-    std::vector<MessageChannelMembership> to_be_removed;
-};
-
-/**
- * @brief ComputeMessageChannelMembershipDelta Compute the difference between the
- * proposed_memberships and the current memberships in the specified message channel.
- *
- * @return See the structure MessageChannelMembershipDelta above.
- */
-MessageChannelMembershipDelta ComputeMessageChannelMembershipDelta(
-    MessageChannelId const channel_id,
-    std::vector<MessageChannelMembership> const &proposed_memberships,
-    ConnectionReservoirInterface *conns);
 
 } // namespace e8
 

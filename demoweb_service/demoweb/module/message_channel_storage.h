@@ -42,6 +42,9 @@ MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &chan
 /**
  * @brief CreateMessageChannelMembership Create a new membership of a message channel specified by
  * the (channel_id, user_id) pair.
+ *
+ * @return true if a new membership is created, otherwise, an existing membership blocks this
+ * operation.
  */
 bool CreateMessageChannelMembership(MessageChannelId const channel_id, UserId const user_id,
                                     MessageChannelMemberType const member_type,
@@ -53,6 +56,14 @@ bool CreateMessageChannelMembership(MessageChannelId const channel_id, UserId co
  */
 void UpdateMessageChannelMembership(MessageChannelId const channel_id, UserId const user_id,
                                     MessageChannelMemberType const member_type,
+                                    ConnectionReservoirInterface *conns);
+
+/**
+ * @brief DeleteMessageChannelMembership Delete a membership from the specified message channel.
+ *
+ * @return true only if the specified membership exists.
+ */
+bool DeleteMessageChannelMembership(MessageChannelId const channel_id, UserId const user_id,
                                     ConnectionReservoirInterface *conns);
 
 } // namespace e8

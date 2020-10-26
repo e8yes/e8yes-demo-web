@@ -97,4 +97,21 @@ void UpdateMessageChannelMembership(MessageChannelId channel_id, UserId const us
     assert(num_rows == 1);
 }
 
+bool DeleteMessageChannelMembership(MessageChannelId const channel_id, UserId const user_id,
+                                    ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder removal_query;
+    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
+    SqlQueryBuilder::Placeholder<SqlLong> user_id_ph;
+
+    removal_query.QueryPiece("WHERE channel_id=")
+        .Holder(&channel_id_ph)
+        .QueryPiece(" AND user_id=")
+        .Holder(&user_id_ph);
+
+    removal_query.SetValueToPlaceholder(channel_id_ph, std::make_shared<SqlLong>(channel_id));
+    removal_query.SetValueToPlaceholder(user_id_ph, std::make_shared<SqlLong>(user_id));
+
+    return 1L == Delete(TableNames::MessageChannelHasUser(), removal_query, conns);
+}
+
 } // namespace e8

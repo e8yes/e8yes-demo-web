@@ -254,18 +254,36 @@ bool CreateAndListChannelMemberTest() {
     return true;
 }
 
-bool AddUserToMessageChannelTest() {
+bool UpdateMessageChannelMembershipTest() {
     e8::DemoWebTestEnvironmentContext env;
 
     CreateNewChannelInfo channel_info = CreateChannel1(&env);
 
-    std::optional<e8::UserEntity> user = e8::CreateUser(
+    std::optional<e8::UserEntity> new_member = e8::CreateUser(
         /*security_key=*/"", std::vector<std::string>(), /*user_id=*/100L, env.CurrentHostId(),
         env.DemowebDatabase());
 
+    // Membership proposal.
+    e8::MessageChannelMembership unchanged_creator;
+    unchanged_creator.set_channel_id(*channel_info.message_channel.id.Value());
+    unchanged_creator.set_user_id(kCreatorId);
+    unchanged_creator.set_member_type(e8::MCMT_ADMIN);
+
+    e8::MessageChannelMembership new_membership;
+    new_membership.set_channel_id(*channel_info.message_channel.id.Value());
+    new_membership.set_user_id(*new_member->id.Value());
+    new_membership.set_member_type(e8::MCMT_ADMIN);
+
+    e8::MessageChannelMembership promote_regular_member;
+    promote_regular_member.set_channel_id(*channel_info.message_channel.id.Value());
+    promote_regular_member.set_user_id(kRegularMemberId);
+    promote_regular_member.set_member_type(e8::MCMT_ADMIN);
+
+    // Apply the proposal.
     bool rc = e8::UpdateMessageChannelMembership(
-        /*viewer_id=*/kCreatorId, *channel_info.message_channel.id.Value(), *user->id.Value(),
-        e8::MCMT_ADMIN, env.MessageChannelPbac(), env.DemowebDatabase());
+        /*viewer_id=*/kCreatorId, *channel_info.message_channel.id.Value(),
+        {unchanged_creator, new_membership, promote_regular_member}, env.MessageChannelPbac(),
+        env.DemowebDatabase());
     TEST_CONDITION(rc == true);
 
     std::vector<e8::MessageChannelMember> retrieved_members =
@@ -275,17 +293,20 @@ bool AddUserToMessageChannelTest() {
 
     TEST_CONDITION(std::find_if(retrieved_members.begin(), retrieved_members.end(),
                                 [](e8::MessageChannelMember const &member) {
-                                    return *member.member.id.Value() == kCreatorId;
+                                    return *member.member.id.Value() == kCreatorId &&
+                                           member.member_type == e8::MCMT_ADMIN;
                                 }) != retrieved_members.end());
 
     TEST_CONDITION(std::find_if(retrieved_members.begin(), retrieved_members.end(),
                                 [](e8::MessageChannelMember const &member) {
-                                    return *member.member.id.Value() == kRegularMemberId;
+                                    return *member.member.id.Value() == kRegularMemberId &&
+                                           member.member_type == e8::MCMT_ADMIN;
                                 }) != retrieved_members.end());
 
     TEST_CONDITION(std::find_if(retrieved_members.begin(), retrieved_members.end(),
                                 [](e8::MessageChannelMember const &member) {
-                                    return *member.member.id.Value() == 100L;
+                                    return *member.member.id.Value() == 100L &&
+                                           member.member_type == e8::MCMT_ADMIN;
                                 }) != retrieved_members.end());
 
     return true;
@@ -359,8 +380,9 @@ bool ComputeMessageChannelMembershipDeltaTest() {
 
     // Removal.
     std::vector<e8::MessageChannelMembership> proposed_removal{creator};
-    e8::MessageChannelMembershipDelta delta = e8::ComputeMessageChannelMembershipDelta(
-        *channel_info.message_channel.id.Value(), proposed_removal, env.DemowebDatabase());
+    e8::message_channel_internal::MessageChannelMembershipDelta delta =
+        e8::message_channel_internal::ComputeMessageChannelMembershipDelta(
+            *channel_info.message_channel.id.Value(), proposed_removal, env.DemowebDatabase());
     TEST_CONDITION(delta.to_be_added.empty());
     TEST_CONDITION(delta.to_be_modified.empty());
     TEST_CONDITION(delta.to_be_removed.size() == 1);
@@ -368,14 +390,14 @@ bool ComputeMessageChannelMembershipDeltaTest() {
 
     // Addition.
     e8::MessageChannelMembership new_member;
-    regular_member.set_user_id(100L);
-    regular_member.set_channel_id(*channel_info.message_channel.id.Value());
-    regular_member.set_member_type(e8::MCMT_ADMIN);
+    new_member.set_user_id(100L);
+    new_member.set_channel_id(*channel_info.message_channel.id.Value());
+    new_member.set_member_type(e8::MCMT_ADMIN);
 
     std::vector<e8::MessageChannelMembership> proposed_addition{creator, regular_member,
                                                                 new_member};
-    delta = e8::ComputeMessageChannelMembershipDelta(*channel_info.message_channel.id.Value(),
-                                                     proposed_addition, env.DemowebDatabase());
+    delta = e8::message_channel_internal::ComputeMessageChannelMembershipDelta(
+        *channel_info.message_channel.id.Value(), proposed_addition, env.DemowebDatabase());
     TEST_CONDITION(delta.to_be_modified.empty());
     TEST_CONDITION(delta.to_be_removed.empty());
     TEST_CONDITION(delta.to_be_added.size() == 1);
@@ -385,8 +407,8 @@ bool ComputeMessageChannelMembershipDeltaTest() {
     // Modification.
     regular_member.set_member_type(e8::MCMT_ADMIN);
     std::vector<e8::MessageChannelMembership> proposed_modification{creator, regular_member};
-    delta = e8::ComputeMessageChannelMembershipDelta(*channel_info.message_channel.id.Value(),
-                                                     proposed_addition, env.DemowebDatabase());
+    delta = e8::message_channel_internal::ComputeMessageChannelMembershipDelta(
+        *channel_info.message_channel.id.Value(), proposed_modification, env.DemowebDatabase());
     TEST_CONDITION(delta.to_be_removed.empty());
     TEST_CONDITION(delta.to_be_added.empty());
     TEST_CONDITION(delta.to_be_modified.size() == 1);
@@ -404,7 +426,7 @@ int main() {
     e8::RunTest("ListMessageChannelQueryTextFilterTest", ListMessageChannelQueryTextFilterTest);
     e8::RunTest("ListMessageChannelWithMemberIdsTest", ListMessageChannelWithMemberIdsTest);
     e8::RunTest("CreateAndListChannelMemberTest", CreateAndListChannelMemberTest);
-    e8::RunTest("AddUserToMessageChannelTest", AddUserToMessageChannelTest);
+    e8::RunTest("AddUserToMessageChannelTest", UpdateMessageChannelMembershipTest);
     e8::RunTest("ToMessageChannelOverviewsTest", ToMessageChannelOverviewsTest);
     e8::RunTest("MessageChannelMembershipTest", MessageChannelMembershipTest);
     e8::RunTest("ComputeMessageChannelMembershipDeltaTest",

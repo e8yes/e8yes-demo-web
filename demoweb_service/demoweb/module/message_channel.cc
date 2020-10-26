@@ -44,6 +44,66 @@
 #include "proto_cc/user_profile.pb.h"
 
 namespace e8 {
+namespace message_channel_internal {
+
+MessageChannelMembershipDelta ComputeMessageChannelMembershipDelta(
+    MessageChannelId const channel_id,
+    std::vector<MessageChannelMembership> const &proposed_memberships,
+    ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder message_channel_member_query;
+    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
+    message_channel_member_query.QueryPiece(TableNames::MessageChannelHasUser())
+        .QueryPiece(" mchu")
+        .QueryPiece(" WHERE mchu.channel_id=")
+        .Holder(&channel_id_ph);
+
+    message_channel_member_query.SetValueToPlaceholder(channel_id_ph,
+                                                       std::make_shared<SqlLong>(channel_id));
+
+    std::vector<std::tuple<MessageChannelHasUserEntity>> members =
+        Query<MessageChannelHasUserEntity>(message_channel_member_query, {"mchu"}, conns);
+    std::unordered_map<UserId, MessageChannelHasUserEntity> current_members;
+    for (auto const &member : members) {
+        MessageChannelHasUserEntity const &entity = std::get<0>(member);
+        current_members[*entity.user_id.Value()] = entity;
+    }
+
+    std::unordered_map<UserId, MessageChannelMembership> proposed_members;
+    for (auto const &membership : proposed_memberships) {
+        proposed_members[membership.user_id()] = membership;
+    }
+
+    MessageChannelMembershipDelta delta;
+    for (auto const &[member_id, current_member] : current_members) {
+        auto it = proposed_members.find(member_id);
+        if (it == proposed_members.end()) {
+            // To be removed.
+            MessageChannelMembership to_be_removed;
+            to_be_removed.set_user_id(*current_member.user_id.Value());
+            to_be_removed.set_channel_id(*current_member.channel_id.Value());
+            to_be_removed.set_member_type(
+                static_cast<MessageChannelMemberType>(*current_member.ownership.Value()));
+            delta.to_be_removed.push_back(to_be_removed);
+        } else {
+            if (it->second.member_type() != *current_member.ownership.Value()) {
+                // To be modified.
+                delta.to_be_modified.push_back(it->second);
+            }
+        }
+    }
+    for (auto const &[proposed_member_id, proposed_member] : proposed_members) {
+        auto it = current_members.find(proposed_member_id);
+        if (it == current_members.end()) {
+            // To be added.
+            delta.to_be_added.push_back(proposed_member);
+        }
+    }
+
+    return delta;
+}
+
+} // namespace message_channel_internal
+
 namespace {
 
 std::vector<std::vector<MessageChannelHasUserEntity>>
@@ -119,31 +179,71 @@ GetMessageChannelRelation(SearchedMessageChannel const &searched_message_channel
 
 } // namespace
 
-std::optional<MessageChannelEntity>
-CreateMessageChannel(UserId creator_id, std::optional<std::string> const &channel_name,
-                     std::optional<std::string> const &description,
-                     std::vector<UserId> const &to_be_member_ids, bool const encrypted,
-                     bool const close_group_channel, HostId const host_id,
-                     MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
+MessageChannelEntity CreateMessageChannel(UserId creator_id,
+                                          std::optional<std::string> const &channel_name,
+                                          std::optional<std::string> const &description,
+                                          std::vector<UserId> const &to_be_member_ids,
+                                          bool const encrypted, bool const close_group_channel,
+                                          HostId const host_id,
+                                          ConnectionReservoirInterface *conns) {
     std::time_t current_timestamp;
     std::time(&current_timestamp);
 
     MessageChannelEntity message_channel = CreateMessageChannel(
         channel_name, description, encrypted, close_group_channel, host_id, conns);
 
-    bool rc = UpdateMessageChannelMembership(
-        /*viewer_id=*/std::nullopt, *message_channel.id.Value(), creator_id, MCMT_ADMIN, pbac,
-        conns);
-    if (rc == false) {
-        return std::nullopt;
-    }
-
+    UpdateMessageChannelMembership(*message_channel.id.Value(), creator_id, MCMT_ADMIN, conns);
     for (UserId const user_id : to_be_member_ids) {
-        UpdateMessageChannelMembership(/*viewer_id=*/std::nullopt, *message_channel.id.Value(),
-                                       user_id, MCMT_MEMBER, pbac, conns);
+        UpdateMessageChannelMembership(*message_channel.id.Value(), user_id, MCMT_ADMIN, conns);
     }
 
     return message_channel;
+}
+
+bool UpdateMessageChannelMembership(
+    UserId const viewer_id, MessageChannelId const channel_id,
+    std::vector<MessageChannelMembership> const &proposed_memberships,
+    MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
+    bool all_successful = true;
+
+    message_channel_internal::MessageChannelMembershipDelta delta =
+        message_channel_internal::ComputeMessageChannelMembershipDelta(channel_id,
+                                                                       proposed_memberships, conns);
+
+    // Evalulate access control.
+    for (auto const &membership : delta.to_be_modified) {
+        assert(membership.channel_id() == channel_id);
+        all_successful &= pbac->AllowUpdateChannelMembership(
+            viewer_id, channel_id, membership.user_id(), membership.member_type());
+    }
+    for (auto const &membership : delta.to_be_removed) {
+        assert(membership.channel_id() == channel_id);
+        all_successful &=
+            pbac->AllowDeleteMemberFromChannel(viewer_id, channel_id, membership.user_id());
+    }
+    for (auto const &membership : delta.to_be_added) {
+        assert(membership.channel_id() == channel_id);
+        all_successful &= pbac->AllowUpdateChannelMembership(
+            viewer_id, channel_id, membership.user_id(), membership.member_type());
+    }
+    if (!all_successful) {
+        return false;
+    }
+
+    // Apply the delta.
+    for (auto const &membership : delta.to_be_modified) {
+        UpdateMessageChannelMembership(channel_id, membership.user_id(), membership.member_type(),
+                                       conns);
+    }
+    for (auto const &membership : delta.to_be_added) {
+        all_successful &= CreateMessageChannelMembership(channel_id, membership.user_id(),
+                                                         membership.member_type(), conns);
+    }
+    for (auto const &membership : delta.to_be_removed) {
+        all_successful &= DeleteMessageChannelMembership(channel_id, membership.user_id(), conns);
+    }
+
+    return all_successful;
 }
 
 std::vector<SearchedMessageChannel> SearchMessageChannels(
@@ -346,18 +446,6 @@ GetMessageChannelMembers(MessageChannelId channel_id, std::optional<Pagination> 
     return results;
 }
 
-bool UpdateMessageChannelMembership(std::optional<UserId> const &viewer_id,
-                                    MessageChannelId channel_id, UserId const user_id,
-                                    MessageChannelMemberType const member_type,
-                                    MessageChannelPbacInterface *pbac,
-                                    ConnectionReservoirInterface *conns) {
-    if (viewer_id.has_value() &&
-        !pbac->AllowUpdateChannelMembership(*viewer_id, channel_id, user_id, member_type)) {
-        return false;
-    }
-    return CreateMessageChannelMembership(channel_id, user_id, member_type, conns);
-}
-
 bool UserInMessageChannel(UserId const user_id, MessageChannelId const channel_id,
                           ConnectionReservoirInterface *conns) {
     SqlQueryBuilder query;
@@ -373,62 +461,6 @@ bool UserInMessageChannel(UserId const user_id, MessageChannelId const channel_i
     query.SetValueToPlaceholder(member_id_ph, std::make_shared<SqlLong>(user_id));
 
     return Exists(query, conns);
-}
-
-MessageChannelMembershipDelta ComputeMessageChannelMembershipDelta(
-    MessageChannelId const channel_id,
-    std::vector<MessageChannelMembership> const &proposed_memberships,
-    ConnectionReservoirInterface *conns) {
-    SqlQueryBuilder message_channel_member_query;
-    SqlQueryBuilder::Placeholder<SqlLong> channel_id_ph;
-    message_channel_member_query.QueryPiece(TableNames::MessageChannelHasUser())
-        .QueryPiece(" mchu")
-        .QueryPiece(" WHERE mchu.channel_id=")
-        .Holder(&channel_id_ph);
-
-    message_channel_member_query.SetValueToPlaceholder(channel_id_ph,
-                                                       std::make_shared<SqlLong>(channel_id));
-
-    std::vector<std::tuple<MessageChannelHasUserEntity>> members =
-        Query<MessageChannelHasUserEntity>(message_channel_member_query, {"mchu"}, conns);
-    std::unordered_map<UserId, MessageChannelHasUserEntity> current_members;
-    for (auto const &member : members) {
-        MessageChannelHasUserEntity const &entity = std::get<0>(member);
-        current_members[*entity.user_id.Value()] = entity;
-    }
-
-    std::unordered_map<UserId, MessageChannelMembership> proposed_members;
-    for (auto const &membership : proposed_memberships) {
-        proposed_members[membership.user_id()] = membership;
-    }
-
-    MessageChannelMembershipDelta delta;
-    for (auto const &[member_id, current_member] : current_members) {
-        auto it = proposed_members.find(member_id);
-        if (it == proposed_members.end()) {
-            // To be removed.
-            MessageChannelMembership to_be_removed;
-            to_be_removed.set_user_id(*current_member.user_id.Value());
-            to_be_removed.set_channel_id(*current_member.channel_id.Value());
-            to_be_removed.set_member_type(
-                static_cast<MessageChannelMemberType>(*current_member.ownership.Value()));
-            delta.to_be_removed.push_back(to_be_removed);
-        } else {
-            if (it->second.member_type() != *current_member.ownership.Value()) {
-                // To be modified.
-                delta.to_be_modified.push_back(it->second);
-            }
-        }
-    }
-    for (auto const &[proposed_member_id, proposed_member] : proposed_members) {
-        auto it = current_members.find(proposed_member_id);
-        if (it == current_members.end()) {
-            // To be added.
-            delta.to_be_added.push_back(proposed_member);
-        }
-    }
-
-    return delta;
 }
 
 } // namespace e8
