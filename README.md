@@ -8,7 +8,7 @@ Deployed at HTTP/2 api.e8yes.org:30051; HTTP/1.4 api.e8yes.org:30080
 - OS: Debian Linux Distros
 - Build tools: GNU Make
 
-Run `./gitpush.sh` in the top-level directory to initialize the development environment as well as pushing commits to the github repository. Do not recommend running `git push` because that allows you to skip the important automated testing processes.
+Run `./install_dev_pkgs.sh` in the top-level directory to initialize the development environment. To build and test the back-end services, run the script `./compile_proto.sh` to generate protocol buffer code, then run the script `./run_tests.sh` to initiate the build and test process. Run the script `./gitpush.sh` to push commits to the github repository. This script will try to build and test your commits before pushing to the repository.
 
 ### Client
  - [Android](https://github.com/e8yes/e8yes-chat-android)
