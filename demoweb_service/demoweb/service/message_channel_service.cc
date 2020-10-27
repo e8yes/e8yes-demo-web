@@ -64,6 +64,41 @@ MessageChannelServiceImpl::CreateMessageChannel(grpc::ServerContext *context,
 }
 
 grpc::Status
+MessageChannelServiceImpl::UpdateMessageChannel(grpc::ServerContext *context,
+                                                UpdateMessageChannelRequest const *request,
+                                                UpdateMessageChannelResponse * /*response*/) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!identity.has_value()) {
+        return status;
+    }
+
+    std::optional<std::string> channel_title =
+        request->has_title() ? std::optional<std::string>(request->title().value()) : std::nullopt;
+    std::optional<std::string> channel_desc =
+        request->has_description() ? std::optional<std::string>(request->description().value())
+                                   : std::nullopt;
+    if (!UpdateMessageChannelMetadata(identity->user_id(), request->channel_id(), channel_title,
+                                      channel_desc, DemoWebEnvironment()->MessageChannelPbac(),
+                                      DemoWebEnvironment()->DemowebDatabase())
+             .has_value()) {
+        return grpc::Status(grpc::StatusCode::PERMISSION_DENIED,
+                            "Failed to update the message channel's metadata.");
+    }
+
+    std::vector<MessageChannelMembership> membership_proposal{request->memberships().begin(),
+                                                              request->memberships().end()};
+    if (!UpdateMessageChannelMembership(
+            identity->user_id(), request->channel_id(), membership_proposal,
+            DemoWebEnvironment()->MessageChannelPbac(), DemoWebEnvironment()->DemowebDatabase())) {
+        return grpc::Status(grpc::StatusCode::PERMISSION_DENIED,
+                            "Failed to apply the entire/part of the membership proposal.");
+    }
+
+    return grpc::Status::OK;
+}
+
+grpc::Status
 MessageChannelServiceImpl::SearchMessageChannels(grpc::ServerContext *context,
                                                  SearchMessageChannelsRequest const *request,
                                                  SearchMessageChannelsResponse *response) {
