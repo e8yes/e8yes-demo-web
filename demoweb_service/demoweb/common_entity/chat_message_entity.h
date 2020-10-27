@@ -27,13 +27,13 @@ namespace e8 {
  * @brief The MessageEntity class C++ class representation of the database table
  * "message".
  */
-class MessageEntity : public SqlEntityInterface {
+class ChatMessageEntity : public SqlEntityInterface {
   public:
-    MessageEntity();
-    MessageEntity(MessageEntity const &other);
-    ~MessageEntity() = default;
+    ChatMessageEntity();
+    ChatMessageEntity(ChatMessageEntity const &other);
+    ~ChatMessageEntity() = default;
 
-    MessageEntity &operator=(MessageEntity const &other);
+    ChatMessageEntity &operator=(ChatMessageEntity const &other);
 
     SqlLong id = SqlLong("id");
     SqlLong group_id = SqlLong("group_id");

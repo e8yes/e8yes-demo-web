@@ -15,19 +15,9 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <optional>
-#include <string>
+#ifndef CHAT_MESSAGE_STORAGE_H
+#define CHAT_MESSAGE_STORAGE_H
 
-#include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
-#include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
-#include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "demoweb_service/demoweb/module/chat_message_group.h"
+namespace e8 {}
 
-namespace e8 {
-
-std::optional<ChatMessageGroupEntity> CreateChatMessageGroup(std::optional<UserId> const viewer_id,
-                                                     MessageChannelId const channel_id,
-                                                     std::string const &group_title,
-                                                     ConnectionReservoirInterface *conns) {}
-
-} // namespace e8
+#endif // CHAT_MESSAGE_STORAGE_H

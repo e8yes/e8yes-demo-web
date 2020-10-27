@@ -14,12 +14,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 HEADERS += \
+    common_entity/chat_message_entity.h \
+    common_entity/chat_message_group_entity.h \
     common_entity/contact_relation_entity.h \
     common_entity/file_metadata_entity.h \
     common_entity/message_channel_entity.h \
     common_entity/message_channel_has_user_entity.h \
-    common_entity/message_entity.h \
-    common_entity/message_group_entity.h \
     common_entity/user_entity.h \
     common_entity/user_group_entity.h \
     common_entity/user_group_has_file_entity.h \
@@ -33,6 +33,7 @@ HEADERS += \
     module/baseline_user.h \
     module/chat_message.h \
     module/chat_message_group.h \
+    module/chat_message_storage.h \
     module/contact_invitation.h \
     module/contact_storage.h \
     module/file_access_validator.h \
@@ -57,12 +58,12 @@ HEADERS += \
     service/user_service.h
 
 SOURCES += \
+    common_entity/chat_message_entity.cc \
+    common_entity/chat_message_group_entity.cc \
     common_entity/contact_relation_entity.cc \
     common_entity/file_metadata_entity.cc \
     common_entity/message_channel_entity.cc \
     common_entity/message_channel_has_user_entity.cc \
-    common_entity/message_entity.cc \
-    common_entity/message_group_entity.cc \
     common_entity/user_entity.cc \
     common_entity/user_group_entity.cc \
     common_entity/user_group_has_file_entity.cc \
@@ -73,6 +74,7 @@ SOURCES += \
     module/baseline_user.cc \
     module/chat_message.cc \
     module/chat_message_group.cc \
+    module/chat_message_storage.cc \
     module/contact_invitation.cc \
     module/contact_storage.cc \
     module/file_access_validator.cc \

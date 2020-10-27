@@ -16,7 +16,7 @@
  */
 
 #include "demoweb_service/demoweb/module/chat_message.h"
-#include "demoweb_service/demoweb/common_entity/message_group_entity.h"
+#include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
 #include "proto_cc/chat_message.pb.h"
 
 namespace e8 {

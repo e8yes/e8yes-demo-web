@@ -21,25 +21,25 @@
 #include <optional>
 #include <string>
 
+#include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
-#include "demoweb_service/demoweb/common_entity/message_group_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
 
 /**
- * @brief CreateMessageGroup
+ * @brief CreateChatMessageGroup
  * @param viewer_id
  * @param channel_id
  * @param group_title
  * @param conns
  * @return
  */
-std::optional<MessageGroupEntity> CreateMessageGroup(std::optional<UserId> const viewer_id,
-                                                     MessageChannelId const channel_id,
-                                                     std::string const &group_title,
-                                                     ConnectionReservoirInterface *conns);
+std::optional<ChatMessageGroupEntity> CreateChatMessageGroup(std::optional<UserId> const viewer_id,
+                                                             MessageChannelId const channel_id,
+                                                             std::string const &group_title,
+                                                             ConnectionReservoirInterface *conns);
 
 } // namespace e8
 

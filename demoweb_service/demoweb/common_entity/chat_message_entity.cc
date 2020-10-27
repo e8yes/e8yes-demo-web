@@ -15,18 +15,18 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "demoweb_service/demoweb/common_entity/message_entity.h"
+#include "demoweb_service/demoweb/common_entity/chat_message_entity.h"
 #include "postgres/query_runner/reflection/sql_entity_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 
 namespace e8 {
 
-MessageEntity::MessageEntity()
+ChatMessageEntity::ChatMessageEntity()
     : SqlEntityInterface({&id, &group_id, &sender_id, &text_entries, &binary_content,
                           &media_file_paths, &media_file_preview_paths, &created_at,
                           &last_interaction_at}) {}
 
-MessageEntity::MessageEntity(MessageEntity const &other) : MessageEntity() {
+ChatMessageEntity::ChatMessageEntity(ChatMessageEntity const &other) : ChatMessageEntity() {
     id = other.id;
     group_id = other.group_id;
     sender_id = other.sender_id;
@@ -38,7 +38,7 @@ MessageEntity::MessageEntity(MessageEntity const &other) : MessageEntity() {
     last_interaction_at = other.last_interaction_at;
 }
 
-MessageEntity &MessageEntity::operator=(MessageEntity const &other) {
+ChatMessageEntity &ChatMessageEntity::operator=(ChatMessageEntity const &other) {
     id = other.id;
     group_id = other.group_id;
     sender_id = other.sender_id;
