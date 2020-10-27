@@ -36,35 +36,6 @@
 #include "proto_cc/pagination.pb.h"
 
 namespace e8 {
-namespace message_channel_internal {
-
-/**
- * @brief The MessageChannelMembershipDelta struct The difference between the proposed memberships
- * and the current memberships
- */
-struct MessageChannelMembershipDelta {
-    // Memberships to be updated towards the current records.
-    std::vector<MessageChannelMembership> to_be_modified;
-
-    // Memberships to be amended.
-    std::vector<MessageChannelMembership> to_be_added;
-
-    // Current memberships that need to be removed.
-    std::vector<MessageChannelMembership> to_be_removed;
-};
-
-/**
- * @brief ComputeMessageChannelMembershipDelta Compute the difference between the
- * proposed_memberships and the current memberships in the specified message channel.
- *
- * @return See the structure MessageChannelMembershipDelta above.
- */
-MessageChannelMembershipDelta ComputeMessageChannelMembershipDelta(
-    MessageChannelId const channel_id,
-    std::vector<MessageChannelMembership> const &proposed_memberships,
-    ConnectionReservoirInterface *conns);
-
-} // namespace message_channel_internal
 
 /**
  * @brief CreateMessageChannel Create a new message channel. A message channel allows communication
@@ -113,6 +84,30 @@ bool UpdateMessageChannelMembership(
     UserId const viewer_id, MessageChannelId const channel_id,
     std::vector<MessageChannelMembership> const &proposed_memberships,
     MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns);
+
+/**
+ * @brief The MessageChannelMembershipDelta struct The difference between the proposed memberships
+ * and the current memberships
+ */
+struct MessageChannelMembershipDelta {
+    // Memberships to be updated towards the current records.
+    std::vector<MessageChannelMembership> to_be_modified;
+
+    // Memberships to be amended.
+    std::vector<MessageChannelMembership> to_be_added;
+
+    // Current memberships that need to be removed.
+    std::vector<MessageChannelMembership> to_be_removed;
+};
+
+/**
+ * @brief UpdateMessageChannelMembership Similar to the function above, it applies the given delta
+ * directly rather than computing it internally.
+ */
+bool UpdateMessageChannelMembership(UserId const viewer_id, MessageChannelId const channel_id,
+                                    MessageChannelMembershipDelta const &delta,
+                                    MessageChannelPbacInterface *pbac,
+                                    ConnectionReservoirInterface *conns);
 
 struct SearchedMessageChannel {
     MessageChannelEntity message_channel;
@@ -172,6 +167,21 @@ GetMessageChannelMembers(MessageChannelId channel_id, std::optional<Pagination> 
  */
 bool UserInMessageChannel(UserId const user_id, MessageChannelId const channel_id,
                           ConnectionReservoirInterface *conns);
+
+namespace message_channel_internal {
+
+/**
+ * @brief ComputeMessageChannelMembershipDelta Compute the difference between the
+ * proposed_memberships and the current memberships in the specified message channel.
+ *
+ * @return See the structure MessageChannelMembershipDelta above.
+ */
+MessageChannelMembershipDelta ComputeMessageChannelMembershipDelta(
+    MessageChannelId const channel_id,
+    std::vector<MessageChannelMembership> const &proposed_memberships,
+    ConnectionReservoirInterface *conns);
+
+} // namespace message_channel_internal
 
 } // namespace e8
 

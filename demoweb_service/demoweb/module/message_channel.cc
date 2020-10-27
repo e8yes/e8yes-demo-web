@@ -210,15 +210,11 @@ std::optional<MessageChannelEntity> UpdateMessageChannelMetadata(
     return UpdateMessageChannel(channel_id, channel_name, description, conns);
 }
 
-bool UpdateMessageChannelMembership(
-    UserId const viewer_id, MessageChannelId const channel_id,
-    std::vector<MessageChannelMembership> const &proposed_memberships,
-    MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
+bool UpdateMessageChannelMembership(UserId const viewer_id, MessageChannelId const channel_id,
+                                    MessageChannelMembershipDelta const &delta,
+                                    MessageChannelPbacInterface *pbac,
+                                    ConnectionReservoirInterface *conns) {
     bool all_successful = true;
-
-    message_channel_internal::MessageChannelMembershipDelta delta =
-        message_channel_internal::ComputeMessageChannelMembershipDelta(channel_id,
-                                                                       proposed_memberships, conns);
 
     // Evalulate access control.
     for (auto const &membership : delta.to_be_modified) {
@@ -254,6 +250,16 @@ bool UpdateMessageChannelMembership(
     }
 
     return all_successful;
+}
+
+bool UpdateMessageChannelMembership(
+    UserId const viewer_id, MessageChannelId const channel_id,
+    std::vector<MessageChannelMembership> const &proposed_memberships,
+    MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
+    MessageChannelMembershipDelta delta =
+        message_channel_internal::ComputeMessageChannelMembershipDelta(channel_id,
+                                                                       proposed_memberships, conns);
+    return UpdateMessageChannelMembership(viewer_id, channel_id, delta, pbac, conns);
 }
 
 std::vector<SearchedMessageChannel> SearchMessageChannels(

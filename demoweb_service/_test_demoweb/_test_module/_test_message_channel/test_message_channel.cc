@@ -402,7 +402,7 @@ bool ComputeMessageChannelMembershipDeltaTest() {
 
     // Removal.
     std::vector<e8::MessageChannelMembership> proposed_removal{creator};
-    e8::message_channel_internal::MessageChannelMembershipDelta delta =
+    e8::MessageChannelMembershipDelta delta =
         e8::message_channel_internal::ComputeMessageChannelMembershipDelta(
             *channel_info.message_channel.id.Value(), proposed_removal, env.DemowebDatabase());
     TEST_CONDITION(delta.to_be_added.empty());
