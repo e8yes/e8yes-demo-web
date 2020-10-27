@@ -40,6 +40,10 @@ class MessageChannelServiceImpl : public MessageChannelService::Service {
                                       UpdateMessageChannelRequest const *request,
                                       UpdateMessageChannelResponse *response) override;
 
+    grpc::Status LeaveMessageChannel(grpc::ServerContext *context,
+                                     LeaveMessageChannelRequest const *request,
+                                     LeaveMessageChannelResponse *response) override;
+
     grpc::Status SearchMessageChannels(grpc::ServerContext *context,
                                        SearchMessageChannelsRequest const *request,
                                        SearchMessageChannelsResponse *response) override;

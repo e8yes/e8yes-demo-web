@@ -99,6 +99,30 @@ MessageChannelServiceImpl::UpdateMessageChannel(grpc::ServerContext *context,
 }
 
 grpc::Status
+MessageChannelServiceImpl::LeaveMessageChannel(grpc::ServerContext *context,
+                                               LeaveMessageChannelRequest const *request,
+                                               LeaveMessageChannelResponse * /*response*/) {
+    grpc::Status status;
+    std::optional<Identity> identity = ExtractIdentityFromContext(*context, &status);
+    if (!identity.has_value()) {
+        return status;
+    }
+
+    MessageChannelMembership removal;
+    removal.set_channel_id(request->channel_id());
+    removal.set_user_id(identity->user_id());
+
+    if (!UpdateMessageChannelMembership(identity->user_id(), request->channel_id(), {removal},
+                                        DemoWebEnvironment()->MessageChannelPbac(),
+                                        DemoWebEnvironment()->DemowebDatabase())) {
+        return grpc::Status(grpc::StatusCode::PERMISSION_DENIED,
+                            "Failed to apply the membership removal proposal.");
+    }
+
+    return grpc::Status::OK;
+}
+
+grpc::Status
 MessageChannelServiceImpl::SearchMessageChannels(grpc::ServerContext *context,
                                                  SearchMessageChannelsRequest const *request,
                                                  SearchMessageChannelsResponse *response) {
