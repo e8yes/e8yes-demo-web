@@ -156,4 +156,10 @@ bool MessageChannelPbacImpl::AllowDeleteMemberFromChannel(UserId const operator_
            operator_attr_it->second.member_type == MCMT_ADMIN;
 }
 
+bool MessageChannelPbacImpl::AllowCreateChatMessageGroup(UserId const operator_user_id,
+                                                         MessageChannelId const target_channel_id) {
+    return ExtractMessageChannelMemberAttributes(target_channel_id, operator_user_id, conns_)
+        .has_value();
+}
+
 } // namespace e8

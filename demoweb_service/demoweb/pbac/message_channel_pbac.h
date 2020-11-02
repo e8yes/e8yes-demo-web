@@ -66,6 +66,19 @@ class MessageChannelPbacInterface {
     virtual bool AllowDeleteMemberFromChannel(UserId const operator_user_id,
                                               MessageChannelId const target_channel_id,
                                               UserId const user_to_be_removed) = 0;
+
+    /**
+     * @brief AllowCreateChatMessageGroup Check if the operator has the permission to create a chat
+     * message group in the specified message channel.
+     *
+     * @param operator_user_id ID of the person who is requesting the creation of a chat message
+     * group.
+     * @param target_channel_id ID of the message channel in which the chat message group is to be
+     * created.
+     * @return Whether the operator has the right.
+     */
+    virtual bool AllowCreateChatMessageGroup(UserId const operator_user_id,
+                                             MessageChannelId const target_channel_id) = 0;
 };
 
 /**
@@ -90,6 +103,9 @@ class MessageChannelPbacImpl : public MessageChannelPbacInterface {
     bool AllowDeleteMemberFromChannel(UserId const operator_user_id,
                                       MessageChannelId const target_channel_id,
                                       UserId const user_to_be_removed) override;
+
+    bool AllowCreateChatMessageGroup(UserId const operator_user_id,
+                                     MessageChannelId const target_channel_id) override;
 
   private:
     ConnectionReservoirInterface *conns_;
