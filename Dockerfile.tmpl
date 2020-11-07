@@ -5,6 +5,9 @@ WORKDIR /home
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 RUN apt upgrade -y
+RUN apt install -y qt5-default
+RUN apt install -y golang-go
+RUN apt install -y go-dep
 RUN apt install -y haveged
 RUN apt install -y build-essential
 RUN apt install -y git
@@ -12,12 +15,10 @@ RUN apt install -y nginx
 RUN apt install -y libpqxx-dev
 RUN apt install -y libprotobuf-dev
 RUN apt install -y protobuf-compiler
+RUN apt install -y protobuf-compiler-grpc
 RUN apt install -y libgrpc++-dev
 RUN apt install -y libcrypto++-dev
 RUN apt install -y libcrypt2-dev
-RUN apt install -y golang-go
-RUN apt install -y go-dep
-RUN apt install -y qt5-default
 RUN apt install -y libsqlite3-dev
 
 # Install grpc web proxy
@@ -37,6 +38,14 @@ RUN ls -lh
 # Build project.
 WORKDIR /home
 RUN mkdir -p build
+
+WORKDIR /home/demoweb_src
+RUN protoc --cpp_out=./proto_cc \
+           --grpc_out=./proto_cc \
+           --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` \
+           --proto_path=proto \
+           `find proto -name '*.proto'`
+
 WORKDIR /home/build
 RUN qmake ../demoweb_src/e8.pro
 RUN make -j `nproc --all`
