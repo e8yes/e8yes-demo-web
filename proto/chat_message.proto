@@ -30,9 +30,16 @@ message ChatMessageEntry {
     int64 created_at = 6;
 }
 
+enum ChatMessageThreadType {
+    CMTT_INVALID = 0;
+    CMTT_TEMPORAL = 1;
+    CMTT_POPUP = 2;
+}
+
 message ChatMessageThread {
     int64 thread_id = 1;
     string thread_title = 2;
     int64 created_at = 3;
-    repeated ChatMessageEntry messages = 4;
+    ChatMessageThreadType thread_type = 4;
+    repeated ChatMessageEntry messages = 5;
 }
