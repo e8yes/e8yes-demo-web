@@ -25,6 +25,7 @@ import "chat_message.proto";
 message CreateChatMessageThreadRequest {
     int64 channel_id = 1;
     string thread_title = 2;
+    ChatMessageThreadType thread_type = 3;
 }
 
 message CreateChatMessageThreadResponse {
