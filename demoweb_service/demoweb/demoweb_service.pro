@@ -33,6 +33,7 @@ HEADERS += \
     module/baseline_user.h \
     module/chat_message.h \
     module/chat_message_group.h \
+    module/chat_message_group_storage.h \
     module/chat_message_storage.h \
     module/contact_invitation.h \
     module/contact_storage.h \
@@ -74,6 +75,7 @@ SOURCES += \
     module/baseline_user.cc \
     module/chat_message.cc \
     module/chat_message_group.cc \
+    module/chat_message_group_storage.cc \
     module/chat_message_storage.cc \
     module/contact_invitation.cc \
     module/contact_storage.cc \

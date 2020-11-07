@@ -23,8 +23,8 @@ abstract class MessageChannelServiceInterface {
   Future<CreateMessageChannelResponse> createMessageChannel(
       CreateMessageChannelRequest request, String signature);
 
-  Future<AddUserToMessageChannelResponse> addUserToMessageChannel(
-      AddUserToMessageChannelRequest request, String signature);
+  Future<UpdateMessageChannelResponse> updateMessageChannel(
+      UpdateMessageChannelRequest request, String signature);
 
   Future<SearchMessageChannelsResponse> searchMessageChannels(
       SearchMessageChannelsRequest request, String signature);

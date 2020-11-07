@@ -18,16 +18,28 @@
 #include <optional>
 #include <string>
 
-#include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
+#include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
-#include "demoweb_service/demoweb/module/chat_message_group.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
+#include "demoweb_service/demoweb/module/chat_message_group_storage.h"
+#include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "postgres/query_runner/sql_runner.h"
+#include "proto_cc/chat_message.pb.h"
 
 namespace e8 {
 
-std::optional<ChatMessageGroupEntity> CreateChatMessageGroup(std::optional<UserId> const viewer_id,
-                                                     MessageChannelId const channel_id,
-                                                     std::string const &group_title,
-                                                     ConnectionReservoirInterface *conns) {}
+std::optional<ChatMessageGroupEntity>
+CreateChatMessageGroup(UserId const viewer_id, MessageChannelId const channel_id,
+                       std::string const &group_title, ChatMessageThreadType const thread_type,
+                       HostId const host_id, MessageChannelPbacInterface *pbac,
+                       ConnectionReservoirInterface *conns) {
+    if (!pbac->AllowCreateChatMessageGroup(viewer_id, channel_id)) {
+        return std::nullopt;
+    }
+    return CreateChatMessageGroup(viewer_id, channel_id, group_title, thread_type, host_id, pbac,
+                                  conns);
+}
 
 } // namespace e8

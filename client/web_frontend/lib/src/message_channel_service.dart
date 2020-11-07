@@ -31,12 +31,12 @@ class MessageChannelServiceImpl extends MessageChannelServiceInterface {
   }
 
   @override
-  Future<AddUserToMessageChannelResponse> addUserToMessageChannel(
-      AddUserToMessageChannelRequest request, String signature) {
+  Future<UpdateMessageChannelResponse> updateMessageChannel(
+      UpdateMessageChannelRequest request, String signature) {
     return demowebServiceRequester.MakeRequest(request, signature,
         (request, call_opts, channel) {
       return MessageChannelServiceClient(channel)
-          .addUserToMessageChannel(request, options: call_opts);
+          .updateMessageChannel(request, options: call_opts);
     });
   }
 

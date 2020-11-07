@@ -37,7 +37,7 @@ struct TableNames {
     static std::string ContactRelation() { return "contact_relation"; }
     static std::string MessageChannel() { return "message_channel"; }
     static std::string MessageChannelHasUser() { return "message_channel_has_user"; }
-    static std::string Message() { return "message"; }
+    static std::string ChatMessage() { return "message"; }
 };
 
 } // namespace e8
