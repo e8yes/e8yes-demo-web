@@ -55,15 +55,6 @@ message UpdateMessageChannelRequest {
 message UpdateMessageChannelResponse {}
 
 
-message AddUserToMessageChannelRequest {
-    int64 channel_id = 1;
-    int64 user_id = 2;
-    MessageChannelMemberType member_type = 3;
-}
-
-message AddUserToMessageChannelResponse {}
-
-
 message GetMessageChannelKeyRequest {
     int64 channel_id = 1;
     int32 timeout_secs = 2;
