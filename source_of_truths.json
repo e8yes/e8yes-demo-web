@@ -3,7 +3,7 @@
         {
             "name": "pi1",
             "user": "pi",
-            "location": "192.168.0.201",
+            "location": "192.168.1.201",
             "ssh_password": "1111",
             "functions": [
                 "distributor",
@@ -15,7 +15,7 @@
         {
             "name": "pi2",
             "user": "pi",
-            "location": "192.168.0.202",
+            "location": "192.168.1.202",
             "ssh_password": "1111",
             "functions": [
                 "load_balancer",
@@ -28,7 +28,7 @@
         {
             "name": "pi3",
             "user": "pi",
-            "location": "192.168.0.203",
+            "location": "192.168.1.203",
             "ssh_password": "1111",
             "functions": [
                 "distributor",
@@ -41,7 +41,7 @@
         {
             "name": "pi4",
             "user": "pi",
-            "location": "192.168.0.204",
+            "location": "192.168.1.204",
             "ssh_password": "1111",
             "functions": [
                 "distributor",
@@ -53,7 +53,7 @@
         {
             "name": "pi5",
             "user": "pi",
-            "location": "192.168.0.205",
+            "location": "192.168.1.205",
             "ssh_password": "1111",
             "functions": [
                 "distributor",
@@ -65,7 +65,7 @@
         {
             "name": "pi6",
             "user": "pi",
-            "location": "192.168.0.206",
+            "location": "192.168.1.206",
             "ssh_password": "1111",
             "functions": [
                 "distributor",
