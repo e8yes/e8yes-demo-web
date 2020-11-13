@@ -40,11 +40,7 @@ WORKDIR /home
 RUN mkdir -p build
 
 WORKDIR /home/demoweb_src
-RUN protoc --cpp_out=./proto_cc \
-           --grpc_out=./proto_cc \
-           --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` \
-           --proto_path=proto \
-           `find proto -name '*.proto'`
+RUN protoc --cpp_out=./proto_cc --grpc_out=./proto_cc --plugin=protoc-gen-grpc=$(which grpc_cpp_plugin) --proto_path=./proto $(find proto -name '*.proto')
 
 WORKDIR /home/build
 RUN qmake ../demoweb_src/e8.pro
