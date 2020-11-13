@@ -38,13 +38,13 @@ RUN ls -lh
 # Build project.
 WORKDIR /home
 RUN mkdir -p build
-
+# Generate proto sources.
 WORKDIR /home/demoweb_src
-RUN protoc --cpp_out=./proto_cc --grpc_out=./proto_cc --plugin=protoc-gen-grpc=$(which grpc_cpp_plugin) --proto_path=./proto $(find proto -name '*.proto')
-
+RUN ./compile_proto.sh
+# Compile.
 WORKDIR /home/build
 RUN qmake ../demoweb_src/e8.pro
-RUN make -j `nproc --all`
+RUN make -j 4
 
 # Copy out the binaries.
 WORKDIR /home

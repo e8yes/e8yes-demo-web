@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 mkdir -p proto_cc
 mkdir -p client/web_frontend/lib/src/proto_dart
 
