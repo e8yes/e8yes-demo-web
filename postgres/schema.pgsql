@@ -196,15 +196,15 @@ CREATE TABLE IF NOT EXISTS message_channel_has_user (
 
 
 /* Message group */
-CREATE SEQUENCE IF NOT EXISTS message_group_id_seq
+CREATE SEQUENCE IF NOT EXISTS chat_message_group_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE IF NOT EXISTS message_group (
-    id BIGINT NOT NULL DEFAULT nextval('message_group_id_seq'),
+CREATE TABLE IF NOT EXISTS chat_message_group (
+    id BIGINT NOT NULL DEFAULT nextval('chat_message_group_id_seq'),
     group_type INT NOT NULL DEFAULT 0,
     channel_id BIGINT NOT NULL,
     creator_id BIGINT NULL,
@@ -217,8 +217,8 @@ CREATE TABLE IF NOT EXISTS message_group (
     FOREIGN KEY (creator_id) REFERENCES auser (id) ON DELETE CASCADE
 );
 
-DROP FUNCTION IF EXISTS update_message_group_search_terms CASCADE;
-CREATE FUNCTION update_message_group_search_terms() RETURNS trigger AS $$
+DROP FUNCTION IF EXISTS update_chat_message_group_search_terms CASCADE;
+CREATE FUNCTION update_chat_message_group_search_terms() RETURNS trigger AS $$
 begin
   new.search_terms :=
     setweight(to_tsvector(coalesce(new.description, '')), 'A');
@@ -226,13 +226,13 @@ begin
 end
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER upsert_message_group
+CREATE TRIGGER upsert_chat_message_group
     BEFORE INSERT OR UPDATE
-    ON message_group 
+    ON chat_message_group 
     FOR EACH ROW 
-    EXECUTE PROCEDURE update_message_group_search_terms();
+    EXECUTE PROCEDURE update_chat_message_group_search_terms();
 
-CREATE INDEX IF NOT EXISTS message_search_terms ON message_group USING gin (search_terms);
+CREATE INDEX IF NOT EXISTS chat_message_group_search_terms ON chat_message_group USING gin (search_terms);
 
 
 /* Message */
@@ -243,24 +243,24 @@ CREATE SEQUENCE IF NOT EXISTS message_id_seq
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE IF NOT EXISTS message (
+CREATE TABLE IF NOT EXISTS chat_message (
     id BIGINT NOT NULL DEFAULT nextval('message_id_seq'),
     group_id BIGINT NOT NULL,
     sender_id BIGINT NOT NULL,
     text_content CHARACTER VARYING [] NULL,
-    binary_content BYTEA NULL,
-    media_file_path CHARACTER VARYING(128) [] NULL,
-    media_file_preview_path CHARACTER VARYING(128) [] NULL,
+    binary_content_paths CHARACTER VARYING(128) [] NULL,
+    media_file_paths CHARACTER VARYING(128) [] NULL,
+    media_file_preview_paths CHARACTER VARYING(128) [] NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     search_terms tsvector,
     PRIMARY KEY (id),
-    FOREIGN KEY (group_id) REFERENCES message_group (id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES chat_message_group (id) ON DELETE CASCADE,
     FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE
 );
 
-DROP FUNCTION IF EXISTS update_message_search_terms CASCADE;
-CREATE FUNCTION update_message_search_terms() RETURNS trigger AS $$
+DROP FUNCTION IF EXISTS update_chat_message_search_terms CASCADE;
+CREATE FUNCTION update_chat_message_search_terms() RETURNS trigger AS $$
 begin
   new.search_terms :=
     setweight(to_tsvector(coalesce(new.text_content, '')), 'A');
@@ -268,10 +268,10 @@ begin
 end
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER upsert_message
+CREATE TRIGGER upsert_chat_message
     BEFORE INSERT OR UPDATE
-    ON message 
+    ON chat_message 
     FOR EACH ROW 
-    EXECUTE PROCEDURE update_message_search_terms();
+    EXECUTE PROCEDURE update_chat_message_search_terms();
 
-CREATE INDEX IF NOT EXISTS message_search_terms ON message USING gin (search_terms);
+CREATE INDEX IF NOT EXISTS chat_message_search_terms ON chat_message USING gin (search_terms);

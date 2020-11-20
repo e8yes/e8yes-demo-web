@@ -39,9 +39,9 @@ class ChatMessageEntity : public SqlEntityInterface {
     SqlLong group_id = SqlLong("group_id");
     SqlLong sender_id = SqlLong("sender_id");
     SqlStrArr text_entries = SqlStrArr("text_content");
-    SqlByteArr binary_content = SqlByteArr("binary_content");
-    SqlStrArr media_file_paths = SqlStrArr("media_file_path");
-    SqlStrArr media_file_preview_paths = SqlStrArr("media_file_preview_path");
+    SqlStrArr binary_content_paths = SqlStrArr("binary_content_paths");
+    SqlStrArr media_file_paths = SqlStrArr("media_file_paths");
+    SqlStrArr media_file_preview_paths = SqlStrArr("media_file_preview_paths");
     SqlTimestamp created_at = SqlTimestamp("created_at");
     SqlTimestamp last_interaction_at = SqlTimestamp("last_interaction_at");
 };
