@@ -15,6 +15,39 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "demoweb_service/demoweb/module/chat_message_storage.h"
+#include <cassert>
+#include <cstdint>
+#include <string>
+#include <vector>
 
-namespace e8 {}
+#include "demoweb_service/demoweb/common_entity/chat_message_entity.h"
+#include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/constant/demoweb_database.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
+#include "demoweb_service/demoweb/module/chat_message_storage.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "postgres/query_runner/sql_runner.h"
+#include "proto_cc/chat_message.pb.h"
+
+namespace e8 {
+
+ChatMessageEntity CreateChatMessage(ChatMessageGroupId const chat_message_group_id,
+                                    UserId const sender_id,
+                                    std::vector<std::string> const &text_entries,
+                                    std::vector<std::string> const &binary_content_paths,
+                                    HostId const host_id, ConnectionReservoirInterface *conns) {
+    ChatMessageEntity chat_message;
+    *chat_message.id.ValuePtr() = e8::TimeId(host_id);
+    *chat_message.group_id.ValuePtr() = chat_message_group_id;
+    *chat_message.sender_id.ValuePtr() = sender_id;
+    *chat_message.text_entries.ValuePtr() = text_entries;
+    *chat_message.binary_content_paths.ValuePtr() = binary_content_paths;
+
+    int64_t num_rows = Update(chat_message, TableNames::ChatMessage(), /*replace=*/false, conns);
+    assert(num_rows == 1);
+
+    return chat_message;
+}
+
+} // namespace e8

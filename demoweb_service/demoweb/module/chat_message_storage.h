@@ -18,6 +18,31 @@
 #ifndef CHAT_MESSAGE_STORAGE_H
 #define CHAT_MESSAGE_STORAGE_H
 
-namespace e8 {}
+#include <string>
+#include <vector>
+
+#include "demoweb_service/demoweb/common_entity/chat_message_entity.h"
+#include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
+#include "demoweb_service/demoweb/environment/host_id.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "proto_cc/chat_message.pb.h"
+
+namespace e8 {
+
+/**
+ * @brief CreateChatMessage Create a new chat message and persist the message into the database.
+ *
+ * TODO: Media files have not yet been handled by this function.
+ *
+ * @return The newly created chat message.
+ */
+ChatMessageEntity CreateChatMessage(ChatMessageGroupId const chat_message_group_id,
+                                    UserId const sender_id,
+                                    std::vector<std::string> const &text_entries,
+                                    std::vector<std::string> const &binary_content_paths,
+                                    HostId const host_id, ConnectionReservoirInterface *conns);
+
+} // namespace e8
 
 #endif // CHAT_MESSAGE_STORAGE_H
