@@ -22,11 +22,22 @@ package e8;
 import "file.proto";
 
 message ChatMessageEntry {
-    int64 thread_id = 1;
-    int64 message_id = 2;
-    int64 sender_id = 3;
-    repeated string messages = 4;
-    repeated FileTokenAccess media_file_accesses = 5;
+    // Unique ID of this chat message.
+    int64 message_id = 1;
+
+    // ID of the sender of this chat message.
+    int64 sender_id = 2;
+
+    // Text content.
+    repeated string texts = 3;
+
+    // Read-only media file access tokens.
+    repeated FileTokenAccess media_file_accesses = 4;
+
+    // Read-only binary file access tokens.
+    repeated FileTokenAccess binary_file_accesses = 5;
+
+    // Creation timestamp.
     int64 created_at = 6;
 }
 

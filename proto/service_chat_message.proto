@@ -1,5 +1,5 @@
 /**
- * e8yes demo web server.
+ * e8yes demo web.
  *
  * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
  *
@@ -19,8 +19,9 @@ syntax = "proto3";
 
 package e8;
 
-import "pagination.proto";
 import "chat_message.proto";
+import "file.proto";
+import "pagination.proto";
 
 message CreateChatMessageThreadRequest {
     int64 channel_id = 1;
@@ -35,15 +36,31 @@ message CreateChatMessageThreadResponse {
 
 message SendChatMessageRequest {
     int64 thread_id = 1;
-    ChatMessageEntry message = 2;
+
+    // This determines the number of media files attached to the message.
+    repeated FileFormat media_file_formats = 2;
+
+    // This determines the number of general binary files attached to the
+    // message.
+    repeated FileFormat binary_file_formats = 3;
+
+    // Text content attached to the message.
+    repeated string texts = 4;
 }
 
 message SendChatMessageResponse {
-    ChatMessageThread updated_thread = 1;
+    ChatMessageEntry message = 1;
+
+    // Access tokens associated with each media file requested.
+    repeated FileTokenAccess media_file_readwrite_accesses = 2;
+
+    // Access tokens associated with each binary file requested.
+    repeated FileTokenAccess binary_file_readwrite_accesses = 3;
 }
 
 
 message GetChatMessageRequest {
+    // ID of the message channel to fetch message threads from.
     int64 channel_id = 1;
     Pagination pagination = 2;
 }
