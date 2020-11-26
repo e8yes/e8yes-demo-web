@@ -15,12 +15,56 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "demoweb_service/demoweb/module/chat_message.h"
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
+#include "demoweb_service/demoweb/module/chat_message.h"
+#include "demoweb_service/demoweb/module/chat_message_group_storage.h"
+#include "demoweb_service/demoweb/module/chat_message_storage.h"
+#include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
+#include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "proto_cc/chat_message.pb.h"
+#include "proto_cc/file.pb.h"
 
 namespace e8 {
+namespace {
 
-bool SendChatMessageThread(ChatMessageThread const &thread) {}
+ChatMessageEntry ToChatMessageEntry(ChatMessageEntity const &entity) {
+    ChatMessageEntry chat_message;
+    chat_message.set_message_id(*entity.id.Value());
+    chat_message.set_sender_id(*entity.sender_id.Value());
+    chat_message.set_created_at(*entity.created_at.Value());
+    *chat_message.mutable_texts() = {entity.text_entries.Value().begin(),
+                                     entity.text_entries.Value().end()};
+    return chat_message;
+}
+
+} // namespace
+
+std::optional<SendChatMessageResult>
+SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
+                std::vector<std::string> const &texts,
+                std::vector<FileFormat> const & /*media_file_formats*/,
+                std::vector<FileFormat> const & /*binary_file_formats*/, HostId const host_id,
+                MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
+    std::optional<ChatMessageGroupEntity> group = FetchChatMessageGroup(group_id, conns);
+    if (!group.has_value()) {
+        return std::nullopt;
+    }
+    if (!pbac->AllowSendChatMessage(sender_id, *group->channel_id.Value())) {
+        return std::nullopt;
+    }
+
+    ChatMessageEntity entity =
+        CreateChatMessage(group_id, sender_id, texts,
+                          /*binary_content_paths=*/std::vector<std::string>(), host_id, conns);
+
+    SendChatMessageResult result;
+    result.message = ToChatMessageEntry(entity);
+
+    return result;
+}
 
 } // namespace e8
