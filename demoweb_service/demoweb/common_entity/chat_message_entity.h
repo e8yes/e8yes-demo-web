@@ -18,10 +18,14 @@
 #ifndef MESSAGEENTITY_H
 #define MESSAGEENTITY_H
 
+#include <cstdint>
+
 #include "postgres/query_runner/reflection/sql_entity_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 
 namespace e8 {
+
+using ChatMessageId = int64_t;
 
 /**
  * @brief The MessageEntity class C++ class representation of the database table

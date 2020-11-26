@@ -18,6 +18,7 @@
 #include <cassert>
 #include <cstdint>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/chat_message_entity.h"
@@ -48,6 +49,25 @@ ChatMessageEntity CreateChatMessage(ChatMessageGroupId const chat_message_group_
     assert(num_rows == 1);
 
     return chat_message;
+}
+
+std::optional<ChatMessageEntity> FetchChatMessage(ChatMessageId const chat_message_id,
+                                                  ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLong> chat_message_id_ph;
+    query.QueryPiece(TableNames::ChatMessage())
+        .QueryPiece(" cm WHERE cm.id=")
+        .Holder(&chat_message_id_ph);
+
+    query.SetValueToPlaceholder(chat_message_id_ph, std::make_shared<SqlLong>(chat_message_id));
+
+    std::vector<std::tuple<ChatMessageEntity>> query_result =
+        Query<ChatMessageEntity>(query, {"cm"}, conns);
+    if (query_result.empty()) {
+        return std::nullopt;
+    }
+
+    return std::get<0>(query_result[0]);
 }
 
 } // namespace e8

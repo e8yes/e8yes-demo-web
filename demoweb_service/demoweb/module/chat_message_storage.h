@@ -18,6 +18,7 @@
 #ifndef CHAT_MESSAGE_STORAGE_H
 #define CHAT_MESSAGE_STORAGE_H
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -26,7 +27,6 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
-#include "proto_cc/chat_message.pb.h"
 
 namespace e8 {
 
@@ -42,6 +42,12 @@ ChatMessageEntity CreateChatMessage(ChatMessageGroupId const chat_message_group_
                                     std::vector<std::string> const &text_entries,
                                     std::vector<std::string> const &binary_content_paths,
                                     HostId const host_id, ConnectionReservoirInterface *conns);
+
+/**
+ * @brief FetchChatMessage Fetch a chat message by ID, if one exists.
+ */
+std::optional<ChatMessageEntity> FetchChatMessage(ChatMessageId const chat_message_id,
+                                                  ConnectionReservoirInterface *conns);
 
 } // namespace e8
 
