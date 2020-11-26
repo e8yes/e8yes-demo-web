@@ -287,6 +287,46 @@ bool AllowDeleteMemberFromChannelTest() {
     return true;
 }
 
+bool AllowCreateChatMessageGroupTest() {
+    e8::DemoWebTestEnvironmentContext env;
+
+    CreateNewChannelInfo channel_info = CreateChannel(/*close_group_channel=*/false, &env);
+
+    e8::MessageChannelPbacImpl pbac(env.DemowebDatabase());
+
+    // Channel member creating a chat message group.
+    bool should_allow = pbac.AllowCreateChatMessageGroup(/*operator_user_id=*/kRegularMemberId,
+                                                         *channel_info.message_channel.id.Value());
+    TEST_CONDITION(should_allow);
+
+    // Non-member creating a chat message group.
+    bool should_not_allow = !pbac.AllowCreateChatMessageGroup(
+        /*operator_user_id=*/10000L, *channel_info.message_channel.id.Value());
+    TEST_CONDITION(should_not_allow);
+
+    return true;
+}
+
+bool AllowSendChatMessageTest() {
+    e8::DemoWebTestEnvironmentContext env;
+
+    CreateNewChannelInfo channel_info = CreateChannel(/*close_group_channel=*/false, &env);
+
+    e8::MessageChannelPbacImpl pbac(env.DemowebDatabase());
+
+    // Channel member creating a chat message group.
+    bool should_allow = pbac.AllowSendChatMessage(/*operator_user_id=*/kRegularMemberId,
+                                                  *channel_info.message_channel.id.Value());
+    TEST_CONDITION(should_allow);
+
+    // Non-member creating a chat message group.
+    bool should_not_allow = !pbac.AllowSendChatMessage(
+        /*operator_user_id=*/10000L, *channel_info.message_channel.id.Value());
+    TEST_CONDITION(should_not_allow);
+
+    return true;
+}
+
 int main() {
     e8::BeginTestSuite("message_channel_pbac");
     e8::RunTest("AllowUpdateCloseGroupChannelMetadataTest",
@@ -301,6 +341,8 @@ int main() {
     e8::RunTest("AllowUpdateChannelMembershipPromotionTest",
                 AllowUpdateChannelMembershipPromotionTest);
     e8::RunTest("AllowDeleteMemberFromChannelTest", AllowDeleteMemberFromChannelTest);
+    e8::RunTest("AllowCreateChatMessageGroupTest", AllowCreateChatMessageGroupTest);
+    e8::RunTest("AllowSendChatMessageTest", AllowSendChatMessageTest);
     e8::EndTestSuite();
     return 0;
 }

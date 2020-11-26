@@ -79,6 +79,18 @@ class MessageChannelPbacInterface {
      */
     virtual bool AllowCreateChatMessageGroup(UserId const operator_user_id,
                                              MessageChannelId const target_channel_id) = 0;
+
+    /**
+     * @brief AllowSendChatMessage Check if the operator has the permission to send a chat
+     * message in the specified message channel.
+     *
+     * @param operator_user_id ID of the person who is requesting the creation of a chat message.
+     * @param target_channel_id ID of the message channel in which the chat message is to be
+     * created.
+     * @return Whether the operator has the right.
+     */
+    virtual bool AllowSendChatMessage(UserId const operator_user_id,
+                                      MessageChannelId const target_channel_id) = 0;
 };
 
 /**
@@ -106,6 +118,9 @@ class MessageChannelPbacImpl : public MessageChannelPbacInterface {
 
     bool AllowCreateChatMessageGroup(UserId const operator_user_id,
                                      MessageChannelId const target_channel_id) override;
+
+    bool AllowSendChatMessage(UserId const operator_user_id,
+                              MessageChannelId const target_channel_id) override;
 
   private:
     ConnectionReservoirInterface *conns_;
