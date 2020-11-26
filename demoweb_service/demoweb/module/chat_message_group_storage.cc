@@ -18,7 +18,9 @@
 #include <cassert>
 #include <cstdint>
 #include <ctime>
+#include <memory>
 #include <string>
+#include <tuple>
 
 #include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
@@ -50,10 +52,31 @@ CreateChatMessageGroup(UserId const viewer_id, MessageChannelId const channel_id
     *chat_message_group.last_interaction_at.ValuePtr() = timestamp;
 
     int64_t num_rows =
-        Update(chat_message_group, TableNames::ChatMessage(), /*replace=*/false, conns);
+        Update(chat_message_group, TableNames::ChatMessageGroup(), /*replace=*/false, conns);
     assert(num_rows == 1);
 
     return chat_message_group;
+}
+
+std::optional<ChatMessageGroupEntity> FetchChatMessageGroup(ChatMessageGroupId const group_id,
+                                                            ConnectionReservoirInterface *conns) {
+    SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLong> group_id_ph;
+    query.QueryPiece(TableNames::ChatMessageGroup())
+        .QueryPiece(" cmg WHERE cmg.id=")
+        .Holder(&group_id_ph);
+
+    query.SetValueToPlaceholder(group_id_ph, std::make_shared<SqlLong>(group_id));
+
+    std::vector<std::tuple<ChatMessageGroupEntity>> query_result =
+        Query<ChatMessageGroupEntity>(query, {"cmg"}, conns);
+    if (query_result.empty()) {
+        return std::nullopt;
+    }
+
+    assert(query_result.size() == 1);
+
+    return std::get<0>(query_result[0]);
 }
 
 } // namespace e8

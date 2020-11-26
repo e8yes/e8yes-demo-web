@@ -18,6 +18,7 @@
 #ifndef CHAT_MESSAGE_GROUP_STORAGE_H
 #define CHAT_MESSAGE_GROUP_STORAGE_H
 
+#include <optional>
 #include <string>
 
 #include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
@@ -37,6 +38,12 @@ ChatMessageGroupEntity
 CreateChatMessageGroup(UserId const viewer_id, MessageChannelId const channel_id,
                        std::string const &group_title, ChatMessageThreadType const thread_type,
                        HostId const host_id, ConnectionReservoirInterface *conns);
+
+/**
+ * @brief FetchChatMessageGroup Fetch a chat message group by ID if it exists.
+ */
+std::optional<ChatMessageGroupEntity> FetchChatMessageGroup(ChatMessageGroupId const group_id,
+                                                            ConnectionReservoirInterface *conns);
 
 } // namespace e8
 
