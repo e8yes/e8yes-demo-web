@@ -17,6 +17,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <ctime>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -44,6 +45,10 @@ ChatMessageEntity CreateChatMessage(ChatMessageGroupId const chat_message_group_
     *chat_message.sender_id.ValuePtr() = sender_id;
     *chat_message.text_entries.ValuePtr() = text_entries;
     *chat_message.binary_content_paths.ValuePtr() = binary_content_paths;
+    std::time_t timestamp;
+    std::time(&timestamp);
+    *chat_message.created_at.ValuePtr() = timestamp;
+    *chat_message.last_interaction_at.ValuePtr() = timestamp;
 
     int64_t num_rows = Update(chat_message, TableNames::ChatMessage(), /*replace=*/false, conns);
     assert(num_rows == 1);

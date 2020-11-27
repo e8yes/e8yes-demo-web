@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS = \    
+SUBDIRS = \
     demoweb/demoweb_service.pro \
     demoweb/demoweb_service_main.pro \
     _test_demoweb/_test_module/_test_baseline_user/_test_baseline_user.pro \
@@ -13,6 +13,7 @@ SUBDIRS = \
     _test_demoweb/_test_module/_test_contact_storage/_test_contact_storage.pro \
     _test_demoweb/_test_module/_test_search_user/_test_search_user.pro \
     _test_demoweb/_test_module/_test_chat_message_group_storage/_test_chat_message_group_storage.pro \
+    _test_demoweb/_test_module/_test_chat_message_storage/_test_chat_message_storage.pro \
     _test_demoweb/_test_pbac/_test_message_channel_attributes/_test_message_channel_attributes.pro \
     _test_demoweb/_test_pbac/_test_message_channel_member_attributes/_test_message_channel_member_attributes.pro \
     _test_demoweb/_test_pbac/_test_message_channel_pbac/_test_message_channel_pbac.pro

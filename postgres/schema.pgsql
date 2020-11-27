@@ -263,7 +263,7 @@ DROP FUNCTION IF EXISTS update_chat_message_search_terms CASCADE;
 CREATE FUNCTION update_chat_message_search_terms() RETURNS trigger AS $$
 begin
   new.search_terms :=
-    setweight(to_tsvector(coalesce(new.text_content, '')), 'A');
+    setweight(to_tsvector(coalesce(array_to_string(new.text_content, ';'), '')), 'A');
   return new;
 end
 $$ LANGUAGE plpgsql;
