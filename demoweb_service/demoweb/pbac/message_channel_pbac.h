@@ -81,6 +81,18 @@ class MessageChannelPbacInterface {
                                              MessageChannelId const target_channel_id) = 0;
 
     /**
+     * @brief AllowReadChatMessageGroup Check if the operator has the permission to read chat
+     * message groups in the specified message channel.
+     *
+     * @param operator_user_id ID of the person who is requesting the reading of chat message
+     * groups.
+     * @param target_channel_id ID of the message channel where the groups are read.
+     * @return Whether the operator has right.
+     */
+    virtual bool AllowReadChatMessageGroup(UserId const operator_user_id,
+                                           MessageChannelId const target_channel_id) = 0;
+
+    /**
      * @brief AllowSendChatMessage Check if the operator has the permission to send a chat
      * message in the specified message channel.
      *
@@ -118,6 +130,9 @@ class MessageChannelPbacImpl : public MessageChannelPbacInterface {
 
     bool AllowCreateChatMessageGroup(UserId const operator_user_id,
                                      MessageChannelId const target_channel_id) override;
+
+    bool AllowReadChatMessageGroup(UserId const operator_user_id,
+                                   MessageChannelId const target_channel_id) override;
 
     bool AllowSendChatMessage(UserId const operator_user_id,
                               MessageChannelId const target_channel_id) override;

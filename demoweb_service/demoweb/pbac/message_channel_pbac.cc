@@ -162,6 +162,11 @@ bool MessageChannelPbacImpl::AllowCreateChatMessageGroup(UserId const operator_u
         .has_value();
 }
 
+bool MessageChannelPbacImpl::AllowReadChatMessageGroup(UserId const operator_user_id,
+                                                       MessageChannelId const target_channel_id) {
+    return this->AllowCreateChatMessageGroup(operator_user_id, target_channel_id);
+}
+
 bool MessageChannelPbacImpl::AllowSendChatMessage(UserId const operator_user_id,
                                                   MessageChannelId const target_channel_id) {
     return this->AllowCreateChatMessageGroup(operator_user_id, target_channel_id);
