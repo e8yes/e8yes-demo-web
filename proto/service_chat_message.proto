@@ -59,13 +59,31 @@ message SendChatMessageResponse {
 }
 
 
-message GetChatMessageRequest {
-    // ID of the message channel to fetch message threads from.
-    int64 channel_id = 1;
+message GetChatMessagesRequest {
+    // ID of the chat message groupo to fetch messages from.
+    int64 group_id = 1;
+
+    // Message thread pagination.
     Pagination pagination = 2;
 }
 
-message GetChatMessageResponse {
+message GetChatMessagesResponse {
+    repeated ChatMessageEntry messages = 1;
+}
+
+
+message SearchChatMessageGroupsRequest {
+    // ID of the message channel to fetch message threads from.
+    int64 channel_id = 1;
+
+    // Maximum number of messages to fetch per message thread.
+    int32 limit_per_thread = 2;
+
+    // Message thread pagination.
+    Pagination pagination = 3;
+}
+
+message SearchChatMessageGroupsResponse {
     repeated ChatMessageThread threads = 1;
 }
 
@@ -80,7 +98,12 @@ service ChatMessageService {
     rpc SendChatMessage (SendChatMessageRequest) returns 
         (SendChatMessageResponse);
 
-    // Get a history of the chat messages in the specified message channel.
-    rpc GetChatMessage (GetChatMessageRequest) returns
-        (GetChatMessageResponse);
+    // Get messages from the specified chat message group.
+    rpc GetChatMessages (GetChatMessagesRequest) returns
+        (GetChatMessagesResponse);
+
+    // Search from the history of the chat messages in their associated chat
+    // messages groups in the specified message channel.
+    rpc SearchChatMessageGroups (SearchChatMessageGroupsRequest) returns
+        (SearchChatMessageGroupsResponse);
 }
