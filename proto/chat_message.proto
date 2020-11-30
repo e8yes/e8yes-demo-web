@@ -22,23 +22,25 @@ package e8;
 import "file.proto";
 
 message ChatMessageEntry {
-    // Unique ID of this chat message.
-    int64 message_id = 1;
+    // The following tuple (thread_id, message_seq_id) constitute a unique ID
+    // for each chat message.
+    int64 thread_id = 1;
+    int64 message_seq_id = 2;
 
     // ID of the sender of this chat message.
-    int64 sender_id = 2;
+    int64 sender_id = 3;
 
     // Text content.
-    repeated string texts = 3;
+    repeated string texts = 4;
 
     // Read-only media file access tokens.
-    repeated FileTokenAccess media_file_accesses = 4;
+    repeated FileTokenAccess media_file_accesses = 5;
 
     // Read-only binary file access tokens.
-    repeated FileTokenAccess binary_file_accesses = 5;
+    repeated FileTokenAccess binary_file_accesses = 6;
 
     // Creation timestamp.
-    int64 created_at = 6;
+    int64 created_at = 7;
 }
 
 enum ChatMessageThreadType {

@@ -38,10 +38,10 @@ ChatMessageEntity CreateChatMessage(ChatMessageGroupId const chat_message_group_
                                     UserId const sender_id,
                                     std::vector<std::string> const &text_entries,
                                     std::vector<std::string> const &binary_content_paths,
-                                    HostId const host_id, ConnectionReservoirInterface *conns) {
+                                    ConnectionReservoirInterface *conns) {
     ChatMessageEntity chat_message;
-    *chat_message.id.ValuePtr() = e8::TimeId(host_id);
     *chat_message.group_id.ValuePtr() = chat_message_group_id;
+    *chat_message.message_seq_id.ValuePtr() = e8::TemporalId();
     *chat_message.sender_id.ValuePtr() = sender_id;
     *chat_message.text_entries.ValuePtr() = text_entries;
     *chat_message.binary_content_paths.ValuePtr() = binary_content_paths;
@@ -59,12 +59,20 @@ ChatMessageEntity CreateChatMessage(ChatMessageGroupId const chat_message_group_
 std::optional<ChatMessageEntity> FetchChatMessage(ChatMessageId const chat_message_id,
                                                   ConnectionReservoirInterface *conns) {
     SqlQueryBuilder query;
-    SqlQueryBuilder::Placeholder<SqlLong> chat_message_id_ph;
+    SqlQueryBuilder::Placeholder<SqlLong> chat_message_group_id_ph;
+    SqlQueryBuilder::Placeholder<SqlLong> chat_message_seq_id_ph;
     query.QueryPiece(TableNames::ChatMessage())
-        .QueryPiece(" cm WHERE cm.id=")
-        .Holder(&chat_message_id_ph);
+        .QueryPiece(" cm WHERE cm.group_id=")
+        .Holder(&chat_message_group_id_ph)
+        .QueryPiece(" AND cm.message_seq_id=")
+        .Holder(&chat_message_seq_id_ph);
 
-    query.SetValueToPlaceholder(chat_message_id_ph, std::make_shared<SqlLong>(chat_message_id));
+    query.SetValueToPlaceholder(
+        chat_message_group_id_ph,
+        std::make_shared<SqlLong>(std::get<CMID_CHAT_MESSAGE_GROUP>(chat_message_id)));
+    query.SetValueToPlaceholder(
+        chat_message_seq_id_ph,
+        std::make_shared<SqlLong>(std::get<CMID_CHAT_MESSAGE_SEQ>(chat_message_id)));
 
     std::vector<std::tuple<ChatMessageEntity>> query_result =
         Query<ChatMessageEntity>(query, {"cm"}, conns);

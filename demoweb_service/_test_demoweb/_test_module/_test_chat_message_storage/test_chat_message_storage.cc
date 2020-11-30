@@ -43,17 +43,17 @@ bool CreateAndFetchChatMessageTest() {
                                    /*group_title=*/"Test chat message group", e8::CMTT_POPUP,
                                    env.CurrentHostId(), env.DemowebDatabase());
 
-    e8::ChatMessageEntity chat_message =
-        e8::CreateChatMessage(*group.id.Value(), *user->id.Value(),
-                              /*text_entries=*/std::vector<std::string>{"Hey", "Good morning."},
-                              /*binary_content_paths=*/std::vector<std::string>(),
-                              env.CurrentHostId(), env.DemowebDatabase());
-    std::optional<e8::ChatMessageEntity> fetched =
-        e8::FetchChatMessage(*chat_message.id.Value(), env.DemowebDatabase());
+    e8::ChatMessageEntity chat_message = e8::CreateChatMessage(
+        *group.id.Value(), *user->id.Value(),
+        /*text_entries=*/std::vector<std::string>{"Hey", "Good morning."},
+        /*binary_content_paths=*/std::vector<std::string>(), env.DemowebDatabase());
+    std::optional<e8::ChatMessageEntity> fetched = e8::FetchChatMessage(
+        std::make_tuple(*chat_message.group_id.Value(), *chat_message.message_seq_id.Value()),
+        env.DemowebDatabase());
 
     TEST_CONDITION(fetched.has_value());
-    TEST_CONDITION(*fetched->id.Value() != 0);
     TEST_CONDITION(*fetched->group_id.Value() == group.id.Value());
+    TEST_CONDITION(*fetched->message_seq_id.Value() != 0);
     TEST_CONDITION(*fetched->sender_id.Value() == user->id.Value());
     TEST_CONDITION(fetched->text_entries.Value().size() == 2);
     TEST_CONDITION(fetched->text_entries.Value()[0] == "Hey");

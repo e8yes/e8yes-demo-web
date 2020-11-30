@@ -33,7 +33,8 @@ namespace {
 
 ChatMessageEntry ToChatMessageEntry(ChatMessageEntity const &entity) {
     ChatMessageEntry chat_message;
-    chat_message.set_message_id(*entity.id.Value());
+    chat_message.set_thread_id(*entity.group_id.Value());
+    chat_message.set_message_seq_id(*entity.message_seq_id.Value());
     chat_message.set_sender_id(*entity.sender_id.Value());
     chat_message.set_created_at(*entity.created_at.Value());
     *chat_message.mutable_texts() = {entity.text_entries.Value().begin(),
@@ -47,7 +48,7 @@ std::optional<SendChatMessageResult>
 SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
                 std::vector<std::string> const &texts,
                 std::vector<FileFormat> const & /*media_file_formats*/,
-                std::vector<FileFormat> const & /*binary_file_formats*/, HostId const host_id,
+                std::vector<FileFormat> const & /*binary_file_formats*/,
                 MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
     std::optional<ChatMessageGroupEntity> group = FetchChatMessageGroup(group_id, conns);
     if (!group.has_value()) {
@@ -59,7 +60,7 @@ SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
 
     ChatMessageEntity entity =
         CreateChatMessage(group_id, sender_id, texts,
-                          /*binary_content_paths=*/std::vector<std::string>(), host_id, conns);
+                          /*binary_content_paths=*/std::vector<std::string>(), conns);
 
     SendChatMessageResult result;
     result.message = ToChatMessageEntry(entity);

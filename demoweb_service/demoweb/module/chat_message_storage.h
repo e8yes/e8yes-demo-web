@@ -41,7 +41,7 @@ ChatMessageEntity CreateChatMessage(ChatMessageGroupId const chat_message_group_
                                     UserId const sender_id,
                                     std::vector<std::string> const &text_entries,
                                     std::vector<std::string> const &binary_content_paths,
-                                    HostId const host_id, ConnectionReservoirInterface *conns);
+                                    ConnectionReservoirInterface *conns);
 
 /**
  * @brief FetchChatMessage Fetch a chat message by ID, if one exists.

@@ -22,13 +22,13 @@
 namespace e8 {
 
 ChatMessageEntity::ChatMessageEntity()
-    : SqlEntityInterface({&id, &group_id, &sender_id, &text_entries, &binary_content_paths,
-                          &media_file_paths, &media_file_preview_paths, &created_at,
-                          &last_interaction_at}) {}
+    : SqlEntityInterface({&group_id, &message_seq_id, &sender_id, &text_entries,
+                          &binary_content_paths, &media_file_paths, &media_file_preview_paths,
+                          &created_at, &last_interaction_at}) {}
 
 ChatMessageEntity::ChatMessageEntity(ChatMessageEntity const &other) : ChatMessageEntity() {
-    id = other.id;
     group_id = other.group_id;
+    message_seq_id = other.message_seq_id;
     sender_id = other.sender_id;
     text_entries = other.text_entries;
     binary_content_paths = other.binary_content_paths;
@@ -39,8 +39,8 @@ ChatMessageEntity::ChatMessageEntity(ChatMessageEntity const &other) : ChatMessa
 }
 
 ChatMessageEntity &ChatMessageEntity::operator=(ChatMessageEntity const &other) {
-    id = other.id;
     group_id = other.group_id;
+    message_seq_id = other.message_seq_id;
     sender_id = other.sender_id;
     text_entries = other.text_entries;
     binary_content_paths = other.binary_content_paths;

@@ -19,17 +19,25 @@
 #define MESSAGEENTITY_H
 
 #include <cstdint>
+#include <tuple>
 
+#include "demoweb_service/demoweb/module/chat_message_group.h"
 #include "postgres/query_runner/reflection/sql_entity_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 
 namespace e8 {
 
-using ChatMessageId = int64_t;
+enum ChatMessageIdComps { CMID_CHAT_MESSAGE_GROUP = 0, CMID_CHAT_MESSAGE_SEQ };
+
+using ChatMessageSeqWeakId = int64_t;
+using ChatMessageId = std::tuple<ChatMessageGroupId, ChatMessageSeqWeakId>;
 
 /**
  * @brief The MessageEntity class C++ class representation of the database table
- * "message".
+ * "message". This entity is weakly functionally dependent on the chat message group. Note that: the
+ * message sequence ID isn't unique across all chat messages. Uniqueness is only guaranteed within a
+ * chat message group. Besides uniqueness, this sequence ID is guaranteed to be ever-increasing for
+ * the purpose of temporal range search.
  */
 class ChatMessageEntity : public SqlEntityInterface {
   public:
@@ -39,8 +47,8 @@ class ChatMessageEntity : public SqlEntityInterface {
 
     ChatMessageEntity &operator=(ChatMessageEntity const &other);
 
-    SqlLong id = SqlLong("id");
     SqlLong group_id = SqlLong("group_id");
+    SqlLong message_seq_id = SqlLong("message_seq_id");
     SqlLong sender_id = SqlLong("sender_id");
     SqlStrArr text_entries = SqlStrArr("text_content");
     SqlStrArr binary_content_paths = SqlStrArr("binary_content_paths");

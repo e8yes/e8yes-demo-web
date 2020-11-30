@@ -236,16 +236,9 @@ CREATE INDEX IF NOT EXISTS chat_message_group_search_terms ON chat_message_group
 
 
 /* Message */
-CREATE SEQUENCE IF NOT EXISTS message_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
 CREATE TABLE IF NOT EXISTS chat_message (
-    id BIGINT NOT NULL DEFAULT nextval('message_id_seq'),
     group_id BIGINT NOT NULL,
+    message_seq_id BIGINT NOT NULL,
     sender_id BIGINT NOT NULL,
     text_content CHARACTER VARYING [] NULL,
     binary_content_paths CHARACTER VARYING(128) [] NULL,
@@ -254,7 +247,7 @@ CREATE TABLE IF NOT EXISTS chat_message (
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     last_interaction_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     search_terms tsvector,
-    PRIMARY KEY (id),
+    PRIMARY KEY (group_id, message_seq_id),
     FOREIGN KEY (group_id) REFERENCES chat_message_group (id) ON DELETE CASCADE,
     FOREIGN KEY (sender_id) REFERENCES auser (id) ON DELETE CASCADE
 );

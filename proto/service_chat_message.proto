@@ -60,8 +60,8 @@ message SendChatMessageResponse {
 
 
 message GetChatMessagesRequest {
-    // ID of the chat message groupo to fetch messages from.
-    int64 group_id = 1;
+    // ID of the chat message thread to fetch messages from.
+    int64 thread_id = 1;
 
     // Message thread pagination.
     Pagination pagination = 2;

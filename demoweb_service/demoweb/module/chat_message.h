@@ -56,7 +56,6 @@ struct SendChatMessageResult {
  * formats, if any.
  * @param binary_file_formats Requests a list of general binary file location access of the
  * specified file formats, if any.
- * @param host_id ID of the host that is calling this funciton.
  * @param pbac Policy based access controller for the associated message channel.
  * @param conns Database connections.
  * @return The sent messages and corresponding file location accesses if the group ID is valid and
@@ -66,7 +65,7 @@ std::optional<SendChatMessageResult>
 SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
                 std::vector<std::string> const &texts,
                 std::vector<FileFormat> const &media_file_formats,
-                std::vector<FileFormat> const &binary_file_formats, HostId const host_id,
+                std::vector<FileFormat> const &binary_file_formats,
                 MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns);
 
 } // namespace e8

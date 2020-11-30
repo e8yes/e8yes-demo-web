@@ -212,6 +212,14 @@ int64_t TimeId(unsigned host_id) {
     return sql_runner_internal::ReverseBytes(unique_id);
 }
 
+int64_t TemporalId() {
+    auto now = std::chrono::high_resolution_clock::now();
+    auto micros = std::chrono::time_point_cast<std::chrono::microseconds>(now);
+    auto dura = std::chrono::duration_cast<std::chrono::microseconds>(micros.time_since_epoch());
+    int64_t timestamp = dura.count() - 1588490444394000L;
+    return timestamp;
+}
+
 int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reservoir) {
     ConnectionInterface *conn = reservoir->Take();
 
