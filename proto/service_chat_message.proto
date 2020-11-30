@@ -72,7 +72,7 @@ message GetChatMessagesResponse {
 }
 
 
-message SearchChatMessageGroupsRequest {
+message GetChatMessageGroupsRequest {
     // ID of the message channel to fetch message threads from.
     int64 channel_id = 1;
 
@@ -83,7 +83,7 @@ message SearchChatMessageGroupsRequest {
     Pagination pagination = 3;
 }
 
-message SearchChatMessageGroupsResponse {
+message GetChatMessageGroupsResponse {
     repeated ChatMessageThread threads = 1;
 }
 
@@ -102,8 +102,8 @@ service ChatMessageService {
     rpc GetChatMessages (GetChatMessagesRequest) returns
         (GetChatMessagesResponse);
 
-    // Search from the history of the chat messages in their associated chat
-    // messages groups in the specified message channel.
-    rpc SearchChatMessageGroups (SearchChatMessageGroupsRequest) returns
-        (SearchChatMessageGroupsResponse);
+    // Get a history of chat message groups each with a summary list of the
+    // chat messages.
+    rpc GetChatMessageGroups (GetChatMessageGroupsRequest) returns
+        (GetChatMessageGroupsResponse);
 }
