@@ -232,6 +232,7 @@ CREATE TRIGGER upsert_chat_message_group
     FOR EACH ROW 
     EXECUTE PROCEDURE update_chat_message_group_search_terms();
 
+CREATE INDEX IF NOT EXISTS chat_message_group_last_interaction_at ON chat_message_group USING btree (last_interaction_at);
 CREATE INDEX IF NOT EXISTS chat_message_group_search_terms ON chat_message_group USING gin (search_terms);
 
 

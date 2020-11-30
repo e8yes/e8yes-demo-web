@@ -35,10 +35,9 @@ namespace e8 {
  * @brief CreateChatMessageGroup Create a new message group in the specified message channel.
  */
 ChatMessageGroupEntity
-CreateChatMessageGroup(UserId const viewer_id, MessageChannelId const channel_id,
+CreateChatMessageGroup(UserId const creator_id, MessageChannelId const channel_id,
                        std::string const &group_title, ChatMessageThreadType const thread_type,
                        HostId const host_id, ConnectionReservoirInterface *conns);
-
 /**
  * @brief FetchChatMessageGroup Fetch a chat message group by ID if it exists.
  */

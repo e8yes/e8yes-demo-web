@@ -36,14 +36,14 @@
 namespace e8 {
 
 ChatMessageGroupEntity
-CreateChatMessageGroup(UserId const viewer_id, MessageChannelId const channel_id,
+CreateChatMessageGroup(UserId const creator_id, MessageChannelId const channel_id,
                        std::string const &group_title, ChatMessageThreadType const thread_type,
                        HostId const host_id, ConnectionReservoirInterface *conns) {
     ChatMessageGroupEntity chat_message_group;
     *chat_message_group.id.ValuePtr() = TimeId(host_id);
     *chat_message_group.channel_id.ValuePtr() = channel_id;
     *chat_message_group.description.ValuePtr() = group_title;
-    *chat_message_group.creator_id.ValuePtr() = viewer_id;
+    *chat_message_group.creator_id.ValuePtr() = creator_id;
     *chat_message_group.group_type.ValuePtr() = thread_type;
 
     std::time_t timestamp;

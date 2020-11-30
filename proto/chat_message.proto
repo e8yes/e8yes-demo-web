@@ -51,8 +51,10 @@ enum ChatMessageThreadType {
 
 message ChatMessageThread {
     int64 thread_id = 1;
-    string thread_title = 2;
-    int64 created_at = 3;
+    int64 channel_id = 2;
+    string thread_title = 3;
     ChatMessageThreadType thread_type = 4;
-    repeated ChatMessageEntry messages = 5;
+    int64 created_at = 5;
+    int64 last_interaction_at = 6;
+    repeated ChatMessageEntry messages = 7;
 }
