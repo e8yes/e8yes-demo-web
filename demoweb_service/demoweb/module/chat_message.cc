@@ -15,16 +15,20 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
+#include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/chat_message.h"
 #include "demoweb_service/demoweb/module/chat_message_group_storage.h"
 #include "demoweb_service/demoweb/module/chat_message_storage.h"
 #include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "postgres/query_runner/sql_runner.h"
 #include "proto_cc/chat_message.pb.h"
 #include "proto_cc/file.pb.h"
 
@@ -61,6 +65,19 @@ SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
     ChatMessageEntity entity =
         CreateChatMessage(group_id, sender_id, texts,
                           /*binary_content_paths=*/std::vector<std::string>(), conns);
+
+    switch (*group->group_type.Value()) {
+    case CMTT_POPUP: {
+        *group->last_interaction_at.ValuePtr() = *entity.created_at.Value();
+        int64_t rows = Update(*group, TableNames::ChatMessageGroup(), /*replace=*/true, conns);
+        assert(rows == 1);
+        break;
+    }
+    case CMTT_TEMPORAL: {
+        // Do nothing.
+        break;
+    }
+    }
 
     SendChatMessageResult result;
     result.message = ToChatMessageEntry(entity);
