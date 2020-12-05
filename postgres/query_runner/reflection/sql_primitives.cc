@@ -22,6 +22,7 @@
 #include <stdint.h>
 #include <string>
 
+#include "common/time_util/time_util.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
 
 namespace e8 {
@@ -40,21 +41,49 @@ void from_string(std::string const &str_val, float *val) { *val = std::stof(str_
 void from_string(std::string const &str_val, double *val) { *val = std::stod(str_val); }
 void from_string(std::string const &str_val, std::string *val) { *val = str_val; }
 
-std::time_t timestamp_from_string(std::string const &str_val) {
-    std::istringstream in(str_val);
+std::vector<std::string> split(std::string const &input, char const delim) {
+    std::vector<std::string> elems;
+
+    std::stringstream ss(input);
+    std::string piece;
+    while (std::getline(ss, piece, delim)) {
+        elems.push_back(piece);
+    }
+
+    return elems;
+}
+
+TimestampMicros timestamp_from_string(std::string const &str_val) {
+    std::vector<std::string> pieces = split(str_val, '.');
+    assert(pieces.size() == 1 || pieces.size() == 2);
+
+    std::string date = pieces[0];
+
+    std::istringstream in(date);
     std::tm t{};
     in >> std::get_time(&t, "%Y-%m-%d %H:%M:%S");
     assert(!in.fail());
+
     std::time_t local_timestamp = std::mktime(&t);
-    std::time_t utc_timestamp = local_timestamp + t.tm_gmtoff;
+    TimestampMicros utc_timestamp = (local_timestamp + t.tm_gmtoff) * 1000000;
+
+    if (pieces.size() == 2) {
+        std::string micros = pieces[1];
+        utc_timestamp += std::stol(micros);
+    }
+
     return utc_timestamp;
 }
 
-std::string timestamp_to_string(std::time_t const &timestamp) {
+std::string timestamp_to_string(TimestampMicros const &timestamp) {
+    TimestampSecs epoch_secs = timestamp / 1000000;
+    TimestampMicros micros_remainder = timestamp % 1000000;
+
     std::ostringstream out;
-    std::tm const *t = std::gmtime(&timestamp);
-    out << std::put_time(t, "%Y-%m-%d %H:%M:%S");
+    std::tm const *t = std::gmtime(&epoch_secs);
+    out << std::put_time(t, "%Y-%m-%d %H:%M:%S") << '.' << micros_remainder;
     assert(!out.fail());
+
     return out.str();
 }
 
@@ -420,7 +449,7 @@ std::optional<std::string> *SqlStr::ValuePtr() { return &value_; }
 
 SqlTimestamp::SqlTimestamp(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
-SqlTimestamp::SqlTimestamp(std::time_t value, std::string const &field_name)
+SqlTimestamp::SqlTimestamp(TimestampMicros value, std::string const &field_name)
     : SqlPrimitiveInterface(field_name), value_(value) {}
 
 SqlTimestamp::~SqlTimestamp() {}
@@ -468,9 +497,9 @@ bool SqlTimestamp::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_.value() < other.value_.value();
 }
 
-std::optional<std::time_t> const &SqlTimestamp::Value() const { return value_; }
+std::optional<TimestampMicros> const &SqlTimestamp::Value() const { return value_; }
 
-std::optional<std::time_t> *SqlTimestamp::ValuePtr() { return &value_; }
+std::optional<TimestampMicros> *SqlTimestamp::ValuePtr() { return &value_; }
 
 SqlBoolArr::SqlBoolArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 
@@ -751,14 +780,14 @@ std::vector<std::string> *SqlStrArr::ValuePtr() { return &value_; }
 SqlTimestampArr::SqlTimestampArr(std::string const &field_name)
     : SqlPrimitiveInterface(field_name) {}
 
-SqlTimestampArr::SqlTimestampArr(std::vector<std::time_t> const &value,
+SqlTimestampArr::SqlTimestampArr(std::vector<TimestampMicros> const &value,
                                  std::string const &field_name)
     : SqlPrimitiveInterface(field_name), value_(value) {}
 
 SqlTimestampArr::~SqlTimestampArr() {}
 
 void SqlTimestampArr::ExportToInvocation(pqxx::prepare::invocation *invocation) const {
-    (*invocation)(ArrayToPsqlString<std::time_t, /*timestamp=*/true>(value_));
+    (*invocation)(ArrayToPsqlString<TimestampMicros, /*timestamp=*/true>(value_));
 }
 
 void SqlTimestampArr::ImportFromField(pqxx::field const &field) {
@@ -767,7 +796,7 @@ void SqlTimestampArr::ImportFromField(pqxx::field const &field) {
     if (!field.is_null()) {
         // If the field is indeed null, this primitive type will instead store an empty array.
         pqxx::array_parser arr_parser = field.as_array();
-        ReadArray<std::time_t, /*timestamp=*/true>(&arr_parser, &value_);
+        ReadArray<TimestampMicros, /*timestamp=*/true>(&arr_parser, &value_);
     }
 }
 
@@ -792,9 +821,9 @@ bool SqlTimestampArr::operator<(SqlPrimitiveInterface const &rhs) const {
     return value_ < other.value_;
 }
 
-std::vector<std::time_t> const &SqlTimestampArr::Value() const { return value_; }
+std::vector<TimestampMicros> const &SqlTimestampArr::Value() const { return value_; }
 
-std::vector<std::time_t> *SqlTimestampArr::ValuePtr() { return &value_; }
+std::vector<TimestampMicros> *SqlTimestampArr::ValuePtr() { return &value_; }
 
 SqlByteArr::SqlByteArr(std::string const &field_name) : SqlPrimitiveInterface(field_name) {}
 

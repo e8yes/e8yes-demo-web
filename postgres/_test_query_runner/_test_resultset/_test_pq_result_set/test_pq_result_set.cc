@@ -132,14 +132,15 @@ bool InsertAndRetrieveTest() {
     TEST_CONDITION(record.bool_field.Value() == true);
     TEST_CONDITION(record.float_field.Value() == 0.5f);
     TEST_CONDITION(record.double_field.Value() == 0.25);
-    TEST_CONDITION(record.timestamp_field.Value() == 111);
+    TEST_CONDITION(record.timestamp_field.Value() == 111000000);
     TEST_CONDITION(record.string_field.Value() == "string_value");
     TEST_CONDITION(record.int_array_field.Value() == std::vector<int32_t>({10, 11}));
     TEST_CONDITION(record.long_array_field.Value() == std::vector<int64_t>({100, 101}));
     TEST_CONDITION(record.bool_array_field.Value() == std::vector<bool>({true, false}));
     TEST_CONDITION(record.float_array_field.Value() == std::vector<float>({0.5f, 1.5f}));
     TEST_CONDITION(record.double_array_field.Value() == std::vector<double>({0.25, 1.25}));
-    TEST_CONDITION(record.timestamp_array_field.Value() == std::vector<std::time_t>({111, 112}));
+    TEST_CONDITION(record.timestamp_array_field.Value() ==
+                   std::vector<std::time_t>({111000000, 112000000}));
     TEST_CONDITION(record.string_array_field.Value() ==
                    std::vector<std::string>({"string_value0", "string_value1"}));
 

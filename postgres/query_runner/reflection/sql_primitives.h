@@ -18,13 +18,13 @@
 #ifndef SQL_PRIMITIVES_H
 #define SQL_PRIMITIVES_H
 
-#include <ctime>
 #include <optional> // IWYU pragma: keep
 #include <pqxx/pqxx>
 #include <stdint.h>
 #include <string>
 #include <vector>
 
+#include "common/time_util/time_util.h"
 #include "postgres/query_runner/reflection/sql_primitive_interface.h"
 
 namespace e8 {
@@ -252,7 +252,8 @@ class SqlStr : public SqlPrimitiveInterface {
 };
 
 /**
- * @brief The SqlTimestamp class Timestamp primitive type.
+ * @brief The SqlTimestamp class Timestamp primitive type. It's precise up to the microseconds
+ * level.
  *
  * Example usage:
  * SqlTimestamp created_at = SqlTimestamp("created_at");
@@ -260,7 +261,7 @@ class SqlStr : public SqlPrimitiveInterface {
 class SqlTimestamp : public SqlPrimitiveInterface {
   public:
     explicit SqlTimestamp(std::string const &FieldName);
-    explicit SqlTimestamp(std::time_t Value, std::string const &FieldName = "");
+    explicit SqlTimestamp(TimestampMicros Value, std::string const &FieldName = "");
     ~SqlTimestamp() override;
     SqlTimestamp(SqlTimestamp const &) = default;
 
@@ -277,15 +278,15 @@ class SqlTimestamp : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ time.
      */
-    std::optional<std::time_t> const &Value() const;
+    std::optional<TimestampMicros> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::optional<std::time_t> *ValuePtr();
+    std::optional<TimestampMicros> *ValuePtr();
 
   private:
-    std::optional<std::time_t> value_;
+    std::optional<TimestampMicros> value_;
 };
 
 /**
@@ -517,8 +518,9 @@ class SqlStrArr : public SqlPrimitiveInterface {
 };
 
 /**
- * @brief The SqlTimestampArr class timestamp array primitive type.
- * Note that, this array type is not nullable, so are the array elements.
+ * @brief The SqlTimestampArr class timestamp array primitive type. Timestamps are expected to have
+ * up to microseconds precision. Note that, this array type is not nullable, so are the array
+ * elements.
  *
  * Example usage:
  * SqlTimestampArr last_4_login_timestamps = SqlTimestampArr("last_4_login_timestamps");
@@ -526,7 +528,7 @@ class SqlStrArr : public SqlPrimitiveInterface {
 class SqlTimestampArr : public SqlPrimitiveInterface {
   public:
     explicit SqlTimestampArr(std::string const &FieldName);
-    explicit SqlTimestampArr(std::vector<std::time_t> const &Value,
+    explicit SqlTimestampArr(std::vector<TimestampMicros> const &Value,
                              std::string const &FieldName = "");
     ~SqlTimestampArr() override;
     SqlTimestampArr(SqlTimestampArr const &) = default;
@@ -544,15 +546,15 @@ class SqlTimestampArr : public SqlPrimitiveInterface {
     /**
      * @brief value The internally stored C++ timestamp array.
      */
-    std::vector<std::time_t> const &Value() const;
+    std::vector<TimestampMicros> const &Value() const;
 
     /**
      * @brief value_ptr Mutable version of the above function.
      */
-    std::vector<std::time_t> *ValuePtr();
+    std::vector<TimestampMicros> *ValuePtr();
 
   private:
-    std::vector<std::time_t> value_;
+    std::vector<TimestampMicros> value_;
 };
 
 /**
