@@ -99,6 +99,10 @@ SOURCES += \
     service/social_network_service.cc \
     service/user_service.cc
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/time_util/ -ltime_util
+
+INCLUDEPATH += $$PWD/../../common/time_util
+DEPENDPATH += $$PWD/../../common/time_util
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 

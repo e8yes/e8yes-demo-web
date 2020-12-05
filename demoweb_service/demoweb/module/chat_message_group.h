@@ -39,7 +39,7 @@ namespace e8 {
  * message group's associated message channel. Please refer to the specific message channel PBAC to
  * see how exactly access control is evaluated.
  *
- * @param viewer_id ID of the chat message group's creator.
+ * @param creator_id ID of the chat message group's creator.
  * @param channel_id ID of the message channel the chat message group is associated with.
  * @param group_title Description of the chat message group.
  * @param thread_type The type of the chat message group which determines certain behaviors
@@ -49,7 +49,7 @@ namespace e8 {
  * @return The newly created chat message group if the creator passes the access control evaluation.
  */
 std::optional<ChatMessageGroupEntity>
-CreateChatMessageGroup(UserId const viewer_id, MessageChannelId const channel_id,
+CreateChatMessageGroup(UserId const creator_id, MessageChannelId const channel_id,
                        std::string const &group_title, ChatMessageThreadType const thread_type,
                        HostId const host_id, MessageChannelPbacInterface *pbac,
                        ConnectionReservoirInterface *conns);

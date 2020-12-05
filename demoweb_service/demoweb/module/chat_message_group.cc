@@ -63,15 +63,14 @@ ChatMessageEntry ToChatMessageEntry(ChatMessageEntity const &entity) {
 } // namespace
 
 std::optional<ChatMessageGroupEntity>
-CreateChatMessageGroup(UserId const viewer_id, MessageChannelId const channel_id,
+CreateChatMessageGroup(UserId const creator_id, MessageChannelId const channel_id,
                        std::string const &group_title, ChatMessageThreadType const thread_type,
                        HostId const host_id, MessageChannelPbacInterface *pbac,
                        ConnectionReservoirInterface *conns) {
-    if (!pbac->AllowCreateChatMessageGroup(viewer_id, channel_id)) {
+    if (!pbac->AllowCreateChatMessageGroup(creator_id, channel_id)) {
         return std::nullopt;
     }
-    return CreateChatMessageGroup(viewer_id, channel_id, group_title, thread_type, host_id, pbac,
-                                  conns);
+    return CreateChatMessageGroup(creator_id, channel_id, group_title, thread_type, host_id, conns);
 }
 
 std::vector<ChatMessageThread> GetChatMessageGroupsWithChatMessageSummaryList(
@@ -88,20 +87,29 @@ std::vector<ChatMessageThread> GetChatMessageGroupsWithChatMessageSummaryList(
     SqlQueryBuilder::Placeholder<SqlInt> max_num_messages_per_group_ph;
     query.QueryPiece("(SELECT * FROM ")
         .QueryPiece(TableNames::ChatMessageGroup())
-        .QueryPiece(" cmg LIMIT ")
+        .QueryPiece(" cmg "
+                    "ORDER BY cmg.last_interaction_at DESC "
+                    "LIMIT ")
         .Holder(&chat_message_group_limit_ph)
         .QueryPiece(" OFFSET ")
         .Holder(&chat_message_group_offset_ph)
         .QueryPiece(") AS paginated_cmg ")
-        .QueryPiece(" JOIN ")
+        .QueryPiece(" LEFT JOIN ")
         .QueryPiece(TableNames::ChatMessage())
-        .QueryPiece(" cm ON cm.group_id = paginated_cmg.id WHERE cm.message_seq_id >= (SELECT "
-                    "MIN(valid_messages.message_seq_id) FROM (SELECT valid_cm.message_seq_id FROM "
-                    "chat_message valid_cm WHERE valid_cm.group_id = paginated_cmg.id ORDER BY "
-                    "cm.message_seq_id DESC LIMIT ")
+        .QueryPiece(" cm ON cm.group_id = paginated_cmg.id "
+                    "WHERE "
+                    "cm IS NULL OR "
+                    "cm.message_seq_id >= ("
+                    "SELECT MIN(valid_messages.message_seq_id) "
+                    "FROM "
+                    "(SELECT valid_cm.message_seq_id "
+                    "FROM chat_message valid_cm "
+                    "WHERE valid_cm.group_id = paginated_cmg.id "
+                    "ORDER BY valid_cm.message_seq_id DESC "
+                    "LIMIT ")
         .Holder(&max_num_messages_per_group_ph)
         .QueryPiece(") AS valid_messages)")
-        .QueryPiece("ORDER BY paginated_cmg.last_interaction_at DESC, cm.message_seq_id DESC");
+        .QueryPiece("ORDER BY paginated_cmg.last_interaction_at DESC, cm.message_seq_id ASC");
 
     query.SetValueToPlaceholder(chat_message_group_limit_ph,
                                 std::make_shared<SqlInt>(pagination.result_per_page()));
@@ -120,13 +128,18 @@ std::vector<ChatMessageThread> GetChatMessageGroupsWithChatMessageSummaryList(
         auto it = chat_message_thread_lookup.find(*chat_message_group.id.Value());
         if (it == chat_message_thread_lookup.end()) {
             ChatMessageThread chat_message_thread = ToChatMessageThread(chat_message_group);
+
             chat_message_threads.push_back(chat_message_thread);
 
             it = chat_message_thread_lookup
-                     .insert(std::make_pair(it->first, &chat_message_threads.back()))
+                     .insert(std::make_pair(*chat_message_group.id.Value(),
+                                            &chat_message_threads.back()))
                      .first;
         }
-        *it->second->mutable_messages()->Add() = ToChatMessageEntry(chat_message);
+
+        if (chat_message.message_seq_id.Value().has_value()) {
+            *it->second->mutable_messages()->Add() = ToChatMessageEntry(chat_message);
+        }
     }
 
     return chat_message_threads;
