@@ -16,7 +16,6 @@
  */
 
 #include <chrono>
-#include <iostream>
 
 #include "common/time_util/time_util.h"
 
