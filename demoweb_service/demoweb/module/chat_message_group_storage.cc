@@ -17,11 +17,11 @@
 
 #include <cassert>
 #include <cstdint>
-#include <ctime>
 #include <memory>
 #include <string>
 #include <tuple>
 
+#include "common/time_util/time_util.h"
 #include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
 #include "demoweb_service/demoweb/common_entity/message_channel_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
@@ -46,8 +46,7 @@ CreateChatMessageGroup(UserId const creator_id, MessageChannelId const channel_i
     *chat_message_group.creator_id.ValuePtr() = creator_id;
     *chat_message_group.group_type.ValuePtr() = thread_type;
 
-    std::time_t timestamp;
-    std::time(&timestamp);
+    TimestampMicros timestamp = CurrentTimestampMicros();
     *chat_message_group.created_at.ValuePtr() = timestamp;
     *chat_message_group.last_interaction_at.ValuePtr() = timestamp;
 
