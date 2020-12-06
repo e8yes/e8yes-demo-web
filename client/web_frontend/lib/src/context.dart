@@ -5,7 +5,7 @@ import 'package:demoweb_app/src/identity_storage.dart';
 import 'package:demoweb_app/src/immediate_connection.dart';
 
 Uri demowebServiceUri = Uri.parse("http://api.e8yes.org:18000");
-// Uri demowebServiceUri = Uri.parse("http://localhost:8000");
+// Uri demowebServiceUri = Uri.parse("http://192.168.30.202");
 
 ConnectionManagerInterface demowebServiceConnections =
     ImmediateConnection(demowebServiceUri);
