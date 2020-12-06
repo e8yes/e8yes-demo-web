@@ -17,8 +17,10 @@
 
 #include <cassert>
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
@@ -28,6 +30,8 @@
 #include "demoweb_service/demoweb/module/chat_message_storage.h"
 #include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
+#include "postgres/query_runner/reflection/sql_primitives.h"
+#include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
 #include "proto_cc/chat_message.pb.h"
 #include "proto_cc/file.pb.h"
@@ -83,6 +87,52 @@ SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
     result.message = ToChatMessageEntry(entity);
 
     return result;
+}
+
+std::vector<ChatMessageEntry> GetChatMessages(UserId const viewer_id,
+                                              ChatMessageGroupId const group_id,
+                                              std::optional<Pagination> const &pagination,
+                                              MessageChannelPbacInterface *pbac,
+                                              ConnectionReservoirInterface *conns) {
+    std::optional<ChatMessageGroupEntity> group = FetchChatMessageGroup(group_id, conns);
+    if (!group.has_value()) {
+        return std::vector<ChatMessageEntry>();
+    }
+    if (!pbac->AllowReadChatMessageGroup(viewer_id, *group->channel_id.Value())) {
+        return std::vector<ChatMessageEntry>();
+    }
+
+    SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLong> group_id_ph;
+    query.QueryPiece(TableNames::ChatMessage())
+        .QueryPiece(" cm WHERE cm.group_id=")
+        .Holder(&group_id_ph)
+        .QueryPiece(" ORDER BY cm.message_seq_id ASC");
+
+    if (pagination.has_value()) {
+        SqlQueryBuilder::Placeholder<SqlInt> limit_ph;
+        SqlQueryBuilder::Placeholder<SqlInt> offset_ph;
+        query.QueryPiece(" LIMIT ").Holder(&limit_ph);
+        query.QueryPiece(" OFFSET ").Holder(&offset_ph);
+
+        query.SetValueToPlaceholder(limit_ph,
+                                    std::make_shared<SqlInt>(pagination->result_per_page()));
+        query.SetValueToPlaceholder(
+            offset_ph,
+            std::make_shared<SqlInt>(pagination->page_number() * pagination->result_per_page()));
+    }
+
+    query.SetValueToPlaceholder(group_id_ph, std::make_shared<SqlLong>(group_id));
+
+    std::vector<std::tuple<ChatMessageEntity>> query_results =
+        Query<ChatMessageEntity>(query, {"cm"}, conns);
+
+    std::vector<ChatMessageEntry> entries(query_results.size());
+    for (unsigned i = 0; i < query_results.size(); ++i) {
+        entries[i] = ToChatMessageEntry(std::get<0>(query_results[i]));
+    }
+
+    return entries;
 }
 
 } // namespace e8

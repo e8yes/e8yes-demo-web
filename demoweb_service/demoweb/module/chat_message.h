@@ -29,6 +29,7 @@
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "proto_cc/chat_message.pb.h"
 #include "proto_cc/file.pb.h"
+#include "proto_cc/pagination.pb.h"
 
 namespace e8 {
 
@@ -67,6 +68,26 @@ SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
                 std::vector<FileFormat> const &media_file_formats,
                 std::vector<FileFormat> const &binary_file_formats,
                 MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns);
+
+/**
+ * @brief GetChatMessages Get chat message entries from the specified chat message group which
+ * belongs to a message channel. The viewer will be checked against the access rules provided by the
+ * PBAC in that message channel.
+ *
+ * @param viewer_id ID of the viewer attempted to read from the chat message group.
+ * @param group_id ID of the chat message group to read from.
+ * @param pagination Optionally paginate the message entries.
+ * @param pbac Policy based access controller for the associated message channel.
+ * @param conns Database connections.
+ * @return The message entries returned based on the criteria specified by the arguments. If the
+ * message group doesn't exist or the viewer doesn't have the privilege to read from the message
+ * group, it will return an empty list.
+ */
+std::vector<ChatMessageEntry> GetChatMessages(UserId const viewer_id,
+                                              ChatMessageGroupId const group_id,
+                                              std::optional<Pagination> const &pagination,
+                                              MessageChannelPbacInterface *pbac,
+                                              ConnectionReservoirInterface *conns);
 
 } // namespace e8
 
