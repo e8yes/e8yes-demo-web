@@ -18,8 +18,10 @@
 #ifndef SERVICE_UTIL_H
 #define SERVICE_UTIL_H
 
+#include <google/protobuf/repeated_field.h>
 #include <grpcpp/grpcpp.h>
 #include <optional>
+#include <vector>
 
 #include "proto_cc/identity.pb.h"
 #include "proto_cc/pagination.pb.h"
@@ -44,6 +46,18 @@ std::optional<Identity> ExtractIdentityFromContext(grpc::ServerContext const &co
  * @return OK status if no error found.
  */
 grpc::Status ValidatePagination(Pagination const &pagination, unsigned result_per_page_limit);
+
+/**
+ * @brief IntsToEnums Converts an integer repeated field to an enumeration list.
+ */
+template <typename EnumType>
+std::vector<EnumType> IntsToEnums(google::protobuf::RepeatedField<int> const &enum_ints) {
+    std::vector<EnumType> result(enum_ints.size());
+    for (int i = 0; i < enum_ints.size(); ++i) {
+        result[i] = static_cast<EnumType>(enum_ints[i]);
+    }
+    return result;
+}
 
 } // namespace e8
 
