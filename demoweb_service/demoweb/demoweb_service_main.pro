@@ -21,6 +21,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/./ -ldemoweb_service
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/time_util/ -ltime_util
+
+INCLUDEPATH += $$PWD/../../common/time_util
+DEPENDPATH += $$PWD/../../common/time_util
+
 unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 
 INCLUDEPATH += $$PWD/../../postgres/query_runner
