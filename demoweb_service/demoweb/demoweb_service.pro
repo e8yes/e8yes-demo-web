@@ -52,6 +52,7 @@ HEADERS += \
     pbac/message_channel_attributes.h \
     pbac/message_channel_member_attributes.h \
     pbac/message_channel_pbac.h \
+    service/chat_message_service.h \
     service/file_service.h \
     service/message_channel_service.h \
     service/service_util.h \
@@ -93,6 +94,7 @@ SOURCES += \
     pbac/message_channel_attributes.cc \
     pbac/message_channel_member_attributes.cc \
     pbac/message_channel_pbac.cc \
+    service/chat_message_service.cc \
     service/file_service.cc \
     service/message_channel_service.cc \
     service/service_util.cc \

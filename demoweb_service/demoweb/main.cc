@@ -28,6 +28,7 @@
 #include "common/flags/parse_flags.h"
 #include "demoweb_service/demoweb/environment/environment_context_interface.h"
 #include "demoweb_service/demoweb/environment/prod_environment_context.h"
+#include "demoweb_service/demoweb/service/chat_message_service.h"
 #include "demoweb_service/demoweb/service/file_service.h"
 #include "demoweb_service/demoweb/service/message_channel_service.h"
 #include "demoweb_service/demoweb/service/social_network_service.h"
@@ -50,6 +51,7 @@ static e8::UserServiceImpl gUserService;
 static e8::FileServiceImpl gFileService;
 static e8::SocialNetworkServiceImpl gSocialNetworkService;
 static e8::MessageChannelServiceImpl gMessageChannelService;
+static e8::ChatMessageServiceImpl gChatMessageService;
 static e8::MessageSubscriberServiceImpl gMessageSubscriberService;
 
 std::unique_ptr<e8::DemoWebProductionEnvironmentContext> BuildDemoWebEnvironmentContext() {
@@ -114,6 +116,7 @@ int main(int argc, char *argv[]) {
     builder.RegisterService(&gFileService);
     builder.RegisterService(&gSocialNetworkService);
     builder.RegisterService(&gMessageChannelService);
+    builder.RegisterService(&gChatMessageService);
     builder.RegisterService(&gMessageSubscriberService);
 
     std::unique_ptr<grpc::Server> server = builder.BuildAndStart();
