@@ -1,0 +1,10 @@
+FROM demoweb_base_env:latest
+
+# Run the service.
+WORKDIR /home
+
+RUN cp ./demoweb_src/load_balancer/dyn_dns/watch_dog.py ./bin/
+
+WORKDIR /home/bin
+
+CMD ["python3", "watch_dog.py"]
