@@ -135,7 +135,7 @@
         {
             "name": "dyn_dns",
             "docker_template": "load_balancer/dyn_dns/Dockerfile.tmpl",
-            "pushable": false,
+            "pushable": true,
             "open_ports": [],
             "function": "load_balancer"
         }
