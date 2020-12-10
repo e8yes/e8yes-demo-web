@@ -18,7 +18,6 @@
 #include <cassert>
 #include <crypt.h>
 #include <cstdint>
-#include <ctime>
 #include <fstream>
 #include <optional>
 #include <sstream>
@@ -38,7 +37,7 @@ namespace {
 static char const kDigestAlgorithmPrefix[] = "$2y$";
 static unsigned const kDigestStrength = 11;
 static unsigned const kNumRandomBytes = 16;
-static uint64_t const kIdentityValidDurationSecs = 60 * 10;
+static uint64_t const kIdentityValidDurationMicros = 60 * 10 * 1000 * 1000;
 
 std::vector<std::string> Split(std::string const &input, char delimiter) {
     std::stringstream ss(input);
@@ -107,9 +106,7 @@ std::optional<SignedIdentity> SignIdentity(UserEntity const &user, std::string c
     identity.set_user_id(user.id.Value().value());
     *identity.mutable_group_names() = {user.group_names.Value().begin(),
                                        user.group_names.Value().end()};
-    std::time_t cur_timestamp;
-    std::time(&cur_timestamp);
-    identity.set_expiry_timestamp(cur_timestamp + kIdentityValidDurationSecs);
+    identity.set_expiry_timestamp(CurrentTimestampMicros() + kIdentityValidDurationMicros);
 
     return SignIdentity(identity, key_gen);
 }

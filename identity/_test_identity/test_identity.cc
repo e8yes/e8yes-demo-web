@@ -19,6 +19,7 @@
 #include <memory>
 #include <optional>
 
+#include "common/time_util/time_util.h"
 #include "common/unit_test_util/unit_test_util.h"
 #include "identity/trustable_identity.h"
 #include "keygen/persistent_key_generator.h"
@@ -43,9 +44,7 @@ bool SuccessfulSignAndParseTest() {
     e8::Identity identity;
     identity.set_user_id(1L);
     *identity.add_group_names() = "default_group";
-    std::time_t cur_timestamp;
-    std::time(&cur_timestamp);
-    identity.set_expiry_timestamp(cur_timestamp + 1000);
+    identity.set_expiry_timestamp(e8::CurrentTimestampMicros() + 1000 * 1000 * 1000);
 
     std::optional<e8::SignedIdentity> signed_id = e8::SignIdentity(identity, &key_gen);
 
@@ -70,7 +69,7 @@ bool ExpiredSignatureTest() {
     identity.set_user_id(1L);
     std::time_t cur_timestamp;
     std::time(&cur_timestamp);
-    identity.set_expiry_timestamp(cur_timestamp - 1000);
+    identity.set_expiry_timestamp(e8::CurrentTimestampMicros() - 1000 * 1000 * 1000);
 
     std::optional<e8::SignedIdentity> signed_id = e8::SignIdentity(identity, &key_gen);
 

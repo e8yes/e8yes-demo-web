@@ -15,9 +15,9 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ctime>
 #include <vector>
 
+#include "common/time_util/time_util.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/module/push_message.h"
@@ -34,10 +34,7 @@ std::vector<bool> PushMessageContent(UserId const target_user_id,
     RealTimeMessage message;
     message.set_real_time_message_id(TimeId(host_id));
     message.set_target_user_id(target_user_id);
-
-    std::time_t timestamp;
-    std::time(&timestamp);
-    message.set_created_at(timestamp);
+    message.set_created_at(CurrentTimestampMicros());
 
     *message.mutable_content() = message_content;
 

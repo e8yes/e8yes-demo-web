@@ -16,7 +16,6 @@
  */
 
 #include <cassert>
-#include <ctime>
 #include <memory>
 #include <optional>
 #include <string>
@@ -26,19 +25,19 @@
 #include "demoweb_service/demoweb/common_entity/user_group_has_file_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/file_access_validator.h"
-#include "proto_cc/file.pb.h"
-#include "proto_cc/identity.pb.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/sign_message.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_query_builder.h"
 #include "postgres/query_runner/sql_runner.h"
+#include "proto_cc/file.pb.h"
+#include "proto_cc/identity.pb.h"
 
 namespace e8 {
 namespace {
 
 static char const kEncrypter[] = "FileAccessSigner";
-static uint64_t const kFileSignatureValidDurationSecs = 60 * 10;
+static uint64_t const kFileSignatureValidDurationMicros = 60 * 10 * 1000 * 1000;
 
 } // namespace
 
@@ -48,10 +47,7 @@ FileAccessToken SignFileAccessToken(UserId viewer_id, std::string const &file_pa
     file_access.set_viewer_id(viewer_id);
     file_access.set_file_path(file_path);
     file_access.set_access_mode(access_mode);
-
-    std::time_t cur_timestamp;
-    std::time(&cur_timestamp);
-    file_access.set_expiry_timestamp(cur_timestamp + kFileSignatureValidDurationSecs);
+    file_access.set_expiry_timestamp(CurrentTimestampMicros() + kFileSignatureValidDurationMicros);
 
     std::string file_access_bytes;
     bool serialize_status = file_access.SerializeToString(&file_access_bytes);
@@ -85,8 +81,7 @@ std::optional<std::string> ValidateFileAccessToken(UserId viewer_id, FileAccessM
         return std::nullopt;
     }
 
-    std::time_t cur_timestamp;
-    std::time(&cur_timestamp);
+    TimestampMicros cur_timestamp = CurrentTimestampMicros();
     if (cur_timestamp > file_access.expiry_timestamp()) {
         return std::nullopt;
     }

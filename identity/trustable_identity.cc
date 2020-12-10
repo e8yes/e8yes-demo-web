@@ -15,10 +15,10 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ctime>
 #include <optional>
 #include <string>
 
+#include "common/time_util/time_util.h"
 #include "identity/trustable_identity.h"
 #include "keygen/key_generator_interface.h"
 #include "keygen/sign_message.h"
@@ -64,8 +64,7 @@ std::optional<Identity> ValidateSignedIdentity(SignedIdentity const &signed_iden
         identity.ParseFromArray(decoded_bytes.value().data(), decoded_bytes.value().size());
     assert(deserialize_status == true);
 
-    std::time_t cur_timestamp;
-    std::time(&cur_timestamp);
+    TimestampMicros cur_timestamp = CurrentTimestampMicros();
     if (cur_timestamp > identity.expiry_timestamp()) {
         return std::nullopt;
     }

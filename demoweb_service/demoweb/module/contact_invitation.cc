@@ -17,11 +17,11 @@
 
 #include <cassert>
 #include <cstdint>
-#include <ctime>
 #include <memory>
 #include <optional>
 #include <vector>
 
+#include "common/time_util/time_util.h"
 #include "demoweb_service/demoweb/common_entity/contact_relation_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
@@ -60,8 +60,7 @@ bool SendInvitation(UserId inviter_id, UserId invitee_id, bool send_message_anyw
                     KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
     bool first_time_invitation = true;
 
-    time_t timestamp;
-    std::time(&timestamp);
+    TimestampMicros timestamp = CurrentTimestampMicros();
 
     ContactRelationEntity forward_relation;
     *forward_relation.src_user_id.ValuePtr() = inviter_id;
@@ -131,9 +130,6 @@ bool ProcessInvitation(UserId invitee_id, UserId inviter_id, bool accept, HostId
     if (num_deleted != 2) {
         return false;
     }
-
-    time_t timestamp;
-    std::time(&timestamp);
 
     if (accept) {
         CreateContact(inviter_id, invitee_id, conns);

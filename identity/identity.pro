@@ -30,6 +30,11 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
+unix:!macx: LIBS += -L$$OUT_PWD/../common/time_util/ -ltime_util
+
+INCLUDEPATH += $$PWD/../common/time_util
+DEPENDPATH += $$PWD/../common/time_util
+
 unix:!macx: LIBS += -L$$OUT_PWD/../proto_cc/ -lproto_cc
 
 INCLUDEPATH += $$PWD/../proto_cc

@@ -18,7 +18,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
-#include <ctime>
 #include <memory>
 #include <optional>
 #include <string>
@@ -186,9 +185,6 @@ MessageChannelEntity CreateMessageChannel(UserId creator_id,
                                           bool const encrypted, bool const close_group_channel,
                                           HostId const host_id,
                                           ConnectionReservoirInterface *conns) {
-    std::time_t current_timestamp;
-    std::time(&current_timestamp);
-
     MessageChannelEntity message_channel = CreateMessageChannel(
         channel_name, description, encrypted, close_group_channel, host_id, conns);
 

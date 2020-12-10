@@ -22,6 +22,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "common/time_util/time_util.h"
 #include "demoweb_service/demoweb/common_entity/contact_relation_entity.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
@@ -96,8 +97,7 @@ std::unordered_map<UserId, UserRelations> GetUsersRelations(UserId source_user_i
 
 bool CreateContact(UserId const inviter_id, UserId const invitee_id,
                    ConnectionReservoirInterface *conns) {
-    std::time_t timestamp;
-    std::time(&timestamp);
+    TimestampMicros timestamp = CurrentTimestampMicros();
 
     ContactRelationEntity forward_relation;
     *forward_relation.src_user_id.ValuePtr() = inviter_id;
@@ -125,8 +125,7 @@ bool CreateContact(UserId const inviter_id, UserId const invitee_id,
 
 bool RejectContact(UserId const inviter_id, UserId const invitee_id,
                    ConnectionReservoirInterface *conns) {
-    std::time_t timestamp;
-    std::time(&timestamp);
+    TimestampMicros timestamp = CurrentTimestampMicros();
 
     ContactRelationEntity rejection_relation;
     *rejection_relation.src_user_id.ValuePtr() = inviter_id;

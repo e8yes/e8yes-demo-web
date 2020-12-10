@@ -24,10 +24,10 @@
 #include "demoweb_service/demoweb/common_entity/file_metadata_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/file_metadata.h"
-#include "proto_cc/encryption_source.pb.h"
-#include "proto_cc/file.pb.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/sql_runner.h"
+#include "proto_cc/encryption_source.pb.h"
+#include "proto_cc/file.pb.h"
 
 namespace e8 {
 namespace {
@@ -79,8 +79,7 @@ std::optional<FileMetadataEntity> AttachMetadataForFile(std::string const &file_
     *file.format.ValuePtr() = format.value();
     *file.encryption_key_source.ValuePtr() = encryption_source;
 
-    time_t timestamp;
-    std::time(&timestamp);
+    TimestampMicros timestamp = CurrentTimestampMicros();
     *file.created_at.ValuePtr() = timestamp;
     *file.last_modified_at.ValuePtr() = timestamp;
 

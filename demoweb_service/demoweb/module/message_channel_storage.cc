@@ -17,7 +17,6 @@
 
 #include <cassert>
 #include <cstdint>
-#include <ctime>
 #include <optional>
 #include <string>
 #include <tuple>
@@ -42,8 +41,7 @@ ToMessageChannelHasUserEntity(MessageChannelId channel_id, UserId const user_id,
     *channel_member.user_id.ValuePtr() = user_id;
     *channel_member.ownership.ValuePtr() = member_type;
 
-    std::time_t timestamp;
-    std::time(&timestamp);
+    TimestampMicros timestamp = CurrentTimestampMicros();
     *channel_member.created_at.ValuePtr() = timestamp;
     *channel_member.last_interaction_at.ValuePtr() = timestamp;
 
@@ -57,17 +55,13 @@ MessageChannelEntity CreateMessageChannel(std::optional<std::string> const &chan
                                           bool const encrypted, bool const close_group_channel,
                                           HostId const host_id,
                                           ConnectionReservoirInterface *conns) {
-
-    std::time_t current_timestamp;
-    std::time(&current_timestamp);
-
     MessageChannelEntity message_channel;
     *message_channel.id.ValuePtr() = TimeId(host_id);
     *message_channel.channel_name.ValuePtr() = channel_name;
     *message_channel.description.ValuePtr() = description;
     *message_channel.encryption_enabled.ValuePtr() = encrypted;
     *message_channel.close_group_channel.ValuePtr() = close_group_channel;
-    *message_channel.created_at.ValuePtr() = current_timestamp;
+    *message_channel.created_at.ValuePtr() = CurrentTimestampMicros();
 
     int64_t num_rows =
         Update(message_channel, TableNames::MessageChannel(), /*replace=*/false, conns);

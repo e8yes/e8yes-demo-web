@@ -16,13 +16,13 @@
  */
 
 #include <cassert>
-#include <ctime>
 #include <memory>
 #include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
 
+#include "common/time_util/time_util.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
@@ -54,10 +54,7 @@ std::optional<UserEntity> CreateUser(std::string const &security_key,
     *user.security_key_hash.ValuePtr() = security_hash.value();
     *user.group_names.ValuePtr() = user_group_names;
     *user.active_level.ValuePtr() = 0;
-
-    std::time_t timestamp;
-    std::time(&timestamp);
-    *user.created_at.ValuePtr() = timestamp;
+    *user.created_at.ValuePtr() = CurrentTimestampMicros();
 
     uint64_t num_rows_affected = Update(user, TableNames::AUser(), /*overrdie=*/false, db_conn);
     if (num_rows_affected == 0) {

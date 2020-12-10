@@ -15,10 +15,10 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ctime>
 #include <optional>
 #include <string>
 
+#include "common/time_util/time_util.h"
 #include "common/unit_test_util/unit_test_util.h"
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/test_environment_context.h"
@@ -47,9 +47,7 @@ bool CreateBaselineUserTest() {
     TEST_CONDITION(!user.avatar_path.Value().has_value());
     TEST_CONDITION(user.emails.Value().empty());
     TEST_CONDITION(user.created_at.Value().has_value());
-    std::time_t current_timestamp;
-    std::time(&current_timestamp);
-    TEST_CONDITION(current_timestamp - user.created_at.Value().value() < 2);
+    TEST_CONDITION(e8::CurrentTimestampMicros() - user.created_at.Value().value() < 1000 * 1000);
     TEST_CONDITION(user.active_level.Value().has_value());
     TEST_CONDITION(user.active_level.Value().value() == 0);
     TEST_CONDITION(user.group_names.Value().size() == 1);
