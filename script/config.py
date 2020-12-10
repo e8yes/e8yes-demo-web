@@ -77,11 +77,13 @@ class BuildTarget:
                name: str, 
                docker_template: str,
                pushable: bool,
-               open_ports: List[int]):
+               open_ports: List[int],
+               function: str):
     self.name = name
     self.docker_template = docker_template
     self.pushable = pushable
     self.open_ports = open_ports
+    self.function = function
   
   def __repr__(self):
     return "BuildTarget={name=" + self.name + \
@@ -133,7 +135,8 @@ def LoadSourceOfTruths(config_file_path: str) -> Tuple[Dict[str, NodeConfig],
       BuildTarget(name=json_build_target["name"],
                   docker_template=json_build_target["docker_template"],
                   pushable=bool(json_build_target["pushable"]),
-                  open_ports=json_build_target["open_ports"]))
+                  open_ports=json_build_target["open_ports"],
+                  function=json_build_target["function"]))
 
   return node_configs, cluster_config, topology_config, build_targets
 

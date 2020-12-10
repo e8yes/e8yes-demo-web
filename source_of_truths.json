@@ -101,32 +101,43 @@
             "name": "demoweb_base_env",
             "docker_template": "Dockerfile.tmpl",
             "pushable": false,
-            "open_ports": []
+            "open_ports": [],
+            "function": "general"
         },
         {
             "name": "node_state_service",
             "docker_template": "node_state/Dockerfile.tmpl",
             "pushable": true,
-            "open_ports": [20021]
+            "open_ports": [20021],
+            "function": "distributor"
         },
         {
             "name": "message_queue_service",
             "docker_template": "message_queue/message_queue/Dockerfile.tmpl",
             "pushable": true,
-            "open_ports": [40041]
+            "open_ports": [40041],
+            "function": "message_queue"
         },
         {
             "name": "demoweb_service",
             "docker_template": "demoweb_service/demoweb/Dockerfile.tmpl",
             "pushable": true,
-            "open_ports": [50051, 8000]
+            "open_ports": [50051, 8000],
+            "function": "general"
         },
-        
         {
             "name": "demoweb_frontend_web",
             "docker_template": "client/web_frontend/Dockerfile.tmpl",
             "pushable": true,
-            "open_ports": [8080, 8443]
+            "open_ports": [8080, 8443],
+            "function": "general"
+        },
+        {
+            "name": "dyn_dns",
+            "docker_template": "load_balancer/dyn_dns/Dockerfile.tmpl",
+            "pushable": false,
+            "open_ports": [],
+            "function": "load_balancer"
         }
     ]
 }

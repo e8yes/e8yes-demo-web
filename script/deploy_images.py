@@ -38,6 +38,9 @@ def DeployImages(deployment_node: NodeConfig,
     for target in targets:
       if not target.pushable:
         continue
+      if target.function != "general" and node.functions.count(target.function) < 1:
+        continue
+
       image_name = BuildTargetImageName(
         deployment_node=deployment_node,
         docker_registry_port=docker_registry_port,
