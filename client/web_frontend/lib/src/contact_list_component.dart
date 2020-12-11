@@ -4,6 +4,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:demoweb_app/src/basic/context.dart';
+import 'package:demoweb_app/src/date_component.dart';
 import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/proto_dart/pagination.pbserver.dart';
 import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pb.dart';
@@ -19,9 +20,18 @@ import 'package:fixnum/fixnum.dart';
 @Component(
     selector: "contact-list",
     templateUrl: "contact_list_component.html",
-    styleUrls: ["contact_list_component.css"],
-    directives: [coreDirectives, formDirectives, FooterComponent],
-    exports: [UserRelation])
+    styleUrls: [
+      "contact_list_component.css"
+    ],
+    directives: [
+      coreDirectives,
+      formDirectives,
+      DateComponent,
+      FooterComponent
+    ],
+    exports: [
+      UserRelation
+    ])
 class ContactListComponent implements OnActivate {
   List<UserPublicProfile> searchedProfiles = List<UserPublicProfile>();
   List<UserPublicProfile> inviterProfiles = List<UserPublicProfile>();
@@ -115,12 +125,6 @@ class ContactListComponent implements OnActivate {
       List<UserRelationRecord> relations, UserRelation expected) {
     return relations.firstWhere(
         (UserRelationRecord relation) => relation.relation == expected);
-  }
-
-  String relationJoinDateString(UserRelationRecord relation) {
-    return DateTime.fromMicrosecondsSinceEpoch(relation.createdAt.toInt())
-        .toLocal()
-        .toString();
   }
 
   bool unrelated(List<UserRelationRecord> relations) {

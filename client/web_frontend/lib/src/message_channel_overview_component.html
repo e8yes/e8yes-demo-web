@@ -36,16 +36,27 @@
 <div *ngIf="showDates">
     <div>
         <label>
-            Last interacted at 
-            {{
-                dateToString(messageChannel.channelLastInteractedAt)
-            }}
+            <span>
+                Last interacted @
+            </span>
+            <span>
+                <date-hour [timestampMicros]=
+                    "messageChannel.channelLastInteractedAt">
+                </date-hour>
+            </span>
         </label>
     </div>
     
     <div>
         <label>
-            Created at {{dateToString(messageChannel.channel.createdAt)}}
+            <span>
+                Created @
+            </span>
+            <span>
+                <date-hour [timestampMicros]=
+                    "messageChannel.channel.createdAt">
+                </date-hour>
+            </span>
         </label>
     </div>
 </div>

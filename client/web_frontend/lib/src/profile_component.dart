@@ -1,17 +1,19 @@
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:demoweb_app/src/basic/context.dart';
+import 'package:demoweb_app/src/basic/date_string.dart';
+import 'package:demoweb_app/src/date_component.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
 import 'package:demoweb_app/src/service/user_service_interface.dart';
-import 'package:fixnum/fixnum.dart';
 
 @Component(
   selector: 'profile',
   templateUrl: 'profile_component.html',
   styleUrls: ["profile_component.css"],
-  directives: [coreDirectives, formDirectives],
+  exports: [extractDateString, extractHourString],
+  directives: [coreDirectives, formDirectives, DateComponent],
 )
 class ProfileComponent {
   @Input()
@@ -27,12 +29,6 @@ class ProfileComponent {
 
   bool hasAlias(UserPublicProfile profile) {
     return profile.hasAlias() && profile.alias.value.isNotEmpty;
-  }
-
-  String timestampToDateString(Int64 timestamp) {
-    return DateTime.fromMicrosecondsSinceEpoch(timestamp.toInt())
-        .toLocal()
-        .toString();
   }
 
   void onClickEdit() {

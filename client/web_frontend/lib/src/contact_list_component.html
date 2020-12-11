@@ -37,12 +37,11 @@
         <span *ngIf="!profile.hasAlias()">
           (no alias)
         </span>
-        <span>{{
-          relationJoinDateString(
-            extractRelation(profile.relations, 
-                            UserRelation.URL_INVITATION_RECEIVED))
-              }}
-        </span>
+        <date-hour [timestampMicros]=
+                   "extractRelation(profile.relations, 
+                                    UserRelation.URL_INVITATION_RECEIVED)
+                    .createdAt">
+        </date-hour>
       </li>
     </ul>
   </div>
@@ -71,12 +70,11 @@
         <span *ngIf="!profile.hasAlias()">
           (no alias)
         </span>
-        <span>{{
-          relationJoinDateString(
-            extractRelation(profile.relations, 
-                            UserRelation.URL_INVITATION_SENT))
-              }}
-        </span>
+        <date-hour [timestampMicros]=
+                   "extractRelation(profile.relations, 
+                                    UserRelation.URL_INVITATION_SENT)
+                    .createdAt">
+        </date-hour>
       </li>
     </ul>
   </div>
@@ -106,12 +104,11 @@
         <span *ngIf="!profile.hasAlias()">
           (no alias)
         </span>
-        <span>{{
-          relationJoinDateString(
-            extractRelation(profile.relations, 
-                            UserRelation.URL_CONTACT))
-              }}
-        </span>
+        <date-hour [timestampMicros]=
+                   "extractRelation(profile.relations, 
+                                    UserRelation.URL_CONTACT)
+                    .createdAt">
+        </date-hour>
       </li>
     </ul>
   </div>

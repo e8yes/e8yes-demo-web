@@ -35,7 +35,7 @@
     <div>
         <label class="col-form-label key-label">Join Date</label>
         <label class="col-form-label value-label" >
-            {{timestampToDateString(profile.joinAt)}}
+            <date-hour [timestampMicros]="profile.joinAt"></date-hour>
         </label>
     </div>
 
