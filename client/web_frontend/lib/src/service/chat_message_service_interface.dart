@@ -15,9 +15,18 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-import 'package:demoweb_app/src/proto_dart/service_message_subscriber.pb.dart';
+import 'package:demoweb_app/src/proto_dart/service_chat_message.pb.dart';
 
-abstract class MessageSubscriberServiceInterface {
-  Stream<SubscribeRealTimeMessageQueueResponse> subscribeRealTimeMessageQueue(
-      SubscribeRealTimeMessageQueueRequest request, String signature);
+abstract class ChatMessageServiceInterface {
+  Future<CreateChatMessageThreadRequest> createChatMessageThread(
+      CreateChatMessageThreadResponse request, String signature);
+
+  Future<SendChatMessageResponse> sendChatMessage(
+      SendChatMessageRequest request, String signature);
+
+  Future<GetChatMessagesResponse> getChatMessages(
+      GetChatMessagesRequest request, String signature);
+
+  Future<GetChatMessageThreadsResponse> getChatMessageThreads(
+      GetChatMessageThreadsRequest request, String signature);
 }

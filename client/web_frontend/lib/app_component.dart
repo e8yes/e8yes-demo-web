@@ -4,6 +4,8 @@ import 'package:demoweb_app/src/account/account.dart';
 import 'package:demoweb_app/src/service/authorization_service.dart';
 import 'package:demoweb_app/src/service/authorization_service_interface.dart';
 import 'package:demoweb_app/src/basic/fetch_realtime_message.dart';
+import 'package:demoweb_app/src/service/chat_message_service.dart';
+import 'package:demoweb_app/src/service/chat_message_service_interface.dart';
 import 'package:demoweb_app/src/service/message_channel_service.dart';
 import 'package:demoweb_app/src/service/message_channel_service_interface.dart';
 import 'package:demoweb_app/src/service/message_subscriber_service.dart';
@@ -29,6 +31,8 @@ import 'package:demoweb_app/src/service/user_service_interface.dart';
         useClass: SocialNetworkServiceImpl),
     ClassProvider(MessageChannelServiceInterface,
         useClass: MessageChannelServiceImpl),
+    ClassProvider(ChatMessageServiceInterface,
+        useClass: ChatMessageServiceImpl),
     ClassProvider(MessageSubscriberServiceInterface,
         useClass: MessageSubscriberServiceImpl),
   ],
