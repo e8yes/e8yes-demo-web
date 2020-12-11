@@ -3,17 +3,17 @@ import "dart:async";
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:demoweb_app/src/context.dart';
+import 'package:demoweb_app/src/basic/context.dart';
 import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/proto_dart/pagination.pbserver.dart';
 import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_relation.pb.dart';
-import 'package:demoweb_app/src/route_paths.dart';
-import 'package:demoweb_app/src/socialnetwork_service_interface.dart';
-import 'package:demoweb_app/src/sync_search_result.dart';
-import 'package:demoweb_app/src/user_service_interface.dart';
+import 'package:demoweb_app/src/routers/route_paths.dart';
+import 'package:demoweb_app/src/service/socialnetwork_service_interface.dart';
+import 'package:demoweb_app/src/basic/sync_search_result.dart';
+import 'package:demoweb_app/src/service/user_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
 
 @Component(

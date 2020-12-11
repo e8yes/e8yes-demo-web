@@ -1,15 +1,15 @@
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:demoweb_app/src/context.dart';
+import 'package:demoweb_app/src/basic/context.dart';
 import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/profile_component.dart';
 import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pbgrpc.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pbgrpc.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_relation.pb.dart';
-import 'package:demoweb_app/src/routes.dart';
-import 'package:demoweb_app/src/socialnetwork_service_interface.dart';
-import 'package:demoweb_app/src/user_service_interface.dart';
+import 'package:demoweb_app/src/routers/routes.dart';
+import 'package:demoweb_app/src/service/socialnetwork_service_interface.dart';
+import 'package:demoweb_app/src/service/user_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
 
 @Component(

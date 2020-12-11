@@ -1,11 +1,11 @@
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:demoweb_app/src/account.dart';
-import 'package:demoweb_app/src/authorization_service_interface.dart';
-import 'package:demoweb_app/src/context.dart';
-import 'package:demoweb_app/src/route_paths.dart';
-import 'package:demoweb_app/src/routes.dart';
-import 'package:demoweb_app/src/user_service_interface.dart';
+import 'package:demoweb_app/src/account/account.dart';
+import 'package:demoweb_app/src/service/authorization_service_interface.dart';
+import 'package:demoweb_app/src/basic/context.dart';
+import 'package:demoweb_app/src/routers/route_paths.dart';
+import 'package:demoweb_app/src/routers/routes.dart';
+import 'package:demoweb_app/src/service/user_service_interface.dart';
 
 @Component(
   selector: "navigation-sidebar",

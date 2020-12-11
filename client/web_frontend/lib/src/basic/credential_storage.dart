@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:demoweb_app/src/authorization_service_interface.dart';
+import 'package:demoweb_app/src/service/authorization_service_interface.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:webstorage/webstorage.dart';
@@ -16,8 +16,7 @@ class CredentialStorage {
           ..userId = userId
           ..securityKey = securityKey)
         .then((AuthorizationResponse res) {
-      _sessionStorage.set(
-          "sig", res.signedIdentity.signature);
+      _sessionStorage.set("sig", res.signedIdentity.signature);
       return res;
     });
   }

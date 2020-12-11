@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:demoweb_app/src/context.dart';
-import 'package:demoweb_app/src/message_subscriber_service_interface.dart';
+import 'package:demoweb_app/src/basic/context.dart';
+import 'package:demoweb_app/src/service/message_subscriber_service_interface.dart';
 import 'package:demoweb_app/src/proto_dart/service_message_subscriber.pb.dart';
 
 void fetchRealTimeMessages(

@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
-import 'package:demoweb_app/src/context.dart';
-import 'package:demoweb_app/src/message_channel_service_interface.dart';
+import 'package:demoweb_app/src/basic/context.dart';
+import 'package:demoweb_app/src/service/message_channel_service_interface.dart';
 import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/pagination.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_message_channel.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
-import 'package:demoweb_app/src/socialnetwork_service_interface.dart';
-import 'package:demoweb_app/src/sync_search_result.dart';
+import 'package:demoweb_app/src/service/socialnetwork_service_interface.dart';
+import 'package:demoweb_app/src/basic/sync_search_result.dart';
 import 'package:fixnum/fixnum.dart';
 
 class MessageChannelEditorStructuralControl {

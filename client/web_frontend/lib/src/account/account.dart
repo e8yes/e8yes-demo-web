@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:demoweb_app/src/authorization_service_interface.dart';
+import 'package:demoweb_app/src/service/authorization_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
 
-import 'package:demoweb_app/src/context.dart';
+import 'package:demoweb_app/src/basic/context.dart';
 import "package:demoweb_app/src/proto_dart/service_user.pb.dart";
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
-import 'package:demoweb_app/src/security_key_generator.dart';
-import 'package:demoweb_app/src/user_service_interface.dart';
+import 'package:demoweb_app/src/basic/security_key_generator.dart';
+import 'package:demoweb_app/src/service/user_service_interface.dart';
 import 'package:grpc/grpc_web.dart';
 
 enum AccountState {

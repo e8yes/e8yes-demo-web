@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-import 'package:demoweb_app/src/context.dart';
-import 'package:demoweb_app/src/message_channel_service_interface.dart';
+import 'package:demoweb_app/src/basic/context.dart';
+import 'package:demoweb_app/src/service/message_channel_service_interface.dart';
 import 'package:demoweb_app/src/proto_dart/service_message_channel.pbgrpc.dart';
 
 class MessageChannelServiceImpl extends MessageChannelServiceInterface {

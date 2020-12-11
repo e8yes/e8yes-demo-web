@@ -1,8 +1,8 @@
 import "dart:async";
 
-import "package:demoweb_app/src/context.dart";
+import 'package:demoweb_app/src/basic/context.dart';
 import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pbgrpc.dart';
-import "package:demoweb_app/src/socialnetwork_service_interface.dart";
+import 'package:demoweb_app/src/service/socialnetwork_service_interface.dart';
 
 class SocialNetworkServiceImpl implements SocialNetworkServiceInterface {
   @override

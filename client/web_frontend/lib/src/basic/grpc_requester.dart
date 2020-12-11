@@ -15,7 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-import 'package:demoweb_app/src/connection_manager_interface.dart';
+import 'package:demoweb_app/src/basic/connection_manager_interface.dart';
 import 'package:grpc/grpc_web.dart';
 
 class GrpcRequester {

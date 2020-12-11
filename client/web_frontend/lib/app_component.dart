@@ -1,20 +1,20 @@
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:demoweb_app/src/account.dart';
-import 'package:demoweb_app/src/authorization_service.dart';
-import 'package:demoweb_app/src/authorization_service_interface.dart';
-import 'package:demoweb_app/src/fetch_realtime_message.dart';
-import 'package:demoweb_app/src/message_channel_service.dart';
-import 'package:demoweb_app/src/message_channel_service_interface.dart';
-import 'package:demoweb_app/src/message_subscriber_service.dart';
-import 'package:demoweb_app/src/message_subscriber_service_interface.dart';
+import 'package:demoweb_app/src/account/account.dart';
+import 'package:demoweb_app/src/service/authorization_service.dart';
+import 'package:demoweb_app/src/service/authorization_service_interface.dart';
+import 'package:demoweb_app/src/basic/fetch_realtime_message.dart';
+import 'package:demoweb_app/src/service/message_channel_service.dart';
+import 'package:demoweb_app/src/service/message_channel_service_interface.dart';
+import 'package:demoweb_app/src/service/message_subscriber_service.dart';
+import 'package:demoweb_app/src/service/message_subscriber_service_interface.dart';
 import 'package:demoweb_app/src/navigation_component.dart';
-import 'package:demoweb_app/src/route_paths.dart';
-import 'package:demoweb_app/src/routes.dart';
-import 'package:demoweb_app/src/socialnetwork_service.dart';
-import 'package:demoweb_app/src/socialnetwork_service_interface.dart';
-import 'package:demoweb_app/src/user_service.dart';
-import 'package:demoweb_app/src/user_service_interface.dart';
+import 'package:demoweb_app/src/routers/route_paths.dart';
+import 'package:demoweb_app/src/routers/routes.dart';
+import 'package:demoweb_app/src/service/socialnetwork_service.dart';
+import 'package:demoweb_app/src/service/socialnetwork_service_interface.dart';
+import 'package:demoweb_app/src/service/user_service.dart';
+import 'package:demoweb_app/src/service/user_service_interface.dart';
 
 @Component(
   selector: 'app',

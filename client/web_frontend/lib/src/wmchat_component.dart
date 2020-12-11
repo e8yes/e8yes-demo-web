@@ -7,7 +7,7 @@ import 'package:demoweb_app/src/chat_component.dart';
 import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/message_channel_manager_component.dart';
 import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
-import 'package:demoweb_app/src/routes.dart';
+import 'package:demoweb_app/src/routers/routes.dart';
 import 'package:fixnum/fixnum.dart';
 
 @Component(

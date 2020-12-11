@@ -1,5 +1,5 @@
-import 'package:demoweb_app/src/authorization_service_interface.dart';
-import 'package:demoweb_app/src/context.dart';
+import 'package:demoweb_app/src/service/authorization_service_interface.dart';
+import 'package:demoweb_app/src/basic/context.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pbgrpc.dart';
 

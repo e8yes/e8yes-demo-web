@@ -1,7 +1,7 @@
 import "dart:async";
 
-import 'package:demoweb_app/src/context.dart';
-import "package:demoweb_app/src/user_service_interface.dart";
+import 'package:demoweb_app/src/basic/context.dart';
+import 'package:demoweb_app/src/service/user_service_interface.dart';
 import "package:demoweb_app/src/proto_dart/service_user.pb.dart";
 import "package:demoweb_app/src/proto_dart/service_user.pbgrpc.dart";
 

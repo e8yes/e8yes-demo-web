@@ -1,10 +1,10 @@
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
-import 'package:demoweb_app/src/context.dart';
+import 'package:demoweb_app/src/basic/context.dart';
 import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
-import 'package:demoweb_app/src/user_service_interface.dart';
+import 'package:demoweb_app/src/service/user_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
 
 @Component(

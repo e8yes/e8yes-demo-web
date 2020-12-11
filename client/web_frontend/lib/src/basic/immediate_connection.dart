@@ -1,6 +1,6 @@
 import 'package:grpc/src/client/web_channel.dart';
 
-import "connection_manager_interface.dart";
+import 'connection_manager_interface.dart';
 
 class ImmediateConnection implements ConnectionManagerInterface {
   final Uri _uri;
