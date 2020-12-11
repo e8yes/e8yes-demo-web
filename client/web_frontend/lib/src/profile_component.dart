@@ -30,7 +30,7 @@ class ProfileComponent {
   }
 
   String timestampToDateString(Int64 timestamp) {
-    return DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000)
+    return DateTime.fromMicrosecondsSinceEpoch(timestamp.toInt())
         .toLocal()
         .toString();
   }

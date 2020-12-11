@@ -6,7 +6,6 @@ import 'package:angular_router/angular_router.dart';
 import 'package:demoweb_app/src/context.dart';
 import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/proto_dart/pagination.pbserver.dart';
-import 'package:demoweb_app/src/proto_dart/nullable_primitives.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
@@ -119,8 +118,7 @@ class ContactListComponent implements OnActivate {
   }
 
   String relationJoinDateString(UserRelationRecord relation) {
-    return DateTime.fromMillisecondsSinceEpoch(
-            relation.createdAt.toInt() * 1000)
+    return DateTime.fromMicrosecondsSinceEpoch(relation.createdAt.toInt())
         .toLocal()
         .toString();
   }
