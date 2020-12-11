@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:demoweb_app/src/chat_component.dart';
+import 'package:demoweb_app/src/chat_room_component.dart';
 import 'package:demoweb_app/src/footer_component.dart';
 import 'package:demoweb_app/src/message_channel_manager_component.dart';
 import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
@@ -18,7 +18,7 @@ import 'package:fixnum/fixnum.dart';
     coreDirectives,
     formDirectives,
     FooterComponent,
-    ChatComponent,
+    ChatRoomComponent,
     MessageChannelManagerComponent
   ],
 )
