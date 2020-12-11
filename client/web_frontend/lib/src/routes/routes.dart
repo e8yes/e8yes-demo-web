@@ -8,7 +8,7 @@ import 'package:demoweb_app/src/demo_list_component.template.dart'
     as demo_list_template;
 import 'package:demoweb_app/src/wmchat_component.template.dart'
     as wmchat_template;
-import 'package:demoweb_app/src/routers/route_paths.dart';
+import 'package:demoweb_app/src/routes/route_paths.dart';
 import 'package:fixnum/fixnum.dart';
 
 class Routes {

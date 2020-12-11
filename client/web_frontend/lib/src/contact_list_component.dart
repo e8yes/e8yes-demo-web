@@ -11,7 +11,7 @@ import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pb.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_relation.pb.dart';
-import 'package:demoweb_app/src/routers/route_paths.dart';
+import 'package:demoweb_app/src/routes/route_paths.dart';
 import 'package:demoweb_app/src/service/socialnetwork_service_interface.dart';
 import 'package:demoweb_app/src/basic/sync_search_result.dart';
 import 'package:demoweb_app/src/service/user_service_interface.dart';

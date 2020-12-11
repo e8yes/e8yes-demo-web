@@ -7,7 +7,7 @@ import 'package:demoweb_app/src/proto_dart/service_socialnetwork.pbgrpc.dart';
 import 'package:demoweb_app/src/proto_dart/service_user.pbgrpc.dart';
 import 'package:demoweb_app/src/proto_dart/user_profile.pb.dart';
 import 'package:demoweb_app/src/proto_dart/user_relation.pb.dart';
-import 'package:demoweb_app/src/routers/routes.dart';
+import 'package:demoweb_app/src/routes/routes.dart';
 import 'package:demoweb_app/src/service/socialnetwork_service_interface.dart';
 import 'package:demoweb_app/src/service/user_service_interface.dart';
 import 'package:fixnum/fixnum.dart';
