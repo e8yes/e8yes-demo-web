@@ -39,7 +39,7 @@ void SetRecordsToEntities(ResultSetInterface *rs, unsigned *base_record_idx, Ent
 
 template <typename EntityType1, typename EntityType2, typename... Others>
 void SetRecordsToEntities(ResultSetInterface *rs, unsigned *base_record_idx, EntityType1 &&entity1,
-                          EntityType2 &&entity2, Others... others) {
+                          EntityType2 &&entity2, Others &&... others) {
     SetRecordsToEntities(rs, base_record_idx, entity1);
     SetRecordsToEntities(rs, base_record_idx, entity2, others...);
 }
