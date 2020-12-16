@@ -54,4 +54,10 @@ UserEntity &UserEntity::operator=(UserEntity const &other) {
     return *this;
 }
 
+bool UserEntity::operator==(UserEntity const &other) const {
+    return *id.Value() == *other.id.Value();
+}
+
+bool UserEntity::operator!=(UserEntity const &other) const { return !(*this == other); }
+
 } // namespace e8

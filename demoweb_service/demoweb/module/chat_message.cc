@@ -21,13 +21,18 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "demoweb_service/demoweb/common_entity/chat_message_group_entity.h"
+#include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/constant/demoweb_database.h"
 #include "demoweb_service/demoweb/module/chat_message.h"
 #include "demoweb_service/demoweb/module/chat_message_group_storage.h"
 #include "demoweb_service/demoweb/module/chat_message_storage.h"
+#include "demoweb_service/demoweb/module/user_profile.h"
+#include "demoweb_service/demoweb/module/user_storage.h"
 #include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
@@ -39,25 +44,49 @@
 namespace e8 {
 namespace {
 
-ChatMessageEntry ToChatMessageEntry(ChatMessageEntity const &entity) {
-    ChatMessageEntry chat_message;
-    chat_message.set_thread_id(*entity.group_id.Value());
-    chat_message.set_message_seq_id(*entity.message_seq_id.Value());
-    chat_message.set_sender_id(*entity.sender_id.Value());
-    chat_message.set_created_at(*entity.created_at.Value());
-    *chat_message.mutable_texts() = {entity.text_entries.Value().begin(),
-                                     entity.text_entries.Value().end()};
-    return chat_message;
+std::vector<ChatMessageEntry>
+ToChatMessageEntries(std::vector<std::tuple<ChatMessageEntity, UserEntity>> const &entities,
+                     KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
+    std::unordered_set<UserId> unique_sender_ids;
+    std::vector<UserEntity> unqiue_senders;
+    for (auto const &[_, sender] : entities) {
+        auto it = unique_sender_ids.find(*sender.id.Value());
+        if (it == unique_sender_ids.end()) {
+            unique_sender_ids.insert(*sender.id.Value());
+            unqiue_senders.push_back(sender);
+        }
+    }
+
+    std::vector<UserPublicProfile> sender_profiles =
+        BuildPublicProfiles(/*viewer_id=*/std::nullopt, unqiue_senders, key_gen, conns);
+    std::unordered_map<UserId, UserPublicProfile const *> sender_profile_lookup(
+        sender_profiles.size());
+    for (auto const &sender_profile : sender_profiles) {
+        sender_profile_lookup.insert(std::make_pair(sender_profile.user_id(), &sender_profile));
+    }
+
+    std::vector<ChatMessageEntry> entries(entities.size());
+    for (unsigned i = 0; i < entries.size(); ++i) {
+        auto const &[chat_message, _] = entities[i];
+        entries[i].set_thread_id(*chat_message.group_id.Value());
+        entries[i].set_message_seq_id(*chat_message.message_seq_id.Value());
+        *entries[i].mutable_sender() = *sender_profile_lookup[*chat_message.sender_id.Value()];
+        entries[i].set_created_at(*chat_message.created_at.Value());
+        *entries[i].mutable_texts() = {chat_message.text_entries.Value().begin(),
+                                       chat_message.text_entries.Value().end()};
+        // TODO: manages media and binary file accesses.
+    }
+
+    return entries;
 }
 
 } // namespace
 
-std::optional<SendChatMessageResult>
-SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
-                std::vector<std::string> const &texts,
-                std::vector<FileFormat> const & /*media_file_formats*/,
-                std::vector<FileFormat> const & /*binary_file_formats*/,
-                MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns) {
+std::optional<SendChatMessageResult> SendChatMessage(
+    UserId const sender_id, ChatMessageGroupId const group_id,
+    std::vector<std::string> const &texts, std::vector<FileFormat> const & /*media_file_formats*/,
+    std::vector<FileFormat> const & /*binary_file_formats*/, MessageChannelPbacInterface *pbac,
+    KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
     std::optional<ChatMessageGroupEntity> group = FetchChatMessageGroup(group_id, conns);
     if (!group.has_value()) {
         return std::nullopt;
@@ -84,16 +113,19 @@ SendChatMessage(UserId const sender_id, ChatMessageGroupId const group_id,
     }
 
     SendChatMessageResult result;
-    result.message = ToChatMessageEntry(entity);
+    std::optional<UserEntity> sender = FetchUser(sender_id, conns);
+    assert(sender.has_value());
+    result.message = ToChatMessageEntries(
+        std::vector<std::tuple<ChatMessageEntity, UserEntity>>{std::make_tuple(entity, *sender)},
+        key_gen, conns)[0];
 
     return result;
 }
 
-std::vector<ChatMessageEntry> GetChatMessages(UserId const viewer_id,
-                                              ChatMessageGroupId const group_id,
-                                              std::optional<Pagination> const &pagination,
-                                              MessageChannelPbacInterface *pbac,
-                                              ConnectionReservoirInterface *conns) {
+std::vector<ChatMessageEntry>
+GetChatMessages(UserId const viewer_id, ChatMessageGroupId const group_id,
+                std::optional<Pagination> const &pagination, MessageChannelPbacInterface *pbac,
+                KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
     std::optional<ChatMessageGroupEntity> group = FetchChatMessageGroup(group_id, conns);
     if (!group.has_value()) {
         return std::vector<ChatMessageEntry>();
@@ -105,7 +137,9 @@ std::vector<ChatMessageEntry> GetChatMessages(UserId const viewer_id,
     SqlQueryBuilder query;
     SqlQueryBuilder::Placeholder<SqlLong> group_id_ph;
     query.QueryPiece(TableNames::ChatMessage())
-        .QueryPiece(" cm WHERE cm.group_id=")
+        .QueryPiece(" cm JOIN ")
+        .QueryPiece(TableNames::AUser())
+        .QueryPiece(" sender ON sender.id = cm.sender_id WHERE cm.group_id=")
         .Holder(&group_id_ph)
         .QueryPiece(" ORDER BY cm.message_seq_id ASC");
 
@@ -124,15 +158,10 @@ std::vector<ChatMessageEntry> GetChatMessages(UserId const viewer_id,
 
     query.SetValueToPlaceholder(group_id_ph, std::make_shared<SqlLong>(group_id));
 
-    std::vector<std::tuple<ChatMessageEntity>> query_results =
-        Query<ChatMessageEntity>(query, {"cm"}, conns);
+    std::vector<std::tuple<ChatMessageEntity, UserEntity>> query_results =
+        Query<ChatMessageEntity, UserEntity>(query, {"cm", "sender"}, conns);
 
-    std::vector<ChatMessageEntry> entries(query_results.size());
-    for (unsigned i = 0; i < query_results.size(); ++i) {
-        entries[i] = ToChatMessageEntry(std::get<0>(query_results[i]));
-    }
-
-    return entries;
+    return ToChatMessageEntries(query_results, key_gen, conns);
 }
 
 } // namespace e8

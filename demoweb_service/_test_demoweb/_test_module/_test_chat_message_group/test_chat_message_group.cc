@@ -112,7 +112,7 @@ bool GetChatMessageGroupsWithChatMessageSummaryListTest() {
     std::vector<e8::ChatMessageThread> fetched_page1 =
         e8::GetChatMessageGroupsWithChatMessageSummaryList(
             *creator->id.Value(), *message_channel.id.Value(), /*max_num_messages_per_group=*/2,
-            page1, env.MessageChannelPbac(), env.DemowebDatabase());
+            page1, env.MessageChannelPbac(), env.KeyGen(), env.DemowebDatabase());
 
     TEST_CONDITION(fetched_page1.size() == 2);
 
@@ -128,6 +128,7 @@ bool GetChatMessageGroupsWithChatMessageSummaryListTest() {
     TEST_CONDITION(fetched_page1[1].messages().size() == 2);
     TEST_CONDITION(fetched_page1[1].messages()[0].texts().size() == 1);
     TEST_CONDITION(fetched_page1[1].messages()[0].texts()[0] == "g2m2");
+    TEST_CONDITION(fetched_page1[1].messages()[0].sender().user_id() == *creator->id.Value());
     TEST_CONDITION(fetched_page1[1].messages()[1].texts().size() == 1);
     TEST_CONDITION(fetched_page1[1].messages()[1].texts()[0] == "g2m3");
 
@@ -137,7 +138,7 @@ bool GetChatMessageGroupsWithChatMessageSummaryListTest() {
     std::vector<e8::ChatMessageThread> fetched_page2 =
         e8::GetChatMessageGroupsWithChatMessageSummaryList(
             *creator->id.Value(), *message_channel.id.Value(), /*max_num_messages_per_group=*/2,
-            page2, env.MessageChannelPbac(), env.DemowebDatabase());
+            page2, env.MessageChannelPbac(), env.KeyGen(), env.DemowebDatabase());
 
     TEST_CONDITION(fetched_page2.size() == 1);
 
@@ -148,6 +149,7 @@ bool GetChatMessageGroupsWithChatMessageSummaryListTest() {
     TEST_CONDITION(fetched_page2[0].messages().size() == 1);
     TEST_CONDITION(fetched_page2[0].messages()[0].texts().size() == 1);
     TEST_CONDITION(fetched_page2[0].messages()[0].texts()[0] == "g1m1");
+    TEST_CONDITION(fetched_page2[0].messages()[0].sender().user_id() == *creator->id.Value());
 
     return true;
 }

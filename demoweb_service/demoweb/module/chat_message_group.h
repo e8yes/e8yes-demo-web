@@ -27,6 +27,7 @@
 #include "demoweb_service/demoweb/common_entity/user_entity.h"
 #include "demoweb_service/demoweb/environment/host_id.h"
 #include "demoweb_service/demoweb/pbac/message_channel_pbac.h"
+#include "keygen/key_generator_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "proto_cc/chat_message.pb.h"
 #include "proto_cc/pagination.pb.h"
@@ -68,13 +69,16 @@ CreateChatMessageGroup(UserId const creator_id, MessageChannelId const channel_i
  * message group in the result.
  * @param pagination Pagination on the chat message group list.
  * @param pbac Policy based access controller for the associated message channel.
+ * @param key_gen Key generator for signing the avatar path as well as file paths associated with
+ * the chat message.
  * @param conns Database connections.
  * @return The chat message groups with chat message summary list.
  */
 std::vector<ChatMessageThread> GetChatMessageGroupsWithChatMessageSummaryList(
     UserId const viewer_id, MessageChannelId const channel_id,
     int32_t const max_num_messages_per_group, Pagination const pagination,
-    MessageChannelPbacInterface *pbac, ConnectionReservoirInterface *conns);
+    MessageChannelPbacInterface *pbac, KeyGeneratorInterface *key_gen,
+    ConnectionReservoirInterface *conns);
 
 } // namespace e8
 

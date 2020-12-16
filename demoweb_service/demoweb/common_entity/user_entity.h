@@ -19,6 +19,7 @@
 #define USER_ENTITY_H
 
 #include <cstdint>
+#include <functional>
 
 #include "postgres/query_runner/reflection/sql_entity_interface.h"
 #include "postgres/query_runner/reflection/sql_primitives.h"
@@ -37,6 +38,8 @@ class UserEntity : public SqlEntityInterface {
     ~UserEntity() = default;
 
     UserEntity &operator=(UserEntity const &other);
+    bool operator==(UserEntity const &other) const;
+    bool operator!=(UserEntity const &other) const;
 
     SqlLong id = SqlLong("id");
     SqlStr id_str = SqlStr("id_str");
@@ -52,5 +55,15 @@ class UserEntity : public SqlEntityInterface {
 };
 
 } // namespace e8
+
+namespace std {
+
+template <> struct hash<::e8::UserEntity> {
+    std::size_t operator()(::e8::UserEntity const &entity) const {
+        return std::hash<::e8::UserId>{}(*entity.id.Value());
+    }
+};
+
+} // namespace std
 
 #endif // USER_ENTITY_H

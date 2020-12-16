@@ -68,7 +68,8 @@ grpc::Status ChatMessageServiceImpl::SendChatMessage(grpc::ServerContext *contex
         std::vector<std::string>(request->texts().begin(), request->texts().end()),
         IntsToEnums<FileFormat>(request->media_file_formats()),
         IntsToEnums<FileFormat>(request->binary_file_formats()),
-        DemoWebEnvironment()->MessageChannelPbac(), DemoWebEnvironment()->DemowebDatabase());
+        DemoWebEnvironment()->MessageChannelPbac(), DemoWebEnvironment()->KeyGen(),
+        DemoWebEnvironment()->DemowebDatabase());
     if (!result.has_value()) {
         return grpc::Status(grpc::StatusCode::PERMISSION_DENIED,
                             "You don't have enough privilege to send a chat message in the "
@@ -95,7 +96,8 @@ grpc::Status ChatMessageServiceImpl::GetChatMessages(grpc::ServerContext *contex
 
     std::vector<ChatMessageEntry> result = e8::GetChatMessages(
         identity->user_id(), request->thread_id(), request->pagination(),
-        DemoWebEnvironment()->MessageChannelPbac(), DemoWebEnvironment()->DemowebDatabase());
+        DemoWebEnvironment()->MessageChannelPbac(), DemoWebEnvironment()->KeyGen(),
+        DemoWebEnvironment()->DemowebDatabase());
 
     *response->mutable_messages() = {result.begin(), result.end()};
 
@@ -115,7 +117,7 @@ ChatMessageServiceImpl::GetChatMessageThreads(grpc::ServerContext *context,
     std::vector<ChatMessageThread> result = GetChatMessageGroupsWithChatMessageSummaryList(
         identity->user_id(), request->channel_id(), request->limit_per_thread(),
         request->pagination(), DemoWebEnvironment()->MessageChannelPbac(),
-        DemoWebEnvironment()->DemowebDatabase());
+        DemoWebEnvironment()->KeyGen(), DemoWebEnvironment()->DemowebDatabase());
 
     *response->mutable_threads() = {result.begin(), result.end()};
 
