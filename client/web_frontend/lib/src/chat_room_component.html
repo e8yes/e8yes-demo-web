@@ -8,36 +8,27 @@
 
 <hr>
 
-<div>
-    <span class="key-label">
-        <label class="col-form-label">
-            Sender1 2020-09-13 14:09:59.000
-        </label>
-    </span>
-    <span class="value-label">
-        <label class="col-form-label">
-            Message 1
-        </label>
-    </span>
-</div>
+<lu>
+    <li *ngFor="let chatMessageThread of chatMessageThreads">
+        <chat-message-group [messageChannelId]="messageChannel.channel.channelId"
+                            [chatMessageThread]="chatMessageThread"
+                            [creationMode]="false">
+        </chat-message-group>
+    </li>
+    <li>
+        <chat-message-group [messageChannelId]="messageChannel.channel.channelId"
+                            [chatMessageThread]="null"
+                            [creationMode]="true">
+        </chat-message-group>
+    </li>
+</lu>
 
-<div>
-    <span class="key-label">
-        <label class="col-form-label">
-            Sender1 2020-09-13 14:09:59.000
-        </label>
-    </span>
-    <span class="value-label">
-        <label class="col-form-label">
-            Message 2
-        </label>
-    </span>
-</div>
 
-<div>
+
+<!-- <div>
     <textarea rows="5" cols="80">
         New text message
     </textarea>
 </div>
 
-<button class="btn">Send</button>
+<button class="btn">Send</button> -->

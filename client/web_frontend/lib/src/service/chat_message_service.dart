@@ -23,8 +23,8 @@ import 'package:demoweb_app/src/proto_dart/service_chat_message.pbgrpc.dart';
 
 class ChatMessageServiceImpl extends ChatMessageServiceInterface {
   @override
-  Future<CreateChatMessageThreadRequest> createChatMessageThread(
-      CreateChatMessageThreadResponse request, String signature) async {
+  Future<CreateChatMessageThreadResponse> createChatMessageThread(
+      CreateChatMessageThreadRequest request, String signature) async {
     return demowebServiceRequester.MakeRequest(request, signature,
         (request, call_opts, channel) {
       return ChatMessageServiceClient(channel)

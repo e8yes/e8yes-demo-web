@@ -18,8 +18,8 @@
 import 'package:demoweb_app/src/proto_dart/service_chat_message.pb.dart';
 
 abstract class ChatMessageServiceInterface {
-  Future<CreateChatMessageThreadRequest> createChatMessageThread(
-      CreateChatMessageThreadResponse request, String signature);
+  Future<CreateChatMessageThreadResponse> createChatMessageThread(
+      CreateChatMessageThreadRequest request, String signature);
 
   Future<SendChatMessageResponse> sendChatMessage(
       SendChatMessageRequest request, String signature);
