@@ -56,7 +56,7 @@ class ChatMessageGroupEditorComponent {
 
   ChatMessageGroupEditorComponent(this._chatMessageService) {}
 
-  void addNewMessageThread() {
+  void onClickAddNewMessageThread() {
     CreateChatMessageThreadRequest request = CreateChatMessageThreadRequest();
     request.channelId = messageChannelId;
     if (newMessageThreadTitle != null) {

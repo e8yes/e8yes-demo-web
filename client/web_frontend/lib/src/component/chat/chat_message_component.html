@@ -2,7 +2,7 @@
     <div>
         <span>{{chatMessageEntry.sender.userId}}</span>
         <span *ngIf="chatMessageEntry.sender.hasAlias()">
-            - {{chatMessageEntry.sender.alias}}
+            - {{chatMessageEntry.sender.alias.value}}
         </span>
     </div>
     <div>

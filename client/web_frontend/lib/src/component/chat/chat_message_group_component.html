@@ -6,10 +6,26 @@
         <date-hour [timestampMicros]="chatMessageThread.lastInteractionAt">
         </date-hour>
     </div>
+
     <ul>
-        <li *ngFor="let chatMessageEntry of chatMessageThread.messages">
-            <chat-message-entry [chatMessageEntry]="chatMessageEntry">
-            </chat-message-entry>
-        </li>
+
     </ul>
+        <div *ngIf="chatMessageThread.messages.isNotEmpty">
+            <li *ngFor="let chatMessageEntry of chatMessageThread.messages">
+                <chat-message-entry [chatMessageEntry]="chatMessageEntry">
+                </chat-message-entry>
+            </li>
+        </div>
+        <li>
+            <input placeholder="Enter Message"
+                   [(ngModel)]="newChatMessageText" />
+            <span *ngIf="!sendingChatMessage">
+                <button (click)="onClickSendChatMessage"
+                         class="btn">Send</button>
+            </span>
+            <span *ngIf="sendingChatMessage">
+                <button (click)="onClickSendChatMessage"
+                         class="btn">Sending...</button>
+            </span>
+        </li>
 </div>

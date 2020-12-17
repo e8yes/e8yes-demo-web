@@ -18,9 +18,11 @@
 import 'package:angular/angular.dart';
 import 'package:angular/di.dart';
 import 'package:angular_forms/angular_forms.dart';
+import 'package:demoweb_app/src/basic/context.dart';
 import 'package:demoweb_app/src/component/chat/chat_message_component.dart';
 import 'package:demoweb_app/src/component/date/date_component.dart';
 import 'package:demoweb_app/src/proto_dart/chat_message.pb.dart';
+import 'package:demoweb_app/src/proto_dart/service_chat_message.pb.dart';
 import 'package:demoweb_app/src/service/chat_message_service_interface.dart';
 
 @Component(
@@ -42,9 +44,32 @@ class ChatMessageGroupComponent {
   @Input()
   ChatMessageThread chatMessageThread;
 
-  String newMessageThreadTitle;
+  // Presentation data.
+  bool sendingChatMessage = false;
 
+  // Form data.
+  String newChatMessageText;
+
+  // Dependencies.
   ChatMessageServiceInterface _chatMessageService;
 
   ChatMessageGroupComponent(this._chatMessageService) {}
+
+  void onClickSendChatMessage() {
+    if (newChatMessageText == null || newChatMessageText.isEmpty) {
+      return;
+    }
+
+    SendChatMessageRequest request = SendChatMessageRequest();
+    request.threadId = chatMessageThread.threadId;
+    request.texts.add(newChatMessageText);
+
+    sendingChatMessage = true;
+    _chatMessageService
+        .sendChatMessage(request, credentialStorage.loadSignature())
+        .then((SendChatMessageResponse res) {
+      chatMessageThread.messages.add(res.message);
+      sendingChatMessage = false;
+    });
+  }
 }
