@@ -35,6 +35,12 @@
 namespace e8 {
 
 /**
+ * @brief ToChatMessageThread Converts from a ChatMessageGroupEntity to a ChatMessageThread. There
+ * won't be any messages added to tbe thread but only the group's metadata.
+ */
+ChatMessageThread ToChatMessageThread(ChatMessageGroupEntity const &entity);
+
+/**
  * @brief CreateChatMessageGroup Creates a new chat message group. A message group allows the
  * grouping of chat messages. The accessibility of the chat messages is controlled by the chat
  * message group's associated message channel. Please refer to the specific message channel PBAC to

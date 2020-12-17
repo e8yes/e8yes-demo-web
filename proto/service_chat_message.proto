@@ -30,7 +30,7 @@ message CreateChatMessageThreadRequest {
 }
 
 message CreateChatMessageThreadResponse {
-    int64 thread_id = 1;
+    ChatMessageThread thread = 1;
 }
 
 

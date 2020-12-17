@@ -49,7 +49,7 @@ ChatMessageServiceImpl::CreateChatMessageThread(grpc::ServerContext *context,
                             "message channel.");
     }
 
-    response->set_thread_id(*chat_mesage_group->id.Value());
+    *response->mutable_thread() = ToChatMessageThread(*chat_mesage_group);
 
     return grpc::Status::OK;
 }

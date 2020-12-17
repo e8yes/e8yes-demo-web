@@ -39,21 +39,6 @@
 
 namespace e8 {
 namespace {
-
-ChatMessageThread ToChatMessageThread(ChatMessageGroupEntity const &entity) {
-    ChatMessageThread chat_message_thread;
-
-    chat_message_thread.set_thread_id(*entity.id.Value());
-    chat_message_thread.set_channel_id(*entity.channel_id.Value());
-    chat_message_thread.set_thread_type(
-        static_cast<ChatMessageThreadType>(*entity.group_type.Value()));
-    chat_message_thread.set_thread_title(*entity.description.Value());
-    chat_message_thread.set_created_at(*entity.created_at.Value());
-    chat_message_thread.set_last_interaction_at(*entity.last_interaction_at.Value());
-
-    return chat_message_thread;
-}
-
 std::vector<std::tuple<ChatMessageThread, std::optional<ChatMessageEntry>>> ToChatMessageEntries(
     std::vector<std::tuple<ChatMessageGroupEntity, ChatMessageEntity, UserEntity>> const &entities,
     KeyGeneratorInterface *key_gen, ConnectionReservoirInterface *conns) {
@@ -136,6 +121,20 @@ std::vector<ChatMessageThread> GroupByMessageGroup(
 }
 
 } // namespace
+
+ChatMessageThread ToChatMessageThread(ChatMessageGroupEntity const &entity) {
+    ChatMessageThread chat_message_thread;
+
+    chat_message_thread.set_thread_id(*entity.id.Value());
+    chat_message_thread.set_channel_id(*entity.channel_id.Value());
+    chat_message_thread.set_thread_type(
+        static_cast<ChatMessageThreadType>(*entity.group_type.Value()));
+    chat_message_thread.set_thread_title(*entity.description.Value());
+    chat_message_thread.set_created_at(*entity.created_at.Value());
+    chat_message_thread.set_last_interaction_at(*entity.last_interaction_at.Value());
+
+    return chat_message_thread;
+}
 
 std::optional<ChatMessageGroupEntity>
 CreateChatMessageGroup(UserId const creator_id, MessageChannelId const channel_id,
