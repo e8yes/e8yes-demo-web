@@ -20,6 +20,7 @@ import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:demoweb_app/src/basic/context.dart';
 import 'package:demoweb_app/src/component/chat/chat_message_group_component.dart';
+import 'package:demoweb_app/src/component/chat/chat_message_group_editor_component.dart';
 import 'package:demoweb_app/src/component/message_channel/message_channel_overview_component.dart';
 import 'package:demoweb_app/src/proto_dart/chat_message.pb.dart';
 import 'package:demoweb_app/src/proto_dart/message_channel.pb.dart';
@@ -35,21 +36,25 @@ import 'package:demoweb_app/src/service/chat_message_service_interface.dart';
     coreDirectives,
     formDirectives,
     ChatMessageGroupComponent,
+    ChatMessageGroupEditorComponent,
     MessageChannelOverviewComponent,
   ],
 )
-class ChatRoomComponent implements OnActivate {
+class ChatRoomComponent implements OnInit {
   @Input()
   MessageChannelOverview messageChannel;
 
+  // Presentation data.
+  bool chatMessageThreadsLoading = true;
   List<ChatMessageThread> chatMessageThreads = List<ChatMessageThread>();
 
+  // Dependencies.
   ChatMessageServiceInterface _chatMessageService;
 
   ChatRoomComponent(this._chatMessageService);
 
   @override
-  void onActivate(_, RouterState current) async {
+  void ngOnInit() {
     this._fetchChatMessageThreads();
   }
 
@@ -61,10 +66,12 @@ class ChatRoomComponent implements OnActivate {
       ..pageNumber = 0
       ..resultPerPage = 5;
 
+    chatMessageThreadsLoading = true;
     _chatMessageService
         .getChatMessageThreads(request, credentialStorage.loadSignature())
         .then((GetChatMessageThreadsResponse res) {
       chatMessageThreads = res.threads;
+      chatMessageThreadsLoading = false;
     });
   }
 }

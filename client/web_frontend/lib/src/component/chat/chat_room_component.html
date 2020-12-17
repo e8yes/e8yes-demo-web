@@ -8,27 +8,20 @@
 
 <hr>
 
-<lu>
-    <li *ngFor="let chatMessageThread of chatMessageThreads">
-        <chat-message-group [messageChannelId]="messageChannel.channel.channelId"
-                            [chatMessageThread]="chatMessageThread"
-                            [creationMode]="false">
-        </chat-message-group>
-    </li>
-    <li>
-        <chat-message-group [messageChannelId]="messageChannel.channel.channelId"
-                            [chatMessageThread]="null"
-                            [creationMode]="true">
-        </chat-message-group>
-    </li>
-</lu>
-
-
-
-<!-- <div>
-    <textarea rows="5" cols="80">
-        New text message
-    </textarea>
+<div *ngIf="chatMessageThreadsLoading">
+    Loading...
 </div>
-
-<button class="btn">Send</button> -->
+<div *ngIf="!chatMessageThreadsLoading">
+    <lu>
+        <li *ngFor="let chatMessageThread of chatMessageThreads">
+            <chat-message-group [chatMessageThread]="chatMessageThread">
+            </chat-message-group>
+        </li>
+        <li>
+            <chat-message-group-editor 
+                [messageChannelId]="messageChannel.channel.channelId"
+                [creationMode]="true">
+            </chat-message-group-editor>
+        </li>
+    </lu>
+</div>

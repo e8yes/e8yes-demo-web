@@ -1,0 +1,6 @@
+<div *ngIf="creationMode">
+    <input placeholder="New Message Thread" 
+           [(ngModel)]="newMessageThreadTitle" />
+    <button (click)="addNewMessageThread"
+            class="btn">+</button>
+</div>
