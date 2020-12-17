@@ -1,6 +1,6 @@
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:demoweb_app/src/account/account.dart';
+import 'package:demoweb_app/src/basic/account.dart';
 import 'package:demoweb_app/src/service/authorization_service.dart';
 import 'package:demoweb_app/src/service/authorization_service_interface.dart';
 import 'package:demoweb_app/src/basic/fetch_realtime_message.dart';
@@ -10,7 +10,7 @@ import 'package:demoweb_app/src/service/message_channel_service.dart';
 import 'package:demoweb_app/src/service/message_channel_service_interface.dart';
 import 'package:demoweb_app/src/service/message_subscriber_service.dart';
 import 'package:demoweb_app/src/service/message_subscriber_service_interface.dart';
-import 'package:demoweb_app/src/navigation_component.dart';
+import 'package:demoweb_app/src/component/navigation/navigation_component.dart';
 import 'package:demoweb_app/src/routes/route_paths.dart';
 import 'package:demoweb_app/src/routes/routes.dart';
 import 'package:demoweb_app/src/service/socialnetwork_service.dart';

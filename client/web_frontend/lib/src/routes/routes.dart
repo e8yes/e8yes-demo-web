@@ -1,12 +1,12 @@
 import 'package:angular_router/angular_router.dart';
-import 'package:demoweb_app/src/account_component.template.dart'
-    as account_template;
-import 'package:demoweb_app/src/contact_list_component.template.dart'
-    as contact_list_template;
 import 'package:demoweb_app/src/basic/context.dart';
-import 'package:demoweb_app/src/demo_list_component.template.dart'
+import 'package:demoweb_app/src/component/account/account_component.template.dart'
+    as account_template;
+import 'package:demoweb_app/src/component/contact/contact_list_component.template.dart'
+    as contact_list_template;
+import 'package:demoweb_app/src/component/demo/demo_list_component.template.dart'
     as demo_list_template;
-import 'package:demoweb_app/src/wmchat_component.template.dart'
+import 'package:demoweb_app/src/component/wmchat/wmchat_component.template.dart'
     as wmchat_template;
 import 'package:demoweb_app/src/routes/route_paths.dart';
 import 'package:fixnum/fixnum.dart';
