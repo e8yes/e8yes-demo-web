@@ -1,0 +1,17 @@
+<div>
+    <div>
+        <span>{{chatMessageEntry.sender.userId}}</span>
+        <span *ngIf="chatMessageEntry.sender.hasAlias()">
+            - {{chatMessageEntry.sender.alias}}
+        </span>
+    </div>
+    <div>
+        <lu>
+            <li *ngFor="let text of chatMessageEntry.texts">
+                <span>{{text}}</span>
+            </li>
+        </lu>
+        <date-hour [timestampMicros]="chatMessageEntry.createdAt">
+        </date-hour>
+    </div>
+</div>
