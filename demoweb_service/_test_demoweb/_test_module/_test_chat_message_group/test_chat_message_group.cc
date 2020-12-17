@@ -72,6 +72,14 @@ bool GetChatMessageGroupsWithChatMessageSummaryListTest() {
                                        *creator->id.Value(), /*member_type=*/e8::MCMT_ADMIN,
                                        env.DemowebDatabase());
 
+    e8::MessageChannelEntity empty_message_channel = e8::CreateMessageChannel(
+        /*channel_name=*/"Empty test channel name",
+        /*description=*/"Empyt test channel description", /*encrypted=*/false,
+        /*close_group_channel=*/false, env.CurrentHostId(), env.DemowebDatabase());
+    e8::CreateMessageChannelMembership(/*channel_id=*/*empty_message_channel.id.Value(),
+                                       *creator->id.Value(), /*member_type=*/e8::MCMT_ADMIN,
+                                       env.DemowebDatabase());
+
     e8::ChatMessageGroupEntity group1 = e8::CreateChatMessageGroup(
         *creator->id.Value(), *message_channel.id.Value(), /*group_title=*/"Test group 1 title",
         /*thread_type=*/e8::CMTT_TEMPORAL, env.CurrentHostId(), env.DemowebDatabase());
@@ -109,6 +117,15 @@ bool GetChatMessageGroupsWithChatMessageSummaryListTest() {
     e8::Pagination page1;
     page1.set_page_number(0);
     page1.set_result_per_page(2);
+
+    std::vector<e8::ChatMessageThread> fetched_empty_page1 =
+        e8::GetChatMessageGroupsWithChatMessageSummaryList(
+            *creator->id.Value(), *empty_message_channel.id.Value(),
+            /*max_num_messages_per_group=*/2, page1, env.MessageChannelPbac(), env.KeyGen(),
+            env.DemowebDatabase());
+
+    TEST_CONDITION(fetched_empty_page1.empty());
+
     std::vector<e8::ChatMessageThread> fetched_page1 =
         e8::GetChatMessageGroupsWithChatMessageSummaryList(
             *creator->id.Value(), *message_channel.id.Value(), /*max_num_messages_per_group=*/2,

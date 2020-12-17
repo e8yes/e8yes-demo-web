@@ -158,13 +158,16 @@ std::vector<ChatMessageThread> GetChatMessageGroupsWithChatMessageSummaryList(
     }
 
     SqlQueryBuilder query;
+    SqlQueryBuilder::Placeholder<SqlLong> message_channel_id_ph;
     SqlQueryBuilder::Placeholder<SqlInt> chat_message_group_limit_ph;
     SqlQueryBuilder::Placeholder<SqlInt> chat_message_group_offset_ph;
     SqlQueryBuilder::Placeholder<SqlInt> max_num_messages_per_group_ph;
     query.QueryPiece("(SELECT * FROM ")
         .QueryPiece(TableNames::ChatMessageGroup())
-        .QueryPiece(" cmg "
-                    "ORDER BY cmg.last_interaction_at DESC"
+        .QueryPiece(" cmg")
+        .QueryPiece(" WHERE cmg.channel_id=")
+        .Holder(&message_channel_id_ph)
+        .QueryPiece(" ORDER BY cmg.last_interaction_at DESC"
                     " LIMIT ")
         .Holder(&chat_message_group_limit_ph)
         .QueryPiece(" OFFSET ")
@@ -190,6 +193,7 @@ std::vector<ChatMessageThread> GetChatMessageGroupsWithChatMessageSummaryList(
         .QueryPiece(")AS valid_messages)")
         .QueryPiece("ORDER BY paginated_cmg.last_interaction_at DESC, cm.message_seq_id ASC");
 
+    query.SetValueToPlaceholder(message_channel_id_ph, std::make_shared<SqlLong>(channel_id));
     query.SetValueToPlaceholder(chat_message_group_limit_ph,
                                 std::make_shared<SqlInt>(pagination.result_per_page()));
     query.SetValueToPlaceholder(
