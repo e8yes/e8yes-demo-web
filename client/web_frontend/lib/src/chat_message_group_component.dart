@@ -18,7 +18,13 @@
 import 'package:angular/angular.dart';
 import 'package:angular/di.dart';
 import 'package:angular_forms/angular_forms.dart';
+import 'package:demoweb_app/src/basic/context.dart';
+import 'package:demoweb_app/src/chat_message_component.dart';
+import 'package:demoweb_app/src/date_component.dart';
 import 'package:demoweb_app/src/proto_dart/chat_message.pb.dart';
+import 'package:demoweb_app/src/proto_dart/service_chat_message.pbgrpc.dart';
+import 'package:demoweb_app/src/service/chat_message_service_interface.dart';
+import 'package:fixnum/fixnum.dart';
 
 @Component(
     selector: "chat-message-group",
@@ -29,11 +35,36 @@ import 'package:demoweb_app/src/proto_dart/chat_message.pb.dart';
     directives: [
       coreDirectives,
       formDirectives,
+      DateComponent,
+      ChatMessageComponent
     ],
     exports: [
       ChatMessageThread
     ])
 class ChatMessageGroupComponent {
   @Input()
+  bool creationMode;
+  @Input()
+  Int64 messageChannelId;
+  @Input()
   ChatMessageThread chatMessageThread;
+
+  String newMessageThreadTitle;
+
+  ChatMessageServiceInterface _chatMessageService;
+
+  ChatMessageGroupComponent(this._chatMessageService) {}
+
+  void addNewMessageThread() {
+    CreateChatMessageThreadRequest request = CreateChatMessageThreadRequest();
+    request.channelId = messageChannelId;
+    if (newMessageThreadTitle != null) {
+      request.threadTitle = newMessageThreadTitle;
+    }
+    request.threadType = ChatMessageThreadType.CMTT_TEMPORAL;
+
+    _chatMessageService
+        .createChatMessageThread(request, credentialStorage.loadSignature())
+        .then((CreateChatMessageThreadResponse res) {});
+  }
 }

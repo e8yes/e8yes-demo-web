@@ -1,5 +1,22 @@
-<div>
-    <span>{{chatMessageThread.threadTitle}}</span>
-    <li *ngFor="let chatMessageEntry of chatMessageThread.messages">
-    </li>
+<div *ngIf="creationMode">
+    <input placeholder="New Message Thread" 
+           [(ngModel)]="newMessageThreadTitle" />
+    <button (click)="addNewMessageThread"
+            class="btn">+</button>
+</div>
+
+<div *ngIf="!creationMode">
+    <div *ngIf="chatMessageThread.threadTitle.isNotEmpty">
+        {{chatMessageThread.threadTitle}}
+    </div>
+    <div>
+        <date-hour [timestampMicros]="chatMessageThread.lastInteractionAt">
+        </date-hour>
+    </div>
+    <ul>
+        <li *ngFor="let chatMessageEntry of chatMessageThread.messages">
+            <chat-message-entry [chatMessageEntry]="chatMessageEntry">
+            </chat-message-entry>
+        </li>
+    </ul>
 </div>
