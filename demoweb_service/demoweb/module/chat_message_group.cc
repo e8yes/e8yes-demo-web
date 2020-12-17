@@ -166,7 +166,7 @@ std::vector<ChatMessageThread> GetChatMessageGroupsWithChatMessageSummaryList(
         .QueryPiece(" cmg")
         .QueryPiece(" WHERE cmg.channel_id=")
         .Holder(&message_channel_id_ph)
-        .QueryPiece(" ORDER BY cmg.last_interaction_at DESC"
+        .QueryPiece(" ORDER BY cmg.last_interaction_at ASC"
                     " LIMIT ")
         .Holder(&chat_message_group_limit_ph)
         .QueryPiece(" OFFSET ")
@@ -190,7 +190,7 @@ std::vector<ChatMessageThread> GetChatMessageGroupsWithChatMessageSummaryList(
                     " LIMIT ")
         .Holder(&max_num_messages_per_group_ph)
         .QueryPiece(")AS valid_messages)")
-        .QueryPiece("ORDER BY paginated_cmg.last_interaction_at DESC, cm.message_seq_id ASC");
+        .QueryPiece("ORDER BY paginated_cmg.last_interaction_at ASC, cm.message_seq_id ASC");
 
     query.SetValueToPlaceholder(message_channel_id_ph, std::make_shared<SqlLong>(channel_id));
     query.SetValueToPlaceholder(chat_message_group_limit_ph,

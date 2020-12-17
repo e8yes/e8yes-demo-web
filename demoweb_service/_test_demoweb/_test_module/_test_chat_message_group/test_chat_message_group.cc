@@ -133,10 +133,14 @@ bool GetChatMessageGroupsWithChatMessageSummaryListTest() {
 
     TEST_CONDITION(fetched_page1.size() == 2);
 
-    TEST_CONDITION(fetched_page1[0].thread_id() == *group3.id.Value());
+    TEST_CONDITION(fetched_page1[0].thread_id() == *group1.id.Value());
     TEST_CONDITION(fetched_page1[0].channel_id() == *message_channel.id.Value());
-    TEST_CONDITION(fetched_page1[0].thread_title() == "Test group 3 title");
-    TEST_CONDITION(fetched_page1[0].messages().empty());
+    TEST_CONDITION(fetched_page1[0].thread_title() == "Test group 1 title");
+
+    TEST_CONDITION(fetched_page1[0].messages().size() == 1);
+    TEST_CONDITION(fetched_page1[0].messages()[0].texts().size() == 1);
+    TEST_CONDITION(fetched_page1[0].messages()[0].texts()[0] == "g1m1");
+    TEST_CONDITION(fetched_page1[0].messages()[0].sender().user_id() == *creator->id.Value());
 
     TEST_CONDITION(fetched_page1[1].thread_id() == *group2.id.Value());
     TEST_CONDITION(fetched_page1[1].channel_id() == *message_channel.id.Value());
@@ -159,14 +163,10 @@ bool GetChatMessageGroupsWithChatMessageSummaryListTest() {
 
     TEST_CONDITION(fetched_page2.size() == 1);
 
-    TEST_CONDITION(fetched_page2[0].thread_id() == *group1.id.Value());
+    TEST_CONDITION(fetched_page2[0].thread_id() == *group3.id.Value());
     TEST_CONDITION(fetched_page2[0].channel_id() == *message_channel.id.Value());
-    TEST_CONDITION(fetched_page2[0].thread_title() == "Test group 1 title");
-
-    TEST_CONDITION(fetched_page2[0].messages().size() == 1);
-    TEST_CONDITION(fetched_page2[0].messages()[0].texts().size() == 1);
-    TEST_CONDITION(fetched_page2[0].messages()[0].texts()[0] == "g1m1");
-    TEST_CONDITION(fetched_page2[0].messages()[0].sender().user_id() == *creator->id.Value());
+    TEST_CONDITION(fetched_page2[0].thread_title() == "Test group 3 title");
+    TEST_CONDITION(fetched_page2[0].messages().empty());
 
     return true;
 }
