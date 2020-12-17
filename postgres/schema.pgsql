@@ -36,6 +36,10 @@ CREATE TABLE IF NOT EXISTS file_metadata (
     PRIMARY KEY (path)
 );
 
+CREATE INDEX IF NOT EXISTS file_metadata_last_modified_at
+  ON file_metadata 
+  USING btree (last_modified_at);
+
 
 /* Email */
 CREATE TABLE IF NOT EXISTS email_set (
@@ -54,6 +58,11 @@ CREATE TABLE IF NOT EXISTS user_group (
     PRIMARY KEY (group_name)
 );
 
+CREATE INDEX IF NOT EXISTS user_group_last_modified_at
+  ON user_group 
+  USING btree (last_modified_at);
+
+
 CREATE TABLE IF NOT EXISTS user_group_has_file (
     group_name CHARACTER VARYING(60) NOT NULL,
     file_path CHARACTER VARYING(256) NOT NULL,
@@ -65,6 +74,10 @@ CREATE TABLE IF NOT EXISTS user_group_has_file (
     FOREIGN KEY (group_name) REFERENCES user_group (group_name) ON DELETE CASCADE,
     FOREIGN KEY (file_path) REFERENCES file_metadata (path) ON DELETE CASCADE
 );
+
+CREATE INDEX IF NOT EXISTS user_group_has_file_last_modified_at
+  ON user_group_has_file 
+  USING btree (last_modified_at);
 
 
 /* User */
@@ -110,7 +123,9 @@ CREATE TRIGGER upsert_auser
     FOR EACH ROW 
     EXECUTE PROCEDURE update_auser_search_terms();
 
-CREATE INDEX IF NOT EXISTS auser_search_terms ON auser USING gin (search_terms);
+CREATE INDEX IF NOT EXISTS auser_search_terms 
+  ON auser 
+  USING gin (search_terms);
 
 
 /* Directed contact relations */
@@ -142,7 +157,13 @@ CREATE TRIGGER upsert_contact_relation
     FOR EACH ROW 
     EXECUTE PROCEDURE update_contact_relation_search_terms();
 
-CREATE INDEX IF NOT EXISTS contact_relation_search_terms ON contact_relation USING gin (search_terms);
+CREATE INDEX IF NOT EXISTS contact_relation_search_terms 
+  ON contact_relation 
+  USING gin (search_terms);
+
+CREATE INDEX IF NOT EXISTS contact_relation_last_interaction_at
+  ON contact_relation 
+  USING btree (last_interaction_at);
 
 
 /* Messaging channel */
@@ -180,7 +201,9 @@ CREATE TRIGGER upsert_message_channel
     FOR EACH ROW 
     EXECUTE PROCEDURE update_message_channel_search_terms();
 
-CREATE INDEX IF NOT EXISTS message_channel_search_terms ON message_channel USING gin (search_terms);
+CREATE INDEX IF NOT EXISTS message_channel_search_terms 
+  ON message_channel 
+  USING gin (search_terms);
 
 
 CREATE TABLE IF NOT EXISTS message_channel_has_user (
@@ -193,6 +216,10 @@ CREATE TABLE IF NOT EXISTS message_channel_has_user (
     FOREIGN KEY (channel_id) REFERENCES message_channel (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES auser (id) ON DELETE CASCADE
 );
+
+CREATE INDEX IF NOT EXISTS message_channel_has_user_last_interaction_at
+  ON message_channel_has_user 
+  USING btree (last_interaction_at);
 
 
 /* Message group */
@@ -232,8 +259,17 @@ CREATE TRIGGER upsert_chat_message_group
     FOR EACH ROW 
     EXECUTE PROCEDURE update_chat_message_group_search_terms();
 
-CREATE INDEX IF NOT EXISTS chat_message_group_last_interaction_at ON chat_message_group USING btree (last_interaction_at);
-CREATE INDEX IF NOT EXISTS chat_message_group_search_terms ON chat_message_group USING gin (search_terms);
+CREATE INDEX IF NOT EXISTS chat_message_group_channel_id 
+  ON chat_message_group 
+  USING btree (channel_id);
+
+CREATE INDEX IF NOT EXISTS chat_message_group_last_interaction_at 
+  ON chat_message_group 
+  USING btree (last_interaction_at);
+
+CREATE INDEX IF NOT EXISTS chat_message_group_search_terms 
+  ON chat_message_group 
+  USING gin (search_terms);
 
 
 /* Message */
@@ -268,4 +304,10 @@ CREATE TRIGGER upsert_chat_message
     FOR EACH ROW 
     EXECUTE PROCEDURE update_chat_message_search_terms();
 
-CREATE INDEX IF NOT EXISTS chat_message_search_terms ON chat_message USING gin (search_terms);
+CREATE INDEX IF NOT EXISTS chat_message_sender_id
+  ON chat_message 
+  USING btree (sender_id);
+
+CREATE INDEX IF NOT EXISTS chat_message_search_terms 
+  ON chat_message 
+  USING gin (search_terms);
