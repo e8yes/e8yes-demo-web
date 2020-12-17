@@ -1,3 +1,5 @@
+import 'dart:async';
+
 /**
  * e8yes demo web.
  *
@@ -48,6 +50,12 @@ class ChatMessageGroupEditorComponent {
   @Input()
   bool creationMode;
 
+  StreamController<ChatMessageThread> editCompletionTriggerStreamController =
+      StreamController<ChatMessageThread>();
+  @Output()
+  Stream<ChatMessageThread> get editCompletionTrigger =>
+      editCompletionTriggerStreamController.stream;
+
   // Form data.
   String newMessageThreadTitle;
 
@@ -66,6 +74,9 @@ class ChatMessageGroupEditorComponent {
 
     _chatMessageService
         .createChatMessageThread(request, credentialStorage.loadSignature())
-        .then((CreateChatMessageThreadResponse res) {});
+        .then((CreateChatMessageThreadResponse res) {
+      print(res.thread);
+      editCompletionTriggerStreamController.add(res.thread);
+    });
   }
 }

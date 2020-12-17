@@ -20,7 +20,8 @@
         <li>
             <chat-message-group-editor 
                 [messageChannelId]="messageChannel.channel.channelId"
-                [creationMode]="true">
+                [creationMode]="true"
+                (editCompletionTrigger)="onAddNewChatMessageGroup">
             </chat-message-group-editor>
         </li>
     </lu>

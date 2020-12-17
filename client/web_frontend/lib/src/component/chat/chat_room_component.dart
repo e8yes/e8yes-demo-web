@@ -58,6 +58,10 @@ class ChatRoomComponent implements OnInit {
     this._fetchChatMessageThreads();
   }
 
+  void onAddNewChatMessageGroup() {
+    this._fetchChatMessageThreads();
+  }
+
   void _fetchChatMessageThreads() {
     GetChatMessageThreadsRequest request = GetChatMessageThreadsRequest();
     request.channelId = messageChannel.channel.channelId;
