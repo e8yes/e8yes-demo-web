@@ -20,7 +20,7 @@
 #include <optional>
 #include <vector>
 
-#include "connectk/board/board_state.h"
+#include "connectk/connectk_game/board/board_state.h"
 
 namespace e8 {
 
