@@ -10,6 +10,7 @@ SUBDIRS = \
     file_system/filesystemw.pro \
     message_queue/message_queue.pro \
     node_state/node_statew.pro \
-    demoweb_service/demoweb.pro
+    demoweb_service/demoweb.pro \
+    connectk/connectk.pro
 
 CONFIG += ordered
