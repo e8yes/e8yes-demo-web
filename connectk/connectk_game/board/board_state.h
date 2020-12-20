@@ -18,8 +18,11 @@
 #ifndef BOARD_STATE_H
 #define BOARD_STATE_H
 
+#include <cstdint>
+#include <functional>
 #include <memory>
 #include <optional>
+#include <unordered_set>
 #include <vector>
 
 namespace e8 {
@@ -44,15 +47,40 @@ struct ChessPieceState {
 };
 
 /**
+ * @brief The MovePosition struct
+ */
+struct MovePosition {
+    int x;
+    int y;
+
+    MovePosition(int const x, int const y);
+
+    bool operator==(MovePosition const &other) const;
+};
+
+} // namespace e8
+
+namespace std {
+
+template <> struct hash<::e8::MovePosition> {
+    std::size_t operator()(::e8::MovePosition const &pos) const {
+        return std::hash<uint64_t>{}((static_cast<uint64_t>(pos.x) << 32) | pos.y);
+    }
+};
+
+} // namespace std
+
+namespace e8 {
+
+/**
  * @brief The MoveRecord struct Stores information about a move. It consists of the board position
  * of the move and which player made the move.
  */
 struct MoveRecord {
-    unsigned const x;
-    unsigned const y;
+    MovePosition const pos;
     PlayerSide const side;
 
-    MoveRecord(unsigned const x, unsigned const y, PlayerSide const side);
+    MoveRecord(MovePosition const &pos, PlayerSide const side);
 };
 
 /**
@@ -72,6 +100,12 @@ class BoardState {
     BoardState(BoardState const &other);
     BoardState(BoardState &&other) = default;
     ~BoardState() = default;
+
+    /**
+     * @brief LegalMovePositions Legal positions that a new move can be made by the specified side.
+     * The set of positions will be updated after either MakeMove() or RetractMove() is called.
+     */
+    std::unordered_set<MovePosition> const &LegalMovePositions(PlayerSide const &side) const;
 
     /**
      * @brief MakeMove Make a move at a empty position and update the game result. This function
@@ -112,7 +146,7 @@ class BoardState {
     unsigned Height() const;
 
   private:
-    ChessPieceState *ChessPieceStateAt(unsigned x, unsigned y);
+    ChessPieceState *ChessPieceStateAt(MovePosition const &pos);
 
     bool LeadToWinStateFrom(MoveRecord const &move);
 
@@ -124,6 +158,7 @@ class BoardState {
     std::unique_ptr<ChessPieceState[]> board_;
 
     std::vector<MoveRecord> move_history_;
+    std::unordered_set<MovePosition> legal_move_positions_;
 };
 
 } // namespace e8

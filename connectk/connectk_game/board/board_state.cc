@@ -16,8 +16,11 @@
  */
 
 #include <cassert>
+#include <cstdint>
+#include <functional>
 #include <memory>
 #include <optional>
+#include <unordered_set>
 #include <vector>
 
 #include "connectk/connectk_game/board/board_state.h"
@@ -28,12 +31,24 @@ ChessPieceState::ChessPieceState() : side(PlayerSide::PS_NONE) {}
 
 ChessPieceState::ChessPieceState(PlayerSide const side) : side(side) {}
 
-MoveRecord::MoveRecord(unsigned const x, unsigned const y, PlayerSide const side)
-    : x(x), y(y), side(side) {}
+MovePosition::MovePosition(int const x, int const y) : x(x), y(y) {}
+
+bool MovePosition::operator==(MovePosition const &other) const {
+    return x == other.x && y == other.y;
+}
+
+MoveRecord::MoveRecord(MovePosition const &pos, PlayerSide const side) : pos(pos), side(side) {}
 
 BoardState::BoardState(unsigned const width, unsigned const height, unsigned const k)
     : width_(width), height_(height), k_(k), game_result_(GameResult::GR_UNDETERMINED),
-      board_(std::unique_ptr<ChessPieceState[]>(new ChessPieceState[width * height])) {}
+      board_(std::unique_ptr<ChessPieceState[]>(new ChessPieceState[width * height])),
+      legal_move_positions_(2 * width * height) {
+    for (unsigned y = 0; y < height_; ++y) {
+        for (unsigned x = 0; x < width_; ++x) {
+            legal_move_positions_.insert(MovePosition(x, y));
+        }
+    }
+}
 
 BoardState::BoardState(BoardState const &other)
     : BoardState(other.width_, other.height_, other.k_) {
@@ -42,14 +57,22 @@ BoardState::BoardState(BoardState const &other)
     for (unsigned i = 0; i < width_ * height_; ++i) {
         board_[i] = other.board_[i];
     }
+
+    legal_move_positions_ = other.legal_move_positions_;
+}
+
+std::unordered_set<MovePosition> const &
+BoardState::LegalMovePositions(PlayerSide const & /*side*/) const {
+    return legal_move_positions_;
 }
 
 GameResult BoardState::MakeMove(MoveRecord const &move) {
     assert(game_result_ == GameResult::GR_UNDETERMINED);
 
-    *this->ChessPieceStateAt(move.x, move.y) = ChessPieceState(move.side);
+    *this->ChessPieceStateAt(move.pos) = ChessPieceState(move.side);
 
     move_history_.push_back(move);
+    legal_move_positions_.erase(move.pos);
 
     if (this->LeadToWinStateFrom(move)) {
         switch (move.side) {
@@ -77,8 +100,9 @@ std::optional<MoveRecord> BoardState::RetractMove() {
 
     MoveRecord const &the_move = move_history_.back();
     move_history_.pop_back();
+    legal_move_positions_.insert(the_move.pos);
 
-    *this->ChessPieceStateAt(the_move.x, the_move.y) = ChessPieceState();
+    *this->ChessPieceStateAt(the_move.pos) = ChessPieceState();
 
     return the_move;
 }
@@ -91,95 +115,94 @@ unsigned BoardState::Width() const { return width_; }
 
 unsigned BoardState::Height() const { return height_; }
 
-ChessPieceState *BoardState::ChessPieceStateAt(unsigned x, unsigned y) {
-    return &board_[x + y * width_];
+ChessPieceState *BoardState::ChessPieceStateAt(MovePosition const &pos) {
+    return &board_[pos.x + pos.y * width_];
 }
 
 bool BoardState::LeadToWinStateFrom(MoveRecord const &move) {
     // Counter clockwise 135 degrees.
-    int x = static_cast<int>(move.x) - 1;
-    int y = static_cast<int>(move.y) - 1;
-    while (x >= 0 && y >= 0 && this->ChessPieceStateAt(x, y)->side == move.side) {
-        --x;
-        --y;
+    MovePosition pos(move.pos.x - 1, move.pos.y - 1);
+    while (pos.x >= 0 && pos.y >= 0 && this->ChessPieceStateAt(pos)->side == move.side) {
+        --pos.x;
+        --pos.y;
     }
-    if (move.x - x > k_) {
+    if (move.pos.x - pos.x > static_cast<int>(k_)) {
         return true;
     }
 
     // Counter clockwise 90 degrees.
-    x = static_cast<int>(move.x);
-    y = static_cast<int>(move.y) - 1;
-    while (y >= 0 && this->ChessPieceStateAt(x, y)->side == move.side) {
-        --y;
+    pos.x = move.pos.x;
+    pos.y = move.pos.y - 1;
+    while (pos.y >= 0 && this->ChessPieceStateAt(pos)->side == move.side) {
+        --pos.y;
     }
-    if (move.y - y > k_) {
+    if (move.pos.y - pos.y > static_cast<int>(k_)) {
         return true;
     }
 
     // Counter clockwise 45 degrees.
-    x = static_cast<int>(move.x) + 1;
-    y = static_cast<int>(move.y) - 1;
-    while (x < static_cast<int>(width_) && y >= 0 &&
-           this->ChessPieceStateAt(x, y)->side == move.side) {
-        ++x;
-        --y;
+    pos.x = move.pos.x + 1;
+    pos.y = move.pos.y - 1;
+    while (pos.x < static_cast<int>(width_) && pos.y >= 0 &&
+           this->ChessPieceStateAt(pos)->side == move.side) {
+        ++pos.x;
+        --pos.y;
     }
-    if (move.y - y > k_) {
+    if (move.pos.y - pos.y > static_cast<int>(k_)) {
         return true;
     }
 
     // Counter clockwise 180 degrees.
-    x = static_cast<int>(move.x) - 1;
-    y = static_cast<int>(move.y);
-    while (x >= 0 && this->ChessPieceStateAt(x, y)->side == move.side) {
-        --x;
+    pos.x = move.pos.x - 1;
+    pos.y = move.pos.y;
+    while (pos.x >= 0 && this->ChessPieceStateAt(pos)->side == move.side) {
+        --pos.x;
     }
-    if (move.x - x > k_) {
+    if (move.pos.x - pos.x > static_cast<int>(k_)) {
         return true;
     }
 
     // Counter clockwise 0 degrees.
-    x = static_cast<int>(move.x) + 1;
-    y = static_cast<int>(move.y);
-    while (x < static_cast<int>(width_) && this->ChessPieceStateAt(x, y)->side == move.side) {
-        ++x;
+    pos.x = move.pos.x + 1;
+    pos.y = move.pos.y;
+    while (pos.x < static_cast<int>(width_) && this->ChessPieceStateAt(pos)->side == move.side) {
+        ++pos.x;
     }
-    if (x - move.x > k_) {
+    if (pos.x - move.pos.x > static_cast<int>(k_)) {
         return true;
     }
 
     // Counter clockwise -135 degrees.
-    x = static_cast<int>(move.x) - 1;
-    y = static_cast<int>(move.y) + 1;
-    while (x >= 0 && y < static_cast<int>(height_) &&
-           this->ChessPieceStateAt(x, y)->side == move.side) {
-        --x;
-        ++y;
+    pos.x = move.pos.x - 1;
+    pos.y = move.pos.y + 1;
+    while (pos.x >= 0 && pos.y < static_cast<int>(height_) &&
+           this->ChessPieceStateAt(pos)->side == move.side) {
+        --pos.x;
+        ++pos.y;
     }
-    if (move.x - x > k_) {
+    if (move.pos.x - pos.x > static_cast<int>(k_)) {
         return true;
     }
 
     // Counter clockwise -90 degrees.
-    x = static_cast<int>(move.x);
-    y = static_cast<int>(move.y) + 1;
-    while (y < static_cast<int>(height_) && this->ChessPieceStateAt(x, y)->side == move.side) {
-        ++y;
+    pos.x = move.pos.x;
+    pos.y = move.pos.y + 1;
+    while (pos.y < static_cast<int>(height_) && this->ChessPieceStateAt(pos)->side == move.side) {
+        ++pos.y;
     }
-    if (y - move.y > k_) {
+    if (pos.y - move.pos.y > static_cast<int>(k_)) {
         return true;
     }
 
     // Counter clockwise -45 degrees.
-    x = static_cast<int>(move.x) + 1;
-    y = static_cast<int>(move.y) + 1;
-    while (x < static_cast<int>(width_) && y < static_cast<int>(height_) &&
-           this->ChessPieceStateAt(x, y)->side == move.side) {
-        ++x;
-        ++y;
+    pos.x = move.pos.x + 1;
+    pos.y = move.pos.y + 1;
+    while (pos.x < static_cast<int>(width_) && pos.y < static_cast<int>(height_) &&
+           this->ChessPieceStateAt(pos)->side == move.side) {
+        ++pos.x;
+        ++pos.y;
     }
-    if (y - move.y > k_) {
+    if (pos.y - move.pos.y > static_cast<int>(k_)) {
         return true;
     }
 
