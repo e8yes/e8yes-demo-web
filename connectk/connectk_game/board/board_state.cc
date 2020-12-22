@@ -27,6 +27,18 @@
 
 namespace e8 {
 
+PlayerSide FlipPlayerSide(PlayerSide const side) {
+    switch (side) {
+    case PS_NONE:
+        return PS_NONE;
+    case PS_WHITE:
+        return PS_BLACK;
+    case PS_BLACK:
+        return PS_WHITE;
+    }
+    assert(false);
+}
+
 ChessPieceState::ChessPieceState() : side(PlayerSide::PS_NONE) {}
 
 ChessPieceState::ChessPieceState(PlayerSide const side) : side(side) {}
@@ -68,6 +80,7 @@ BoardState::LegalMovePositions(PlayerSide const & /*side*/) const {
 
 GameResult BoardState::MakeMove(MoveRecord const &move) {
     assert(game_result_ == GameResult::GR_UNDETERMINED);
+    assert(this->ChessPieceStateAt(move.pos)->side == PlayerSide::PS_NONE);
 
     *this->ChessPieceStateAt(move.pos) = ChessPieceState(move.side);
 
@@ -85,6 +98,10 @@ GameResult BoardState::MakeMove(MoveRecord const &move) {
         default:
             assert(false);
             break;
+        }
+    } else {
+        if (this->LegalMovePositions(FlipPlayerSide(move.side)).empty()) {
+            game_result_ = GameResult::GR_TIE;
         }
     }
 

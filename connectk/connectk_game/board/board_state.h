@@ -31,9 +31,16 @@ enum GameResult {
     GR_UNDETERMINED,
     GR_WHITE_WIN,
     GR_BLACK_WIN,
+    GR_TIE,
 };
 
 enum PlayerSide { PS_NONE, PS_WHITE, PS_BLACK };
+
+/**
+ * @brief FlipPlayerSide Flip the given player side to the its opponent. But it won't return a
+ * different side, if the given is PS_NONE.
+ */
+PlayerSide FlipPlayerSide(PlayerSide const side);
 
 /**
  * @brief The ChessPieceState struct Stores the state of a chess piece. If the side is PS_NONE, it
