@@ -120,9 +120,10 @@ class BoardState {
      *
      * @param move The position has to be within the legal range of the board [0, width) x [0,
      * height).
+     * @param require_game_result_update Set this to true if the move can affect the game result.
      * @return The game result after the move is made.
      */
-    GameResult MakeMove(MoveRecord const &move);
+    GameResult MakeMove(MoveRecord const &move, bool require_game_result_update);
 
     /**
      * @brief RetractMove Undo the last move made to the board and restore the game result back to

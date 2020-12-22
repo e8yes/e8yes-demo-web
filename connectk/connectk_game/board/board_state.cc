@@ -78,7 +78,7 @@ BoardState::LegalMovePositions(PlayerSide const & /*side*/) const {
     return legal_move_positions_;
 }
 
-GameResult BoardState::MakeMove(MoveRecord const &move) {
+GameResult BoardState::MakeMove(MoveRecord const &move, bool require_game_result_update) {
     assert(game_result_ == GameResult::GR_UNDETERMINED);
     assert(this->ChessPieceStateAt(move.pos)->side == PlayerSide::PS_NONE);
 
@@ -86,6 +86,10 @@ GameResult BoardState::MakeMove(MoveRecord const &move) {
 
     move_history_.push_back(move);
     legal_move_positions_.erase(move.pos);
+
+    if (!require_game_result_update) {
+        return this->CurrentGameResult();
+    }
 
     if (this->LeadToWinStateFrom(move)) {
         switch (move.side) {
