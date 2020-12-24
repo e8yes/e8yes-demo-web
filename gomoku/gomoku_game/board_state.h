@@ -126,7 +126,7 @@ struct GomokuActionRecord {
  * @brief The BoardState class Represents the state of the chess board. Thread-safety is not
  * guaranteed.
  */
-class GomokuBoardStates {
+class GomokuBoardState {
   public:
     /**
      * @brief BoardState Constructs an empty board.
@@ -134,11 +134,11 @@ class GomokuBoardStates {
      * @param width Board width.
      * @param height Board height.
      */
-    GomokuBoardStates(unsigned const width, unsigned const height);
+    GomokuBoardState(unsigned const width, unsigned const height);
 
-    GomokuBoardStates(GomokuBoardStates const &other);
-    GomokuBoardStates(GomokuBoardStates &&other) = default;
-    ~GomokuBoardStates() = default;
+    GomokuBoardState(GomokuBoardState const &other);
+    GomokuBoardState(GomokuBoardState &&other) = default;
+    ~GomokuBoardState() = default;
 
     /**
      * @brief LegalActions The set of legal actions that can be made by the CurrentPlayerSide()

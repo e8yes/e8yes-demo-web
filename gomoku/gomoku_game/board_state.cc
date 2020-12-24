@@ -47,7 +47,7 @@ GomokuActionRecord::GomokuActionRecord(GamePhase const game_phase, PlayerSide co
                                        GomokuActionId const action_id, GomokuAction const &action)
     : game_phase(game_phase), side(side), action(std::make_pair(action_id, action)) {}
 
-GomokuBoardStates::GomokuBoardStates(unsigned const width, unsigned const height)
+GomokuBoardState::GomokuBoardState(unsigned const width, unsigned const height)
     : width_(width), height_(height), game_result_(GameResult::GR_UNDETERMINED),
       current_game_phase_(GP_PLACE_3_STONES), current_player_side_(OffensiveSide()),
       board_(std::unique_ptr<StoneState[]>(new StoneState[width * height])),
@@ -76,8 +76,8 @@ GomokuBoardStates::GomokuBoardStates(unsigned const width, unsigned const height
         std::make_pair(next_id++, GomokuAction(StoneTypeDecision::STD_CHOOSE_BLACK)));
 }
 
-GomokuBoardStates::GomokuBoardStates(GomokuBoardStates const &other)
-    : GomokuBoardStates(other.width_, other.height_) {
+GomokuBoardState::GomokuBoardState(GomokuBoardState const &other)
+    : GomokuBoardState(other.width_, other.height_) {
     game_result_ = other.game_result_;
     current_game_phase_ = other.current_game_phase_;
     current_player_side_ = other.current_player_side_;
@@ -92,7 +92,7 @@ GomokuBoardStates::GomokuBoardStates(GomokuBoardStates const &other)
     standard_gomoku_legal_actions_ = other.standard_gomoku_legal_actions_;
 }
 
-std::unordered_map<GomokuActionId, GomokuAction> const &GomokuBoardStates::LegalActions() const {
+std::unordered_map<GomokuActionId, GomokuAction> const &GomokuBoardState::LegalActions() const {
     switch (this->CurrentGamePhase()) {
     case GP_PLACE_3_STONES:
     case GP_SWAP2_PLACE_2_STONES:
@@ -106,11 +106,11 @@ std::unordered_map<GomokuActionId, GomokuAction> const &GomokuBoardStates::Legal
     assert(false);
 }
 
-PlayerSide GomokuBoardStates::CurrentPlayerSide() const { return current_player_side_; }
+PlayerSide GomokuBoardState::CurrentPlayerSide() const { return current_player_side_; }
 
-GamePhase GomokuBoardStates::CurrentGamePhase() const { return current_game_phase_; }
+GamePhase GomokuBoardState::CurrentGamePhase() const { return current_game_phase_; }
 
-GameResult GomokuBoardStates::ApplyAction(GomokuActionId const action_id,
+GameResult GomokuBoardState::ApplyAction(GomokuActionId const action_id,
                                           bool require_game_result_update) {
     assert(game_result_ == GameResult::GR_UNDETERMINED);
 
@@ -247,7 +247,7 @@ GameResult GomokuBoardStates::ApplyAction(GomokuActionId const action_id,
     return this->CurrentGameResult();
 }
 
-std::optional<GomokuActionRecord> GomokuBoardStates::RetractAction() {
+std::optional<GomokuActionRecord> GomokuBoardState::RetractAction() {
     if (history_.empty()) {
         return std::nullopt;
     }
@@ -302,30 +302,30 @@ std::optional<GomokuActionRecord> GomokuBoardStates::RetractAction() {
     return record;
 }
 
-std::optional<GomokuActionRecord> GomokuBoardStates::LastAction() const {
+std::optional<GomokuActionRecord> GomokuBoardState::LastAction() const {
     if (history_.empty()) {
         return std::nullopt;
     }
     return history_.back();
 }
 
-GameResult GomokuBoardStates::CurrentGameResult() const { return game_result_; }
+GameResult GomokuBoardState::CurrentGameResult() const { return game_result_; }
 
-StoneState *GomokuBoardStates::CurrentBoard() const { return board_.get(); }
+StoneState *GomokuBoardState::CurrentBoard() const { return board_.get(); }
 
-unsigned GomokuBoardStates::Width() const { return width_; }
+unsigned GomokuBoardState::Width() const { return width_; }
 
-unsigned GomokuBoardStates::Height() const { return height_; }
+unsigned GomokuBoardState::Height() const { return height_; }
 
-StoneState *GomokuBoardStates::ChessPieceStateAt(MovePosition const &pos) {
+StoneState *GomokuBoardState::ChessPieceStateAt(MovePosition const &pos) {
     return &board_[pos.x + pos.y * width_];
 }
 
-StoneState const *GomokuBoardStates::ChessPieceStateAt(MovePosition const &pos) const {
+StoneState const *GomokuBoardState::ChessPieceStateAt(MovePosition const &pos) const {
     return &board_[pos.x + pos.y * width_];
 }
 
-unsigned GomokuBoardStates::MaxConnectedStonesFrom(MovePosition const &move_pos,
+unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
                                                    StoneType const stone_type) const {
     int max_connected_stones = 0;
 
