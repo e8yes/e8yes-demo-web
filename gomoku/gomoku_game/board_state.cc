@@ -23,7 +23,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "connectk/connectk_game/board/board_state.h"
+#include "gomoku/gomoku_game/board_state.h"
 
 namespace e8 {
 
@@ -76,7 +76,8 @@ GomokuBoardStates::GomokuBoardStates(unsigned const width, unsigned const height
         std::make_pair(next_id++, GomokuAction(StoneTypeDecision::STD_CHOOSE_BLACK)));
 }
 
-GomokuBoardStates::GomokuBoardStates(GomokuBoardStates const &other) : GomokuBoardStates(other.width_, other.height_) {
+GomokuBoardStates::GomokuBoardStates(GomokuBoardStates const &other)
+    : GomokuBoardStates(other.width_, other.height_) {
     game_result_ = other.game_result_;
     current_game_phase_ = other.current_game_phase_;
     current_player_side_ = other.current_player_side_;
@@ -110,7 +111,7 @@ PlayerSide GomokuBoardStates::CurrentPlayerSide() const { return current_player_
 GamePhase GomokuBoardStates::CurrentGamePhase() const { return current_game_phase_; }
 
 GameResult GomokuBoardStates::ApplyAction(GomokuActionId const action_id,
-                                   bool require_game_result_update) {
+                                          bool require_game_result_update) {
     assert(game_result_ == GameResult::GR_UNDETERMINED);
 
     std::unordered_map<GomokuActionId, GomokuAction>::const_iterator action_it;
@@ -325,7 +326,7 @@ StoneState const *GomokuBoardStates::ChessPieceStateAt(MovePosition const &pos) 
 }
 
 unsigned GomokuBoardStates::MaxConnectedStonesFrom(MovePosition const &move_pos,
-                                            StoneType const stone_type) const {
+                                                   StoneType const stone_type) const {
     int max_connected_stones = 0;
 
     // Counter clockwise 135 degrees.

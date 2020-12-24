@@ -1,5 +1,5 @@
 QT       -= core gui
-TARGET = connectk_game
+TARGET = gomoku_game
 TEMPLATE = lib
 CONFIG += c++17
 
@@ -15,10 +15,10 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
-    board/board_state.cc
+    board_state.cc
 
 HEADERS += \
-    board/board_state.h
+    board_state.h
 
 # Default rules for deployment.
 unix {
