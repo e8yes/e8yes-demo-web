@@ -20,28 +20,18 @@
 #include <functional>
 #include <memory>
 #include <optional>
-#include <unordered_set>
+#include <unordered_map>
 #include <vector>
 
 #include "connectk/connectk_game/board/board_state.h"
 
 namespace e8 {
 
-PlayerSide FlipPlayerSide(PlayerSide const side) {
-    switch (side) {
-    case PS_NONE:
-        return PS_NONE;
-    case PS_WHITE:
-        return PS_BLACK;
-    case PS_BLACK:
-        return PS_WHITE;
-    }
-    assert(false);
-}
+PlayerSide OffensiveSide() { return PS_PLAYER_B; }
 
-ChessPieceState::ChessPieceState() : side(PlayerSide::PS_NONE) {}
+StoneState::StoneState() : stone_type(StoneType::ST_NONE) {}
 
-ChessPieceState::ChessPieceState(PlayerSide const side) : side(side) {}
+StoneState::StoneState(StoneType const stone_type) : stone_type(stone_type) {}
 
 MovePosition::MovePosition(int const x, int const y) : x(x), y(y) {}
 
@@ -49,185 +39,385 @@ bool MovePosition::operator==(MovePosition const &other) const {
     return x == other.x && y == other.y;
 }
 
-MoveRecord::MoveRecord(MovePosition const &pos, PlayerSide const side) : pos(pos), side(side) {}
+GomokuAction::GomokuAction(MovePosition const &stone_pos) : stone_pos(stone_pos) {}
+GomokuAction::GomokuAction(Swap2Decision const decision) : swap2_decision(decision) {}
+GomokuAction::GomokuAction(StoneTypeDecision const decision) : stone_type_decision(decision) {}
 
-BoardState::BoardState(unsigned const width, unsigned const height, unsigned const k)
-    : width_(width), height_(height), k_(k), game_result_(GameResult::GR_UNDETERMINED),
-      board_(std::unique_ptr<ChessPieceState[]>(new ChessPieceState[width * height])),
-      legal_move_positions_(2 * width * height) {
-    for (unsigned y = 0; y < height_; ++y) {
-        for (unsigned x = 0; x < width_; ++x) {
-            legal_move_positions_.insert(MovePosition(x, y));
+GomokuActionRecord::GomokuActionRecord(GamePhase const game_phase, PlayerSide const side,
+                                       GomokuActionId const action_id, GomokuAction const &action)
+    : game_phase(game_phase), side(side), action(std::make_pair(action_id, action)) {}
+
+BoardState::BoardState(unsigned const width, unsigned const height)
+    : width_(width), height_(height), game_result_(GameResult::GR_UNDETERMINED),
+      current_game_phase_(GP_PLACE_3_STONES), current_player_side_(OffensiveSide()),
+      board_(std::unique_ptr<StoneState[]>(new StoneState[width * height])),
+      player_stone_type_({std::optional<StoneType>(StoneType::ST_BLACK), std::nullopt}),
+      standard_gomoku_legal_actions_(2 * width * height) {
+    for (unsigned y = 0; y < this->Height(); ++y) {
+        for (unsigned x = 0; x < this->Width(); ++x) {
+            GomokuActionId id = x + y * this->Width();
+            MovePosition pos(x, y);
+            standard_gomoku_legal_actions_.insert(std::make_pair(id, GomokuAction(pos)));
         }
     }
+
+    GomokuActionId next_id = this->Width() * this->Height();
+
+    swap2_decision_legal_actions_.insert(
+        std::make_pair(next_id++, GomokuAction(Swap2Decision::SW2D_CHOOSE_WHITE)));
+    swap2_decision_legal_actions_.insert(
+        std::make_pair(next_id++, GomokuAction(Swap2Decision::SW2D_CHOOSE_BLACK)));
+    swap2_decision_legal_actions_.insert(
+        std::make_pair(next_id++, GomokuAction(Swap2Decision::SW2D_PLACE_2_STONES)));
+
+    stone_type_decision_legal_actions_.insert(
+        std::make_pair(next_id++, GomokuAction(StoneTypeDecision::STD_CHOOSE_WHITE)));
+    stone_type_decision_legal_actions_.insert(
+        std::make_pair(next_id++, GomokuAction(StoneTypeDecision::STD_CHOOSE_BLACK)));
 }
 
-BoardState::BoardState(BoardState const &other)
-    : BoardState(other.width_, other.height_, other.k_) {
+BoardState::BoardState(BoardState const &other) : BoardState(other.width_, other.height_) {
     game_result_ = other.game_result_;
+    current_game_phase_ = other.current_game_phase_;
+    current_player_side_ = other.current_player_side_;
 
-    for (unsigned i = 0; i < width_ * height_; ++i) {
+    player_stone_type_ = other.player_stone_type_;
+    for (unsigned i = 0; i < this->Width() * this->Height(); ++i) {
         board_[i] = other.board_[i];
     }
 
-    legal_move_positions_ = other.legal_move_positions_;
+    swap2_decision_legal_actions_ = other.swap2_decision_legal_actions_;
+    stone_type_decision_legal_actions_ = other.stone_type_decision_legal_actions_;
+    standard_gomoku_legal_actions_ = other.standard_gomoku_legal_actions_;
 }
 
-std::unordered_set<MovePosition> const &
-BoardState::LegalMovePositions(PlayerSide const & /*side*/) const {
-    return legal_move_positions_;
+std::unordered_map<GomokuActionId, GomokuAction> const &BoardState::LegalActions() const {
+    switch (this->CurrentGamePhase()) {
+    case GP_PLACE_3_STONES:
+    case GP_SWAP2_PLACE_2_STONES:
+    case GP_STANDARD_GOMOKU:
+        return standard_gomoku_legal_actions_;
+    case GP_SWAP2_DECISION:
+        return swap2_decision_legal_actions_;
+    case GP_STONE_TYPE_DECISION:
+        return stone_type_decision_legal_actions_;
+    }
+    assert(false);
 }
 
-GameResult BoardState::MakeMove(MoveRecord const &move, bool require_game_result_update) {
+PlayerSide BoardState::CurrentPlayerSide() const { return current_player_side_; }
+
+GamePhase BoardState::CurrentGamePhase() const { return current_game_phase_; }
+
+GameResult BoardState::ApplyAction(GomokuActionId const action_id,
+                                   bool require_game_result_update) {
     assert(game_result_ == GameResult::GR_UNDETERMINED);
-    assert(this->ChessPieceStateAt(move.pos)->side == PlayerSide::PS_NONE);
 
-    *this->ChessPieceStateAt(move.pos) = ChessPieceState(move.side);
-
-    move_history_.push_back(move);
-    legal_move_positions_.erase(move.pos);
-
-    if (!require_game_result_update) {
-        return this->CurrentGameResult();
+    std::unordered_map<GomokuActionId, GomokuAction>::const_iterator action_it;
+    switch (this->CurrentGamePhase()) {
+    case GP_PLACE_3_STONES:
+    case GP_SWAP2_PLACE_2_STONES:
+    case GP_STANDARD_GOMOKU: {
+        action_it = standard_gomoku_legal_actions_.find(action_id);
+        assert(action_it != standard_gomoku_legal_actions_.end());
+        break;
+    }
+    case GP_SWAP2_DECISION: {
+        action_it = swap2_decision_legal_actions_.find(action_id);
+        assert(action_it != swap2_decision_legal_actions_.end());
+        break;
+    }
+    case GP_STONE_TYPE_DECISION: {
+        action_it = stone_type_decision_legal_actions_.find(action_id);
+        assert(action_it != stone_type_decision_legal_actions_.end());
+        break;
+    }
+    default:
+        assert(false);
+        break;
     }
 
-    if (this->LeadToWinStateFrom(move)) {
-        switch (move.side) {
-        case PS_BLACK:
-            game_result_ = GameResult::GR_BLACK_WIN;
+    history_.push_back(GomokuActionRecord(this->CurrentGamePhase(), this->CurrentPlayerSide(),
+                                          action_it->first, action_it->second));
+
+    switch (this->CurrentGamePhase()) {
+    case GP_PLACE_3_STONES: {
+        assert(player_stone_type_[this->CurrentPlayerSide()].has_value());
+        *this->ChessPieceStateAt(*action_it->second.stone_pos) =
+            StoneState(*player_stone_type_[this->CurrentPlayerSide()]);
+
+        if (history_.size() == 2) {
+            player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_WHITE;
+        } else if (history_.size() == 3) {
+            player_stone_type_[PlayerSide::PS_PLAYER_A] = std::nullopt;
+            current_game_phase_ = GamePhase::GP_SWAP2_DECISION;
+            current_player_side_ = PlayerSide::PS_PLAYER_B;
+        }
+        break;
+    }
+    case GP_SWAP2_DECISION: {
+        switch (*action_it->second.swap2_decision) {
+        case SW2D_CHOOSE_WHITE: {
+            player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_BLACK;
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_WHITE;
+            current_game_phase_ = GamePhase::GP_STANDARD_GOMOKU;
             break;
-        case PS_WHITE:
-            game_result_ = GameResult::GR_WHITE_WIN;
+        }
+        case SW2D_CHOOSE_BLACK: {
+            player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_WHITE;
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_BLACK;
+            current_game_phase_ = GamePhase::GP_STANDARD_GOMOKU;
+            current_player_side_ = PlayerSide::PS_PLAYER_A;
             break;
-        default:
+        }
+        case SW2D_PLACE_2_STONES: {
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_WHITE;
+            current_game_phase_ = GamePhase::GP_SWAP2_PLACE_2_STONES;
+            break;
+        }
+        default: {
             assert(false);
             break;
         }
-    } else {
-        if (this->LegalMovePositions(FlipPlayerSide(move.side)).empty()) {
-            game_result_ = GameResult::GR_TIE;
         }
+        break;
+    }
+    case GP_SWAP2_PLACE_2_STONES: {
+        assert(player_stone_type_[this->CurrentPlayerSide()].has_value());
+        *this->ChessPieceStateAt(*action_it->second.stone_pos) =
+            StoneState(*player_stone_type_[this->CurrentPlayerSide()]);
+
+        if (history_.size() == 5) {
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_BLACK;
+        } else if (history_.size() == 6) {
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = std::nullopt;
+            current_game_phase_ = GamePhase::GP_STONE_TYPE_DECISION;
+            current_player_side_ = PlayerSide::PS_PLAYER_A;
+        }
+        break;
+    }
+    case GP_STONE_TYPE_DECISION: {
+        switch (*action_it->second.stone_type_decision) {
+        case STD_CHOOSE_WHITE: {
+            player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_WHITE;
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_BLACK;
+            break;
+        }
+        case STD_CHOOSE_BLACK: {
+            player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_BLACK;
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_WHITE;
+            current_player_side_ = PlayerSide::PS_PLAYER_B;
+            break;
+        }
+        }
+        current_game_phase_ = GamePhase::GP_STANDARD_GOMOKU;
+        break;
+    }
+    case GP_STANDARD_GOMOKU: {
+        assert(player_stone_type_[this->CurrentPlayerSide()].has_value());
+        *this->ChessPieceStateAt(*action_it->second.stone_pos) =
+            StoneState(*player_stone_type_[this->CurrentPlayerSide()]);
+
+        if (require_game_result_update) {
+            unsigned max_connected_stones = this->MaxConnectedStonesFrom(
+                *action_it->second.stone_pos, *player_stone_type_[this->CurrentPlayerSide()]);
+            if (max_connected_stones == 5) {
+                switch (current_player_side_) {
+                case PS_PLAYER_A:
+                    game_result_ = GameResult::GR_PLAYER_A_WIN;
+                    break;
+                case PS_PLAYER_B:
+                    game_result_ = GameResult::GR_PLAYER_B_WIN;
+                    break;
+                }
+            } else if (max_connected_stones > 5 || this->LegalActions().empty()) {
+                game_result_ = GameResult::GR_TIE;
+            }
+        }
+
+        current_player_side_ =
+            static_cast<PlayerSide>((static_cast<unsigned>(current_player_side_) + 1) | 1);
+
+        standard_gomoku_legal_actions_.erase(action_it);
+        break;
+    }
     }
 
     return this->CurrentGameResult();
 }
 
-std::optional<MoveRecord> BoardState::RetractMove() {
-    if (move_history_.empty()) {
+std::optional<GomokuActionRecord> BoardState::RetractAction() {
+    if (history_.empty()) {
         return std::nullopt;
     }
 
     game_result_ = GameResult::GR_UNDETERMINED;
 
-    MoveRecord const &the_move = move_history_.back();
-    move_history_.pop_back();
-    legal_move_positions_.insert(the_move.pos);
+    GomokuActionRecord record = history_.back();
 
-    *this->ChessPieceStateAt(the_move.pos) = ChessPieceState();
+    switch (record.game_phase) {
+    case GP_PLACE_3_STONES: {
+        current_game_phase_ = GP_PLACE_3_STONES;
+        current_player_side_ = PlayerSide::PS_PLAYER_A;
+        if (history_.size() == 3) {
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_WHITE;
+        } else if (history_.size() == 2) {
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_BLACK;
+        }
+        break;
+    }
+    case GP_SWAP2_DECISION: {
+        current_game_phase_ = GP_SWAP2_DECISION;
+        current_player_side_ = PlayerSide::PS_PLAYER_B;
+        break;
+    }
+    case GP_SWAP2_PLACE_2_STONES: {
+        current_game_phase_ = GP_SWAP2_PLACE_2_STONES;
+        current_player_side_ = PlayerSide::PS_PLAYER_B;
+        if (history_.size() == 6) {
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_BLACK;
+        } else if (history_.size() == 5) {
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_WHITE;
+        }
+        break;
+    }
+    case GP_STONE_TYPE_DECISION: {
+        current_game_phase_ = GP_STONE_TYPE_DECISION;
+        current_player_side_ = PlayerSide::PS_PLAYER_A;
+        break;
+    }
+    case GP_STANDARD_GOMOKU: {
+        *this->ChessPieceStateAt(*record.action.second.stone_pos) = StoneState();
+        standard_gomoku_legal_actions_.insert(record.action);
+        current_player_side_ =
+            static_cast<PlayerSide>((static_cast<unsigned>(current_player_side_) + 1) | 1);
+        game_result_ = GameResult::GR_UNDETERMINED;
+        break;
+    }
+    }
 
-    return the_move;
+    history_.pop_back();
+
+    return record;
+}
+
+std::optional<GomokuActionRecord> BoardState::LastAction() const {
+    if (history_.empty()) {
+        return std::nullopt;
+    }
+    return history_.back();
 }
 
 GameResult BoardState::CurrentGameResult() const { return game_result_; }
 
-ChessPieceState *BoardState::CurrentBoard() const { return board_.get(); }
+StoneState *BoardState::CurrentBoard() const { return board_.get(); }
 
 unsigned BoardState::Width() const { return width_; }
 
 unsigned BoardState::Height() const { return height_; }
 
-ChessPieceState *BoardState::ChessPieceStateAt(MovePosition const &pos) {
+StoneState *BoardState::ChessPieceStateAt(MovePosition const &pos) {
     return &board_[pos.x + pos.y * width_];
 }
 
-bool BoardState::LeadToWinStateFrom(MoveRecord const &move) {
+StoneState const *BoardState::ChessPieceStateAt(MovePosition const &pos) const {
+    return &board_[pos.x + pos.y * width_];
+}
+
+unsigned BoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
+                                            StoneType const stone_type) const {
+    int max_connected_stones = 0;
+
     // Counter clockwise 135 degrees.
-    MovePosition pos(move.pos.x - 1, move.pos.y - 1);
-    while (pos.x >= 0 && pos.y >= 0 && this->ChessPieceStateAt(pos)->side == move.side) {
+    MovePosition pos(move_pos.x - 1, move_pos.y - 1);
+    while (pos.x >= 0 && pos.y >= 0 && this->ChessPieceStateAt(pos)->stone_type == stone_type) {
         --pos.x;
         --pos.y;
     }
-    if (move.pos.x - pos.x > static_cast<int>(k_)) {
-        return true;
+    if (move_pos.x - pos.x - 1 > max_connected_stones) {
+        max_connected_stones = move_pos.x - pos.x - 1;
     }
 
     // Counter clockwise 90 degrees.
-    pos.x = move.pos.x;
-    pos.y = move.pos.y - 1;
-    while (pos.y >= 0 && this->ChessPieceStateAt(pos)->side == move.side) {
+    pos.x = move_pos.x;
+    pos.y = move_pos.y - 1;
+    while (pos.y >= 0 && this->ChessPieceStateAt(pos)->stone_type == stone_type) {
         --pos.y;
     }
-    if (move.pos.y - pos.y > static_cast<int>(k_)) {
-        return true;
+    if (move_pos.y - pos.y - 1 > max_connected_stones) {
+        max_connected_stones = move_pos.y - pos.y - 1;
     }
 
     // Counter clockwise 45 degrees.
-    pos.x = move.pos.x + 1;
-    pos.y = move.pos.y - 1;
+    pos.x = move_pos.x + 1;
+    pos.y = move_pos.y - 1;
     while (pos.x < static_cast<int>(width_) && pos.y >= 0 &&
-           this->ChessPieceStateAt(pos)->side == move.side) {
+           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
         ++pos.x;
         --pos.y;
     }
-    if (move.pos.y - pos.y > static_cast<int>(k_)) {
-        return true;
+    if (move_pos.y - pos.y - 1 > max_connected_stones) {
+        max_connected_stones = move_pos.y - pos.y - 1;
     }
 
     // Counter clockwise 180 degrees.
-    pos.x = move.pos.x - 1;
-    pos.y = move.pos.y;
-    while (pos.x >= 0 && this->ChessPieceStateAt(pos)->side == move.side) {
+    pos.x = move_pos.x - 1;
+    pos.y = move_pos.y;
+    while (pos.x >= 0 && this->ChessPieceStateAt(pos)->stone_type == stone_type) {
         --pos.x;
     }
-    if (move.pos.x - pos.x > static_cast<int>(k_)) {
-        return true;
+    if (move_pos.x - pos.x - 1 > max_connected_stones) {
+        max_connected_stones = move_pos.x - pos.x - 1;
     }
 
     // Counter clockwise 0 degrees.
-    pos.x = move.pos.x + 1;
-    pos.y = move.pos.y;
-    while (pos.x < static_cast<int>(width_) && this->ChessPieceStateAt(pos)->side == move.side) {
+    pos.x = move_pos.x + 1;
+    pos.y = move_pos.y;
+    while (pos.x < static_cast<int>(width_) &&
+           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
         ++pos.x;
     }
-    if (pos.x - move.pos.x > static_cast<int>(k_)) {
-        return true;
+    if (pos.x - move_pos.x - 1 > max_connected_stones) {
+        max_connected_stones = pos.x - move_pos.x - 1;
     }
 
     // Counter clockwise -135 degrees.
-    pos.x = move.pos.x - 1;
-    pos.y = move.pos.y + 1;
+    pos.x = move_pos.x - 1;
+    pos.y = move_pos.y + 1;
     while (pos.x >= 0 && pos.y < static_cast<int>(height_) &&
-           this->ChessPieceStateAt(pos)->side == move.side) {
+           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
         --pos.x;
         ++pos.y;
     }
-    if (move.pos.x - pos.x > static_cast<int>(k_)) {
-        return true;
+    if (move_pos.x - pos.x - 1 > max_connected_stones) {
+        max_connected_stones = move_pos.x - pos.x - 1;
     }
 
     // Counter clockwise -90 degrees.
-    pos.x = move.pos.x;
-    pos.y = move.pos.y + 1;
-    while (pos.y < static_cast<int>(height_) && this->ChessPieceStateAt(pos)->side == move.side) {
+    pos.x = move_pos.x;
+    pos.y = move_pos.y + 1;
+    while (pos.y < static_cast<int>(height_) &&
+           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
         ++pos.y;
     }
-    if (pos.y - move.pos.y > static_cast<int>(k_)) {
-        return true;
+    if (pos.y - move_pos.y - 1 > max_connected_stones) {
+        max_connected_stones = pos.y - move_pos.y - 1;
     }
 
     // Counter clockwise -45 degrees.
-    pos.x = move.pos.x + 1;
-    pos.y = move.pos.y + 1;
+    pos.x = move_pos.x + 1;
+    pos.y = move_pos.y + 1;
     while (pos.x < static_cast<int>(width_) && pos.y < static_cast<int>(height_) &&
-           this->ChessPieceStateAt(pos)->side == move.side) {
+           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
         ++pos.x;
         ++pos.y;
     }
-    if (pos.y - move.pos.y > static_cast<int>(k_)) {
-        return true;
+    if (pos.y - move_pos.y - 1 > max_connected_stones) {
+        max_connected_stones = pos.y - move_pos.y - 1;
     }
 
-    return false;
+    assert(max_connected_stones >= 0);
+    return max_connected_stones;
 }
 
 } // namespace e8

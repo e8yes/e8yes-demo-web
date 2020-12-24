@@ -1,4 +1,4 @@
-/**
+﻿/**
  * e8yes demo web.
  *
  * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
@@ -22,39 +22,49 @@
 #include <functional>
 #include <memory>
 #include <optional>
-#include <unordered_set>
+#include <unordered_map>
 #include <vector>
 
 namespace e8 {
 
 enum GameResult {
     GR_UNDETERMINED,
-    GR_WHITE_WIN,
-    GR_BLACK_WIN,
+    GR_PLAYER_A_WIN,
+    GR_PLAYER_B_WIN,
     GR_TIE,
 };
 
-enum PlayerSide { PS_NONE, PS_WHITE, PS_BLACK };
+enum PlayerSide { PS_PLAYER_A, PS_PLAYER_B };
 
-/**
- * @brief FlipPlayerSide Flip the given player side to the its opponent. But it won't return a
- * different side, if the given is PS_NONE.
- */
-PlayerSide FlipPlayerSide(PlayerSide const side);
+enum StoneType { ST_NONE, ST_BLACK, ST_WHITE };
 
-/**
- * @brief The ChessPieceState struct Stores the state of a chess piece. If the side is PS_NONE, it
- * means that no move has been made to the chess piece position.
- */
-struct ChessPieceState {
-    PlayerSide side;
-
-    ChessPieceState();
-    explicit ChessPieceState(PlayerSide const side);
+enum GamePhase {
+    GP_PLACE_3_STONES,
+    GP_SWAP2_DECISION,
+    GP_SWAP2_PLACE_2_STONES,
+    GP_STONE_TYPE_DECISION,
+    GP_STANDARD_GOMOKU
 };
 
 /**
- * @brief The MovePosition struct
+ * @brief OffensiveSide Indicate which side will initiate the move.
+ */
+PlayerSide OffensiveSide();
+
+/**
+ * @brief The StoneState struct Stores the state of a chess piece. If the stone_type is
+ * ST_NONE, it means that no stone has been placed to the chess piece position.
+ */
+struct StoneState {
+    StoneType stone_type;
+
+    StoneState();
+    explicit StoneState(StoneType const stone_type);
+};
+
+/**
+ * @brief The MovePosition struct Zero-offset 2D board position. Orgin is at the top-left
+ * corner.
  */
 struct MovePosition {
     int x;
@@ -65,33 +75,56 @@ struct MovePosition {
     bool operator==(MovePosition const &other) const;
 };
 
-} // namespace e8
-
-namespace std {
-
-template <> struct hash<::e8::MovePosition> {
-    std::size_t operator()(::e8::MovePosition const &pos) const {
-        return std::hash<uint64_t>{}((static_cast<uint64_t>(pos.x) << 32) | pos.y);
-    }
-};
-
-} // namespace std
-
-namespace e8 {
-
 /**
- * @brief The MoveRecord struct Stores information about a move. It consists of the board position
- * of the move and which player made the move.
+ * @brief The Swap2Decision enum Decisions available during GP_SWAP2_DECISION.
  */
-struct MoveRecord {
-    MovePosition const pos;
-    PlayerSide const side;
+enum Swap2Decision { SW2D_CHOOSE_WHITE, SW2D_CHOOSE_BLACK, SW2D_PLACE_2_STONES };
 
-    MoveRecord(MovePosition const &pos, PlayerSide const side);
+/**
+ * @brief The StoneTypeDecision enum Decisions avaliable during GP_SWAP2_DECISION_EXCHANGED.
+ */
+enum StoneTypeDecision { STD_CHOOSE_WHITE, STD_CHOOSE_BLACK };
+
+/**
+ * @brief The GomokuAction struct An action is one of the three types occurred during different
+ * phases of the game. See the belowed comments for how each type of action is used.
+ */
+struct GomokuAction {
+    // Placing a stone on the board during GP_PLACE_3_STONES, GP_SWAP2_PLACE_2_STONES and
+    // GP_STANDARD_GOMOKU.
+    std::optional<MovePosition> const stone_pos;
+
+    // Making a swap2 decision during GP_SWAP2_DECISION.
+    std::optional<Swap2Decision> const swap2_decision;
+
+    // Making a stone type decision during GP_SWAP2_DECISION_EXCHANGED.
+    std::optional<StoneTypeDecision> const stone_type_decision;
+
+    explicit GomokuAction(MovePosition const &stone_pos);
+    explicit GomokuAction(Swap2Decision const decision);
+    explicit GomokuAction(StoneTypeDecision const decision);
+
+    GomokuAction &operator=(GomokuAction const &other);
+};
+
+// Zero-offset action ID allowing all actions in the game are densely numbered.
+using GomokuActionId = int;
+
+/**
+ * @brief The GomokuActionRecord struct
+ */
+struct GomokuActionRecord {
+    GamePhase const game_phase;
+    PlayerSide const side;
+    std::pair<GomokuActionId, GomokuAction> const action;
+
+    GomokuActionRecord(GamePhase const game_phase, PlayerSide const side,
+                       GomokuActionId const action_id, GomokuAction const &action);
 };
 
 /**
- * @brief The BoardState class Represents the state of the chess board.
+ * @brief The BoardState class Represents the state of the chess board. Thread-safety is not
+ * guaranteed.
  */
 class BoardState {
   public:
@@ -100,38 +133,54 @@ class BoardState {
      *
      * @param width Board width.
      * @param height Board height.
-     * @param k The number of connection to win the game.
      */
-    BoardState(unsigned const width, unsigned const height, unsigned const k);
+    BoardState(unsigned const width, unsigned const height);
 
     BoardState(BoardState const &other);
     BoardState(BoardState &&other) = default;
     ~BoardState() = default;
 
     /**
-     * @brief LegalMovePositions Legal positions that a new move can be made by the specified side.
-     * The set of positions will be updated after either MakeMove() or RetractMove() is called.
+     * @brief LegalActions The set of legal actions that can be made by the CurrentPlayerSide()
+     * given the board state.
      */
-    std::unordered_set<MovePosition> const &LegalMovePositions(PlayerSide const &side) const;
+    std::unordered_map<GomokuActionId, GomokuAction> const &LegalActions() const;
 
     /**
-     * @brief MakeMove Make a move at a empty position and update the game result. This function
-     * will fail if the game result was changed from GR_UNDETERMINED.
+     * @brief CurrentPlayerSide The current player who is going to make the next action.
+     */
+    PlayerSide CurrentPlayerSide() const;
+
+    /**
+     * @brief CurrentGamePhase The current game phase.
+     */
+    GamePhase CurrentGamePhase() const;
+
+    /**
+     * @brief ApplyAction Make an action given the current board state and update the game result.
+     * This function will fail if the game result has been changed from GR_UNDETERMINED. It will
+     * also update the state of CurrentPlayerSide(), CurrentGamePhase(), CurrentGameResult() as well
+     * as the history of records of the actions previously applied.
      *
-     * @param move The position has to be within the legal range of the board [0, width) x [0,
-     * height).
-     * @param require_game_result_update Set this to true if the move can affect the game result.
+     * @param action_id Id of the action in one of the LegalActions().
+     * @param require_game_result_update Set this to true if the action can affect the game result.
      * @return The game result after the move is made.
      */
-    GameResult MakeMove(MoveRecord const &move, bool require_game_result_update);
+    GameResult ApplyAction(GomokuActionId const action_id, bool require_game_result_update);
 
     /**
-     * @brief RetractMove Undo the last move made to the board and restore the game result back to
-     * GR_UNDETERMINED if it wasn't.
+     * @brief RetractAction Undo the last action made to the board and restore the game result back
+     * to GR_UNDETERMINED.
      *
-     * @return The last move if there is any, otherwise it returns a empty.
+     * @return The last action if there is any, otherwise it returns empty, and the function will do
+     * nothing.
      */
-    std::optional<MoveRecord> RetractMove();
+    std::optional<GomokuActionRecord> RetractAction();
+
+    /**
+     * @brief LastAction Return the last action made to the board if there was any.
+     */
+    std::optional<GomokuActionRecord> LastAction() const;
 
     /**
      * @brief CurrentGameResult Current game result.
@@ -141,7 +190,7 @@ class BoardState {
     /**
      * @brief CurrentBoard It returns a 1d array representing the board in row major order.
      */
-    ChessPieceState *CurrentBoard() const;
+    StoneState *CurrentBoard() const;
 
     /**
      * @brief Width Board width.
@@ -154,19 +203,25 @@ class BoardState {
     unsigned Height() const;
 
   private:
-    ChessPieceState *ChessPieceStateAt(MovePosition const &pos);
+    StoneState *ChessPieceStateAt(MovePosition const &pos);
+    StoneState const *ChessPieceStateAt(MovePosition const &pos) const;
 
-    bool LeadToWinStateFrom(MoveRecord const &move);
+    unsigned MaxConnectedStonesFrom(MovePosition const &pos, StoneType const stone_type) const;
 
     unsigned const width_;
     unsigned const height_;
-    unsigned const k_;
     GameResult game_result_;
+    GamePhase current_game_phase_;
+    PlayerSide current_player_side_;
 
-    std::unique_ptr<ChessPieceState[]> board_;
+    std::unique_ptr<StoneState[]> board_;
+    std::array<std::optional<StoneType>, 2> player_stone_type_;
 
-    std::vector<MoveRecord> move_history_;
-    std::unordered_set<MovePosition> legal_move_positions_;
+    std::vector<GomokuActionRecord> history_;
+
+    std::unordered_map<GomokuActionId, GomokuAction> swap2_decision_legal_actions_;
+    std::unordered_map<GomokuActionId, GomokuAction> stone_type_decision_legal_actions_;
+    std::unordered_map<GomokuActionId, GomokuAction> standard_gomoku_legal_actions_;
 };
 
 } // namespace e8
