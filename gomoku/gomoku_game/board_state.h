@@ -18,6 +18,7 @@
 #ifndef BOARD_STATE_H
 #define BOARD_STATE_H
 
+#include <array>
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -163,10 +164,12 @@ class GomokuBoardState {
      * as the history of records of the actions previously applied.
      *
      * @param action_id Id of the action in one of the LegalActions().
-     * @param require_game_result_update Set this to true if the action can affect the game result.
+     * @param cached_game_result Externally provide the cached game result to avoid repeatedly
+     * checking the board.
      * @return The game result after the move is made.
      */
-    GameResult ApplyAction(GomokuActionId const action_id, bool require_game_result_update);
+    GameResult ApplyAction(GomokuActionId const action_id,
+                           std::optional<GameResult> const cached_game_result);
 
     /**
      * @brief RetractAction Undo the last action made to the board and restore the game result back

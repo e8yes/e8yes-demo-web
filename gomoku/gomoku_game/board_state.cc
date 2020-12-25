@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <array>
 #include <cassert>
 #include <cstdint>
 #include <functional>
@@ -111,7 +112,7 @@ PlayerSide GomokuBoardState::CurrentPlayerSide() const { return current_player_s
 GamePhase GomokuBoardState::CurrentGamePhase() const { return current_game_phase_; }
 
 GameResult GomokuBoardState::ApplyAction(GomokuActionId const action_id,
-                                          bool require_game_result_update) {
+                                         std::optional<GameResult> const cached_game_result) {
     assert(game_result_ == GameResult::GR_UNDETERMINED);
 
     std::unordered_map<GomokuActionId, GomokuAction>::const_iterator action_it;
@@ -219,7 +220,9 @@ GameResult GomokuBoardState::ApplyAction(GomokuActionId const action_id,
         *this->ChessPieceStateAt(*action_it->second.stone_pos) =
             StoneState(*player_stone_type_[this->CurrentPlayerSide()]);
 
-        if (require_game_result_update) {
+        if (cached_game_result.has_value()) {
+            game_result_ = *cached_game_result;
+        } else {
             unsigned max_connected_stones = this->MaxConnectedStonesFrom(
                 *action_it->second.stone_pos, *player_stone_type_[this->CurrentPlayerSide()]);
             if (max_connected_stones == 5) {
@@ -326,7 +329,7 @@ StoneState const *GomokuBoardState::ChessPieceStateAt(MovePosition const &pos) c
 }
 
 unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
-                                                   StoneType const stone_type) const {
+                                                  StoneType const stone_type) const {
     int max_connected_stones = 0;
 
     // Counter clockwise 135 degrees.
