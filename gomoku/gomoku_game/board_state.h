@@ -124,8 +124,10 @@ struct GomokuActionRecord {
 };
 
 /**
- * @brief The BoardState class Represents the state of the chess board. Thread-safety is not
- * guaranteed.
+ * @brief The GomokuBoardState class Represents the state of the chess board.
+ *
+ * The board state is defined by the tuple <ChessBoard, PlayerSide, GamePhase, GameResult>.
+ * Thread-safety is not guaranteed.
  */
 class GomokuBoardState {
   public:
@@ -158,10 +160,10 @@ class GomokuBoardState {
     GamePhase CurrentGamePhase() const;
 
     /**
-     * @brief ApplyAction Make an action given the current board state and update the game result.
-     * This function will fail if the game result has been changed from GR_UNDETERMINED. It will
-     * also update the state of CurrentPlayerSide(), CurrentGamePhase(), CurrentGameResult() as well
-     * as the history of records of the actions previously applied.
+     * @brief ApplyAction Make an action and update the board state. See the class explanation above
+     * for what board state refers to. This function will fail if the game result has changed from
+     * GR_UNDETERMINED. It will also update the history of records of the actions previously
+     * applied.
      *
      * @param action_id Id of the action in one of the LegalActions().
      * @param cached_game_result Externally provide the cached game result to avoid repeatedly
@@ -172,8 +174,7 @@ class GomokuBoardState {
                            std::optional<GameResult> const cached_game_result);
 
     /**
-     * @brief RetractAction Undo the last action made to the board and restore the game result back
-     * to GR_UNDETERMINED.
+     * @brief RetractAction Undo the last action made to the board and restore the state.
      *
      * @return The last action if there is any, otherwise it returns empty, and the function will do
      * nothing.
