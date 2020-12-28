@@ -25,10 +25,12 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     lru_hash_map.cc \
+    mutable_priority_queue.cc \
     trie_map.cc
 
 HEADERS += \
     lru_hash_map.h \
+    mutable_priority_queue.h \
     trie_map.h
 
 unix {
