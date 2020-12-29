@@ -49,13 +49,8 @@ template <typename ValueType, typename LessThan = std::less<ValueType>> class Mu
       public:
         ~iterator_base() = default;
 
-        /**
-         * @brief iterator_base
-         *
-         * @param heap_type
-         * @param current_node
-         */
         iterator_base(HeapType *heap, Node *current_node);
+        iterator_base(iterator_base const &other);
 
         /**
          * @brief operator == Two iterators are equal if they have the same tree path.
@@ -87,6 +82,13 @@ template <typename ValueType, typename LessThan = std::less<ValueType>> class Mu
          * @return value at the current the iterator position.
          */
         IteratorValueType &operator*();
+
+        /**
+         * @brief operator -> Member selection operator.
+         *
+         * @return Pointer to the value at the current iterator position.
+         */
+        IteratorValueType *operator->();
 
       public:
         HeapType *const heap_;
@@ -439,6 +441,12 @@ MutablePriorityQueue<ValueType, LessThan>::iterator_base<HeapType, IteratorValue
 
 template <typename ValueType, typename LessThan>
 template <typename HeapType, typename IteratorValueType>
+MutablePriorityQueue<ValueType, LessThan>::iterator_base<
+    HeapType, IteratorValueType>::iterator_base(iterator_base const &other)
+    : heap_(other.heap_), current_node_(other.current_node_) {}
+
+template <typename ValueType, typename LessThan>
+template <typename HeapType, typename IteratorValueType>
 bool MutablePriorityQueue<ValueType, LessThan>::iterator_base<
     HeapType, IteratorValueType>::operator==(iterator_base const &rhs) const {
     return current_node_ == rhs.current_node_;
@@ -478,7 +486,18 @@ template <typename HeapType, typename IteratorValueType>
 IteratorValueType &
 MutablePriorityQueue<ValueType, LessThan>::iterator_base<HeapType, IteratorValueType>::operator*() {
     assert(current_node_ != nullptr);
+    assert(current_node_->idx >= 0);
     return current_node_->value;
+}
+
+template <typename ValueType, typename LessThan>
+template <typename HeapType, typename IteratorValueType>
+IteratorValueType *
+MutablePriorityQueue<ValueType, LessThan>::iterator_base<HeapType,
+                                                         IteratorValueType>::operator->() {
+    assert(current_node_ != nullptr);
+    assert(current_node_->idx >= 0);
+    return &current_node_->value;
 }
 
 } // namespace e8
