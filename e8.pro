@@ -11,6 +11,6 @@ SUBDIRS = \
     message_queue/message_queue.pro \
     node_state/node_statew.pro \
     demoweb_service/demoweb.pro \
-    connectk/connectk.pro
+    gomoku/gomoku.pro
 
 CONFIG += ordered
