@@ -61,7 +61,7 @@ void BackPropagate(EvaluationResult const &eval, float const exploration_factor,
 }
 
 EvaluationResult Evaluate(GomokuBoardState const &state,
-                          ConnectkEvaluatorInterface const &evaluator,
+                          GomokuEvaluatorInterface const &evaluator,
                           MctNode const &state_mct_node) {
 
     GameResult game_result = state.CurrentGameResult();
@@ -92,7 +92,7 @@ EvaluationResult Evaluate(GomokuBoardState const &state,
     return result;
 }
 
-void Expand(MctNode *root, GomokuBoardState *state, ConnectkEvaluatorInterface const &evaluator) {
+void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface const &evaluator) {
     std::unordered_map<GomokuActionId, float> heuristics_policy = evaluator.EvaluatePolicy(*state);
     PlayerSide const action_performer = state->CurrentPlayerSide();
 
@@ -109,7 +109,7 @@ void Expand(MctNode *root, GomokuBoardState *state, ConnectkEvaluatorInterface c
     }
 }
 
-void SelectFrom(MctNode *root, GomokuBoardState *state, ConnectkEvaluatorInterface const &evaluator,
+void SelectFrom(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface const &evaluator,
                 std::vector<MutablePriorityQueue<MctNode>::iterator> *propagation_path) {
     if (state->CurrentGameResult() != GR_UNDETERMINED) {
         EvaluationResult eval = Evaluate(*state, evaluator, *root);
@@ -155,7 +155,7 @@ std::unordered_map<GomokuActionId, float> ExtractStochasticPolicy(MctNode const 
 } // namespace
 
 std::unordered_map<GomokuActionId, float>
-MctSearchFrom(GomokuBoardState state, ConnectkEvaluatorInterface const &evaluator) {
+MctSearchFrom(GomokuBoardState state, GomokuEvaluatorInterface const &evaluator) {
     MutablePriorityQueue<MctNode> root;
     root.push(MctNode(
         /*arrived_thru_action_id=*/std::nullopt, /*action_performed_by=*/std::nullopt,

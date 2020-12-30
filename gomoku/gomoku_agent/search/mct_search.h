@@ -34,7 +34,7 @@ namespace e8 {
  * @return A stochastic policy.
  */
 std::unordered_map<GomokuActionId, float>
-MctSearchFrom(GomokuBoardState state, ConnectkEvaluatorInterface const &evaluator);
+MctSearchFrom(GomokuBoardState state, GomokuEvaluatorInterface const &evaluator);
 
 } // namespace e8
 

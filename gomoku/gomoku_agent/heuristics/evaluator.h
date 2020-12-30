@@ -26,13 +26,13 @@
 namespace e8 {
 
 /**
- * @brief The ConnectkEvaluatorInterface class A gomoku agent heuristics is responsible for
+ * @brief The GomokuEvaluatorInterface class A gomoku agent heuristics is responsible for
  * estimating the reward and policy at a given game state.
  */
-class ConnectkEvaluatorInterface {
+class GomokuEvaluatorInterface {
   public:
-    ConnectkEvaluatorInterface() = default;
-    virtual ~ConnectkEvaluatorInterface() = default;
+    GomokuEvaluatorInterface() = default;
+    virtual ~GomokuEvaluatorInterface() = default;
 
     /**
      * @brief EvaluateReward Estimate the Q value at the given state.
