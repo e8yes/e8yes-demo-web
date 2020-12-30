@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FIXEDPRIORITYQUEUE_H
-#define FIXEDPRIORITYQUEUE_H
+#ifndef MUTABLE_PRIORITY_QUEUE_H
+#define MUTABLE_PRIORITY_QUEUE_H
 
 #include <algorithm>
 #include <cassert>
@@ -532,4 +532,4 @@ MutablePriorityQueue<ValueType, LessThan>::iterator_base<HeapType,
 
 } // namespace e8
 
-#endif // FIXEDPRIORITYQUEUE_H
+#endif // MUTABLE_PRIORITY_QUEUE_H
