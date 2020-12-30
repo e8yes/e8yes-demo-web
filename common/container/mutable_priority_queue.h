@@ -38,11 +38,12 @@ template <typename ValueType, typename LessThan = std::less<ValueType>> class Mu
         ValueType value;
 
         Node(int64_t const idx, ValueType const &value);
-        Node(int64_t const idx, ValueType &&value);
+        // Node(int64_t const idx, ValueType &&value);
     };
 
   public:
     MutablePriorityQueue() = default;
+    MutablePriorityQueue(MutablePriorityQueue const &other);
     ~MutablePriorityQueue() = default;
 
     template <typename HeapType, typename IteratorValueType> class iterator_base {
@@ -97,6 +98,12 @@ template <typename ValueType, typename LessThan = std::less<ValueType>> class Mu
 
     using const_iterator = iterator_base<std::vector<std::unique_ptr<Node>> const, ValueType const>;
     using iterator = iterator_base<std::vector<std::unique_ptr<Node>> const, ValueType>;
+
+    /**
+     * @brief operator = Assignment operator.
+     */
+    MutablePriorityQueue<ValueType, LessThan> &
+    operator=(MutablePriorityQueue<ValueType, LessThan> other);
 
     /**
      * @brief add Ignores the priority of the element and adds the value to the container. This is
@@ -200,21 +207,39 @@ template <typename ValueType, typename LessThan = std::less<ValueType>> class Mu
     void apply_lazy_removal() const;
 
     std::vector<std::unique_ptr<Node>> heap_;
-    size_t num_lazy_removals = 0;
+    size_t num_lazy_removals_ = 0;
     size_t heap_len_ = 0;
 };
 
-template <typename ValueType, typename LessThan>
-MutablePriorityQueue<ValueType, LessThan>::Node::Node(int64_t const idx, ValueType &&value)
-    : idx(idx), value(std::move(value)) {}
+// template <typename ValueType, typename LessThan>
+// MutablePriorityQueue<ValueType, LessThan>::Node::Node(int64_t const idx, ValueType &&value)
+//    : idx(idx), value(std::move(value)) {}
 
 template <typename ValueType, typename LessThan>
 MutablePriorityQueue<ValueType, LessThan>::Node::Node(int64_t const idx, ValueType const &value)
     : idx(idx), value(value) {}
 
 template <typename ValueType, typename LessThan>
+MutablePriorityQueue<ValueType, LessThan>::MutablePriorityQueue(MutablePriorityQueue const &other)
+    : heap_(other.heap_.size()), num_lazy_removals_(other.num_lazy_removals_),
+      heap_len_(other.heap_len_) {
+    for (size_t i = 0; i < other.heap_.size(); ++i) {
+        heap_[i] = std::make_unique<Node>(*other.heap_[i]);
+    }
+}
+
+template <typename ValueType, typename LessThan>
+MutablePriorityQueue<ValueType, LessThan> &MutablePriorityQueue<ValueType, LessThan>::operator=(
+    MutablePriorityQueue<ValueType, LessThan> other) {
+    std::swap(heap_, other.heap_);
+    std::swap(num_lazy_removals_, other.num_lazy_removals_);
+    std::swap(heap_len_, other.heap_len_);
+    return *this;
+}
+
+template <typename ValueType, typename LessThan>
 void MutablePriorityQueue<ValueType, LessThan>::add(ValueType const &value) {
-    heap_.emplace_back(std::make_unique<Node>(heap_.size(), value));
+    heap_.push_back(std::make_unique<Node>(heap_.size(), value));
 }
 
 template <typename ValueType, typename LessThan>
@@ -244,7 +269,7 @@ template <typename ValueType, typename LessThan>
 typename MutablePriorityQueue<ValueType, LessThan>::iterator
 MutablePriorityQueue<ValueType, LessThan>::push(ValueType const &value) {
     int64_t current_idx = heap_.size();
-    heap_.emplace_back(std::make_unique<Node>(current_idx, value));
+    heap_.push_back(std::make_unique<Node>(current_idx, value));
 
     Node *new_node = heap_.back().get();
 
@@ -266,7 +291,7 @@ void MutablePriorityQueue<ValueType, LessThan>::erase(iterator &it) {
     assert(current_node->idx >= 0);
     current_node->idx = -1;
 
-    ++num_lazy_removals;
+    ++num_lazy_removals_;
 }
 
 template <typename ValueType, typename LessThan>
@@ -291,8 +316,8 @@ ValueType const &MutablePriorityQueue<ValueType, LessThan>::top() const {
 
 template <typename ValueType, typename LessThan>
 size_t MutablePriorityQueue<ValueType, LessThan>::size() const {
-    assert(heap_.size() >= num_lazy_removals);
-    return heap_.size() - num_lazy_removals;
+    assert(heap_.size() >= num_lazy_removals_);
+    return heap_.size() - num_lazy_removals_;
 }
 
 template <typename ValueType, typename LessThan>
@@ -303,7 +328,8 @@ bool MutablePriorityQueue<ValueType, LessThan>::empty() const {
 template <typename ValueType, typename LessThan>
 typename MutablePriorityQueue<ValueType, LessThan>::iterator
 MutablePriorityQueue<ValueType, LessThan>::front() {
-    assert(this->begin() != this->end());
+    assert(!this->empty());
+    this->apply_lazy_removal();
     return this->begin();
 }
 
@@ -311,6 +337,7 @@ template <typename ValueType, typename LessThan>
 typename MutablePriorityQueue<ValueType, LessThan>::const_iterator
 MutablePriorityQueue<ValueType, LessThan>::front() const {
     assert(this->begin() != this->end());
+    this->apply_lazy_removal();
     return this->begin();
 }
 
@@ -320,6 +347,7 @@ MutablePriorityQueue<ValueType, LessThan>::begin() {
     if (this->empty()) {
         return this->end();
     }
+    this->apply_lazy_removal();
     return iterator(&heap_, heap_[0].get());
 }
 
@@ -329,6 +357,7 @@ MutablePriorityQueue<ValueType, LessThan>::begin() const {
     if (this->empty()) {
         return this->end();
     }
+    this->apply_lazy_removal();
     return const_iterator(&heap_, heap_[0].get());
 }
 
@@ -341,7 +370,7 @@ MutablePriorityQueue<ValueType, LessThan>::end() {
 template <typename ValueType, typename LessThan>
 typename MutablePriorityQueue<ValueType, LessThan>::const_iterator
 MutablePriorityQueue<ValueType, LessThan>::end() const {
-    return const_iterator();
+    return const_iterator(&heap_, /*current_node=*/nullptr);
 }
 
 template <typename ValueType, typename LessThan>
@@ -393,8 +422,8 @@ void MutablePriorityQueue<ValueType, LessThan>::pop_one_element() {
     while (heap_.back()->idx < 0) {
         heap_.pop_back();
 
-        assert(num_lazy_removals >= 1);
-        --num_lazy_removals;
+        assert(num_lazy_removals_ >= 1);
+        --num_lazy_removals_;
 
         if (heap_.size() <= (heap_len_ >> 1)) {
             heap_len_ >>= 1;
@@ -410,6 +439,7 @@ void MutablePriorityQueue<ValueType, LessThan>::pop_one_element() {
     }
 
     heap_[0] = std::move(heap_.back());
+    heap_[0]->idx = 0;
     heap_.pop_back();
 
     if (heap_.size() <= (heap_len_ >> 1)) {
@@ -427,8 +457,8 @@ void MutablePriorityQueue<ValueType, LessThan>::apply_lazy_removal() const {
 
     if (heap_[0]->idx < 0) {
         const_cast<MutablePriorityQueue<ValueType, LessThan> *>(this)->pop_one_element();
-        assert(num_lazy_removals >= 1);
-        --const_cast<MutablePriorityQueue<ValueType, LessThan> *>(this)->num_lazy_removals;
+        assert(num_lazy_removals_ >= 1);
+        --const_cast<MutablePriorityQueue<ValueType, LessThan> *>(this)->num_lazy_removals_;
     }
 }
 

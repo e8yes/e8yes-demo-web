@@ -16,6 +16,7 @@
  */
 
 #include <unordered_map>
+#include <unordered_set>
 
 #include "common/container/mutable_priority_queue.h"
 #include "common/unit_test_util/unit_test_util.h"
@@ -181,6 +182,30 @@ bool PushAndIterateElementTest() {
     return true;
 }
 
+bool PushAndEraseThenIterateElementTest() {
+    e8::MutablePriorityQueue<int> queue;
+    e8::MutablePriorityQueue<int>::iterator it = queue.push(5);
+    queue.push(4);
+    queue.push(3);
+    queue.push(2);
+    e8::MutablePriorityQueue<int>::iterator it5 = queue.push(1);
+
+    queue.erase(it);
+    queue.erase(it5);
+
+    std::unordered_set<int> elms;
+    for (int entry : queue) {
+        elms.insert(entry);
+    }
+
+    TEST_CONDITION(elms.size() == 3);
+    TEST_CONDITION(elms.find(2) != elms.end());
+    TEST_CONDITION(elms.find(3) != elms.end());
+    TEST_CONDITION(elms.find(4) != elms.end());
+
+    return true;
+}
+
 bool EmptyQueueIteratorTest() {
     e8::MutablePriorityQueue<int> queue;
     TEST_CONDITION(queue.begin() == queue.end());
@@ -205,6 +230,7 @@ int main() {
     e8::RunTest("PushAndErase1ElmentTest", PushAndErase1ElmentTest);
     e8::RunTest("PushAndEraseAllElement", PushAndEraseAllElement);
     e8::RunTest("PushAndIterateElementTest", PushAndIterateElementTest);
+    e8::RunTest("PushAndEraseThenIterateElementTest", PushAndEraseThenIterateElementTest);
     e8::RunTest("EmptyQueueIteratorTest", EmptyQueueIteratorTest);
     e8::RunTest("FrontIteratorTest", FrontIteratorTest);
     e8::EndTestSuite();
