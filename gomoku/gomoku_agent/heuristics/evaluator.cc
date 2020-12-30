@@ -15,6 +15,6 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gomoku/gomoku_agent/search/heuristics.h"
+#include "gomoku/gomoku_agent/heuristics/evaluator.h"
 
 namespace e8 {} // namespace e8

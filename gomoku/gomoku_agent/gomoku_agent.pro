@@ -15,12 +15,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
-    search/heuristics.cc \
+    heuristics/evaluator.cc \
     search/mct_node.cc \
     search/mct_search.cc
 
 HEADERS += \
-    search/heuristics.h \
+    heuristics/evaluator.h \
     search/mct_node.h \
     search/mct_search.h
 

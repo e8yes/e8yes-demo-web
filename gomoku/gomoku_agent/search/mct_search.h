@@ -20,7 +20,7 @@
 
 #include <unordered_map>
 
-#include "gomoku/gomoku_agent/search/heuristics.h"
+#include "gomoku/gomoku_agent/heuristics/evaluator.h"
 #include "gomoku/gomoku_game/board_state.h"
 
 namespace e8 {

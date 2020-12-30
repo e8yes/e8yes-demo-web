@@ -25,7 +25,7 @@
 #include <vector>
 
 #include "common/container/mutable_priority_queue.h"
-#include "gomoku/gomoku_agent/search/heuristics.h"
+#include "gomoku/gomoku_agent/heuristics/evaluator.h"
 #include "gomoku/gomoku_agent/search/mct_node.h"
 #include "gomoku/gomoku_agent/search/mct_search.h"
 #include "gomoku/gomoku_game/board_state.h"
