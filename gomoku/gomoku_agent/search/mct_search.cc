@@ -102,6 +102,7 @@ void Expand(MctNode *root, GomokuBoardState *state, ConnectkEvaluatorInterface c
         state->RetractAction();
 
         auto policy_weight_it = heuristics_policy.find(action_id);
+        assert(policy_weight_it != heuristics_policy.end());
 
         root->children.push(
             MctNode(action_id, action_performer, game_result, policy_weight_it->second));
