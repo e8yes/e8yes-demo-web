@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 SUBDIRS = \
     container/container.pro \
     flags/flags.pro \
+    thread/thread.pro \
     time_util/time_util.pro \
     unit_test_util/unit_test_util.pro \
     _test_flags/_test_flags.pro \
