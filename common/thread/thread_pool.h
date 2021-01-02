@@ -81,6 +81,11 @@ class ThreadPool {
      */
     std::unique_ptr<TaskStorageInterface> WaitForNextCompleted();
 
+    /**
+     * @brief NumWorkers The number of thread workers in this pool.
+     */
+    unsigned NumWorkers() const;
+
   public:
     struct ThreadPoolInternal;
 

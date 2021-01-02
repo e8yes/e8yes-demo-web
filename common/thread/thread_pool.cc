@@ -159,4 +159,6 @@ std::unique_ptr<TaskStorageInterface> ThreadPool::WaitForNextCompleted() {
     return std::move(task_info.task_data);
 }
 
+unsigned ThreadPool::NumWorkers() const { return pimpl_->worker_threads.size(); }
+
 } // namespace e8
