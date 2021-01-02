@@ -316,6 +316,8 @@ GameResult GomokuBoardState::CurrentGameResult() const { return game_result_; }
 
 StoneState *GomokuBoardState::CurrentBoard() const { return board_.get(); }
 
+std::vector<GomokuActionRecord> const &GomokuBoardState::History() const { return history_; }
+
 unsigned GomokuBoardState::Width() const { return width_; }
 
 unsigned GomokuBoardState::Height() const { return height_; }

@@ -197,6 +197,11 @@ class GomokuBoardState {
     StoneState *CurrentBoard() const;
 
     /**
+     * @brief History Returns a history of action records.
+     */
+    std::vector<GomokuActionRecord> const &History() const;
+
+    /**
      * @brief Width Board width.
      */
     unsigned Width() const;
