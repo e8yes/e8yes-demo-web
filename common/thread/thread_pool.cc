@@ -128,13 +128,17 @@ ThreadPool::ThreadPoolInternal::~ThreadPoolInternal() {
     sem_destroy(&sink_resource);
 }
 
+TaskStorageInterface::~TaskStorageInterface() {}
+
+TaskInterface::~TaskInterface() {}
+
 ThreadPool::ThreadPool(unsigned num_workers)
     : pimpl_(std::make_unique<ThreadPoolInternal>(num_workers)) {}
 
 ThreadPool::~ThreadPool() {}
 
 void ThreadPool::Schedule(std::shared_ptr<TaskInterface> task,
-                     std::unique_ptr<TaskStorageInterface> &&task_data) {
+                          std::unique_ptr<TaskStorageInterface> &&task_data) {
     pimpl_->source_lock.lock();
     pimpl_->tasks.push(TaskInfo(task, std::move(task_data)));
     pimpl_->source_lock.unlock();
