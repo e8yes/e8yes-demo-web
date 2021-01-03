@@ -30,11 +30,7 @@ namespace e8 {
 
 PlayerSide OffensiveSide() { return PS_PLAYER_B; }
 
-StoneState::StoneState() : stone_type(StoneType::ST_NONE) {}
-
-StoneState::StoneState(StoneType const stone_type) : stone_type(stone_type) {}
-
-MovePosition::MovePosition(int const x, int const y) : x(x), y(y) {}
+MovePosition::MovePosition(int8_t const x, int8_t const y) : x(x), y(y) {}
 
 bool MovePosition::operator==(MovePosition const &other) const {
     return x == other.x && y == other.y;
@@ -48,14 +44,14 @@ GomokuActionRecord::GomokuActionRecord(GamePhase const game_phase, PlayerSide co
                                        GomokuActionId const action_id, GomokuAction const &action)
     : game_phase(game_phase), side(side), action(std::make_pair(action_id, action)) {}
 
-GomokuBoardState::GomokuBoardState(unsigned const width, unsigned const height)
+GomokuBoardState::GomokuBoardState(int16_t const width, int16_t const height)
     : width_(width), height_(height), game_result_(GameResult::GR_UNDETERMINED),
       current_game_phase_(GP_PLACE_3_STONES), current_player_side_(OffensiveSide()),
       board_(std::unique_ptr<StoneState[]>(new StoneState[width * height])),
       player_stone_type_({std::optional<StoneType>(StoneType::ST_BLACK), std::nullopt}),
       standard_gomoku_legal_actions_(2 * width * height) {
-    for (unsigned y = 0; y < this->Height(); ++y) {
-        for (unsigned x = 0; x < this->Width(); ++x) {
+    for (int16_t y = 0; y < this->Height(); ++y) {
+        for (int16_t x = 0; x < this->Width(); ++x) {
             GomokuActionId id = x + y * this->Width();
             MovePosition pos(x, y);
             standard_gomoku_legal_actions_.insert(std::make_pair(id, GomokuAction(pos)));
@@ -84,7 +80,7 @@ GomokuBoardState::GomokuBoardState(GomokuBoardState const &other)
     current_player_side_ = other.current_player_side_;
 
     player_stone_type_ = other.player_stone_type_;
-    for (unsigned i = 0; i < this->Width() * this->Height(); ++i) {
+    for (int16_t i = 0; i < this->Width() * this->Height(); ++i) {
         board_[i] = other.board_[i];
     }
 
@@ -318,9 +314,9 @@ StoneState *GomokuBoardState::CurrentBoard() const { return board_.get(); }
 
 std::vector<GomokuActionRecord> const &GomokuBoardState::History() const { return history_; }
 
-unsigned GomokuBoardState::Width() const { return width_; }
+int16_t GomokuBoardState::Width() const { return width_; }
 
-unsigned GomokuBoardState::Height() const { return height_; }
+int16_t GomokuBoardState::Height() const { return height_; }
 
 StoneState *GomokuBoardState::ChessPieceStateAt(MovePosition const &pos) {
     return &board_[pos.x + pos.y * width_];
@@ -330,13 +326,13 @@ StoneState const *GomokuBoardState::ChessPieceStateAt(MovePosition const &pos) c
     return &board_[pos.x + pos.y * width_];
 }
 
-unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
-                                                  StoneType const stone_type) const {
-    int max_connected_stones = 0;
+uint8_t GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
+                                                 StoneType const stone_type) const {
+    int8_t max_connected_stones = 0;
 
     // Counter clockwise 135 degrees.
     MovePosition pos(move_pos.x - 1, move_pos.y - 1);
-    while (pos.x >= 0 && pos.y >= 0 && this->ChessPieceStateAt(pos)->stone_type == stone_type) {
+    while (pos.x >= 0 && pos.y >= 0 && *this->ChessPieceStateAt(pos) == stone_type) {
         --pos.x;
         --pos.y;
     }
@@ -347,7 +343,7 @@ unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
     // Counter clockwise 90 degrees.
     pos.x = move_pos.x;
     pos.y = move_pos.y - 1;
-    while (pos.y >= 0 && this->ChessPieceStateAt(pos)->stone_type == stone_type) {
+    while (pos.y >= 0 && *this->ChessPieceStateAt(pos) == stone_type) {
         --pos.y;
     }
     if (move_pos.y - pos.y - 1 > max_connected_stones) {
@@ -357,8 +353,7 @@ unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
     // Counter clockwise 45 degrees.
     pos.x = move_pos.x + 1;
     pos.y = move_pos.y - 1;
-    while (pos.x < static_cast<int>(width_) && pos.y >= 0 &&
-           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
+    while (pos.x < width_ && pos.y >= 0 && *this->ChessPieceStateAt(pos) == stone_type) {
         ++pos.x;
         --pos.y;
     }
@@ -369,7 +364,7 @@ unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
     // Counter clockwise 180 degrees.
     pos.x = move_pos.x - 1;
     pos.y = move_pos.y;
-    while (pos.x >= 0 && this->ChessPieceStateAt(pos)->stone_type == stone_type) {
+    while (pos.x >= 0 && *this->ChessPieceStateAt(pos) == stone_type) {
         --pos.x;
     }
     if (move_pos.x - pos.x - 1 > max_connected_stones) {
@@ -379,8 +374,7 @@ unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
     // Counter clockwise 0 degrees.
     pos.x = move_pos.x + 1;
     pos.y = move_pos.y;
-    while (pos.x < static_cast<int>(width_) &&
-           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
+    while (pos.x < width_ && *this->ChessPieceStateAt(pos) == stone_type) {
         ++pos.x;
     }
     if (pos.x - move_pos.x - 1 > max_connected_stones) {
@@ -390,8 +384,7 @@ unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
     // Counter clockwise -135 degrees.
     pos.x = move_pos.x - 1;
     pos.y = move_pos.y + 1;
-    while (pos.x >= 0 && pos.y < static_cast<int>(height_) &&
-           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
+    while (pos.x >= 0 && pos.y < height_ && *this->ChessPieceStateAt(pos) == stone_type) {
         --pos.x;
         ++pos.y;
     }
@@ -402,8 +395,7 @@ unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
     // Counter clockwise -90 degrees.
     pos.x = move_pos.x;
     pos.y = move_pos.y + 1;
-    while (pos.y < static_cast<int>(height_) &&
-           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
+    while (pos.y < height_ && *this->ChessPieceStateAt(pos) == stone_type) {
         ++pos.y;
     }
     if (pos.y - move_pos.y - 1 > max_connected_stones) {
@@ -413,8 +405,7 @@ unsigned GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
     // Counter clockwise -45 degrees.
     pos.x = move_pos.x + 1;
     pos.y = move_pos.y + 1;
-    while (pos.x < static_cast<int>(width_) && pos.y < static_cast<int>(height_) &&
-           this->ChessPieceStateAt(pos)->stone_type == stone_type) {
+    while (pos.x < width_ && pos.y < height_ && *this->ChessPieceStateAt(pos) == stone_type) {
         ++pos.x;
         ++pos.y;
     }

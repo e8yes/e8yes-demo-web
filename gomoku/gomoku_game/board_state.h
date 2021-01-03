@@ -56,25 +56,32 @@ PlayerSide OffensiveSide();
  * @brief The StoneState struct Stores the state of a chess piece. If the stone_type is
  * ST_NONE, it means that no stone has been placed to the chess piece position.
  */
-struct StoneState {
-    StoneType stone_type;
-
-    StoneState();
-    explicit StoneState(StoneType const stone_type);
-};
+using StoneState = StoneType;
 
 /**
  * @brief The MovePosition struct Zero-offset 2D board position. Orgin is at the top-left
  * corner.
  */
 struct MovePosition {
-    int x;
-    int y;
+    int8_t x;
+    int8_t y;
 
-    MovePosition(int const x, int const y);
+    MovePosition(int8_t const x, int8_t const y);
 
     bool operator==(MovePosition const &other) const;
 };
+
+} // namespace e8
+
+namespace std {
+template <> struct hash<e8::MovePosition> {
+    size_t operator()(e8::MovePosition const &pos) const {
+        return std::hash<int16_t>()(static_cast<int16_t>(pos.x) << 8 | pos.y);
+    }
+};
+} // namespace std
+
+namespace e8 {
 
 /**
  * @brief The Swap2Decision enum Decisions available during GP_SWAP2_DECISION.
@@ -137,7 +144,7 @@ class GomokuBoardState {
      * @param width Board width.
      * @param height Board height.
      */
-    GomokuBoardState(unsigned const width, unsigned const height);
+    GomokuBoardState(int16_t const width, int16_t const height);
 
     GomokuBoardState(GomokuBoardState const &other);
     GomokuBoardState(GomokuBoardState &&other) = default;
@@ -204,21 +211,21 @@ class GomokuBoardState {
     /**
      * @brief Width Board width.
      */
-    unsigned Width() const;
+    int16_t Width() const;
 
     /**
      * @brief Height Board height.
      */
-    unsigned Height() const;
+    int16_t Height() const;
 
   private:
     StoneState *ChessPieceStateAt(MovePosition const &pos);
     StoneState const *ChessPieceStateAt(MovePosition const &pos) const;
 
-    unsigned MaxConnectedStonesFrom(MovePosition const &pos, StoneType const stone_type) const;
+    uint8_t MaxConnectedStonesFrom(MovePosition const &pos, StoneType const stone_type) const;
 
-    unsigned const width_;
-    unsigned const height_;
+    int16_t const width_;
+    int16_t const height_;
     GameResult game_result_;
     GamePhase current_game_phase_;
     PlayerSide current_player_side_;
