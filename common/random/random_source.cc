@@ -28,6 +28,6 @@ RandomSource::RandomSource() : uniform_(0, 1) {
 
 RandomSource::RandomSource(unsigned seed) : engine_(seed), uniform_(0, 1) {}
 
-float RandomSource::Draw() { return uniform_(engine_); }
+double RandomSource::Draw() { return uniform_(engine_); }
 
 } // namespace e8

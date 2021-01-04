@@ -40,11 +40,11 @@ class RandomSource {
     /**
      * @brief Draw A uniformly distributed random number between [0, 1).
      */
-    float Draw();
+    double Draw();
 
   private:
     std::mt19937 engine_;
-    std::uniform_real_distribution<float> uniform_;
+    std::uniform_real_distribution<double> uniform_;
 };
 
 } // namespace e8

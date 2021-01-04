@@ -1,6 +1,5 @@
 TEMPLATE = subdirs
 SUBDIRS = \
-    _test_random/_test_random_source \
     container/container.pro \
     flags/flags.pro \
     random/random.pro \
@@ -9,6 +8,8 @@ SUBDIRS = \
     unit_test_util/unit_test_util.pro \
     _test_flags/_test_flags.pro \
     _test_time_util/_test_time_util.pro \
+    _test_random/_test_random_source \
+    _test_random/_test_uniform_distribution \
     _test_thread/_test_thread_pool \
     _test_container/_test_trie_map/_test_trie_map.pro \
     _test_container/_test_lru_hash_map/_test_lru_hash_map.pro \
