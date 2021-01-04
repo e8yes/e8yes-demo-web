@@ -15,20 +15,37 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "common/random/uniform_distribution.h"
+#include <vector>
+
 #include "common/random/random_source.h"
+#include "common/random/uniform_distribution.h"
 
 namespace e8 {
+namespace {
 
-int DrawUniformInt(int const lower_bound, int const upper_bound, RandomSource *random_source) {
-    float val = random_source->Draw();
-    return lower_bound + val * (upper_bound - lower_bound);
+template <typename ValueType>
+std::vector<ValueType> DrawUniforms(ValueType const lower_bound, ValueType const upper_bound,
+                                    unsigned const num_instances, RandomSource *random_source) {
+    std::vector<ValueType> values(num_instances);
+
+    for (unsigned i = 0; i < num_instances; ++i) {
+        ValueType val = random_source->Draw();
+        values[i] = lower_bound + val * (upper_bound - lower_bound);
+    }
+
+    return values;
 }
 
-float DrawUniformFloat(float const lower_bound, float const upper_bound,
-                       RandomSource *random_source) {
-    float val = random_source->Draw();
-    return lower_bound + val * (upper_bound - lower_bound);
+} // namespace
+
+std::vector<int> DrawUniformInt(int const lower_bound, int const upper_bound,
+                                unsigned const num_instances, RandomSource *random_source) {
+    return DrawUniforms(lower_bound, upper_bound, num_instances, random_source);
+}
+
+std::vector<float> DrawUniformFloat(float const lower_bound, float const upper_bound,
+                                    unsigned const num_instances, RandomSource *random_source) {
+    return DrawUniforms(lower_bound, upper_bound, num_instances, random_source);
 }
 
 } // namespace e8

@@ -18,22 +18,25 @@
 #ifndef UNIFORM_DISTRIBUTION_H
 #define UNIFORM_DISTRIBUTION_H
 
+#include <vector>
+
 #include "common/random/random_source.h"
 
 namespace e8 {
 
 /**
- * @brief DrawUniformInt Draw a uniformly distributed integer within the interval [lower_bound,
- * upper_bound).
- */
-int DrawUniformInt(int const lower_bound, int const upper_bound, RandomSource *random_source);
-
-/**
- * @brief DrawUniformFloat Draw a uniformly distributed floating point number within the interval
+ * @brief DrawUniformInt Draw num_instances uniformly distributed integers within the interval
  * [lower_bound, upper_bound).
  */
-float DrawUniformFloat(float const lower_bound, float const upper_bound,
-                       RandomSource *random_source);
+std::vector<int> DrawUniformInt(int const lower_bound, int const upper_bound,
+                                unsigned const num_instances, RandomSource *random_source);
+
+/**
+ * @brief DrawUniformFloat Draw num_instances uniformly distributed floating point numbers within
+ * the interval [lower_bound, upper_bound).
+ */
+std::vector<float> DrawUniformFloat(float const lower_bound, float const upper_bound,
+                                    unsigned const num_instances, RandomSource *random_source);
 
 } // namespace e8
 

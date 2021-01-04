@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = \
+    _test_random/_test_random_source \
     container/container.pro \
     flags/flags.pro \
     random/random.pro \
