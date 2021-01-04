@@ -35,7 +35,7 @@ class RandomSource {
     /**
      * @brief RandomSource Select a fixed sequence of random number by providing a random seed.
      */
-    RandomSource(unsigned seed);
+    explicit RandomSource(unsigned seed);
 
     /**
      * @brief Draw A uniformly distributed random number between [0, 1).
