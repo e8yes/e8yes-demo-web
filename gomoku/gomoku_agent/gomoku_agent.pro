@@ -16,11 +16,13 @@ INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
     heuristics/evaluator.cc \
+    heuristics/light_rollout_evaluator.cc \
     search/mct_node.cc \
     search/mct_search.cc
 
 HEADERS += \
     heuristics/evaluator.h \
+    heuristics/light_rollout_evaluator.h \
     search/mct_node.h \
     search/mct_search.h
 

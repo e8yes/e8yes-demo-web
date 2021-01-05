@@ -60,8 +60,7 @@ void BackPropagate(EvaluationResult const &eval, float const exploration_factor,
     (*propagation_path)[0]->num_bandit_pulls += 1;
 }
 
-EvaluationResult Evaluate(GomokuBoardState const &state,
-                          GomokuEvaluatorInterface const &evaluator,
+EvaluationResult Evaluate(GomokuBoardState const &state, GomokuEvaluatorInterface const &evaluator,
                           MctNode const &state_mct_node) {
 
     GameResult game_result = state.CurrentGameResult();
@@ -82,7 +81,8 @@ EvaluationResult Evaluate(GomokuBoardState const &state,
         break;
     }
     case GR_UNDETERMINED: {
-        float est_reward = evaluator.EvaluateReward(state);
+        float est_reward =
+            evaluator.EvaluateReward(state, reinterpret_cast<GomokuStateId>(&state_mct_node));
         result.reward_viewed_by_player[*state_mct_node.action_performed_by] = est_reward;
         result.reward_viewed_by_player[(*state_mct_node.action_performed_by + 1) | 1] = -est_reward;
         break;
@@ -93,7 +93,8 @@ EvaluationResult Evaluate(GomokuBoardState const &state,
 }
 
 void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface const &evaluator) {
-    std::unordered_map<GomokuActionId, float> heuristics_policy = evaluator.EvaluatePolicy(*state);
+    std::unordered_map<GomokuActionId, float> heuristics_policy =
+        evaluator.EvaluatePolicy(*state, reinterpret_cast<GomokuStateId>(root));
     PlayerSide const action_performer = state->CurrentPlayerSide();
 
     for (auto const &[action_id, _] : state->LegalActions()) {
@@ -154,8 +155,8 @@ std::unordered_map<GomokuActionId, float> ExtractStochasticPolicy(MctNode const 
 
 } // namespace
 
-std::unordered_map<GomokuActionId, float>
-MctSearchFrom(GomokuBoardState state, GomokuEvaluatorInterface const &evaluator) {
+std::unordered_map<GomokuActionId, float> MctSearchFrom(GomokuBoardState state,
+                                                        GomokuEvaluatorInterface const &evaluator) {
     MutablePriorityQueue<MctNode> root;
     root.push(MctNode(
         /*arrived_thru_action_id=*/std::nullopt, /*action_performed_by=*/std::nullopt,
