@@ -16,10 +16,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
+    random_distribution.cc \
     random_source.cc \
     uniform_distribution.cc
 
 HEADERS += \
+    random_distribution.h \
     random_source.h \
     uniform_distribution.h
 
