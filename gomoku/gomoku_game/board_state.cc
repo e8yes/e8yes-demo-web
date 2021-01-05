@@ -52,8 +52,8 @@ GomokuBoardState::GomokuBoardState(int16_t const width, int16_t const height)
       standard_gomoku_legal_actions_(2 * width * height) {
     for (int16_t y = 0; y < this->Height(); ++y) {
         for (int16_t x = 0; x < this->Width(); ++x) {
-            GomokuActionId id = x + y * this->Width();
             MovePosition pos(x, y);
+            GomokuActionId id = this->MovePositionToActionId(pos);
             standard_gomoku_legal_actions_.insert(std::make_pair(id, GomokuAction(pos)));
         }
     }
@@ -101,6 +101,10 @@ std::unordered_map<GomokuActionId, GomokuAction> const &GomokuBoardState::LegalA
         return stone_type_decision_legal_actions_;
     }
     assert(false);
+}
+
+GomokuActionId GomokuBoardState::MovePositionToActionId(MovePosition const &pos) const {
+    return pos.x + pos.y * this->Width();
 }
 
 PlayerSide GomokuBoardState::CurrentPlayerSide() const { return current_player_side_; }

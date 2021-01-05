@@ -157,6 +157,12 @@ class GomokuBoardState {
     std::unordered_map<GomokuActionId, GomokuAction> const &LegalActions() const;
 
     /**
+     * @brief MovePositionToActionId Converts a move position to the standard action ID acceptable
+     * by the ApplyAction() function.
+     */
+    GomokuActionId MovePositionToActionId(MovePosition const &pos) const;
+
+    /**
      * @brief CurrentPlayerSide The current player who is going to make the next action.
      */
     PlayerSide CurrentPlayerSide() const;
