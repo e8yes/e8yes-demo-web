@@ -28,7 +28,7 @@
 
 namespace e8 {
 
-PlayerSide OffensiveSide() { return PS_PLAYER_B; }
+PlayerSide OffensiveSide() { return PS_PLAYER_A; }
 
 MovePosition::MovePosition(int8_t const x, int8_t const y) : x(x), y(y) {}
 
@@ -58,19 +58,22 @@ GomokuBoardState::GomokuBoardState(int16_t const width, int16_t const height)
         }
     }
 
-    GomokuActionId next_id = this->Width() * this->Height();
-
     swap2_decision_legal_actions_.insert(
-        std::make_pair(next_id++, GomokuAction(Swap2Decision::SW2D_CHOOSE_WHITE)));
+        std::make_pair(this->Swap2DecisionToActionId(Swap2Decision::SW2D_CHOOSE_WHITE),
+                       GomokuAction(Swap2Decision::SW2D_CHOOSE_WHITE)));
     swap2_decision_legal_actions_.insert(
-        std::make_pair(next_id++, GomokuAction(Swap2Decision::SW2D_CHOOSE_BLACK)));
+        std::make_pair(this->Swap2DecisionToActionId(Swap2Decision::SW2D_CHOOSE_BLACK),
+                       GomokuAction(Swap2Decision::SW2D_CHOOSE_BLACK)));
     swap2_decision_legal_actions_.insert(
-        std::make_pair(next_id++, GomokuAction(Swap2Decision::SW2D_PLACE_2_STONES)));
+        std::make_pair(this->Swap2DecisionToActionId(Swap2Decision::SW2D_PLACE_2_STONES),
+                       GomokuAction(Swap2Decision::SW2D_PLACE_2_STONES)));
 
     stone_type_decision_legal_actions_.insert(
-        std::make_pair(next_id++, GomokuAction(StoneTypeDecision::STD_CHOOSE_WHITE)));
+        std::make_pair(this->StoneTypeDecisionToActionId(StoneTypeDecision::STD_CHOOSE_WHITE),
+                       GomokuAction(StoneTypeDecision::STD_CHOOSE_WHITE)));
     stone_type_decision_legal_actions_.insert(
-        std::make_pair(next_id++, GomokuAction(StoneTypeDecision::STD_CHOOSE_BLACK)));
+        std::make_pair(this->StoneTypeDecisionToActionId(StoneTypeDecision::STD_CHOOSE_BLACK),
+                       GomokuAction(StoneTypeDecision::STD_CHOOSE_BLACK)));
 }
 
 GomokuBoardState::GomokuBoardState(GomokuBoardState const &other)
@@ -107,7 +110,20 @@ GomokuActionId GomokuBoardState::MovePositionToActionId(MovePosition const &pos)
     return pos.x + pos.y * this->Width();
 }
 
+GomokuActionId GomokuBoardState::Swap2DecisionToActionId(Swap2Decision const decision) const {
+    return this->Width() * this->Height() + decision;
+}
+
+GomokuActionId
+GomokuBoardState::StoneTypeDecisionToActionId(StoneTypeDecision const decision) const {
+    return this->Width() * this->Height() + 3 + decision;
+}
+
 PlayerSide GomokuBoardState::CurrentPlayerSide() const { return current_player_side_; }
+
+std::optional<StoneType> GomokuBoardState::PlayerStoneType(PlayerSide const player_side) const {
+    return player_stone_type_[player_side];
+}
 
 GamePhase GomokuBoardState::CurrentGamePhase() const { return current_game_phase_; }
 

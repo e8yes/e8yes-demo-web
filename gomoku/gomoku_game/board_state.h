@@ -116,7 +116,7 @@ struct GomokuAction {
 };
 
 // Zero-offset action ID allowing all actions in the game are densely numbered.
-using GomokuActionId = int;
+using GomokuActionId = int16_t;
 
 /**
  * @brief The GomokuActionRecord struct
@@ -163,9 +163,27 @@ class GomokuBoardState {
     GomokuActionId MovePositionToActionId(MovePosition const &pos) const;
 
     /**
+     * @brief Swap2DecisionToActionId Converts a swap2 decision to the standard action ID acceptable
+     * by the ApplyAction() function.
+     */
+    GomokuActionId Swap2DecisionToActionId(Swap2Decision const decision) const;
+
+    /**
+     * @brief StoneTypeDecisionToActionId Converts a stone type decision to the standard action ID
+     * acceptable by the ApplyAction() function.
+     */
+    GomokuActionId StoneTypeDecisionToActionId(StoneTypeDecision const decision) const;
+
+    /**
      * @brief CurrentPlayerSide The current player who is going to make the next action.
      */
     PlayerSide CurrentPlayerSide() const;
+
+    /**
+     * @brief PlayerStoneType Returns the type of stone the specified player is currently holding.
+     * The player might not hold any specific type of stone during the game.
+     */
+    std::optional<StoneType> PlayerStoneType(PlayerSide const player_side) const;
 
     /**
      * @brief CurrentGamePhase The current game phase.
