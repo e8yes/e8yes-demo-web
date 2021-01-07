@@ -18,8 +18,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QGridLayout>
+#include <QLabel>
 #include <QMainWindow>
+#include <QPushButton>
 #include <memory>
+
+#include "gomoku/gomoku_game/board_state.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -37,7 +42,40 @@ class MainWindow : public QMainWindow {
     ~MainWindow();
 
   private:
-    std::unique_ptr<Ui::MainWindow> ui;
+    void DisplayActions();
+
+    void DisplayGomokuBoardActions();
+
+    void DisplaySwap2Actions();
+
+    void DisplayStoneTypeActions();
+
+    void DisplayCommonElements(int beginning_column_index);
+
+    unsigned const kWidth = 11;
+    unsigned const kHeight = 11;
+
+    // Game elements.
+    GomokuBoardState board_;
+
+    // UI elements.
+    std::unique_ptr<Ui::MainWindow> ui_;
+
+    std::unique_ptr<QGridLayout> gomoku_grid_;
+    std::unique_ptr<QPushButton[]> stones_;
+
+    std::unique_ptr<QPushButton> swap2_decision_choose_black_;
+    std::unique_ptr<QPushButton> swap2_decision_choose_white_;
+    std::unique_ptr<QPushButton> swap2_decision_place_2_stones_;
+
+    std::unique_ptr<QPushButton> stone_type_decision_choose_black_;
+    std::unique_ptr<QPushButton> stone_type_decision_choose_white_;
+
+    std::unique_ptr<QLabel> game_phase_;
+    std::unique_ptr<QLabel> player_a_stone_type_;
+    std::unique_ptr<QLabel> player_b_stone_type_;
+    std::unique_ptr<QLabel> current_player_;
+    std::unique_ptr<QLabel> game_result_;
 };
 
 } // namespace e8
