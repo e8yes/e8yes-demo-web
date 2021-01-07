@@ -15,14 +15,16 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
-    main.cc \
-    main_window.cc
+    game.cc \
+    human_gui_player.cc \
+    main.cc
 
 HEADERS += \
-    main_window.h
+    game.h \
+    human_gui_player.h
 
 FORMS += \
-    main_window.ui
+    human_gui_player.ui
 
 TRANSLATIONS += \
     gomoku_gui_main_en_US.ts
