@@ -15,13 +15,13 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gomoku/gomoku_gui_main/main_window.h"
+#include "gomoku/gomoku_gui_main/human_gui_player.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    e8::MainWindow w;
+    e8::HumanGuiPlayer w;
     w.show();
     return a.exec();
 }

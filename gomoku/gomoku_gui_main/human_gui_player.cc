@@ -25,7 +25,7 @@
 #include <optional>
 #include <string>
 
-#include "gomoku/gomoku_gui_main/main_window.h"
+#include "gomoku/gomoku_gui_main/human_gui_player.h"
 #include "ui_main_window.h"
 
 namespace e8 {
@@ -43,7 +43,7 @@ void ClearLayout(QLayout *layout) {
 
 } // namespace
 
-MainWindow::MainWindow(QWidget *parent)
+HumanGuiPlayer::HumanGuiPlayer(QWidget *parent)
     : QMainWindow(parent), board_(kWidth, kHeight), ui_(std::make_unique<Ui::MainWindow>()),
       gomoku_grid_(std::make_unique<QGridLayout>()),
       stones_(std::unique_ptr<QPushButton[]>(new QPushButton[kWidth * kHeight])),
@@ -88,20 +88,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connect up the signals from the action elements to the action handler.
     for (unsigned i = 0; i < kWidth * kHeight; ++i) {
-        connect(&stones_[i], &QPushButton::clicked, this, &MainWindow::ActionHandler);
+        connect(&stones_[i], &QPushButton::clicked, this, &HumanGuiPlayer::ActionHandler);
     }
 
     connect(swap2_decision_choose_black_.get(), &QPushButton::clicked, this,
-            &MainWindow::ActionHandler);
+            &HumanGuiPlayer::ActionHandler);
     connect(swap2_decision_choose_white_.get(), &QPushButton::clicked, this,
-            &MainWindow::ActionHandler);
+            &HumanGuiPlayer::ActionHandler);
     connect(swap2_decision_place_2_stones_.get(), &QPushButton::clicked, this,
-            &MainWindow::ActionHandler);
+            &HumanGuiPlayer::ActionHandler);
 
     connect(stone_type_decision_choose_black_.get(), &QPushButton::clicked, this,
-            &MainWindow::ActionHandler);
+            &HumanGuiPlayer::ActionHandler);
     connect(stone_type_decision_choose_white_.get(), &QPushButton::clicked, this,
-            &MainWindow::ActionHandler);
+            &HumanGuiPlayer::ActionHandler);
 
     // Set labels.
     swap2_decision_choose_black_->setText("Choose black stone");
@@ -114,9 +114,9 @@ MainWindow::MainWindow(QWidget *parent)
     this->Update();
 }
 
-MainWindow::~MainWindow() {}
+HumanGuiPlayer::~HumanGuiPlayer() {}
 
-void MainWindow::ActionHandler() {
+void HumanGuiPlayer::ActionHandler() {
     QWidget *sender = static_cast<QWidget *>(QObject::sender());
 
     auto action_id = sender->property("action_id");
@@ -126,7 +126,7 @@ void MainWindow::ActionHandler() {
     this->Update();
 }
 
-void MainWindow::Update() {
+void HumanGuiPlayer::Update() {
     ClearLayout(gomoku_grid_.get());
 
     GomokuAction const &sample_action = board_.LegalActions().begin()->second;
@@ -141,7 +141,7 @@ void MainWindow::Update() {
     }
 }
 
-void MainWindow::UpdateGomokuBoard(bool enabled) {
+void HumanGuiPlayer::UpdateGomokuBoard(bool enabled) {
     for (unsigned y = 0; y < kHeight; ++y) {
         for (unsigned x = 0; x < kWidth; ++x) {
             switch (board_.CurrentBoard()[x + y * kWidth]) {
@@ -175,7 +175,7 @@ void MainWindow::UpdateGomokuBoard(bool enabled) {
     gomoku_grid_->update();
 }
 
-void MainWindow::UpdateSwap2Buttons() {
+void HumanGuiPlayer::UpdateSwap2Buttons() {
     this->UpdateGomokuBoard(/*enabled=*/false);
 
     gomoku_grid_->addWidget(swap2_decision_choose_black_.get(), 0, kWidth, Qt::AlignCenter);
@@ -187,7 +187,7 @@ void MainWindow::UpdateSwap2Buttons() {
     gomoku_grid_->update();
 }
 
-void MainWindow::UpdateStoneTypeButtons() {
+void HumanGuiPlayer::UpdateStoneTypeButtons() {
     this->UpdateGomokuBoard(/*enabled=*/false);
 
     gomoku_grid_->addWidget(stone_type_decision_choose_black_.get(), 0, kWidth, Qt::AlignCenter);
@@ -198,7 +198,7 @@ void MainWindow::UpdateStoneTypeButtons() {
     gomoku_grid_->update();
 }
 
-void MainWindow::UpdateCommonElements(int beginning_column_index) {
+void HumanGuiPlayer::UpdateCommonElements(int beginning_column_index) {
     switch (board_.CurrentGamePhase()) {
     case GP_PLACE_3_STONES: {
         game_phase_->setText("Game phase: place 3 stones");

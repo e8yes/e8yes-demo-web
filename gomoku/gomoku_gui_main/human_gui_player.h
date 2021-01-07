@@ -35,12 +35,12 @@ QT_END_NAMESPACE
 
 namespace e8 {
 
-class MainWindow : public QMainWindow {
+class HumanGuiPlayer : public QMainWindow {
     Q_OBJECT
 
   public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    HumanGuiPlayer(QWidget *parent = nullptr);
+    ~HumanGuiPlayer();
 
   private slots:
     void ActionHandler();
