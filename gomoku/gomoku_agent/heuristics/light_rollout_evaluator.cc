@@ -165,7 +165,7 @@ bool RolloutData::SampleNext(unsigned max_steps) {
     }
     case GR_PLAYER_A_WIN:
     case GR_PLAYER_B_WIN: {
-        ++num_wins_[(board_.CurrentPlayerSide() + 1) | 1];
+        ++num_wins_[(board_.CurrentPlayerSide() + 1) & 1];
         return false;
     }
     case GR_UNDETERMINED: {
@@ -179,7 +179,7 @@ bool RolloutData::SampleNext(unsigned max_steps) {
 }
 
 float RolloutData::AccumulatedRewardFor(PlayerSide const player_side) const {
-    return num_wins_[player_side] - num_wins_[(player_side + 1) | 1];
+    return num_wins_[player_side] - num_wins_[(player_side + 1) & 1];
 }
 
 unsigned RolloutData::NumSamples() const { return num_samples_; }

@@ -242,6 +242,12 @@ class GomokuBoardState {
      */
     int16_t Height() const;
 
+    /**
+     * @brief PrintBoard For debugging purposes, prints the board out to the standard output stream
+     * in a human readable form.
+     */
+    void PrintBoard() const;
+
   private:
     StoneState *ChessPieceStateAt(MovePosition const &pos);
     StoneState const *ChessPieceStateAt(MovePosition const &pos) const;
