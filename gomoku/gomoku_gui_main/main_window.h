@@ -44,7 +44,7 @@ class MainWindow : public QMainWindow {
   private:
     void DisplayActions();
 
-    void DisplayGomokuBoardActions();
+    void DisplayGomokuBoardActions(bool enabled);
 
     void DisplaySwap2Actions();
 

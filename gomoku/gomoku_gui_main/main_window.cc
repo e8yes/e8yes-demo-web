@@ -76,9 +76,11 @@ MainWindow::~MainWindow() {}
 void MainWindow::DisplayActions() {
     ClearLayout(gomoku_grid_.get());
 
+    this->DisplayStoneTypeActions();
+
     GomokuAction const &sample_action = board_.LegalActions().begin()->second;
     if (sample_action.stone_pos.has_value()) {
-        this->DisplayGomokuBoardActions();
+        this->DisplayGomokuBoardActions(/*enabled=*/true);
     } else if (sample_action.swap2_decision.has_value()) {
         this->DisplaySwap2Actions();
     } else if (sample_action.stone_type_decision.has_value()) {
@@ -88,20 +90,23 @@ void MainWindow::DisplayActions() {
     }
 }
 
-void MainWindow::DisplayGomokuBoardActions() {
+void MainWindow::DisplayGomokuBoardActions(bool enabled) {
     for (unsigned y = 0; y < kHeight; ++y) {
         for (unsigned x = 0; x < kWidth; ++x) {
             switch (board_.CurrentBoard()[x + y * kWidth]) {
             case ST_NONE: {
                 stones_[x + y * kWidth].setText("-");
+                stones_[x + y * kWidth].setEnabled(enabled);
                 break;
             }
             case ST_BLACK: {
                 stones_[x + y * kWidth].setText("X");
+                stones_[x + y * kWidth].setEnabled(false);
                 break;
             }
             case ST_WHITE: {
                 stones_[x + y * kWidth].setText("O");
+                stones_[x + y * kWidth].setEnabled(false);
                 break;
             }
             default: {
@@ -120,7 +125,7 @@ void MainWindow::DisplayGomokuBoardActions() {
 }
 
 void MainWindow::DisplaySwap2Actions() {
-    this->DisplayGomokuBoardActions();
+    this->DisplayGomokuBoardActions(/*enabled=*/false);
 
     gomoku_grid_->addWidget(swap2_decision_choose_black_.get(), 0, kWidth, Qt::AlignCenter);
     gomoku_grid_->addWidget(swap2_decision_choose_white_.get(), 1, kWidth, Qt::AlignCenter);
@@ -132,7 +137,7 @@ void MainWindow::DisplaySwap2Actions() {
 }
 
 void MainWindow::DisplayStoneTypeActions() {
-    this->DisplayGomokuBoardActions();
+    this->DisplayGomokuBoardActions(/*enabled=*/false);
 
     gomoku_grid_->addWidget(stone_type_decision_choose_black_.get(), 0, kWidth, Qt::AlignCenter);
     gomoku_grid_->addWidget(stone_type_decision_choose_white_.get(), 1, kWidth, Qt::AlignCenter);
