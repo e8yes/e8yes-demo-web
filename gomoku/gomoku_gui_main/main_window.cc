@@ -22,6 +22,7 @@
 #include <QWidget>
 #include <cassert>
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "gomoku/gomoku_gui_main/main_window.h"
@@ -60,6 +61,48 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui_->centralwidget->setLayout(gomoku_grid_.get());
 
+    // Set action ID as property.
+    for (unsigned y = 0; y < kHeight; ++y) {
+        for (unsigned x = 0; x < kWidth; ++x) {
+            stones_[x + y * kWidth].setProperty(
+                "action_id", QVariant(board_.MovePositionToActionId(MovePosition(x, y))));
+        }
+    }
+
+    swap2_decision_choose_black_->setProperty(
+        "action_id",
+        QVariant(board_.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_BLACK)));
+    swap2_decision_place_2_stones_->setProperty(
+        "action_id",
+        QVariant(board_.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_WHITE)));
+    swap2_decision_place_2_stones_->setProperty(
+        "action_id",
+        QVariant(board_.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_PLACE_2_STONES)));
+
+    stone_type_decision_choose_black_->setProperty(
+        "action_id",
+        QVariant(board_.StoneTypeDecisionToActionId(e8::StoneTypeDecision::STD_CHOOSE_BLACK)));
+    stone_type_decision_choose_white_->setProperty(
+        "action_id",
+        QVariant(board_.StoneTypeDecisionToActionId(e8::StoneTypeDecision::STD_CHOOSE_WHITE)));
+
+    // Connect up the signals from the action elements to the action handler.
+    for (unsigned i = 0; i < kWidth * kHeight; ++i) {
+        connect(&stones_[i], &QPushButton::clicked, this, &MainWindow::ActionHandler);
+    }
+
+    connect(swap2_decision_choose_black_.get(), &QPushButton::clicked, this,
+            &MainWindow::ActionHandler);
+    connect(swap2_decision_choose_white_.get(), &QPushButton::clicked, this,
+            &MainWindow::ActionHandler);
+    connect(swap2_decision_place_2_stones_.get(), &QPushButton::clicked, this,
+            &MainWindow::ActionHandler);
+
+    connect(stone_type_decision_choose_black_.get(), &QPushButton::clicked, this,
+            &MainWindow::ActionHandler);
+    connect(stone_type_decision_choose_white_.get(), &QPushButton::clicked, this,
+            &MainWindow::ActionHandler);
+
     // Set labels.
     swap2_decision_choose_black_->setText("Choose black stone");
     swap2_decision_choose_white_->setText("Choose white stone");
@@ -68,29 +111,37 @@ MainWindow::MainWindow(QWidget *parent)
     stone_type_decision_choose_black_->setText("Choose black stone");
     stone_type_decision_choose_white_->setText("Choose white stone");
 
-    this->DisplayActions();
+    this->Update();
 }
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::DisplayActions() {
-    ClearLayout(gomoku_grid_.get());
+void MainWindow::ActionHandler() {
+    QWidget *sender = static_cast<QWidget *>(QObject::sender());
 
-    this->DisplayStoneTypeActions();
+    auto action_id = sender->property("action_id");
+    board_.ApplyAction(*reinterpret_cast<GomokuActionId *>(action_id.data()),
+                       /*cached_game_result=*/std::nullopt);
+
+    this->Update();
+}
+
+void MainWindow::Update() {
+    ClearLayout(gomoku_grid_.get());
 
     GomokuAction const &sample_action = board_.LegalActions().begin()->second;
     if (sample_action.stone_pos.has_value()) {
-        this->DisplayGomokuBoardActions(/*enabled=*/true);
+        this->UpdateGomokuBoard(/*enabled=*/true);
     } else if (sample_action.swap2_decision.has_value()) {
-        this->DisplaySwap2Actions();
+        this->UpdateSwap2Buttons();
     } else if (sample_action.stone_type_decision.has_value()) {
-        this->DisplayStoneTypeActions();
+        this->UpdateStoneTypeButtons();
     } else {
         assert(false);
     }
 }
 
-void MainWindow::DisplayGomokuBoardActions(bool enabled) {
+void MainWindow::UpdateGomokuBoard(bool enabled) {
     for (unsigned y = 0; y < kHeight; ++y) {
         for (unsigned x = 0; x < kWidth; ++x) {
             switch (board_.CurrentBoard()[x + y * kWidth]) {
@@ -119,35 +170,35 @@ void MainWindow::DisplayGomokuBoardActions(bool enabled) {
         }
     }
 
-    this->DisplayCommonElements(/*beginning_column_index=*/kWidth);
+    this->UpdateCommonElements(/*beginning_column_index=*/kWidth);
 
     gomoku_grid_->update();
 }
 
-void MainWindow::DisplaySwap2Actions() {
-    this->DisplayGomokuBoardActions(/*enabled=*/false);
+void MainWindow::UpdateSwap2Buttons() {
+    this->UpdateGomokuBoard(/*enabled=*/false);
 
     gomoku_grid_->addWidget(swap2_decision_choose_black_.get(), 0, kWidth, Qt::AlignCenter);
     gomoku_grid_->addWidget(swap2_decision_choose_white_.get(), 1, kWidth, Qt::AlignCenter);
     gomoku_grid_->addWidget(swap2_decision_place_2_stones_.get(), 2, kWidth, Qt::AlignCenter);
 
-    this->DisplayCommonElements(/*beginning_column_index=*/kWidth + 1);
+    this->UpdateCommonElements(/*beginning_column_index=*/kWidth + 1);
 
     gomoku_grid_->update();
 }
 
-void MainWindow::DisplayStoneTypeActions() {
-    this->DisplayGomokuBoardActions(/*enabled=*/false);
+void MainWindow::UpdateStoneTypeButtons() {
+    this->UpdateGomokuBoard(/*enabled=*/false);
 
     gomoku_grid_->addWidget(stone_type_decision_choose_black_.get(), 0, kWidth, Qt::AlignCenter);
     gomoku_grid_->addWidget(stone_type_decision_choose_white_.get(), 1, kWidth, Qt::AlignCenter);
 
-    this->DisplayCommonElements(/*beginning_column_index=*/kWidth + 1);
+    this->UpdateCommonElements(/*beginning_column_index=*/kWidth + 1);
 
     gomoku_grid_->update();
 }
 
-void MainWindow::DisplayCommonElements(int beginning_column_index) {
+void MainWindow::UpdateCommonElements(int beginning_column_index) {
     switch (board_.CurrentGamePhase()) {
     case GP_PLACE_3_STONES: {
         game_phase_->setText("Game phase: place 3 stones");

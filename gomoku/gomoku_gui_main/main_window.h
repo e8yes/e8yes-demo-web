@@ -22,6 +22,7 @@
 #include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
+#include <QWidget>
 #include <memory>
 
 #include "gomoku/gomoku_game/board_state.h"
@@ -41,16 +42,19 @@ class MainWindow : public QMainWindow {
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+  private slots:
+    void ActionHandler();
+
   private:
-    void DisplayActions();
+    void Update();
 
-    void DisplayGomokuBoardActions(bool enabled);
+    void UpdateGomokuBoard(bool enabled);
 
-    void DisplaySwap2Actions();
+    void UpdateSwap2Buttons();
 
-    void DisplayStoneTypeActions();
+    void UpdateStoneTypeButtons();
 
-    void DisplayCommonElements(int beginning_column_index);
+    void UpdateCommonElements(int beginning_column_index);
 
     unsigned const kWidth = 11;
     unsigned const kHeight = 11;
