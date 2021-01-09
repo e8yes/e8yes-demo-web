@@ -15,73 +15,38 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef HUMAN_GUI_PLAYER_H
+#define HUMAN_GUI_PLAYER_H
 
-#include <QGridLayout>
-#include <QLabel>
-#include <QMainWindow>
-#include <QPushButton>
-#include <QWidget>
-#include <memory>
-
-#include "gomoku/gomoku_game/board_state.h"
-
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
-QT_END_NAMESPACE
+#include "gomoku/gomoku_game/game.h"
+#include "gomoku/gomoku_gui_main/main_window.h"
 
 namespace e8 {
 
-class HumanGuiPlayer : public QMainWindow {
-    Q_OBJECT
-
+/**
+ * @brief The HumanGuiPlayer class A human Gomoku player who engages into the game through a Qt GUI.
+ * It's assumed that the game is run in a different thread from the GUI's.
+ */
+class HumanGuiPlayer : public GomokuPlayerInterface {
   public:
-    HumanGuiPlayer(QWidget *parent = nullptr);
-    ~HumanGuiPlayer();
+    HumanGuiPlayer(MainWindow *main_window, PlayerSide const player_side);
+    ~HumanGuiPlayer() = default;
 
-  private slots:
-    void ActionHandler();
+    GomokuActionId NextPlayerAction(GomokuBoardState const &board_state) override;
+
+    void OnGomokuGameBegin(GomokuBoardState const &board_state) override;
+
+    void AfterGomokuActionApplied(GomokuBoardState const &board_state) override;
+
+    void OnGameEnded(GomokuBoardState const &board_state) override;
+
+    bool WantAnotherGame() override;
 
   private:
-    void Update();
-
-    void UpdateGomokuBoard(bool enabled);
-
-    void UpdateSwap2Buttons();
-
-    void UpdateStoneTypeButtons();
-
-    void UpdateCommonElements(int beginning_column_index);
-
-    unsigned const kWidth = 11;
-    unsigned const kHeight = 11;
-
-    // Game elements.
-    GomokuBoardState board_;
-
-    // UI elements.
-    std::unique_ptr<Ui::MainWindow> ui_;
-
-    std::unique_ptr<QGridLayout> gomoku_grid_;
-    std::unique_ptr<QPushButton[]> stones_;
-
-    std::unique_ptr<QPushButton> swap2_decision_choose_black_;
-    std::unique_ptr<QPushButton> swap2_decision_choose_white_;
-    std::unique_ptr<QPushButton> swap2_decision_place_2_stones_;
-
-    std::unique_ptr<QPushButton> stone_type_decision_choose_black_;
-    std::unique_ptr<QPushButton> stone_type_decision_choose_white_;
-
-    std::unique_ptr<QLabel> game_phase_;
-    std::unique_ptr<QLabel> player_a_stone_type_;
-    std::unique_ptr<QLabel> player_b_stone_type_;
-    std::unique_ptr<QLabel> current_player_;
-    std::unique_ptr<QLabel> game_result_;
+    MainWindow *const main_window_;
+    PlayerSide const player_side_;
 };
 
 } // namespace e8
 
-#endif // MAINWINDOW_H
+#endif // HUMAN_GUI_PLAYER_H

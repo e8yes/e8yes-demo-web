@@ -15,15 +15,16 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <memory>
 #include <optional>
 
-#include "gomoku/gomoku_gui_main/game.h"
+#include "gomoku/gomoku_game/game.h"
 
 namespace e8 {
 
-GomokuGame::GomokuGame(std::unique_ptr<GomokuPlayerInterface> &&player_a,
-                       std::unique_ptr<GomokuPlayerInterface> &&player_b)
+GomokuGame::GomokuGame(std::shared_ptr<GomokuPlayerInterface> const &player_a,
+                       std::shared_ptr<GomokuPlayerInterface> const &player_b)
     : player_a_(std::move(player_a)), player_b_(std::move(player_b)) {}
 
 void GomokuGame::Start() {
@@ -45,6 +46,10 @@ void GomokuGame::Start() {
             }
             case PS_PLAYER_B: {
                 current_player = player_b_.get();
+                break;
+            }
+            default: {
+                assert(false);
                 break;
             }
             }

@@ -69,8 +69,8 @@ class GomokuGame {
     /**
      * @brief GomokuGame Constructs a Gomoku game with the specified two players.
      */
-    GomokuGame(std::unique_ptr<GomokuPlayerInterface> &&player_a,
-               std::unique_ptr<GomokuPlayerInterface> &&player_b);
+    GomokuGame(std::shared_ptr<GomokuPlayerInterface> const &player_a,
+               std::shared_ptr<GomokuPlayerInterface> const &player_b);
     GomokuGame(GomokuGame const &) = delete;
     GomokuGame(GomokuGame &&) = delete;
     ~GomokuGame() = default;
@@ -84,8 +84,8 @@ class GomokuGame {
     unsigned const kWidth = 11;
     unsigned const kHeight = 11;
 
-    std::unique_ptr<GomokuPlayerInterface> player_a_;
-    std::unique_ptr<GomokuPlayerInterface> player_b_;
+    std::shared_ptr<GomokuPlayerInterface> player_a_;
+    std::shared_ptr<GomokuPlayerInterface> player_b_;
 };
 
 } // namespace e8

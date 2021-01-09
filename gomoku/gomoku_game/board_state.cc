@@ -82,7 +82,8 @@ GomokuBoardState::GomokuBoardState(int16_t const width, int16_t const height)
 }
 
 GomokuBoardState::GomokuBoardState(GomokuBoardState const &other)
-    : width_(other.width_), height_(other.height_) {
+    : width_(other.width_), height_(other.height_),
+      board_(std::unique_ptr<StoneState[]>(new StoneState[other.width_ * other.height_])) {
     game_result_ = other.game_result_;
     current_game_phase_ = other.current_game_phase_;
     current_player_side_ = other.current_player_side_;

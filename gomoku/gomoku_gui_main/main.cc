@@ -15,13 +15,38 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gomoku/gomoku_gui_main/human_gui_player.h"
-
 #include <QApplication>
+#include <memory>
+#include <thread>
+
+#include "gomoku/gomoku_game/board_state.h"
+#include "gomoku/gomoku_game/game.h"
+#include "gomoku/gomoku_gui_main/human_gui_player.h"
+#include "gomoku/gomoku_gui_main/main_window.h"
+
+void RunGame(e8::MainWindow *player_a_window, e8::MainWindow *player_b_window) {
+    e8::GomokuGame game(
+        std::static_pointer_cast<e8::GomokuPlayerInterface>(
+            std::make_shared<e8::HumanGuiPlayer>(player_a_window, e8::PlayerSide::PS_PLAYER_A)),
+        std::static_pointer_cast<e8::GomokuPlayerInterface>(
+            std::make_shared<e8::HumanGuiPlayer>(player_b_window, e8::PlayerSide::PS_PLAYER_B)));
+
+    game.Start();
+}
 
 int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
-    e8::HumanGuiPlayer w;
-    w.show();
-    return a.exec();
+    QApplication app(argc, argv);
+
+    e8::MainWindow player_a_window;
+    e8::MainWindow player_b_window;
+
+    std::thread game_thread(RunGame, &player_a_window, &player_b_window);
+
+    player_a_window.show();
+    player_b_window.show();
+    int exit_code = app.exec();
+
+    game_thread.join();
+
+    return exit_code;
 }

@@ -15,10 +15,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
-    board_state.cc
+    board_state.cc \
+    game.cc
 
 HEADERS += \
-    board_state.h
+    board_state.h \
+    game.h
 
 # Default rules for deployment.
 unix {
