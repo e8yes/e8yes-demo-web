@@ -206,7 +206,7 @@ void MainWindow::RenderGameState(GomokuBoardState const &board_state) {
 void MainWindow::RenderBoard(GomokuBoardState const &board_state) {
     for (int y = 0; y < board_state.Height(); ++y) {
         for (int x = 0; x < board_state.Width(); ++x) {
-            switch (board_state.CurrentBoard()[x + y * board_state.Width()]) {
+            switch (*board_state.ChessPieceStateAt(MovePosition(x, y))) {
             case ST_NONE: {
                 stones_[x + y * board_state.Width()].setText("-");
                 break;

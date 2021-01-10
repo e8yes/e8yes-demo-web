@@ -368,8 +368,6 @@ std::optional<GomokuActionRecord> GomokuBoardState::LastAction() const {
 
 GameResult GomokuBoardState::CurrentGameResult() const { return game_result_; }
 
-StoneState *GomokuBoardState::CurrentBoard() const { return board_.get(); }
-
 std::vector<GomokuActionRecord> const &GomokuBoardState::History() const { return history_; }
 
 int16_t GomokuBoardState::Width() const { return width_; }

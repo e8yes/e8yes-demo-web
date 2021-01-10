@@ -224,9 +224,14 @@ class GomokuBoardState {
     GameResult CurrentGameResult() const;
 
     /**
-     * @brief CurrentBoard It returns a 1d array representing the board in row major order.
+     * @brief ChessPieceStateAt Retrieve the state of the move position.
      */
-    StoneState *CurrentBoard() const;
+    StoneState *ChessPieceStateAt(MovePosition const &pos);
+
+    /**
+     * @brief ChessPieceStateAt Constant version of the above function.
+     */
+    StoneState const *ChessPieceStateAt(MovePosition const &pos) const;
 
     /**
      * @brief History Returns a history of action records.
@@ -250,9 +255,6 @@ class GomokuBoardState {
     void PrintBoard() const;
 
   private:
-    StoneState *ChessPieceStateAt(MovePosition const &pos);
-    StoneState const *ChessPieceStateAt(MovePosition const &pos) const;
-
     uint8_t MaxConnectedStonesFrom(MovePosition const &pos, StoneType const stone_type) const;
 
     int16_t const width_;
