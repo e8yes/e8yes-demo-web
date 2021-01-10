@@ -31,44 +31,58 @@
 #include "gomoku/gomoku_game/board_state.h"
 
 namespace e8 {
+
 namespace {
 
-unsigned const kNumQValueSamples = 200;
-unsigned const kMaxSimulationSteps = 7;
-
-struct BoardContour {
-    std::unordered_set<MovePosition> positions;
-};
-
-void AddStone(GomokuBoardState const &board, MovePosition const &stone_pos, BoardContour *contour) {
+void AddStone(GomokuBoardState const &board, MovePosition const &stone_pos,
+              light_rollout_evaluator_internal::BoardContour *contour) {
     contour->positions.erase(stone_pos);
-    if (stone_pos.x - 1 >= 0) {
+    if (stone_pos.x - 1 >= 0 && *board.ChessPieceStateAt(MovePosition(
+                                    stone_pos.x - 1, stone_pos.y)) == StoneType::ST_NONE) {
         contour->positions.insert(MovePosition(stone_pos.x - 1, stone_pos.y));
     }
-    if (stone_pos.x + 1 < board.Width()) {
+    if (stone_pos.x + 1 < board.Width() &&
+        *board.ChessPieceStateAt(MovePosition(stone_pos.x + 1, stone_pos.y)) ==
+            StoneType::ST_NONE) {
         contour->positions.insert(MovePosition(stone_pos.x + 1, stone_pos.y));
     }
 
     if (stone_pos.y - 1 >= 0) {
-        contour->positions.insert(MovePosition(stone_pos.x, stone_pos.y - 1));
-        if (stone_pos.x - 1 >= 0) {
+        if (*board.ChessPieceStateAt(MovePosition(stone_pos.x, stone_pos.y - 1)) ==
+            StoneType::ST_NONE) {
+            contour->positions.insert(MovePosition(stone_pos.x, stone_pos.y - 1));
+        }
+        if (stone_pos.x - 1 >= 0 && *board.ChessPieceStateAt(MovePosition(
+                                        stone_pos.x - 1, stone_pos.y - 1)) == StoneType::ST_NONE) {
             contour->positions.insert(MovePosition(stone_pos.x - 1, stone_pos.y - 1));
         }
-        if (stone_pos.x + 1 < board.Width()) {
+        if (stone_pos.x + 1 < board.Width() &&
+            *board.ChessPieceStateAt(MovePosition(stone_pos.x + 1, stone_pos.y - 1)) ==
+                StoneType::ST_NONE) {
             contour->positions.insert(MovePosition(stone_pos.x + 1, stone_pos.y - 1));
         }
     }
 
     if (stone_pos.y + 1 < board.Height()) {
-        contour->positions.insert(MovePosition(stone_pos.x, stone_pos.y + 1));
-        if (stone_pos.x - 1 >= 0) {
+        if (*board.ChessPieceStateAt(MovePosition(stone_pos.x, stone_pos.y + 1)) ==
+            StoneType::ST_NONE) {
+            contour->positions.insert(MovePosition(stone_pos.x, stone_pos.y + 1));
+        }
+        if (stone_pos.x - 1 >= 0 && *board.ChessPieceStateAt(MovePosition(
+                                        stone_pos.x - 1, stone_pos.y + 1)) == StoneType::ST_NONE) {
             contour->positions.insert(MovePosition(stone_pos.x - 1, stone_pos.y + 1));
         }
-        if (stone_pos.x + 1 < board.Width()) {
+        if (stone_pos.x + 1 < board.Width() &&
+            *board.ChessPieceStateAt(MovePosition(stone_pos.x + 1, stone_pos.y + 1)) ==
+                StoneType::ST_NONE) {
             contour->positions.insert(MovePosition(stone_pos.x + 1, stone_pos.y + 1));
         }
     }
 }
+
+} // namespace
+
+namespace light_rollout_evaluator_internal {
 
 std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board) {
     auto contour = std::make_shared<BoardContour>();
@@ -92,9 +106,17 @@ std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board) {
     return contour;
 }
 
+} // namespace light_rollout_evaluator_internal
+
+namespace {
+
+unsigned const kNumQValueSamples = 200;
+unsigned const kMaxSimulationSteps = 7;
+
 class RolloutData : public TaskStorageInterface {
   public:
-    RolloutData(GomokuBoardState const &board, std::shared_ptr<BoardContour> const &contour,
+    RolloutData(GomokuBoardState const &board,
+                std::shared_ptr<light_rollout_evaluator_internal::BoardContour> const &contour,
                 unsigned const num_samples, unsigned const job_idx);
 
     void Init();
@@ -104,18 +126,19 @@ class RolloutData : public TaskStorageInterface {
 
   private:
     GomokuBoardState board_;
-    std::shared_ptr<BoardContour> original_copy_;
+    std::shared_ptr<light_rollout_evaluator_internal::BoardContour> original_copy_;
     RandomSource random_source_;
 
-    BoardContour contour_;
+    light_rollout_evaluator_internal::BoardContour contour_;
     std::array<unsigned, 2> num_wins_;
     unsigned num_steps_ = 0;
     unsigned const num_samples_;
 };
 
-RolloutData::RolloutData(GomokuBoardState const &board,
-                         std::shared_ptr<BoardContour> const &contour, unsigned const num_samples,
-                         unsigned const job_idx)
+RolloutData::RolloutData(
+    GomokuBoardState const &board,
+    std::shared_ptr<light_rollout_evaluator_internal::BoardContour> const &contour,
+    unsigned const num_samples, unsigned const job_idx)
     : board_(board), original_copy_(contour), random_source_(job_idx), num_samples_(num_samples) {}
 
 void RolloutData::Init() {
@@ -127,7 +150,9 @@ void RolloutData::Init() {
     }
 }
 
-MovePosition SelectRandomMoveFromContour(BoardContour const &contour, RandomSource *random_source) {
+MovePosition
+SelectRandomMoveFromContour(light_rollout_evaluator_internal::BoardContour const &contour,
+                            RandomSource *random_source) {
     assert(!contour.positions.empty());
 
     std::vector<int> selector =
@@ -208,23 +233,29 @@ bool RolloutTask::DropResourceOnCompletion() const { return false; }
 struct GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal {
     ThreadPool thread_pool;
     RandomSource random_source;
-    std::unordered_map<GomokuStateId, std::shared_ptr<BoardContour>> contour_cache;
+    std::unordered_map<GomokuStateId,
+                       std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>
+        contour_cache;
 
     GomokuLightRolloutEvaluatorInternal();
 
-    std::unordered_map<GomokuStateId, std::shared_ptr<BoardContour>>::const_iterator
+    std::unordered_map<
+        GomokuStateId,
+        std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>::const_iterator
     FetchContour(GomokuStateId const state_id, GomokuBoardState const &state);
 };
 
 GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal::
     GomokuLightRolloutEvaluatorInternal() {}
 
-std::unordered_map<GomokuStateId, std::shared_ptr<BoardContour>>::const_iterator
+std::unordered_map<GomokuStateId,
+                   std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>::const_iterator
 GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal::FetchContour(
     GomokuStateId const state_id, GomokuBoardState const &state) {
     auto contour_cache_it = contour_cache.find(state_id);
     if (contour_cache_it == contour_cache.end()) {
-        std::shared_ptr<BoardContour> contour = BuildBoardContour(state);
+        std::shared_ptr<light_rollout_evaluator_internal::BoardContour> contour =
+            light_rollout_evaluator_internal::BuildBoardContour(state);
         contour_cache_it = contour_cache.insert(std::make_pair(state_id, contour)).first;
     }
 
