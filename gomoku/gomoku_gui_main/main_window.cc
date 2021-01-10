@@ -16,6 +16,7 @@
  */
 
 #include <QGridLayout>
+#include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
 #include <QString>
@@ -50,17 +51,16 @@ void ClearLayout(QLayout *layout) {
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui_(std::make_unique<Ui::MainWindow>()),
-      event_looper_(std::make_unique<QTimer>(this)), gomoku_grid_(std::make_unique<QGridLayout>()),
-      stones_(nullptr), swap2_decision_choose_black_(std::make_unique<QPushButton>(this)),
-      swap2_decision_choose_white_(std::make_unique<QPushButton>(this)),
-      swap2_decision_place_2_stones_(std::make_unique<QPushButton>(this)),
-      stone_type_decision_choose_black_(std::make_unique<QPushButton>(this)),
-      stone_type_decision_choose_white_(std::make_unique<QPushButton>(this)),
-      game_phase_(std::make_unique<QLabel>(this)),
-      player_a_stone_type_(std::make_unique<QLabel>(this)),
-      player_b_stone_type_(std::make_unique<QLabel>(this)),
-      current_player_(std::make_unique<QLabel>(this)),
-      game_result_(std::make_unique<QLabel>(this)) {
+      event_looper_(std::make_unique<QTimer>(this)),
+      gomoku_grid_(std::make_unique<QGridLayout>(this)), stones_(nullptr),
+      swap2_decision_choose_black_(std::make_unique<QPushButton>()),
+      swap2_decision_choose_white_(std::make_unique<QPushButton>()),
+      swap2_decision_place_2_stones_(std::make_unique<QPushButton>()),
+      stone_type_decision_choose_black_(std::make_unique<QPushButton>()),
+      stone_type_decision_choose_white_(std::make_unique<QPushButton>()),
+      game_phase_(std::make_unique<QLabel>()), player_a_stone_type_(std::make_unique<QLabel>()),
+      player_b_stone_type_(std::make_unique<QLabel>()), current_player_(std::make_unique<QLabel>()),
+      game_result_(std::make_unique<QLabel>()) {
     ui_->setupUi(this);
     ui_->centralwidget->setLayout(gomoku_grid_.get());
 
@@ -130,6 +130,8 @@ MainWindow::Command::Command(CallType const call_type, GomokuActionId const &act
     : call_type(call_type), action_id(action_id) {}
 
 void MainWindow::Init(GomokuBoardState const &board_state, std::string const &player_side) {
+    ClearLayout(gomoku_grid_.get());
+
     this->setWindowTitle(QString::fromStdString(std::string("Gomoku Swap2 - ") + player_side));
 
     stones_ =
