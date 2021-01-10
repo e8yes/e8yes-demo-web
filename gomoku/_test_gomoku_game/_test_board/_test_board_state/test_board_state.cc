@@ -41,7 +41,7 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_PLACE_3_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_BLACK);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5);
     e8::GomokuActionId action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/0, /*y=*/0));
     TEST_CONDITION(board.LegalActions().find(action_id) != board.LegalActions().end());
@@ -51,7 +51,7 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_PLACE_3_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_BLACK);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5 - 1);
     action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/0));
     TEST_CONDITION(board.LegalActions().find(action_id) != board.LegalActions().end());
@@ -61,7 +61,7 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_PLACE_3_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_WHITE);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5 - 2);
     action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/3));
     TEST_CONDITION(board.LegalActions().find(action_id) != board.LegalActions().end());
@@ -71,8 +71,8 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     // Swap2 chooses black.
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_SWAP2_DECISION);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_B);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 3);
     action_id = board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_BLACK);
     TEST_CONDITION(board.LegalActions().find(action_id) != board.LegalActions().end());
@@ -87,8 +87,8 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     // Swap2 chooses white.
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_SWAP2_DECISION);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_B);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 3);
     action_id = board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_WHITE);
     TEST_CONDITION(board.LegalActions().find(action_id) != board.LegalActions().end());
@@ -103,8 +103,8 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     // Swap2 places 2 more stones.
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_SWAP2_DECISION);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_B);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 3);
     action_id = board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_PLACE_2_STONES);
     TEST_CONDITION(board.LegalActions().find(action_id) != board.LegalActions().end());
@@ -113,7 +113,7 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     // Places 2 more stones.
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_SWAP2_PLACE_2_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_B);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_WHITE);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5 - 3);
     action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/3, /*y=*/3));
@@ -122,7 +122,7 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     TEST_CONDITION(board.LegalActions().find(action_id) == board.LegalActions().end());
 
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_SWAP2_PLACE_2_STONES);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_BLACK);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5 - 4);
     action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/3, /*y=*/0));
@@ -133,8 +133,8 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     // Chooses black stone.
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_STONE_TYPE_DECISION);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 2);
     action_id = board.StoneTypeDecisionToActionId(e8::STD_CHOOSE_BLACK);
     TEST_CONDITION(board.LegalActions().find(action_id) != board.LegalActions().end());
@@ -149,8 +149,8 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     // Chooses white stone.
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_STONE_TYPE_DECISION);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 2);
     action_id = board.StoneTypeDecisionToActionId(e8::STD_CHOOSE_WHITE);
     TEST_CONDITION(board.LegalActions().find(action_id) != board.LegalActions().end());
@@ -164,50 +164,50 @@ bool ApplyAndRetractActionsSwap2DecisionTest() {
     board.RetractAction();
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_STONE_TYPE_DECISION);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 2);
 
     board.RetractAction();
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_SWAP2_PLACE_2_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_B);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_BLACK);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5 - 4);
 
     board.RetractAction();
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_SWAP2_PLACE_2_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_B);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_WHITE);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5 - 3);
 
     board.RetractAction();
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_SWAP2_DECISION);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_B);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == std::nullopt);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_NONE);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 3);
 
     board.RetractAction();
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_PLACE_3_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_WHITE);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5 - 2);
 
     board.RetractAction();
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_PLACE_3_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_BLACK);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5 - 1);
 
     board.RetractAction();
     TEST_CONDITION(board.CurrentGamePhase() == e8::GamePhase::GP_PLACE_3_STONES);
     TEST_CONDITION(board.CurrentPlayerSide() == e8::PlayerSide::PS_PLAYER_A);
     TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A) == e8::StoneType::ST_BLACK);
-    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == std::nullopt);
+    TEST_CONDITION(board.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B) == e8::StoneType::ST_NONE);
     TEST_CONDITION(board.LegalActions().size() == 4 * 5);
 
     return true;

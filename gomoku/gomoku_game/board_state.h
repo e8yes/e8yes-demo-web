@@ -181,9 +181,10 @@ class GomokuBoardState {
 
     /**
      * @brief PlayerStoneType Returns the type of stone the specified player is currently holding.
-     * The player might not hold any specific type of stone during the game.
+     * The player might not hold any specific type of stone during the game. In that case, the
+     * return value will be ST_NONE.
      */
-    std::optional<StoneType> PlayerStoneType(PlayerSide const player_side) const;
+    StoneType PlayerStoneType(PlayerSide const player_side) const;
 
     /**
      * @brief CurrentGamePhase The current game phase.
@@ -261,7 +262,7 @@ class GomokuBoardState {
     PlayerSide current_player_side_;
 
     std::unique_ptr<StoneState[]> board_;
-    std::array<std::optional<StoneType>, 2> player_stone_type_;
+    std::array<StoneType, 2> player_stone_type_;
 
     std::vector<GomokuActionRecord> history_;
 

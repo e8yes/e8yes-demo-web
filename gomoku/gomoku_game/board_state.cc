@@ -49,7 +49,7 @@ GomokuBoardState::GomokuBoardState(int16_t const width, int16_t const height)
     : width_(width), height_(height), game_result_(GameResult::GR_UNDETERMINED),
       current_game_phase_(GP_PLACE_3_STONES), current_player_side_(OffensiveSide()),
       board_(std::unique_ptr<StoneState[]>(new StoneState[width * height])),
-      player_stone_type_({std::optional<StoneType>(StoneType::ST_BLACK), std::nullopt}),
+      player_stone_type_({StoneType::ST_BLACK, StoneType::ST_NONE}),
       standard_gomoku_legal_actions_(2 * width * height) {
     for (int16_t i = 0; i < this->Width() * this->Height(); ++i) {
         board_[i] = StoneState();
@@ -128,7 +128,7 @@ GomokuBoardState::StoneTypeDecisionToActionId(StoneTypeDecision const decision) 
 
 PlayerSide GomokuBoardState::CurrentPlayerSide() const { return current_player_side_; }
 
-std::optional<StoneType> GomokuBoardState::PlayerStoneType(PlayerSide const player_side) const {
+StoneType GomokuBoardState::PlayerStoneType(PlayerSide const player_side) const {
     return player_stone_type_[player_side];
 }
 
@@ -167,15 +167,15 @@ GameResult GomokuBoardState::ApplyAction(GomokuActionId const action_id,
 
     switch (this->CurrentGamePhase()) {
     case GP_PLACE_3_STONES: {
-        assert(player_stone_type_[this->CurrentPlayerSide()].has_value());
+        assert(player_stone_type_[this->CurrentPlayerSide()] != StoneType::ST_NONE);
         assert(*this->ChessPieceStateAt(*action_it->second.stone_pos) == StoneType::ST_NONE);
         *this->ChessPieceStateAt(*action_it->second.stone_pos) =
-            StoneState(*player_stone_type_[this->CurrentPlayerSide()]);
+            player_stone_type_[this->CurrentPlayerSide()];
 
         if (history_.size() == 2) {
             player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_WHITE;
         } else if (history_.size() == 3) {
-            player_stone_type_[PlayerSide::PS_PLAYER_A] = std::nullopt;
+            player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_NONE;
             current_game_phase_ = GamePhase::GP_SWAP2_DECISION;
             current_player_side_ = PlayerSide::PS_PLAYER_B;
         }
@@ -211,15 +211,15 @@ GameResult GomokuBoardState::ApplyAction(GomokuActionId const action_id,
         break;
     }
     case GP_SWAP2_PLACE_2_STONES: {
-        assert(player_stone_type_[this->CurrentPlayerSide()].has_value());
+        assert(player_stone_type_[this->CurrentPlayerSide()] != StoneType::ST_NONE);
         assert(*this->ChessPieceStateAt(*action_it->second.stone_pos) == StoneType::ST_NONE);
         *this->ChessPieceStateAt(*action_it->second.stone_pos) =
-            StoneState(*player_stone_type_[this->CurrentPlayerSide()]);
+            StoneState(player_stone_type_[this->CurrentPlayerSide()]);
 
         if (history_.size() == 5) {
             player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_BLACK;
         } else if (history_.size() == 6) {
-            player_stone_type_[PlayerSide::PS_PLAYER_B] = std::nullopt;
+            player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_NONE;
             current_game_phase_ = GamePhase::GP_STONE_TYPE_DECISION;
             current_player_side_ = PlayerSide::PS_PLAYER_A;
         }
@@ -245,16 +245,16 @@ GameResult GomokuBoardState::ApplyAction(GomokuActionId const action_id,
         break;
     }
     case GP_STANDARD_GOMOKU: {
-        assert(player_stone_type_[this->CurrentPlayerSide()].has_value());
+        assert(player_stone_type_[this->CurrentPlayerSide()] != StoneType::ST_NONE);
         assert(*this->ChessPieceStateAt(*action_it->second.stone_pos) == StoneType::ST_NONE);
         *this->ChessPieceStateAt(*action_it->second.stone_pos) =
-            StoneState(*player_stone_type_[this->CurrentPlayerSide()]);
+            StoneState(player_stone_type_[this->CurrentPlayerSide()]);
 
         if (cached_game_result.has_value()) {
             game_result_ = *cached_game_result;
         } else {
             unsigned max_connected_stones = this->MaxConnectedStonesFrom(
-                *action_it->second.stone_pos, *player_stone_type_[this->CurrentPlayerSide()]);
+                *action_it->second.stone_pos, player_stone_type_[this->CurrentPlayerSide()]);
             if (max_connected_stones == 5) {
                 switch (current_player_side_) {
                 case PS_PLAYER_A:
@@ -303,7 +303,7 @@ std::optional<GomokuActionRecord> GomokuBoardState::RetractAction() {
         } else if (history_.size() == 2) {
             player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_BLACK;
         }
-        player_stone_type_[PlayerSide::PS_PLAYER_B] = std::nullopt;
+        player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_NONE;
         break;
     }
     case GP_SWAP2_DECISION: {
@@ -311,8 +311,8 @@ std::optional<GomokuActionRecord> GomokuBoardState::RetractAction() {
 
         current_player_side_ = PlayerSide::PS_PLAYER_B;
 
-        player_stone_type_[PlayerSide::PS_PLAYER_A] = std::nullopt;
-        player_stone_type_[PlayerSide::PS_PLAYER_B] = std::nullopt;
+        player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_NONE;
+        player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_NONE;
         break;
     }
     case GP_SWAP2_PLACE_2_STONES: {
@@ -323,7 +323,7 @@ std::optional<GomokuActionRecord> GomokuBoardState::RetractAction() {
 
         current_player_side_ = PlayerSide::PS_PLAYER_B;
 
-        player_stone_type_[PlayerSide::PS_PLAYER_A] = std::nullopt;
+        player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_NONE;
         if (history_.size() == 6) {
             player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_BLACK;
         } else if (history_.size() == 5) {
@@ -336,8 +336,8 @@ std::optional<GomokuActionRecord> GomokuBoardState::RetractAction() {
 
         current_player_side_ = PlayerSide::PS_PLAYER_A;
 
-        player_stone_type_[PlayerSide::PS_PLAYER_A] = std::nullopt;
-        player_stone_type_[PlayerSide::PS_PLAYER_B] = std::nullopt;
+        player_stone_type_[PlayerSide::PS_PLAYER_A] = StoneType::ST_NONE;
+        player_stone_type_[PlayerSide::PS_PLAYER_B] = StoneType::ST_NONE;
         break;
     }
     case GP_STANDARD_GOMOKU: {

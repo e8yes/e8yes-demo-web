@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui_->centralwidget->setLayout(gomoku_grid_.get());
 
     connect(event_looper_.get(), &QTimer::timeout, this, &MainWindow::ProcessCommands);
-    event_looper_->start(std::chrono::milliseconds(50));
+    event_looper_->start(std::chrono::milliseconds(1));
 }
 
 MainWindow::~MainWindow() {}
@@ -113,7 +113,7 @@ GomokuActionId MainWindow::WaitForNextAction() {
 
         command_lock_.unlock();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     } while (!action_id.has_value());
 
     return *action_id;
@@ -287,7 +287,7 @@ void MainWindow::RenderCommonElements(GomokuBoardState const &board_state,
     }
     }
 
-    switch (*board_state.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A)) {
+    switch (board_state.PlayerStoneType(e8::PlayerSide::PS_PLAYER_A)) {
     case ST_NONE: {
         player_a_stone_type_->setText("Player A stone type: undetermined");
         break;
@@ -305,7 +305,7 @@ void MainWindow::RenderCommonElements(GomokuBoardState const &board_state,
     }
     }
 
-    switch (*board_state.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B)) {
+    switch (board_state.PlayerStoneType(e8::PlayerSide::PS_PLAYER_B)) {
     case ST_NONE: {
         player_b_stone_type_->setText("Player B stone type: undetermined");
         break;
