@@ -37,7 +37,6 @@ bool ContourTest() {
                       /*cached_game_result=*/std::nullopt);
     board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/3)),
                       /*cached_game_result=*/std::nullopt);
-    board.PrintBoard();
 
     // Contour
     // ? ? ? - -
@@ -81,9 +80,54 @@ bool ContourTest() {
     return true;
 }
 
+bool RewardEvaluationTest() {
+    e8::GomokuBoardState board(/*width=*/7, /*height=*/7);
+
+    // Player A will very likely win in this case whereas Player B will lose.
+    // - - - - - - o
+    // - - - - - - -
+    // - - x - o - -
+    // - - - x - - -
+    // - - - - x - -
+    // - - - - - - -
+    // - - - - - - -
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/2, /*y=*/2)),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/3, /*y=*/3)),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/2)),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_WHITE),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/6, /*y=*/0)),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/4)),
+                      /*cached_game_result=*/std::nullopt);
+
+    e8::GomokuLightRolloutEvaluator evaluator;
+    float player_b_reward = evaluator.EvaluateReward(board, /*state_id=*/3);
+    TEST_CONDITION(player_b_reward < 0);
+
+    // - - - - - - o
+    // - - - - - o -
+    // - - x - o - -
+    // - - - x - - -
+    // - - - - x - -
+    // - - - - - - -
+    // - - - - - - -
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/5, /*y=*/1)),
+                      /*cached_game_result=*/std::nullopt);
+
+    float player_a_reward = evaluator.EvaluateReward(board, /*state_id=*/4);
+    TEST_CONDITION(player_a_reward > 0);
+
+    return true;
+}
+
 int main() {
     e8::BeginTestSuite("light_rollout_evaluator");
     e8::RunTest("ContourTest", ContourTest);
+    e8::RunTest("RolloutTest", RewardEvaluationTest);
     e8::EndTestSuite();
     return 0;
 }

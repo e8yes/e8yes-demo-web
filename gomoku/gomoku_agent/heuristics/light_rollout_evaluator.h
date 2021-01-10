@@ -38,7 +38,8 @@ std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board);
 } // namespace light_rollout_evaluator_internal
 
 /**
- * @brief The GomokuLightRolloutEvaluator class
+ * @brief The GomokuLightRolloutEvaluator class Evaluate the board state by conducting random
+ * rollouts.
  */
 class GomokuLightRolloutEvaluator : public GomokuEvaluatorInterface {
   public:

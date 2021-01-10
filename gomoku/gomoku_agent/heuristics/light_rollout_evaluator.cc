@@ -121,7 +121,7 @@ class RolloutData : public TaskStorageInterface {
 
     void Init();
     bool SampleNext(unsigned max_steps);
-    float AccumulatedRewardFor(PlayerSide const stone_type) const;
+    unsigned AccumulatedWinsFor(PlayerSide const stone_type) const;
     unsigned NumSamples() const;
 
   private:
@@ -203,8 +203,8 @@ bool RolloutData::SampleNext(unsigned max_steps) {
     }
 }
 
-float RolloutData::AccumulatedRewardFor(PlayerSide const player_side) const {
-    return num_wins_[player_side] - num_wins_[(player_side + 1) & 1];
+unsigned RolloutData::AccumulatedWinsFor(PlayerSide const player_side) const {
+    return num_wins_[player_side];
 }
 
 unsigned RolloutData::NumSamples() const { return num_samples_; }
@@ -262,7 +262,8 @@ GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal::FetchContour(
     return contour_cache_it;
 }
 
-GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluator() {}
+GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluator()
+    : pimpl_(std::make_unique<GomokuLightRolloutEvaluatorInternal>()) {}
 
 GomokuLightRolloutEvaluator::~GomokuLightRolloutEvaluator() {}
 
@@ -283,24 +284,33 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
 
         auto contour_cache_it = pimpl_->FetchContour(state_id, state);
 
-        for (unsigned job_idx = 0; job_idx < pimpl_->thread_pool.NumWorkers(); ++job_idx) {
+        // unsigned const num_parallelism = pimpl_->thread_pool.NumWorkers();
+        unsigned const num_parallelism = 1;
+        for (unsigned job_idx = 0; job_idx < num_parallelism; ++job_idx) {
             auto rollout_data = std::make_unique<RolloutData>(
-                state, contour_cache_it->second,
-                kNumQValueSamples / pimpl_->thread_pool.NumWorkers(), job_idx);
+                state, contour_cache_it->second, kNumQValueSamples / num_parallelism, job_idx);
             pimpl_->thread_pool.Schedule(task, std::move(rollout_data));
         }
 
         float accumulated_reward = 0.0f;
-        unsigned num_samples = 0;
-        for (unsigned i = 0; i < pimpl_->thread_pool.NumWorkers(); ++i) {
+        unsigned num_valid_samples = 0;
+        for (unsigned i = 0; i < num_parallelism; ++i) {
             std::unique_ptr<TaskStorageInterface> rollout_data =
                 pimpl_->thread_pool.WaitForNextCompleted();
-            accumulated_reward += static_cast<RolloutData *>(rollout_data.get())
-                                      ->AccumulatedRewardFor(state.CurrentPlayerSide());
-            num_samples += static_cast<RolloutData *>(rollout_data.get())->NumSamples();
+            int wins = static_cast<RolloutData *>(rollout_data.get())
+                           ->AccumulatedWinsFor(state.CurrentPlayerSide());
+            int losses = static_cast<RolloutData *>(rollout_data.get())
+                             ->AccumulatedWinsFor(static_cast<PlayerSide>(
+                                 (static_cast<int>(state.CurrentPlayerSide()) + 1) & 1));
+            accumulated_reward += wins - losses;
+            num_valid_samples += wins + losses;
         }
 
-        q_value = accumulated_reward / num_samples;
+        if (num_valid_samples > 0) {
+            q_value = accumulated_reward / num_valid_samples;
+        } else {
+            q_value = 0;
+        }
 
         break;
     }

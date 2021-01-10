@@ -147,8 +147,9 @@ void ThreadPool::Schedule(std::shared_ptr<TaskInterface> task,
 }
 
 std::unique_ptr<TaskStorageInterface> ThreadPool::WaitForNextCompleted() {
-    pimpl_->sink_lock.lock();
     sem_wait(&pimpl_->sink_resource);
+
+    pimpl_->sink_lock.lock();
 
     assert(!pimpl_->completed_tasks.empty());
     TaskInfo task_info = std::move(pimpl_->completed_tasks.front());
