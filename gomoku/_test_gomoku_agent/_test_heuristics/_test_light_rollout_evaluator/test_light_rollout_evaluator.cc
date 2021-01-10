@@ -121,13 +121,71 @@ bool RewardEvaluationTest() {
     float player_a_reward = evaluator.EvaluateReward(board, /*state_id=*/4);
     TEST_CONDITION(player_a_reward > 0);
 
+    // Using the cache should give the same result.
+    float player_a_reward_cached = evaluator.EvaluateReward(board, /*state_id=*/4);
+    TEST_CONDITION(player_a_reward_cached == player_a_reward);
+
+    return true;
+}
+
+bool PolicyEvaluationTest() {
+    e8::GomokuBoardState board(/*width=*/7, /*height=*/7);
+
+    // - - - - - - o
+    // - - - - - - -
+    // - - x - o - -
+    // - - - x - - -
+    // - - - - x - -
+    // - - - - - - -
+    // - - - - - - -
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/2, /*y=*/2)),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/3, /*y=*/3)),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/2)),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_WHITE),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/6, /*y=*/0)),
+                      /*cached_game_result=*/std::nullopt);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/4)),
+                      /*cached_game_result=*/std::nullopt);
+
+    e8::GomokuLightRolloutEvaluator evaluator;
+    std::unordered_map<e8::GomokuActionId, float> policy =
+        evaluator.EvaluatePolicy(board, /*state_id=*/2);
+
+    // Contour
+    // - - - - - ? o
+    // - ? ? ? ? ? ?
+    // - ? x ? o ? -
+    // - ? ? x ? ? -
+    // - - ? ? x ? -
+    // - - - ? ? ? -
+    // - - - - - - -
+    TEST_CONDITION(policy.size() == 7 * 7 - 5);
+    unsigned num_zero = 0;
+    unsigned num_nonzero = 0;
+    for (auto const &[action_id, p] : policy) {
+        if (p == 0) {
+            ++num_zero;
+        } else {
+            TEST_CONDITION(p == 1.0f / 20.0f);
+            ++num_nonzero;
+        }
+    }
+
+    TEST_CONDITION(num_zero == 24);
+    TEST_CONDITION(num_nonzero == 20);
+
     return true;
 }
 
 int main() {
     e8::BeginTestSuite("light_rollout_evaluator");
     e8::RunTest("ContourTest", ContourTest);
-    e8::RunTest("RolloutTest", RewardEvaluationTest);
+    e8::RunTest("RewardEvaluationTest", RewardEvaluationTest);
+    e8::RunTest("PolicyEvaluationTest", PolicyEvaluationTest);
     e8::EndTestSuite();
     return 0;
 }
