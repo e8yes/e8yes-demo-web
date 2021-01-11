@@ -34,6 +34,21 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/container/ -lcontainer
+
+INCLUDEPATH += $$PWD/../../common/container
+DEPENDPATH += $$PWD/../../common/container
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/thread/ -lthread
+
+INCLUDEPATH += $$PWD/../../common/thread
+DEPENDPATH += $$PWD/../../common/thread
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/random/ -lrandom
+
+INCLUDEPATH += $$PWD/../../common/random
+DEPENDPATH += $$PWD/../../common/random
+
 unix:!macx: LIBS += -L$$OUT_PWD/../gomoku_game/ -lgomoku_game
 
 INCLUDEPATH += $$PWD/../gomoku_game

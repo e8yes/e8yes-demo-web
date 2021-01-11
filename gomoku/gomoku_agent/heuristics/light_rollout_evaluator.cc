@@ -110,7 +110,7 @@ std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board) {
 
 namespace {
 
-unsigned const kNumQValueSamples = 200;
+unsigned const kNumQValueSamples = 100;
 unsigned const kMaxSimulationSteps = 7;
 
 class RolloutData : public TaskStorageInterface {
@@ -139,7 +139,8 @@ RolloutData::RolloutData(
     GomokuBoardState const &board,
     std::shared_ptr<light_rollout_evaluator_internal::BoardContour> const &contour,
     unsigned const num_samples, unsigned const job_idx)
-    : board_(board), original_copy_(contour), random_source_(job_idx), num_samples_(num_samples) {}
+    : board_(board), original_copy_(contour), random_source_(job_idx), num_wins_({0, 0}),
+      num_samples_(num_samples) {}
 
 void RolloutData::Init() {
     contour_ = *original_copy_;
@@ -246,7 +247,8 @@ struct GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal {
 };
 
 GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal::
-    GomokuLightRolloutEvaluatorInternal() {}
+    GomokuLightRolloutEvaluatorInternal()
+    : random_source(13) {}
 
 std::unordered_map<GomokuStateId,
                    std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>::const_iterator
@@ -268,7 +270,7 @@ GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluator()
 GomokuLightRolloutEvaluator::~GomokuLightRolloutEvaluator() {}
 
 float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
-                                                  GomokuStateId const state_id) const {
+                                                  GomokuStateId const state_id) {
     float q_value;
 
     switch (state.CurrentGamePhase()) {
@@ -284,8 +286,8 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
 
         auto contour_cache_it = pimpl_->FetchContour(state_id, state);
 
-        // unsigned const num_parallelism = pimpl_->thread_pool.NumWorkers();
-        unsigned const num_parallelism = 1;
+        unsigned const num_parallelism = pimpl_->thread_pool.NumWorkers();
+        // unsigned const num_parallelism = 1;
         for (unsigned job_idx = 0; job_idx < num_parallelism; ++job_idx) {
             auto rollout_data = std::make_unique<RolloutData>(
                 state, contour_cache_it->second, kNumQValueSamples / num_parallelism, job_idx);
@@ -308,6 +310,10 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
 
         if (num_valid_samples > 0) {
             q_value = accumulated_reward / num_valid_samples;
+
+            assert(q_value < 1.05f && q_value > -1.05f);
+            assert(!std::isinf(q_value));
+            assert(!std::isnan(q_value));
         } else {
             q_value = 0;
         }
@@ -321,7 +327,7 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
 
 std::unordered_map<GomokuActionId, float>
 GomokuLightRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
-                                            GomokuStateId const state_id) const {
+                                            GomokuStateId const state_id) {
     std::unordered_map<GomokuActionId, float> policy;
 
     switch (state.CurrentGamePhase()) {
@@ -358,6 +364,8 @@ GomokuLightRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
 
 float GomokuLightRolloutEvaluator::ExplorationFactor() const { return std::sqrt(2); }
 
-unsigned GomokuLightRolloutEvaluator::NumSimulations() const { return 1400; }
+unsigned GomokuLightRolloutEvaluator::NumSimulations() const { return 10000; }
+
+void GomokuLightRolloutEvaluator::ClearCache() { pimpl_->contour_cache.clear(); }
 
 } // namespace e8

@@ -19,17 +19,23 @@
 #include <memory>
 #include <thread>
 
+#include "gomoku/gomoku_agent/heuristics/light_rollout_evaluator.h"
+#include "gomoku/gomoku_agent/mcts_agent_player.h"
 #include "gomoku/gomoku_game/board_state.h"
 #include "gomoku/gomoku_game/game.h"
 #include "gomoku/gomoku_gui_main/human_gui_player.h"
 #include "gomoku/gomoku_gui_main/main_window.h"
 
-void RunGame(e8::MainWindow *player_a_window, e8::MainWindow *player_b_window) {
-    e8::GomokuGame game(
+void RunGame(/*e8::MainWindow *player_a_window,*/ e8::MainWindow *player_b_window) {
+    std::shared_ptr<e8::GomokuPlayerInterface> player_a =
+        std::static_pointer_cast<e8::GomokuPlayerInterface>(std::make_shared<e8::MctsAgentPlayer>(
+            std::make_shared<e8::GomokuLightRolloutEvaluator>()));
+
+    std::shared_ptr<e8::GomokuPlayerInterface> player_b =
         std::static_pointer_cast<e8::GomokuPlayerInterface>(
-            std::make_shared<e8::HumanGuiPlayer>(player_a_window, e8::PlayerSide::PS_PLAYER_A)),
-        std::static_pointer_cast<e8::GomokuPlayerInterface>(
-            std::make_shared<e8::HumanGuiPlayer>(player_b_window, e8::PlayerSide::PS_PLAYER_B)));
+            std::make_shared<e8::HumanGuiPlayer>(player_b_window, e8::PlayerSide::PS_PLAYER_B));
+
+    e8::GomokuGame game(player_a, player_b);
 
     game.Start();
 }
@@ -37,12 +43,12 @@ void RunGame(e8::MainWindow *player_a_window, e8::MainWindow *player_b_window) {
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    e8::MainWindow player_a_window;
+    // e8::MainWindow player_a_window;
     e8::MainWindow player_b_window;
 
-    std::thread game_thread(RunGame, &player_a_window, &player_b_window);
+    std::thread game_thread(RunGame, /*player_a_window,*/ &player_b_window);
 
-    player_a_window.show();
+    // player_a_window.show();
     player_b_window.show();
     int exit_code = app.exec();
 

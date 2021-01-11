@@ -46,15 +46,16 @@ class GomokuLightRolloutEvaluator : public GomokuEvaluatorInterface {
     GomokuLightRolloutEvaluator();
     ~GomokuLightRolloutEvaluator();
 
-    float EvaluateReward(GomokuBoardState const &state,
-                         GomokuStateId const state_id) const override;
+    float EvaluateReward(GomokuBoardState const &state, GomokuStateId const state_id) override;
 
-    std::unordered_map<GomokuActionId, float>
-    EvaluatePolicy(GomokuBoardState const &state, GomokuStateId const state_id) const override;
+    std::unordered_map<GomokuActionId, float> EvaluatePolicy(GomokuBoardState const &state,
+                                                             GomokuStateId const state_id) override;
 
     float ExplorationFactor() const override;
 
     unsigned NumSimulations() const override;
+
+    virtual void ClearCache() override;
 
   private:
     struct GomokuLightRolloutEvaluatorInternal;

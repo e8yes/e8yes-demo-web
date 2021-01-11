@@ -15,27 +15,40 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MCT_SEARCH_H
-#define MCT_SEARCH_H
+#ifndef MCTS_AGENT_PLAYER_H
+#define MCTS_AGENT_PLAYER_H
 
-#include <unordered_map>
+#include <memory>
 
 #include "gomoku/gomoku_agent/heuristics/evaluator.h"
 #include "gomoku/gomoku_game/board_state.h"
+#include "gomoku/gomoku_game/game.h"
 
 namespace e8 {
 
 /**
- * @brief MctSearchFrom Calculate a stochastically optimal policy for the specified board state with
- * the help of the heuristics.
- *
- * @param state Board state to search from.
- * @param evaluator Heuristics to help guide the tree search.
- * @return A stochastic policy.
+ * @brief The MctsAgentPlayer class An artificial intelligent agent that uses MCTS to derive optimal
+ * board actions.
  */
-std::unordered_map<GomokuActionId, float> MctSearchFrom(GomokuBoardState state,
-                                                        GomokuEvaluatorInterface *evaluator);
+class MctsAgentPlayer : public GomokuPlayerInterface {
+  public:
+    MctsAgentPlayer(std::shared_ptr<GomokuEvaluatorInterface> const &evaluator);
+    ~MctsAgentPlayer() override = default;
+
+    GomokuActionId NextPlayerAction(GomokuBoardState const &board_state) override;
+
+    void OnGomokuGameBegin(GomokuBoardState const &board_state) override;
+
+    void AfterGomokuActionApplied(GomokuBoardState const &board_state) override;
+
+    void OnGameEnded(GomokuBoardState const &board_state) override;
+
+    bool WantAnotherGame() override;
+
+  private:
+    std::shared_ptr<GomokuEvaluatorInterface> evaluator_;
+};
 
 } // namespace e8
 
-#endif // MCT_SEARCH_H
+#endif // MCTS_AGENT_PLAYER_H

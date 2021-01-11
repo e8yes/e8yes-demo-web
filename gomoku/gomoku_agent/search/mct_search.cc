@@ -18,6 +18,7 @@
 #include <array>
 #include <cassert>
 #include <cmath>
+#include <iostream>
 #include <limits>
 #include <memory>
 #include <optional>
@@ -41,10 +42,20 @@ void UpdateMctNode(EvaluationResult const &eval, float const exploration_factor,
                    MctNode *node) {
     assert(node->action_performed_by.has_value());
     node->summed_reward += eval.reward_viewed_by_player[*node->action_performed_by];
-    node->upper_confidence_bound = node->summed_reward / node->num_bandit_pulls +
-                                   exploration_factor * node->heuristic_policy_weight *
-                                       std::sqrt(parent->num_bandit_pulls) /
-                                       (1 + node->num_bandit_pulls);
+
+    float q_value = node->summed_reward / (1.0f + node->num_bandit_pulls);
+    float uncertainty = exploration_factor *
+                        std::sqrt(static_cast<float>(parent->num_bandit_pulls)) /
+                        (1.0f + node->num_bandit_pulls);
+
+    assert(q_value < 1.05f && q_value > -1.05f);
+    assert(!std::isinf(q_value));
+    assert(!std::isnan(q_value));
+    assert(!std::isinf(uncertainty));
+    assert(!std::isnan(uncertainty));
+
+    node->upper_confidence_bound = q_value + node->heuristic_policy_weight * uncertainty;
+
     node->num_bandit_pulls += 1;
 }
 
@@ -60,31 +71,39 @@ void BackPropagate(EvaluationResult const &eval, float const exploration_factor,
     (*propagation_path)[0]->num_bandit_pulls += 1;
 }
 
-EvaluationResult Evaluate(GomokuBoardState const &state, GomokuEvaluatorInterface const &evaluator,
-                          MctNode const &state_mct_node) {
+EvaluationResult Evaluate(GomokuBoardState const &state, MctNode const &state_mct_node,
+                          GomokuEvaluatorInterface *evaluator) {
 
     GameResult game_result = state.CurrentGameResult();
-    assert(state_mct_node.action_performed_by.has_value());
 
     EvaluationResult result;
 
     switch (game_result) {
-    case GR_PLAYER_A_WIN:
+    case GR_PLAYER_A_WIN: {
+        result.reward_viewed_by_player[PlayerSide::PS_PLAYER_A] = 1.0f;
+        result.reward_viewed_by_player[PlayerSide::PS_PLAYER_B] = -1.0f;
+        break;
+    }
     case GR_PLAYER_B_WIN: {
-        result.reward_viewed_by_player[*state_mct_node.action_performed_by] = 1.0f;
-        result.reward_viewed_by_player[(*state_mct_node.action_performed_by + 1) | 1] = -1.0f;
+        result.reward_viewed_by_player[PlayerSide::PS_PLAYER_A] = -1.0f;
+        result.reward_viewed_by_player[PlayerSide::PS_PLAYER_B] = 1.0f;
         break;
     }
     case GR_TIE: {
-        result.reward_viewed_by_player[*state_mct_node.action_performed_by] = 0.0f;
-        result.reward_viewed_by_player[(*state_mct_node.action_performed_by + 1) | 1] = 0.0f;
+        result.reward_viewed_by_player[PlayerSide::PS_PLAYER_A] = 0.0f;
+        result.reward_viewed_by_player[PlayerSide::PS_PLAYER_B] = 0.0f;
         break;
     }
     case GR_UNDETERMINED: {
         float est_reward =
-            evaluator.EvaluateReward(state, reinterpret_cast<GomokuStateId>(&state_mct_node));
-        result.reward_viewed_by_player[*state_mct_node.action_performed_by] = est_reward;
-        result.reward_viewed_by_player[(*state_mct_node.action_performed_by + 1) | 1] = -est_reward;
+            evaluator->EvaluateReward(state, reinterpret_cast<GomokuStateId>(&state_mct_node));
+
+        assert(est_reward < 1.05f && est_reward > -1.05f);
+        assert(!std::isinf(est_reward));
+        assert(!std::isnan(est_reward));
+
+        result.reward_viewed_by_player[state.CurrentPlayerSide()] = est_reward;
+        result.reward_viewed_by_player[(state.CurrentPlayerSide() + 1) & 1] = -est_reward;
         break;
     }
     }
@@ -92,12 +111,13 @@ EvaluationResult Evaluate(GomokuBoardState const &state, GomokuEvaluatorInterfac
     return result;
 }
 
-void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface const &evaluator) {
+void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *evaluator) {
     std::unordered_map<GomokuActionId, float> heuristics_policy =
-        evaluator.EvaluatePolicy(*state, reinterpret_cast<GomokuStateId>(root));
+        evaluator->EvaluatePolicy(*state, reinterpret_cast<GomokuStateId>(root));
     PlayerSide const action_performer = state->CurrentPlayerSide();
 
-    for (auto const &[action_id, _] : state->LegalActions()) {
+    std::unordered_map<GomokuActionId, GomokuAction> actions = state->LegalActions();
+    for (auto const &[action_id, _] : actions) {
         GameResult game_result = state->ApplyAction(action_id,
                                                     /*cached_game_result=*/std::nullopt);
         state->RetractAction();
@@ -110,22 +130,22 @@ void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface con
     }
 }
 
-void SelectFrom(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface const &evaluator,
+void SelectFrom(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *evaluator,
                 std::vector<MutablePriorityQueue<MctNode>::iterator> *propagation_path) {
     if (state->CurrentGameResult() != GR_UNDETERMINED) {
-        EvaluationResult eval = Evaluate(*state, evaluator, *root);
-        BackPropagate(eval, evaluator.ExplorationFactor(), propagation_path);
+        EvaluationResult eval = Evaluate(*state, *root, evaluator);
+        BackPropagate(eval, evaluator->ExplorationFactor(), propagation_path);
         return;
     }
 
     if (root->children.empty()) {
         Expand(root, state, evaluator);
-        EvaluationResult eval = Evaluate(*state, evaluator, *root);
-        BackPropagate(eval, evaluator.ExplorationFactor(), propagation_path);
+        EvaluationResult eval = Evaluate(*state, *root, evaluator);
+        BackPropagate(eval, evaluator->ExplorationFactor(), propagation_path);
         return;
     }
 
-    auto candidate_it = root->children.begin();
+    auto candidate_it = root->children.front();
     state->ApplyAction(*candidate_it->arrived_thru_action_id, candidate_it->game_result);
     propagation_path->push_back(candidate_it);
 
@@ -156,7 +176,9 @@ std::unordered_map<GomokuActionId, float> ExtractStochasticPolicy(MctNode const 
 } // namespace
 
 std::unordered_map<GomokuActionId, float> MctSearchFrom(GomokuBoardState state,
-                                                        GomokuEvaluatorInterface const &evaluator) {
+                                                        GomokuEvaluatorInterface *evaluator) {
+    evaluator->ClearCache();
+
     MutablePriorityQueue<MctNode> root;
     root.push(MctNode(
         /*arrived_thru_action_id=*/std::nullopt, /*action_performed_by=*/std::nullopt,
@@ -165,8 +187,19 @@ std::unordered_map<GomokuActionId, float> MctSearchFrom(GomokuBoardState state,
 
     std::vector<MutablePriorityQueue<MctNode>::iterator> propagation_path{root.begin()};
 
-    for (unsigned i = 0; i < evaluator.NumSimulations(); ++i) {
+    for (unsigned i = 0; i < evaluator->NumSimulations(); ++i) {
         SelectFrom(&(*root.begin()), &state, evaluator, &propagation_path);
+        //        auto candidate_it = root.begin()->children.front();
+        //        if (i % 100 == 0) {
+        //            std::cout << "i_sims=" << i << std::endl;
+        //            std::cout << candidate_it->summed_reward << std::endl;
+        //            std::cout << candidate_it->upper_confidence_bound << std::endl;
+        //            if (*candidate_it->arrived_thru_action_id < state.Width() * state.Height()) {
+        //                int x = *candidate_it->arrived_thru_action_id % state.Width();
+        //                int y = *candidate_it->arrived_thru_action_id / state.Width();
+        //                std::cout << "pos.x=" << x << ", pos.y=" << y << std::endl;
+        //            }
+        //        }
     }
 
     return ExtractStochasticPolicy(*root.begin());

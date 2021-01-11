@@ -82,21 +82,17 @@ GomokuBoardState::GomokuBoardState(int16_t const width, int16_t const height)
 }
 
 GomokuBoardState::GomokuBoardState(GomokuBoardState const &other)
-    : width_(other.width_), height_(other.height_),
-      board_(std::unique_ptr<StoneState[]>(new StoneState[other.width_ * other.height_])) {
-    game_result_ = other.game_result_;
-    current_game_phase_ = other.current_game_phase_;
-    current_player_side_ = other.current_player_side_;
-
+    : width_(other.width_), height_(other.height_), game_result_(other.game_result_),
+      current_game_phase_(other.current_game_phase_),
+      current_player_side_(other.current_player_side_),
+      board_(std::unique_ptr<StoneState[]>(new StoneState[other.width_ * other.height_])),
+      player_stone_type_(other.player_stone_type_), history_(other.history_),
+      swap2_decision_legal_actions_(other.swap2_decision_legal_actions_),
+      stone_type_decision_legal_actions_(other.stone_type_decision_legal_actions_),
+      standard_gomoku_legal_actions_(other.standard_gomoku_legal_actions_) {
     for (int16_t i = 0; i < this->Width() * this->Height(); ++i) {
         board_[i] = other.board_[i];
     }
-
-    player_stone_type_ = other.player_stone_type_;
-
-    swap2_decision_legal_actions_ = other.swap2_decision_legal_actions_;
-    stone_type_decision_legal_actions_ = other.stone_type_decision_legal_actions_;
-    standard_gomoku_legal_actions_ = other.standard_gomoku_legal_actions_;
 }
 
 std::unordered_map<GomokuActionId, GomokuAction> const &GomokuBoardState::LegalActions() const {

@@ -37,21 +37,21 @@ class GomokuEvaluatorInterface {
     virtual ~GomokuEvaluatorInterface() = default;
 
     /**
-     * @brief EvaluateReward Estimate the Q value at the given state.
+     * @brief EvaluateReward Estimate the Q value in the perspective of the current player at the
+     * given state.
      *
      * @param state_id Different states are guaranteed to have different state_id.
      */
-    virtual float EvaluateReward(GomokuBoardState const &state,
-                                 GomokuStateId const state_id) const = 0;
+    virtual float EvaluateReward(GomokuBoardState const &state, GomokuStateId const state_id) = 0;
 
     /**
-     * @brief EvaluatePolicy Estimate the optimal policy for the set of legal actions at the given
-     * state.
+     * @brief EvaluatePolicy Estimate the optimal policy for the set of legal actions in the
+     * perspective of the current player at the given state.
      *
      * @param state_id Different states are guaranteed to have different state_id.
      */
     virtual std::unordered_map<GomokuActionId, float>
-    EvaluatePolicy(GomokuBoardState const &state, GomokuStateId const state_id) const = 0;
+    EvaluatePolicy(GomokuBoardState const &state, GomokuStateId const state_id) = 0;
 
     /**
      * @brief ExplorationFactor How exaggerated the upper confidence bound should it be for this
@@ -64,6 +64,11 @@ class GomokuEvaluatorInterface {
      * for this heuristics.
      */
     virtual unsigned NumSimulations() const = 0;
+
+    /**
+     * @brief ClearCache Clears any cached information.
+     */
+    virtual void ClearCache() = 0;
 };
 
 } // namespace e8
