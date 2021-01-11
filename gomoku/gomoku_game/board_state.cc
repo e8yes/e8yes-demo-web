@@ -465,7 +465,7 @@ uint8_t GomokuBoardState::MaxConnectedStonesFrom(MovePosition const &move_pos,
         int8_t num_connected_stones;
 
         // Counter clockwise 45 degrees.
-        MovePosition pos(move_pos.x + 1, move_pos.y + 1);
+        MovePosition pos(move_pos.x + 1, move_pos.y - 1);
         while (pos.x < width_ && pos.y >= 0 && *this->ChessPieceStateAt(pos) == stone_type) {
             ++pos.x;
             --pos.y;

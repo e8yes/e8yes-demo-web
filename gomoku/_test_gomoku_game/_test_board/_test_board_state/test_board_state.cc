@@ -304,6 +304,97 @@ bool GameResultTest() {
     return true;
 }
 
+bool GameResultTest2() {
+    e8::GomokuBoardState board(/*width=*/5, /*height=*/5);
+
+    // - - - - x
+    // - - - - -
+    // - - - - -
+    // - - - - -
+    // - - - - -
+    e8::GomokuActionId action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/0));
+    e8::GameResult game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    // - - - - x
+    // - - - x -
+    // - - - - -
+    // - - - - -
+    // - - - - -
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/3, /*y=*/1));
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    // - - - - x
+    // - - - x o
+    // - - - - -
+    // - - - - -
+    // - - - - -
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/1));
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    action_id = board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_BLACK);
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    // - - - - x
+    // - - - x o
+    // - - - - o
+    // - - - - -
+    // - - - - -
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/2));
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    // - - - - x
+    // - - - x o
+    // - - - - o
+    // - - - - -
+    // x - - - -
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/0, /*y=*/4));
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    // - - - - x
+    // - - - x o
+    // - - - - o
+    // - - - - o
+    // x - - - -
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/3));
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    // - - - - x
+    // - - - x o
+    // - - - - o
+    // - x - - o
+    // x - - - -
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/1, /*y=*/3));
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    // - - - - x
+    // - - - x o
+    // - - - - o
+    // - x - - o
+    // x - - - o
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/4));
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_UNDETERMINED);
+
+    // - - - - x
+    // - - - x o
+    // - - x - o
+    // - x - - o
+    // x - - - o
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/2, /*y=*/2));
+    game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+    TEST_CONDITION(game_result == e8::GameResult::GR_PLAYER_B_WIN);
+
+    return true;
+}
+
 bool HistoryRecordTest() {
     e8::GomokuBoardState board(/*width=*/5, /*height=*/5);
 
@@ -362,6 +453,7 @@ int main() {
     e8::RunTest("BasicGameStateTest", BasicGameStateTest);
     e8::RunTest("ApplyAndRetractActionsSwap2DecisionTest", ApplyAndRetractActionsSwap2DecisionTest);
     e8::RunTest("GameResultTest", GameResultTest);
+    e8::RunTest("GameResultTest2", GameResultTest2);
     e8::RunTest("HistoryRecordTest", HistoryRecordTest);
     e8::EndTestSuite();
     return 0;
