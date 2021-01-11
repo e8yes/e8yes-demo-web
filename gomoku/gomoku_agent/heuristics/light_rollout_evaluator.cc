@@ -110,8 +110,9 @@ std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board) {
 
 namespace {
 
-unsigned const kNumQValueSamples = 100;
-unsigned const kMaxSimulationSteps = 7;
+unsigned const kNumQValueSamples = 4096;
+unsigned const kEarlyGameMaxSimulationSteps = 7;
+unsigned const kMidGameMaxSimulationSteps = 5;
 
 class RolloutData : public TaskStorageInterface {
   public:
@@ -120,7 +121,7 @@ class RolloutData : public TaskStorageInterface {
                 unsigned const num_samples, unsigned const job_idx);
 
     void Init();
-    bool SampleNext(unsigned max_steps);
+    bool SampleNext();
     unsigned AccumulatedWinsFor(PlayerSide const stone_type) const;
     unsigned NumSamples() const;
 
@@ -133,14 +134,21 @@ class RolloutData : public TaskStorageInterface {
     std::array<unsigned, 2> num_wins_;
     unsigned num_steps_ = 0;
     unsigned const num_samples_;
+    unsigned max_sim_steps_;
 };
 
 RolloutData::RolloutData(
     GomokuBoardState const &board,
     std::shared_ptr<light_rollout_evaluator_internal::BoardContour> const &contour,
     unsigned const num_samples, unsigned const job_idx)
-    : board_(board), original_copy_(contour), random_source_(job_idx), num_wins_({0, 0}),
-      num_samples_(num_samples) {}
+    : board_(board), original_copy_(contour), random_source_(31 * (job_idx + 47128)),
+      num_wins_({0, 0}), num_samples_(num_samples) {
+    if (board_.History().size() <= 5) {
+        max_sim_steps_ = kEarlyGameMaxSimulationSteps;
+    } else {
+        max_sim_steps_ = kMidGameMaxSimulationSteps;
+    }
+}
 
 void RolloutData::Init() {
     contour_ = *original_copy_;
@@ -171,13 +179,17 @@ SelectRandomMoveFromContour(light_rollout_evaluator_internal::BoardContour const
         ++i;
     }
 
+    assert(selected_move.x != -1 && selected_move.y != -1);
+
     return selected_move;
 }
 
-bool RolloutData::SampleNext(unsigned max_steps) {
+bool RolloutData::SampleNext() {
     ++num_steps_;
 
     MovePosition selected_move = SelectRandomMoveFromContour(contour_, &random_source_);
+    assert(selected_move.x >= 0 && selected_move.x < board_.Width());
+    assert(selected_move.y >= 0 && selected_move.y < board_.Height());
     AddStone(board_, selected_move, &contour_);
 
     GomokuActionId action_id = board_.MovePositionToActionId(selected_move);
@@ -195,7 +207,7 @@ bool RolloutData::SampleNext(unsigned max_steps) {
         return false;
     }
     case GR_UNDETERMINED: {
-        return num_steps_ < max_steps;
+        return num_steps_ < max_sim_steps_;
     }
     default: {
         assert(false);
@@ -221,7 +233,7 @@ void RolloutTask::Run(TaskStorageInterface *storage) const {
 
     for (unsigned i = 0; i < data->NumSamples(); ++i) {
         data->Init();
-        while (data->SampleNext(kMaxSimulationSteps)) {
+        while (data->SampleNext()) {
             // Do nothing.
         }
     }
@@ -364,7 +376,7 @@ GomokuLightRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
 
 float GomokuLightRolloutEvaluator::ExplorationFactor() const { return std::sqrt(2); }
 
-unsigned GomokuLightRolloutEvaluator::NumSimulations() const { return 10000; }
+unsigned GomokuLightRolloutEvaluator::NumSimulations() const { return 1400; }
 
 void GomokuLightRolloutEvaluator::ClearCache() { pimpl_->contour_cache.clear(); }
 

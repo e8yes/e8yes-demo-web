@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <cmath>
 #include <vector>
 
@@ -30,7 +31,8 @@ std::vector<ValueType> DrawUniforms(ValueType const lower_bound, ValueType const
     std::vector<ValueType> values(num_instances);
 
     for (unsigned i = 0; i < num_instances; ++i) {
-        float val = random_source->Draw();
+        double val = random_source->Draw();
+        assert(val >= 0 && val < 1);
         values[i] = lower_bound + std::floor(val * (upper_bound - lower_bound));
     }
 

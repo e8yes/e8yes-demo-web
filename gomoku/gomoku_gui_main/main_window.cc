@@ -208,7 +208,8 @@ void MainWindow::RenderBoard(GomokuBoardState const &board_state) {
         for (int x = 0; x < board_state.Width(); ++x) {
             switch (*board_state.ChessPieceStateAt(MovePosition(x, y))) {
             case ST_NONE: {
-                stones_[x + y * board_state.Width()].setText("-");
+                stones_[x + y * board_state.Width()].setText(
+                    QString::fromStdString(std::to_string(x) + "," + std::to_string(y)));
                 break;
             }
             case ST_BLACK: {

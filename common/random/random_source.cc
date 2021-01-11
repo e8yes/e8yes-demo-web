@@ -23,7 +23,8 @@ namespace e8 {
 
 RandomSource::RandomSource() : uniform_(0, 1) {
     std::random_device rd;
-    engine_.seed(rd());
+    unsigned seed = rd();
+    engine_.seed(seed);
 }
 
 RandomSource::RandomSource(unsigned seed) : engine_(seed), uniform_(0, 1) {}

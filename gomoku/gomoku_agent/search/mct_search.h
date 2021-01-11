@@ -31,10 +31,16 @@ namespace e8 {
  *
  * @param state Board state to search from.
  * @param evaluator Heuristics to help guide the tree search.
+ * @param print_stats Whether the print out the final MCTS statistics after running the simulations.
  * @return A stochastic policy.
  */
-std::unordered_map<GomokuActionId, float> MctSearchFrom(GomokuBoardState state,
-                                                        GomokuEvaluatorInterface *evaluator);
+std::unordered_map<GomokuActionId, float>
+MctSearchFrom(GomokuBoardState state, GomokuEvaluatorInterface *evaluator, bool const print_stats);
+
+/**
+ * @brief BestAction Returns the ID of the most visited action.
+ */
+GomokuActionId BestAction(std::unordered_map<GomokuActionId, float> const &optimal_policy);
 
 } // namespace e8
 

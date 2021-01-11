@@ -26,29 +26,13 @@
 #include "gomoku/gomoku_game/game.h"
 
 namespace e8 {
-namespace {
-
-GomokuActionId BestAction(std::unordered_map<GomokuActionId, float> const &optimal_policy) {
-    assert(!optimal_policy.empty());
-    GomokuActionId best_action = -1;
-    float best_p = -1.0f;
-    for (auto const &[action_id, p] : optimal_policy) {
-        if (p > best_p) {
-            best_action = action_id;
-            best_p = p;
-        }
-    }
-    return best_action;
-}
-
-} // namespace
 
 MctsAgentPlayer::MctsAgentPlayer(std::shared_ptr<GomokuEvaluatorInterface> const &evaluator)
     : evaluator_(evaluator) {}
 
 GomokuActionId MctsAgentPlayer::NextPlayerAction(GomokuBoardState const &board_state) {
     std::unordered_map<GomokuActionId, float> optimal_policy =
-        MctSearchFrom(board_state, evaluator_.get());
+        MctSearchFrom(board_state, evaluator_.get(), /*print_stats=*/true);
     return BestAction(optimal_policy);
 }
 

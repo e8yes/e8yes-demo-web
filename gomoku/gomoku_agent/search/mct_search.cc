@@ -38,15 +38,11 @@ struct EvaluationResult {
     std::array<float, 2> reward_viewed_by_player;
 };
 
-void UpdateMctNode(EvaluationResult const &eval, float const exploration_factor, MctNode *parent,
-                   MctNode *node) {
-    assert(node->action_performed_by.has_value());
-    node->summed_reward += eval.reward_viewed_by_player[*node->action_performed_by];
-
-    float q_value = node->summed_reward / (1.0f + node->num_bandit_pulls);
-    float uncertainty = exploration_factor *
-                        std::sqrt(static_cast<float>(parent->num_bandit_pulls)) /
-                        (1.0f + node->num_bandit_pulls);
+float UpperConfidenceBound(float const exploration_factor, MctNode const &parent,
+                           MctNode const &node) {
+    float q_value = node.summed_reward / (1.0f + node.num_bandit_pulls);
+    float uncertainty = exploration_factor * std::sqrt(1.0f + parent.num_bandit_pulls) /
+                        (1.0f + node.num_bandit_pulls);
 
     assert(q_value < 1.05f && q_value > -1.05f);
     assert(!std::isinf(q_value));
@@ -54,8 +50,14 @@ void UpdateMctNode(EvaluationResult const &eval, float const exploration_factor,
     assert(!std::isinf(uncertainty));
     assert(!std::isnan(uncertainty));
 
-    node->upper_confidence_bound = q_value + node->heuristic_policy_weight * uncertainty;
+    return q_value + node.heuristic_policy_weight * uncertainty;
+}
 
+void UpdateMctNode(EvaluationResult const &eval, float const exploration_factor, MctNode *parent,
+                   MctNode *node) {
+    assert(node->action_performed_by.has_value());
+    node->summed_reward += eval.reward_viewed_by_player[*node->action_performed_by];
+    node->upper_confidence_bound = UpperConfidenceBound(exploration_factor, *parent, *node);
     node->num_bandit_pulls += 1;
 }
 
@@ -125,8 +127,10 @@ void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *ev
         auto policy_weight_it = heuristics_policy.find(action_id);
         assert(policy_weight_it != heuristics_policy.end());
 
-        root->children.push(
-            MctNode(action_id, action_performer, game_result, policy_weight_it->second));
+        MctNode child(action_id, action_performer, game_result, policy_weight_it->second);
+        child.upper_confidence_bound =
+            UpperConfidenceBound(evaluator->ExplorationFactor(), *root, child);
+        root->children.push(child);
     }
 }
 
@@ -173,10 +177,62 @@ std::unordered_map<GomokuActionId, float> ExtractStochasticPolicy(MctNode const 
     return policy;
 }
 
+void PrintMctsStats(MctNode const &root, GomokuBoardState const &state) {
+    std::cout << "--------------------------------" << std::endl;
+
+    for (auto const &child : root.children) {
+        if (child.num_bandit_pulls > 0) {
+            assert(child.arrived_thru_action_id.has_value());
+            GomokuAction const &action = state.LegalActions().at(*child.arrived_thru_action_id);
+
+            if (action.stone_pos.has_value()) {
+                std::cout << "(" << static_cast<int>(action.stone_pos->x) << ","
+                          << static_cast<int>(action.stone_pos->y) << ")";
+            }
+
+            if (action.swap2_decision.has_value()) {
+                switch (*action.swap2_decision) {
+                case SW2D_CHOOSE_BLACK: {
+                    std::cout << "SW2D_CHOOSE_BLACK";
+                    break;
+                }
+                case SW2D_CHOOSE_WHITE: {
+                    std::cout << "SW2D_CHOOSE_WHITE";
+                    break;
+                }
+                case SW2D_PLACE_2_STONES: {
+                    std::cout << "SW2D_PLACE_2_STONES";
+                    break;
+                }
+                }
+            }
+
+            if (*action.stone_type_decision) {
+                switch (*action.stone_type_decision) {
+                case STD_CHOOSE_BLACK: {
+                    std::cout << "STD_CHOOSE_BLACK";
+                    break;
+                }
+                case STD_CHOOSE_WHITE: {
+                    std::cout << "STD_CHOOSE_WHITE";
+                    break;
+                }
+                }
+            }
+
+            std::cout << "|reward=" << child.summed_reward / child.num_bandit_pulls
+                      << "|n=" << child.num_bandit_pulls << "|ucb=" << child.upper_confidence_bound
+                      << "|p=" << child.heuristic_policy_weight << std::endl;
+        }
+    }
+
+    std::cout << "--------------------------------" << std::endl;
+}
+
 } // namespace
 
-std::unordered_map<GomokuActionId, float> MctSearchFrom(GomokuBoardState state,
-                                                        GomokuEvaluatorInterface *evaluator) {
+std::unordered_map<GomokuActionId, float>
+MctSearchFrom(GomokuBoardState state, GomokuEvaluatorInterface *evaluator, bool const print_stats) {
     evaluator->ClearCache();
 
     MutablePriorityQueue<MctNode> root;
@@ -186,23 +242,28 @@ std::unordered_map<GomokuActionId, float> MctSearchFrom(GomokuBoardState state,
         /*heuristic_policy_weight=*/std::numeric_limits<float>::infinity()));
 
     std::vector<MutablePriorityQueue<MctNode>::iterator> propagation_path{root.begin()};
-
     for (unsigned i = 0; i < evaluator->NumSimulations(); ++i) {
         SelectFrom(&(*root.begin()), &state, evaluator, &propagation_path);
-        //        auto candidate_it = root.begin()->children.front();
-        //        if (i % 100 == 0) {
-        //            std::cout << "i_sims=" << i << std::endl;
-        //            std::cout << candidate_it->summed_reward << std::endl;
-        //            std::cout << candidate_it->upper_confidence_bound << std::endl;
-        //            if (*candidate_it->arrived_thru_action_id < state.Width() * state.Height()) {
-        //                int x = *candidate_it->arrived_thru_action_id % state.Width();
-        //                int y = *candidate_it->arrived_thru_action_id / state.Width();
-        //                std::cout << "pos.x=" << x << ", pos.y=" << y << std::endl;
-        //            }
-        //        }
+    }
+
+    if (print_stats) {
+        PrintMctsStats(*root.begin(), state);
     }
 
     return ExtractStochasticPolicy(*root.begin());
+}
+
+GomokuActionId BestAction(std::unordered_map<GomokuActionId, float> const &optimal_policy) {
+    assert(!optimal_policy.empty());
+    GomokuActionId best_action = -1;
+    float best_p = -1.0f;
+    for (auto const &[action_id, p] : optimal_policy) {
+        if (p > best_p) {
+            best_action = action_id;
+            best_p = p;
+        }
+    }
+    return best_action;
 }
 
 } // namespace e8
