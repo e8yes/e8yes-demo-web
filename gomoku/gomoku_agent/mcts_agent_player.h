@@ -37,13 +37,13 @@ class MctsAgentPlayer : public GomokuPlayerInterface {
 
     GomokuActionId NextPlayerAction(GomokuBoardState const &board_state) override;
 
-    void OnGomokuGameBegin(GomokuBoardState const &board_state) override;
+    virtual void OnGomokuGameBegin(GomokuBoardState const &board_state) override;
 
-    void AfterGomokuActionApplied(GomokuBoardState const &board_state) override;
+    virtual void AfterGomokuActionApplied(GomokuBoardState const &board_state) override;
 
-    void OnGameEnded(GomokuBoardState const &board_state) override;
+    virtual void OnGameEnded(GomokuBoardState const &board_state) override;
 
-    bool WantAnotherGame() override;
+    virtual bool WantAnotherGame() override;
 
   private:
     std::shared_ptr<GomokuEvaluatorInterface> evaluator_;

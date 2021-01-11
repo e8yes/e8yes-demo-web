@@ -15,11 +15,13 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
+    agent_gui_player.cc \
     human_gui_player.cc \
     main.cc \
     main_window.cc
 
 HEADERS += \
+    agent_gui_player.h \
     human_gui_player.h \
     main_window.h
 

@@ -110,9 +110,10 @@ std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board) {
 
 namespace {
 
-unsigned const kNumQValueSamples = 4096;
-unsigned const kEarlyGameMaxSimulationSteps = 7;
-unsigned const kMidGameMaxSimulationSteps = 5;
+unsigned const kNumQValueSamples = 1024;
+unsigned const kEarlyGameMaxSimulationSteps = 9;
+unsigned const kMidGameMaxSimulationSteps = 7;
+unsigned const kLateGameMaxSimulationSteps = 6;
 
 class RolloutData : public TaskStorageInterface {
   public:
@@ -145,8 +146,10 @@ RolloutData::RolloutData(
       num_wins_({0, 0}), num_samples_(num_samples) {
     if (board_.History().size() <= 5) {
         max_sim_steps_ = kEarlyGameMaxSimulationSteps;
-    } else {
+    } else if (board_.History().size() <= 9) {
         max_sim_steps_ = kMidGameMaxSimulationSteps;
+    } else {
+        max_sim_steps_ = kLateGameMaxSimulationSteps;
     }
 }
 
@@ -374,9 +377,9 @@ GomokuLightRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
     return policy;
 }
 
-float GomokuLightRolloutEvaluator::ExplorationFactor() const { return std::sqrt(2); }
+float GomokuLightRolloutEvaluator::ExplorationFactor() const { return 2; }
 
-unsigned GomokuLightRolloutEvaluator::NumSimulations() const { return 1400; }
+unsigned GomokuLightRolloutEvaluator::NumSimulations() const { return 6000; }
 
 void GomokuLightRolloutEvaluator::ClearCache() { pimpl_->contour_cache.clear(); }
 

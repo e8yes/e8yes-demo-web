@@ -142,6 +142,8 @@ void MainWindow::Init(GomokuBoardState const &board_state, std::string const &pl
         for (int x = 0; x < board_state.Width(); ++x) {
             stones_[x + y * board_state.Width()].setProperty(
                 "action_id", QVariant(board_state.MovePositionToActionId(MovePosition(x, y))));
+            stones_[x + y * board_state.Width()].setAutoFillBackground(true);
+            stones_[x + y * board_state.Width()].setFlat(true);
         }
     }
 
@@ -214,10 +216,20 @@ void MainWindow::RenderBoard(GomokuBoardState const &board_state) {
             }
             case ST_BLACK: {
                 stones_[x + y * board_state.Width()].setText("X");
+
+                auto pal = stones_[x + y * board_state.Width()].palette();
+                pal.setColor(QPalette::Button, Qt::red);
+                stones_[x + y * board_state.Width()].setPalette(pal);
+
                 break;
             }
             case ST_WHITE: {
                 stones_[x + y * board_state.Width()].setText("O");
+
+                auto pal = stones_[x + y * board_state.Width()].palette();
+                pal.setColor(QPalette::Button, Qt::blue);
+                stones_[x + y * board_state.Width()].setPalette(pal);
+
                 break;
             }
             default: {
