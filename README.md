@@ -1,6 +1,3 @@
-# Service Location
-Deployed at HTTP/2 home.e8yes.org:28000; HTTP/1.4 home.e8yes.org:18000
-
 ## Raspberry PI cluster
 ![Alt text](images/pi_cluster.jpg?raw=true "PI cluster")
 
