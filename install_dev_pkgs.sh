@@ -14,6 +14,12 @@ echo "Installing Protobuf compiler..."
 sudo apt install -y protobuf-compiler
 sudo apt install -y protobuf-compiler-grpc
 
+echo "Installing python..."
+sudo apt install -y python3
+
+echo "Installing pip..."
+sudo apt install -y python3-pip
+
 echo "Installing Qt5 development packages..."
 sudo apt install -y qt5-default
 
@@ -27,4 +33,5 @@ cd distributor && ./install_dev_pkgs.sh && cd ..
 cd client/web_frontend && ./install_dev_pkgs.sh && cd ../..
 cd third_party/grpcwebproxy && ./install_dev_pkgs.sh && cd ../..
 cd postgres && ./push_schema.sh && cd ..
+cd gomoku && ./install_dev_pkgs.sh && cd ..
 
