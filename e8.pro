@@ -10,7 +10,7 @@ SUBDIRS = \
     file_system/filesystemw.pro \
     message_queue/message_queue.pro \
     node_state/node_statew.pro \
-    demoweb_service/demoweb.pro \
-    gomoku/gomoku.pro
+    gomoku/gomoku.pro \
+    demoweb_service/demoweb.pro
 
 CONFIG += ordered
