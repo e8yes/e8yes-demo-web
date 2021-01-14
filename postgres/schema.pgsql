@@ -311,3 +311,72 @@ CREATE INDEX IF NOT EXISTS chat_message_sender_id
 CREATE INDEX IF NOT EXISTS chat_message_search_terms 
   ON chat_message 
   USING gin (search_terms);
+
+/* Gomoku models */
+CREATE SEQUENCE IF NOT EXISTS gomoku_model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE IF NOT EXISTS gomoku_model (
+  id BIGINT NOT NULL DEFAULT nextval('gomoku_model_id_seq'),
+  model_name CHARACTER VARYING NOT NULL,
+  model_path CHARACTER VARYING NOT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  policy_test_cross_entropy FLOAT NULL,
+  value_test_mse FLOAT NULL,
+  total_test_loss FLOAT NULL,
+  stats_updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  PRIMARY KEY (id)
+);
+
+/* Gomoku game data */
+CREATE SEQUENCE IF NOT EXISTS gomoku_game_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE IF NOT EXISTS gomoku_game (
+    id BIGINT NOT NULL DEFAULT nextval('gomoku_game_id_seq'),
+    game_purpose INT NOT NULL,
+    player_a_id BIGINT NULL,
+    player_b_id BIGINT NULL,
+    player_a_model_id BIGINT NULL,
+    player_b_model_id BIGINT NULL,
+    game_result INT NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    end_at TIMESTAMP WITHOUT TIME ZONE NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (player_a_id) REFERENCES auser (id) ON DELETE CASCADE,
+    FOREIGN KEY (player_b_id) REFERENCES auser (id) ON DELETE CASCADE,
+    FOREIGN KEY (player_a_model_id) REFERENCES gomoku_model (id) ON DELETE CASCADE,
+    FOREIGN KEY (player_b_model_id) REFERENCES gomoku_model (id) ON DELETE CASCADE
+);
+
+/* Actions performed in the Gomoku game */
+CREATE SEQUENCE IF NOT EXISTS gomoku_game_action_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE IF NOT EXISTS gomoku_game_action (
+  id BIGINT NOT NULL DEFAULT nextval('gomoku_game_action_id_seq'),
+  game_id BIGINT NOT NULL,
+  step_number INT NOT NULL,
+  action_number INT NOT NULL,
+  action_performed_by_player INT NOT NULL,
+  action_stone_type INT NULL,
+  board_before BYTEA NOT NULL,
+  game_phase INT NOT NULL,
+  stochastic_policy FLOAT [] NULL,
+  final_value FLOAT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (game_id) REFERENCES gomoku_game (id) ON DELETE CASCADE
+);
