@@ -67,7 +67,7 @@ class GomokuPlayerInterface {
 class GomokuGame {
   public:
     /**
-     * @brief GomokuGame Constructs a Gomoku game with the specified two players.
+     * @brief GomokuGame Constructs a Gomoku game with the two specified players.
      */
     GomokuGame(std::shared_ptr<GomokuPlayerInterface> const &player_a,
                std::shared_ptr<GomokuPlayerInterface> const &player_b);

@@ -119,7 +119,8 @@ struct GomokuAction {
 using GomokuActionId = int16_t;
 
 /**
- * @brief The GomokuActionRecord struct
+ * @brief The GomokuActionRecord struct Stores the information about an action made so as to keep
+ * track of the board history.
  */
 struct GomokuActionRecord {
     GamePhase const game_phase;
