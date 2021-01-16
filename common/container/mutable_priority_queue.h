@@ -50,6 +50,7 @@ template <typename ValueType, typename LessThan = std::less<ValueType>> class Mu
       public:
         ~iterator_base() = default;
 
+        iterator_base();
         iterator_base(HeapType *heap, Node *current_node);
         iterator_base(iterator_base const &other);
 
@@ -461,6 +462,12 @@ void MutablePriorityQueue<ValueType, LessThan>::apply_lazy_removal() const {
         --const_cast<MutablePriorityQueue<ValueType, LessThan> *>(this)->num_lazy_removals_;
     }
 }
+
+template <typename ValueType, typename LessThan>
+template <typename HeapType, typename IteratorValueType>
+MutablePriorityQueue<ValueType, LessThan>::iterator_base<HeapType,
+                                                         IteratorValueType>::iterator_base()
+    : heap_(nullptr), current_node_(nullptr) {}
 
 template <typename ValueType, typename LessThan>
 template <typename HeapType, typename IteratorValueType>
