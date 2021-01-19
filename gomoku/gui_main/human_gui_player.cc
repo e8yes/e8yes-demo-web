@@ -49,6 +49,10 @@ void HumanGuiPlayer::OnGomokuGameBegin(GomokuBoardState const &board_state) {
     main_window_->ScheduleDisableActionActionInput(board_state);
 }
 
+void HumanGuiPlayer::BeforeGomokuActionApplied(GomokuBoardState const & /*board_state*/,
+                                               PlayerSide const /*action_performed_by*/,
+                                               GomokuActionId const & /*incoming_action_id*/) {}
+
 void HumanGuiPlayer::AfterGomokuActionApplied(GomokuBoardState const &board_state) {
     main_window_->ScheduleDisableActionActionInput(board_state);
     main_window_->ScheduleUpdate(board_state);

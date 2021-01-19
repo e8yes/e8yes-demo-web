@@ -193,6 +193,11 @@ void MainWindow::Init(GomokuBoardState const &board_state, std::string const &pl
 void MainWindow::RenderGameState(GomokuBoardState const &board_state) {
     ClearLayout(gomoku_grid_.get());
 
+    if (board_state.LegalActions().empty()) {
+        this->RenderBoard(board_state);
+        return;
+    }
+
     GomokuAction const &sample_action = board_state.LegalActions().begin()->second;
     if (sample_action.stone_pos.has_value()) {
         this->RenderBoard(board_state);
@@ -391,7 +396,8 @@ void MainWindow::SetGomokuBoardLockState(GomokuBoardState const &board_state, bo
 }
 
 void MainWindow::SetSwap2ButtonsLockState(GomokuBoardState const &board_state, bool lock) {
-    if (!board_state.LegalActions().begin()->second.swap2_decision.has_value()) {
+    if (board_state.LegalActions().empty() ||
+        !board_state.LegalActions().begin()->second.swap2_decision.has_value()) {
         return;
     }
 
@@ -403,7 +409,8 @@ void MainWindow::SetSwap2ButtonsLockState(GomokuBoardState const &board_state, b
 }
 
 void MainWindow::SetStoneTypeButtonsLockState(GomokuBoardState const &board_state, bool lock) {
-    if (!board_state.LegalActions().begin()->second.stone_type_decision.has_value()) {
+    if (board_state.LegalActions().empty() ||
+        !board_state.LegalActions().begin()->second.stone_type_decision.has_value()) {
         return;
     }
 

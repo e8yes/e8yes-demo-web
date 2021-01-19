@@ -36,6 +36,10 @@ class HumanGuiPlayer : public GomokuPlayerInterface {
 
     void OnGomokuGameBegin(GomokuBoardState const &board_state) override;
 
+    void BeforeGomokuActionApplied(GomokuBoardState const &board_state,
+                                   PlayerSide const action_performed_by,
+                                   GomokuActionId const &incoming_action_id) override;
+
     void AfterGomokuActionApplied(GomokuBoardState const &board_state) override;
 
     void OnGameEnded(GomokuBoardState const &board_state) override;

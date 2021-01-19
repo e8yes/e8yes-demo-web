@@ -22,6 +22,7 @@
 
 #include "gomoku/agent/heuristics/evaluator.h"
 #include "gomoku/agent/mcts_agent_player.h"
+#include "gomoku/agent/search/mct_search.h"
 #include "gomoku/game/board_state.h"
 #include "gomoku/gui_main/main_window.h"
 
@@ -35,7 +36,7 @@ namespace e8 {
 class AgentGuiPlayer : public MctsAgentPlayer {
   public:
     AgentGuiPlayer(MainWindow *main_window, PlayerSide const player_side,
-                   std::shared_ptr<GomokuEvaluatorInterface> const &evaluator);
+                   std::shared_ptr<MctSearcher> const &searcher);
     ~AgentGuiPlayer() override = default;
 
     void OnGomokuGameBegin(GomokuBoardState const &board_state) override;

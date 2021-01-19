@@ -51,12 +51,12 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../common/random/ -lrandom
 INCLUDEPATH += $$PWD/../../common/random
 DEPENDPATH += $$PWD/../../common/random
 
-unix:!macx: LIBS += -L$$OUT_PWD/../gomoku_game/ -lgomoku_game
+unix:!macx: LIBS += -L$$OUT_PWD/../game/ -lgomoku_game
 
-INCLUDEPATH += $$PWD/../gomoku_game
-DEPENDPATH += $$PWD/../gomoku_game
+INCLUDEPATH += $$PWD/../game
+DEPENDPATH += $$PWD/../game
 
-unix:!macx: LIBS += -L$$OUT_PWD/../gomoku_agent/ -lgomoku_agent
+unix:!macx: LIBS += -L$$OUT_PWD/../agent/ -lgomoku_agent
 
-INCLUDEPATH += $$PWD/../gomoku_agent
-DEPENDPATH += $$PWD/../gomoku_agent
+INCLUDEPATH += $$PWD/../agent
+DEPENDPATH += $$PWD/../agent

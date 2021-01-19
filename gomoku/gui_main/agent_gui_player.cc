@@ -15,7 +15,9 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <chrono>
 #include <memory>
+#include <thread>
 
 #include "gomoku/agent/heuristics/evaluator.h"
 #include "gomoku/agent/mcts_agent_player.h"
@@ -26,10 +28,12 @@
 namespace e8 {
 
 AgentGuiPlayer::AgentGuiPlayer(MainWindow *main_window, PlayerSide const player_side,
-                               std::shared_ptr<GomokuEvaluatorInterface> const &evaluator)
-    : MctsAgentPlayer(evaluator), main_window_(main_window), player_side_(player_side) {}
+                               std::shared_ptr<MctSearcher> const &searcher)
+    : MctsAgentPlayer(searcher), main_window_(main_window), player_side_(player_side) {}
 
 void AgentGuiPlayer::OnGomokuGameBegin(GomokuBoardState const &board_state) {
+    MctsAgentPlayer::OnGomokuGameBegin(board_state);
+
     switch (player_side_) {
     case PS_PLAYER_A: {
         main_window_->ScheduleInit(board_state, "Player A");
@@ -45,12 +49,18 @@ void AgentGuiPlayer::OnGomokuGameBegin(GomokuBoardState const &board_state) {
 }
 
 void AgentGuiPlayer::AfterGomokuActionApplied(GomokuBoardState const &board_state) {
+    MctsAgentPlayer::AfterGomokuActionApplied(board_state);
+
     main_window_->ScheduleDisableActionActionInput(board_state);
     main_window_->ScheduleUpdate(board_state);
 }
 
 void AgentGuiPlayer::OnGameEnded(GomokuBoardState const &board_state) {
+    MctsAgentPlayer::OnGameEnded(board_state);
+
     main_window_->ScheduleGameEnding(board_state);
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 bool AgentGuiPlayer::WantAnotherGame() { return true; }

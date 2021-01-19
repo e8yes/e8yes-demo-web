@@ -20,6 +20,7 @@
 #include <thread>
 
 #include "gomoku/agent/heuristics/light_rollout_evaluator.h"
+#include "gomoku/agent/search/mct_search.h"
 #include "gomoku/game/board_state.h"
 #include "gomoku/game/game.h"
 #include "gomoku/gui_main/agent_gui_player.h"
@@ -27,20 +28,27 @@
 #include "gomoku/gui_main/main_window.h"
 
 void RunGame(e8::MainWindow *player_a_window, e8::MainWindow *player_b_window) {
+    auto searcher =
+        std::make_shared<e8::MctSearcher>(std::make_shared<e8::GomokuLightRolloutEvaluator>(),
+                                          /*print_stats=*/true);
+
     std::shared_ptr<e8::GomokuPlayerInterface> player_a =
         std::static_pointer_cast<e8::GomokuPlayerInterface>(std::make_shared<e8::AgentGuiPlayer>(
-            player_a_window, e8::PlayerSide::PS_PLAYER_A,
-            std::make_shared<e8::GomokuLightRolloutEvaluator>()));
+            player_a_window, e8::PlayerSide::PS_PLAYER_A, searcher));
+
+    std::shared_ptr<e8::GomokuPlayerInterface> player_b =
+        std::static_pointer_cast<e8::GomokuPlayerInterface>(std::make_shared<e8::AgentGuiPlayer>(
+            player_b_window, e8::PlayerSide::PS_PLAYER_B, searcher));
+
+    //    std::shared_ptr<e8::GomokuPlayerInterface> player_a =
+    //        std::static_pointer_cast<e8::GomokuPlayerInterface>(
+    //            std::make_shared<e8::HumanGuiPlayer>(player_a_window,
+    //            e8::PlayerSide::PS_PLAYER_A));
 
     //    std::shared_ptr<e8::GomokuPlayerInterface> player_b =
     //        std::static_pointer_cast<e8::GomokuPlayerInterface>(
     //            std::make_shared<e8::HumanGuiPlayer>(player_b_window,
     //            e8::PlayerSide::PS_PLAYER_B));
-
-    std::shared_ptr<e8::GomokuPlayerInterface> player_b =
-        std::static_pointer_cast<e8::GomokuPlayerInterface>(std::make_shared<e8::AgentGuiPlayer>(
-            player_b_window, e8::PlayerSide::PS_PLAYER_B,
-            std::make_shared<e8::GomokuLightRolloutEvaluator>()));
 
     e8::GomokuGame game(player_a, player_b);
 
