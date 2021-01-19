@@ -260,7 +260,7 @@ GameResult GomokuBoardState::ApplyAction(GomokuActionId const action_id,
                     game_result_ = GameResult::GR_PLAYER_B_WIN;
                     break;
                 }
-            } else if (max_connected_stones > 5 || this->LegalActions().empty()) {
+            } else if (max_connected_stones > 5 || this->LegalActions().size() == 1) {
                 game_result_ = GameResult::GR_TIE;
             }
         }
@@ -408,6 +408,7 @@ StoneState *GomokuBoardState::ChessPieceStateAt(MovePosition const &pos) {
 }
 
 StoneState const *GomokuBoardState::ChessPieceStateAt(MovePosition const &pos) const {
+    assert(pos.x >= 0 && pos.x < this->Width() && pos.y >= 0 && pos.y < this->Height());
     return &board_[pos.x + pos.y * width_];
 }
 
