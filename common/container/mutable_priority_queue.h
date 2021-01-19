@@ -76,7 +76,7 @@ template <typename ValueType, typename LessThan = std::less<ValueType>> class Mu
          * @param rhs Another iterator to take information from.
          * @return Reference to this class instance.
          */
-        iterator_base &operator=(iterator_base const &rhs) const;
+        iterator_base &operator=(iterator_base const &rhs);
 
         /**
          * @brief operator ++ Prefix increment. Moves the iterator to the next element. Note that,
@@ -101,7 +101,7 @@ template <typename ValueType, typename LessThan = std::less<ValueType>> class Mu
         IteratorValueType *operator->();
 
       public:
-        HeapType *const heap_;
+        HeapType *heap_;
         Node *current_node_;
     };
 
@@ -509,7 +509,7 @@ template <typename HeapType, typename IteratorValueType>
 typename MutablePriorityQueue<ValueType, LessThan>::template iterator_base<HeapType,
                                                                            IteratorValueType> &
 MutablePriorityQueue<ValueType, LessThan>::iterator_base<HeapType, IteratorValueType>::operator=(
-    iterator_base const &rhs) const {
+    iterator_base const &rhs) {
     heap_ = rhs.heap_;
     current_node_ = rhs.current_node_;
     return *this;
