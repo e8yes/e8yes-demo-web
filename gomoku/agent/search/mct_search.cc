@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cmath>
@@ -26,6 +27,8 @@
 #include <vector>
 
 #include "common/container/mutable_priority_queue.h"
+#include "common/random/random_source.h"
+#include "common/random/sample.h"
 #include "gomoku/agent/heuristics/evaluator.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/agent/search/mct_search.h"
@@ -40,9 +43,17 @@ struct EvaluationResult {
 
 float UpperConfidenceBound(float const exploration_factor, MctNode const &parent,
                            MctNode const &node) {
-    float q_value = node.summed_reward / (1.0f + node.num_bandit_pulls);
-    float uncertainty = exploration_factor * std::sqrt(1.0f + parent.num_bandit_pulls) /
-                        (1.0f + node.num_bandit_pulls);
+    float q_value;
+    float uncertainty;
+
+    if (node.num_bandit_pulls > 0) {
+        q_value = node.summed_reward / (node.num_bandit_pulls);
+        uncertainty = exploration_factor * std::sqrt(1.0f + parent.num_bandit_pulls) /
+                      (node.num_bandit_pulls);
+    } else {
+        q_value = 0.0f;
+        uncertainty = exploration_factor;
+    }
 
     assert(q_value < 1.05f && q_value > -1.05f);
     assert(!std::isinf(q_value));
@@ -57,8 +68,8 @@ void UpdateMctNode(EvaluationResult const &eval, float const exploration_factor,
                    MctNode *node) {
     assert(node->action_performed_by.has_value());
     node->summed_reward += eval.reward_viewed_by_player[*node->action_performed_by];
-    node->upper_confidence_bound = UpperConfidenceBound(exploration_factor, *parent, *node);
     node->num_bandit_pulls += 1;
+    node->upper_confidence_bound = UpperConfidenceBound(exploration_factor, *parent, *node);
 }
 
 void BackPropagate(EvaluationResult const &eval, float const exploration_factor,
@@ -97,8 +108,7 @@ EvaluationResult Evaluate(GomokuBoardState const &state, MctNode const &state_mc
         break;
     }
     case GR_UNDETERMINED: {
-        float est_reward =
-            evaluator->EvaluateReward(state, reinterpret_cast<GomokuStateId>(&state_mct_node));
+        float est_reward = evaluator->EvaluateReward(state, state_mct_node.id);
 
         assert(est_reward < 1.05f && est_reward > -1.05f);
         assert(!std::isinf(est_reward));
@@ -115,7 +125,7 @@ EvaluationResult Evaluate(GomokuBoardState const &state, MctNode const &state_mc
 
 void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *evaluator) {
     std::unordered_map<GomokuActionId, float> heuristics_policy =
-        evaluator->EvaluatePolicy(*state, reinterpret_cast<GomokuStateId>(root));
+        evaluator->EvaluatePolicy(*state, root->id);
     PlayerSide const action_performer = state->CurrentPlayerSide();
 
     std::unordered_map<GomokuActionId, GomokuAction> actions = state->LegalActions();
@@ -127,7 +137,8 @@ void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *ev
         auto policy_weight_it = heuristics_policy.find(action_id);
         assert(policy_weight_it != heuristics_policy.end());
 
-        MctNode child(action_id, action_performer, game_result, policy_weight_it->second);
+        MctNodeId const node_id = AllocateMctNodeId();
+        MctNode child(node_id, action_id, action_performer, game_result, policy_weight_it->second);
         child.upper_confidence_bound =
             UpperConfidenceBound(evaluator->ExplorationFactor(), *root, child);
         root->children.push(child);
@@ -159,13 +170,15 @@ void SelectFrom(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface
     state->RetractAction();
 }
 
-std::unordered_map<GomokuActionId, float> ExtractStochasticPolicy(MctNode const &root) {
+std::unordered_map<GomokuActionId, float> ExtractStochasticPolicy(MctNode const &root,
+                                                                  float const temperature) {
     std::unordered_map<GomokuActionId, float> policy(root.children.size());
     unsigned total_num_bandit_pulls = 0;
     for (auto const &child : root.children) {
         assert(child.arrived_thru_action_id.has_value());
-        policy[*child.arrived_thru_action_id] = child.num_bandit_pulls;
-        total_num_bandit_pulls += child.num_bandit_pulls;
+        float exp_count = std::pow(child.num_bandit_pulls, 1 / temperature);
+        policy[*child.arrived_thru_action_id] = exp_count;
+        total_num_bandit_pulls += exp_count;
     }
 
     assert(total_num_bandit_pulls > 0);
@@ -231,39 +244,85 @@ void PrintMctsStats(MctNode const &root, GomokuBoardState const &state) {
 
 } // namespace
 
-std::unordered_map<GomokuActionId, float>
-MctSearchFrom(GomokuBoardState state, GomokuEvaluatorInterface *evaluator, bool const print_stats) {
-    evaluator->ClearCache();
-
-    MutablePriorityQueue<MctNode> root;
-    root.push(MctNode(
-        /*arrived_thru_action_id=*/std::nullopt, /*action_performed_by=*/std::nullopt,
-        state.CurrentGameResult(),
-        /*heuristic_policy_weight=*/std::numeric_limits<float>::infinity()));
-
-    std::vector<MutablePriorityQueue<MctNode>::iterator> propagation_path{root.begin()};
-    for (unsigned i = 0; i < evaluator->NumSimulations(); ++i) {
-        SelectFrom(&(*root.begin()), &state, evaluator, &propagation_path);
-    }
-
-    if (print_stats) {
-        PrintMctsStats(*root.begin(), state);
-    }
-
-    return ExtractStochasticPolicy(*root.begin());
+MctSearcher::MctSearcher(std::shared_ptr<GomokuEvaluatorInterface> const &evaluator,
+                         bool const print_stats)
+    : evaluator_(evaluator), print_stats_(print_stats) {
+    this->Reset();
 }
 
-GomokuActionId BestAction(std::unordered_map<GomokuActionId, float> const &optimal_policy) {
-    assert(!optimal_policy.empty());
-    GomokuActionId best_action = -1;
-    float best_p = -1.0f;
-    for (auto const &[action_id, p] : optimal_policy) {
-        if (p > best_p) {
-            best_action = action_id;
-            best_p = p;
+MutablePriorityQueue<MctNode>::iterator MctSearcher::Root() {
+    assert(!root_.empty());
+    return root_.begin();
+}
+
+std::unordered_map<GomokuActionId, float>
+MctSearcher::SearchFrom(GomokuBoardState state, MutablePriorityQueue<MctNode>::iterator *node,
+                        float const temperature) {
+    evaluator_->ClearCache();
+
+    MutablePriorityQueue<MctNode>::iterator *root = node;
+
+    std::vector<MutablePriorityQueue<MctNode>::iterator> propagation_path{*root};
+    for (unsigned i = 0; i < evaluator_->NumSimulations(); ++i) {
+        SelectFrom(&(**root), &state, evaluator_.get(), &propagation_path);
+    }
+
+    if (print_stats_) {
+        PrintMctsStats(**root, state);
+    }
+
+    return ExtractStochasticPolicy(**root, temperature);
+}
+
+MutablePriorityQueue<MctNode>::iterator
+MctSearcher::SelectAction(MutablePriorityQueue<MctNode>::iterator from_state_node,
+                          GomokuBoardState state, GomokuActionId const action_id) {
+    assert(state.LegalActions().find(action_id) != state.LegalActions().end());
+
+    if (from_state_node->children.empty()) {
+        Expand(&(*from_state_node), &state, evaluator_.get());
+    }
+
+    MutablePriorityQueue<MctNode>::iterator result;
+    for (auto it = from_state_node->children.begin(); it != from_state_node->children.end(); ++it) {
+        assert(it->arrived_thru_action_id.has_value());
+        if (*it->arrived_thru_action_id == action_id) {
+            result = it;
+        } else {
+            it->children.clear();
         }
     }
-    return best_action;
+    return result;
+}
+
+void MctSearcher::Reset() {
+    root_.clear();
+    MctNodeId const node_id = AllocateMctNodeId();
+    root_.push(MctNode(node_id,
+                       /*arrived_thru_action_id=*/std::nullopt,
+                       /*action_performed_by=*/std::nullopt,
+                       /*game_result=*/GameResult::GR_UNDETERMINED,
+                       /*heuristic_policy_weight=*/std::numeric_limits<float>::infinity()));
+}
+
+GomokuActionId BestAction(std::unordered_map<GomokuActionId, float> const &policy) {
+    // Find the action.
+    auto it = std::max_element(
+        policy.begin(), policy.end(),
+        [](std::pair<GomokuActionId, float> const &a, std::pair<GomokuActionId, float> const &b) {
+            return a.second < b.second;
+        });
+    assert(it != policy.end());
+
+    // Constructs the selection.
+    GomokuActionId selected_action_id = it->first;
+    return selected_action_id;
+}
+
+GomokuActionId SampleAction(std::unordered_map<GomokuActionId, float> const &policy,
+                            RandomSource *random_source) {
+    GomokuActionId selected_action_id = SampleFrom(policy, random_source);
+    return selected_action_id;
 }
 
 } // namespace e8

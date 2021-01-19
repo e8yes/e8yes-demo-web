@@ -28,6 +28,7 @@
 #include "common/thread/thread_pool.h"
 #include "gomoku/agent/heuristics/evaluator.h"
 #include "gomoku/agent/heuristics/light_rollout_evaluator.h"
+#include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 
 namespace e8 {
@@ -110,10 +111,9 @@ std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board) {
 
 namespace {
 
-unsigned const kNumQValueSamples = 1024;
-unsigned const kEarlyGameMaxSimulationSteps = 9;
-unsigned const kMidGameMaxSimulationSteps = 7;
-unsigned const kLateGameMaxSimulationSteps = 6;
+unsigned const kNumQValueSamples = 512;
+unsigned const kMaxSimulationSteps = 8;
+float const kRewardDiscount = 0.75f;
 
 class RolloutData : public TaskStorageInterface {
   public:
@@ -144,13 +144,7 @@ RolloutData::RolloutData(
     unsigned const num_samples, unsigned const job_idx)
     : board_(board), original_copy_(contour), random_source_(31 * (job_idx + 47128)),
       num_wins_({0, 0}), num_samples_(num_samples) {
-    if (board_.History().size() <= 5) {
-        max_sim_steps_ = kEarlyGameMaxSimulationSteps;
-    } else if (board_.History().size() <= 9) {
-        max_sim_steps_ = kMidGameMaxSimulationSteps;
-    } else {
-        max_sim_steps_ = kLateGameMaxSimulationSteps;
-    }
+    max_sim_steps_ = kMaxSimulationSteps;
 }
 
 void RolloutData::Init() {
@@ -190,6 +184,11 @@ SelectRandomMoveFromContour(light_rollout_evaluator_internal::BoardContour const
 bool RolloutData::SampleNext() {
     ++num_steps_;
 
+    if (contour_.positions.empty()) {
+        // Can't make any more moves.
+        return false;
+    }
+
     MovePosition selected_move = SelectRandomMoveFromContour(contour_, &random_source_);
     assert(selected_move.x >= 0 && selected_move.x < board_.Width());
     assert(selected_move.y >= 0 && selected_move.y < board_.Height());
@@ -200,13 +199,15 @@ bool RolloutData::SampleNext() {
 
     switch (game_result) {
     case GR_TIE: {
-        ++num_wins_[PlayerSide::PS_PLAYER_A];
-        ++num_wins_[PlayerSide::PS_PLAYER_B];
+        float discounted_reward = std::pow(kRewardDiscount, num_steps_ - 1);
+        num_wins_[PlayerSide::PS_PLAYER_A] = discounted_reward;
+        num_wins_[PlayerSide::PS_PLAYER_B] = discounted_reward;
         return false;
     }
     case GR_PLAYER_A_WIN:
     case GR_PLAYER_B_WIN: {
-        ++num_wins_[(board_.CurrentPlayerSide() + 1) & 1];
+        float discounted_reward = std::pow(kRewardDiscount, num_steps_ - 1);
+        num_wins_[(board_.CurrentPlayerSide() + 1) & 1] = discounted_reward;
         return false;
     }
     case GR_UNDETERMINED: {
@@ -249,26 +250,24 @@ bool RolloutTask::DropResourceOnCompletion() const { return false; }
 struct GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal {
     ThreadPool thread_pool;
     RandomSource random_source;
-    std::unordered_map<GomokuStateId,
-                       std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>
+    std::unordered_map<MctNodeId, std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>
         contour_cache;
 
     GomokuLightRolloutEvaluatorInternal();
 
     std::unordered_map<
-        GomokuStateId,
-        std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>::const_iterator
-    FetchContour(GomokuStateId const state_id, GomokuBoardState const &state);
+        MctNodeId, std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>::const_iterator
+    FetchContour(MctNodeId const state_id, GomokuBoardState const &state);
 };
 
 GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal::
     GomokuLightRolloutEvaluatorInternal()
     : random_source(13) {}
 
-std::unordered_map<GomokuStateId,
+std::unordered_map<MctNodeId,
                    std::shared_ptr<light_rollout_evaluator_internal::BoardContour>>::const_iterator
 GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluatorInternal::FetchContour(
-    GomokuStateId const state_id, GomokuBoardState const &state) {
+    MctNodeId const state_id, GomokuBoardState const &state) {
     auto contour_cache_it = contour_cache.find(state_id);
     if (contour_cache_it == contour_cache.end()) {
         std::shared_ptr<light_rollout_evaluator_internal::BoardContour> contour =
@@ -285,7 +284,7 @@ GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluator()
 GomokuLightRolloutEvaluator::~GomokuLightRolloutEvaluator() {}
 
 float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
-                                                  GomokuStateId const state_id) {
+                                                  MctNodeId const state_id) {
     float q_value;
 
     switch (state.CurrentGamePhase()) {
@@ -342,7 +341,7 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
 
 std::unordered_map<GomokuActionId, float>
 GomokuLightRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
-                                            GomokuStateId const state_id) {
+                                            MctNodeId const state_id) {
     std::unordered_map<GomokuActionId, float> policy;
 
     switch (state.CurrentGamePhase()) {

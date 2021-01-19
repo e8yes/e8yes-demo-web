@@ -21,11 +21,10 @@
 #include <cstdint>
 #include <unordered_map>
 
+#include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 
 namespace e8 {
-
-using GomokuStateId = int64_t;
 
 /**
  * @brief The GomokuEvaluatorInterface class A gomoku agent heuristics is responsible for
@@ -42,7 +41,7 @@ class GomokuEvaluatorInterface {
      *
      * @param state_id Different states are guaranteed to have different state_id.
      */
-    virtual float EvaluateReward(GomokuBoardState const &state, GomokuStateId const state_id) = 0;
+    virtual float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) = 0;
 
     /**
      * @brief EvaluatePolicy Estimate the optimal policy for the set of legal actions in the
@@ -50,8 +49,8 @@ class GomokuEvaluatorInterface {
      *
      * @param state_id Different states are guaranteed to have different state_id.
      */
-    virtual std::unordered_map<GomokuActionId, float>
-    EvaluatePolicy(GomokuBoardState const &state, GomokuStateId const state_id) = 0;
+    virtual std::unordered_map<GomokuActionId, float> EvaluatePolicy(GomokuBoardState const &state,
+                                                                     MctNodeId const state_id) = 0;
 
     /**
      * @brief ExplorationFactor How exaggerated the upper confidence bound should it be for this

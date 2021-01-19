@@ -24,6 +24,7 @@
 
 #include "common/thread/thread_pool.h"
 #include "gomoku/agent/heuristics/evaluator.h"
+#include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 
 namespace e8 {
@@ -46,10 +47,10 @@ class GomokuLightRolloutEvaluator : public GomokuEvaluatorInterface {
     GomokuLightRolloutEvaluator();
     ~GomokuLightRolloutEvaluator();
 
-    float EvaluateReward(GomokuBoardState const &state, GomokuStateId const state_id) override;
+    float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) override;
 
     std::unordered_map<GomokuActionId, float> EvaluatePolicy(GomokuBoardState const &state,
-                                                             GomokuStateId const state_id) override;
+                                                             MctNodeId const state_id) override;
 
     float ExplorationFactor() const override;
 

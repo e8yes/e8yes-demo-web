@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <mutex>
 #include <optional>
 
 #include "common/container/mutable_priority_queue.h"
@@ -22,17 +23,32 @@
 #include "gomoku/game/board_state.h"
 
 namespace e8 {
+namespace {
 
-MctNode::MctNode() : game_result(GR_UNDETERMINED), heuristic_policy_weight(-1.0f) {}
+std::mutex gNextNodeIdLock;
+MctNodeId gNextNodeId = 1;
 
-MctNode::MctNode(std::optional<GomokuActionId> const arrived_thru_action_id,
+} // namespace
+
+MctNode::MctNode() : id(0), game_result(GR_UNDETERMINED), heuristic_policy_weight(-1.0f) {}
+
+MctNode::MctNode(MctNodeId const id, std::optional<GomokuActionId> const arrived_thru_action_id,
                  std::optional<PlayerSide> const action_performed_by, GameResult const game_result,
                  float const heuristic_policy_weight)
-    : arrived_thru_action_id(arrived_thru_action_id), action_performed_by(action_performed_by),
-      game_result(game_result), heuristic_policy_weight(heuristic_policy_weight) {}
+    : id(id), arrived_thru_action_id(arrived_thru_action_id),
+      action_performed_by(action_performed_by), game_result(game_result),
+      heuristic_policy_weight(heuristic_policy_weight) {}
 
 bool MctNode::operator<(MctNode const &rhs) const {
     return upper_confidence_bound < rhs.upper_confidence_bound;
+}
+
+MctNodeId AllocateMctNodeId() {
+    gNextNodeIdLock.lock();
+    MctNodeId allocation = gNextNodeId++;
+    gNextNodeIdLock.unlock();
+
+    return allocation;
 }
 
 } // namespace e8

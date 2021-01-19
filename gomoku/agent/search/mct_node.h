@@ -18,6 +18,7 @@
 #ifndef MCT_NODE_H
 #define MCT_NODE_H
 
+#include <cstdint>
 #include <optional>
 
 #include "common/container/mutable_priority_queue.h"
@@ -25,11 +26,17 @@
 
 namespace e8 {
 
+// The number zero is reserved. Any valid ID should not be a zero value.
+using MctNodeId = int64_t;
+
 /**
  * @brief The MctNode struct An abstract game state which stores statistics and action information
  * during monte carlo tree search.
  */
 struct MctNode {
+    // This id should be unique in the entire search tree.
+    MctNodeId const id;
+
     std::optional<GomokuActionId> const arrived_thru_action_id;
     std::optional<PlayerSide> const action_performed_by;
 
@@ -59,6 +66,7 @@ struct MctNode {
     /**
      * @brief MctNode The only valid constructor.
      *
+     * @param id Uhique identity in the entire search tree.
      * @param arrived_thru_action_id How did the current state arrive from the parent state. Set
      * this to nullopt if it's a the root state.
      * @param action_performed_by Which player performed the action. Set this ot nullopt if it's the
@@ -67,7 +75,7 @@ struct MctNode {
      * @param heuristic_policy_weight Policy weight given by the heuristics used to rank the action
      * leading to the current state.
      */
-    MctNode(std::optional<GomokuActionId> const arrived_thru_action_id,
+    MctNode(MctNodeId const id, std::optional<GomokuActionId> const arrived_thru_action_id,
             std::optional<PlayerSide> const action_performed_by, GameResult const game_result,
             float const heuristic_policy_weight);
 
@@ -80,6 +88,12 @@ struct MctNode {
      */
     bool operator<(MctNode const &rhs) const;
 };
+
+/**
+ * @brief AllocateMctNodeId Allocate a node ID which will be unique over the lifetime of the
+ * process.
+ */
+MctNodeId AllocateMctNodeId();
 
 } // namespace e8
 
