@@ -123,7 +123,7 @@ class RolloutData : public TaskStorageInterface {
 
     void Init();
     bool SampleNext();
-    unsigned AccumulatedWinsFor(PlayerSide const stone_type) const;
+    float AccumulatedRewardFor(PlayerSide const stone_type) const;
     unsigned NumSamples() const;
 
   private:
@@ -132,7 +132,7 @@ class RolloutData : public TaskStorageInterface {
     RandomSource random_source_;
 
     light_rollout_evaluator_internal::BoardContour contour_;
-    std::array<unsigned, 2> num_wins_;
+    std::array<float, 2> reward_;
     unsigned num_steps_ = 0;
     unsigned const num_samples_;
     unsigned max_sim_steps_;
@@ -143,7 +143,7 @@ RolloutData::RolloutData(
     std::shared_ptr<light_rollout_evaluator_internal::BoardContour> const &contour,
     unsigned const num_samples, unsigned const job_idx)
     : board_(board), original_copy_(contour), random_source_(31 * (job_idx + 47128)),
-      num_wins_({0, 0}), num_samples_(num_samples) {
+      reward_({0, 0}), num_samples_(num_samples) {
     max_sim_steps_ = kMaxSimulationSteps;
 }
 
@@ -200,14 +200,14 @@ bool RolloutData::SampleNext() {
     switch (game_result) {
     case GR_TIE: {
         float discounted_reward = std::pow(kRewardDiscount, num_steps_ - 1);
-        num_wins_[PlayerSide::PS_PLAYER_A] = discounted_reward;
-        num_wins_[PlayerSide::PS_PLAYER_B] = discounted_reward;
+        reward_[PlayerSide::PS_PLAYER_A] = discounted_reward;
+        reward_[PlayerSide::PS_PLAYER_B] = discounted_reward;
         return false;
     }
     case GR_PLAYER_A_WIN:
     case GR_PLAYER_B_WIN: {
         float discounted_reward = std::pow(kRewardDiscount, num_steps_ - 1);
-        num_wins_[(board_.CurrentPlayerSide() + 1) & 1] = discounted_reward;
+        reward_[(board_.CurrentPlayerSide() + 1) & 1] = discounted_reward;
         return false;
     }
     case GR_UNDETERMINED: {
@@ -220,8 +220,8 @@ bool RolloutData::SampleNext() {
     }
 }
 
-unsigned RolloutData::AccumulatedWinsFor(PlayerSide const player_side) const {
-    return num_wins_[player_side];
+float RolloutData::AccumulatedRewardFor(PlayerSide const player_side) const {
+    return reward_[player_side];
 }
 
 unsigned RolloutData::NumSamples() const { return num_samples_; }
@@ -308,22 +308,22 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
             pimpl_->thread_pool.Schedule(task, std::move(rollout_data));
         }
 
-        float accumulated_reward = 0.0f;
-        unsigned num_valid_samples = 0;
+        float reward_diff = 0.0f;
+        float total_reward = 0.0f;
         for (unsigned i = 0; i < num_parallelism; ++i) {
             std::unique_ptr<TaskStorageInterface> rollout_data =
                 pimpl_->thread_pool.WaitForNextCompleted();
-            int wins = static_cast<RolloutData *>(rollout_data.get())
-                           ->AccumulatedWinsFor(state.CurrentPlayerSide());
-            int losses = static_cast<RolloutData *>(rollout_data.get())
-                             ->AccumulatedWinsFor(static_cast<PlayerSide>(
-                                 (static_cast<int>(state.CurrentPlayerSide()) + 1) & 1));
-            accumulated_reward += wins - losses;
-            num_valid_samples += wins + losses;
+            float wins = static_cast<RolloutData *>(rollout_data.get())
+                             ->AccumulatedRewardFor(state.CurrentPlayerSide());
+            float losses = static_cast<RolloutData *>(rollout_data.get())
+                               ->AccumulatedRewardFor(static_cast<PlayerSide>(
+                                   (static_cast<int>(state.CurrentPlayerSide()) + 1) & 1));
+            reward_diff += wins - losses;
+            total_reward += wins + losses;
         }
 
-        if (num_valid_samples > 0) {
-            q_value = accumulated_reward / num_valid_samples;
+        if (total_reward > 0) {
+            q_value = reward_diff / total_reward;
 
             assert(q_value < 1.05f && q_value > -1.05f);
             assert(!std::isinf(q_value));
