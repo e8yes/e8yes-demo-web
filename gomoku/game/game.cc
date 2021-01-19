@@ -56,6 +56,10 @@ void GomokuGame::Start() {
             }
 
             GomokuActionId action_id = current_player->NextPlayerAction(board);
+
+            player_a_->BeforeGomokuActionApplied(board, board.CurrentPlayerSide(), action_id);
+            player_b_->BeforeGomokuActionApplied(board, board.CurrentPlayerSide(), action_id);
+
             game_result = board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
 
             player_a_->AfterGomokuActionApplied(board);

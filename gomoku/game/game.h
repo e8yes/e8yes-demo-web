@@ -43,6 +43,14 @@ class GomokuPlayerInterface {
     virtual void OnGomokuGameBegin(GomokuBoardState const &board_state) = 0;
 
     /**
+     * @brief BeforeGomokuActionApplied Player will be notified before a new action is going to be
+     * applied to the board.
+     */
+    virtual void BeforeGomokuActionApplied(GomokuBoardState const &board_state,
+                                           PlayerSide const action_performed_by,
+                                           GomokuActionId const &incoming_action_id) = 0;
+
+    /**
      * @brief AfterGomokuActionApplied Player will be notified when a new action is applied to the
      * board.
      */
