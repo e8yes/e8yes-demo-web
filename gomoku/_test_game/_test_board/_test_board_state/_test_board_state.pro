@@ -20,7 +20,7 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/unit_test_util/ -lunit_test_u
 INCLUDEPATH += $$PWD/../../../../common/unit_test_util
 DEPENDPATH += $$PWD/../../../../common/unit_test_util
 
-unix:!macx: LIBS += -L$$OUT_PWD/../../../gomoku_game/ -lgomoku_game
+unix:!macx: LIBS += -L$$OUT_PWD/../../../game/ -lgomoku_game
 
-INCLUDEPATH += $$PWD/../../../gomoku_game
-DEPENDPATH += $$PWD/../../../gomoku_game
+INCLUDEPATH += $$PWD/../../../game
+DEPENDPATH += $$PWD/../../../game
