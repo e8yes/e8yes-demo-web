@@ -18,11 +18,13 @@ INCLUDEPATH += $$PWD/../../
 SOURCES += \
     random_distribution.cc \
     random_source.cc \
+    sample.cc \
     uniform_distribution.cc
 
 HEADERS += \
     random_distribution.h \
     random_source.h \
+    sample.h \
     uniform_distribution.h
 
 # Default rules for deployment.
