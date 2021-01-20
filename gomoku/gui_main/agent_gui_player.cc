@@ -29,7 +29,8 @@ namespace e8 {
 
 AgentGuiPlayer::AgentGuiPlayer(MainWindow *main_window, PlayerSide const player_side,
                                std::shared_ptr<MctSearcher> const &searcher)
-    : MctsAgentPlayer(searcher), main_window_(main_window), player_side_(player_side) {}
+    : MctsAgentPlayer(player_side, searcher), main_window_(main_window), player_side_(player_side) {
+}
 
 void AgentGuiPlayer::OnGomokuGameBegin(GomokuBoardState const &board_state) {
     MctsAgentPlayer::OnGomokuGameBegin(board_state);

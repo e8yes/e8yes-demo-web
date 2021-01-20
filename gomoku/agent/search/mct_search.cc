@@ -250,17 +250,12 @@ MctSearcher::MctSearcher(std::shared_ptr<GomokuEvaluatorInterface> const &evalua
     this->Reset();
 }
 
-MutablePriorityQueue<MctNode>::iterator MctSearcher::Root() {
-    assert(!root_.empty());
-    return root_.begin();
-}
-
-std::unordered_map<GomokuActionId, float>
-MctSearcher::SearchFrom(GomokuBoardState state, MutablePriorityQueue<MctNode>::iterator *node,
-                        float const temperature) {
+std::unordered_map<GomokuActionId, float> MctSearcher::SearchFrom(GomokuBoardState state,
+                                                                  float const temperature) {
+    assert(current_node_it_.has_value());
     evaluator_->ClearCache();
 
-    MutablePriorityQueue<MctNode>::iterator *root = node;
+    MutablePriorityQueue<MctNode>::iterator *root = &current_node_it_.value();
 
     std::vector<MutablePriorityQueue<MctNode>::iterator> propagation_path{*root};
     for (unsigned i = 0; i < evaluator_->NumSimulations(); ++i) {
@@ -274,35 +269,39 @@ MctSearcher::SearchFrom(GomokuBoardState state, MutablePriorityQueue<MctNode>::i
     return ExtractStochasticPolicy(**root, temperature);
 }
 
-MutablePriorityQueue<MctNode>::iterator
-MctSearcher::SelectAction(MutablePriorityQueue<MctNode>::iterator from_state_node,
-                          GomokuBoardState state, GomokuActionId const action_id) {
+void MctSearcher::SelectAction(GomokuBoardState state, GomokuActionId const action_id) {
+    assert(current_node_it_.has_value());
     assert(state.LegalActions().find(action_id) != state.LegalActions().end());
 
-    if (from_state_node->children.empty()) {
-        Expand(&(*from_state_node), &state, evaluator_.get());
+    if (current_node_it_.value()->children.empty()) {
+        Expand(&(*current_node_it_.value()), &state, evaluator_.get());
     }
 
-    MutablePriorityQueue<MctNode>::iterator result;
-    for (auto it = from_state_node->children.begin(); it != from_state_node->children.end(); ++it) {
+    MutablePriorityQueue<MctNode>::iterator next_node;
+    for (auto it = current_node_it_.value()->children.begin();
+         it != current_node_it_.value()->children.end(); ++it) {
         assert(it->arrived_thru_action_id.has_value());
         if (*it->arrived_thru_action_id == action_id) {
-            result = it;
+            next_node = it;
         } else {
             it->children.clear();
         }
     }
-    return result;
+
+    current_node_it_ = next_node;
 }
 
 void MctSearcher::Reset() {
     root_.clear();
+
     MctNodeId const node_id = AllocateMctNodeId();
     root_.push(MctNode(node_id,
                        /*arrived_thru_action_id=*/std::nullopt,
                        /*action_performed_by=*/std::nullopt,
                        /*game_result=*/GameResult::GR_UNDETERMINED,
                        /*heuristic_policy_weight=*/std::numeric_limits<float>::infinity()));
+
+    current_node_it_ = root_.begin();
 }
 
 GomokuActionId BestAction(std::unordered_map<GomokuActionId, float> const &policy) {

@@ -20,7 +20,6 @@
 #include <optional>
 #include <unordered_map>
 
-#include "common/container/mutable_priority_queue.h"
 #include "gomoku/agent/heuristics/evaluator.h"
 #include "gomoku/agent/mcts_agent_player.h"
 #include "gomoku/agent/search/mct_node.h"
@@ -30,27 +29,27 @@
 
 namespace e8 {
 
-MctsAgentPlayer::MctsAgentPlayer(std::shared_ptr<MctSearcher> const &searcher)
-    : searcher_(searcher) {}
+MctsAgentPlayer::MctsAgentPlayer(PlayerSide const player_side,
+                                 std::shared_ptr<MctSearcher> const &searcher)
+    : player_side_(player_side), searcher_(searcher) {}
 
 void MctsAgentPlayer::OnGomokuGameBegin(GomokuBoardState const & /*board_state*/) {
     searcher_->Reset();
-    current_node_it_ = searcher_->Root();
 }
 
 GomokuActionId MctsAgentPlayer::NextPlayerAction(GomokuBoardState const &board_state) {
-    assert(current_node_it_.has_value());
-
     std::unordered_map<GomokuActionId, float> optimal_policy =
-        searcher_->SearchFrom(board_state, &current_node_it_.value(), /*temperature=*/1.0f);
+        searcher_->SearchFrom(board_state, /*temperature=*/1.0f);
 
     return BestAction(optimal_policy);
 }
 
 void MctsAgentPlayer::BeforeGomokuActionApplied(GomokuBoardState const &board_state,
-                                                PlayerSide const /*action_performed_by*/,
+                                                PlayerSide const action_performed_by,
                                                 GomokuActionId const &incoming_action_id) {
-    current_node_it_ = searcher_->SelectAction(*current_node_it_, board_state, incoming_action_id);
+    if (action_performed_by == player_side_) {
+        searcher_->SelectAction(board_state, incoming_action_id);
+    }
 }
 
 void MctsAgentPlayer::AfterGomokuActionApplied(GomokuBoardState const & /*board_state*/) {}

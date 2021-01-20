@@ -19,6 +19,7 @@
 #define MCT_SEARCH_H
 
 #include <memory>
+#include <optional>
 #include <unordered_map>
 
 #include "common/container/mutable_priority_queue.h"
@@ -48,46 +49,39 @@ class MctSearcher {
     ~MctSearcher() = default;
 
     /**
-     * @brief Root Iterator to the root MctNode of the entire search tree. This value can be used to
-     * initiate the first SearchFrom call.
+     * @brief Reset Clear the existing search tree if there is one. All the currently holding
+     * iterators will be invalidated. Then point the internal tree node iterator to the new root.
      */
-    MutablePriorityQueue<MctNode>::iterator Root();
+    void Reset();
 
     /**
      * @brief SearchFrom Calculate a stochastically optimal policy for the specified board state
-     * with the help of the heuristics.
+     * with the help of the heuristics. The internal tree node tterator must correspond to the
+     * internal board state. Synchronize the internal tree node by calling SelectAction() to
+     * transition the tree node state through actions.
      *
      * @param state Board state to search from.
-     * @param node Iterator to the MctNode which corresponding to the board state.
      * @param temperature Controls how "flat" the output policy distribution should be. The
      * resulting policy PMF is normalized as policy_pmf[action_id] =
      * visit_count[action_id]^(1/temperature) / sum(visit_count[action_id]^(1/temperature))
      * @return A stochastic policy.
      */
-    std::unordered_map<GomokuActionId, float>
-    SearchFrom(GomokuBoardState state, MutablePriorityQueue<MctNode>::iterator *node,
-               float const temperature);
+    std::unordered_map<GomokuActionId, float> SearchFrom(GomokuBoardState state,
+                                                         float const temperature);
 
     /**
-     * @brief SelectAction Explicitly transition to a state. If the specified from_state_node has
+     * @brief SelectAction Explicitly transition to a state. If the internal from_state_node has
      * not yet expanded by the MctSearcher's SearchFrom() call, this function will force an
      * expansion with policy evaluation even though the selection has nothing to do with the
      * heuristic policy. The transition will free the memory allocated for the rest of the children.
      *
      * @param from_state_node The parent node to transition from.
      */
-    MutablePriorityQueue<MctNode>::iterator
-    SelectAction(MutablePriorityQueue<MctNode>::iterator from_state_node, GomokuBoardState state,
-                 GomokuActionId const action_id);
-
-    /**
-     * @brief Reset Clear the existing search tree if there is one. All the currently holding
-     * iterators will be invalidated.
-     */
-    void Reset();
+    void SelectAction(GomokuBoardState state, GomokuActionId const action_id);
 
   private:
     MutablePriorityQueue<MctNode> root_;
+    std::optional<MutablePriorityQueue<MctNode>::iterator> current_node_it_;
     std::shared_ptr<GomokuEvaluatorInterface> evaluator_;
     bool const print_stats_;
 };

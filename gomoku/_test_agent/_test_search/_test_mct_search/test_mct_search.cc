@@ -19,7 +19,6 @@
 #include <optional>
 #include <unordered_map>
 
-#include "common/container/mutable_priority_queue.h"
 #include "common/unit_test_util/unit_test_util.h"
 #include "gomoku/agent/heuristics/light_rollout_evaluator.h"
 #include "gomoku/agent/search/mct_search.h"
@@ -29,7 +28,6 @@ bool Test1() {
     auto evaluator = std::make_shared<e8::GomokuLightRolloutEvaluator>();
     e8::MctSearcher searcher(std::static_pointer_cast<e8::GomokuEvaluatorInterface>(evaluator),
                              /*print_stats=*/true);
-    e8::MutablePriorityQueue<e8::MctNode>::iterator node = searcher.Root();
 
     // - - - - - - - - - - -
     // - - - - - - - - - - -
@@ -44,28 +42,28 @@ bool Test1() {
     // - - - - - - - - - - -
     e8::GomokuBoardState board(/*width=*/11, /*height=*/11);
     e8::GomokuActionId action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/3, /*y=*/6));
-    node = searcher.SelectAction(node, board, action_id);
+    searcher.SelectAction(board, action_id);
     board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
 
     action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/3));
-    node = searcher.SelectAction(node, board, action_id);
+    searcher.SelectAction(board, action_id);
     board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
 
     action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/9, /*y=*/7));
-    node = searcher.SelectAction(node, board, action_id);
+    searcher.SelectAction(board, action_id);
     board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
 
     action_id = board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_WHITE);
-    node = searcher.SelectAction(node, board, action_id);
+    searcher.SelectAction(board, action_id);
     board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
 
     action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/9, /*y=*/6));
-    node = searcher.SelectAction(node, board, action_id);
+    searcher.SelectAction(board, action_id);
     board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
 
     e8::GomokuLightRolloutEvaluator eval;
     std::unordered_map<e8::GomokuActionId, float> policy =
-        searcher.SearchFrom(board, &node, /*temperature=*/1.0f);
+        searcher.SearchFrom(board, /*temperature=*/1.0f);
 
     e8::GomokuActionId best_action = e8::BestAction(policy);
 
@@ -73,7 +71,7 @@ bool Test1() {
                        board.MovePositionToActionId(e8::MovePosition(/*x=*/9, /*y=*/5)) ||
                    best_action == board.MovePositionToActionId(e8::MovePosition(/*x=*/9,
                                                                                 /*y=*/8)));
-    searcher.SelectAction(node, board, best_action);
+    searcher.SelectAction(board, best_action);
 
     return true;
 }

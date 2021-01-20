@@ -21,7 +21,6 @@
 #include <memory>
 #include <optional>
 
-#include "common/container/mutable_priority_queue.h"
 #include "gomoku/agent/heuristics/evaluator.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/agent/search/mct_search.h"
@@ -36,7 +35,7 @@ namespace e8 {
  */
 class MctsAgentPlayer : public GomokuPlayerInterface {
   public:
-    MctsAgentPlayer(std::shared_ptr<MctSearcher> const &searcher);
+    MctsAgentPlayer(PlayerSide const player_side, std::shared_ptr<MctSearcher> const &searcher);
     ~MctsAgentPlayer() override = default;
 
     GomokuActionId NextPlayerAction(GomokuBoardState const &board_state) override;
@@ -54,8 +53,8 @@ class MctsAgentPlayer : public GomokuPlayerInterface {
     virtual bool WantAnotherGame() override;
 
   private:
+    PlayerSide const player_side_;
     std::shared_ptr<MctSearcher> searcher_;
-    std::optional<MutablePriorityQueue<MctNode>::iterator> current_node_it_;
 };
 
 } // namespace e8
