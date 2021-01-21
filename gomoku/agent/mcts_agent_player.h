@@ -35,7 +35,16 @@ namespace e8 {
  */
 class MctsAgentPlayer : public GomokuPlayerInterface {
   public:
-    MctsAgentPlayer(PlayerSide const player_side, std::shared_ptr<MctSearcher> const &searcher);
+    /**
+     * @brief MctsAgentPlayer Constructs an agent with using an underlying MCTS algorithm.
+     *
+     * @param player_side The player side the agent represents.
+     * @param searcher The search algorithm.
+     * @param shared_searcher Whether the search algorithm states are shared by the oppponent as
+     * well.
+     */
+    MctsAgentPlayer(PlayerSide const player_side, std::shared_ptr<MctSearcher> const &searcher,
+                    bool shared_searcher);
     ~MctsAgentPlayer() override = default;
 
     GomokuActionId NextPlayerAction(GomokuBoardState const &board_state) override;
@@ -55,6 +64,7 @@ class MctsAgentPlayer : public GomokuPlayerInterface {
   private:
     PlayerSide const player_side_;
     std::shared_ptr<MctSearcher> searcher_;
+    bool const shared_searcher_;
 };
 
 } // namespace e8

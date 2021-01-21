@@ -34,11 +34,11 @@ void RunGame(e8::MainWindow *player_a_window, e8::MainWindow *player_b_window) {
 
     std::shared_ptr<e8::GomokuPlayerInterface> player_a =
         std::static_pointer_cast<e8::GomokuPlayerInterface>(std::make_shared<e8::AgentGuiPlayer>(
-            player_a_window, e8::PlayerSide::PS_PLAYER_A, searcher));
+            player_a_window, e8::PlayerSide::PS_PLAYER_A, searcher, /*shared_searcher=*/true));
 
     std::shared_ptr<e8::GomokuPlayerInterface> player_b =
         std::static_pointer_cast<e8::GomokuPlayerInterface>(std::make_shared<e8::AgentGuiPlayer>(
-            player_b_window, e8::PlayerSide::PS_PLAYER_B, searcher));
+            player_b_window, e8::PlayerSide::PS_PLAYER_B, searcher, /*shared_searcher=*/true));
 
     //    std::shared_ptr<e8::GomokuPlayerInterface> player_a =
     //        std::static_pointer_cast<e8::GomokuPlayerInterface>(

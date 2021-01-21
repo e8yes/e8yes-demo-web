@@ -30,8 +30,8 @@
 namespace e8 {
 
 MctsAgentPlayer::MctsAgentPlayer(PlayerSide const player_side,
-                                 std::shared_ptr<MctSearcher> const &searcher)
-    : player_side_(player_side), searcher_(searcher) {}
+                                 std::shared_ptr<MctSearcher> const &searcher, bool shared_searcher)
+    : player_side_(player_side), searcher_(searcher), shared_searcher_(shared_searcher) {}
 
 void MctsAgentPlayer::OnGomokuGameBegin(GomokuBoardState const & /*board_state*/) {
     searcher_->Reset();
@@ -47,7 +47,7 @@ GomokuActionId MctsAgentPlayer::NextPlayerAction(GomokuBoardState const &board_s
 void MctsAgentPlayer::BeforeGomokuActionApplied(GomokuBoardState const &board_state,
                                                 PlayerSide const action_performed_by,
                                                 GomokuActionId const &incoming_action_id) {
-    if (action_performed_by == player_side_) {
+    if (!shared_searcher_ || action_performed_by == player_side_) {
         searcher_->SelectAction(board_state, incoming_action_id);
     }
 }
