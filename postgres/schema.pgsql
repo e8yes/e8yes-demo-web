@@ -358,15 +358,7 @@ CREATE TABLE IF NOT EXISTS gomoku_game (
 );
 
 /* Actions performed in the Gomoku game */
-CREATE SEQUENCE IF NOT EXISTS gomoku_game_action_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
 CREATE TABLE IF NOT EXISTS gomoku_game_action (
-  id BIGINT NOT NULL DEFAULT nextval('gomoku_game_action_id_seq'),
   game_id BIGINT NOT NULL,
   step_number INT NOT NULL,
   action_number INT NOT NULL,
@@ -377,6 +369,6 @@ CREATE TABLE IF NOT EXISTS gomoku_game_action (
   stochastic_policy FLOAT [] NULL,
   final_value FLOAT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  PRIMARY KEY (id),
+  PRIMARY KEY (game_id, step_number),
   FOREIGN KEY (game_id) REFERENCES gomoku_game (id) ON DELETE CASCADE
 );
