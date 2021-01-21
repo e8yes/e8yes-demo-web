@@ -36,7 +36,7 @@ namespace e8 {
 class AgentGuiPlayer : public MctsAgentPlayer {
   public:
     AgentGuiPlayer(MainWindow *main_window, PlayerSide const player_side,
-                   std::shared_ptr<MctSearcher> const &searcher);
+                   std::shared_ptr<MctSearcher> const &searcher, bool const shared_searcher);
     ~AgentGuiPlayer() override = default;
 
     void OnGomokuGameBegin(GomokuBoardState const &board_state) override;
