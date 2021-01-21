@@ -324,4 +324,21 @@ GomokuActionId SampleAction(std::unordered_map<GomokuActionId, float> const &pol
     return selected_action_id;
 }
 
+std::vector<float> FlattenPolicy(std::unordered_map<GomokuActionId, float> const &policy,
+                                 GomokuBoardState const &board) {
+    auto [min, max] = board.ActionIdRange();
+
+    std::vector<float> flattened_policy(max - min + 1);
+    for (unsigned i = 0; i < flattened_policy.size(); ++i) {
+        auto it = policy.find(i);
+        if (it != policy.end()) {
+            flattened_policy[i] = it->second;
+        } else {
+            flattened_policy[i] = 0.0f;
+        }
+    }
+
+    return flattened_policy;
+}
+
 } // namespace e8

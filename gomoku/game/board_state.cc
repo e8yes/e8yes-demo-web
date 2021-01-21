@@ -109,6 +109,10 @@ std::unordered_map<GomokuActionId, GomokuAction> const &GomokuBoardState::LegalA
     assert(false);
 }
 
+std::pair<GomokuActionId, GomokuActionId> GomokuBoardState::ActionIdRange() const {
+    return std::make_pair(0, this->Width() * this->Height() + 3 + 2 - 1);
+}
+
 GomokuActionId GomokuBoardState::MovePositionToActionId(MovePosition const &pos) const {
     return pos.x + pos.y * this->Width();
 }

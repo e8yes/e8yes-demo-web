@@ -97,6 +97,18 @@ GomokuActionId BestAction(std::unordered_map<GomokuActionId, float> const &polic
 GomokuActionId SampleAction(std::unordered_map<GomokuActionId, float> const &policy,
                             RandomSource *random_source);
 
+/**
+ * @brief FlattenPolicy Transforms the policy map to a fixed length float array. The policy is coded
+ * into the array such that the index of the float array is the action_id. If an action is not
+ * present in the policy map, the value at that index position is set to zero.
+ *
+ * @param policy The policy to be transformed.
+ * @param board The board state that the policy was calculated from.
+ * @return A flat policy array.
+ */
+std::vector<float> FlattenPolicy(std::unordered_map<GomokuActionId, float> const &policy,
+                                 GomokuBoardState const &board);
+
 } // namespace e8
 
 #endif // MCT_SEARCH_H

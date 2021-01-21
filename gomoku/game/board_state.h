@@ -24,6 +24,7 @@
 #include <memory>
 #include <optional>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 namespace e8 {
@@ -156,6 +157,12 @@ class GomokuBoardState {
      * given the board state.
      */
     std::unordered_map<GomokuActionId, GomokuAction> const &LegalActions() const;
+
+    /**
+     * @brief ActionIdRange Since action IDs are compact. Knowing the range the action IDs this
+     * board will take makes flattening action data possible.
+     */
+    std::pair<GomokuActionId, GomokuActionId> ActionIdRange() const;
 
     /**
      * @brief MovePositionToActionId Converts a move position to the standard action ID acceptable
