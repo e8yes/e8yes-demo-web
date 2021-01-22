@@ -16,11 +16,13 @@ INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
     board_state.cc \
-    game.cc
+    game.cc \
+    game_instance_container.cc
 
 HEADERS += \
     board_state.h \
-    game.h
+    game.h \
+    game_instance_container.h
 
 # Default rules for deployment.
 unix {
