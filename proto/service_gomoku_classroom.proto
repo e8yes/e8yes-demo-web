@@ -1,0 +1,104 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "gomoku.proto";
+
+
+message GenerateRespresentativeDataRequest {
+    int32 target_num_games = 1;
+}
+
+message GenerateRespresentativeDataResponse {
+    // ID of the generator instance for progress checking.
+    int64 schedule_id = 1;
+}
+
+
+message RespresentativeDataGenerationProgressRequest {
+    // ID of the generator instance.
+    int64 schedule_id = 1;
+}
+
+message RespresentativeDataGenerationProgressResponse {
+    int32 num_games_completed = 1;
+    int32 target_num_games = 2;
+}
+
+
+message IteratePolicyRequest {
+    // Number of games to play before model update.
+    int32 num_games_per_iteration = 1;
+
+    // How many more iterations to run before ending the model generation process.
+    int32 target_num_iterations = 2;
+
+    // Optionally bootstrap the first model from the representative data.
+    bool bootstrap_from_respresentative_data = 3;
+}
+
+message IteratePolicyResponse {
+    // ID of the model generation instance for progress checking.
+    int64 schedule_id = 1;
+}
+
+
+message IteratePolicyProgressRequest {
+    // ID of the model generation instance.
+    int64 schedule_id = 1;
+}
+
+message IteratePolicyProgressResponse {
+    int32 num_iterations_completed = 1;
+    int32 num_games_completed = 2;
+    int32 target_num_iterations = 3;
+}
+
+
+message ListModelsRequest {
+}
+
+message ListModelsResponse {
+    repeated GomokuModel models = 1;
+}
+
+service GomokuClassroomService {
+    // Generates a Gomoku data set by running a searcher that uses hand-written heuristics.
+    // This data set may be helpful for model bootstrapping / model quantization.
+    rpc GenerateRespresentativeData 
+        (GenerateRespresentativeDataRequest) returns
+        (GenerateRespresentativeDataResponse);
+
+    // Checks the progress of the representative data set generation.
+    rpc RespresentativeDataGenerationProgress 
+        (RespresentativeDataGenerationProgressRequest) returns
+        (RespresentativeDataGenerationProgressResponse);
+
+    // Iterates from the latest model previously generated and improves the model's
+    // policy and value inference via self playing.
+    rpc IteratePolicy (IteratePolicyRequest) returns (IteratePolicyResponse);
+
+    // Checks the progress of the model generation.
+    rpc IteratePolicyProgress (IteratePolicyProgressRequest) returns
+        (IteratePolicyProgressResponse);
+
+    // List information and stats about all the generated models.
+    rpc ListModels (ListModelsRequest) returns (ListModelsResponse); 
+}

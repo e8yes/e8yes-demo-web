@@ -22,6 +22,8 @@ HEADERS += \
     encryption_source.pb.h \
     file.grpc.pb.h \
     file.pb.h \
+    gomoku.grpc.pb.h \
+    gomoku.pb.h \
     identity.grpc.pb.h \
     identity.pb.h \
     invitation_status.grpc.pb.h \
@@ -46,6 +48,8 @@ HEADERS += \
     service_chat_message.pb.h \
     service_file.grpc.pb.h \
     service_file.pb.h \
+    service_gomoku_classroom.grpc.pb.h \
+    service_gomoku_classroom.pb.h \
     service_message_channel.grpc.pb.h \
     service_message_channel.pb.h \
     service_message_queue.grpc.pb.h \
@@ -73,6 +77,8 @@ SOURCES += \
     encryption_source.pb.cc \
     file.grpc.pb.cc \
     file.pb.cc \
+    gomoku.grpc.pb.cc \
+    gomoku.pb.cc \
     identity.grpc.pb.cc \
     identity.pb.cc \
     invitation_status.grpc.pb.cc \
@@ -97,6 +103,8 @@ SOURCES += \
     service_chat_message.pb.cc \
     service_file.grpc.pb.cc \
     service_file.pb.cc \
+    service_gomoku_classroom.grpc.pb.cc \
+    service_gomoku_classroom.pb.cc \
     service_message_channel.grpc.pb.cc \
     service_message_channel.pb.cc \
     service_message_queue.grpc.pb.cc \
