@@ -18,6 +18,9 @@
 #ifndef MOCK_PLAYER_H
 #define MOCK_PLAYER_H
 
+#include <chrono>
+#include <cstdint>
+#include <memory>
 #include <queue>
 
 #include "gomoku/game/board_state.h"
@@ -30,7 +33,12 @@ namespace e8 {
  */
 class MockPlayer : public GomokuPlayerInterface {
   public:
-    MockPlayer(std::queue<GomokuActionId> const &action_sequence);
+    /**
+     * @brief MockPlayer Mock a Gomoku player by playing the specified action_sequence then end the
+     * game after waiting for wait_before_ended milliseconds.
+     */
+    MockPlayer(std::queue<GomokuActionId> const &action_sequence,
+               std::chrono::milliseconds const wait_before_ended);
 
     GomokuActionId NextPlayerAction(GomokuBoardState const &board_state);
 
@@ -48,7 +56,30 @@ class MockPlayer : public GomokuPlayerInterface {
 
   private:
     std::queue<GomokuActionId> action_sequence_;
+    std::chrono::milliseconds wait_before_ended_;
 };
+
+/**
+ * @brief DefaultMockPlayerA/B Default player that proceduces a fix action sequence in a 11x11 board
+ * leading to a final board state:
+ *
+ *    0 1 2 3 4 5 6 7 8 9 10
+ * 0  - - - - - - - - - - -
+ * 1  - - - - - - - - - - -
+ * 2  - - - - - - - - - - -
+ * 3  - - - - - - - - - - -
+ * 4  - - - - - o o o o - -
+ * 5  - - - - - x - - - - -
+ * 6  - - - - - x - - - - -
+ * 7  - - - - - x - - - - -
+ * 8  - - - - - x - - - - -
+ * 9  - - - - - x - - - - -
+ * 10 - - - - - - - - - - -
+ *
+ * Player A will win the game. And both players will wait for half a second before ending the game.
+ */
+std::shared_ptr<MockPlayer> DefaultMockPlayerA();
+std::shared_ptr<MockPlayer> DefaultMockPlayerB();
 
 } // namespace e8
 
