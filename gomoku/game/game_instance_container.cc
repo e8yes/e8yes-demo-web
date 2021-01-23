@@ -69,6 +69,11 @@ void CleanUpCompletedGames(ThreadPool *thread_pool,
                            std::shared_mutex *lock, bool *cleanup_thread_running) {
     while (*cleanup_thread_running) {
         std::unique_ptr<TaskStorageInterface> storage = thread_pool->WaitForNextCompleted();
+
+        if (storage == nullptr) {
+            continue;
+        }
+
         lock->lock();
         scheduled_games->erase(static_cast<GameRunnerStorage *>(storage.get())->schedule_id);
         lock->unlock();
@@ -115,10 +120,11 @@ GameInstanceContainer::ScheduleToRun(std::unique_ptr<GomokuGame> &&game) {
     pimpl_->lock.lock();
 
     ScheduleId schedule_id = pimpl_->next_schedule_id++;
-    pimpl_->scheduled_games.insert(std::make_pair(schedule_id, std::move(game)));
+    auto [_, game_ptr] =
+        *pimpl_->scheduled_games.insert(std::make_pair(schedule_id, std::move(game))).first;
 
     pimpl_->thread_pool.Schedule(std::make_shared<GameRunnerTask>(),
-                                 std::make_unique<GameRunnerStorage>(schedule_id, game.get()));
+                                 std::make_unique<GameRunnerStorage>(schedule_id, game_ptr.get()));
 
     pimpl_->lock.unlock();
 
