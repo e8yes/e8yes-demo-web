@@ -32,3 +32,7 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/thread/ -lthread
+
+INCLUDEPATH += $$PWD/../../common/thread
+DEPENDPATH += $$PWD/../../common/thread
