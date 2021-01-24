@@ -29,8 +29,8 @@
 namespace e8 {
 namespace {
 
-std::unique_ptr<GameInstanceContainer> gGameContainer =
-    std::make_unique<GameInstanceContainer>(/*max_concurrent_games=*/4);
+std::mutex gContainerPtrLock;
+std::unique_ptr<GameInstanceContainer> gGameContainer;
 
 struct GameRunnerStorage : public TaskStorageInterface {
     GameRunnerStorage(GameInstanceContainer::ScheduleId schedule_id, GomokuGame *game);
@@ -148,6 +148,14 @@ std::shared_ptr<GomokuGame> GameInstanceContainer::ScheduledGame(ScheduleId id) 
     return result;
 }
 
-GameInstanceContainer *DefaultGameInstanceContainer() { return gGameContainer.get(); }
+GameInstanceContainer *DefaultGameInstanceContainer() {
+    gContainerPtrLock.lock();
+    if (gGameContainer == nullptr) {
+        gGameContainer = std::make_unique<GameInstanceContainer>(/*max_concurrent_games=*/4);
+    }
+    gContainerPtrLock.unlock();
+
+    return gGameContainer.get();
+}
 
 } // namespace e8
