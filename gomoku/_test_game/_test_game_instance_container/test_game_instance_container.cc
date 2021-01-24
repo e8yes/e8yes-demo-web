@@ -29,7 +29,9 @@ bool ScheduleAndFetchGameTest() {
         std::make_unique<e8::GomokuGame>(e8::DefaultMockPlayerA(), e8::DefaultMockPlayerB());
 
     e8::GameInstanceContainer *container = e8::DefaultGameInstanceContainer();
-    e8::GameInstanceContainer::ScheduleId schedule_id = container->ScheduleToRun(std::move(game));
+    e8::GameInstanceContainer::ScheduleId schedule_id =
+        e8::AllocateGameInstanceContainerScheduleId();
+    container->ScheduleToRun(schedule_id, std::move(game));
 
     std::shared_ptr<e8::GomokuGame> fetched_game = container->ScheduledGame(schedule_id);
     TEST_CONDITION(fetched_game != nullptr);

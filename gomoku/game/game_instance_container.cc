@@ -23,8 +23,10 @@
 #include <unordered_map>
 
 #include "common/thread/thread_pool.h"
+#include "common/time_util/time_util.h"
 #include "gomoku/game/game.h"
 #include "gomoku/game/game_instance_container.h"
+#include "postgres/query_runner/sql_runner.h"
 
 namespace e8 {
 namespace {
@@ -91,8 +93,6 @@ struct GameInstanceContainer::GameInstanceContainerInternal {
     std::unordered_map<ScheduleId, std::shared_ptr<GomokuGame>> scheduled_games;
     std::shared_mutex lock;
 
-    ScheduleId next_schedule_id;
-
     bool cleanup_thread_running;
     std::thread cleanup_thread;
 };
@@ -115,11 +115,10 @@ GameInstanceContainer::GameInstanceContainerInternal::~GameInstanceContainerInte
 GameInstanceContainer::GameInstanceContainer(unsigned max_concurrent_games)
     : pimpl_(std::make_unique<GameInstanceContainerInternal>(max_concurrent_games)) {}
 
-GameInstanceContainer::ScheduleId
-GameInstanceContainer::ScheduleToRun(std::unique_ptr<GomokuGame> &&game) {
+void GameInstanceContainer::ScheduleToRun(ScheduleId schedule_id,
+                                          std::unique_ptr<GomokuGame> &&game) {
     pimpl_->lock.lock();
 
-    ScheduleId schedule_id = pimpl_->next_schedule_id++;
     auto [_, game_ptr] =
         *pimpl_->scheduled_games.insert(std::make_pair(schedule_id, std::move(game))).first;
 
@@ -127,8 +126,6 @@ GameInstanceContainer::ScheduleToRun(std::unique_ptr<GomokuGame> &&game) {
                                  std::make_unique<GameRunnerStorage>(schedule_id, game_ptr.get()));
 
     pimpl_->lock.unlock();
-
-    return schedule_id;
 }
 
 std::shared_ptr<GomokuGame> GameInstanceContainer::ScheduledGame(ScheduleId id) {
@@ -147,6 +144,8 @@ std::shared_ptr<GomokuGame> GameInstanceContainer::ScheduledGame(ScheduleId id) 
 
     return result;
 }
+
+GameInstanceContainer::ScheduleId AllocateGameInstanceContainerScheduleId() { return TemporalId(); }
 
 GameInstanceContainer *DefaultGameInstanceContainer() {
     gContainerPtrLock.lock();

@@ -47,7 +47,7 @@ class GameInstanceContainer {
      * hardware resource is available. The hardware resource limit is set in the constructor by the
      * argument max_concurrent_games.
      */
-    ScheduleId ScheduleToRun(std::unique_ptr<GomokuGame> &&game);
+    void ScheduleToRun(ScheduleId schedule_id, std::unique_ptr<GomokuGame> &&game);
 
     /**
      * @brief ScheduledGame Retrieve the game instance by the schedule ID. If the schedule ID is
@@ -58,6 +58,12 @@ class GameInstanceContainer {
   private:
     std::unique_ptr<GameInstanceContainerInternal> pimpl_;
 };
+
+/**
+ * @brief AllocateGameInstanceContainerScheduleId
+ * @return
+ */
+GameInstanceContainer::ScheduleId AllocateGameInstanceContainerScheduleId();
 
 /**
  * @brief DefaultGameContainer Returns a pointer to the global instance of a
