@@ -67,3 +67,8 @@ unix {
 }
 
 LIBS += -lpqxx
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/time_util/ -ltime_util
+
+INCLUDEPATH += $$PWD/../../common/time_util
+DEPENDPATH += $$PWD/../../common/time_util

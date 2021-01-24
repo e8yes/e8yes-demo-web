@@ -197,12 +197,6 @@ bool SendHeartBeat(ConnectionInterface *conn);
 int64_t TimeId(unsigned host_id);
 
 /**
- * @brief TemporalId Ever-non-decreasing ID. Uniqueness is not guaranteed in sub-microsecond level.
- * @return Ever-non-decreasing ID.
- */
-int64_t TemporalId();
-
-/**
  * @brief SeqId Generate sequential ID from a sequence table.
  *
  * @param seq_table Name of the sequence table to generate ID from.

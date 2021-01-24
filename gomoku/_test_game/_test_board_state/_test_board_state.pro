@@ -29,3 +29,8 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../game/ -lgomoku_game
 
 INCLUDEPATH += $$PWD/../../game
 DEPENDPATH += $$PWD/../../game
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../common/time_util/ -ltime_util
+
+INCLUDEPATH += $$PWD/../../../common/time_util
+DEPENDPATH += $$PWD/../../../common/time_util

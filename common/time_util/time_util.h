@@ -41,6 +41,12 @@ TimestampMillis CurrentTimestampMillis();
  */
 TimestampMicros CurrentTimestampMicros();
 
+/**
+ * @brief TemporalId Ever-non-decreasing ID. Uniqueness is not guaranteed in sub-microsecond level.
+ * @return Ever-non-decreasing ID.
+ */
+int64_t TemporalId();
+
 } // namespace e8
 
 #endif // ACOMMON_TIME_H

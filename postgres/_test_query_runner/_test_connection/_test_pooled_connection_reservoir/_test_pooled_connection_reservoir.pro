@@ -27,5 +27,10 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/unit_test_util/ -lunit_test_u
 INCLUDEPATH += $$PWD/../../../../common/unit_test_util
 DEPENDPATH += $$PWD/../../../../common/unit_test_util
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/time_util/ -ltime_util
+
+INCLUDEPATH += $$PWD/../../../../common/time_util
+DEPENDPATH += $$PWD/../../../../common/time_util
+
 LIBS += -lpqxx
 LIBS += -pthread

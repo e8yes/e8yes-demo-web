@@ -23,6 +23,7 @@
 #include <string>
 #include <unordered_set>
 
+#include "common/time_util/time_util.h"
 #include "postgres/query_runner/connection/connection_interface.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 #include "postgres/query_runner/orm/query_completion.h"
@@ -204,20 +205,9 @@ bool SendHeartBeat(ConnectionInterface *conn) {
 }
 
 int64_t TimeId(unsigned host_id) {
-    auto now = std::chrono::high_resolution_clock::now();
-    auto micros = std::chrono::time_point_cast<std::chrono::microseconds>(now);
-    auto dura = std::chrono::duration_cast<std::chrono::microseconds>(micros.time_since_epoch());
-    int64_t timestamp = dura.count() - 1588490444394000L;
+    int64_t timestamp = TemporalId();
     int64_t unique_id = host_id * 0xFFFFFFFFFFFFF + timestamp;
     return sql_runner_internal::ReverseBytes(unique_id);
-}
-
-int64_t TemporalId() {
-    auto now = std::chrono::high_resolution_clock::now();
-    auto micros = std::chrono::time_point_cast<std::chrono::microseconds>(now);
-    auto dura = std::chrono::duration_cast<std::chrono::microseconds>(micros.time_since_epoch());
-    int64_t timestamp = dura.count() - 1588490444394000L;
-    return timestamp;
 }
 
 int64_t SeqId(std::string const &seq_table, ConnectionReservoirInterface *reservoir) {

@@ -39,3 +39,8 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../agent/ -lgomoku_agent
 
 INCLUDEPATH += $$PWD/../../../agent
 DEPENDPATH += $$PWD/../../../agent
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/time_util/ -ltime_util
+
+INCLUDEPATH += $$PWD/../../../../common/time_util
+DEPENDPATH += $$PWD/../../../../common/time_util
