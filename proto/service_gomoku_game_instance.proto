@@ -1,0 +1,58 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "gomoku.proto";
+
+message LaunchGameInstanceRequest {
+    int64 schedule_id = 1;
+
+    oneof launch_config {
+        RespresentativeDataGeneratorConfig repr_gen_config = 2;
+        PolicyIteratorConfig policy_it_config = 3;
+    };
+}
+
+message LaunchGameInstanceResponse {
+}
+
+
+message GameInstanceProgressRequest {
+    int64 schedule_id = 1;
+}
+
+message GameInstanceProgressResponse {
+    oneof progress {
+        RespresentativeDataGeneratorProgress repr_gen_progress = 1;
+        PolicyIteratorProgress policy_it_progress = 2;
+    };
+}
+
+
+// This service controlls a machine's game instances.
+service GomokuGameInstanceService {
+    // Launches a new game instance with the specified schedule_id and config.
+    rpc LaunchGameInstance (LaunchGameInstanceRequest) returns
+        (LaunchGameInstanceResponse);
+
+    // Tracks progress of the game instance.
+    rpc GameInstanceProgress (GameInstanceProgressRequest) returns 
+        (GameInstanceProgressResponse);
+}

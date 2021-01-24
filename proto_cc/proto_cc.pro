@@ -50,6 +50,8 @@ HEADERS += \
     service_file.pb.h \
     service_gomoku_classroom.grpc.pb.h \
     service_gomoku_classroom.pb.h \
+    service_gomoku_game_instance.grpc.pb.h \
+    service_gomoku_game_instance.pb.h \
     service_message_channel.grpc.pb.h \
     service_message_channel.pb.h \
     service_message_queue.grpc.pb.h \
@@ -105,6 +107,8 @@ SOURCES += \
     service_file.pb.cc \
     service_gomoku_classroom.grpc.pb.cc \
     service_gomoku_classroom.pb.cc \
+    service_gomoku_game_instance.grpc.pb.cc \
+    service_gomoku_game_instance.pb.cc \
     service_message_channel.grpc.pb.cc \
     service_message_channel.pb.cc \
     service_message_queue.grpc.pb.cc \

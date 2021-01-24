@@ -23,7 +23,7 @@ import "gomoku.proto";
 
 
 message GenerateRespresentativeDataRequest {
-    int32 target_num_games = 1;
+    RespresentativeDataGeneratorConfig config = 1;
 }
 
 message GenerateRespresentativeDataResponse {
@@ -38,20 +38,12 @@ message RespresentativeDataGenerationProgressRequest {
 }
 
 message RespresentativeDataGenerationProgressResponse {
-    int32 num_games_completed = 1;
-    int32 target_num_games = 2;
+    RespresentativeDataGeneratorProgress progress = 1;
 }
 
 
 message IteratePolicyRequest {
-    // Number of games to play before model update.
-    int32 num_games_per_iteration = 1;
-
-    // How many more iterations to run before ending the model generation process.
-    int32 target_num_iterations = 2;
-
-    // Optionally bootstrap the first model from the representative data.
-    bool bootstrap_from_respresentative_data = 3;
+    PolicyIteratorConfig config = 1;
 }
 
 message IteratePolicyResponse {
@@ -66,9 +58,7 @@ message IteratePolicyProgressRequest {
 }
 
 message IteratePolicyProgressResponse {
-    int32 num_iterations_completed = 1;
-    int32 num_games_completed = 2;
-    int32 target_num_iterations = 3;
+    PolicyIteratorProgress progress = 1;
 }
 
 
@@ -79,6 +69,8 @@ message ListModelsResponse {
     repeated GomokuModel models = 1;
 }
 
+
+// This service exposes to the external clients for them to manipulate the classroom operations.
 service GomokuClassroomService {
     // Generates a Gomoku data set by running a searcher that uses hand-written heuristics.
     // This data set may be helpful for model bootstrapping / model quantization.

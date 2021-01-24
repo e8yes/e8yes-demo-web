@@ -29,3 +29,32 @@ message GomokuModel {
     float total_test_loss = 7;
     int64 stats_updated_at = 8;
 }
+
+
+message RespresentativeDataGeneratorConfig {
+    // Generate a representative data set with how many games?
+    int32 target_num_games = 1;
+}
+
+message RespresentativeDataGeneratorProgress {
+    int32 num_games_completed = 1;
+    int32 target_num_games = 2;
+}
+
+
+message PolicyIteratorConfig {
+    // Number of games to play before model update.
+    int32 num_games_per_iteration = 1;
+
+    // How many more iterations to run before ending the model generation process.
+    int32 target_num_iterations = 2;
+
+    // Optionally bootstrap the first model from the representative data.
+    bool bootstrap_from_respresentative_data = 3;
+}
+
+message PolicyIteratorProgress {
+    int32 num_iterations_completed = 1;
+    int32 num_games_completed = 2;
+    int32 target_num_iterations = 3;
+}
