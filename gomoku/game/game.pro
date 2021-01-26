@@ -36,3 +36,8 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../common/thread/ -lthread
 
 INCLUDEPATH += $$PWD/../../common/thread
 DEPENDPATH += $$PWD/../../common/thread
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../common/time_util/ -ltime_util
+
+INCLUDEPATH += $$PWD/../../common/time_util
+DEPENDPATH += $$PWD/../../common/time_util
