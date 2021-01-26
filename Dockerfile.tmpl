@@ -20,7 +20,13 @@ RUN apt install -y libgrpc++-dev
 RUN apt install -y libcrypto++-dev
 RUN apt install -y libcrypt2-dev
 RUN apt install -y libsqlite3-dev
-RUN apt install -y openvpn
+RUN apt install -y python3
+RUN apt install -y python3-pip
+RUN apt install -y python3-requests
+RUN apt install -y python3-numpy
+RUN apt install -y python3-pandas
+RUN apt install -y python3-psycopg2
+RUN pip3 install --upgrade tensorflow
 
 # Install grpc web proxy
 ENV GOPATH=/home/go
