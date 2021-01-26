@@ -189,6 +189,7 @@ GameId GameLogStore::LogNewGeneratorGame(GameLogPurpose game_purpose,
     *entity.player_a_model_id.ValuePtr() = player_a_model_id;
     *entity.player_b_model_id.ValuePtr() = player_b_model_id;
     *entity.game_result.ValuePtr() = GameResult::GR_UNDETERMINED;
+    *entity.created_at.ValuePtr() = CurrentTimestampMicros();
 
     uint64_t num_rows = Update(entity, kGomokuTableName, /*replace=*/false, conns_);
     assert(num_rows == 1);
@@ -210,6 +211,7 @@ void GameLogStore::LogGameAction(GameId game_id, GameStepNumber step_number,
     *entity.board_before.ValuePtr() = ExtractBoardFeatures(board_before);
     *entity.game_phase.ValuePtr() = game_phase;
     *entity.stochastic_policy.ValuePtr() = stochastic_policy;
+    *entity.created_at.ValuePtr() = CurrentTimestampMicros();
 
     uint64_t num_rows = Update(entity, kGomokuActionTableName, /*replace=*/false, conns_);
     assert(num_rows == 1);
