@@ -1,12 +1,11 @@
-# This script generates an untrained gomoku model.
-
-import argparse
+from typing import List
+from typing import Tuple
 import math
 import tensorflow as tf
-import os
+import numpy as np
 
 INPUT_SIZE = 11
-NUM_RES_BLOCKS = 20
+NUM_RES_BLOCKS = 4
 
 class ResidualTowerHeadLayer(tf.Module):
     def __init__(self, 
@@ -17,14 +16,15 @@ class ResidualTowerHeadLayer(tf.Module):
         kernel_size = 5
         self.conv_kernel = tf.Variable(
             name="res_tower_head_kernel",
-            initial_value=tf.random.truncated_normal(
+            initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
                 shape=[kernel_size, kernel_size, 
                        num_input_channels, 
                        num_filters],
-                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels)))
+                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels),
+                dtype=tf.float32))
         self.biases = tf.Variable(
             name="res_tower_head_bias",
-            initial_value=tf.zeros(shape=[num_filters]))
+            initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
 
 class ResidualBlock(tf.Module):
     def __init__(self,
@@ -37,25 +37,27 @@ class ResidualBlock(tf.Module):
         num_output_channels = num_filters
         self.conv_kernel1 = tf.Variable(
             name="res_b{0}_kernel1".format(block_num),
-            initial_value=tf.random.truncated_normal(
+            initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
                 shape=[kernel_size, kernel_size, 
                        num_input_channels, 
                        num_output_channels],
-                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels)))
+                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels),
+                dtype=tf.float32))
         self.biases1 = tf.Variable(
             name="res_b{0}_bias1".format(block_num),
-            initial_value=tf.zeros(shape=[num_output_channels]))
+            initial_value=tf.zeros(shape=[num_output_channels], dtype=tf.float32))
 
         self.conv_kernel2 = tf.Variable(
             name="res_b{0}_kernel2".format(block_num),
-            initial_value=tf.random.truncated_normal(
+            initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
                 shape=[kernel_size, kernel_size, 
                        num_input_channels, 
                        num_output_channels],
-                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels)))
+                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels),
+                dtype=tf.float32))
         self.biases2 = tf.Variable(
             name="res_b{0}_bias2".format(block_num),
-            initial_value=tf.zeros(shape=[num_output_channels]))
+            initial_value=tf.zeros(shape=[num_output_channels], dtype=tf.float32))
 
 class PolicyLayer(tf.Module):
     def __init__(self, num_input_channels: int):
@@ -65,24 +67,26 @@ class PolicyLayer(tf.Module):
         num_output_channels = 2
         self.conv_kernel = tf.Variable(
             name="policy_conv_kernel",
-            initial_value=tf.random.truncated_normal(
+            initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
                 shape=[kernel_size, kernel_size, 
                        num_input_channels, 
                        num_output_channels],
-                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels)))
+                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels),
+                dtype=tf.float32))
         self.conv_biases = tf.Variable(
             name="policy_conv_biases",
-            initial_value=tf.zeros(shape=[num_output_channels]))
+            initial_value=tf.zeros(shape=[num_output_channels], dtype=tf.float32))
 
         num_inputs = INPUT_SIZE*INPUT_SIZE*2
         num_outputs = INPUT_SIZE*INPUT_SIZE + 3 + 2
         self.weights = tf.Variable(
             name="policy_fc_weights",
-            initial_value=tf.random.truncated_normal(shape=[num_inputs, num_outputs],
-                                                     stddev=1/math.sqrt(num_inputs)))
+            initial_value=tf.random.truncated_normal(shape=[num_inputs, num_outputs], # pylint: disable=unexpected-keyword-arg
+                                                     stddev=1/math.sqrt(num_inputs),
+                                                     dtype=tf.float32))
         self.biases = tf.Variable(
             name="policy_fc_biases",
-            initial_value=tf.zeros([num_outputs]))
+            initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
 
 class ValueLayer(tf.Module):
     def __init__(self, num_input_channels: int):
@@ -92,34 +96,37 @@ class ValueLayer(tf.Module):
         num_output_channels = 1
         self.conv_kernel = tf.Variable(
             name="value_conv_kernel",
-            initial_value=tf.random.truncated_normal(
+            initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
                 shape=[kernel_size, kernel_size, 
                        num_input_channels, 
                        num_output_channels],
-                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels)))
+                stddev=1/math.sqrt(kernel_size*kernel_size*num_input_channels),
+                dtype=tf.float32))
         self.conv_biases = tf.Variable(
             name="value_conv_biases",
-            initial_value=tf.zeros(shape=[num_output_channels]))
+            initial_value=tf.zeros(shape=[num_output_channels], dtype=tf.float32))
 
         num_inputs = INPUT_SIZE*INPUT_SIZE
-        num_outputs = 32
+        num_outputs = num_input_channels
         self.weights1 = tf.Variable(
             name="value_fc1_weights",
-            initial_value=tf.random.truncated_normal(shape=[num_inputs, num_outputs],
-                                                     stddev=1/math.sqrt(num_inputs)))
+            initial_value=tf.random.truncated_normal(shape=[num_inputs, num_outputs], # pylint: disable=unexpected-keyword-arg
+                                                     stddev=1/math.sqrt(num_inputs),
+                                                     dtype=tf.float32))
         self.biases1 = tf.Variable(
             name="value_fc1_biases",
-            initial_value=tf.zeros([num_outputs]))
+            initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
 
-        num_inputs = 32
+        num_inputs = num_input_channels
         num_outputs = 1
         self.weights2 = tf.Variable(
             name="value_fc2_weights",
-            initial_value=tf.random.truncated_normal(shape=[num_inputs, num_outputs],
-                                                     stddev=1/math.sqrt(num_inputs)))
+            initial_value=tf.random.truncated_normal(shape=[num_inputs, num_outputs], # pylint: disable=unexpected-keyword-arg
+                                                     stddev=1/math.sqrt(num_inputs),
+                                                     dtype=tf.float32))
         self.biases2 = tf.Variable(
             name="value_fc2_biases",
-            initial_value=tf.zeros([num_outputs]))
+            initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
 
 class GomokuCnnResNetSharedTower(tf.Module):
     def __init__(self):
@@ -133,6 +140,36 @@ class GomokuCnnResNetSharedTower(tf.Module):
         
         self.policy_layer_ = PolicyLayer(num_input_channels=32)
         self.value_layer_ = ValueLayer(num_input_channels=32)
+    
+    def Variables(self) -> List[tf.Tensor]:
+        variables = list()
+        variables.append(self.res_tower_head_layer_.conv_kernel)
+        variables.append(self.res_tower_head_layer_.biases)
+
+        for block in self.res_blocks_:
+            variables.append(block.conv_kernel1)
+            variables.append(block.biases1)
+
+            variables.append(block.conv_kernel2)
+            variables.append(block.biases2)
+
+        variables.append(self.policy_layer_.conv_kernel)
+        variables.append(self.policy_layer_.conv_biases)
+        variables.append(self.policy_layer_.weights)
+        variables.append(self.policy_layer_.biases)
+
+        variables.append(self.value_layer_.conv_kernel)
+        variables.append(self.value_layer_.conv_biases)
+        variables.append(self.value_layer_.weights1)
+        variables.append(self.value_layer_.biases1)
+        variables.append(self.value_layer_.weights2)
+        variables.append(self.value_layer_.biases2)
+
+        return variables
+
+    def Name(self)-> str:
+        return "gomoku_cnn_shared_tower_{0}_{0}_b{1}" \
+            .format(INPUT_SIZE, NUM_RES_BLOCKS)
 
     @tf.function(
         input_signature=[
@@ -145,15 +182,15 @@ class GomokuCnnResNetSharedTower(tf.Module):
             tf.TensorSpec(shape=[None], dtype=tf.float32)
         ])
     def __call__(self,
-                 board_features,
-                 game_phase_place_3_stones,
-                 game_phase_swap2_decision,
-                 game_phase_place2_more_stones,
-                 game_phase_stone_type_decision,
-                 game_phase_standard_gomoku,
-                 next_move_stone_type):
+                 board_features: np.ndarray,
+                 game_phase_place_3_stones: np.ndarray,
+                 game_phase_swap2_decision: np.ndarray,
+                 game_phase_place2_more_stones: np.ndarray,
+                 game_phase_stone_type_decision: np.ndarray,
+                 game_phase_standard_gomoku: np.ndarray,
+                 next_move_stone_type) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
         # Places the game states into feature planes.
-        black_stones = -tf.minimum(x=board_features, y=0.0)
+        black_stones = -tf.minimum(x=board_features, y=0.0) # pylint: disable=invalid-unary-operand-type
         black_stones = tf.reshape(tensor=black_stones,
                                   shape=[-1, INPUT_SIZE, INPUT_SIZE, 1])
 
@@ -197,15 +234,13 @@ class GomokuCnnResNetSharedTower(tf.Module):
             tf.repeat(input=game_phase_standard_gomoku, repeats=[INPUT_SIZE], axis=1)
 
         next_move_stone_type = \
-            tf.cast(x=next_move_stone_type, dtype=tf.float32)
-        next_move_stone_type = \
             tf.reshape(tensor=next_move_stone_type, shape=[-1, 1, 1, 1])
         next_move_stone_type = \
             tf.repeat(input=next_move_stone_type, repeats=[INPUT_SIZE], axis=2)
         next_move_stone_type = \
             tf.repeat(input=next_move_stone_type, repeats=[INPUT_SIZE], axis=1)
         
-        conv_features = tf.concat(values=[black_stones,
+        conv_features = tf.concat(values=[black_stones, # pylint: disable=unexpected-keyword-arg, no-value-for-parameter
                                           white_stones,
                                           game_phase_place_3_stones,
                                           game_phase_swap2_decision,
@@ -221,7 +256,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                      strides=[1, 1, 1, 1],
                                      padding="SAME") + \
                         self.res_tower_head_layer_.biases
-        conv_features = tf.nn.relu(features=conv_features)
+        conv_features = tf.nn.leaky_relu(features=conv_features)
 
         # Constructs the residual tower.
         for res_block in self.res_blocks_:
@@ -230,14 +265,14 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                        strides=[1, 1, 1, 1],
                                        padding="SAME") + \
                           res_block.biases1
-            conv_output = tf.nn.relu(features=conv_output)
+            conv_output = tf.nn.leaky_relu(features=conv_output)
 
             conv_output = tf.nn.conv2d(input=conv_output,
                                        filters=res_block.conv_kernel2,
                                        strides=[1, 1, 1, 1],
                                        padding="SAME") + \
                           res_block.biases2
-            conv_features = tf.nn.relu(features=conv_features + conv_output)
+            conv_features = conv_features + tf.nn.leaky_relu(features=conv_output)
         
         # Policy output
         policy_hidden_layer = tf.nn.conv2d(input=conv_features,
@@ -273,79 +308,37 @@ class GomokuCnnResNetSharedTower(tf.Module):
                           b=self.value_layer_.weights2) + \
                 self.value_layer_.biases2
         value = tf.tanh(x=value)
+        value = tf.reshape(tensor=value, shape=[-1])
 
-        return policy, value
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Generate an empty Gomoku tensorflow model")
-    parser.add_argument("--model_output_path",
-        type=str,
-        help="A path to write the model to. Do not specify a file name.")
-
-    args = parser.parse_args()
-    model_output_path = args.model_output_path
-    if model_output_path is None:
-        print("Error: Argument model_output_path is required.")
-        parser.print_help()
-        exit(-1)
-
-    print("Constructing the graph...")
-
-    model = GomokuCnnResNetSharedTower()
-
-    board_features = tf.constant(
-        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
-               [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, -1, 1, 1, 1, 1, -1, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
-        dtype=tf.float32)
+        return policy, value, policy_logits
     
-    game_phase_place_3_stones = tf.constant(value=[1, 0], dtype=tf.float32)
-    game_phase_swap2_decision = tf.constant(value=[0, 0], dtype=tf.float32)
-    game_phase_place2_more_stones = tf.constant(value=[0, 0], dtype=tf.float32)
-    game_phase_stone_type_decision = tf.constant(value=[0, 0], dtype=tf.float32)
-    game_phase_standard_gomoku = tf.constant(value=[0, 1], dtype=tf.float32)
+    @tf.function
+    def Loss(self,
+             boards: np.ndarray, 
+             game_phase_place_3_stones: np.ndarray, 
+             game_phase_swap2_decision: np.ndarray, 
+             game_phase_place2_more_stones: np.ndarray, 
+             game_phase_stone_type_decision: np.ndarray, 
+             game_phase_standard_gomoku: np.ndarray, 
+             next_move_stone_types: np.ndarray, 
+             policies: np.ndarray, 
+             values: np.ndarray) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
+        _, pred_values, policy_logits = \
+            self(boards, 
+                 game_phase_place_3_stones,
+                 game_phase_swap2_decision,
+                 game_phase_place2_more_stones,
+                 game_phase_stone_type_decision,
+                 game_phase_standard_gomoku,
+                 next_move_stone_types)
 
-    next_move_stone_type = tf.constant(value=[1, -1], dtype=tf.float32)
+        policy_losses = tf.nn.softmax_cross_entropy_with_logits(
+            labels=policies, logits=policy_logits)
+        policy_loss = tf.reduce_mean(input_tensor=policy_losses, axis=0)
 
-    policy, value = model(board_features,
-                          game_phase_place_3_stones,
-                          game_phase_swap2_decision,
-                          game_phase_place2_more_stones,
-                          game_phase_stone_type_decision,
-                          game_phase_standard_gomoku,
-                          next_move_stone_type)
-    print("policy=", policy)
-    print("value=", value)
+        value_loss = \
+            tf.losses.mse(y_true=values, y_pred=pred_values)
 
-    print("Saving the model...")
-    model_name = "gomoku_cnn_res_net_shared_tower_{0}_{1}b".format(INPUT_SIZE, NUM_RES_BLOCKS)
-    model_full_path = os.path.join(model_output_path, model_name)
-    tf.saved_model.save(obj=model, export_dir=model_full_path)
-
-    print("Converting to a tf lite model and saving it...")
-    converter = tf.lite.TFLiteConverter.from_saved_model(model_full_path)
-    converter.experimental_new_converter = True
-    converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_LATENCY]
-    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]
-    tflite_model = converter.convert()
-    open("{0}.tflite".format(model_full_path), "wb").write(tflite_model)
+        loss = policy_loss + value_loss
+        
+        return loss, policy_loss, value_loss
