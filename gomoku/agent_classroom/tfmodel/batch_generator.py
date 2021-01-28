@@ -6,45 +6,58 @@ def ExtractBoardData(serialized_board: bytes) -> np.ndarray:
     for y in range(0, 11):
         for x in range(0, 11):
             if serialized_board[x + y*11] == 2:
-                board[y, x] = 1
+                board[x, y] = 1
             elif serialized_board[x + y*11] == 1:
-                board[y, x] = -1
+                board[x, y] = -1
             else:
-                board[y, x] = 00
+                board[x, y] = 0
     return board
 
 class BatchGenerator:
-    def __init__(self, 
+    def __init__(self,
+                 num_data_entries: int,
                  db_name: str,
                  db_host: str,
                  db_port: int,
                  db_user: str,
-                 db_pass: str,
-                 seed: int):
+                 db_pass: str):
         self.conn_ = pg.connect(database=db_name,
                                 host=db_host,
                                 port=db_port,
                                 user=db_user,
                                 password=db_pass)
+
+        self.num_data_entries_ = num_data_entries
+
         self.offset_ = 0
-        self.seed_ = seed
+
+        self.seed_ = 378126
     
     def PartitionClause_(self, training_data: bool):
         if training_data is None:
             return " AND TRUE "
         elif training_data == True:
-            return " AND MOD(HASH_BIGINT(gga.game_id + {0}), 10) >= 2 "\
+            return " AND MOD(HASH_BIGINT(gga.game_id + {0}), 10) < 8 "\
                 .format(self.seed_)
         else:
-            return " AND MOD(HASH_BIGINT(gga.game_id + {0}), 10) < 2 "\
+            return " AND MOD(HASH_BIGINT(gga.game_id + {0}), 10) >= 8 "\
                 .format(self.seed_)
+    
+    def MostRecentDataSet_(self):
+        if self.num_data_entries_ is None:
+            return " gomoku_game_action "
+        else:
+            return "(SELECT * FROM gomoku_game_action " \
+                   "ORDER BY game_id DESC, step_number DESC " \
+                   "LIMIT {0})".format(self.num_data_entries_)
     
     def NumDataEntries(self, training_data: bool) -> int:
         cur = self.conn_.cursor()
         cur.execute(
-            "SELECT COUNT(gga.*) FROM gomoku_game_action gga "
-            "WHERE TRUE {0}"\
-                .format(self.PartitionClause_(training_data=training_data)))
+            "SELECT COUNT(gga.*) FROM {0} AS gga "
+            "WHERE TRUE {1} " \
+                .format(self.MostRecentDataSet_(),
+                        self.PartitionClause_(training_data=training_data)))
         row = cur.fetchall()
         return int(row[0][0])
     
@@ -54,13 +67,14 @@ class BatchGenerator:
                   training_data: bool,
                   enable_augmentation: bool) -> np.ndarray:
         cur = self.conn_.cursor()
-        cur.execute("SELECT gga.* FROM gomoku_game_action gga "
+        cur.execute("SELECT gga.* FROM {0} AS gga "
                     "JOIN gomoku_game ga ON gga.game_id = ga.id "
-                    "WHERE ga.game_purpose={0} {1} "
+                    "WHERE ga.game_purpose={1} {2} "
                     "ORDER BY HASH_BIGINT(gga.game_id * 1031 + gga.step_number) ASC "
-                    "LIMIT {2} "
-                    "OFFSET {3}".\
-            format(sample_from,
+                    "LIMIT {3} "
+                    "OFFSET {4}".\
+            format(self.MostRecentDataSet_(),
+                   sample_from,
                    self.PartitionClause_(training_data=training_data),
                    batch_size,
                    self.offset_))
@@ -222,12 +236,12 @@ class BatchGenerator:
                values
 
 if __name__ == "__main__":
-    gen = BatchGenerator(db_name="demoweb",
+    gen = BatchGenerator(num_data_entries=None,
+                         db_name="demoweb",
                          db_host="localhost",
                          db_port=5432,
                          db_user="postgres",
-                         db_pass="password",
-                         seed=143)
+                         db_pass="password")
 
     print("total=", gen.NumDataEntries(training_data=None))
     print("training=", gen.NumDataEntries(training_data=True))
@@ -258,7 +272,7 @@ if __name__ == "__main__":
         print("next_move_stone_types=", next_move_stone_types[i])
         print("policies=", policies[i])
         action_number = np.argmax(policies[i])
-        x = action_number // 11
-        y = action_number % 11
+        x = action_number % 11
+        y = action_number // 11
         print("arg_max_policies=", x, y)
         print("values=", values[i])

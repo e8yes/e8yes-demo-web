@@ -25,6 +25,9 @@ class ResidualTowerHeadLayer(tf.Module):
         self.biases = tf.Variable(
             name="res_tower_head_bias",
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
+        
+    def Variables(self) -> List[tf.Tensor]:
+        return [self.conv_kernel, self.biases]
 
 class ResidualBlock(tf.Module):
     def __init__(self,
@@ -58,6 +61,9 @@ class ResidualBlock(tf.Module):
         self.biases2 = tf.Variable(
             name="res_b{0}_bias2".format(block_num),
             initial_value=tf.zeros(shape=[num_output_channels], dtype=tf.float32))
+    
+    def Variables(self) -> List[tf.Tensor]:
+        return [self.conv_kernel1, self.biases1, self.conv_kernel2, self.biases2]
 
 class PolicyLayer(tf.Module):
     def __init__(self, num_input_channels: int):
@@ -87,6 +93,9 @@ class PolicyLayer(tf.Module):
         self.biases = tf.Variable(
             name="policy_fc_biases",
             initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
+    
+    def Variables(self) -> List[tf.Tensor]:
+        return [self.conv_kernel, self.conv_biases, self.weights, self.biases]
 
 class ValueLayer(tf.Module):
     def __init__(self, num_input_channels: int):
@@ -127,6 +136,11 @@ class ValueLayer(tf.Module):
         self.biases2 = tf.Variable(
             name="value_fc2_biases",
             initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
+    
+    def Variables(self) -> List[tf.Tensor]:
+        return [self.conv_kernel, self.conv_biases,
+                self.weights1, self.biases1,
+                self.weights2, self.biases2]
 
 class GomokuCnnResNetSharedTower(tf.Module):
     def __init__(self):
@@ -143,27 +157,14 @@ class GomokuCnnResNetSharedTower(tf.Module):
     
     def Variables(self) -> List[tf.Tensor]:
         variables = list()
-        variables.append(self.res_tower_head_layer_.conv_kernel)
-        variables.append(self.res_tower_head_layer_.biases)
+
+        variables += self.res_tower_head_layer_.Variables()
 
         for block in self.res_blocks_:
-            variables.append(block.conv_kernel1)
-            variables.append(block.biases1)
+            variables += block.Variables()
 
-            variables.append(block.conv_kernel2)
-            variables.append(block.biases2)
-
-        variables.append(self.policy_layer_.conv_kernel)
-        variables.append(self.policy_layer_.conv_biases)
-        variables.append(self.policy_layer_.weights)
-        variables.append(self.policy_layer_.biases)
-
-        variables.append(self.value_layer_.conv_kernel)
-        variables.append(self.value_layer_.conv_biases)
-        variables.append(self.value_layer_.weights1)
-        variables.append(self.value_layer_.biases1)
-        variables.append(self.value_layer_.weights2)
-        variables.append(self.value_layer_.biases2)
+        variables += self.policy_layer_.Variables()
+        variables += self.value_layer_.Variables()
 
         return variables
 
