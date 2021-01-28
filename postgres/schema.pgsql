@@ -372,3 +372,14 @@ CREATE TABLE IF NOT EXISTS gomoku_game_action (
   PRIMARY KEY (game_id, step_number),
   FOREIGN KEY (game_id) REFERENCES gomoku_game (id) ON DELETE CASCADE
 );
+
+CREATE OR REPLACE FUNCTION HASH_BIGINT(src_val BIGINT) RETURNS BIGINT AS $$
+BEGIN
+  src_val := MOD(((src_val >> 16) # src_val) * 73244475, 2147483647);
+  src_val := MOD(((src_val >> 16) # src_val) * 73244475, 2147483647);
+  src_val := MOD(((src_val >> 16) # src_val) * 73244475, 2147483647);
+  src_val := MOD(((src_val >> 16) # src_val) * 73244475, 2147483647);
+  src_val := MOD((src_val >> 16) # src_val, 2147483647);
+  RETURN src_val;
+END;
+$$ LANGUAGE PLPGSQL;
