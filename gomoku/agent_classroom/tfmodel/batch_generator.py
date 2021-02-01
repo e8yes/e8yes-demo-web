@@ -86,17 +86,17 @@ class BatchGenerator:
         boards = np.zeros(
             shape=(batch_size, 11, 11), dtype=np.float32)
         game_phase_place_3_stones = np.zeros(
-            shape=(batch_size), dtype=np.float32)
+            shape=(batch_size, 11, 11), dtype=np.float32)
         game_phase_swap2_decision = np.zeros(
-            shape=(batch_size), dtype=np.float32)
+            shape=(batch_size, 11, 11), dtype=np.float32)
         game_phase_place2_more_stones = np.zeros(
-            shape=(batch_size), dtype=np.float32)
+            shape=(batch_size, 11, 11), dtype=np.float32)
         game_phase_stone_type_decision = np.zeros(
-            shape=(batch_size), dtype=np.float32)
+            shape=(batch_size, 11, 11), dtype=np.float32)
         game_phase_standard_gomoku = np.zeros(
-            shape=(batch_size), dtype=np.float32)
+            shape=(batch_size, 11, 11), dtype=np.float32)
         stone_types = np.zeros(
-            shape=(batch_size), dtype=np.float32)
+            shape=(batch_size, 11, 11), dtype=np.float32)
 
         policies = np.zeros(
             shape=(batch_size, 11*11 + 5), dtype=np.float32)
@@ -107,20 +107,20 @@ class BatchGenerator:
             boards[i, :, :] = ExtractBoardData(bytes(rows[i][5]))
 
             if rows[i][4] == 1:
-                stone_types[i] = -1
+                stone_types[i, :, :] = -1
             elif rows[i][4] == 2:
-                stone_types[i] = 1
+                stone_types[i, :, :] = 1
 
             if rows[i][6] == 0:
-                game_phase_place_3_stones[i] = 1
+                game_phase_place_3_stones[i, :, :] = 1
             elif rows[i][6] == 1:
-                game_phase_swap2_decision[i] = 1
+                game_phase_swap2_decision[i, :, :] = 1
             elif rows[i][6] == 2:
-                game_phase_place2_more_stones[i] = 1
+                game_phase_place2_more_stones[i, :, :] = 1
             elif rows[i][6] == 3:
-                game_phase_stone_type_decision[i] = 1
+                game_phase_stone_type_decision[i, :, :] = 1
             elif rows[i][6] == 4:
-                game_phase_standard_gomoku[i] = 1
+                game_phase_standard_gomoku[i, :, :] = 1
             
             policies[i, :] = np.array(rows[i][7])
             values[i] = rows[i][8]
@@ -149,81 +149,105 @@ class BatchGenerator:
                  boards_flip_r270),
                 axis=0)
 
-            stone_types = np.concatenate(
-                (stone_types,
-                 stone_types,
-                 stone_types,
-                 stone_types,
-                 stone_types,
-                 stone_types,
-                 stone_types,
-                 stone_types),
-                axis=0)
+            stone_types = np.tile(A=stone_types, reps=(8, 1, 1))
+
+            game_phase_place_3_stones = \
+                np.tile(A=game_phase_place_3_stones,
+                        reps=(8, 1, 1))
+
+            game_phase_swap2_decision = \
+                np.tile(A=game_phase_swap2_decision,
+                        reps=(8, 1, 1))
             
-            game_phase_place_3_stones = np.concatenate(
-                (game_phase_place_3_stones,
-                 game_phase_place_3_stones,
-                 game_phase_place_3_stones,
-                 game_phase_place_3_stones,
-                 game_phase_place_3_stones,
-                 game_phase_place_3_stones,
-                 game_phase_place_3_stones,
-                 game_phase_place_3_stones),
-                axis=0)
-
-            game_phase_swap2_decision = np.concatenate(
-                (game_phase_swap2_decision,
-                 game_phase_swap2_decision,
-                 game_phase_swap2_decision,
-                 game_phase_swap2_decision,
-                 game_phase_swap2_decision,
-                 game_phase_swap2_decision,
-                 game_phase_swap2_decision,
-                 game_phase_swap2_decision),
-                axis=0)
+            game_phase_place2_more_stones = \
+                np.tile(A=game_phase_place2_more_stones,
+                        reps=(8, 1, 1))
             
-            game_phase_place2_more_stones = np.concatenate(
-                (game_phase_place2_more_stones,
-                 game_phase_place2_more_stones,
-                 game_phase_place2_more_stones,
-                 game_phase_place2_more_stones,
-                 game_phase_place2_more_stones,
-                 game_phase_place2_more_stones,
-                 game_phase_place2_more_stones,
-                 game_phase_place2_more_stones),
-                axis=0)
+            game_phase_stone_type_decision = \
+                np.tile(A=game_phase_stone_type_decision,
+                        reps=(8, 1, 1))
+            
+            game_phase_standard_gomoku = \
+                np.tile(A=game_phase_standard_gomoku,
+                        reps=(8, 1, 1))
+            
+            policy_planes = np.reshape(
+                a=policies[:, :11*11], 
+                newshape=(batch_size, 11, 11),
+                order="F")
+            policy_planes_r90 = np.rot90(policy_planes, k=1, axes=(1, 2))
+            policy_planes_r180 = np.rot90(policy_planes_r90, k=1, axes=(1, 2))
+            policy_planes_r270 = np.rot90(policy_planes_r180, k=1, axes=(1, 2))
 
-            game_phase_stone_type_decision = np.concatenate(
-                (game_phase_stone_type_decision,
-                 game_phase_stone_type_decision,
-                 game_phase_stone_type_decision,
-                 game_phase_stone_type_decision,
-                 game_phase_stone_type_decision,
-                 game_phase_stone_type_decision,
-                 game_phase_stone_type_decision,
-                 game_phase_stone_type_decision),
-                axis=0)
+            policy_planes_flip = np.flip(policy_planes, axis=1)
+            policy_planes_flip_r90 = \
+                np.rot90(policy_planes_flip, k=1, axes=(1, 2))
+            policy_planes_flip_r180 = \
+                np.rot90(policy_planes_flip_r90, k=1, axes=(1, 2))
+            policy_planes_flip_r270 = \
+                np.rot90(policy_planes_flip_r180, k=1, axes=(1, 2))
 
-            game_phase_standard_gomoku = np.concatenate(
-                (game_phase_standard_gomoku,
-                 game_phase_standard_gomoku,
-                 game_phase_standard_gomoku,
-                 game_phase_standard_gomoku,
-                 game_phase_standard_gomoku,
-                 game_phase_standard_gomoku,
-                 game_phase_standard_gomoku,
-                 game_phase_standard_gomoku),
-                axis=0)
+            policies_r90 = np.reshape(
+                a=policy_planes_r90,
+                newshape=(batch_size, 11*11),
+                order='F')
+            policies_r90 = np.concatenate(
+                (policies_r90, policies[:, 11*11:]), axis=1)
+
+            policies_r180 = np.reshape(
+                a=policy_planes_r180,
+                newshape=(batch_size, 11*11),
+                order='F')
+            policies_r180 = np.concatenate(
+                (policies_r180, policies[:, 11*11:]), axis=1)
+
+            policies_r270 = np.reshape(
+                a=policy_planes_r270,
+                newshape=(batch_size, 11*11),
+                order='F')
+            policies_r270 = np.concatenate(
+                (policies_r270, policies[:, 11*11:]), axis=1)
+            
+            policies_flip = np.reshape(
+                a=policy_planes_flip,
+                newshape=(batch_size, 11*11),
+                order='F')
+            policies_flip = np.concatenate(
+                (policies_flip, policies[:, 11*11:]), axis=1)
+
+            policies_flip_r90 = np.reshape(
+                a=policy_planes_flip_r90,
+                newshape=(batch_size, 11*11),
+                order='F')
+            policies_flip_r90 = np.concatenate(
+                (policies_flip_r90, policies[:, 11*11:]), axis=1)
+
+            policies_flip_r180 = np.reshape(
+                a=policy_planes_flip_r180,
+                newshape=(batch_size, 11*11),
+                order='F')
+            policies_flip_r180 = np.concatenate(
+                (policies_flip_r180, policies[:, 11*11:]), axis=1)
+
+            policies_flip_r270 = np.reshape(
+                a=policy_planes_flip_r270,
+                newshape=(batch_size, 11*11),
+                order='F')
+            policies_flip_r270 = np.concatenate(
+                (policies_flip_r270, policies[:, 11*11:]), axis=1)
 
             policies = np.concatenate(
-                (policies, policies, policies, policies, 
-                 policies, policies, policies, policies),
+                (policies,
+                 policies_r90,
+                 policies_r180,
+                 policies_r270,
+                 policies_flip,
+                 policies_flip_r90,
+                 policies_flip_r180,
+                 policies_flip_r270),
                 axis=0)
 
-            values = np.concatenate(
-                (values, values, values, values, 
-                 values, values, values, values),
-                axis=0)
+            values = np.tile(A=values, reps=(8))
 
         return boards, \
                game_phase_place_3_stones, \
@@ -256,12 +280,12 @@ if __name__ == "__main__":
     next_move_stone_types, \
     policies, \
     values= \
-        gen.NextBatch(batch_size=10,
+        gen.NextBatch(batch_size=2,
                       sample_from=0,
                       training_data=True,
-                      enable_augmentation=False)
+                      enable_augmentation=True)
 
-    for i in range(10):
+    for i in range(boards.shape[0]):
         print("=================entry", i + 1, "====================")
         print("board=\n", boards[i, :])
         print("game_phase_place_3_stones=", game_phase_place_3_stones[i])
