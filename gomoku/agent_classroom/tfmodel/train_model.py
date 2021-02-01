@@ -63,12 +63,16 @@ def Train(batch_gen: BatchGenerator,
 
     model_vars = model.Variables()
 
-    best_loss = float("inf")
-    tolerance = 6
-    i = 0
+    kTolerance = 7
+    kBatchSize = 6
 
+    best_loss = float("inf")
+    tolerance = kTolerance
+    evaluateAfterNumUpdates = \
+        batch_gen.NumDataEntries(training_data=True) // kBatchSize
+    i = 0
     while True:
-        if i % 200 == 0:
+        if i % evaluateAfterNumUpdates == 0:
             training_loss, training_policy_loss, training_value_loss = \
                 DataSetLoss(model=model,
                             training_data=True,
@@ -92,7 +96,7 @@ def Train(batch_gen: BatchGenerator,
             
             if test_loss < best_loss:
                 best_loss = test_loss
-                tolerance = 6
+                tolerance = kTolerance
 
                 logging.info("Found a candidate model.")
                 dst = os.path.join(model_export_path, model.Name())
@@ -111,7 +115,7 @@ def Train(batch_gen: BatchGenerator,
         next_move_stone_types, \
         policies, \
         values = \
-            batch_gen.NextBatch(batch_size=12,
+            batch_gen.NextBatch(batch_size=kBatchSize,
                                 sample_from=0,
                                 training_data=True,
                                 enable_augmentation=True)
