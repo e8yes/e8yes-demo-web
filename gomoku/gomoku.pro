@@ -4,6 +4,7 @@ SUBDIRS = \
         logging/logging.pro \
         agent/agent.pro \
         agent_classroom/agent_classroom.pro \
+        agent_classroom/agent_classroom_main.pro \
         service/gomoku_service.pro \
         gui_main/gui_main.pro \
         _test_game/_test_board_state/_test_board_state.pro \
