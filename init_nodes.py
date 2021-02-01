@@ -24,6 +24,8 @@ def ClearDockerImages(node: NodeConfig):
 def SetUpDockerRegistry(deployment_node_config: NodeConfig,
                         docker_registry_port: str):
   RunSingleCommandInNode(
+    node=deployment_node_config, command="sudo docker pull registry:latest")
+  RunSingleCommandInNode(
     node=deployment_node_config, 
     command="sudo docker run -d -p {0}:{0} --restart=always --name=registry registry:latest"
       .format(docker_registry_port))
