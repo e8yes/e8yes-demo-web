@@ -63,7 +63,7 @@ def Train(batch_gen: BatchGenerator,
 
     model_vars = model.Variables()
 
-    kTolerance = 7
+    kTolerance = 4
     kBatchSize = 6
 
     best_loss = float("inf")
