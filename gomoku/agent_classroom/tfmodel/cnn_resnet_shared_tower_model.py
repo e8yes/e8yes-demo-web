@@ -5,7 +5,7 @@ import tensorflow as tf
 import numpy as np
 
 INPUT_SIZE = 11
-NUM_RES_BLOCKS = 4
+NUM_RES_BLOCKS = 5
 
 class ResidualTowerHeadLayer(tf.Module):
     def __init__(self, 
@@ -36,7 +36,7 @@ class ResidualBlock(tf.Module):
         super(ResidualBlock, self).__init__()
 
         num_input_channels = num_filters
-        kernel_size = 5
+        kernel_size = 3
         num_output_channels = num_filters
         self.conv_kernel1 = tf.Variable(
             name="res_b{0}_kernel1".format(block_num),
@@ -146,14 +146,15 @@ class GomokuCnnResNetSharedTower(tf.Module):
     def __init__(self):
         super(GomokuCnnResNetSharedTower, self).__init__()
         self.res_tower_head_layer_ = ResidualTowerHeadLayer(
-            num_input_channels=2 + 5 + 1, num_filters=32)
+            num_input_channels=2 + 5 + 1, num_filters=128)
 
         self.res_blocks_ = list()
         for i in range(NUM_RES_BLOCKS):
-            self.res_blocks_.append(ResidualBlock(block_num=i, num_filters=32))
+            self.res_blocks_.append(
+                ResidualBlock(block_num=i, num_filters=128))
         
-        self.policy_layer_ = PolicyLayer(num_input_channels=32)
-        self.value_layer_ = ValueLayer(num_input_channels=32)
+        self.policy_layer_ = PolicyLayer(num_input_channels=128)
+        self.value_layer_ = ValueLayer(num_input_channels=128)
     
     def Variables(self) -> List[tf.Tensor]:
         variables = list()
@@ -175,12 +176,12 @@ class GomokuCnnResNetSharedTower(tf.Module):
     @tf.function(
         input_signature=[
             tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None], dtype=tf.float32),
-            tf.TensorSpec(shape=[None], dtype=tf.float32),
-            tf.TensorSpec(shape=[None], dtype=tf.float32),
-            tf.TensorSpec(shape=[None], dtype=tf.float32),
-            tf.TensorSpec(shape=[None], dtype=tf.float32),
-            tf.TensorSpec(shape=[None], dtype=tf.float32)
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32)
         ])
     def __call__(self,
                  board_features: np.ndarray,
@@ -191,8 +192,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                  game_phase_standard_gomoku: np.ndarray,
                  next_move_stone_type) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
         # Places the game states into feature planes.
-        black_stones = -tf.minimum(x=board_features, y=0.0, # pylint: disable=invalid-unary-operand-type
-                                   name="black_stones_extraction")
+        black_stones = 0 - tf.minimum(x=board_features, y=0.0,
+                                      name="black_stones_extraction")
         black_stones = tf.reshape(tensor=black_stones,
                                   shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
                                   name="black_stones_create_channel")
@@ -204,64 +205,28 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                   name="white_stones_create_channel")
 
         game_phase_place_3_stones = \
-            tf.reshape(tensor=game_phase_place_3_stones, shape=[-1, 1, 1, 1],
-                       name="game_phase_place_3_stones_dim3")
-        game_phase_place_3_stones = \
-            tf.repeat(input=game_phase_place_3_stones, repeats=[INPUT_SIZE], axis=2,
-                      name="game_phase_place_3_stones_dim2")
-        game_phase_place_3_stones = \
-            tf.repeat(input=game_phase_place_3_stones, repeats=[INPUT_SIZE], axis=1,
-                      name="game_phase_place_3_stones_dim1")
+            tf.reshape(tensor=game_phase_place_3_stones, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
+                       name="game_phase_place_3_stones_create_channel")
 
         game_phase_swap2_decision = \
-            tf.reshape(tensor=game_phase_swap2_decision, shape=[-1, 1, 1, 1],
-                       name="game_phase_swap2_decision_dim3")
-        game_phase_swap2_decision = \
-            tf.repeat(input=game_phase_swap2_decision, repeats=[INPUT_SIZE], axis=2,
-                      name="game_phase_swap2_decision_dim2")
-        game_phase_swap2_decision = \
-            tf.repeat(input=game_phase_swap2_decision, repeats=[INPUT_SIZE], axis=1,
-                      name="game_phase_swap2_decision_dim1")
+            tf.reshape(tensor=game_phase_swap2_decision, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
+                       name="game_phase_swap2_decision_create_channel")
 
         game_phase_place2_more_stones = \
-            tf.reshape(tensor=game_phase_place2_more_stones, shape=[-1, 1, 1, 1],
-                       name="game_phase_place2_more_stones_dim3")
-        game_phase_place2_more_stones = \
-            tf.repeat(input=game_phase_place2_more_stones, repeats=[INPUT_SIZE], axis=2,
-                      name="game_phase_place2_more_stones_dim2")
-        game_phase_place2_more_stones = \
-            tf.repeat(input=game_phase_place2_more_stones, repeats=[INPUT_SIZE], axis=1,
-                      name="game_phase_place2_more_stones_dim1")
+            tf.reshape(tensor=game_phase_place2_more_stones, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
+                       name="game_phase_place2_more_stones_create_channel")
 
         game_phase_stone_type_decision = \
-            tf.reshape(tensor=game_phase_stone_type_decision, shape=[-1, 1, 1, 1],
-                       name="game_phase_stone_type_decision_dim3")
-        game_phase_stone_type_decision = \
-            tf.repeat(input=game_phase_stone_type_decision, repeats=[INPUT_SIZE], axis=2,
-                      name="game_phase_stone_type_decision_dim2")
-        game_phase_stone_type_decision = \
-            tf.repeat(input=game_phase_stone_type_decision, repeats=[INPUT_SIZE], axis=1,
-                      name="game_phase_stone_type_decision_dim1")
+            tf.reshape(tensor=game_phase_stone_type_decision, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
+                       name="game_phase_stone_type_decision_create_channel")
 
         game_phase_standard_gomoku = \
-            tf.reshape(tensor=game_phase_standard_gomoku, shape=[-1, 1, 1, 1],
-                       name="game_phase_standard_gomoku_dim3")
-        game_phase_standard_gomoku = \
-            tf.repeat(input=game_phase_standard_gomoku, repeats=[INPUT_SIZE], axis=2,
-                      name="game_phase_standard_gomoku_dim2")
-        game_phase_standard_gomoku = \
-            tf.repeat(input=game_phase_standard_gomoku, repeats=[INPUT_SIZE], axis=1,
-                      name="game_phase_standard_gomoku_dim1")
+            tf.reshape(tensor=game_phase_standard_gomoku, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
+                       name="game_phase_standard_gomoku_create_channel")
 
         next_move_stone_type = \
-            tf.reshape(tensor=next_move_stone_type, shape=[-1, 1, 1, 1],
-                      name="next_move_stone_type_dim3")
-        next_move_stone_type = \
-            tf.repeat(input=next_move_stone_type, repeats=[INPUT_SIZE], axis=2,
-                      name="next_move_stone_type_dim2")
-        next_move_stone_type = \
-            tf.repeat(input=next_move_stone_type, repeats=[INPUT_SIZE], axis=1,
-                      name="next_move_stone_type_dim1")
+            tf.reshape(tensor=next_move_stone_type, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
+                      name="next_move_stone_type_create_channel")
         
         conv_features = tf.concat(values=[black_stones, # pylint: disable=unexpected-keyword-arg, no-value-for-parameter
                                           white_stones,
@@ -281,8 +246,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                          padding="SAME",
                                          name="residual_tower_head_conv") + \
                             self.res_tower_head_layer_.biases
-        tower_head = tf.nn.leaky_relu(features=tower_head_linear,
-                                      name="residual_tower_head")
+        tower_head = tf.nn.relu(features=tower_head_linear,
+                                name="residual_tower_head")
 
         # Constructs the residual tower.
         tower_hidden_outputs = [tower_head]
@@ -290,13 +255,13 @@ class GomokuCnnResNetSharedTower(tf.Module):
             block_num = len(tower_hidden_outputs)
 
             conv_output1_linear = tf.nn.conv2d(input=tower_hidden_outputs[-1],
-                                                filters=res_block.conv_kernel1,
-                                                strides=[1, 1, 1, 1],
-                                                padding="SAME",
-                                                name="res_block_{0}_conv1".format(block_num)) + \
+                                               filters=res_block.conv_kernel1,
+                                               strides=[1, 1, 1, 1],
+                                               padding="SAME",
+                                               name="res_block_{0}_conv1".format(block_num)) + \
                                    res_block.biases1
-            conv_output1 = tf.nn.leaky_relu(features=conv_output1_linear,
-                                            name="res_block_{0}_1".format(block_num))
+            conv_output1 = tf.nn.relu(features=conv_output1_linear,
+                                      name="res_block_{0}_1".format(block_num))
 
             conv_output2_linear = tf.nn.conv2d(input=conv_output1,
                                                filters=res_block.conv_kernel2,
@@ -304,9 +269,9 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                                padding="SAME",
                                                name="res_block_{0}_conv2".format(block_num)) + \
                                   res_block.biases2
-            conv_output2 = tower_hidden_outputs[-1] + \
-                tf.nn.leaky_relu(features=conv_output2_linear,
-                                 name="res_block_{0}_2".format(block_num))
+            conv_output2 = tf.nn.relu(
+                features=tower_hidden_outputs[-1] + conv_output2_linear,
+                name="res_block_{0}_2".format(block_num))
 
             tower_hidden_outputs.append(conv_output2)
         
