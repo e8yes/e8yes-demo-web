@@ -29,8 +29,7 @@ namespace e8 {
 
 enum GameLogPurpose {
     GLP_REPRESENTATIVE_DATA,
-    GLP_TRAINING_DATA,
-    GLP_VALIDATION_DATA,
+    GLP_LEARNING_DATA,
     GLP_ACTUAL_RUN,
 };
 
