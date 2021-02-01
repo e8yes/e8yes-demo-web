@@ -148,28 +148,31 @@ class BatchGenerator:
                  boards_flip_r180,
                  boards_flip_r270),
                 axis=0)
+            
+            boards = np.concatenate((boards, -boards), axis=0)
 
             stone_types = np.tile(A=stone_types, reps=(8, 1, 1))
+            stone_types = np.concatenate((stone_types, -stone_types), axis=0)
 
             game_phase_place_3_stones = \
                 np.tile(A=game_phase_place_3_stones,
-                        reps=(8, 1, 1))
+                        reps=(16, 1, 1))
 
             game_phase_swap2_decision = \
                 np.tile(A=game_phase_swap2_decision,
-                        reps=(8, 1, 1))
+                        reps=(16, 1, 1))
             
             game_phase_place2_more_stones = \
                 np.tile(A=game_phase_place2_more_stones,
-                        reps=(8, 1, 1))
+                        reps=(16, 1, 1))
             
             game_phase_stone_type_decision = \
                 np.tile(A=game_phase_stone_type_decision,
-                        reps=(8, 1, 1))
+                        reps=(16, 1, 1))
             
             game_phase_standard_gomoku = \
                 np.tile(A=game_phase_standard_gomoku,
-                        reps=(8, 1, 1))
+                        reps=(16, 1, 1))
             
             policy_planes = np.reshape(
                 a=policies[:, :11*11], 
@@ -246,8 +249,10 @@ class BatchGenerator:
                  policies_flip_r180,
                  policies_flip_r270),
                 axis=0)
+            
+            policies = np.tile(A=policies, reps=(2, 1))
 
-            values = np.tile(A=values, reps=(8))
+            values = np.tile(A=values, reps=(16))
 
         return boards, \
                game_phase_place_3_stones, \
