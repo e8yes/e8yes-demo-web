@@ -12,8 +12,9 @@ from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTower
 def DataSetLoss(model: GomokuCnnResNetSharedTower,
                 training_data: bool,
                 batch_gen: BatchGenerator):
+    batch_size = 100
     num_batches = \
-        test_batch_gen.NumDataEntries(training_data=training_data) // 100 + 1
+        test_batch_gen.NumDataEntries(training_data=training_data) // batch_size + 1
 
     total_loss = 0
     total_policy_loss = 0
@@ -29,7 +30,7 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
         next_move_stone_types, \
         policies, \
         values = \
-            batch_gen.NextBatch(batch_size=100,
+            batch_gen.NextBatch(batch_size=batch_size,
                                 sample_from=0,
                                 training_data=training_data,
                                 enable_augmentation=False)
@@ -67,7 +68,7 @@ def Train(batch_gen: BatchGenerator,
     i = 0
 
     while True:
-        if i % 50 == 0:
+        if i % 200 == 0:
             training_loss, training_policy_loss, training_value_loss = \
                 DataSetLoss(model=model,
                             training_data=True,
@@ -77,6 +78,7 @@ def Train(batch_gen: BatchGenerator,
                 DataSetLoss(model=model,
                             training_data=False,
                             batch_gen=test_batch_gen)
+            print("")
 
             print(i,
                   "training_stats",
@@ -109,10 +111,10 @@ def Train(batch_gen: BatchGenerator,
         next_move_stone_types, \
         policies, \
         values = \
-            batch_gen.NextBatch(batch_size=100,
+            batch_gen.NextBatch(batch_size=12,
                                 sample_from=0,
                                 training_data=True,
-                                enable_augmentation=False)
+                                enable_augmentation=True)
         
         with tf.GradientTape() as tape:
             loss, _, _ = model.Loss(
@@ -128,6 +130,7 @@ def Train(batch_gen: BatchGenerator,
             grads = tape.gradient(target=loss, sources=model_vars)
             optimizer.apply_gradients(grads_and_vars=zip(grads, model_vars))
 
+        print("\r", i, end='')
         i += 1
 
     logging.info("Training loop has been terminated.")
