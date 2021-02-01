@@ -5,7 +5,7 @@ import tensorflow as tf
 import numpy as np
 
 INPUT_SIZE = 11
-NUM_RES_BLOCKS = 5
+NUM_RES_BLOCKS = 2
 
 class ResidualTowerHeadLayer(tf.Module):
     def __init__(self, 
@@ -145,16 +145,23 @@ class ValueLayer(tf.Module):
 class GomokuCnnResNetSharedTower(tf.Module):
     def __init__(self):
         super(GomokuCnnResNetSharedTower, self).__init__()
+
+        kNumFeaturesPerPosition = 80
+
         self.res_tower_head_layer_ = ResidualTowerHeadLayer(
-            num_input_channels=2 + 5 + 1, num_filters=128)
+            num_input_channels=2 + 5 + 1,
+            num_filters=kNumFeaturesPerPosition)
 
         self.res_blocks_ = list()
         for i in range(NUM_RES_BLOCKS):
             self.res_blocks_.append(
-                ResidualBlock(block_num=i, num_filters=128))
+                ResidualBlock(block_num=i,
+                              num_filters=kNumFeaturesPerPosition))
         
-        self.policy_layer_ = PolicyLayer(num_input_channels=128)
-        self.value_layer_ = ValueLayer(num_input_channels=128)
+        self.policy_layer_ = PolicyLayer(
+            num_input_channels=kNumFeaturesPerPosition)
+        self.value_layer_ = ValueLayer(
+            num_input_channels=kNumFeaturesPerPosition)
     
     def Variables(self) -> List[tf.Tensor]:
         variables = list()
@@ -246,8 +253,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                          padding="SAME",
                                          name="residual_tower_head_conv") + \
                             self.res_tower_head_layer_.biases
-        tower_head = tf.nn.relu(features=tower_head_linear,
-                                name="residual_tower_head")
+        tower_head = tf.nn.leaky_relu(features=tower_head_linear,
+                                      name="residual_tower_head")
 
         # Constructs the residual tower.
         tower_hidden_outputs = [tower_head]
@@ -260,8 +267,9 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                                padding="SAME",
                                                name="res_block_{0}_conv1".format(block_num)) + \
                                    res_block.biases1
-            conv_output1 = tf.nn.relu(features=conv_output1_linear,
-                                      name="res_block_{0}_1".format(block_num))
+            conv_output1 = tf.nn.leaky_relu(
+                features=conv_output1_linear,
+                name="res_block_{0}_1".format(block_num))
 
             conv_output2_linear = tf.nn.conv2d(input=conv_output1,
                                                filters=res_block.conv_kernel2,
@@ -269,7 +277,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                                padding="SAME",
                                                name="res_block_{0}_conv2".format(block_num)) + \
                                   res_block.biases2
-            conv_output2 = tf.nn.relu(
+            conv_output2 = tf.nn.leaky_relu(
                 features=tower_hidden_outputs[-1] + conv_output2_linear,
                 name="res_block_{0}_2".format(block_num))
 
@@ -282,8 +290,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                             padding="SAME",
                                             name="policy_fconv") + \
                                self.policy_layer_.conv_biases
-        policy_hidden = tf.nn.relu(features=policy_hidden_linear,
-                                   name="policy_plane")
+        policy_hidden = tf.nn.leaky_relu(features=policy_hidden_linear,
+                                         name="policy_plane")
 
         policy_hidden_flattened = tf.reshape(tensor=policy_hidden,
                                              shape=[-1, INPUT_SIZE*INPUT_SIZE*2],
@@ -301,8 +309,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                             padding="SAME",
                                             name="value_fconv") + \
                                self.value_layer_.conv_biases
-        value_hidden1 = tf.nn.relu(features=value_hidden1_linear,
-                                   name="value_plane")
+        value_hidden1 = tf.nn.leaky_relu(features=value_hidden1_linear,
+                                         name="value_plane")
 
         value_hidden_flattened = tf.reshape(tensor=value_hidden1,
                                             shape=[-1, INPUT_SIZE*INPUT_SIZE],
@@ -311,8 +319,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                          b=self.value_layer_.weights1,
                                          name="value_summary_matmul") + \
                                self.value_layer_.biases1
-        value_hidden2 = tf.nn.relu(features=value_hidden2_linear,
-                                   name="value_summary")
+        value_hidden2 = tf.nn.leaky_relu(features=value_hidden2_linear,
+                                         name="value_summary")
 
         value_score = tf.matmul(a=value_hidden2,
                                 b=self.value_layer_.weights2,
