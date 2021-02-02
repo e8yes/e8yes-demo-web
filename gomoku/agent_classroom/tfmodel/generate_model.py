@@ -104,6 +104,13 @@ def GenerateModel(model_output_path: str):
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]], 
         dtype=tf.float32)
+    
+    ground_truth_policy = tf.constant(
+        value=[[0.007936508]*126],
+        dtype=tf.float32)
+    ground_truth_value = tf.constant(
+        value=[0],
+        dtype=tf.float32)
 
     policy, value, _ = model(board_features,
                              game_phase_place_3_stones,
@@ -114,6 +121,19 @@ def GenerateModel(model_output_path: str):
                              next_move_stone_type)
     logging.info("policy=\n{0}".format(policy.numpy()))
     logging.info("value=\n{0}".format(value.numpy()))
+
+    loss, policy_loss, value_loss = model.Loss(board_features,
+                                               game_phase_place_3_stones,
+                                               game_phase_swap2_decision,
+                                               game_phase_place2_more_stones,
+                                               game_phase_stone_type_decision,
+                                               game_phase_standard_gomoku,
+                                               next_move_stone_type,
+                                               ground_truth_policy,
+                                               ground_truth_value)
+    
+    logging.info("loss={0}, policy_loss={1}, value_loss={2}"\
+        .format(loss.numpy(), policy_loss.numpy(), value_loss.numpy()))
 
     model_full_path = os.path.join(model_output_path, model.Name())
 

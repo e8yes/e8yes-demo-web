@@ -1,4 +1,4 @@
-# This script train a model with the most recently generated game data.
+# This script train an old model with the most recently generated game data.
 
 import argparse
 import os
@@ -7,7 +7,9 @@ import tensorflow as tf
 import numpy as np
 
 from batch_generator import BatchGenerator
+from cnn_resnet_shared_tower_model import CollectGomokuCnnResNetSharedTowerVariables
 from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTower
+from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModelName
 
 def DataSetLoss(model: GomokuCnnResNetSharedTower,
                 training_data: bool,
@@ -36,15 +38,15 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
                                 enable_augmentation=False)
 
         loss, policy_loss, value_loss = model.Loss(
-            boards=boards,
-            game_phase_place_3_stones=game_phase_place_3_stones,
-            game_phase_swap2_decision=game_phase_swap2_decision,
-            game_phase_place2_more_stones=game_phase_place2_more_stones,
-            game_phase_stone_type_decision=game_phase_stone_type_decision,
-            game_phase_standard_gomoku=game_phase_standard_gomoku,
-            next_move_stone_types=next_move_stone_types,
-            policies=policies,
-            values=values)
+            boards,
+            game_phase_place_3_stones,
+            game_phase_swap2_decision,
+            game_phase_place2_more_stones,
+            game_phase_stone_type_decision,
+            game_phase_standard_gomoku,
+            next_move_stone_types,
+            policies,
+            values)
         
         total_loss += loss.numpy()
         total_policy_loss += policy_loss.numpy()
@@ -54,14 +56,15 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
            total_policy_loss / num_batches, \
            total_value_loss / num_batches
 
-def Train(batch_gen: BatchGenerator, 
+def Train(model_import_path: str,
+          batch_gen: BatchGenerator, 
           test_batch_gen: BatchGenerator,
           model_export_path: str) -> None:
-    model = GomokuCnnResNetSharedTower()
+    model = tf.saved_model.load(export_dir=model_import_path)
 
     optimizer = tf.optimizers.Adamax()
 
-    model_vars = model.Variables()
+    model_vars = CollectGomokuCnnResNetSharedTowerVariables(model=model)
 
     kTolerance = 4
     kBatchSize = 6
@@ -99,7 +102,8 @@ def Train(batch_gen: BatchGenerator,
                 tolerance = kTolerance
 
                 logging.info("Found a candidate model.")
-                dst = os.path.join(model_export_path, model.Name())
+                dst = os.path.join(
+                    model_export_path, GomokuCnnResNetSharedTowerModelName())
                 tf.saved_model.save(obj=model, export_dir=dst)
             else:
                 tolerance -= 1
@@ -122,15 +126,15 @@ def Train(batch_gen: BatchGenerator,
         
         with tf.GradientTape() as tape:
             loss, _, _ = model.Loss(
-                boards=boards,
-                game_phase_place_3_stones=game_phase_place_3_stones,
-                game_phase_swap2_decision=game_phase_swap2_decision,
-                game_phase_place2_more_stones=game_phase_place2_more_stones,
-                game_phase_stone_type_decision=game_phase_stone_type_decision,
-                game_phase_standard_gomoku=game_phase_standard_gomoku,
-                next_move_stone_types=next_move_stone_types,
-                policies=policies,
-                values=values)
+                boards,
+                game_phase_place_3_stones,
+                game_phase_swap2_decision,
+                game_phase_place2_more_stones,
+                game_phase_stone_type_decision,
+                game_phase_standard_gomoku,
+                next_move_stone_types,
+                policies,
+                values)
             grads = tape.gradient(target=loss, sources=model_vars)
             optimizer.apply_gradients(grads_and_vars=zip(grads, model_vars))
 
@@ -142,7 +146,10 @@ def Train(batch_gen: BatchGenerator,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Train a model with the most recently generated game data.")
+        description="Train an old model with the most recently generated game data.")
+    parser.add_argument("--model_input_path",
+        type=str,
+        help="A path to read the old model from. Do not specify a file name.")
     parser.add_argument("--model_output_path",
         type=str,
         help="A path to write the trained model to. Do not specify a file name.")
@@ -164,6 +171,7 @@ if __name__ == "__main__":
         help="Password of the user that has access to the latest game data.")
 
     args = parser.parse_args()
+    model_input_path = args.model_input_path
     model_output_path = args.model_output_path
     num_data_entries = args.num_data_entries
     db_host = args.db_host
@@ -171,6 +179,10 @@ if __name__ == "__main__":
     db_user = args.db_user
     db_pass = args.db_pass
 
+    if model_input_path is None:
+        logging.error("Argument model_input_path is required.")
+        parser.print_help()
+        exit(-1)
     if model_output_path is None:
         logging.error("Argument model_output_path is required.")
         parser.print_help()
@@ -209,6 +221,7 @@ if __name__ == "__main__":
                                     db_user=db_user,
                                     db_pass=db_pass)
 
-    Train(batch_gen=batch_gen, 
+    Train(model_import_path=model_input_path,
+          batch_gen=batch_gen, 
           test_batch_gen=test_batch_gen,
           model_export_path=model_output_path)

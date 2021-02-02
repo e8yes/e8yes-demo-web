@@ -4,6 +4,8 @@ import numpy as np
 if __name__ == "__main__":
     model = tf.saved_model.load(
         export_dir="/home/davis/saved_models/gomoku_cnn_shared_tower_11_11_b2")
+    
+    print(model.__dict__)
 
     board_features = tf.constant(
         value=[[[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],

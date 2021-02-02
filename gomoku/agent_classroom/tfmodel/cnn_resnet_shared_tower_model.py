@@ -25,9 +25,11 @@ class ResidualTowerHeadLayer(tf.Module):
         self.biases = tf.Variable(
             name="res_tower_head_bias",
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
-        
-    def Variables(self) -> List[tf.Tensor]:
-        return [self.conv_kernel, self.biases]
+
+def CollectResidualTowerHeadLayerVariables(
+        residual_tower_head_layer: ResidualTowerHeadLayer) -> List[tf.Tensor]:
+    return [residual_tower_head_layer.conv_kernel, 
+            residual_tower_head_layer.biases]
 
 class ResidualBlock(tf.Module):
     def __init__(self,
@@ -61,9 +63,11 @@ class ResidualBlock(tf.Module):
         self.biases2 = tf.Variable(
             name="res_b{0}_bias2".format(block_num),
             initial_value=tf.zeros(shape=[num_output_channels], dtype=tf.float32))
-    
-    def Variables(self) -> List[tf.Tensor]:
-        return [self.conv_kernel1, self.biases1, self.conv_kernel2, self.biases2]
+
+def CollectResidualBlockVariables(
+        residual_block: ResidualBlock) -> List[tf.Tensor]:
+    return [residual_block.conv_kernel1, residual_block.biases1, 
+            residual_block.conv_kernel2, residual_block.biases2]
 
 class PolicyLayer(tf.Module):
     def __init__(self, num_input_channels: int):
@@ -93,9 +97,10 @@ class PolicyLayer(tf.Module):
         self.biases = tf.Variable(
             name="policy_fc_biases",
             initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
-    
-    def Variables(self) -> List[tf.Tensor]:
-        return [self.conv_kernel, self.conv_biases, self.weights, self.biases]
+
+def CollectPolicyLayerVariables(policy_layer: PolicyLayer) -> List[tf.Tensor]:
+    return [policy_layer.conv_kernel, policy_layer.conv_biases, 
+            policy_layer.weights, policy_layer.biases]
 
 class ValueLayer(tf.Module):
     def __init__(self, num_input_channels: int):
@@ -136,11 +141,11 @@ class ValueLayer(tf.Module):
         self.biases2 = tf.Variable(
             name="value_fc2_biases",
             initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
-    
-    def Variables(self) -> List[tf.Tensor]:
-        return [self.conv_kernel, self.conv_biases,
-                self.weights1, self.biases1,
-                self.weights2, self.biases2]
+
+def CollectValueLayerVariables(value_layer: ValueLayer) -> List[tf.Tensor]:
+    return [value_layer.conv_kernel, value_layer.conv_biases,
+            value_layer.weights1, value_layer.biases1,
+            value_layer.weights2, value_layer.biases2]
 
 class GomokuCnnResNetSharedTower(tf.Module):
     def __init__(self):
@@ -162,23 +167,6 @@ class GomokuCnnResNetSharedTower(tf.Module):
             num_input_channels=kNumFeaturesPerPosition)
         self.value_layer_ = ValueLayer(
             num_input_channels=kNumFeaturesPerPosition)
-    
-    def Variables(self) -> List[tf.Tensor]:
-        variables = list()
-
-        variables += self.res_tower_head_layer_.Variables()
-
-        for block in self.res_blocks_:
-            variables += block.Variables()
-
-        variables += self.policy_layer_.Variables()
-        variables += self.value_layer_.Variables()
-
-        return variables
-
-    def Name(self)-> str:
-        return "gomoku_cnn_shared_tower_{0}_{0}_b{1}" \
-            .format(INPUT_SIZE, NUM_RES_BLOCKS)
 
     @tf.function(
         input_signature=[
@@ -333,7 +321,18 @@ class GomokuCnnResNetSharedTower(tf.Module):
 
         return policy, value, policy_logits
     
-    @tf.function
+    @tf.function(
+        input_signature=[
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE*INPUT_SIZE + 5], dtype=tf.float32),
+            tf.TensorSpec(shape=[None], dtype=tf.float32)
+        ])
     def Loss(self,
              boards: np.ndarray, 
              game_phase_place_3_stones: np.ndarray, 
@@ -363,3 +362,22 @@ class GomokuCnnResNetSharedTower(tf.Module):
         loss = policy_loss + value_loss
 
         return loss, policy_loss, value_loss
+
+def GomokuCnnResNetSharedTowerModelName()-> str:
+    return "gomoku_cnn_shared_tower_{0}_{0}_b{1}" \
+        .format(INPUT_SIZE, NUM_RES_BLOCKS)
+
+def CollectGomokuCnnResNetSharedTowerVariables(
+        model: GomokuCnnResNetSharedTower) -> List[tf.Tensor]:
+    variables = list()
+
+    variables += CollectResidualTowerHeadLayerVariables(
+        model.res_tower_head_layer_)
+
+    for block in model.res_blocks_:
+        variables += CollectResidualBlockVariables(block)
+
+    variables += CollectPolicyLayerVariables(model.policy_layer_)
+    variables += CollectValueLayerVariables(model.value_layer_)
+
+    return variables
