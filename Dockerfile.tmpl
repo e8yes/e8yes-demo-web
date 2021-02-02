@@ -5,17 +5,6 @@ WORKDIR /home
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 
-# Install grpc web proxy
-RUN apt install -y golang-go
-RUN apt install -y go-dep
-
-ENV GOPATH=/home/go
-RUN git clone https://github.com/improbable-eng/grpc-web.git \
-              ./go/src/github.com/improbable-eng/grpc-web
-WORKDIR /home/go/src/github.com/improbable-eng/grpc-web
-RUN dep ensure
-RUN go install ./go/grpcwebproxy
-
 # Install required packages.
 RUN apt install -y build-essential \
                    git \
