@@ -146,7 +146,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
     def __init__(self):
         super(GomokuCnnResNetSharedTower, self).__init__()
 
-        kNumFeaturesPerPosition = 80
+        kNumFeaturesPerPosition = 84
 
         self.res_tower_head_layer_ = ResidualTowerHeadLayer(
             num_input_channels=2 + 5 + 1,
@@ -199,8 +199,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                  game_phase_standard_gomoku: np.ndarray,
                  next_move_stone_type) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
         # Places the game states into feature planes.
-        black_stones = 0 - tf.minimum(x=board_features, y=0.0,
-                                      name="black_stones_extraction")
+        black_stones = 0.0 - tf.minimum(x=board_features, y=0.0,
+                                        name="black_stones_extraction")
         black_stones = tf.reshape(tensor=black_stones,
                                   shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
                                   name="black_stones_create_channel")
