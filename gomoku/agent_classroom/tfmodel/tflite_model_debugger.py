@@ -56,7 +56,7 @@ if __name__ == "__main__":
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
         dtype=np.float32)
-    game_phase_place2_more_stones = np.array(
+    game_phase_place_2_more_stones = np.array(
         object=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -125,8 +125,8 @@ if __name__ == "__main__":
         tensor_index=FindTensorIndex(key="inference_game_phase_swap2_decision:0", details=input_details), 
         value=game_phase_swap2_decision)
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="inference_game_phase_place2_more_stones:0", details=input_details), 
-        value=game_phase_place2_more_stones)
+        tensor_index=FindTensorIndex(key="inference_game_phase_place_2_more_stones:0", details=input_details), 
+        value=game_phase_place_2_more_stones)
     interpreter.set_tensor(
         tensor_index=FindTensorIndex(key="inference_game_phase_stone_type_decision:0", details=input_details), 
         value=game_phase_stone_type_decision)

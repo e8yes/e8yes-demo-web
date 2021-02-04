@@ -7,18 +7,18 @@ import tensorflow as tf
 from batch_generator import BatchGenerator
 
 gen = BatchGenerator(num_data_entries=None,
-                         db_name="demoweb",
-                         db_host="localhost",
-                         db_port=5432,
-                         db_user="postgres",
-                         db_pass="password")
+                     db_name="demoweb",
+                     db_host="localhost",
+                     db_port=5432,
+                     db_user="postgres",
+                     db_pass="password")
 
 def ExampleDataEntries() -> List[any]:
     for i in range(10):
         boards, \
         game_phase_place_3_stones, \
         game_phase_swap2_decision, \
-        game_phase_place2_more_stones, \
+        game_phase_place_2_more_stones, \
         game_phase_stone_type_decision, \
         game_phase_standard_gomoku, \
         next_move_stone_types, \
@@ -34,7 +34,7 @@ def ExampleDataEntries() -> List[any]:
         yield [boards,
                game_phase_place_3_stones,
                game_phase_swap2_decision,
-               game_phase_place2_more_stones,
+               game_phase_place_2_more_stones,
                game_phase_stone_type_decision,
                game_phase_standard_gomoku,
                next_move_stone_types]

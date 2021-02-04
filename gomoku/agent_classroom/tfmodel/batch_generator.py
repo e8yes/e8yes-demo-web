@@ -89,7 +89,7 @@ class BatchGenerator:
             shape=(batch_size, 11, 11), dtype=np.float32)
         game_phase_swap2_decision = np.zeros(
             shape=(batch_size, 11, 11), dtype=np.float32)
-        game_phase_place2_more_stones = np.zeros(
+        game_phase_place_2_more_stones = np.zeros(
             shape=(batch_size, 11, 11), dtype=np.float32)
         game_phase_stone_type_decision = np.zeros(
             shape=(batch_size, 11, 11), dtype=np.float32)
@@ -116,7 +116,7 @@ class BatchGenerator:
             elif rows[i][6] == 1:
                 game_phase_swap2_decision[i, :, :] = 1
             elif rows[i][6] == 2:
-                game_phase_place2_more_stones[i, :, :] = 1
+                game_phase_place_2_more_stones[i, :, :] = 1
             elif rows[i][6] == 3:
                 game_phase_stone_type_decision[i, :, :] = 1
             elif rows[i][6] == 4:
@@ -162,8 +162,8 @@ class BatchGenerator:
                 np.tile(A=game_phase_swap2_decision,
                         reps=(16, 1, 1))
             
-            game_phase_place2_more_stones = \
-                np.tile(A=game_phase_place2_more_stones,
+            game_phase_place_2_more_stones = \
+                np.tile(A=game_phase_place_2_more_stones,
                         reps=(16, 1, 1))
             
             game_phase_stone_type_decision = \
@@ -257,7 +257,7 @@ class BatchGenerator:
         return boards, \
                game_phase_place_3_stones, \
                game_phase_swap2_decision, \
-               game_phase_place2_more_stones, \
+               game_phase_place_2_more_stones, \
                game_phase_stone_type_decision, \
                game_phase_standard_gomoku, \
                stone_types, \
@@ -279,7 +279,7 @@ if __name__ == "__main__":
     boards, \
     game_phase_place_3_stones, \
     game_phase_swap2_decision, \
-    game_phase_place2_more_stones, \
+    game_phase_place_2_more_stones, \
     game_phase_stone_type_decision, \
     game_phase_standard_gomoku, \
     next_move_stone_types, \
@@ -295,7 +295,7 @@ if __name__ == "__main__":
         print("board=\n", boards[i, :])
         print("game_phase_place_3_stones=", game_phase_place_3_stones[i])
         print("game_phase_swap2_decision=", game_phase_swap2_decision[i])
-        print("game_phase_place2_more_stones=", game_phase_place2_more_stones[i])
+        print("game_phase_place_2_more_stones=", game_phase_place_2_more_stones[i])
         print("game_phase_stone_type_decision=", game_phase_stone_type_decision[i])
         print("game_phase_standard_gomoku=", game_phase_standard_gomoku[i])
         print("next_move_stone_types=", next_move_stone_types[i])

@@ -47,7 +47,7 @@ if __name__ == "__main__":
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
         dtype=tf.float32)
-    game_phase_place2_more_stones = tf.constant(
+    game_phase_place_2_more_stones = tf.constant(
         value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     policy, value, _ = model(board_features,
                              game_phase_place_3_stones,
                              game_phase_swap2_decision,
-                             game_phase_place2_more_stones,
+                             game_phase_place_2_more_stones,
                              game_phase_stone_type_decision,
                              game_phase_standard_gomoku,
                              next_move_stone_type)

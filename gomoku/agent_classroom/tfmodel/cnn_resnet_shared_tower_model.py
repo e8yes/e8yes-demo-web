@@ -182,7 +182,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
                  board_features: np.ndarray,
                  game_phase_place_3_stones: np.ndarray,
                  game_phase_swap2_decision: np.ndarray,
-                 game_phase_place2_more_stones: np.ndarray,
+                 game_phase_place_2_more_stones: np.ndarray,
                  game_phase_stone_type_decision: np.ndarray,
                  game_phase_standard_gomoku: np.ndarray,
                  next_move_stone_type) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
@@ -207,9 +207,9 @@ class GomokuCnnResNetSharedTower(tf.Module):
             tf.reshape(tensor=game_phase_swap2_decision, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
                        name="game_phase_swap2_decision_create_channel")
 
-        game_phase_place2_more_stones = \
-            tf.reshape(tensor=game_phase_place2_more_stones, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
-                       name="game_phase_place2_more_stones_create_channel")
+        game_phase_place_2_more_stones = \
+            tf.reshape(tensor=game_phase_place_2_more_stones, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
+                       name="game_phase_place_2_more_stones_create_channel")
 
         game_phase_stone_type_decision = \
             tf.reshape(tensor=game_phase_stone_type_decision, shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
@@ -227,7 +227,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                           white_stones,
                                           game_phase_place_3_stones,
                                           game_phase_swap2_decision,
-                                          game_phase_place2_more_stones,
+                                          game_phase_place_2_more_stones,
                                           game_phase_stone_type_decision,
                                           game_phase_standard_gomoku,
                                           next_move_stone_type],
@@ -337,7 +337,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
              boards: np.ndarray, 
              game_phase_place_3_stones: np.ndarray, 
              game_phase_swap2_decision: np.ndarray, 
-             game_phase_place2_more_stones: np.ndarray, 
+             game_phase_place_2_more_stones: np.ndarray, 
              game_phase_stone_type_decision: np.ndarray, 
              game_phase_standard_gomoku: np.ndarray, 
              next_move_stone_types: np.ndarray, 
@@ -347,7 +347,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
             self(boards, 
                  game_phase_place_3_stones,
                  game_phase_swap2_decision,
-                 game_phase_place2_more_stones,
+                 game_phase_place_2_more_stones,
                  game_phase_stone_type_decision,
                  game_phase_standard_gomoku,
                  next_move_stone_types)

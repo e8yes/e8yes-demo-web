@@ -26,7 +26,7 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
         boards, \
         game_phase_place_3_stones, \
         game_phase_swap2_decision, \
-        game_phase_place2_more_stones, \
+        game_phase_place_2_more_stones, \
         game_phase_stone_type_decision, \
         game_phase_standard_gomoku, \
         next_move_stone_types, \
@@ -41,7 +41,7 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
             boards,
             game_phase_place_3_stones,
             game_phase_swap2_decision,
-            game_phase_place2_more_stones,
+            game_phase_place_2_more_stones,
             game_phase_stone_type_decision,
             game_phase_standard_gomoku,
             next_move_stone_types,
@@ -117,7 +117,7 @@ def Train(model_import_path: str,
         boards, \
         game_phase_place_3_stones, \
         game_phase_swap2_decision, \
-        game_phase_place2_more_stones, \
+        game_phase_place_2_more_stones, \
         game_phase_stone_type_decision, \
         game_phase_standard_gomoku, \
         next_move_stone_types, \
@@ -133,7 +133,7 @@ def Train(model_import_path: str,
                 boards,
                 game_phase_place_3_stones,
                 game_phase_swap2_decision,
-                game_phase_place2_more_stones,
+                game_phase_place_2_more_stones,
                 game_phase_stone_type_decision,
                 game_phase_standard_gomoku,
                 next_move_stone_types,
