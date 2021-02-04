@@ -104,7 +104,11 @@ def Train(model_import_path: str,
                 logging.info("Found a candidate model.")
                 dst = os.path.join(
                     model_export_path, GomokuCnnResNetSharedTowerModelName())
-                tf.saved_model.save(obj=model, export_dir=dst)
+                tf.saved_model.save(
+                    obj=model,
+                    export_dir=dst,
+                    signatures={"inference": model.__call__,
+                                "loss": model.Loss})
             else:
                 tolerance -= 1
                 if tolerance == 0:

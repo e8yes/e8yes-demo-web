@@ -109,28 +109,35 @@ if __name__ == "__main__":
                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]],
         dtype=np.float32)
 
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+
+    print(input_details)
+    print(output_details)
+
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="serving_default_board_features:0", details=input_details), 
+        tensor_index=FindTensorIndex(key="inference_board_features:0", details=input_details), 
         value=board_features)
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="serving_default_game_phase_swap2_decision:0", details=input_details), 
+        tensor_index=FindTensorIndex(key="inference_game_phase_place_3_stones:0", details=input_details), 
+        value=game_phase_place_3_stones)
+    interpreter.set_tensor(
+        tensor_index=FindTensorIndex(key="inference_game_phase_swap2_decision:0", details=input_details), 
         value=game_phase_swap2_decision)
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="serving_default_game_phase_place2_more_stones:0", details=input_details), 
+        tensor_index=FindTensorIndex(key="inference_game_phase_place2_more_stones:0", details=input_details), 
         value=game_phase_place2_more_stones)
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="serving_default_game_phase_stone_type_decision:0", details=input_details), 
+        tensor_index=FindTensorIndex(key="inference_game_phase_stone_type_decision:0", details=input_details), 
         value=game_phase_stone_type_decision)
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="serving_default_game_phase_standard_gomoku:0", details=input_details), 
+        tensor_index=FindTensorIndex(key="inference_game_phase_standard_gomoku:0", details=input_details), 
         value=game_phase_standard_gomoku)
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="serving_default_next_move_stone_type:0", details=input_details), 
+        tensor_index=FindTensorIndex(key="inference_next_move_stone_type:0", details=input_details), 
         value=next_move_stone_type)
 
     interpreter.invoke()
-
-    output_details = interpreter.get_output_details()
 
     policy = interpreter.get_tensor(
         tensor_index=FindTensorIndex(key="StatefulPartitionedCall:0", details=output_details))

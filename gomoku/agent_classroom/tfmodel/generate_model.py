@@ -5,6 +5,7 @@ import logging
 import tensorflow as tf
 
 from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTower
+from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModelName
 
 def GenerateModel(model_output_path: str):
     logging.info("Constructing the graph...")
@@ -135,21 +136,24 @@ def GenerateModel(model_output_path: str):
     logging.info("loss={0}, policy_loss={1}, value_loss={2}"\
         .format(loss.numpy(), policy_loss.numpy(), value_loss.numpy()))
 
-    model_full_path = os.path.join(model_output_path, model.Name())
+    model_full_path = os.path.join(
+        model_output_path,
+        GomokuCnnResNetSharedTowerModelName())
 
     logging.info("Saving the graph into jounrnal...")
     log_path = os.path.join(model_full_path, "logs")
     writer = tf.summary.create_file_writer(logdir=log_path)
     with writer.as_default():
         tf.summary.trace_export(
-            name=model.Name(),
+            name=GomokuCnnResNetSharedTowerModelName(),
             step=0,
             profiler_outdir=log_path)
 
     logging.info("Saving the model...")
     tf.saved_model.save(obj=model,
                         export_dir=model_full_path,
-                        signatures={"serving_default": model.__call__})
+                        signatures={"inference": model.__call__,
+                                    "loss": model.Loss})
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, 
