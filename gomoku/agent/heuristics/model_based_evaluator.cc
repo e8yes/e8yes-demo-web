@@ -78,7 +78,7 @@ void Fill(GomokuBoardState const &state, float val, TfLiteTensor *tensor) {
 
     for (int16_t y = 0; y < state.Height(); ++y) {
         for (int16_t x = 0; x < state.Width(); ++x) {
-            tensor_memory[y + x * state.Height()] = val;
+            tensor_memory[x + y * state.Width()] = val;
         }
     }
 }
@@ -195,14 +195,16 @@ EvaluationResult ToEvaluationResult(GomokuBoardState const &state,
     return evaluation;
 }
 
-int FindTensorIndexByName(std::string const &name, TfLiteInterpreter *interpreter) {
-    unsigned num_tensors = TfLiteInterpreterGetInputTensorCount(interpreter);
+int FindTensorIndexByName(std::string const &name, bool input, TfLiteInterpreter *interpreter) {
+    unsigned num_tensors = input ? TfLiteInterpreterGetInputTensorCount(interpreter)
+                                 : TfLiteInterpreterGetOutputTensorCount(interpreter);
 
     for (unsigned i = 0; i < num_tensors; ++i) {
-        TfLiteTensor *tensor = TfLiteInterpreterGetInputTensor(interpreter, i);
+        TfLiteTensor const *tensor = input ? TfLiteInterpreterGetInputTensor(interpreter, i)
+                                           : TfLiteInterpreterGetOutputTensor(interpreter, i);
         std::string tensor_name = TfLiteTensorName(tensor);
         if (name == tensor_name) {
-            return 0;
+            return i;
         }
     }
 
@@ -229,6 +231,9 @@ struct ModelBasedEvaluator::ModelBasedEvaluatorInternal {
     int game_phase_standard_gomoku_idx;
     int next_move_stone_type_idx;
 
+    int policy_idx;
+    int value_idx;
+
     std::unordered_map<MctNodeId, EvaluationResult> cache;
 };
 
@@ -243,35 +248,44 @@ ModelBasedEvaluator::ModelBasedEvaluatorInternal::ModelBasedEvaluatorInternal(
     interpreter = TfLiteInterpreterCreate(model, interpreter_options);
     assert(interpreter != nullptr);
 
-    TfLiteStatus status = TfLiteInterpreterAllocateTensors(interpreter);
-    assert(status == TfLiteStatus::kTfLiteOk);
-
-    board_features_idx = FindTensorIndexByName("inference_board_features:0", interpreter);
+    board_features_idx =
+        FindTensorIndexByName(/*name=*/"inference_board_features:0", /*input=*/true, interpreter);
     assert(board_features_idx != -1);
 
-    game_phase_place_3_stones_idx =
-        FindTensorIndexByName("inference_game_phase_place_3_stones:0", interpreter);
+    game_phase_place_3_stones_idx = FindTensorIndexByName(
+        /*name=*/"inference_game_phase_place_3_stones:0", /*input=*/true, interpreter);
     assert(game_phase_place_3_stones_idx != -1);
 
-    game_phase_swap2_decision_idx =
-        FindTensorIndexByName("inference_game_phase_swap2_decision:0", interpreter);
+    game_phase_swap2_decision_idx = FindTensorIndexByName(
+        /*name=*/"inference_game_phase_swap2_decision:0", /*input=*/true, interpreter);
     assert(game_phase_swap2_decision_idx != -1);
 
-    game_phase_swap2_decision_idx =
-        FindTensorIndexByName("inference_game_phase_swap2_decision:0", interpreter);
-    assert(game_phase_swap2_decision_idx != -1);
-
-    game_phase_place_2_more_stones_idx =
-        FindTensorIndexByName("inference_game_phase_place_2_more_stones:0", interpreter);
+    game_phase_place_2_more_stones_idx = FindTensorIndexByName(
+        /*name=*/"inference_game_phase_place_2_more_stones:0", /*input=*/true, interpreter);
     assert(game_phase_place_2_more_stones_idx != -1);
 
-    game_phase_stone_type_decision_idx =
-        FindTensorIndexByName("inference_game_phase_stone_type_decision:0", interpreter);
+    game_phase_stone_type_decision_idx = FindTensorIndexByName(
+        /*name=*/"inference_game_phase_stone_type_decision:0", /*input=*/true, interpreter);
     assert(game_phase_stone_type_decision_idx != -1);
 
-    next_move_stone_type_idx =
-        FindTensorIndexByName("inference_next_move_stone_type:0", interpreter);
+    game_phase_standard_gomoku_idx = FindTensorIndexByName(
+        /*name=*/"inference_game_phase_standard_gomoku:0", /*input=*/true, interpreter);
+    assert(game_phase_standard_gomoku_idx != -1);
+
+    next_move_stone_type_idx = FindTensorIndexByName(/*name=*/"inference_next_move_stone_type:0",
+                                                     /*input=*/true, interpreter);
     assert(next_move_stone_type_idx != -1);
+
+    policy_idx = FindTensorIndexByName(/*name=*/"StatefulPartitionedCall:0",
+                                       /*input=*/false, interpreter);
+    assert(policy_idx != -1);
+
+    value_idx = FindTensorIndexByName(/*name=*/"StatefulPartitionedCall:1",
+                                      /*input=*/false, interpreter);
+    assert(value_idx != -1);
+
+    TfLiteStatus status = TfLiteInterpreterAllocateTensors(interpreter);
+    assert(status == TfLiteStatus::kTfLiteOk);
 }
 
 ModelBasedEvaluator::ModelBasedEvaluatorInternal::~ModelBasedEvaluatorInternal() {
@@ -312,8 +326,8 @@ ModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id
     TfLiteStatus status = TfLiteInterpreterInvoke(interpreter);
     assert(status == TfLiteStatus::kTfLiteOk);
 
-    TfLiteTensor const *policy = TfLiteInterpreterGetOutputTensor(interpreter, /*output_index=*/0);
-    TfLiteTensor const *value = TfLiteInterpreterGetOutputTensor(interpreter, /*output_index=*/1);
+    TfLiteTensor const *policy = TfLiteInterpreterGetOutputTensor(interpreter, policy_idx);
+    TfLiteTensor const *value = TfLiteInterpreterGetOutputTensor(interpreter, value_idx);
 
     EvaluationResult evaluation = ToEvaluationResult(state, policy, value);
     cache.insert(std::make_pair(state_id, evaluation));
@@ -323,6 +337,8 @@ ModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id
 
 ModelBasedEvaluator::ModelBasedEvaluator(std::string const &model_path)
     : pimpl_(std::make_unique<ModelBasedEvaluatorInternal>(model_path)) {}
+
+ModelBasedEvaluator::~ModelBasedEvaluator() {}
 
 float ModelBasedEvaluator::EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) {
     return pimpl_->Fetch(state_id, state).reward;

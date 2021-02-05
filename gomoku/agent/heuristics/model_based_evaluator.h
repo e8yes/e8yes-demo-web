@@ -39,7 +39,7 @@ class ModelBasedEvaluator : public GomokuEvaluatorInterface {
      * @brief ModelBasedEvaluator Constructs an evaluator from a tensorflow lite model file.
      */
     ModelBasedEvaluator(std::string const &model_path);
-    ~ModelBasedEvaluator() = default;
+    ~ModelBasedEvaluator() override;
 
     float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) override;
 
@@ -54,7 +54,6 @@ class ModelBasedEvaluator : public GomokuEvaluatorInterface {
 
   private:
     struct ModelBasedEvaluatorInternal;
-
     std::unique_ptr<ModelBasedEvaluatorInternal> pimpl_;
 };
 

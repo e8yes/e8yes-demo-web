@@ -45,7 +45,7 @@ std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board);
 class GomokuLightRolloutEvaluator : public GomokuEvaluatorInterface {
   public:
     GomokuLightRolloutEvaluator();
-    ~GomokuLightRolloutEvaluator();
+    ~GomokuLightRolloutEvaluator() override;
 
     float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) override;
 
@@ -56,7 +56,7 @@ class GomokuLightRolloutEvaluator : public GomokuEvaluatorInterface {
 
     unsigned NumSimulations() const override;
 
-    virtual void ClearCache() override;
+    void ClearCache() override;
 
   private:
     struct GomokuLightRolloutEvaluatorInternal;
