@@ -167,6 +167,12 @@ class GomokuCnnResNetSharedTower(tf.Module):
             num_input_channels=kNumFeaturesPerPosition)
         self.value_layer_ = ValueLayer(
             num_input_channels=kNumFeaturesPerPosition)
+    
+    @tf.function
+    def LeakyRelu(self, 
+                  features: tf.Tensor,
+                  name: str) -> tf.Tensor:
+        return tf.maximum(x=features, y=0.3*features, name=name)
 
     @tf.function(
         input_signature=[
@@ -241,8 +247,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                          padding="SAME",
                                          name="residual_tower_head_conv") + \
                             self.res_tower_head_layer_.biases
-        tower_head = tf.nn.leaky_relu(features=tower_head_linear,
-                                      name="residual_tower_head")
+        tower_head = self.LeakyRelu(features=tower_head_linear,
+                                    name="residual_tower_head")
 
         # Constructs the residual tower.
         tower_hidden_outputs = [tower_head]
@@ -255,7 +261,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                                padding="SAME",
                                                name="res_block_{0}_conv1".format(block_num)) + \
                                    res_block.biases1
-            conv_output1 = tf.nn.leaky_relu(
+            conv_output1 = self.LeakyRelu(
                 features=conv_output1_linear,
                 name="res_block_{0}_1".format(block_num))
 
@@ -265,7 +271,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                                padding="SAME",
                                                name="res_block_{0}_conv2".format(block_num)) + \
                                   res_block.biases2
-            conv_output2 = tf.nn.leaky_relu(
+            conv_output2 = self.LeakyRelu(
                 features=tower_hidden_outputs[-1] + conv_output2_linear,
                 name="res_block_{0}_2".format(block_num))
 
@@ -278,8 +284,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                             padding="SAME",
                                             name="policy_fconv") + \
                                self.policy_layer_.conv_biases
-        policy_hidden = tf.nn.leaky_relu(features=policy_hidden_linear,
-                                         name="policy_plane")
+        policy_hidden = self.LeakyRelu(features=policy_hidden_linear,
+                                       name="policy_plane")
 
         policy_hidden_flattened = tf.reshape(tensor=policy_hidden,
                                              shape=[-1, INPUT_SIZE*INPUT_SIZE*2],
@@ -297,8 +303,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                             padding="SAME",
                                             name="value_fconv") + \
                                self.value_layer_.conv_biases
-        value_hidden1 = tf.nn.leaky_relu(features=value_hidden1_linear,
-                                         name="value_plane")
+        value_hidden1 = self.LeakyRelu(features=value_hidden1_linear,
+                                       name="value_plane")
 
         value_hidden_flattened = tf.reshape(tensor=value_hidden1,
                                             shape=[-1, INPUT_SIZE*INPUT_SIZE],
@@ -307,8 +313,8 @@ class GomokuCnnResNetSharedTower(tf.Module):
                                          b=self.value_layer_.weights1,
                                          name="value_summary_matmul") + \
                                self.value_layer_.biases1
-        value_hidden2 = tf.nn.leaky_relu(features=value_hidden2_linear,
-                                         name="value_summary")
+        value_hidden2 = self.LeakyRelu(features=value_hidden2_linear,
+                                       name="value_summary")
 
         value_score = tf.matmul(a=value_hidden2,
                                 b=self.value_layer_.weights2,
