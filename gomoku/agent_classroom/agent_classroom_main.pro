@@ -16,6 +16,11 @@ INCLUDEPATH += $$PWD/../../
 SOURCES += \
     main.cc
 
+unix:!macx: LIBS += -L$$OUT_PWD/./ -lgomoku_agent_classroom
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
 unix:!macx: LIBS += -L$$OUT_PWD/../../common/flags/ -lflags
 
 INCLUDEPATH += $$PWD/../../common/flags
@@ -61,7 +66,4 @@ unix:!macx: LIBS += -L$$OUT_PWD/../agent/ -lgomoku_agent
 INCLUDEPATH += $$PWD/../agent
 DEPENDPATH += $$PWD/../agent
 
-unix:!macx: LIBS += -L$$OUT_PWD/./ -lgomoku_agent_classroom
-
-INCLUDEPATH += $$PWD/.
-DEPENDPATH += $$PWD/.
+LIBS += -ltensorflowlite_c

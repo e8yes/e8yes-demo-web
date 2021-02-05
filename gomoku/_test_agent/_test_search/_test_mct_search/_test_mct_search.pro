@@ -15,6 +15,16 @@ INCLUDEPATH += $$PWD/../../../../
 SOURCES += \
     test_mct_search.cc
 
+unix:!macx: LIBS += -L$$OUT_PWD/../../../agent/ -lgomoku_agent
+
+INCLUDEPATH += $$PWD/../../../agent
+DEPENDPATH += $$PWD/../../../agent
+
+unix:!macx: LIBS += -L$$OUT_PWD/../../../game/ -lgomoku_game
+
+INCLUDEPATH += $$PWD/../../../game
+DEPENDPATH += $$PWD/../../../game
+
 unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/unit_test_util/ -lunit_test_util
 
 INCLUDEPATH += $$PWD/../../../../common/unit_test_util
@@ -30,17 +40,9 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/random/ -lrandom
 INCLUDEPATH += $$PWD/../../../../common/random
 DEPENDPATH += $$PWD/../../../../common/random
 
-unix:!macx: LIBS += -L$$OUT_PWD/../../../game/ -lgomoku_game
-
-INCLUDEPATH += $$PWD/../../../game
-DEPENDPATH += $$PWD/../../../game
-
-unix:!macx: LIBS += -L$$OUT_PWD/../../../agent/ -lgomoku_agent
-
-INCLUDEPATH += $$PWD/../../../agent
-DEPENDPATH += $$PWD/../../../agent
-
 unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/time_util/ -ltime_util
 
 INCLUDEPATH += $$PWD/../../../../common/time_util
 DEPENDPATH += $$PWD/../../../../common/time_util
+
+LIBS += -ltensorflowlite_c
