@@ -35,18 +35,3 @@ unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
-
-unix:!macx: LIBS += -L$$OUT_PWD/../../common/container/ -lcontainer
-
-INCLUDEPATH += $$PWD/../../common/container
-DEPENDPATH += $$PWD/../../common/container
-
-unix:!macx: LIBS += -L$$OUT_PWD/../../common/thread/ -lthread
-
-INCLUDEPATH += $$PWD/../../common/thread
-DEPENDPATH += $$PWD/../../common/thread
-
-unix:!macx: LIBS += -L$$OUT_PWD/../../common/random/ -lrandom
-
-INCLUDEPATH += $$PWD/../../common/random
-DEPENDPATH += $$PWD/../../common/random

@@ -5,7 +5,6 @@ import os
 import logging
 import tensorflow as tf
 import numpy as np
-
 from batch_generator import BatchGenerator
 from cnn_resnet_shared_tower_model import CollectGomokuCnnResNetSharedTowerVariables
 from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTower

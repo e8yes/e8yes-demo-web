@@ -59,10 +59,10 @@ if __name__ == "__main__":
         saved_model_dir=model_input_path,
         signature_keys=["inference"])
     converter.experimental_new_converter = True
-    converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_LATENCY]
-    # converter.representative_dataset = ExampleDataEntries
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    converter.representative_dataset = ExampleDataEntries
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]
-    # converter.inference_input_type = tf.float32
-    # converter.inference_output_type = tf.float32
+    # converter.inference_input_type = tf.int8
+    # converter.inference_output_type = tf.int8
     tflite_model = converter.convert()
     open("{0}.tflite".format(model_input_path), "wb").write(tflite_model)
