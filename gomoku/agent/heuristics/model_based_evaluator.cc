@@ -188,7 +188,7 @@ EvaluationResult ToEvaluationResult(GomokuBoardState const &state,
     assert(TfLiteTensorNumDims(value_tensor) == 1);
     assert(TfLiteTensorDim(value_tensor, /*dim_index=*/0) == 1);
 
-    // Re-normalizes and stores the policy into the map.
+    // Value prediction can be treated as the expected reward.
     float *values = static_cast<float *>(TfLiteTensorData(value_tensor));
     evaluation.reward = values[0];
 
