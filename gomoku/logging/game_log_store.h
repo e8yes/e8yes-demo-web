@@ -23,20 +23,10 @@
 #include <unordered_map>
 
 #include "gomoku/game/board_state.h"
+#include "gomoku/logging/common_types.h"
 #include "postgres/query_runner/connection/connection_reservoir_interface.h"
 
 namespace e8 {
-
-enum GameLogPurpose {
-    GLP_REPRESENTATIVE_DATA,
-    GLP_LEARNING_DATA,
-    GLP_ACTUAL_RUN,
-};
-
-using ModelId = int64_t;
-
-using GameId = int64_t;
-using GameStepNumber = unsigned;
 
 /**
  * @brief The GameLogStore class Handles game data logging. The logs will be written to the

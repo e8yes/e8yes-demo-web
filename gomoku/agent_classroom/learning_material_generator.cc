@@ -16,19 +16,103 @@
  */
 
 #include <cassert>
+#include <chrono>
 #include <list>
 #include <memory>
+#include <optional>
+#include <string>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
 #include "gomoku/agent/heuristics/light_rollout_evaluator.h"
+#include "gomoku/agent/heuristics/model_based_evaluator.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/agent/search/mct_search.h"
 #include "gomoku/agent_classroom/learning_material_generator.h"
 #include "gomoku/game/board_state.h"
 #include "gomoku/game/game.h"
+#include "gomoku/game/game_instance_container.h"
+#include "gomoku/logging/common_types.h"
+#include "gomoku/logging/game_log_store.h"
+#include "postgres/query_runner/connection/connection_factory.h"
+#include "postgres/query_runner/connection/pooled_connection_reservoir.h"
 
 namespace e8 {
+namespace {
+
+/**
+ * @brief The LearningMaterialGeneratorSharedData struct Data shared between the two
+ * LearningMaterialGenerator players so that only one copy of data is required to be maintained.
+ * Both LearningMaterialGenerator players will share the Monte Carlo Searcher states during data
+ * generation.
+ */
+struct LearningMaterialGeneratorSharedData {
+    LearningMaterialGeneratorSharedData(GameLogPurpose game_purpose,
+                                        std::optional<ModelId> model_id, unsigned target_num_games,
+                                        std::unique_ptr<MctSearcher> &&searcher,
+                                        GameLogStore *log_store);
+
+    struct StepInfo {
+        StepInfo(GameStepNumber step_number, PlayerSide action_performer);
+
+        GameStepNumber const step_number;
+        PlayerSide const action_performer;
+    };
+
+    GameLogPurpose const game_purpose;
+    std::optional<ModelId> const model_id;
+    unsigned const target_num_games;
+    std::unique_ptr<MctSearcher> searcher;
+    GameLogStore *const log_store;
+
+    unsigned current_num_games;
+    std::optional<GameId> current_game_id;
+    std::list<StepInfo> steps;
+};
+
+/**
+ * @brief The LearningMaterialGenerator class A Gomoku game player that produces example game and
+ * action data by self playing then store them into the specified log store.
+ */
+class LearningMaterialGenerator : public GomokuPlayerInterface {
+  public:
+    /**
+     * @brief LearningMaterialGenerator Constructs a data generator player to play and log a
+     * specified number games.
+     *
+     * @param target_num_games
+     */
+    LearningMaterialGenerator(
+        std::shared_ptr<LearningMaterialGeneratorSharedData> const &shared_data,
+        PlayerSide const player_side);
+    ~LearningMaterialGenerator() override = default;
+
+    /**
+     * @brief NumGamesProduced Returns the number of games that has been logged into the game log
+     * store.
+     */
+    unsigned NumGamesProduced() const;
+
+    GomokuActionId NextPlayerAction(GomokuBoardState const &board_state) override;
+
+    void OnGomokuGameBegin(GomokuBoardState const &board_state) override;
+
+    void BeforeGomokuActionApplied(GomokuBoardState const &board_state,
+                                   PlayerSide const action_performed_by,
+                                   GomokuActionId const &incoming_action_id) override;
+
+    void AfterGomokuActionApplied(GomokuBoardState const &board_state) override;
+
+    void OnGameEnded(GomokuBoardState const &board_state) override;
+
+    bool WantAnotherGame() override;
+
+  private:
+    std::shared_ptr<LearningMaterialGeneratorSharedData> shared_data_;
+    PlayerSide const player_side_;
+    RandomSource random_source_;
+};
 
 LearningMaterialGeneratorSharedData::LearningMaterialGeneratorSharedData(
     GameLogPurpose game_purpose, std::optional<ModelId> model_id, unsigned target_num_games,
@@ -141,6 +225,33 @@ void LearningMaterialGenerator::OnGameEnded(GomokuBoardState const &board_state)
 
 bool LearningMaterialGenerator::WantAnotherGame() {
     return shared_data_->current_num_games < shared_data_->target_num_games;
+}
+
+} // namespace
+
+void GenerateLearningMaterial(GameLogPurpose log_purpose, std::optional<ModelId> model_id,
+                               std::shared_ptr<GomokuEvaluatorInterface> const &evaluator,
+                               GameInstanceContainer::ScheduleId schedule_id,
+                               unsigned target_num_games, std::string const &db_host_name,
+                               std::string const &db_name, GameInstanceContainer *container) {
+    PooledConnectionReservoir conns(
+        ConnectionFactory(ConnectionFactory::PQ, db_host_name, db_name));
+
+    GameLogStore log_store(&conns);
+
+    auto searcher = std::make_unique<MctSearcher>(evaluator, /*print_stats=*/true);
+    auto generator_data = std::make_shared<LearningMaterialGeneratorSharedData>(
+        log_purpose, model_id, target_num_games, std::move(searcher), &log_store);
+
+    auto generator_game = std::make_unique<GomokuGame>(
+        std::make_shared<LearningMaterialGenerator>(generator_data, PlayerSide::PS_PLAYER_A),
+        std::make_shared<LearningMaterialGenerator>(generator_data, PlayerSide::PS_PLAYER_B));
+    container->ScheduleToRun(schedule_id, std::move(generator_game));
+
+    while (container->ScheduledGame(schedule_id) != nullptr) {
+        // Wait for the generator to hit the target number games.
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 }
 
 } // namespace e8

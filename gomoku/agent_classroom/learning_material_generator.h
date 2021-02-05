@@ -18,92 +18,38 @@
 #ifndef LEARNING_MATERIAL_GENERATOR_H
 #define LEARNING_MATERIAL_GENERATOR_H
 
-#include <list>
 #include <memory>
 #include <optional>
+#include <string>
 
-#include "common/container/mutable_priority_queue.h"
-#include "common/random/random_source.h"
-#include "gomoku/agent/search/mct_node.h"
-#include "gomoku/agent/search/mct_search.h"
-#include "gomoku/game/board_state.h"
-#include "gomoku/game/game.h"
+#include "gomoku/agent/heuristics/evaluator.h"
+#include "gomoku/game/game_instance_container.h"
+#include "gomoku/logging/common_types.h"
 #include "gomoku/logging/game_log_store.h"
 
 namespace e8 {
 
 /**
- * @brief The LearningMaterialGeneratorSharedData struct Data shared between the two
- * LearningMaterialGenerator players so that only one copy of data is required to be maintained.
- * Both LearningMaterialGenerator players will share the Monte Carlo Searcher states during data
- * generation.
+ * @brief GenerateLearningMaterial Logs game action data generated from self playing. The actions
+ * from the self playing is computed with a Monte Carlo tree searcher and an evaluator heuristics
+ * supplied by the caller. The stochastic policy and final outcome of each action are logged, so
+ * they can be used as the label for model training.
+ *
+ * @param log_purpose
+ * @param model_id If the heuristics uses a model, the model ID can be stored in the logs.
+ * @param evaluator The heuristics that aids the Monte Carlo tree searcher.
+ * @param schedule_id An unused schedule slot in the game intance container for this function to
+ * launch games in.
+ * @param target_num_games Target number of games to generate.
+ * @param db_host_name Host name of the database to log the game data towards.
+ * @param db_name Name of the database to log game data towards.
+ * @param container An game instance container to for this function to launch game into.
  */
-struct LearningMaterialGeneratorSharedData {
-    LearningMaterialGeneratorSharedData(GameLogPurpose game_purpose,
-                                        std::optional<ModelId> model_id, unsigned target_num_games,
-                                        std::unique_ptr<MctSearcher> &&searcher,
-                                        GameLogStore *log_store);
-
-    struct StepInfo {
-        StepInfo(GameStepNumber step_number, PlayerSide action_performer);
-
-        GameStepNumber const step_number;
-        PlayerSide const action_performer;
-    };
-
-    GameLogPurpose const game_purpose;
-    std::optional<ModelId> const model_id;
-    unsigned const target_num_games;
-    std::unique_ptr<MctSearcher> searcher;
-    GameLogStore *const log_store;
-
-    unsigned current_num_games;
-    std::optional<GameId> current_game_id;
-    std::list<StepInfo> steps;
-};
-
-/**
- * @brief The LearningMaterialGenerator class A Gomoku game player that produces example game and
- * action data by self playing then store them into the specified log store.
- */
-class LearningMaterialGenerator : public GomokuPlayerInterface {
-  public:
-    /**
-     * @brief LearningMaterialGenerator Constructs a data generator player to play and log a
-     * specified number games.
-     *
-     * @param target_num_games
-     */
-    LearningMaterialGenerator(
-        std::shared_ptr<LearningMaterialGeneratorSharedData> const &shared_data,
-        PlayerSide const player_side);
-    ~LearningMaterialGenerator() override = default;
-
-    /**
-     * @brief NumGamesProduced Returns the number of games that has been logged into the game log
-     * store.
-     */
-    unsigned NumGamesProduced() const;
-
-    GomokuActionId NextPlayerAction(GomokuBoardState const &board_state) override;
-
-    void OnGomokuGameBegin(GomokuBoardState const &board_state) override;
-
-    void BeforeGomokuActionApplied(GomokuBoardState const &board_state,
-                                   PlayerSide const action_performed_by,
-                                   GomokuActionId const &incoming_action_id) override;
-
-    void AfterGomokuActionApplied(GomokuBoardState const &board_state) override;
-
-    void OnGameEnded(GomokuBoardState const &board_state) override;
-
-    bool WantAnotherGame() override;
-
-  private:
-    std::shared_ptr<LearningMaterialGeneratorSharedData> shared_data_;
-    PlayerSide const player_side_;
-    RandomSource random_source_;
-};
+void GenerateLearningMaterial(GameLogPurpose log_purpose, std::optional<ModelId> model_id,
+                              std::shared_ptr<GomokuEvaluatorInterface> const &evaluator,
+                              GameInstanceContainer::ScheduleId schedule_id,
+                              unsigned target_num_games, std::string const &db_host_name,
+                              std::string const &db_name, GameInstanceContainer *container);
 
 } // namespace e8
 
