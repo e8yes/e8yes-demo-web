@@ -355,4 +355,9 @@ unsigned ModelBasedEvaluator::NumSimulations() const { return 2000; }
 
 void ModelBasedEvaluator::ClearCache() { pimpl_->cache.clear(); }
 
+std::string ModelBasedEvaluator::ModelName() const {
+    // TODO: Do not hardcode the model name.
+    return "gomoku_cnn_shared_tower_11_1_b2";
+}
+
 } // namespace e8
