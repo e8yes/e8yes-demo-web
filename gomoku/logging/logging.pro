@@ -15,9 +15,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
-    game_log_store.cc
+    game_log_store.cc \
+    model_log_store.cc
 HEADERS += \
-    game_log_store.h
+    common_types.h \
+    game_log_store.h \
+    model_log_store.h
 
 # Default rules for deployment.
 unix {
