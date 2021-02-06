@@ -213,7 +213,7 @@ int FindTensorIndexByName(std::string const &name, bool input, TfLiteInterpreter
 
 } // namespace
 
-struct ModelBasedEvaluator::ModelBasedEvaluatorInternal {
+struct GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal {
     ModelBasedEvaluatorInternal(std::string const &model_path);
     ~ModelBasedEvaluatorInternal();
 
@@ -237,7 +237,7 @@ struct ModelBasedEvaluator::ModelBasedEvaluatorInternal {
     std::unordered_map<MctNodeId, EvaluationResult> cache;
 };
 
-ModelBasedEvaluator::ModelBasedEvaluatorInternal::ModelBasedEvaluatorInternal(
+GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::ModelBasedEvaluatorInternal(
     std::string const &model_path) {
     model = TfLiteModelCreateFromFile(model_path.c_str());
     assert(model != nullptr);
@@ -288,14 +288,14 @@ ModelBasedEvaluator::ModelBasedEvaluatorInternal::ModelBasedEvaluatorInternal(
     assert(status == TfLiteStatus::kTfLiteOk);
 }
 
-ModelBasedEvaluator::ModelBasedEvaluatorInternal::~ModelBasedEvaluatorInternal() {
+GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::~ModelBasedEvaluatorInternal() {
     TfLiteInterpreterDelete(interpreter);
     TfLiteModelDelete(model);
     TfLiteInterpreterOptionsDelete(interpreter_options);
 }
 
 EvaluationResult
-ModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id,
+GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id,
                                                         GomokuBoardState const &state) {
     auto it = cache.find(state_id);
     if (it != cache.end()) {
@@ -335,27 +335,27 @@ ModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id
     return evaluation;
 }
 
-ModelBasedEvaluator::ModelBasedEvaluator(std::string const &model_path)
+GomokuModelBasedEvaluator::GomokuModelBasedEvaluator(std::string const &model_path)
     : pimpl_(std::make_unique<ModelBasedEvaluatorInternal>(model_path)) {}
 
-ModelBasedEvaluator::~ModelBasedEvaluator() {}
+GomokuModelBasedEvaluator::~GomokuModelBasedEvaluator() {}
 
-float ModelBasedEvaluator::EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) {
+float GomokuModelBasedEvaluator::EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) {
     return pimpl_->Fetch(state_id, state).reward;
 }
 
 std::unordered_map<GomokuActionId, float>
-ModelBasedEvaluator::EvaluatePolicy(GomokuBoardState const &state, MctNodeId const state_id) {
+GomokuModelBasedEvaluator::EvaluatePolicy(GomokuBoardState const &state, MctNodeId const state_id) {
     return pimpl_->Fetch(state_id, state).policy;
 }
 
-float ModelBasedEvaluator::ExplorationFactor() const { return 2.0f; }
+float GomokuModelBasedEvaluator::ExplorationFactor() const { return 2.0f; }
 
-unsigned ModelBasedEvaluator::NumSimulations() const { return 2000; }
+unsigned GomokuModelBasedEvaluator::NumSimulations() const { return 2000; }
 
-void ModelBasedEvaluator::ClearCache() { pimpl_->cache.clear(); }
+void GomokuModelBasedEvaluator::ClearCache() { pimpl_->cache.clear(); }
 
-std::string ModelBasedEvaluator::ModelName() const {
+std::string GomokuModelBasedEvaluator::ModelName() const {
     // TODO: Do not hardcode the model name.
     return "gomoku_cnn_shared_tower_11_1_b2";
 }

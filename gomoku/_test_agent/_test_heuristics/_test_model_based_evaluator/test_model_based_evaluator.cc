@@ -66,7 +66,7 @@ bool EvaluationResultPythonConsistencyTest() {
     board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/2, /*y=*/7)),
                       /*cached_game_result=*/std::nullopt);
 
-    e8::ModelBasedEvaluator evaluator(
+    e8::GomokuModelBasedEvaluator evaluator(
         /*model_path=*/"./gomoku/agent_classroom/tfmodel/gomoku_cnn_shared_tower_11_11_b2.tflite");
 
     float reward = evaluator.EvaluateReward(board, /*state_id=*/3);

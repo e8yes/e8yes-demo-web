@@ -30,16 +30,16 @@
 namespace e8 {
 
 /**
- * @brief The ModelBasedEvaluator class This evaluator loads a tensorflow lite model and runs
+ * @brief The GomokuModelBasedEvaluator class This evaluator loads a tensorflow lite model and runs
  * inference over it to get the reward and policy estimation.
  */
-class ModelBasedEvaluator : public GomokuEvaluatorInterface {
+class GomokuModelBasedEvaluator : public GomokuEvaluatorInterface {
   public:
     /**
-     * @brief ModelBasedEvaluator Constructs an evaluator from a tensorflow lite model file.
+     * @brief GomokuModelBasedEvaluator Constructs an evaluator from a tensorflow lite model file.
      */
-    ModelBasedEvaluator(std::string const &model_path);
-    ~ModelBasedEvaluator() override;
+    GomokuModelBasedEvaluator(std::string const &model_path);
+    ~GomokuModelBasedEvaluator() override;
 
     float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) override;
 
