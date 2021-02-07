@@ -14,7 +14,7 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
-    main.cc
+    representative_data_main.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/./ -lgomoku_agent_classroom
 
