@@ -35,7 +35,7 @@ namespace e8 {
  * supplied by the caller. The stochastic policy and final outcome of each action are logged, so
  * they can be used as the label for model training.
  *
- * @param log_purpose
+ * @param log_purpose The purpose of the generated learning material.
  * @param model_id If the heuristics uses a model, the model ID can be stored in the logs.
  * @param evaluator The heuristics that aids the Monte Carlo tree searcher.
  * @param schedule_id An unused schedule slot in the game intance container for this function to
@@ -43,7 +43,7 @@ namespace e8 {
  * @param target_num_games Target number of games to generate.
  * @param db_host_name Host name of the database to log the game data towards.
  * @param db_name Name of the database to log game data towards.
- * @param container An game instance container to for this function to launch game into.
+ * @param container A game instance container to for this function to launch game into.
  */
 void GenerateLearningMaterial(GameLogPurpose log_purpose, std::optional<ModelId> model_id,
                               std::shared_ptr<GomokuEvaluatorInterface> const &evaluator,
