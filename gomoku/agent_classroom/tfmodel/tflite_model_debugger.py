@@ -11,7 +11,7 @@ def FindTensorIndex(key: str, details: any) -> int:
     raise "key not found."
 
 if __name__ == "__main__":
-    model_path = "/home/davis/saved_models/gomoku_cnn_shared_tower_11_11_b2.tflite"
+    model_path = "/home/davis/saved_models/1/gomoku_cnn_shared_tower_11_11_b2.tflite"
 
     interpreter = tflite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
@@ -26,7 +26,7 @@ if __name__ == "__main__":
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 [0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
         dtype=np.float32)
     
@@ -116,25 +116,38 @@ if __name__ == "__main__":
     print(output_details)
 
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="inference_board_features:0", details=input_details), 
+        tensor_index=FindTensorIndex(
+            key="inference_board_features:0", details=input_details), 
         value=board_features)
+
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="inference_game_phase_place_3_stones:0", details=input_details), 
+        tensor_index=FindTensorIndex(
+            key="inference_game_phase_place_3_stones:0", details=input_details), 
         value=game_phase_place_3_stones)
+
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="inference_game_phase_swap2_decision:0", details=input_details), 
+        tensor_index=FindTensorIndex(
+            key="inference_game_phase_swap2_decision:0", details=input_details), 
         value=game_phase_swap2_decision)
+
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="inference_game_phase_place_2_more_stones:0", details=input_details), 
+        tensor_index=FindTensorIndex(
+            key="inference_game_phase_place_2_more_stones:0", details=input_details), 
         value=game_phase_place_2_more_stones)
+
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="inference_game_phase_stone_type_decision:0", details=input_details), 
+        tensor_index=FindTensorIndex(
+            key="inference_game_phase_stone_type_decision:0", details=input_details), 
         value=game_phase_stone_type_decision)
+
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="inference_game_phase_standard_gomoku:0", details=input_details), 
+        tensor_index=FindTensorIndex(
+            key="inference_game_phase_standard_gomoku:0", details=input_details), 
         value=game_phase_standard_gomoku)
+
     interpreter.set_tensor(
-        tensor_index=FindTensorIndex(key="inference_next_move_stone_type:0", details=input_details), 
+        tensor_index=FindTensorIndex(
+            key="inference_next_move_stone_type:0", details=input_details), 
         value=next_move_stone_type)
 
     interpreter.invoke()
@@ -147,5 +160,9 @@ if __name__ == "__main__":
         tensor_index=FindTensorIndex(key="StatefulPartitionedCall:2", details=output_details))
 
     print("policy=", policy)
+    i = np.argmax(policy)
+    x = i % 11
+    y = i // 11
+    print(i, x, y)
     print("value=", value)
     print("policy_logits=", policy_logits)

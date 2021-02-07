@@ -1,3 +1,5 @@
+#!/bin/python3
+
 # This script generates an untrained gomoku model.
 import argparse
 import os

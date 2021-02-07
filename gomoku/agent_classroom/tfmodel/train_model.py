@@ -1,3 +1,5 @@
+#!/bin/python3
+
 # This script train an old model with the most recently generated game data.
 
 import argparse

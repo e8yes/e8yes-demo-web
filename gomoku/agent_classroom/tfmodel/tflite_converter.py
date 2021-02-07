@@ -1,3 +1,7 @@
+#!/bin/python3
+
+# This script convert a tensorflow saved model to an 8-bit quantized tflite model.
+
 from typing import List
 import argparse
 import os
