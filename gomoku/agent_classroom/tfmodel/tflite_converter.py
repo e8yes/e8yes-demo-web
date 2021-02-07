@@ -9,6 +9,7 @@ import logging
 import tensorflow as tf
 
 from batch_generator import BatchGenerator
+from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModelName
 
 gen = BatchGenerator(num_data_entries=None,
                      db_name="demoweb",
@@ -59,8 +60,10 @@ if __name__ == "__main__":
         exit(-1)
 
     logging.info("Converting to a tf lite model and saving it...")
+    src = os.path.join(
+        model_input_path, GomokuCnnResNetSharedTowerModelName())
     converter = tf.lite.TFLiteConverter.from_saved_model(
-        saved_model_dir=model_input_path,
+        saved_model_dir=src,
         signature_keys=["inference"])
     converter.experimental_new_converter = True
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
@@ -69,4 +72,4 @@ if __name__ == "__main__":
     # converter.inference_input_type = tf.int8
     # converter.inference_output_type = tf.int8
     tflite_model = converter.convert()
-    open("{0}.tflite".format(model_input_path), "wb").write(tflite_model)
+    open("{0}.tflite".format(src), "wb").write(tflite_model)

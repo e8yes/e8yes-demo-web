@@ -63,7 +63,9 @@ def Train(model_import_path: str,
           batch_gen: BatchGenerator, 
           test_batch_gen: BatchGenerator,
           model_export_path: str) -> None:
-    model = tf.saved_model.load(export_dir=model_import_path)
+    src = os.path.join(
+        model_import_path, GomokuCnnResNetSharedTowerModelName())
+    model = tf.saved_model.load(export_dir=src)
 
     optimizer = tf.optimizers.Adamax()
 
