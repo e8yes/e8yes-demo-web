@@ -145,7 +145,15 @@ void LearningMaterialGenerator::OnGomokuGameBegin(GomokuBoardState const & /*boa
 GomokuActionId LearningMaterialGenerator::NextPlayerAction(GomokuBoardState const &board_state) {
     std::unordered_map<GomokuActionId, float> policy =
         shared_data_->searcher->SearchFrom(board_state, /*temperature=*/1.0f);
-    GomokuActionId action_id = SampleAction(policy, &random_source_);
+
+    // Selects the action based on the policy distribution in the first 6 moves so as to explore the
+    // state space. It will then always pick the best action after the first 6 moves.
+    GomokuActionId action_id;
+    if (board_state.History().size() < 6) {
+        action_id = SampleAction(policy, &random_source_);
+    } else {
+        action_id = BestAction(policy);
+    }
 
     auto flattened_policy = FlattenPolicy(policy, board_state);
     GameStepNumber step_number = board_state.History().size();
@@ -230,10 +238,10 @@ bool LearningMaterialGenerator::WantAnotherGame() {
 } // namespace
 
 void GenerateLearningMaterial(GameLogPurpose log_purpose, std::optional<ModelId> model_id,
-                               std::shared_ptr<GomokuEvaluatorInterface> const &evaluator,
-                               GameInstanceContainer::ScheduleId schedule_id,
-                               unsigned target_num_games, std::string const &db_host_name,
-                               std::string const &db_name, GameInstanceContainer *container) {
+                              std::shared_ptr<GomokuEvaluatorInterface> const &evaluator,
+                              GameInstanceContainer::ScheduleId schedule_id,
+                              unsigned target_num_games, std::string const &db_host_name,
+                              std::string const &db_name, GameInstanceContainer *container) {
     PooledConnectionReservoir conns(
         ConnectionFactory(ConnectionFactory::PQ, db_host_name, db_name));
 
