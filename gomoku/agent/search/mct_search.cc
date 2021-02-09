@@ -220,7 +220,7 @@ void PrintMctsStats(MctNode const &root, GomokuBoardState const &state) {
                 }
             }
 
-            if (*action.stone_type_decision) {
+            if (action.stone_type_decision.has_value()) {
                 switch (*action.stone_type_decision) {
                 case STD_CHOOSE_BLACK: {
                     std::cout << "STD_CHOOSE_BLACK";

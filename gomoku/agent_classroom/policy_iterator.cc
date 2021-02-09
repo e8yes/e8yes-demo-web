@@ -74,7 +74,7 @@ void TrainModel(std::string const &source_tree_root, std::string const &model_in
                           " --model_output_path=" + model_output_path +
                           " --data_source=" + std::to_string(data_source) +
                           " --db_host=" + db_host_name + " --db_name=" + db_name +
-                          " --db_user=postgres --db_pass=password --num_data_entries=40000")
+                          " --db_user=postgres --db_pass=password --num_data_entries=50000")
                              .c_str());
     assert(rc == 0);
 }
@@ -145,8 +145,10 @@ void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id, unsign
                    GameLogPurpose::GLP_LEARNING_DATA, db_host_name, db_name);
         ConvertToLiteModel(source_tree_root, new_model_path);
 
-        GomokuModelEntity new_model =
-            model_log_store.LogNewModel(evaluator->ModelName(), new_model_path);
+        model_names = TfLiteModelFileName(new_model_path);
+        assert(model_names.size() == 1);
+
+        GomokuModelEntity new_model = model_log_store.LogNewModel(model_names[0], new_model_path);
 
         last_model = new_model;
     }
