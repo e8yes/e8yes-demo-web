@@ -127,7 +127,7 @@ LearningMaterialGeneratorSharedData::StepInfo::StepInfo(GameStepNumber step_numb
 LearningMaterialGenerator::LearningMaterialGenerator(
     std::shared_ptr<LearningMaterialGeneratorSharedData> const &shared_data,
     PlayerSide const player_side)
-    : shared_data_(shared_data), player_side_(player_side), random_source_(/*seed=*/1031) {}
+    : shared_data_(shared_data), player_side_(player_side), random_source_() {}
 
 unsigned LearningMaterialGenerator::NumGamesProduced() const {
     return shared_data_->current_num_games;
@@ -146,10 +146,10 @@ GomokuActionId LearningMaterialGenerator::NextPlayerAction(GomokuBoardState cons
     std::unordered_map<GomokuActionId, float> policy =
         shared_data_->searcher->SearchFrom(board_state, /*temperature=*/1.0f);
 
-    // Selects the action based on the policy distribution in the first 6 moves so as to explore the
-    // state space. It will then always pick the best action after the first 6 moves.
+    // Selects the action based on the policy distribution in the first 10 moves so as to explore
+    // the state space. It will then always pick the best action after the first 10 moves.
     GomokuActionId action_id;
-    if (board_state.History().size() < 6) {
+    if (board_state.History().size() < 10) {
         action_id = SampleAction(policy, &random_source_);
     } else {
         action_id = BestAction(policy);
