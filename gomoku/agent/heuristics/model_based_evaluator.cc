@@ -296,7 +296,7 @@ GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::~ModelBasedEvaluatorInte
 
 EvaluationResult
 GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id,
-                                                        GomokuBoardState const &state) {
+                                                              GomokuBoardState const &state) {
     auto it = cache.find(state_id);
     if (it != cache.end()) {
         return it->second;
@@ -340,7 +340,8 @@ GomokuModelBasedEvaluator::GomokuModelBasedEvaluator(std::string const &model_pa
 
 GomokuModelBasedEvaluator::~GomokuModelBasedEvaluator() {}
 
-float GomokuModelBasedEvaluator::EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) {
+float GomokuModelBasedEvaluator::EvaluateReward(GomokuBoardState const &state,
+                                                MctNodeId const state_id) {
     return pimpl_->Fetch(state_id, state).reward;
 }
 
@@ -349,7 +350,7 @@ GomokuModelBasedEvaluator::EvaluatePolicy(GomokuBoardState const &state, MctNode
     return pimpl_->Fetch(state_id, state).policy;
 }
 
-float GomokuModelBasedEvaluator::ExplorationFactor() const { return 2.0f; }
+float GomokuModelBasedEvaluator::ExplorationFactor() const { return 1.0f; }
 
 unsigned GomokuModelBasedEvaluator::NumSimulations() const { return 2000; }
 
@@ -357,7 +358,7 @@ void GomokuModelBasedEvaluator::ClearCache() { pimpl_->cache.clear(); }
 
 std::string GomokuModelBasedEvaluator::ModelName() const {
     // TODO: Do not hardcode the model name.
-    return "gomoku_cnn_shared_tower_11_1_b2";
+    return "gomoku_cnn_shared_tower_11_11_b2";
 }
 
 } // namespace e8
