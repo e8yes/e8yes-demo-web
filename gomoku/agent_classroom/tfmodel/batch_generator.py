@@ -51,12 +51,16 @@ class BatchGenerator:
                    "ORDER BY game_id DESC, step_number DESC " \
                    "LIMIT {0})".format(self.num_data_entries_)
     
-    def NumDataEntries(self, training_data: bool) -> int:
+    def NumDataEntries(self,
+                       data_source: int,
+                       training_data: bool) -> int:
         cur = self.conn_.cursor()
         cur.execute(
             "SELECT COUNT(gga.*) FROM {0} AS gga "
-            "WHERE TRUE {1} " \
+            "JOIN gomoku_game ga ON gga.game_id = ga.id "
+            "WHERE ga.game_purpose={1} {2} " \
                 .format(self.MostRecentDataSet_(),
+                        data_source,
                         self.PartitionClause_(training_data=training_data)))
         row = cur.fetchall()
         return int(row[0][0])
@@ -81,7 +85,8 @@ class BatchGenerator:
         rows = cur.fetchall()
 
         self.offset_ = (self.offset_ + batch_size) % \
-            self.NumDataEntries(training_data=training_data)
+            self.NumDataEntries(data_source=sample_from,
+                                training_data=training_data)
 
         boards = np.zeros(
             shape=(batch_size, 11, 11), dtype=np.float32)
@@ -250,7 +255,20 @@ class BatchGenerator:
                  policies_flip_r270),
                 axis=0)
             
-            policies = np.tile(A=policies, reps=(2, 1))
+            policies_flipped_stone_decision = policies
+            s2d_choose_white = policies_flipped_stone_decision[:, 11*11 + 0]
+            policies_flipped_stone_decision[:, 11*11 + 0] = \
+                policies_flipped_stone_decision[:, 11*11 + 1]
+            policies_flipped_stone_decision[:, 11*11 + 1] = s2d_choose_white
+
+            std_choose_white = policies_flipped_stone_decision[:, 11*11 + 3 + 0]
+            policies_flipped_stone_decision[:, 11*11 + 3 + 0] = \
+                policies_flipped_stone_decision[:, 11*11 + 3 + 1]
+            policies_flipped_stone_decision[:, 11*11 + 3 + 1] = std_choose_white
+            
+            policies = np.concatenate(
+                (policies, policies_flipped_stone_decision),
+                axis=0)
 
             values = np.tile(A=values, reps=(16))
 
@@ -272,9 +290,9 @@ if __name__ == "__main__":
                          db_user="postgres",
                          db_pass="password")
 
-    print("total=", gen.NumDataEntries(training_data=None))
-    print("training=", gen.NumDataEntries(training_data=True))
-    print("testing=", gen.NumDataEntries(training_data=False))
+    print("total=", gen.NumDataEntries(data_source=1, training_data=None))
+    print("training=", gen.NumDataEntries(data_source=1, training_data=True))
+    print("testing=", gen.NumDataEntries(data_source=1, training_data=False))
 
     boards, \
     game_phase_place_3_stones, \
@@ -285,10 +303,10 @@ if __name__ == "__main__":
     next_move_stone_types, \
     policies, \
     values= \
-        gen.NextBatch(batch_size=2,
+        gen.NextBatch(batch_size=10,
                       sample_from=0,
                       training_data=True,
-                      enable_augmentation=True)
+                      enable_augmentation=False)
 
     for i in range(boards.shape[0]):
         print("=================entry", i + 1, "====================")
