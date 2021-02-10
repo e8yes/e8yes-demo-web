@@ -16,13 +16,16 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
                 data_source: int,
                 training_data: bool,
                 batch_gen: BatchGenerator):
-    batch_size = 100
+    batch_size = 1000
     num_batches = \
-        test_batch_gen.NumDataEntries(training_data=training_data) // batch_size + 1
+        test_batch_gen.NumDataEntries(
+            data_source=data_source,
+            training_data=training_data) // batch_size + 1
 
     total_loss = 0
     total_policy_loss = 0
     total_value_loss = 0
+    num_data_points = 0
 
     for _ in range(num_batches):
         boards, \
@@ -49,14 +52,17 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
             next_move_stone_types,
             policies,
             values)
-        
-        total_loss += loss.numpy()
-        total_policy_loss += policy_loss.numpy()
-        total_value_loss += value_loss.numpy()
-    
-    return total_loss / num_batches, \
-           total_policy_loss / num_batches, \
-           total_value_loss / num_batches
+
+        batch_num_data_points = boards.shape[0]
+        total_loss += batch_num_data_points*loss.numpy()
+        total_policy_loss += batch_num_data_points*policy_loss.numpy()
+        total_value_loss += batch_num_data_points*value_loss.numpy()
+        num_data_points += batch_num_data_points
+
+    return total_loss / num_data_points, \
+           total_policy_loss / num_data_points, \
+           total_value_loss / num_data_points, \
+           num_data_points
 
 def Train(model_import_path: str,
           data_source: int,
@@ -71,38 +77,44 @@ def Train(model_import_path: str,
 
     model_vars = CollectGomokuCnnResNetSharedTowerVariables(model=model)
 
-    kTolerance = 4
-    kBatchSize = 6
+    kTolerance = 5
+    kBatchSize = 12
 
     best_loss = float("inf")
     tolerance = kTolerance
     evaluateAfterNumUpdates = \
-        batch_gen.NumDataEntries(training_data=True) // kBatchSize
+        batch_gen.NumDataEntries(data_source=data_source,
+                                 training_data=True) // kBatchSize // 2
+    if evaluateAfterNumUpdates == 0:
+        evaluateAfterNumUpdates = 1
+
     i = 0
     while True:
         if i % evaluateAfterNumUpdates == 0:
-            training_loss, training_policy_loss, training_value_loss = \
+            training_loss, training_policy_loss, training_value_loss, training_n = \
                 DataSetLoss(model=model,
                             data_source=data_source,
                             training_data=True,
                             batch_gen=test_batch_gen)
 
-            test_loss, test_policy_loss, test_value_loss = \
+            test_loss, test_policy_loss, test_value_loss, testing_n = \
                 DataSetLoss(model=model,
                             data_source=data_source,
                             training_data=False,
                             batch_gen=test_batch_gen)
-            print("")
 
-            print(i,
-                  "training_stats",
-                  training_loss,
-                  training_policy_loss,
-                  training_value_loss,
-                  "testing_stats",
-                  test_loss,
-                  test_policy_loss,
-                  test_value_loss)
+            logging.info("iteration={0} "\
+                         "training=[l={1}, pl={2}, vl={3}, n={4}] "\
+                         "testing=[l={5}, pl={6}, vl={7}, n={8}]"\
+                .format(i,
+                        training_loss,
+                        training_policy_loss,
+                        training_value_loss,
+                        training_n,
+                        test_loss,
+                        test_policy_loss,
+                        test_value_loss,
+                        testing_n))
             
             if test_loss < best_loss:
                 best_loss = test_loss
@@ -118,6 +130,9 @@ def Train(model_import_path: str,
                                 "loss": model.Loss})
             else:
                 tolerance -= 1
+
+                logging.info("iteration={0} remaining_tolerance={1}.".format(i, tolerance))
+
                 if tolerance == 0:
                     break
 
@@ -134,7 +149,7 @@ def Train(model_import_path: str,
                                 sample_from=data_source,
                                 training_data=True,
                                 enable_augmentation=True)
-        
+
         with tf.GradientTape() as tape:
             loss, _, _ = model.Loss(
                 boards,
@@ -149,7 +164,6 @@ def Train(model_import_path: str,
             grads = tape.gradient(target=loss, sources=model_vars)
             optimizer.apply_gradients(grads_and_vars=zip(grads, model_vars))
 
-        print("\r", i, end='')
         i += 1
 
     logging.info("Training loop has been terminated.")
@@ -224,7 +238,7 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO, 
                         format="%(asctime)s %(levelname)s %(message)s")
-    
+
     batch_gen = BatchGenerator(num_data_entries=num_data_entries,
                                db_name=db_name,
                                db_host=db_host,
