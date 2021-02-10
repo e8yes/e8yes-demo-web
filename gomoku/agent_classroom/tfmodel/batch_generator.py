@@ -62,6 +62,7 @@ class BatchGenerator:
                 .format(self.MostRecentDataSet_(),
                         data_source,
                         self.PartitionClause_(training_data=training_data)))
+
         row = cur.fetchall()
         return int(row[0][0])
     
@@ -83,6 +84,8 @@ class BatchGenerator:
                    batch_size,
                    self.offset_))
         rows = cur.fetchall()
+
+        batch_size = len(rows)
 
         self.offset_ = (self.offset_ + batch_size) % \
             self.NumDataEntries(data_source=sample_from,
@@ -255,13 +258,13 @@ class BatchGenerator:
                  policies_flip_r270),
                 axis=0)
             
-            policies_flipped_stone_decision = policies
-            s2d_choose_white = policies_flipped_stone_decision[:, 11*11 + 0]
+            policies_flipped_stone_decision = np.copy(a=policies)
+            s2d_choose_white = np.copy(a=policies_flipped_stone_decision[:, 11*11 + 0])
             policies_flipped_stone_decision[:, 11*11 + 0] = \
                 policies_flipped_stone_decision[:, 11*11 + 1]
             policies_flipped_stone_decision[:, 11*11 + 1] = s2d_choose_white
 
-            std_choose_white = policies_flipped_stone_decision[:, 11*11 + 3 + 0]
+            std_choose_white = np.copy(a=policies_flipped_stone_decision[:, 11*11 + 3 + 0])
             policies_flipped_stone_decision[:, 11*11 + 3 + 0] = \
                 policies_flipped_stone_decision[:, 11*11 + 3 + 1]
             policies_flipped_stone_decision[:, 11*11 + 3 + 1] = std_choose_white
@@ -303,10 +306,10 @@ if __name__ == "__main__":
     next_move_stone_types, \
     policies, \
     values= \
-        gen.NextBatch(batch_size=10,
+        gen.NextBatch(batch_size=1,
                       sample_from=0,
                       training_data=True,
-                      enable_augmentation=False)
+                      enable_augmentation=True)
 
     for i in range(boards.shape[0]):
         print("=================entry", i + 1, "====================")
