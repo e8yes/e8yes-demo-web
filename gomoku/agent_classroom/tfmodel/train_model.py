@@ -77,14 +77,14 @@ def Train(model_import_path: str,
 
     model_vars = CollectGomokuCnnResNetSharedTowerVariables(model=model)
 
-    kTolerance = 5
-    kBatchSize = 12
+    kTolerance = 2
+    kBatchSize = 50
 
     best_loss = float("inf")
     tolerance = kTolerance
     evaluateAfterNumUpdates = \
         batch_gen.NumDataEntries(data_source=data_source,
-                                 training_data=True) // kBatchSize // 2
+                                 training_data=True) // kBatchSize // 5
     if evaluateAfterNumUpdates == 0:
         evaluateAfterNumUpdates = 1
 
