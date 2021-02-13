@@ -43,23 +43,37 @@ class BatchGenerator:
             return " AND MOD(HASH_BIGINT(gga.game_id + {0}), 10) >= 8 "\
                 .format(self.seed_)
     
-    def MostRecentDataSet_(self):
-        if self.num_data_entries_ is None:
-            return " gomoku_game_action "
+    def StepFilterClause_(self, last_k: int):
+        if last_k is None:
+            return " AND TRUE "
         else:
-            return "(SELECT * FROM gomoku_game_action " \
+            return " AND gga.step_number > gg.num_steps - " + str(last_k)
+
+    def MostRecentDataSet_(self, last_k_steps: int):
+        if self.num_data_entries_ is None:
+            return "(SELECT * FROM gomoku_game_action gga "\
+                   "JOIN gomoku_game gg ON gg.id = gga.game_id "\
+                   "WHERE TRUE {0} )"\
+                       .format(self.StepFilterClause_(last_k=last_k_steps))
+        else:
+            return "(SELECT * FROM gomoku_game_action gga " \
+                   "JOIN gomoku_game gg ON gg.id = gga.game_id "\
+                   "WHERE TRUE {0} "\
                    "ORDER BY game_id DESC, step_number DESC " \
-                   "LIMIT {0})".format(self.num_data_entries_)
+                   "LIMIT {1})"\
+                       .format(self.StepFilterClause_(last_k=last_k_steps),
+                               self.num_data_entries_)
     
     def NumDataEntries(self,
                        data_source: int,
-                       training_data: bool) -> int:
+                       training_data: bool,
+                       last_k_steps: int = None) -> int:
         cur = self.conn_.cursor()
         cur.execute(
             "SELECT COUNT(gga.*) FROM {0} AS gga "
-            "JOIN gomoku_game ga ON gga.game_id = ga.id "
-            "WHERE ga.game_purpose={1} {2} " \
-                .format(self.MostRecentDataSet_(),
+            "JOIN gomoku_game gg ON gga.game_id = gg.id "
+            "WHERE gg.game_purpose={1} {2} " \
+                .format(self.MostRecentDataSet_(last_k_steps=last_k_steps),
                         data_source,
                         self.PartitionClause_(training_data=training_data)))
 
@@ -70,19 +84,21 @@ class BatchGenerator:
                   batch_size: int,
                   sample_from: int,
                   training_data: bool,
-                  enable_augmentation: bool) -> np.ndarray:
+                  enable_augmentation: bool,
+                  last_k_steps: int = None) -> np.ndarray:
         actual_offset = self.offset_ % self.NumDataEntries(
             data_source=sample_from, 
-            training_data=training_data)
+            training_data=training_data,
+            last_k_steps=last_k_steps)
 
         cur = self.conn_.cursor()
         cur.execute("SELECT gga.* FROM {0} AS gga "
-                    "JOIN gomoku_game ga ON gga.game_id = ga.id "
-                    "WHERE ga.game_purpose={1} {2} "
+                    "JOIN gomoku_game gg ON gga.game_id = gg.id "
+                    "WHERE gg.game_purpose={1} {2} "
                     "ORDER BY HASH_BIGINT(gga.game_id * 1031 + gga.step_number) ASC "
                     "LIMIT {3} "
                     "OFFSET {4}".\
-            format(self.MostRecentDataSet_(),
+            format(self.MostRecentDataSet_(last_k_steps=last_k_steps),
                    sample_from,
                    self.PartitionClause_(training_data=training_data),
                    batch_size,
