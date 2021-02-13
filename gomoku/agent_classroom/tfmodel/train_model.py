@@ -17,8 +17,13 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
                 training_data: bool,
                 batch_gen: BatchGenerator):
     batch_size = 1000
-    num_batches = \
-        test_batch_gen.NumDataEntries(
+    num_batches = None
+    if training_data:
+        num_batches = min(batch_gen.NumDataEntries(
+            data_source=data_source,
+            training_data=training_data) // batch_size + 1, 6)
+    else:
+        num_batches = batch_gen.NumDataEntries(
             data_source=data_source,
             training_data=training_data) // batch_size + 1
 
@@ -77,14 +82,14 @@ def Train(model_import_path: str,
 
     model_vars = CollectGomokuCnnResNetSharedTowerVariables(model=model)
 
-    kTolerance = 2
-    kBatchSize = 50
+    kTolerance = 3
+    kBatchSize = 100
 
     best_loss = float("inf")
     tolerance = kTolerance
     evaluateAfterNumUpdates = \
         batch_gen.NumDataEntries(data_source=data_source,
-                                 training_data=True) // kBatchSize // 5
+                                 training_data=True) // kBatchSize // 10
     if evaluateAfterNumUpdates == 0:
         evaluateAfterNumUpdates = 1
 
@@ -115,7 +120,7 @@ def Train(model_import_path: str,
                         test_policy_loss,
                         test_value_loss,
                         testing_n))
-            
+
             if test_loss < best_loss:
                 best_loss = test_loss
                 tolerance = kTolerance
