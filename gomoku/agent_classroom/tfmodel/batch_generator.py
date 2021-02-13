@@ -71,6 +71,10 @@ class BatchGenerator:
                   sample_from: int,
                   training_data: bool,
                   enable_augmentation: bool) -> np.ndarray:
+        actual_offset = self.offset_ % self.NumDataEntries(
+            data_source=sample_from, 
+            training_data=training_data)
+
         cur = self.conn_.cursor()
         cur.execute("SELECT gga.* FROM {0} AS gga "
                     "JOIN gomoku_game ga ON gga.game_id = ga.id "
@@ -82,34 +86,32 @@ class BatchGenerator:
                    sample_from,
                    self.PartitionClause_(training_data=training_data),
                    batch_size,
-                   self.offset_))
+                   actual_offset))
         rows = cur.fetchall()
 
-        batch_size = len(rows)
+        actual_batch_size = len(rows)
 
-        self.offset_ = (self.offset_ + batch_size) % \
-            self.NumDataEntries(data_source=sample_from,
-                                training_data=training_data)
+        self.offset_ += actual_batch_size
 
         boards = np.zeros(
-            shape=(batch_size, 11, 11), dtype=np.float32)
+            shape=(actual_batch_size, 11, 11), dtype=np.float32)
         game_phase_place_3_stones = np.zeros(
-            shape=(batch_size, 11, 11), dtype=np.float32)
+            shape=(actual_batch_size, 11, 11), dtype=np.float32)
         game_phase_swap2_decision = np.zeros(
-            shape=(batch_size, 11, 11), dtype=np.float32)
+            shape=(actual_batch_size, 11, 11), dtype=np.float32)
         game_phase_place_2_more_stones = np.zeros(
-            shape=(batch_size, 11, 11), dtype=np.float32)
+            shape=(actual_batch_size, 11, 11), dtype=np.float32)
         game_phase_stone_type_decision = np.zeros(
-            shape=(batch_size, 11, 11), dtype=np.float32)
+            shape=(actual_batch_size, 11, 11), dtype=np.float32)
         game_phase_standard_gomoku = np.zeros(
-            shape=(batch_size, 11, 11), dtype=np.float32)
+            shape=(actual_batch_size, 11, 11), dtype=np.float32)
         stone_types = np.zeros(
-            shape=(batch_size, 11, 11), dtype=np.float32)
+            shape=(actual_batch_size, 11, 11), dtype=np.float32)
 
         policies = np.zeros(
-            shape=(batch_size, 11*11 + 5), dtype=np.float32)
+            shape=(actual_batch_size, 11*11 + 5), dtype=np.float32)
         values = np.zeros(
-            shape=(batch_size), dtype=np.float32)
+            shape=(actual_batch_size), dtype=np.float32)
 
         for i in range(len(rows)):
             boards[i, :, :] = ExtractBoardData(bytes(rows[i][5]))
@@ -184,7 +186,7 @@ class BatchGenerator:
             
             policy_planes = np.reshape(
                 a=policies[:, :11*11], 
-                newshape=(batch_size, 11, 11),
+                newshape=(actual_batch_size, 11, 11),
                 order="F")
             policy_planes_r90 = np.rot90(policy_planes, k=1, axes=(1, 2))
             policy_planes_r180 = np.rot90(policy_planes_r90, k=1, axes=(1, 2))
@@ -200,49 +202,49 @@ class BatchGenerator:
 
             policies_r90 = np.reshape(
                 a=policy_planes_r90,
-                newshape=(batch_size, 11*11),
+                newshape=(actual_batch_size, 11*11),
                 order='F')
             policies_r90 = np.concatenate(
                 (policies_r90, policies[:, 11*11:]), axis=1)
 
             policies_r180 = np.reshape(
                 a=policy_planes_r180,
-                newshape=(batch_size, 11*11),
+                newshape=(actual_batch_size, 11*11),
                 order='F')
             policies_r180 = np.concatenate(
                 (policies_r180, policies[:, 11*11:]), axis=1)
 
             policies_r270 = np.reshape(
                 a=policy_planes_r270,
-                newshape=(batch_size, 11*11),
+                newshape=(actual_batch_size, 11*11),
                 order='F')
             policies_r270 = np.concatenate(
                 (policies_r270, policies[:, 11*11:]), axis=1)
             
             policies_flip = np.reshape(
                 a=policy_planes_flip,
-                newshape=(batch_size, 11*11),
+                newshape=(actual_batch_size, 11*11),
                 order='F')
             policies_flip = np.concatenate(
                 (policies_flip, policies[:, 11*11:]), axis=1)
 
             policies_flip_r90 = np.reshape(
                 a=policy_planes_flip_r90,
-                newshape=(batch_size, 11*11),
+                newshape=(actual_batch_size, 11*11),
                 order='F')
             policies_flip_r90 = np.concatenate(
                 (policies_flip_r90, policies[:, 11*11:]), axis=1)
 
             policies_flip_r180 = np.reshape(
                 a=policy_planes_flip_r180,
-                newshape=(batch_size, 11*11),
+                newshape=(actual_batch_size, 11*11),
                 order='F')
             policies_flip_r180 = np.concatenate(
                 (policies_flip_r180, policies[:, 11*11:]), axis=1)
 
             policies_flip_r270 = np.reshape(
                 a=policy_planes_flip_r270,
-                newshape=(batch_size, 11*11),
+                newshape=(actual_batch_size, 11*11),
                 order='F')
             policies_flip_r270 = np.concatenate(
                 (policies_flip_r270, policies[:, 11*11:]), axis=1)
