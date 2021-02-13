@@ -5,7 +5,8 @@ import tensorflow as tf
 import numpy as np
 
 INPUT_SIZE = 11
-NUM_RES_BLOCKS = 2
+NUM_RES_BLOCKS = 4
+NUM_FEATURES = 84
 
 class ResidualTowerHeadLayer(tf.Module):
     def __init__(self, 
@@ -38,7 +39,7 @@ class ResidualBlock(tf.Module):
         super(ResidualBlock, self).__init__()
 
         num_input_channels = num_filters
-        kernel_size = 3
+        kernel_size = 5
         num_output_channels = num_filters
         self.conv_kernel1 = tf.Variable(
             name="res_b{0}_kernel1".format(block_num),
@@ -151,7 +152,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
     def __init__(self):
         super(GomokuCnnResNetSharedTower, self).__init__()
 
-        kNumFeaturesPerPosition = 84
+        kNumFeaturesPerPosition = NUM_FEATURES
 
         self.res_tower_head_layer_ = ResidualTowerHeadLayer(
             num_input_channels=2 + 5 + 1,
@@ -172,7 +173,7 @@ class GomokuCnnResNetSharedTower(tf.Module):
     def LeakyRelu(self, 
                   features: tf.Tensor,
                   name: str) -> tf.Tensor:
-        return tf.maximum(x=features, y=0.3*features, name=name)
+        return tf.maximum(x=features, y=0.1*features, name=name)
 
     @tf.function(
         input_signature=[
@@ -365,13 +366,13 @@ class GomokuCnnResNetSharedTower(tf.Module):
         value_loss = \
             tf.losses.mse(y_true=values, y_pred=pred_values)
 
-        loss = policy_loss + value_loss
+        loss = policy_loss + 3*value_loss
 
         return loss, policy_loss, value_loss
 
 def GomokuCnnResNetSharedTowerModelName()-> str:
-    return "gomoku_cnn_shared_tower_{0}_{0}_b{1}" \
-        .format(INPUT_SIZE, NUM_RES_BLOCKS)
+    return "gomoku_cnn_shared_tower_i{0}_f{1}_b{2}" \
+        .format(INPUT_SIZE, NUM_FEATURES, NUM_RES_BLOCKS)
 
 def CollectGomokuCnnResNetSharedTowerVariables(
         model: GomokuCnnResNetSharedTower) -> List[tf.Tensor]:
@@ -387,3 +388,22 @@ def CollectGomokuCnnResNetSharedTowerVariables(
     variables += CollectValueLayerVariables(model.value_layer_)
 
     return variables
+
+if __name__ == "__main__":
+    model = GomokuCnnResNetSharedTower()
+    variables = CollectGomokuCnnResNetSharedTowerVariables(model)
+
+    print("num_vars=", len(variables))
+
+    count = 0
+    for variable in variables:
+
+        variable_size = 1
+        for dim in variable.shape:
+            variable_size *= dim
+        
+        print("name=", variable.name, "=>", variable_size)
+
+        count += variable_size
+    
+    print("size=", count)
