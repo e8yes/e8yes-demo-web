@@ -348,6 +348,7 @@ CREATE TABLE IF NOT EXISTS gomoku_game (
     player_a_model_id BIGINT NULL,
     player_b_model_id BIGINT NULL,
     game_result INT NOT NULL,
+    num_steps INT NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     end_at TIMESTAMP WITHOUT TIME ZONE NULL,
     PRIMARY KEY (id),

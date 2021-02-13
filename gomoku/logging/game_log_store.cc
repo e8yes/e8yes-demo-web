@@ -43,7 +43,8 @@ char const *kGomokuActionTableName = "gomoku_game_action";
 struct GomokuGameEntity : public SqlEntityInterface {
     GomokuGameEntity()
         : SqlEntityInterface({&id, &game_purpose, &player_a_id, &player_b_id, &player_a_model_id,
-                              &player_b_model_id, &game_result, &created_at, &end_at}) {}
+                              &player_b_model_id, &game_result, &num_steps, &created_at, &end_at}) {
+    }
 
     GomokuGameEntity(GomokuGameEntity const &other) : GomokuGameEntity() {
         id = other.id;
@@ -53,6 +54,7 @@ struct GomokuGameEntity : public SqlEntityInterface {
         player_a_model_id = other.player_a_model_id;
         player_b_model_id = other.player_b_model_id;
         game_result = other.game_result;
+        num_steps = other.num_steps;
         created_at = other.created_at;
         end_at = other.end_at;
     }
@@ -65,6 +67,7 @@ struct GomokuGameEntity : public SqlEntityInterface {
         player_a_model_id = other.player_a_model_id;
         player_b_model_id = other.player_b_model_id;
         game_result = other.game_result;
+        num_steps = other.num_steps;
         created_at = other.created_at;
         end_at = other.end_at;
         return *this;
@@ -77,6 +80,7 @@ struct GomokuGameEntity : public SqlEntityInterface {
     SqlLong player_a_model_id = SqlLong("player_a_model_id");
     SqlLong player_b_model_id = SqlLong("player_b_model_id");
     SqlInt game_result = SqlInt("game_result");
+    SqlInt num_steps = SqlInt("num_steps");
     SqlTimestamp created_at = SqlTimestamp("created_at");
     SqlTimestamp end_at = SqlTimestamp("end_at");
 };
@@ -189,6 +193,7 @@ GameId GameLogStore::LogNewGeneratorGame(GameLogPurpose game_purpose,
     *entity.player_a_model_id.ValuePtr() = player_a_model_id;
     *entity.player_b_model_id.ValuePtr() = player_b_model_id;
     *entity.game_result.ValuePtr() = GameResult::GR_UNDETERMINED;
+    *entity.num_steps.ValuePtr() = 0;
     *entity.created_at.ValuePtr() = CurrentTimestampMicros();
 
     uint64_t num_rows = Update(entity, kGomokuTableName, /*replace=*/false, conns_);
@@ -228,11 +233,12 @@ void GameLogStore::LogGameActionValue(GameId game_id, GameStepNumber step_number
     Update(*game_action, kGomokuActionTableName, /*replace=*/true, conns_);
 }
 
-void GameLogStore::LogGameEnd(GameId game_id, GameResult game_result) {
+void GameLogStore::LogGameEnd(GameId game_id, GameStepNumber num_steps, GameResult game_result) {
     std::optional<GomokuGameEntity> game = FetchGame(game_id, conns_);
     assert(game.has_value());
 
     *game->game_result.ValuePtr() = game_result;
+    *game->num_steps.ValuePtr() = num_steps;
     *game->end_at.ValuePtr() = CurrentTimestampMicros();
 
     Update(*game, kGomokuTableName, /*replace=*/true, conns_);

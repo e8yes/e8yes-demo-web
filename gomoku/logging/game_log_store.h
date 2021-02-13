@@ -64,7 +64,7 @@ class GameLogStore {
     /**
      * @brief LogGameEnd Amend the game result to the specified game.
      */
-    void LogGameEnd(GameId game_id, GameResult game_result);
+    void LogGameEnd(GameId game_id, GameStepNumber num_steps, GameResult game_result);
 
   private:
     ConnectionReservoirInterface *const conns_;

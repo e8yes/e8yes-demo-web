@@ -146,10 +146,10 @@ GomokuActionId LearningMaterialGenerator::NextPlayerAction(GomokuBoardState cons
     std::unordered_map<GomokuActionId, float> policy =
         shared_data_->searcher->SearchFrom(board_state, /*temperature=*/1.0f);
 
-    // Selects the action based on the policy distribution in the first 10 moves so as to explore
-    // the state space. It will then always pick the best action after the first 10 moves.
+    // Selects the action based on the policy distribution in the first 30 moves so as to explore
+    // the state space. It will then always pick the best action after the first 30 moves.
     GomokuActionId action_id;
-    if (board_state.History().size() < 10) {
+    if (board_state.History().size() < 30) {
         action_id = SampleAction(policy, &random_source_);
     } else {
         action_id = BestAction(policy);
@@ -224,6 +224,7 @@ void LearningMaterialGenerator::OnGameEnded(GomokuBoardState const &board_state)
     }
 
     shared_data_->log_store->LogGameEnd(*shared_data_->current_game_id,
+                                        board_state.History().size(),
                                         board_state.CurrentGameResult());
 
     shared_data_->current_game_id = std::nullopt;
@@ -247,7 +248,7 @@ void GenerateLearningMaterial(GameLogPurpose log_purpose, std::optional<ModelId>
 
     GameLogStore log_store(&conns);
 
-    auto searcher = std::make_unique<MctSearcher>(evaluator, /*print_stats=*/true);
+    auto searcher = std::make_unique<MctSearcher>(evaluator, /*print_stats=*/false);
     auto generator_data = std::make_shared<LearningMaterialGeneratorSharedData>(
         log_purpose, model_id, target_num_games, std::move(searcher), &log_store);
 
