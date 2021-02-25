@@ -1,6 +1,9 @@
 #!/bin/python3
 from typing import List
+import argparse
 import os
+import time
+import logging
 import psycopg2 as pg
 
 class ActionProb:
@@ -106,18 +109,52 @@ def ActionRank(action_number: int,
 
     return None
 
+def PrintNonBoardActions(game_phase: str, 
+                         policy: List[ActionProb],
+                         next_action: int):
+    if game_phase == "swap2 decision":
+        action_choose_black = 11*11
+        action_choose_white = 11*11 + 1
+        action_place_2_more_stones = 11*11 + 2
+
+        print(
+            "Choose black",
+            ActionRank(
+                action_number=action_choose_black, policy=policy) if not None else "",
+            "*" if action_choose_black == next_action else "",
+            "Choose white",
+            ActionRank(
+                action_number=action_choose_white, policy=policy) if not None else "",
+            "*" if action_choose_white == next_action else "",
+            "Place 2 more stones",
+            ActionRank(
+                action_number=action_place_2_more_stones, policy=policy) if not None else "",
+            "*" if action_place_2_more_stones == next_action else "")
+    elif game_phase == "stone type decision":
+        action_choose_black = 11*11 + 3
+        action_choose_white = 11*11 + 4
+
+        print(
+            "Choose black",
+            ActionRank(
+                action_number=action_choose_black, policy=policy) if not None else "",
+            "*" if action_choose_black == next_action else "",
+            "Choose white",
+            ActionRank(
+                action_number=action_choose_white, policy=policy) if not None else "",
+            "*" if action_choose_white == next_action else "")
+
 def PrintBoard(board: List[List[str]],
                policy: List[ActionProb],
                next_action: int):
     for y in range(11):
         for x in range(11):
-            action_number = x + y*11
+            pos_action_number = x + y*11
             rank = ActionRank(
-                action_number=action_number, policy=policy)
+                action_number=pos_action_number, policy=policy)
             
             annotation = " "
-
-            if next_action == action_number:
+            if next_action == pos_action_number:
                 annotation = "*"
 
             if rank is not None and \
@@ -131,16 +168,34 @@ def PrintBoard(board: List[List[str]],
         
 
 def Replay(history: List[ActionHistoryRecord]):
-    print("num_moves=", len(history))
-
     i = 0
+    preview_mode = True
     while True:
+        os.system("clear")
+        print("total_num_moves=", len(history))
         print("step=", i + 1)
         print("game_phase=", history[i].game_phase_)
-        print("next_move_stone_type=", history[i].game_phase_)
+        print("next_move_stone_type=", history[i].next_move_stone_type_)
 
         PrintBoard(
-            history[i].board_, history[i].policy_, history[i].action_number_)
+            history[i].board_,
+            history[i].policy_,
+            history[i].action_number_)
+        
+        PrintNonBoardActions(
+            history[i].game_phase_,
+            history[i].policy_,
+            history[i].action_number_)
+
+        if preview_mode:
+            time.sleep(2)
+            i += 1
+
+            if i == len(history):
+                preview_mode = False
+                i = 0
+
+            continue
 
         command = input("command=")
         if command == "n":
@@ -152,17 +207,59 @@ def Replay(history: List[ActionHistoryRecord]):
         elif command == "q":
             break
 
-        os.system("clear")
-
 if __name__ == "__main__":
-    game_id = 2642
+    parser = argparse.ArgumentParser(
+        description="Visually presents a Gomoku game.")
+    parser.add_argument("--game_id",
+        type=str,
+        help="ID of a game to present.")
+    parser.add_argument("--db_host",
+        type=str,
+        help="Host name pointing to the database storing the latest game data.")
+    parser.add_argument("--db_name",
+        type=str,
+        help="Name of the database storing the latest game data.")
+    parser.add_argument("--db_user",
+        type=str,
+        help="User of the database that has access to the latest game data.")
+    parser.add_argument("--db_pass",
+        type=str,
+        help="Password of the user that has access to the latest game data.")
+
+    args = parser.parse_args()
+    game_id = args.game_id
+    db_host = args.db_host
+    db_name = args.db_name
+    db_user = args.db_user
+    db_pass = args.db_pass
+
+    if game_id is None:
+        logging.error("Argument game_id is required.")
+        parser.print_help()
+        exit(-1)
+    if db_host is None:
+        logging.error("Argument db_host is required.")
+        parser.print_help()
+        exit(-1)
+    if db_name is None:
+        logging.error("Argument db_name is required.")
+        parser.print_help()
+        exit(-1)
+    if db_user is None:
+        logging.error("Argument db_user is required.")
+        parser.print_help()
+        exit(-1)
+    if db_pass is None:
+        logging.error("Argument db_pass is required.")
+        parser.print_help()
+        exit(-1)
 
     history = FetchActionHistory(
         game_id=game_id,
-        db_name="demoweb",
-        db_host="localhost",
+        db_name=db_name,
+        db_host=db_host,
         db_port=5432,
-        db_user="postgres",
-        db_pass="password")
+        db_user=db_user,
+        db_pass=db_pass)
 
     Replay(history)
