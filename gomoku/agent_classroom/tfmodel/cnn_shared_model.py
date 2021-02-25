@@ -4,87 +4,10 @@ import math
 import tensorflow as tf
 import numpy as np
 
+from common_module import PRelu
+from common_module import FeaturePlanesBuilder
+
 INPUT_SIZE = 11
-
-class PRelu(tf.Module):
-    def __init__(self, depth: int):
-        self.alphas = tf.Variable(
-            name="relu_params",
-            initial_value=0.25*tf.ones(shape=[depth], dtype=tf.float32))
-
-    @tf.function
-    def __call__(self, features):
-        pos = tf.maximum(x=features, y=0)
-        neg = tf.minimum(x=features, y=0)
-        return pos + self.alphas*neg
-
-class FeaturePlanesBuilder(tf.Module):    
-    @tf.function
-    def __call__(self,
-                 boards: tf.Tensor,
-                 game_phases: tf.Tensor,
-                 next_move_stone_types: tf.Tensor) -> tf.Tensor:
-        # Places the game states into feature planes.
-        black_stones = tf.equal(
-            x=boards, y=1, name="black_stones_extraction")
-        black_stones = tf.cast(x=black_stones, dtype=tf.float32) # pylint: disable=no-value-for-parameter, unexpected-keyword-arg
-        black_stones = tf.reshape(
-            tensor=black_stones, 
-            shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
-            name="black_stones_create_channel")
-
-        white_stones = tf.equal(
-            x=boards, y=2, name="white_stones_extraction")
-        white_stones = tf.cast(x=white_stones, dtype=tf.float32) # pylint: disable=no-value-for-parameter, unexpected-keyword-arg
-        white_stones = tf.reshape(
-            tensor=white_stones,
-            shape=[-1, INPUT_SIZE, INPUT_SIZE, 1],
-            name="white_stones_create_channel")
-        
-        one_hot_game_phases = tf.one_hot( # pylint: disable=no-value-for-parameter
-            indices=game_phases, depth=5, name="one_hot_expand_game_phases")
-        one_hot_game_phases = tf.reshape(
-            tensor=one_hot_game_phases, 
-            shape=[-1, 1, 1, 5],
-            name="game_phases_create_channels")
-        one_hot_game_phases = tf.repeat(
-            input=one_hot_game_phases, 
-            repeats=[INPUT_SIZE], 
-            axis=2,
-            name="game_phase_plane_height")
-        one_hot_game_phases = tf.repeat(
-            input=one_hot_game_phases, 
-            repeats=[INPUT_SIZE], 
-            axis=1,
-            name="game_phase_plane_width")
-
-        one_hot_next_move_stone_types = tf.one_hot( # pylint: disable=no-value-for-parameter
-            indices=next_move_stone_types, depth=3,
-            name="one_hot_expand_next_move_stone_types")
-        one_hot_next_move_stone_types = tf.reshape(
-            tensor=one_hot_next_move_stone_types, 
-            shape=[-1, 1, 1, 3],
-            name="next_move_stone_types_create_channels")
-        one_hot_next_move_stone_types = tf.repeat(
-            input=one_hot_next_move_stone_types, 
-            repeats=[INPUT_SIZE], 
-            axis=2,
-            name="next_move_stone_types_plane_height")
-        one_hot_next_move_stone_types = tf.repeat(
-            input=one_hot_next_move_stone_types, 
-            repeats=[INPUT_SIZE], 
-            axis=1,
-            name="next_move_stone_types_plane_width")
-
-        feature_planes = tf.concat( # pylint: disable=unexpected-keyword-arg, no-value-for-parameter
-            values=[black_stones,
-                    white_stones,
-                    one_hot_game_phases,
-                    one_hot_next_move_stone_types],
-            axis=3,
-            name="input_feature_planes")
-
-        return feature_planes
 
 class CnnLayers(tf.Module):
     def __init__(self, num_features: int):
@@ -102,7 +25,7 @@ class CnnLayers(tf.Module):
         self.conv_biases1 = tf.Variable(
             name="conv_biases1",
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
-        self.prelu1 = PRelu(depth=num_filters)
+        self.prelu1 = PRelu(num_features=num_filters)
         
         kernel_size = 3
         num_input_channels = num_filters
@@ -118,7 +41,7 @@ class CnnLayers(tf.Module):
         self.conv_biases2 = tf.Variable(
             name="conv_biases2",
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
-        self.prelu2 = PRelu(depth=num_filters)
+        self.prelu2 = PRelu(num_features=num_filters)
 
         num_input_channels = num_filters
         num_filters = 128
@@ -133,7 +56,7 @@ class CnnLayers(tf.Module):
         self.conv_biases3 = tf.Variable(
             name="conv_biases3",
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
-        self.prelu3 = PRelu(depth=num_filters)
+        self.prelu3 = PRelu(num_features=num_filters)
 
     @tf.function
     def __call__(self, feature_planes: tf.Tensor):
@@ -183,7 +106,7 @@ class PolicyLayer(tf.Module):
         self.conv_biases = tf.Variable(
             name="policy_conv_biases",
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
-        self.prelu = PRelu(depth=num_filters)
+        self.prelu = PRelu(num_features=num_filters)
 
         num_inputs = INPUT_SIZE*INPUT_SIZE*num_filters
         num_outputs = INPUT_SIZE*INPUT_SIZE + 5
@@ -241,7 +164,7 @@ class ValueLayer(tf.Module):
         self.conv_biases = tf.Variable(
             name="value_conv_biases",
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
-        self.prelu = PRelu(depth=num_filters)
+        self.prelu = PRelu(num_features=num_filters)
 
         num_inputs = INPUT_SIZE*INPUT_SIZE*num_filters
         num_outputs = num_features // 2
@@ -293,14 +216,14 @@ class ValueLayer(tf.Module):
         value = tf.tanh(x=value_score, name="value")
 
         return tf.reshape(tensor=value, shape=[-1])
-    
+
     @tf.function
     def TransformVariables(self) -> List[tf.Tensor]:
         return [self.conv_kernel, self.weights1, self.weights2]
 
 class GomokuCnnSharedModel(tf.Module):
     def __init__(self):
-        self.feature_planes_builder = FeaturePlanesBuilder()
+        self.feature_planes_builder = FeaturePlanesBuilder(input_size=INPUT_SIZE)
         self.cnn_layers = CnnLayers(num_features=2 + 5 + 3)
         self.policy_layer = PolicyLayer(num_features=128)
         self.value_layer = ValueLayer(num_features=128)
@@ -383,7 +306,7 @@ class GomokuCnnSharedModel(tf.Module):
             flattened = tf.reshape(tensor=transform_var, shape=[-1])
             l2 = tf.reduce_sum(tf.square(x=flattened))
             l2_loss += l2
-        l2_loss *= 1e-4
+        l2_loss *= 5e-5
 
         loss = policy_loss + value_loss + l2_loss
 
