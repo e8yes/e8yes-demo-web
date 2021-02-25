@@ -5,149 +5,90 @@ import argparse
 import os
 import logging
 import tensorflow as tf
+import numpy as np
 
-from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTower
-from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModelName
+from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModel
+from cnn_shared_model import GomokuCnnSharedModel
 
-def GenerateModel(model_output_path: str):
+def GenerateModel(model_name: str, model_output_path: str):
     logging.info("Constructing the graph...")
 
     tf.summary.trace_on(graph=True, profiler=False) 
 
-    model = GomokuCnnResNetSharedTower()
+    model = None
+    if model_name == "cnn_resnet_shared_tower":
+        model = GomokuCnnResNetSharedTowerModel()
+    elif model_name == "cnn_shared":
+        model = GomokuCnnSharedModel()
+    else:
+        raise "Unkown model_name=" + str(model_name)
 
-    board_features = tf.constant(
+    boards = tf.constant(
         value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+               [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 2, 2, 1, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
-        dtype=tf.float32)
-    game_phase_place_3_stones = tf.constant(
-        value=[[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]], 
-        dtype=tf.float32)
-    game_phase_swap2_decision = tf.constant(
-        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
-        dtype=tf.float32)
-    game_phase_place_2_more_stones = tf.constant(
-        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
-        dtype=tf.float32)
-    game_phase_stone_type_decision = tf.constant(
-        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
-        dtype=tf.float32)
-    game_phase_standard_gomoku = tf.constant(
-        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
-        dtype=tf.float32)
-    next_move_stone_type = tf.constant(
-        value=[[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]], 
-        dtype=tf.float32)
+        dtype=tf.uint8)
+    game_phases = tf.constant(value=[0, 4], dtype=tf.uint8)
+    next_move_stone_types = tf.constant(value=[2, 1], dtype=tf.uint8)
     
     ground_truth_policy = tf.constant(
-        value=[[0.007936508]*126],
+        value=[[0.007936508]*126,
+               [0.007936508]*126],
         dtype=tf.float32)
     ground_truth_value = tf.constant(
-        value=[0],
+        value=[0, 0],
         dtype=tf.float32)
 
-    policy, value, _ = model(board_features,
-                             game_phase_place_3_stones,
-                             game_phase_swap2_decision,
-                             game_phase_place_2_more_stones,
-                             game_phase_stone_type_decision,
-                             game_phase_standard_gomoku,
-                             next_move_stone_type)
+    policy, value = model(
+        boards,
+        game_phases,
+        next_move_stone_types)
+    
     logging.info("policy=\n{0}".format(policy.numpy()))
     logging.info("value=\n{0}".format(value.numpy()))
 
-    loss, policy_loss, value_loss = model.Loss(board_features,
-                                               game_phase_place_3_stones,
-                                               game_phase_swap2_decision,
-                                               game_phase_place_2_more_stones,
-                                               game_phase_stone_type_decision,
-                                               game_phase_standard_gomoku,
-                                               next_move_stone_type,
-                                               ground_truth_policy,
-                                               ground_truth_value)
+    loss, policy_loss, value_loss, l2_loss = model.Loss(
+        boards,
+        game_phases,
+        next_move_stone_types,
+        ground_truth_policy,
+        ground_truth_value)
     
-    logging.info("loss={0}, policy_loss={1}, value_loss={2}"\
-        .format(loss.numpy(), policy_loss.numpy(), value_loss.numpy()))
+    logging.info("loss={0}, policy_loss={1}, value_loss={2}, l2_loss={3}"\
+        .format(loss.numpy(), 
+                policy_loss.numpy(), 
+                value_loss.numpy(),
+                l2_loss.numpy()))
 
     model_full_path = os.path.join(
         model_output_path,
-        GomokuCnnResNetSharedTowerModelName())
+        model.Name().numpy().decode("UTF-8"))
 
     logging.info("Saving the graph into jounrnal...")
     log_path = os.path.join(model_full_path, "logs")
     writer = tf.summary.create_file_writer(logdir=log_path)
     with writer.as_default():
         tf.summary.trace_export(
-            name=GomokuCnnResNetSharedTowerModelName(),
+            name=model.Name().numpy().decode("UTF-8"),
             step=0,
             profiler_outdir=log_path)
 
@@ -155,7 +96,8 @@ def GenerateModel(model_output_path: str):
     tf.saved_model.save(obj=model,
                         export_dir=model_full_path,
                         signatures={"inference": model.__call__,
-                                    "loss": model.Loss})
+                                    "loss": model.Loss,
+                                    "name": model.Name})
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, 
@@ -163,15 +105,26 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description="Generate an empty Gomoku tensorflow model")
+    parser.add_argument("--model_name",
+        type=str,
+        help="The type of model to generate.")
     parser.add_argument("--model_output_path",
         type=str,
         help="A path to write the model to. Do not specify a file name.")
 
     args = parser.parse_args()
+    model_name = args.model_name
     model_output_path = args.model_output_path
+
+    if model_name is None:
+        logging.error("Argument model_name is required.")
+        parser.print_help()
+        exit(-1)
+
     if model_output_path is None:
         logging.error("Argument model_output_path is required.")
         parser.print_help()
         exit(-1)
 
-    GenerateModel(model_output_path=model_output_path)
+    GenerateModel(
+        model_name=model_name, model_output_path=model_output_path)
