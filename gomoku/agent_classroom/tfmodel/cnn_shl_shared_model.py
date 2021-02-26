@@ -5,14 +5,41 @@ import tensorflow as tf
 import numpy as np
 
 from common_module import PRelu
-from common_module import FeaturePlanesBuilder
+from common_module import ShlFeaturePlanesBuilder
 
 INPUT_SIZE = 11
+
+class LinearCnnLayer(tf.Module):
+    def __init__(self, num_features: int):
+        num_input_channels = num_features
+        num_filters = num_features
+        kernel_size = 1
+        self.conv_kernel = tf.Variable(
+            name="linear_conv_kernel",
+            initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
+                shape=[kernel_size, kernel_size, 
+                       num_input_channels, 
+                       num_filters],
+                stddev=math.sqrt(2/(kernel_size*kernel_size*num_input_channels)),
+                dtype=tf.float32))
+    
+    @tf.function
+    def __call__(self, feature_planes: tf.Tensor):
+        return tf.nn.conv2d(
+            input=feature_planes,
+            filters=self.conv_kernel,
+            strides=[1, 1, 1, 1],
+            padding="SAME",
+            name="linear_conv_kernel")
+
+    @tf.function
+    def TransformVariables(self) -> List[tf.Tensor]:
+        return [self.conv_kernel]
 
 class CnnLayers(tf.Module):
     def __init__(self, num_features: int):
         num_input_channels = num_features
-        num_filters = 32
+        num_filters = 22
         kernel_size = 5
         self.conv_kernel1 = tf.Variable(
             name="conv_kernel1",
@@ -29,7 +56,7 @@ class CnnLayers(tf.Module):
         
         kernel_size = 3
         num_input_channels = num_filters
-        num_filters = 64
+        num_filters = 22
         self.conv_kernel2 = tf.Variable(
             name="conv_kernel2",
             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
@@ -43,8 +70,9 @@ class CnnLayers(tf.Module):
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
         self.prelu2 = PRelu(num_features=num_filters)
 
+        kernel_size = 1
         num_input_channels = num_filters
-        num_filters = 128
+        num_filters = 22
         self.conv_kernel3 = tf.Variable(
             name="conv_kernel3",
             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
@@ -93,7 +121,7 @@ class CnnLayers(tf.Module):
 class PolicyLayer(tf.Module):
     def __init__(self, num_features: int):
         num_input_channels = num_features
-        num_filters = 4
+        num_filters = 1
         kernel_size = 1
         self.conv_kernel = tf.Variable(
             name="policy_conv_kernel",
@@ -151,7 +179,7 @@ class PolicyLayer(tf.Module):
 class ValueLayer(tf.Module):
     def __init__(self, num_features: int):
         num_input_channels = num_features
-        num_filters = 2
+        num_filters = 1
         kernel_size = 1
         self.conv_kernel = tf.Variable(
             name="value_conv_kernel",
@@ -167,7 +195,7 @@ class ValueLayer(tf.Module):
         self.prelu = PRelu(num_features=num_filters)
 
         num_inputs = INPUT_SIZE*INPUT_SIZE*num_filters
-        num_outputs = num_features // 2
+        num_outputs = 64
         self.weights1 = tf.Variable(
             name="value_weights1",
             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
@@ -221,10 +249,12 @@ class ValueLayer(tf.Module):
     def TransformVariables(self) -> List[tf.Tensor]:
         return [self.conv_kernel, self.weights1, self.weights2]
 
-class GomokuCnnSharedModel(tf.Module):
+class GomokuCnnShlSharedModel(tf.Module):
     def __init__(self):
-        self.feature_planes_builder = FeaturePlanesBuilder(input_size=INPUT_SIZE)
-        self.cnn_layers = CnnLayers(num_features=2 + 5 + 3)
+        self.feature_planes_builder = ShlFeaturePlanesBuilder(
+            input_size=INPUT_SIZE)
+        self.linear_cnn_layer = LinearCnnLayer(num_features=2 + 5 + 3 + 4)
+        self.cnn_layers = CnnLayers(num_features=2 + 5 + 3 + 4)
         self.policy_layer = PolicyLayer(num_features=128)
         self.value_layer = ValueLayer(num_features=128)
     
@@ -232,12 +262,20 @@ class GomokuCnnSharedModel(tf.Module):
         input_signature=[
             tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
-            tf.TensorSpec(shape=[None], dtype=tf.uint8)
+            tf.TensorSpec(shape=[None], dtype=tf.uint8),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32)
         ])
     def Infer(self, 
               boards: tf.Tensor,
               game_phases: tf.Tensor,
-              next_move_stone_types: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
+              next_move_stone_types: tf.Tensor,
+              primary_shl_count_black: tf.Tensor,
+              secondary_shl_count_black: tf.Tensor,
+              primary_shl_count_white: tf.Tensor,
+              secondary_shl_count_white: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
         feature_planes = self.feature_planes_builder(
             boards,
             game_phases,
@@ -254,14 +292,24 @@ class GomokuCnnSharedModel(tf.Module):
         input_signature=[
             tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
-            tf.TensorSpec(shape=[None], dtype=tf.uint8)
+            tf.TensorSpec(shape=[None], dtype=tf.uint8),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32)
         ])
     def __call__(self,
                  boards: tf.Tensor,
                  game_phases: tf.Tensor,
-                 next_move_stone_types: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor]:
-        policy, value, policy_logits = self.Infer(
-            boards, game_phases, next_move_stone_types)
+                 next_move_stone_types: tf.Tensor,
+                 primary_shl_count_black: tf.Tensor,
+                 secondary_shl_count_black: tf.Tensor,
+                 primary_shl_count_white: tf.Tensor,
+                 secondary_shl_count_white: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor]:
+        policy, value, _ = self.Infer(
+            boards, game_phases, next_move_stone_types,
+            primary_shl_count_black, secondary_shl_count_black,
+            primary_shl_count_white, secondary_shl_count_white)
         return policy, value
 
     @tf.function
@@ -275,20 +323,30 @@ class GomokuCnnSharedModel(tf.Module):
             tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
             tf.TensorSpec(shape=[None, INPUT_SIZE*INPUT_SIZE + 5], dtype=tf.float32),
             tf.TensorSpec(shape=[None], dtype=tf.float32)
         ])
     def Loss(self,
-             boards: tf.Tensor, 
+             boards: tf.Tensor,
              game_phases: tf.Tensor,
-             next_move_stone_types: tf.Tensor, 
-             policies: tf.Tensor, 
+             next_move_stone_types: tf.Tensor,
+             primary_shl_count_black: tf.Tensor,
+             secondary_shl_count_black: tf.Tensor,
+             primary_shl_count_white: tf.Tensor,
+             secondary_shl_count_white: tf.Tensor,
+             policies: tf.Tensor,
              values: tf.Tensor) -> Tuple[tf.Tensor,
-                                          tf.Tensor,
-                                          tf.Tensor,
-                                          tf.Tensor]:
+                                         tf.Tensor,
+                                         tf.Tensor,
+                                         tf.Tensor]:
         _, pred_values, policy_logits = self.Infer(
-            boards, game_phases, next_move_stone_types)
+            boards, game_phases, next_move_stone_types,
+            primary_shl_count_black, secondary_shl_count_black,
+            primary_shl_count_white, secondary_shl_count_white)
 
         # Policy loss.
         policy_losses = tf.nn.softmax_cross_entropy_with_logits(
@@ -301,16 +359,16 @@ class GomokuCnnSharedModel(tf.Module):
             y_true=values, y_pred=pred_values)
         
         # Regularization loss.
-        l2_loss = 0
+        l1_loss = 0
         for transform_var in self.TransformVariables():
             flattened = tf.reshape(tensor=transform_var, shape=[-1])
-            l2 = tf.reduce_sum(tf.square(x=flattened))
-            l2_loss += l2
-        l2_loss *= 1e-4
+            l1 = tf.reduce_sum(tf.abs(x=flattened))
+            l1_loss += l1
+        l1_loss *= 1e-4
 
-        loss = policy_loss + value_loss + l2_loss
+        loss = policy_loss + value_loss + l1_loss
 
-        return loss, policy_loss, value_loss, l2_loss
+        return loss, policy_loss, value_loss, l1_loss
 
     @tf.function(input_signature=[])
     def Name(self) -> tf.Tensor:
@@ -318,8 +376,9 @@ class GomokuCnnSharedModel(tf.Module):
             value="gomoku_cnn_shared_i{0}".format(INPUT_SIZE),
             dtype=tf.string)
 
-def TrainableVariables(model: GomokuCnnSharedModel):
-    return [model.cnn_layers.conv_kernel1,
+def TrainableVariables(model: GomokuCnnShlSharedModel):
+    return [model.linear_cnn_layer.conv_kernel,
+            model.cnn_layers.conv_kernel1,
             model.cnn_layers.conv_biases1,
             model.cnn_layers.conv_kernel2,
             model.cnn_layers.conv_biases2,
@@ -342,7 +401,7 @@ def TrainableVariables(model: GomokuCnnSharedModel):
             model.value_layer.biases2]
 
 def PrintModelParameterInfo():
-    model = GomokuCnnSharedModel()
+    model = GomokuCnnShlSharedModel()
 
     num_params = 0
     for variable in model.variables:
