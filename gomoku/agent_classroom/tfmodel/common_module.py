@@ -123,3 +123,96 @@ class FeaturePlanesBuilder(tf.Module):
             name="input_feature_planes")
 
         return feature_planes
+
+class ShlFeaturePlanesBuilder(tf.Module):
+    def __init__(self, input_size: int):
+        """It converts the game states and handcrafted SHL features 
+           into a structure ingestable by the convolution operation.
+
+        Args:
+            input_size (int): The game's board size.
+        """
+        self.basic_builder_ = FeaturePlanesBuilder(
+            input_size=input_size)
+        self.input_size_ = input_size
+
+    @tf.function
+    def __call__(self,
+                 boards: tf.Tensor,
+                 game_phases: tf.Tensor,
+                 next_move_stone_types: tf.Tensor,
+                 primary_shl_count_black: tf.Tensor,
+                 secondary_shl_count_black: tf.Tensor,
+                 primary_shl_count_white: tf.Tensor,
+                 secondary_shl_count_white: tf.Tensor) -> tf.Tensor:
+        """Converts the game states into a list of 2D feature planes and 
+           stacks them as a multi-channel image.
+
+        Args:
+            boards (tf.Tensor): A uint8 tensor of shape 
+                [BATCH_SIZE, INPUT_SIZE, INPUT_SIZE] containing the board features. 
+                In particular, 
+                    a black stone should take the value 1; 
+                    white stone should take the value 2;
+                    empty position is coded as 0.
+            game_phases (tf.Tensor): A 1D uint8 tensor representing the game phase.
+                Each game phase should take the following values:
+                    Place 3 stones: 0
+                    Swap 2 decision: 1
+                    Place 2 more stones: 2
+                    Stone type decision: 3
+                    Standard Gomoku: 4
+            next_move_stone_types (tf.Tensor): A 1D uint8 tensor representing the 
+                stone type to be put on the Gomoku board. Each stone type will take 
+                the following values:
+                    If no stone involves in the next action, 
+                        then it should be marked as 0.
+                    Black stone takes the value 1.
+                    White stone takes the value 2.
+            primary_shl_count_black (tf.Tensor): A 2D float32 tensor representing
+                the primary SHL count for the black stone type at each non-suppressed 
+                position.
+            secondary_shl_count_black (tf.Tensor): A 2D float32 tensor representing
+                the secondary SHL count for the black stone type at each non-suppressed 
+                position.
+            primary_shl_count_white (tf.Tensor): A 2D float32 tensor representing
+                the primary SHL count for the white stone type at each non-suppressed 
+                position.
+            secondary_shl_count_white (tf.Tensor): A 2D float32 tensor representing
+                the secondary SHL count for the white stone type at each non-suppressed 
+                position.
+
+        Returns:
+            tf.Tensor: A float32 image with 14 channels.
+        """
+        basic_feature_planes = self.basic_builder_(
+            boards, game_phases, next_move_stone_types)
+
+        primary_shl_count_black = tf.reshape(
+            tensor=primary_shl_count_black, 
+            shape=[-1, self.input_size_, self.input_size_, 1],
+            name="primary_shl_count_black_create_channel")
+        secondary_shl_count_black = tf.reshape(
+            tensor=secondary_shl_count_black, 
+            shape=[-1, self.input_size_, self.input_size_, 1],
+            name="secondary_shl_count_black_create_channel")
+        
+        primary_shl_count_white = tf.reshape(
+            tensor=primary_shl_count_white, 
+            shape=[-1, self.input_size_, self.input_size_, 1],
+            name="primary_shl_count_white_create_channel")
+        secondary_shl_count_white = tf.reshape(
+            tensor=secondary_shl_count_white, 
+            shape=[-1, self.input_size_, self.input_size_, 1],
+            name="secondary_shl_count_white_create_channel")
+
+        feature_planes = tf.concat( # pylint: disable=unexpected-keyword-arg, no-value-for-parameter
+            values=[basic_feature_planes,
+                    primary_shl_count_black,
+                    secondary_shl_count_black,
+                    primary_shl_count_white,
+                    secondary_shl_count_white],
+            axis=3,
+            name="shl_input_feature_planes")
+
+        return feature_planes
