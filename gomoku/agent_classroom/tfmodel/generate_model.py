@@ -7,8 +7,10 @@ import logging
 import tensorflow as tf
 import numpy as np
 
+from poly_functions import RequireShlFeatures
 from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModel
 from cnn_shared_model import GomokuCnnSharedModel
+from cnn_shl_shared_model import GomokuCnnShlSharedModel
 
 def GenerateModel(model_name: str, model_output_path: str):
     logging.info("Constructing the graph...")
@@ -20,6 +22,8 @@ def GenerateModel(model_name: str, model_output_path: str):
         model = GomokuCnnResNetSharedTowerModel()
     elif model_name == "cnn_shared":
         model = GomokuCnnSharedModel()
+    elif model_name == "cnn_shl_shared":
+        model = GomokuCnnShlSharedModel()
     else:
         raise "Unkown model_name=" + str(model_name)
 
@@ -49,7 +53,105 @@ def GenerateModel(model_name: str, model_output_path: str):
         dtype=tf.uint8)
     game_phases = tf.constant(value=[0, 4], dtype=tf.uint8)
     next_move_stone_types = tf.constant(value=[2, 1], dtype=tf.uint8)
+
+    primary_shl_count_black = tf.constant(
+        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+               [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 2, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
+        dtype=tf.float32)
+    secondary_shl_count_black = tf.constant(
+        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+               [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 2, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
+        dtype=tf.float32)
     
+    primary_shl_count_white = tf.constant(
+        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+               [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 2, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
+        dtype=tf.float32)
+    secondary_shl_count_white = tf.constant(
+        value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+               [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 2, 2, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
+        dtype=tf.float32)
+
     ground_truth_policy = tf.constant(
         value=[[0.007936508]*126,
                [0.007936508]*126],
@@ -58,26 +160,56 @@ def GenerateModel(model_name: str, model_output_path: str):
         value=[0, 0],
         dtype=tf.float32)
 
-    policy, value = model(
-        boards,
-        game_phases,
-        next_move_stone_types)
+    policy = None
+    value = None
+
+    if RequireShlFeatures(model_name=model_name):
+        policy, value = model(
+            boards,
+            game_phases,
+            next_move_stone_types,
+            primary_shl_count_black,
+            secondary_shl_count_black,
+            primary_shl_count_white,
+            secondary_shl_count_white)
+    else:
+        policy, value = model(
+            boards,
+            game_phases,
+            next_move_stone_types)
     
     logging.info("policy=\n{0}".format(policy.numpy()))
     logging.info("value=\n{0}".format(value.numpy()))
 
-    loss, policy_loss, value_loss, l2_loss = model.Loss(
-        boards,
-        game_phases,
-        next_move_stone_types,
-        ground_truth_policy,
-        ground_truth_value)
+    loss = None
+    policy_loss = None
+    value_loss = None
+    reg_loss = None
+
+    if RequireShlFeatures(model_name=model_name):
+        loss, policy_loss, value_loss, reg_loss = model.Loss(
+            boards,
+            game_phases,
+            next_move_stone_types,
+            primary_shl_count_black,
+            secondary_shl_count_black,
+            primary_shl_count_white,
+            secondary_shl_count_white,
+            ground_truth_policy,
+            ground_truth_value)
+    else:
+        loss, policy_loss, value_loss, reg_loss = model.Loss(
+            boards,
+            game_phases,
+            next_move_stone_types,
+            ground_truth_policy,
+            ground_truth_value)
     
-    logging.info("loss={0}, policy_loss={1}, value_loss={2}, l2_loss={3}"\
+    logging.info("loss={0}, policy_loss={1}, value_loss={2}, reg_loss={3}"\
         .format(loss.numpy(), 
                 policy_loss.numpy(), 
                 value_loss.numpy(),
-                l2_loss.numpy()))
+                reg_loss.numpy()))
 
     model_full_path = os.path.join(
         model_output_path,
