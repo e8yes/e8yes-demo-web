@@ -160,7 +160,7 @@ class PolicyLayer(tf.Module):
 
         flattened_features = tf.reshape(
             tensor=fconv_output,
-            shape=[-1, INPUT_SIZE*INPUT_SIZE*4],
+            shape=[-1, INPUT_SIZE*INPUT_SIZE],
             name="flattened_policy_features")
 
         logits = tf.matmul(
@@ -230,7 +230,7 @@ class ValueLayer(tf.Module):
 
         flattened_value_summary = tf.reshape(
             tensor=value_summary,
-            shape=[-1, INPUT_SIZE*INPUT_SIZE*2],
+            shape=[-1, INPUT_SIZE*INPUT_SIZE],
             name="flattened_value_features")
         
         value_scores = tf.matmul(
@@ -255,8 +255,8 @@ class GomokuCnnShlSharedModel(tf.Module):
             input_size=INPUT_SIZE)
         self.linear_cnn_layer = LinearCnnLayer(num_features=2 + 5 + 3 + 4)
         self.cnn_layers = CnnLayers(num_features=2 + 5 + 3 + 4)
-        self.policy_layer = PolicyLayer(num_features=128)
-        self.value_layer = ValueLayer(num_features=128)
+        self.policy_layer = PolicyLayer(num_features=22)
+        self.value_layer = ValueLayer(num_features=22)
     
     @tf.function(
         input_signature=[
@@ -279,7 +279,11 @@ class GomokuCnnShlSharedModel(tf.Module):
         feature_planes = self.feature_planes_builder(
             boards,
             game_phases,
-            next_move_stone_types)
+            next_move_stone_types,
+            primary_shl_count_black,
+            secondary_shl_count_black,
+            primary_shl_count_white,
+            secondary_shl_count_white)
         
         conv_features = self.cnn_layers(feature_planes)
 
@@ -364,7 +368,7 @@ class GomokuCnnShlSharedModel(tf.Module):
             flattened = tf.reshape(tensor=transform_var, shape=[-1])
             l1 = tf.reduce_sum(tf.abs(x=flattened))
             l1_loss += l1
-        l1_loss *= 1e-4
+        l1_loss *= 1e-5
 
         loss = policy_loss + value_loss + l1_loss
 
@@ -373,7 +377,7 @@ class GomokuCnnShlSharedModel(tf.Module):
     @tf.function(input_signature=[])
     def Name(self) -> tf.Tensor:
         return tf.constant(
-            value="gomoku_cnn_shared_i{0}".format(INPUT_SIZE),
+            value="gomoku_cnn_shl_shared_i{0}".format(INPUT_SIZE),
             dtype=tf.string)
 
 def TrainableVariables(model: GomokuCnnShlSharedModel):
