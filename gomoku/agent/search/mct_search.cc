@@ -124,21 +124,26 @@ EvaluationResult Evaluate(GomokuBoardState const &state, MctNode const &state_mc
 }
 
 void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *evaluator) {
+    std::unordered_map<GomokuActionId, GomokuAction> actions = state->LegalActions();
+
     std::unordered_map<GomokuActionId, float> heuristics_policy =
         evaluator->EvaluatePolicy(*state, root->id);
-    PlayerSide const action_performer = state->CurrentPlayerSide();
 
-    std::unordered_map<GomokuActionId, GomokuAction> actions = state->LegalActions();
+    // Expand the node and assign the heuristics policy as the bandits' prior.
+    PlayerSide const action_performer = state->CurrentPlayerSide();
     for (auto const &[action_id, _] : actions) {
         GameResult game_result = state->ApplyAction(action_id,
                                                     /*cached_game_result=*/std::nullopt);
         state->RetractAction();
 
+        float policy_weight = 0.0f;
         auto policy_weight_it = heuristics_policy.find(action_id);
-        assert(policy_weight_it != heuristics_policy.end());
+        if (policy_weight_it != heuristics_policy.end()) {
+            policy_weight = policy_weight_it->second;
+        }
 
         MctNodeId const node_id = AllocateMctNodeId();
-        MctNode child(node_id, action_id, action_performer, game_result, policy_weight_it->second);
+        MctNode child(node_id, action_id, action_performer, game_result, policy_weight);
         child.upper_confidence_bound =
             UpperConfidenceBound(evaluator->ExplorationFactor(), *root, child);
         root->children.push(child);
