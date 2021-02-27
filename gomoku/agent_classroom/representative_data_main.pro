@@ -66,4 +66,6 @@ unix:!macx: LIBS += -L$$OUT_PWD/../agent/ -lgomoku_agent
 INCLUDEPATH += $$PWD/../agent
 DEPENDPATH += $$PWD/../agent
 
+LIBS += -ltensorflow
+LIBS += -ltensorflow_framework
 LIBS += -ltensorflowlite_c

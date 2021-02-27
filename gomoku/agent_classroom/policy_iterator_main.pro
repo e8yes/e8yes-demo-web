@@ -66,4 +66,6 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../postgres/query_runner/ -lquery_runner
 INCLUDEPATH += $$PWD/../../postgres/query_runner
 DEPENDPATH += $$PWD/../../postgres/query_runner
 
+LIBS += -ltensorflow
+LIBS += -ltensorflow_framework
 LIBS += -ltensorflowlite_c
