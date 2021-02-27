@@ -179,7 +179,7 @@ class PolicyLayer(tf.Module):
 class ValueLayer(tf.Module):
     def __init__(self, num_features: int):
         num_input_channels = num_features
-        num_filters = 1
+        num_filters = 2
         kernel_size = 1
         self.conv_kernel = tf.Variable(
             name="value_conv_kernel",
@@ -192,10 +192,10 @@ class ValueLayer(tf.Module):
         self.conv_biases = tf.Variable(
             name="value_conv_biases",
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
-        self.prelu = PRelu(num_features=num_filters)
+        self.prelu1 = PRelu(num_features=num_filters)
 
         num_inputs = INPUT_SIZE*INPUT_SIZE*num_filters
-        num_outputs = 64
+        num_outputs = 49
         self.weights1 = tf.Variable(
             name="value_weights1",
             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
@@ -205,6 +205,7 @@ class ValueLayer(tf.Module):
         self.biases1 = tf.Variable(
             name="policy_biases1",
             initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
+        self.prelu2 = PRelu(num_features=num_outputs)
 
         num_inputs = num_outputs
         num_outputs = 1
@@ -226,17 +227,19 @@ class ValueLayer(tf.Module):
             strides=[1, 1, 1, 1],
             padding="SAME",
             name="value_fconv") + self.conv_biases
-        value_summary = self.prelu(value_summary_linear)
+        value_summary = self.prelu1(value_summary_linear)
 
         flattened_value_summary = tf.reshape(
             tensor=value_summary,
-            shape=[-1, INPUT_SIZE*INPUT_SIZE],
+            shape=[-1, INPUT_SIZE*INPUT_SIZE*2],
             name="flattened_value_features")
         
-        value_scores = tf.matmul(
+        value_scores_linear = tf.matmul(
             a=flattened_value_summary,
             b=self.weights1,
             name="value_dense1") + self.biases1
+        value_scores = self.prelu2(value_scores_linear)
+
         value_score = tf.matmul(
             a=value_scores,
             b=self.weights2,
@@ -398,7 +401,8 @@ def TrainableVariables(model: GomokuCnnShlSharedModel):
             model.policy_layer.biases,
             model.value_layer.conv_kernel,
             model.value_layer.conv_biases,
-            model.value_layer.prelu.alphas,
+            model.value_layer.prelu1.alphas,
+            model.value_layer.prelu2.alphas,
             model.value_layer.weights1,
             model.value_layer.biases1,
             model.value_layer.weights2,
