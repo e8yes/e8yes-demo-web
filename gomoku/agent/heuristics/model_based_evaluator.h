@@ -52,11 +52,6 @@ class GomokuModelBasedEvaluator : public GomokuEvaluatorInterface {
 
     void ClearCache() override;
 
-    /**
-     * @brief ModelName Name of the loaded tensorflow lite model.
-     */
-    std::string ModelName() const;
-
   private:
     struct ModelBasedEvaluatorInternal;
     std::unique_ptr<ModelBasedEvaluatorInternal> pimpl_;

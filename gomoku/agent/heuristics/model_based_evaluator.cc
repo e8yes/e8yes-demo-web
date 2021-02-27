@@ -36,132 +36,35 @@ struct EvaluationResult {
     std::unordered_map<GomokuActionId, float> policy;
 };
 
-void ExtractBoardFeatures(GomokuBoardState const &state, TfLiteTensor *board_features) {
-    assert(TfLiteTensorNumDims(board_features) == 3);
-    assert(TfLiteTensorDim(board_features, /*dim_index=*/0) == 1);
-    assert(TfLiteTensorDim(board_features, /*dim_index=*/1) == state.Width());
-    assert(TfLiteTensorDim(board_features, /*dim_index=*/2) == state.Height());
+void WriteBoard(GomokuBoardState const &state, TfLiteTensor *board) {
+    assert(TfLiteTensorNumDims(board) == 3);
+    assert(TfLiteTensorDim(board, /*dim_index=*/0) == 1);
+    assert(TfLiteTensorDim(board, /*dim_index=*/1) == state.Width());
+    assert(TfLiteTensorDim(board, /*dim_index=*/2) == state.Height());
 
-    float *tensor_memory = static_cast<float *>(TfLiteTensorData(board_features));
+    uint8_t *tensor_memory = static_cast<uint8_t *>(TfLiteTensorData(board));
 
     for (int16_t y = 0; y < state.Height(); ++y) {
         for (int16_t x = 0; x < state.Width(); ++x) {
-            switch (*state.ChessPieceStateAt(MovePosition(x, y))) {
-            case ST_NONE: {
-                tensor_memory[y + x * state.Height()] = 0.0f;
-                break;
-            }
-            case ST_BLACK: {
-                tensor_memory[y + x * state.Height()] = -1.0f;
-                break;
-            }
-            case ST_WHITE: {
-                tensor_memory[y + x * state.Height()] = 1.0f;
-                break;
-            }
-            default: {
-                assert(false);
-                break;
-            }
-            }
+            tensor_memory[y + x * state.Height()] = *state.ChessPieceStateAt(MovePosition(x, y));
         }
     }
 }
 
-void Fill(GomokuBoardState const &state, float val, TfLiteTensor *tensor) {
-    assert(TfLiteTensorNumDims(tensor) == 3);
-    assert(TfLiteTensorDim(tensor, /*dim_index=*/0) == 1);
-    assert(TfLiteTensorDim(tensor, /*dim_index=*/1) == state.Width());
-    assert(TfLiteTensorDim(tensor, /*dim_index=*/2) == state.Height());
+void WriteGamePhase(GomokuBoardState const &state, TfLiteTensor *game_phase) {
+    assert(TfLiteTensorNumDims(game_phase) == 1);
+    assert(TfLiteTensorDim(game_phase, /*dim_index=*/0) == 1);
 
-    float *tensor_memory = static_cast<float *>(TfLiteTensorData(tensor));
-
-    for (int16_t y = 0; y < state.Height(); ++y) {
-        for (int16_t x = 0; x < state.Width(); ++x) {
-            tensor_memory[x + y * state.Width()] = val;
-        }
-    }
+    uint8_t *tensor_memory = static_cast<uint8_t *>(TfLiteTensorData(game_phase));
+    *tensor_memory = state.CurrentGamePhase();
 }
 
-void ExtractGamePhaseFeature(GomokuBoardState const &state, TfLiteTensor *game_phase_place_3_stones,
-                             TfLiteTensor *game_phase_swap2_decision,
-                             TfLiteTensor *game_phase_place_2_more_stones,
-                             TfLiteTensor *game_phase_stone_type_decision,
-                             TfLiteTensor *game_phase_standard_gomoku) {
+void WriteNextMoveStoneType(GomokuBoardState const &state, TfLiteTensor *next_move_stone_type) {
+    assert(TfLiteTensorNumDims(next_move_stone_type) == 1);
+    assert(TfLiteTensorDim(next_move_stone_type, /*dim_index=*/0) == 1);
 
-    switch (state.CurrentGamePhase()) {
-    case GP_PLACE_3_STONES: {
-        Fill(state, /*val=*/1.0f, game_phase_place_3_stones);
-
-        Fill(state, /*val=*/0.0f, game_phase_swap2_decision);
-        Fill(state, /*val=*/0.0f, game_phase_place_2_more_stones);
-        Fill(state, /*val=*/0.0f, game_phase_stone_type_decision);
-        Fill(state, /*val=*/0.0f, game_phase_standard_gomoku);
-        break;
-    }
-    case GP_SWAP2_DECISION: {
-        Fill(state, /*val=*/1.0f, game_phase_swap2_decision);
-
-        Fill(state, /*val=*/0.0f, game_phase_place_3_stones);
-        Fill(state, /*val=*/0.0f, game_phase_place_2_more_stones);
-        Fill(state, /*val=*/0.0f, game_phase_stone_type_decision);
-        Fill(state, /*val=*/0.0f, game_phase_standard_gomoku);
-        break;
-    }
-    case GP_SWAP2_PLACE_2_STONES: {
-        Fill(state, /*val=*/1.0f, game_phase_place_2_more_stones);
-
-        Fill(state, /*val=*/0.0f, game_phase_place_3_stones);
-        Fill(state, /*val=*/0.0f, game_phase_swap2_decision);
-        Fill(state, /*val=*/0.0f, game_phase_stone_type_decision);
-        Fill(state, /*val=*/0.0f, game_phase_standard_gomoku);
-        break;
-    }
-    case GP_STONE_TYPE_DECISION: {
-        Fill(state, /*val=*/1.0f, game_phase_stone_type_decision);
-
-        Fill(state, /*val=*/0.0f, game_phase_place_3_stones);
-        Fill(state, /*val=*/0.0f, game_phase_swap2_decision);
-        Fill(state, /*val=*/0.0f, game_phase_place_2_more_stones);
-        Fill(state, /*val=*/0.0f, game_phase_standard_gomoku);
-        break;
-    }
-    case GP_STANDARD_GOMOKU: {
-        Fill(state, /*val=*/1.0f, game_phase_standard_gomoku);
-
-        Fill(state, /*val=*/0.0f, game_phase_place_3_stones);
-        Fill(state, /*val=*/0.0f, game_phase_swap2_decision);
-        Fill(state, /*val=*/0.0f, game_phase_place_2_more_stones);
-        Fill(state, /*val=*/0.0f, game_phase_stone_type_decision);
-        break;
-    }
-    default: {
-        assert(false);
-        break;
-    }
-    }
-}
-
-void ExtractNextMoveStoneTypeFeature(GomokuBoardState const &state,
-                                     TfLiteTensor *next_move_stone_type) {
-    switch (state.PlayerStoneType(state.CurrentPlayerSide())) {
-    case ST_NONE: {
-        Fill(state, /*val=*/0.0f, next_move_stone_type);
-        break;
-    }
-    case ST_BLACK: {
-        Fill(state, /*val=*/-1.0f, next_move_stone_type);
-        break;
-    }
-    case ST_WHITE: {
-        Fill(state, /*val=*/1.0f, next_move_stone_type);
-        break;
-    }
-    default: {
-        assert(false);
-        break;
-    }
-    }
+    uint8_t *tensor_memory = static_cast<uint8_t *>(TfLiteTensorData(next_move_stone_type));
+    *tensor_memory = state.PlayerStoneType(state.CurrentPlayerSide());
 }
 
 EvaluationResult ToEvaluationResult(GomokuBoardState const &state,
@@ -223,12 +126,8 @@ struct GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal {
     TfLiteInterpreterOptions *interpreter_options;
     TfLiteInterpreter *interpreter;
 
-    int board_features_idx;
-    int game_phase_place_3_stones_idx;
-    int game_phase_swap2_decision_idx;
-    int game_phase_place_2_more_stones_idx;
-    int game_phase_stone_type_decision_idx;
-    int game_phase_standard_gomoku_idx;
+    int board_idx;
+    int game_phase_idx;
     int next_move_stone_type_idx;
 
     int policy_idx;
@@ -248,31 +147,14 @@ GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::ModelBasedEvaluatorInter
     interpreter = TfLiteInterpreterCreate(model, interpreter_options);
     assert(interpreter != nullptr);
 
-    board_features_idx =
-        FindTensorIndexByName(/*name=*/"inference_board_features:0", /*input=*/true, interpreter);
-    assert(board_features_idx != -1);
+    board_idx = FindTensorIndexByName(/*name=*/"inference_boards:0", /*input=*/true, interpreter);
+    assert(board_idx != -1);
 
-    game_phase_place_3_stones_idx = FindTensorIndexByName(
-        /*name=*/"inference_game_phase_place_3_stones:0", /*input=*/true, interpreter);
-    assert(game_phase_place_3_stones_idx != -1);
+    game_phase_idx = FindTensorIndexByName(
+        /*name=*/"inference_game_phases:0", /*input=*/true, interpreter);
+    assert(game_phase_idx != -1);
 
-    game_phase_swap2_decision_idx = FindTensorIndexByName(
-        /*name=*/"inference_game_phase_swap2_decision:0", /*input=*/true, interpreter);
-    assert(game_phase_swap2_decision_idx != -1);
-
-    game_phase_place_2_more_stones_idx = FindTensorIndexByName(
-        /*name=*/"inference_game_phase_place_2_more_stones:0", /*input=*/true, interpreter);
-    assert(game_phase_place_2_more_stones_idx != -1);
-
-    game_phase_stone_type_decision_idx = FindTensorIndexByName(
-        /*name=*/"inference_game_phase_stone_type_decision:0", /*input=*/true, interpreter);
-    assert(game_phase_stone_type_decision_idx != -1);
-
-    game_phase_standard_gomoku_idx = FindTensorIndexByName(
-        /*name=*/"inference_game_phase_standard_gomoku:0", /*input=*/true, interpreter);
-    assert(game_phase_standard_gomoku_idx != -1);
-
-    next_move_stone_type_idx = FindTensorIndexByName(/*name=*/"inference_next_move_stone_type:0",
+    next_move_stone_type_idx = FindTensorIndexByName(/*name=*/"inference_next_move_stone_types:0",
                                                      /*input=*/true, interpreter);
     assert(next_move_stone_type_idx != -1);
 
@@ -302,26 +184,15 @@ GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const st
         return it->second;
     }
 
-    TfLiteTensor *board_features = TfLiteInterpreterGetInputTensor(interpreter, board_features_idx);
-    ExtractBoardFeatures(state, board_features);
+    TfLiteTensor *board_features = TfLiteInterpreterGetInputTensor(interpreter, board_idx);
+    WriteBoard(state, board_features);
 
-    TfLiteTensor *game_phase_place_3_stones =
-        TfLiteInterpreterGetInputTensor(interpreter, game_phase_place_3_stones_idx);
-    TfLiteTensor *game_phase_swap2_decision =
-        TfLiteInterpreterGetInputTensor(interpreter, game_phase_swap2_decision_idx);
-    TfLiteTensor *game_phase_place_2_more_stones =
-        TfLiteInterpreterGetInputTensor(interpreter, game_phase_place_2_more_stones_idx);
-    TfLiteTensor *game_phase_stone_type_decision =
-        TfLiteInterpreterGetInputTensor(interpreter, game_phase_stone_type_decision_idx);
-    TfLiteTensor *game_phase_standard_gomoku =
-        TfLiteInterpreterGetInputTensor(interpreter, game_phase_standard_gomoku_idx);
-    ExtractGamePhaseFeature(state, game_phase_place_3_stones, game_phase_swap2_decision,
-                            game_phase_place_2_more_stones, game_phase_stone_type_decision,
-                            game_phase_standard_gomoku);
+    TfLiteTensor *game_phase = TfLiteInterpreterGetInputTensor(interpreter, game_phase_idx);
+    WriteGamePhase(state, game_phase);
 
     TfLiteTensor *next_move_stone_type =
         TfLiteInterpreterGetInputTensor(interpreter, next_move_stone_type_idx);
-    ExtractNextMoveStoneTypeFeature(state, next_move_stone_type);
+    WriteNextMoveStoneType(state, next_move_stone_type);
 
     TfLiteStatus status = TfLiteInterpreterInvoke(interpreter);
     assert(status == TfLiteStatus::kTfLiteOk);
@@ -350,15 +221,10 @@ GomokuModelBasedEvaluator::EvaluatePolicy(GomokuBoardState const &state, MctNode
     return pimpl_->Fetch(state_id, state).policy;
 }
 
-float GomokuModelBasedEvaluator::ExplorationFactor() const { return 1.0f; }
+float GomokuModelBasedEvaluator::ExplorationFactor() const { return 5.0f; }
 
 unsigned GomokuModelBasedEvaluator::NumSimulations() const { return 2000; }
 
 void GomokuModelBasedEvaluator::ClearCache() { pimpl_->cache.clear(); }
-
-std::string GomokuModelBasedEvaluator::ModelName() const {
-    // TODO: Do not hardcode the model name.
-    return "gomoku_cnn_shared_tower_11_11_b2";
-}
 
 } // namespace e8
