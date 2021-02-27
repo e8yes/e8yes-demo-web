@@ -38,6 +38,8 @@ namespace e8 {
  * @param log_purpose The purpose of the generated learning material.
  * @param model_id If the heuristics uses a model, the model ID can be stored in the logs.
  * @param evaluator The heuristics that aids the Monte Carlo tree searcher.
+ * @param early_termination Terminate the self play by making the winning move if there exists one
+ * for any one of the players.
  * @param schedule_id An unused schedule slot in the game intance container for this function to
  * launch games in.
  * @param target_num_games Target number of games to generate.
@@ -47,7 +49,7 @@ namespace e8 {
  */
 void GenerateLearningMaterial(GameLogPurpose log_purpose, std::optional<ModelId> model_id,
                               std::shared_ptr<GomokuEvaluatorInterface> const &evaluator,
-                              GameInstanceContainer::ScheduleId schedule_id,
+                              bool early_termination, GameInstanceContainer::ScheduleId schedule_id,
                               unsigned target_num_games, std::string const &db_host_name,
                               std::string const &db_name, GameInstanceContainer *container);
 

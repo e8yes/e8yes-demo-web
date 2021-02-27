@@ -34,6 +34,7 @@ namespace e8 {
  *
  * @param schedule_id An unused schedule slot in the game intance container for this function to
  * launch games in.
+ * @param model_name Name of the model to iterate policy on.
  * @param num_iterations How many more iterations of learning material generation and model training
  * needs to be run.
  * @param num_games_per_iteration The number of games to run before model update.
@@ -47,7 +48,8 @@ namespace e8 {
  * @param db_name Name of the database to log the model metadata and learning material towards.
  * @param container A game instance container to for this function to launch game into.
  */
-void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id, unsigned num_iterations,
+void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
+                           std::string const &model_name, unsigned num_iterations,
                            unsigned num_games_per_iteration, bool bootstrap_from_rep_data,
                            std::string const &source_tree_root,
                            std::string const &model_storage_path, std::string const &db_host_name,

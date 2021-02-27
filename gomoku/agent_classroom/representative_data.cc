@@ -30,8 +30,8 @@ void GenerateRepresentativeData(GameInstanceContainer::ScheduleId schedule_id,
                                 std::string const &db_name, GameInstanceContainer *container) {
     auto evaluator = std::make_shared<GomokuLightRolloutEvaluator>();
     GenerateLearningMaterial(GameLogPurpose::GLP_REPRESENTATIVE_DATA, /*model_id=*/std::nullopt,
-                              evaluator, schedule_id, target_num_games, db_host_name, db_name,
-                              container);
+                             evaluator, /*early_termination=*/true, schedule_id, target_num_games,
+                             db_host_name, db_name, container);
 }
 
 } // namespace e8

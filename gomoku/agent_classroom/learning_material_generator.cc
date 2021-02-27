@@ -25,8 +25,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "gomoku/agent/heuristics/light_rollout_evaluator.h"
-#include "gomoku/agent/heuristics/model_based_evaluator.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/agent/search/mct_search.h"
 #include "gomoku/agent_classroom/learning_material_generator.h"
@@ -51,7 +49,7 @@ struct LearningMaterialGeneratorSharedData {
     LearningMaterialGeneratorSharedData(GameLogPurpose game_purpose,
                                         std::optional<ModelId> model_id, unsigned target_num_games,
                                         std::unique_ptr<MctSearcher> &&searcher,
-                                        GameLogStore *log_store);
+                                        bool early_termination, GameLogStore *log_store);
 
     struct StepInfo {
         StepInfo(GameStepNumber step_number, PlayerSide action_performer);
@@ -64,6 +62,7 @@ struct LearningMaterialGeneratorSharedData {
     std::optional<ModelId> const model_id;
     unsigned const target_num_games;
     std::unique_ptr<MctSearcher> searcher;
+    bool const early_termination;
     GameLogStore *const log_store;
 
     unsigned current_num_games;
@@ -116,9 +115,10 @@ class LearningMaterialGenerator : public GomokuPlayerInterface {
 
 LearningMaterialGeneratorSharedData::LearningMaterialGeneratorSharedData(
     GameLogPurpose game_purpose, std::optional<ModelId> model_id, unsigned target_num_games,
-    std::unique_ptr<MctSearcher> &&searcher, GameLogStore *log_store)
+    std::unique_ptr<MctSearcher> &&searcher, bool early_termination, GameLogStore *log_store)
     : game_purpose(game_purpose), model_id(model_id), target_num_games(target_num_games),
-      searcher(std::move(searcher)), log_store(log_store), current_num_games(0) {}
+      searcher(std::move(searcher)), early_termination(early_termination), log_store(log_store),
+      current_num_games(0) {}
 
 LearningMaterialGeneratorSharedData::StepInfo::StepInfo(GameStepNumber step_number,
                                                         PlayerSide action_performer)
@@ -142,9 +142,39 @@ void LearningMaterialGenerator::OnGomokuGameBegin(GomokuBoardState const & /*boa
     }
 }
 
+std::optional<std::unordered_map<GomokuActionId, float>>
+FindWinningPolicy(GomokuBoardState board_state) {
+    PlayerSide player_side = board_state.CurrentPlayerSide();
+    std::unordered_map<GomokuActionId, GomokuAction> actions = board_state.LegalActions();
+
+    for (auto [action_id, _] : actions) {
+        GameResult game_result =
+            board_state.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+        board_state.RetractAction();
+
+        if ((game_result == GameResult::GR_PLAYER_A_WIN &&
+             player_side == PlayerSide::PS_PLAYER_A) ||
+            (game_result == GameResult::GR_PLAYER_B_WIN &&
+             player_side == PlayerSide::PS_PLAYER_B)) {
+            return std::unordered_map<GomokuActionId, float>({std::make_pair(action_id, 1.0f)});
+        }
+    }
+
+    return std::nullopt;
+}
+
 GomokuActionId LearningMaterialGenerator::NextPlayerAction(GomokuBoardState const &board_state) {
-    std::unordered_map<GomokuActionId, float> policy =
-        shared_data_->searcher->SearchFrom(board_state, /*temperature=*/1.0f);
+    std::optional<std::unordered_map<GomokuActionId, float>> winning_policy;
+    if (shared_data_->early_termination) {
+        winning_policy = FindWinningPolicy(board_state);
+    }
+
+    std::unordered_map<GomokuActionId, float> policy;
+    if (winning_policy.has_value()) {
+        policy = *winning_policy;
+    } else {
+        policy = shared_data_->searcher->SearchFrom(board_state, /*temperature=*/1.0f);
+    }
 
     // Selects the action based on the policy distribution in the first 30 moves so as to explore
     // the state space. It will then always pick the best action after the first 30 moves.
@@ -240,7 +270,7 @@ bool LearningMaterialGenerator::WantAnotherGame() {
 
 void GenerateLearningMaterial(GameLogPurpose log_purpose, std::optional<ModelId> model_id,
                               std::shared_ptr<GomokuEvaluatorInterface> const &evaluator,
-                              GameInstanceContainer::ScheduleId schedule_id,
+                              bool early_termination, GameInstanceContainer::ScheduleId schedule_id,
                               unsigned target_num_games, std::string const &db_host_name,
                               std::string const &db_name, GameInstanceContainer *container) {
     PooledConnectionReservoir conns(
@@ -248,9 +278,10 @@ void GenerateLearningMaterial(GameLogPurpose log_purpose, std::optional<ModelId>
 
     GameLogStore log_store(&conns);
 
-    auto searcher = std::make_unique<MctSearcher>(evaluator, /*print_stats=*/false);
+    auto searcher = std::make_unique<MctSearcher>(evaluator, /*print_stats=*/true);
     auto generator_data = std::make_shared<LearningMaterialGeneratorSharedData>(
-        log_purpose, model_id, target_num_games, std::move(searcher), &log_store);
+        log_purpose, model_id, target_num_games, std::move(searcher), early_termination,
+        &log_store);
 
     auto generator_game = std::make_unique<GomokuGame>(
         std::make_shared<LearningMaterialGenerator>(generator_data, PlayerSide::PS_PLAYER_A),

@@ -22,6 +22,7 @@
 #include "gomoku/agent_classroom/policy_iterator.h"
 #include "gomoku/game/game_instance_container.h"
 
+static char const kModelNameFlag[] = "model_name";
 static char const kDbHostNameFlag[] = "db_host_name";
 static char const kDbNameFlag[] = "db_name";
 static char const kNumIterationsFlag[] = "num_iterations";
@@ -33,6 +34,8 @@ static char const kModelStoragePathFlag[] = "model_storage_path";
 int main(int argc, char *argv[]) {
     e8::Argv(argc, argv);
 
+    std::string model_name =
+        e8::ReadFlag(kModelNameFlag, std::string(), e8::FromString<std::string>);
     std::string db_host_name =
         e8::ReadFlag(kDbHostNameFlag, std::string(), e8::FromString<std::string>);
     std::string db_name = e8::ReadFlag(kDbNameFlag, std::string(), e8::FromString<std::string>);
@@ -47,6 +50,7 @@ int main(int argc, char *argv[]) {
     std::string model_storage_path =
         e8::ReadFlag(kModelStoragePathFlag, std::string(), e8::FromString<std::string>);
 
+    assert(!model_name.empty());
     assert(!db_host_name.empty());
     assert(!db_name.empty());
     assert(num_iterations > 0);
@@ -56,7 +60,7 @@ int main(int argc, char *argv[]) {
 
     e8::GameInstanceContainer::ScheduleId schedule_id =
         e8::AllocateGameInstanceContainerScheduleId();
-    e8::IterateFromLastPolicy(schedule_id, num_iterations, num_games_per_iteration,
+    e8::IterateFromLastPolicy(schedule_id, model_name, num_iterations, num_games_per_iteration,
                               bootstrap_from_rep_data, source_tree_root, model_storage_path,
                               db_host_name, db_name, e8::DefaultGameInstanceContainer());
 

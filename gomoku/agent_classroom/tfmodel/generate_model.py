@@ -18,11 +18,11 @@ def GenerateModel(model_name: str, model_output_path: str):
     tf.summary.trace_on(graph=True, profiler=False) 
 
     model = None
-    if model_name == "cnn_resnet_shared_tower":
+    if "cnn_resnet_shared_tower" in model_name:
         model = GomokuCnnResNetSharedTowerModel()
-    elif model_name == "cnn_shared":
+    elif "cnn_shared" in model_name:
         model = GomokuCnnSharedModel()
-    elif model_name == "cnn_shl_shared":
+    elif "cnn_shl_shared" in model_name:
         model = GomokuCnnShlSharedModel()
     else:
         raise "Unkown model_name=" + str(model_name)
