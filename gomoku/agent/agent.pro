@@ -17,8 +17,8 @@ INCLUDEPATH += $$PWD/../../
 SOURCES += \
     heuristics/evaluator.cc \
     heuristics/light_rollout_evaluator.cc \
-    heuristics/model_based_evaluator.cc \
-    heuristics/tfmodel_based_evaluator.cc \
+    heuristics/tf_zero_prior_evaluator.cc \
+    heuristics/tflite_zero_prior_evaluator.cc \
     mcts_agent_player.cc \
     search/mct_node.cc \
     search/mct_search.cc
@@ -26,8 +26,8 @@ SOURCES += \
 HEADERS += \
     heuristics/evaluator.h \
     heuristics/light_rollout_evaluator.h \
-    heuristics/model_based_evaluator.h \
-    heuristics/tfmodel_based_evaluator.h \
+    heuristics/tf_zero_prior_evaluator.h \
+    heuristics/tflite_zero_prior_evaluator.h \
     mcts_agent_player.h \
     search/mct_node.h \
     search/mct_search.h

@@ -13,7 +13,7 @@ QMAKE_LFLAGS_RELEASE += -O3 -flto -march=native
 INCLUDEPATH += $$PWD/../../../../
 
 SOURCES += \
-    test_model_based_evaluator.cc
+    test_tflite_zero_prior_evaluator.cc
 
 unix:!macx: LIBS += -L$$OUT_PWD/../../../agent/ -lgomoku_agent
 

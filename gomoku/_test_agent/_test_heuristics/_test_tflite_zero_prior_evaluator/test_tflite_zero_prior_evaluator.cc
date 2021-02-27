@@ -20,7 +20,7 @@
 #include <optional>
 
 #include "common/unit_test_util/unit_test_util.h"
-#include "gomoku/agent/heuristics/tfmodel_based_evaluator.h"
+#include "gomoku/agent/heuristics/tflite_zero_prior_evaluator.h"
 #include "gomoku/agent/search/mct_search.h"
 #include "gomoku/game/board_state.h"
 
@@ -66,8 +66,8 @@ bool EvaluationResultPythonConsistencyTest() {
     board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/2, /*y=*/7)),
                       /*cached_game_result=*/std::nullopt);
 
-    e8::GomokuTfModelBasedEvaluator evaluator(
-        /*model_path=*/"./gomoku/agent_classroom/tfmodel/gomoku_cnn_shared_i11");
+    e8::GomokuTfliteZeroPriorEvaluator evaluator(
+        /*model_path=*/"./gomoku/agent_classroom/tfmodel/gomoku_cnn_shared_i11.tflite");
 
     float reward = evaluator.EvaluateReward(board, /*state_id=*/3);
     TEST_CONDITION(std::abs(reward - 0.922) < 0.05f);

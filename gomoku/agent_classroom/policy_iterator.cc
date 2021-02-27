@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "common/time_util/time_util.h"
-#include "gomoku/agent/heuristics/tfmodel_based_evaluator.h"
+#include "gomoku/agent/heuristics/tf_zero_prior_evaluator.h"
 #include "gomoku/agent_classroom/learning_material_generator.h"
 #include "gomoku/agent_classroom/policy_iterator.h"
 #include "gomoku/game/game_instance_container.h"
@@ -119,7 +119,7 @@ void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
         std::string model_dir_name = ModelFileName(*last_model->model_path.Value());
         assert(model_dir_name == model_name);
 
-        auto evaluator = std::make_shared<GomokuTfModelBasedEvaluator>(
+        auto evaluator = std::make_shared<GomokuTfZeroPriorEvaluator>(
             *last_model->model_path.Value() + "/" + model_dir_name);
 
         std::cout << "iteration=" << i << " games_played=" << i * num_games_per_iteration

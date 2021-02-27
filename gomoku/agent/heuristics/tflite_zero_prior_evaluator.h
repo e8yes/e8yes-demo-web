@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TFMODEL_BASED_EVALUATOR_H
-#define TFMODEL_BASED_EVALUATOR_H
+#ifndef MODELBASEDEVALUATOR_H
+#define MODELBASEDEVALUATOR_H
 
 #include <cstdint>
 #include <memory>
@@ -30,16 +30,17 @@
 namespace e8 {
 
 /**
- * @brief The GomokuTfModelBasedEvaluator class This evaluator loads a tensorflow saved model and
- * runs inference over it to get the reward and policy estimation.
+ * @brief The GomokuTfliteZeroPriorEvaluator class This evaluator loads a tensorflow lite
+ * model and runs inference over it to get the reward and policy estimation. The model requires zero
+ * prior knowledge but only the current game state.
  */
-class GomokuTfModelBasedEvaluator : public GomokuEvaluatorInterface {
+class GomokuTfliteZeroPriorEvaluator : public GomokuEvaluatorInterface {
   public:
     /**
      * @brief GomokuModelBasedEvaluator Constructs an evaluator from a tensorflow lite model file.
      */
-    GomokuTfModelBasedEvaluator(std::string const &model_path);
-    ~GomokuTfModelBasedEvaluator() override;
+    GomokuTfliteZeroPriorEvaluator(std::string const &model_path);
+    ~GomokuTfliteZeroPriorEvaluator() override;
 
     float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) override;
 
@@ -53,10 +54,10 @@ class GomokuTfModelBasedEvaluator : public GomokuEvaluatorInterface {
     void ClearCache() override;
 
   private:
-    struct TfModelBasedEvaluatorInternal;
-    std::unique_ptr<TfModelBasedEvaluatorInternal> pimpl_;
+    struct ModelBasedEvaluatorInternal;
+    std::unique_ptr<ModelBasedEvaluatorInternal> pimpl_;
 };
 
 } // namespace e8
 
-#endif // TFMODEL_BASED_EVALUATOR_H
+#endif // MODELBASEDEVALUATOR_H

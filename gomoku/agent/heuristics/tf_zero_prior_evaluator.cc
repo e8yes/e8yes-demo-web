@@ -23,7 +23,7 @@
 #include <unordered_map>
 
 #include "gomoku/agent/heuristics/evaluator.h"
-#include "gomoku/agent/heuristics/tfmodel_based_evaluator.h"
+#include "gomoku/agent/heuristics/tf_zero_prior_evaluator.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 #include "third_party/tensorflow/c/c_api.h"
@@ -102,7 +102,7 @@ EvaluationResult ToEvaluationResult(GomokuBoardState const &state, TF_Tensor con
 
 } // namespace
 
-struct GomokuTfModelBasedEvaluator::TfModelBasedEvaluatorInternal {
+struct GomokuTfZeroPriorEvaluator::TfModelBasedEvaluatorInternal {
     TfModelBasedEvaluatorInternal(std::string const &model_path);
     ~TfModelBasedEvaluatorInternal();
 
@@ -119,7 +119,7 @@ struct GomokuTfModelBasedEvaluator::TfModelBasedEvaluatorInternal {
     std::unordered_map<MctNodeId, EvaluationResult> cache;
 };
 
-GomokuTfModelBasedEvaluator::TfModelBasedEvaluatorInternal::TfModelBasedEvaluatorInternal(
+GomokuTfZeroPriorEvaluator::TfModelBasedEvaluatorInternal::TfModelBasedEvaluatorInternal(
     std::string const &model_path) {
     graph = TF_NewGraph();
     graph_def = TF_NewBuffer();
@@ -135,7 +135,7 @@ GomokuTfModelBasedEvaluator::TfModelBasedEvaluatorInternal::TfModelBasedEvaluato
     TF_DeleteSessionOptions(session_options);
 }
 
-GomokuTfModelBasedEvaluator::TfModelBasedEvaluatorInternal::~TfModelBasedEvaluatorInternal() {
+GomokuTfZeroPriorEvaluator::TfModelBasedEvaluatorInternal::~TfModelBasedEvaluatorInternal() {
     TF_DeleteTensor(board_input_value);
     TF_DeleteTensor(game_phase_input_value);
     TF_DeleteTensor(next_move_stone_type_input_value);
@@ -150,7 +150,7 @@ GomokuTfModelBasedEvaluator::TfModelBasedEvaluatorInternal::~TfModelBasedEvaluat
 }
 
 EvaluationResult
-GomokuTfModelBasedEvaluator::TfModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id,
+GomokuTfZeroPriorEvaluator::TfModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id,
                                                                   GomokuBoardState const &state) {
     auto it = cache.find(state_id);
     if (it != cache.end()) {
@@ -227,26 +227,26 @@ GomokuTfModelBasedEvaluator::TfModelBasedEvaluatorInternal::Fetch(MctNodeId cons
     return evaluation;
 }
 
-GomokuTfModelBasedEvaluator::GomokuTfModelBasedEvaluator(std::string const &model_path)
+GomokuTfZeroPriorEvaluator::GomokuTfZeroPriorEvaluator(std::string const &model_path)
     : pimpl_(std::make_unique<TfModelBasedEvaluatorInternal>(model_path)) {}
 
-GomokuTfModelBasedEvaluator::~GomokuTfModelBasedEvaluator() {}
+GomokuTfZeroPriorEvaluator::~GomokuTfZeroPriorEvaluator() {}
 
-float GomokuTfModelBasedEvaluator::EvaluateReward(GomokuBoardState const &state,
+float GomokuTfZeroPriorEvaluator::EvaluateReward(GomokuBoardState const &state,
                                                   MctNodeId const state_id) {
     return pimpl_->Fetch(state_id, state).reward;
 }
 
 std::unordered_map<GomokuActionId, float>
-GomokuTfModelBasedEvaluator::EvaluatePolicy(GomokuBoardState const &state,
+GomokuTfZeroPriorEvaluator::EvaluatePolicy(GomokuBoardState const &state,
                                             MctNodeId const state_id) {
     return pimpl_->Fetch(state_id, state).policy;
 }
 
-float GomokuTfModelBasedEvaluator::ExplorationFactor() const { return 4.0f; }
+float GomokuTfZeroPriorEvaluator::ExplorationFactor() const { return 4.0f; }
 
-unsigned GomokuTfModelBasedEvaluator::NumSimulations() const { return 2048; }
+unsigned GomokuTfZeroPriorEvaluator::NumSimulations() const { return 2048; }
 
-void GomokuTfModelBasedEvaluator::ClearCache() { pimpl_->cache.clear(); }
+void GomokuTfZeroPriorEvaluator::ClearCache() { pimpl_->cache.clear(); }
 
 } // namespace e8

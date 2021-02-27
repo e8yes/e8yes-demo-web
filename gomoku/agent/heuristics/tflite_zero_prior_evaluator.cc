@@ -23,7 +23,7 @@
 #include <unordered_map>
 
 #include "gomoku/agent/heuristics/evaluator.h"
-#include "gomoku/agent/heuristics/model_based_evaluator.h"
+#include "gomoku/agent/heuristics/tflite_zero_prior_evaluator.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 #include "third_party/tensorflow/lite/c/c_api.h"
@@ -116,7 +116,7 @@ int FindTensorIndexByName(std::string const &name, bool input, TfLiteInterpreter
 
 } // namespace
 
-struct GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal {
+struct GomokuTfliteZeroPriorEvaluator::ModelBasedEvaluatorInternal {
     ModelBasedEvaluatorInternal(std::string const &model_path);
     ~ModelBasedEvaluatorInternal();
 
@@ -136,7 +136,7 @@ struct GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal {
     std::unordered_map<MctNodeId, EvaluationResult> cache;
 };
 
-GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::ModelBasedEvaluatorInternal(
+GomokuTfliteZeroPriorEvaluator::ModelBasedEvaluatorInternal::ModelBasedEvaluatorInternal(
     std::string const &model_path) {
     model = TfLiteModelCreateFromFile(model_path.c_str());
     assert(model != nullptr);
@@ -170,14 +170,14 @@ GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::ModelBasedEvaluatorInter
     assert(status == TfLiteStatus::kTfLiteOk);
 }
 
-GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::~ModelBasedEvaluatorInternal() {
+GomokuTfliteZeroPriorEvaluator::ModelBasedEvaluatorInternal::~ModelBasedEvaluatorInternal() {
     TfLiteInterpreterDelete(interpreter);
     TfLiteModelDelete(model);
     TfLiteInterpreterOptionsDelete(interpreter_options);
 }
 
 EvaluationResult
-GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id,
+GomokuTfliteZeroPriorEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id,
                                                               GomokuBoardState const &state) {
     auto it = cache.find(state_id);
     if (it != cache.end()) {
@@ -206,25 +206,25 @@ GomokuModelBasedEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const st
     return evaluation;
 }
 
-GomokuModelBasedEvaluator::GomokuModelBasedEvaluator(std::string const &model_path)
+GomokuTfliteZeroPriorEvaluator::GomokuTfliteZeroPriorEvaluator(std::string const &model_path)
     : pimpl_(std::make_unique<ModelBasedEvaluatorInternal>(model_path)) {}
 
-GomokuModelBasedEvaluator::~GomokuModelBasedEvaluator() {}
+GomokuTfliteZeroPriorEvaluator::~GomokuTfliteZeroPriorEvaluator() {}
 
-float GomokuModelBasedEvaluator::EvaluateReward(GomokuBoardState const &state,
+float GomokuTfliteZeroPriorEvaluator::EvaluateReward(GomokuBoardState const &state,
                                                 MctNodeId const state_id) {
     return pimpl_->Fetch(state_id, state).reward;
 }
 
 std::unordered_map<GomokuActionId, float>
-GomokuModelBasedEvaluator::EvaluatePolicy(GomokuBoardState const &state, MctNodeId const state_id) {
+GomokuTfliteZeroPriorEvaluator::EvaluatePolicy(GomokuBoardState const &state, MctNodeId const state_id) {
     return pimpl_->Fetch(state_id, state).policy;
 }
 
-float GomokuModelBasedEvaluator::ExplorationFactor() const { return 5.0f; }
+float GomokuTfliteZeroPriorEvaluator::ExplorationFactor() const { return 5.0f; }
 
-unsigned GomokuModelBasedEvaluator::NumSimulations() const { return 2000; }
+unsigned GomokuTfliteZeroPriorEvaluator::NumSimulations() const { return 2000; }
 
-void GomokuModelBasedEvaluator::ClearCache() { pimpl_->cache.clear(); }
+void GomokuTfliteZeroPriorEvaluator::ClearCache() { pimpl_->cache.clear(); }
 
 } // namespace e8
