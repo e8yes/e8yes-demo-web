@@ -40,10 +40,11 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/random/ -lrandom
 INCLUDEPATH += $$PWD/../../../../common/random
 DEPENDPATH += $$PWD/../../../../common/random
 
-
 unix:!macx: LIBS += -L$$OUT_PWD/../../../../common/time_util/ -ltime_util
 
 INCLUDEPATH += $$PWD/../../../../common/time_util
 DEPENDPATH += $$PWD/../../../../common/time_util
 
-LIBS += -ltensorflowlite_c_debug
+LIBS += -ltensorflow
+LIBS += -ltensorflow_framework
+LIBS += -ltensorflowlite_c
