@@ -113,9 +113,9 @@ ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
 
 /**
  * @brief ToDenseShlMap The original SHL map is stored in sparse format. This function converts the
- * map to a dense representation.
+ * map to a dense flat array in row major data layout.
  */
-std::vector<ShlComponents> ToDenseShlMap(ShlFeatures const &feature_map);
+std::vector<float> ToDenseShlMap(ShlFeatures const &feature_map);
 
 /**
  * @brief ToShlScore Computes the SHL score from the SHL components.

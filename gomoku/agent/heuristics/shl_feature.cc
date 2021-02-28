@@ -263,11 +263,14 @@ ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
     return shl_map;
 }
 
-std::vector<ShlComponents> ToDenseShlMap(ShlFeatures const &feature_map) {
-    std::vector<ShlComponents> dense_map(feature_map.width * feature_map.height);
+std::vector<float> ToDenseShlMap(ShlFeatures const &feature_map) {
+    std::vector<float> dense_map(feature_map.width * feature_map.height * 4);
 
     for (auto const &[pos, shl_components] : feature_map.normalized_top_k_map) {
-        dense_map[pos.x + pos.y * feature_map.width] = shl_components;
+        dense_map[pos.x + pos.y * feature_map.width + 0] = shl_components.primary_shl_count_black;
+        dense_map[pos.x + pos.y * feature_map.width + 1] = shl_components.secondary_shl_count_black;
+        dense_map[pos.x + pos.y * feature_map.width + 2] = shl_components.primary_shl_count_white;
+        dense_map[pos.x + pos.y * feature_map.width + 3] = shl_components.secondary_shl_count_white;
     }
 
     return dense_map;
