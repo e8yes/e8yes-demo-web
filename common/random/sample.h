@@ -19,6 +19,7 @@
 #define SAMPLE_H
 
 #include <cassert>
+#include <cmath>
 #include <unordered_map>
 #include <vector>
 
@@ -35,13 +36,21 @@ KeyType SampleFrom(std::unordered_map<KeyType, float> const &discrete_distri,
                    RandomSource *random_source) {
     double q = random_source->Draw();
     double cdf = 0;
+
+    KeyType last_key;
     for (auto const &[key, p] : discrete_distri) {
         cdf += p;
         if (q < cdf) {
             return key;
         }
+
+        last_key = key;
     }
-    assert(false);
+
+    assert(std::abs(cdf - 1.0f) < 1e-2f);
+
+    // Numerical glitch.
+    return last_key;
 }
 
 } // namespace e8
