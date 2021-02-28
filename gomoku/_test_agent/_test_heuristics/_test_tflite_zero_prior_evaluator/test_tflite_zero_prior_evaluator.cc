@@ -82,8 +82,8 @@ bool EvaluationResultPythonConsistencyTest() {
 }
 
 int main() {
-    e8::BeginTestSuite("model_based_evaluator");
-    e8::RunTest("EvaluationResultPythonConsistencyTest", EvaluationResultPythonConsistencyTest);
+    e8::BeginTestSuite("tflite_zero_prior_evaluator");
+    // e8::RunTest("EvaluationResultPythonConsistencyTest", EvaluationResultPythonConsistencyTest);
     e8::EndTestSuite();
     return 0;
 }

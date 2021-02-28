@@ -70,19 +70,19 @@ bool EvaluationResultPythonConsistencyTest() {
         /*model_path=*/"./gomoku/agent_classroom/tfmodel/gomoku_cnn_shared_i11");
 
     float reward = evaluator.EvaluateReward(board, /*state_id=*/3);
-    TEST_CONDITION(std::abs(reward - 0.922) < 0.05f);
+    TEST_CONDITION(std::abs(reward - 0.62968427f) < 1e-2f);
 
     std::unordered_map<e8::GomokuActionId, float> policy =
         evaluator.EvaluatePolicy(board, /*state_id=*/3);
     e8::GomokuActionId best_action_id = e8::BestAction(policy);
     TEST_CONDITION(best_action_id ==
-                   board.MovePositionToActionId(e8::MovePosition(/*x=*/6, /*y=*/3)));
+                   board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/5)));
 
     return true;
 }
 
 int main() {
-    e8::BeginTestSuite("model_based_evaluator");
+    e8::BeginTestSuite("tf_zero_prior_evalutor");
     e8::RunTest("EvaluationResultPythonConsistencyTest", EvaluationResultPythonConsistencyTest);
     e8::EndTestSuite();
     return 0;
