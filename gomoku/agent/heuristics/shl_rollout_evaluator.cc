@@ -124,9 +124,7 @@ GomokuShlRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
         float cdf = 0.0f;
         for (auto const &[pos, shl_components] : shl_map.normalized_top_k_map) {
             GomokuActionId action_id = state.MovePositionToActionId(pos);
-            float shl_score =
-                shl_components.primary_shl_count_black + shl_components.secondary_shl_count_black +
-                shl_components.primary_shl_count_white + shl_components.secondary_shl_count_white;
+            float shl_score = ToShlScore(shl_components);
             cdf += shl_score;
             policy[action_id] = shl_score;
         }

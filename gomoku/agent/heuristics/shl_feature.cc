@@ -196,7 +196,6 @@ void NonTopKSuppression(unsigned k, ShlFeatures *shl_map) {
         shl_map->shl_score_total += shl_scores[i].shl_score;
         shl_map->normalized_top_k_map.push_back(
             std::make_pair(shl_scores[i].position, shl_scores[i].shl_components));
-        shl_map->top_k_positions.push_back(shl_scores[i].position);
     }
 }
 
@@ -272,6 +271,11 @@ std::vector<ShlComponents> ToDenseShlMap(ShlFeatures const &feature_map) {
     }
 
     return dense_map;
+}
+
+float ToShlScore(e8::ShlComponents const &shl_components) {
+    return shl_components.primary_shl_count_black + shl_components.secondary_shl_count_black +
+           shl_components.primary_shl_count_white + shl_components.secondary_shl_count_white;
 }
 
 } // namespace e8

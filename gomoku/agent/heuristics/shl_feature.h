@@ -75,13 +75,10 @@ struct ShlFeatures {
     // Sparse 2D map storing the raw SHL components.
     std::vector<std::pair<MovePosition, ShlComponents>> raw_map;
 
-    // Sparse 2D map storing the suppressed and normalized SHL components.
+    // Sparse 2D map storing the suppressed and normalized SHL components. The ordering of the
+    // following list indicates the rank of those top K ShlComponents. This list may not get filled
+    // up in the case when there isn't K SHL candidate scores.
     std::vector<std::pair<MovePosition, ShlComponents>> normalized_top_k_map;
-
-    // The ordering of the following lists indicates the rank of those top K ShlComponents pointed
-    // to by their positions. This list may not get filled up in the case when there isn't K SHL
-    // candidate scores.
-    std::vector<MovePosition> top_k_positions;
 
     // Sum of raw component scores at those unsupressed SHL locations. The total will be
     // zero if the map is empty.
@@ -119,6 +116,14 @@ ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
  * map to a dense representation.
  */
 std::vector<ShlComponents> ToDenseShlMap(ShlFeatures const &feature_map);
+
+/**
+ * @brief ToShlScore Computes the SHL score from the SHL components.
+ *
+ * shl_score = primary_count_black + secondary_count_black + primary_count_white +
+ * secondary_count_white
+ */
+float ToShlScore(e8::ShlComponents const &shl_components);
 
 } // namespace e8
 
