@@ -15,8 +15,11 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
+    heuristics/contour.cc \
     heuristics/evaluator.cc \
     heuristics/light_rollout_evaluator.cc \
+    heuristics/shl_feature.cc \
+    heuristics/shl_rollout_evaluator.cc \
     heuristics/tf_zero_prior_evaluator.cc \
     heuristics/tflite_zero_prior_evaluator.cc \
     mcts_agent_player.cc \
@@ -24,8 +27,11 @@ SOURCES += \
     search/mct_search.cc
 
 HEADERS += \
+    heuristics/contour.h \
     heuristics/evaluator.h \
     heuristics/light_rollout_evaluator.h \
+    heuristics/shl_feature.h \
+    heuristics/shl_rollout_evaluator.h \
     heuristics/tf_zero_prior_evaluator.h \
     heuristics/tflite_zero_prior_evaluator.h \
     mcts_agent_player.h \
