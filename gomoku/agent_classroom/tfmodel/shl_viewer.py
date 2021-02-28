@@ -227,6 +227,9 @@ def NormalizeShlMap(shl_map: List[List[float]]) -> List[List[float]]:
         for x in range(11):
             total_shl_score += shl_map[y][x]
     
+    if total_shl_score == 0.0:
+        return normalized_shl_map
+
     for y in range(11):
         for x in range(11):
             normalized_shl_map[y][x] = \
@@ -396,7 +399,7 @@ def PrintBoard(board: List[List[str]],
             if board[y][x] == "-" and \
                shl_map is not None and \
                shl_map[y][x] != 0:
-                print(" {0}{1}".format(annotation, round(shl_map[y][x]/5)), end="")
+                print(" {0}{1}".format(annotation, round(shl_map[y][x]*10)), end="")
             else:
                 print(" {0}{1}".format(annotation, board[y][x]), end="")
 
@@ -405,7 +408,6 @@ def PrintBoard(board: List[List[str]],
 
 def Replay(history: List[ActionHistoryRecord]):
     i = 0
-    preview_mode = True
     while True:
         os.system("clear")
         print("total_num_moves=", len(history))
@@ -417,25 +419,17 @@ def Replay(history: List[ActionHistoryRecord]):
             board=history[i].board_, 
             next_move_stone_type=history[i].next_move_stone_type_,
             k=5)
+        normalized_shl_map = NormalizeShlMap(shl_map=shl_map)
+
         PrintBoard(
             history[i].board_,
-            shl_map,
+            normalized_shl_map,
             history[i].action_number_)
         
         PrintNonBoardActions(
             history[i].game_phase_,
             history[i].policy_,
             history[i].action_number_)
-
-        if preview_mode:
-            time.sleep(2)
-            i += 1
-
-            if i == len(history):
-                preview_mode = False
-                i = 0
-
-            continue
 
         command = input("command=")
         if command == "n":
