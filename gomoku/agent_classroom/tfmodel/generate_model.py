@@ -151,6 +151,13 @@ def GenerateModel(model_name: str, model_output_path: str):
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 
         dtype=tf.float32)
+    
+    shl_map = np.concatenate(
+        (np.reshape(a=primary_shl_count_black, newshape=(-1, 11, 11, 1)),
+         np.reshape(a=secondary_shl_count_black, newshape=(-1, 11, 11, 1)),
+         np.reshape(a=primary_shl_count_white, newshape=(-1, 11, 11, 1)),
+         np.reshape(a=secondary_shl_count_white, newshape=(-1, 11, 11, 1))),
+        axis=3)
 
     ground_truth_policy = tf.constant(
         value=[[0.007936508]*126,
@@ -168,10 +175,7 @@ def GenerateModel(model_name: str, model_output_path: str):
             boards,
             game_phases,
             next_move_stone_types,
-            primary_shl_count_black,
-            secondary_shl_count_black,
-            primary_shl_count_white,
-            secondary_shl_count_white)
+            shl_map)
     else:
         policy, value = model(
             boards,
@@ -191,10 +195,7 @@ def GenerateModel(model_name: str, model_output_path: str):
             boards,
             game_phases,
             next_move_stone_types,
-            primary_shl_count_black,
-            secondary_shl_count_black,
-            primary_shl_count_white,
-            secondary_shl_count_white,
+            shl_map,
             ground_truth_policy,
             ground_truth_value)
     else:

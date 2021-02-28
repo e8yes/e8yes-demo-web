@@ -266,27 +266,18 @@ class GomokuCnnShlSharedModel(tf.Module):
             tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32)
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE, 4], dtype=tf.float32)
         ])
     def Infer(self, 
               boards: tf.Tensor,
               game_phases: tf.Tensor,
               next_move_stone_types: tf.Tensor,
-              primary_shl_count_black: tf.Tensor,
-              secondary_shl_count_black: tf.Tensor,
-              primary_shl_count_white: tf.Tensor,
-              secondary_shl_count_white: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
+              shl_map: tf.Tensor,) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor]:
         feature_planes = self.feature_planes_builder(
             boards,
             game_phases,
             next_move_stone_types,
-            primary_shl_count_black,
-            secondary_shl_count_black,
-            primary_shl_count_white,
-            secondary_shl_count_white)
+            shl_map)
         
         conv_features = self.cnn_layers(feature_planes)
 
@@ -300,23 +291,15 @@ class GomokuCnnShlSharedModel(tf.Module):
             tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32)
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE, 4], dtype=tf.float32),
         ])
     def __call__(self,
                  boards: tf.Tensor,
                  game_phases: tf.Tensor,
                  next_move_stone_types: tf.Tensor,
-                 primary_shl_count_black: tf.Tensor,
-                 secondary_shl_count_black: tf.Tensor,
-                 primary_shl_count_white: tf.Tensor,
-                 secondary_shl_count_white: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor]:
+                 shl_map: tf.Tensor) -> Tuple[tf.Tensor, tf.Tensor]:
         policy, value, _ = self.Infer(
-            boards, game_phases, next_move_stone_types,
-            primary_shl_count_black, secondary_shl_count_black,
-            primary_shl_count_white, secondary_shl_count_white)
+            boards, game_phases, next_move_stone_types, shl_map)
         return policy, value
 
     @tf.function
@@ -330,10 +313,7 @@ class GomokuCnnShlSharedModel(tf.Module):
             tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
             tf.TensorSpec(shape=[None], dtype=tf.uint8),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
-            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE], dtype=tf.float32),
+            tf.TensorSpec(shape=[None, INPUT_SIZE, INPUT_SIZE, 4], dtype=tf.float32),
             tf.TensorSpec(shape=[None, INPUT_SIZE*INPUT_SIZE + 5], dtype=tf.float32),
             tf.TensorSpec(shape=[None], dtype=tf.float32)
         ])
@@ -341,19 +321,14 @@ class GomokuCnnShlSharedModel(tf.Module):
              boards: tf.Tensor,
              game_phases: tf.Tensor,
              next_move_stone_types: tf.Tensor,
-             primary_shl_count_black: tf.Tensor,
-             secondary_shl_count_black: tf.Tensor,
-             primary_shl_count_white: tf.Tensor,
-             secondary_shl_count_white: tf.Tensor,
+             shl_map: tf.Tensor,
              policies: tf.Tensor,
              values: tf.Tensor) -> Tuple[tf.Tensor,
                                          tf.Tensor,
                                          tf.Tensor,
                                          tf.Tensor]:
         _, pred_values, policy_logits = self.Infer(
-            boards, game_phases, next_move_stone_types,
-            primary_shl_count_black, secondary_shl_count_black,
-            primary_shl_count_white, secondary_shl_count_white)
+            boards, game_phases, next_move_stone_types, shl_map)
 
         # Policy loss.
         policy_losses = tf.nn.softmax_cross_entropy_with_logits(
