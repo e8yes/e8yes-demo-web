@@ -267,10 +267,11 @@ std::vector<float> ToDenseShlMap(ShlFeatures const &feature_map) {
     std::vector<float> dense_map(feature_map.width * feature_map.height * 4);
 
     for (auto const &[pos, shl_components] : feature_map.normalized_top_k_map) {
-        dense_map[pos.x + pos.y * feature_map.width + 0] = shl_components.primary_shl_count_black;
-        dense_map[pos.x + pos.y * feature_map.width + 1] = shl_components.secondary_shl_count_black;
-        dense_map[pos.x + pos.y * feature_map.width + 2] = shl_components.primary_shl_count_white;
-        dense_map[pos.x + pos.y * feature_map.width + 3] = shl_components.secondary_shl_count_white;
+        unsigned dst = (pos.x + pos.y * feature_map.width) * 4;
+        dense_map[dst + 0] = shl_components.primary_shl_count_black;
+        dense_map[dst + 1] = shl_components.secondary_shl_count_black;
+        dense_map[dst + 2] = shl_components.primary_shl_count_white;
+        dense_map[dst + 3] = shl_components.secondary_shl_count_white;
     }
 
     return dense_map;
