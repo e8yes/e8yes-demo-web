@@ -19,6 +19,8 @@
 #define CONTOUR_H
 
 #include <cstdint>
+#include <unordered_set>
+#include <vector>
 
 #include "gomoku/game/board_state.h"
 
@@ -35,6 +37,37 @@ bool IsContour(int8_t x, int8_t y, GomokuBoardState const &board);
  * A double contour is the coutour of the contour when it is filled with stones.
  */
 bool IsDoubleContour(int8_t x, int8_t y, GomokuBoardState const &board);
+
+/**
+ * @brief The ContourBuilder class A data structure that helps construct arbitrary orders of contour
+ * efficient.
+ */
+class ContourBuilder {
+  public:
+    /**
+     * @brief ContourBuilder Construct the initial contour from the specified board state.
+     *
+     * @param order See the definition of contour order in the above functions.
+     */
+    ContourBuilder(GomokuBoardState const &board, int8_t order);
+
+    /**
+     * @brief AddStone Incrementally updates the contour after a new stone is added to the board.
+     */
+    void AddStone(MovePosition const &stone_pos);
+
+    /**
+     * @brief Contour Returns the current contour.
+     */
+    std::unordered_set<MovePosition> const &Contour() const;
+
+  private:
+    std::unordered_set<MovePosition> contour_;
+    std::vector<bool> blacklist_;
+    int8_t const width_;
+    int8_t const height_;
+    int8_t const order_;
+};
 
 } // namespace e8
 

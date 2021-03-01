@@ -17,6 +17,9 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <optional>
+#include <unordered_set>
+#include <vector>
 
 #include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/game/board_state.h"
@@ -29,18 +32,14 @@ template <int8_t order> bool IsAnyOrderContour(int8_t x, int8_t y, GomokuBoardSt
         return false;
     }
 
-    int8_t min_delta_x = std::max(0, x - order) - x;
-    int8_t max_delta_x = std::min(board.Width() - 1, x + order) - x;
+    int8_t min_x = std::max(0, x - order);
+    int8_t max_x = std::min(board.Width() - 1, x + order);
 
-    int8_t min_delta_y = std::max(0, y - order) - y;
-    int8_t max_delta_y = std::min(board.Height() - 1, y + order) - y;
+    int8_t min_y = std::max(0, y - order);
+    int8_t max_y = std::min(board.Height() - 1, y + order);
 
-    for (int8_t delta_y = min_delta_y; delta_y <= max_delta_y; ++delta_y) {
-        int8_t shifted_y = y + delta_y;
-
-        for (int8_t delta_x = min_delta_x; delta_x <= max_delta_x; ++delta_x) {
-            int8_t shifted_x = x + delta_x;
-
+    for (int8_t shifted_y = min_y; shifted_y <= max_y; ++shifted_y) {
+        for (int8_t shifted_x = min_x; shifted_x <= max_x; ++shifted_x) {
             if (*board.ChessPieceStateAt(MovePosition(shifted_x, shifted_y)) !=
                 StoneType::ST_NONE) {
                 return true;
@@ -60,5 +59,39 @@ bool IsContour(int8_t x, int8_t y, GomokuBoardState const &board) {
 bool IsDoubleContour(int8_t x, int8_t y, GomokuBoardState const &board) {
     return IsAnyOrderContour</*order=*/2>(x, y, board);
 }
+
+ContourBuilder::ContourBuilder(GomokuBoardState const &board, int8_t order)
+    : blacklist_(board.Width() * board.Height()), width_(board.Width()), height_(board.Height()),
+      order_(order) {
+    for (GomokuActionRecord const &action_record : board.History()) {
+        std::optional<MovePosition> pos = action_record.action.second.stone_pos;
+
+        if (pos.has_value()) {
+            this->AddStone(*pos);
+        }
+    }
+}
+
+void ContourBuilder::AddStone(MovePosition const &stone_pos) {
+    contour_.erase(stone_pos);
+    blacklist_[stone_pos.x + stone_pos.y * width_] = true;
+
+    int8_t min_x = std::max(0, stone_pos.x - order_);
+    int8_t max_x = std::min(width_ - 1, stone_pos.x + order_);
+
+    int8_t min_y = std::max(0, stone_pos.y - order_);
+    int8_t max_y = std::min(height_ - 1, stone_pos.y + order_);
+
+    for (int8_t shifted_y = min_y; shifted_y <= max_y; ++shifted_y) {
+        for (int8_t shifted_x = min_x; shifted_x <= max_x; ++shifted_x) {
+            if (!blacklist_[shifted_x + shifted_y * width_]) {
+                blacklist_[shifted_x + shifted_y * width_] = true;
+                contour_.insert(MovePosition(shifted_x, shifted_y));
+            }
+        }
+    }
+}
+
+std::unordered_set<MovePosition> const &ContourBuilder::Contour() const { return contour_; }
 
 } // namespace e8
