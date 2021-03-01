@@ -76,6 +76,7 @@ class BatchGenerator:
                                                      np.ndarray,
                                                      np.ndarray,
                                                      np.ndarray,
+                                                     np.ndarray,
                                                      np.ndarray]:
         cur = self.conn_.cursor()
         cur.execute("SELECT gga.* FROM {0} AS gga "
@@ -93,6 +94,7 @@ class BatchGenerator:
         game_phases,\
         next_move_stone_types,\
         shl_maps,\
+        top_shl_features,\
         policies,\
         values = DeserializeRows(
             rows=rows, board_size=self.board_size_)
@@ -101,6 +103,7 @@ class BatchGenerator:
                game_phases,\
                next_move_stone_types,\
                shl_maps,\
+               top_shl_features,\
                policies,\
                values
 
@@ -121,6 +124,7 @@ if __name__ == "__main__":
     game_phases, \
     next_move_stone_types, \
     shl_maps, \
+    top_shl_features,\
     policies, \
     values= \
         gen.NextBatch(batch_size=1,
@@ -132,9 +136,11 @@ if __name__ == "__main__":
 
         print("=================entry", i + 1, "====================")
         print("board=\n", boards[i, :])
-        print("shl_score=\n", np.sum(a=shl_maps[i, :, :, :], axis=2))
         print("game_phases=", game_phases[i])
         print("next_move_stone_types=", next_move_stone_types[i])
+        print("shl_score=\n", np.sum(a=shl_maps[i, :, :, :], axis=2))
+        print("top_shl_features=\n", top_shl_features[i])
+        top_shl_features
         print("policies=", policies[i])
         action_number = np.argmax(policies[i])
         x = action_number % 11

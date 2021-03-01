@@ -36,6 +36,7 @@ def DeserializeRows(rows: List[any],
              np.ndarray,
              np.ndarray,
              np.ndarray,
+             np.ndarray,
              np.ndarray]:
     actual_batch_size = len(rows)
 
@@ -47,6 +48,8 @@ def DeserializeRows(rows: List[any],
         shape=(actual_batch_size), dtype=np.uint8)
     shl_maps = np.zeros(
         shape=(actual_batch_size, board_size, board_size, 4), dtype=np.float32)
+    top_shl_features = np.zeros(
+        shape=(actual_batch_size, 40), dtype=np.float32)
 
     policies = np.zeros(
         shape=(actual_batch_size, board_size*board_size + 5), dtype=np.float32)
@@ -61,13 +64,15 @@ def DeserializeRows(rows: List[any],
 
         shl_maps[i, :, :, :] = DeserializeShlMap(
             flat_shl_map=rows[i][7], board_size=board_size)
+        top_shl_features[i, :] = np.array(object=rows[i][8])
         
-        policies[i, :] = np.array(rows[i][8])
-        values[i] = float(rows[i][9])
+        policies[i, :] = np.array(object=rows[i][9])
+        values[i] = float(rows[i][10])
     
     return boards,\
            game_phases,\
            next_move_stone_types,\
            shl_maps,\
+           top_shl_features,\
            policies,\
            values

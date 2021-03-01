@@ -14,6 +14,7 @@ def RotationTransform(board: np.ndarray,
 
 def SwitchStoneType(board: np.ndarray,
                     shl_map: np.ndarray,
+                    top_shl_features: np.ndarray,
                     next_move_stone_type: np.ndarray,
                     policy: np.ndarray,
                     board_size: int):
@@ -29,6 +30,13 @@ def SwitchStoneType(board: np.ndarray,
     new_shl_map[:,:,:2], new_shl_map[:,:,2:] = \
         shl_map[:,:,2:], shl_map[:,:,:2]
 
+    new_top_shl_features = np.copy(a=top_shl_features)
+    for i in range(10):
+        new_top_shl_features[4*i + 0] = top_shl_features[i*4 + 2]
+        new_top_shl_features[4*i + 1] = top_shl_features[i*4 + 3]
+        new_top_shl_features[4*i + 2] = top_shl_features[i*4 + 0]
+        new_top_shl_features[4*i + 3] = top_shl_features[i*4 + 1]
+
     new_policy = np.copy(a=policy)
     new_policy[board_size*board_size + 0], \
     new_policy[board_size*board_size + 1] = \
@@ -42,6 +50,7 @@ def SwitchStoneType(board: np.ndarray,
 
     return new_board, \
            new_shl_map, \
+           new_top_shl_features, \
            new_next_move_stone_type, \
            new_policy
 
@@ -49,8 +58,8 @@ def TransformFeatures(board: np.ndarray,
                       game_phase: np.ndarray,
                       next_move_stone_type: np.ndarray,
                       shl_map: np.ndarray,
+                      top_shl_features: np.ndarray,
                       policy: np.ndarray,
-                      value: np.ndarray,
                       transform_type: int):
     if transform_type is None:
         transform_type = np.random.choice(
@@ -97,10 +106,12 @@ def TransformFeatures(board: np.ndarray,
     elif 8 <= transform_type <= 11:
         board,\
         shl_map,\
+        top_shl_features, \
         next_move_stone_type,\
         policy = SwitchStoneType(
             board=board,
             shl_map=shl_map,
+            top_shl_features=top_shl_features,
             next_move_stone_type=next_move_stone_type,
             policy=policy,
             board_size=board_size)
@@ -123,10 +134,12 @@ def TransformFeatures(board: np.ndarray,
     elif 12 <= transform_type <= 15:
         board,\
         shl_map,\
+        top_shl_features,\
         next_move_stone_type,\
         policy = SwitchStoneType(
             board=board,
             shl_map=shl_map,
+            top_shl_features=top_shl_features,
             next_move_stone_type=next_move_stone_type,
             policy=policy,
             board_size=board_size)
@@ -155,8 +168,8 @@ def TransformFeatures(board: np.ndarray,
            game_phase,\
            next_move_stone_type,\
            shl_map,\
-           policy,\
-           value
+           top_shl_features,\
+           policy
 
 if __name__ == "__main__":
     board = np.array(
@@ -173,27 +186,27 @@ if __name__ == "__main__":
                 [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0]],
                 [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]],
         dtype=np.float32)
+    top_shl_features = np.tile(A=[1, 0.5, 0, 0], reps=(10))
     policy = np.array(
         object=[0, 0, 0,
                 0.33, 0, 0,
                 0, 0, 0,
                 0.33, 0, 0, 0.33, 0],
         dtype=np.float32)
-    value = np.array(object=[-1], dtype=np.float32)
 
     for transform_type in range(16):
         board_t,\
         game_phase_t,\
         next_move_stone_type_t,\
         shl_map_t,\
-        policy_t,\
-        value_t = TransformFeatures(
+        top_shl_features_t,\
+        policy_t = TransformFeatures(
             board=board,
             game_phase=game_phase,
             next_move_stone_type=next_move_stone_type,
             shl_map=shl_map,
+            top_shl_features=top_shl_features,
             policy=policy,
-            value=value,
             transform_type=transform_type)
 
         print("=====================================")
@@ -202,6 +215,6 @@ if __name__ == "__main__":
         print("game_phase=\n", game_phase_t)
         print("next_move_stone_type=\n", next_move_stone_type_t)
         print("shl_score=\n", np.sum(a=shl_map_t, axis=2))
+        print("top_shl_features=\n", top_shl_features_t)
         print("policy=\n", policy_t)
-        print("value=\n", value_t)
         print("=====================================")
