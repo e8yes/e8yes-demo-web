@@ -19,6 +19,7 @@
 #define HEURISTICS_H
 
 #include <cstdint>
+#include <optional>
 #include <unordered_map>
 
 #include "gomoku/agent/search/mct_node.h"
@@ -39,18 +40,26 @@ class GomokuEvaluatorInterface {
      * @brief EvaluateReward Estimate the Q value in the perspective of the current player at the
      * given state.
      *
+     * @param parent_state_id ID of the parent state. This ID is supplied to this function just to
+     * save computation by implementing incremental operations. The function should not depend on
+     * this field for correct resuult.
      * @param state_id Different states are guaranteed to have different state_id.
      */
-    virtual float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) = 0;
+    virtual float EvaluateReward(GomokuBoardState const &state,
+                                 std::optional<MctNodeId> parent_state_id, MctNodeId state_id) = 0;
 
     /**
      * @brief EvaluatePolicy Estimate the optimal policy for the set of legal actions in the
      * perspective of the current player at the given state.
      *
+     * @param parent_state_id ID of the parent state. This ID is supplied to this function just to
+     * save computation by implementing incremental operations. The function should not depend on
+     * this field for correct resuult.
      * @param state_id Different states are guaranteed to have different state_id.
      */
-    virtual std::unordered_map<GomokuActionId, float> EvaluatePolicy(GomokuBoardState const &state,
-                                                                     MctNodeId const state_id) = 0;
+    virtual std::unordered_map<GomokuActionId, float>
+    EvaluatePolicy(GomokuBoardState const &state, std::optional<MctNodeId> parent_state_id,
+                   MctNodeId state_id) = 0;
 
     /**
      * @brief ExplorationFactor How exaggerated the upper confidence bound should it be for this

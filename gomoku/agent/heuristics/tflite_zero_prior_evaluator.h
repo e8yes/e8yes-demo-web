@@ -20,6 +20,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 
@@ -42,10 +43,12 @@ class GomokuTfliteZeroPriorEvaluator : public GomokuEvaluatorInterface {
     GomokuTfliteZeroPriorEvaluator(std::string const &model_path);
     ~GomokuTfliteZeroPriorEvaluator() override;
 
-    float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) override;
+    float EvaluateReward(GomokuBoardState const &state, std::optional<MctNodeId> parent_state_id,
+                         MctNodeId state_id) override;
 
-    std::unordered_map<GomokuActionId, float> EvaluatePolicy(GomokuBoardState const &state,
-                                                             MctNodeId const state_id) override;
+    std::unordered_map<GomokuActionId, float>
+    EvaluatePolicy(GomokuBoardState const &state, std::optional<MctNodeId> parent_state_id,
+                   MctNodeId state_id) override;
 
     float ExplorationFactor() const override;
 

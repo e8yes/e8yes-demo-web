@@ -18,6 +18,7 @@
 #include <cassert>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <thread>
 #include <unordered_map>
@@ -178,7 +179,7 @@ GomokuTfliteZeroPriorEvaluator::ModelBasedEvaluatorInternal::~ModelBasedEvaluato
 
 EvaluationResult
 GomokuTfliteZeroPriorEvaluator::ModelBasedEvaluatorInternal::Fetch(MctNodeId const state_id,
-                                                              GomokuBoardState const &state) {
+                                                                   GomokuBoardState const &state) {
     auto it = cache.find(state_id);
     if (it != cache.end()) {
         return it->second;
@@ -212,12 +213,15 @@ GomokuTfliteZeroPriorEvaluator::GomokuTfliteZeroPriorEvaluator(std::string const
 GomokuTfliteZeroPriorEvaluator::~GomokuTfliteZeroPriorEvaluator() {}
 
 float GomokuTfliteZeroPriorEvaluator::EvaluateReward(GomokuBoardState const &state,
-                                                MctNodeId const state_id) {
+                                                     std::optional<MctNodeId> /*parent_state_id*/,
+                                                     MctNodeId state_id) {
     return pimpl_->Fetch(state_id, state).reward;
 }
 
 std::unordered_map<GomokuActionId, float>
-GomokuTfliteZeroPriorEvaluator::EvaluatePolicy(GomokuBoardState const &state, MctNodeId const state_id) {
+GomokuTfliteZeroPriorEvaluator::EvaluatePolicy(GomokuBoardState const &state,
+                                               std::optional<MctNodeId> /*parent_state_id*/,
+                                               MctNodeId state_id) {
     return pimpl_->Fetch(state_id, state).policy;
 }
 

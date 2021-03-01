@@ -19,6 +19,7 @@
 #define SHL_ROLLOUT_EVALUATOR_H
 
 #include <memory>
+#include <optional>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -39,10 +40,12 @@ class GomokuShlRolloutEvaluator : public GomokuEvaluatorInterface {
     GomokuShlRolloutEvaluator();
     ~GomokuShlRolloutEvaluator();
 
-    float EvaluateReward(GomokuBoardState const &state, MctNodeId const state_id) override;
+    float EvaluateReward(GomokuBoardState const &state, std::optional<MctNodeId> parent_state_id,
+                         MctNodeId state_id) override;
 
-    std::unordered_map<GomokuActionId, float> EvaluatePolicy(GomokuBoardState const &state,
-                                                             MctNodeId const state_id) override;
+    std::unordered_map<GomokuActionId, float>
+    EvaluatePolicy(GomokuBoardState const &state, std::optional<MctNodeId> parent_state_id,
+                   MctNodeId state_id) override;
 
     float ExplorationFactor() const override;
 

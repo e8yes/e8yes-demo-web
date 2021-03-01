@@ -19,6 +19,7 @@
 #include <cassert>
 #include <cmath>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -284,7 +285,8 @@ GomokuLightRolloutEvaluator::GomokuLightRolloutEvaluator()
 GomokuLightRolloutEvaluator::~GomokuLightRolloutEvaluator() {}
 
 float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
-                                                  MctNodeId const state_id) {
+                                                  std::optional<MctNodeId> /*parent_state_id*/,
+                                                  MctNodeId state_id) {
     float q_value;
 
     switch (state.CurrentGamePhase()) {
@@ -341,7 +343,8 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
 
 std::unordered_map<GomokuActionId, float>
 GomokuLightRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
-                                            MctNodeId const state_id) {
+                                            std::optional<MctNodeId> /*parent_state_id*/,
+                                            MctNodeId state_id) {
     std::unordered_map<GomokuActionId, float> policy;
 
     switch (state.CurrentGamePhase()) {

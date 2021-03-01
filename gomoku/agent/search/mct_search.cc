@@ -84,8 +84,8 @@ void BackPropagate(EvaluationResult const &eval, float const exploration_factor,
     (*propagation_path)[0]->num_bandit_pulls += 1;
 }
 
-EvaluationResult Evaluate(GomokuBoardState const &state, MctNode const &state_mct_node,
-                          GomokuEvaluatorInterface *evaluator) {
+EvaluationResult Evaluate(GomokuBoardState const &state, MctNode const *parent_mct_node,
+                          MctNode const &state_mct_node, GomokuEvaluatorInterface *evaluator) {
 
     GameResult game_result = state.CurrentGameResult();
 
@@ -108,7 +108,13 @@ EvaluationResult Evaluate(GomokuBoardState const &state, MctNode const &state_mc
         break;
     }
     case GR_UNDETERMINED: {
-        float est_reward = evaluator->EvaluateReward(state, state_mct_node.id);
+        float est_reward;
+        if (parent_mct_node != nullptr) {
+            est_reward = evaluator->EvaluateReward(state, parent_mct_node->id, state_mct_node.id);
+        } else {
+            est_reward = evaluator->EvaluateReward(state, /*parent_state_id=*/std::nullopt,
+                                                   state_mct_node.id);
+        }
 
         assert(est_reward < 1.05f && est_reward > -1.05f);
         assert(!std::isinf(est_reward));
@@ -123,11 +129,17 @@ EvaluationResult Evaluate(GomokuBoardState const &state, MctNode const &state_mc
     return result;
 }
 
-void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *evaluator) {
+void Expand(MctNode *parent, MctNode *node, GomokuBoardState *state,
+            GomokuEvaluatorInterface *evaluator) {
     std::unordered_map<GomokuActionId, GomokuAction> actions = state->LegalActions();
 
-    std::unordered_map<GomokuActionId, float> heuristics_policy =
-        evaluator->EvaluatePolicy(*state, root->id);
+    std::unordered_map<GomokuActionId, float> heuristics_policy;
+    if (parent != nullptr) {
+        heuristics_policy = evaluator->EvaluatePolicy(*state, parent->id, node->id);
+    } else {
+        heuristics_policy =
+            evaluator->EvaluatePolicy(*state, /*parent_state_id=*/std::nullopt, node->id);
+    }
 
     // Expand the node and assign the heuristics policy as the bandits' prior.
     PlayerSide const action_performer = state->CurrentPlayerSide();
@@ -145,31 +157,32 @@ void Expand(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *ev
         MctNodeId const node_id = AllocateMctNodeId();
         MctNode child(node_id, action_id, action_performer, game_result, policy_weight);
         child.upper_confidence_bound =
-            UpperConfidenceBound(evaluator->ExplorationFactor(), *root, child);
-        root->children.push(child);
+            UpperConfidenceBound(evaluator->ExplorationFactor(), *node, child);
+        node->children.push(child);
     }
 }
 
-void SelectFrom(MctNode *root, GomokuBoardState *state, GomokuEvaluatorInterface *evaluator,
+void SelectFrom(MctNode *parent, MctNode *node, GomokuBoardState *state,
+                GomokuEvaluatorInterface *evaluator,
                 std::vector<MutablePriorityQueue<MctNode>::iterator> *propagation_path) {
     if (state->CurrentGameResult() != GR_UNDETERMINED) {
-        EvaluationResult eval = Evaluate(*state, *root, evaluator);
+        EvaluationResult eval = Evaluate(*state, parent, *node, evaluator);
         BackPropagate(eval, evaluator->ExplorationFactor(), propagation_path);
         return;
     }
 
-    if (root->children.empty()) {
-        Expand(root, state, evaluator);
-        EvaluationResult eval = Evaluate(*state, *root, evaluator);
+    if (node->children.empty()) {
+        Expand(parent, node, state, evaluator);
+        EvaluationResult eval = Evaluate(*state, parent, *node, evaluator);
         BackPropagate(eval, evaluator->ExplorationFactor(), propagation_path);
         return;
     }
 
-    auto candidate_it = root->children.front();
+    auto candidate_it = node->children.front();
     state->ApplyAction(*candidate_it->arrived_thru_action_id, candidate_it->game_result);
     propagation_path->push_back(candidate_it);
 
-    SelectFrom(&(*candidate_it), state, evaluator, propagation_path);
+    SelectFrom(node, &(*candidate_it), state, evaluator, propagation_path);
 
     propagation_path->pop_back();
     state->RetractAction();
@@ -264,7 +277,7 @@ std::unordered_map<GomokuActionId, float> MctSearcher::SearchFrom(GomokuBoardSta
 
     std::vector<MutablePriorityQueue<MctNode>::iterator> propagation_path{*root};
     for (unsigned i = 0; i < evaluator_->NumSimulations(); ++i) {
-        SelectFrom(&(**root), &state, evaluator_.get(), &propagation_path);
+        SelectFrom(/*parent=*/nullptr, &(**root), &state, evaluator_.get(), &propagation_path);
     }
 
     if (print_stats_) {
@@ -279,7 +292,7 @@ void MctSearcher::SelectAction(GomokuBoardState state, GomokuActionId const acti
     assert(state.LegalActions().find(action_id) != state.LegalActions().end());
 
     if (current_node_it_.value()->children.empty()) {
-        Expand(&(*current_node_it_.value()), &state, evaluator_.get());
+        Expand(/*parent=*/nullptr, &(*current_node_it_.value()), &state, evaluator_.get());
     }
 
     MutablePriorityQueue<MctNode>::iterator next_node;

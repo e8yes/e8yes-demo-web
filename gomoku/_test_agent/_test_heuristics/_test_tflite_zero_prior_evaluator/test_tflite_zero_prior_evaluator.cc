@@ -69,11 +69,12 @@ bool EvaluationResultPythonConsistencyTest() {
     e8::GomokuTfliteZeroPriorEvaluator evaluator(
         /*model_path=*/"./gomoku/agent_classroom/tfmodel/gomoku_cnn_shared_i11.tflite");
 
-    float reward = evaluator.EvaluateReward(board, /*state_id=*/3);
+    float reward =
+        evaluator.EvaluateReward(board, /*parent_state_id*/ std::nullopt, /*state_id=*/3);
     TEST_CONDITION(std::abs(reward - 0.922) < 0.05f);
 
     std::unordered_map<e8::GomokuActionId, float> policy =
-        evaluator.EvaluatePolicy(board, /*state_id=*/3);
+        evaluator.EvaluatePolicy(board, /*parent_state_id*/ std::nullopt, /*state_id=*/3);
     e8::GomokuActionId best_action_id = e8::BestAction(policy);
     TEST_CONDITION(best_action_id ==
                    board.MovePositionToActionId(e8::MovePosition(/*x=*/6, /*y=*/3)));

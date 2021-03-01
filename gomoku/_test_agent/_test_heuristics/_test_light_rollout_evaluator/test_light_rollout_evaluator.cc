@@ -105,7 +105,8 @@ bool RewardEvaluationTest() {
                       /*cached_game_result=*/std::nullopt);
 
     e8::GomokuLightRolloutEvaluator evaluator;
-    float player_b_reward = evaluator.EvaluateReward(board, /*state_id=*/3);
+    float player_b_reward =
+        evaluator.EvaluateReward(board, /*parent_state_id=*/std::nullopt, /*state_id=*/3);
     TEST_CONDITION(player_b_reward < 0);
 
     // - - - - - - o
@@ -118,11 +119,13 @@ bool RewardEvaluationTest() {
     board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/5, /*y=*/1)),
                       /*cached_game_result=*/std::nullopt);
 
-    float player_a_reward = evaluator.EvaluateReward(board, /*state_id=*/4);
+    float player_a_reward =
+        evaluator.EvaluateReward(board, /*parent_state_id=*/std::nullopt, /*state_id=*/4);
     TEST_CONDITION(player_a_reward > 0);
 
     // Using the cache should give the same result.
-    float player_a_reward_cached = evaluator.EvaluateReward(board, /*state_id=*/4);
+    float player_a_reward_cached =
+        evaluator.EvaluateReward(board, /*parent_state_id=*/std::nullopt, /*state_id=*/4);
     TEST_CONDITION(player_a_reward_cached == player_a_reward);
 
     return true;
@@ -153,7 +156,7 @@ bool PolicyEvaluationTest() {
 
     e8::GomokuLightRolloutEvaluator evaluator;
     std::unordered_map<e8::GomokuActionId, float> policy =
-        evaluator.EvaluatePolicy(board, /*state_id=*/2);
+        evaluator.EvaluatePolicy(board, /*parent_state_id=*/std::nullopt, /*state_id=*/2);
 
     // Contour
     // - - - - - ? o

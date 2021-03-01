@@ -54,7 +54,8 @@ GomokuShlRolloutEvaluator::GomokuShlRolloutEvaluator()
 GomokuShlRolloutEvaluator::~GomokuShlRolloutEvaluator() {}
 
 float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
-                                                MctNodeId const /*state_id*/) {
+                                                std::optional<MctNodeId> /*parent_state_id*/,
+                                                MctNodeId /*state_id*/) {
     PlayerSide evaluate_for_player = state.CurrentPlayerSide();
     float acc_reward = 0.0f;
 
@@ -64,7 +65,7 @@ float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
         GameResult game_result = rollout_state.CurrentGameResult();
         do {
             std::unordered_map<GomokuActionId, float> policy =
-                this->EvaluatePolicy(rollout_state, /*state_id=*/-1);
+                this->EvaluatePolicy(rollout_state, /*parent_state_id=*/-1, /*state_id=*/-1);
             GomokuActionId action_id = SampleAction(policy, &pimpl_->random_source);
             game_result = rollout_state.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
         } while (game_result == GameResult::GR_UNDETERMINED);
@@ -101,6 +102,7 @@ float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
 
 std::unordered_map<GomokuActionId, float>
 GomokuShlRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
+                                          std::optional<MctNodeId> /*parent_state_id*/,
                                           MctNodeId const /*state_id*/) {
     std::unordered_map<GomokuActionId, float> policy;
 
