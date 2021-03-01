@@ -20,10 +20,10 @@ def GenerateModel(model_name: str, model_output_path: str):
     model = None
     if "cnn_resnet_shared_tower" in model_name:
         model = GomokuCnnResNetSharedTowerModel()
-    elif "cnn_shared" in model_name:
-        model = GomokuCnnSharedModel()
     elif "cnn_shared_with_shl" in model_name:
         model = GomokuCnnShlSharedModel()
+    elif "cnn_shared" in model_name:
+        model = GomokuCnnSharedModel()
     else:
         raise "Unkown model_name=" + str(model_name)
 
