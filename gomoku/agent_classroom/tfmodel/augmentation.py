@@ -171,6 +171,45 @@ def TransformFeatures(board: np.ndarray,
            top_shl_features,\
            policy
 
+def AugmentData(boards: np.ndarray,
+                game_phases: np.ndarray,
+                next_move_stone_types: np.ndarray,
+                shl_maps: np.ndarray,
+                top_shl_features: np.ndarray,
+                policies: np.ndarray,
+                values: np.ndarray,
+                percentage: float):
+    batch_size = boards.shape[0]
+    augmentation_size = int(batch_size*percentage)
+
+    candids = np.arange(start=0, stop=batch_size)
+    np.random.shuffle(candids)
+    candids = candids[:augmentation_size]
+
+    for candid in candids:
+        boards[candid, :, :],\
+        game_phases[candid],\
+        next_move_stone_types[candid],\
+        shl_maps[candid, :, :, :],\
+        top_shl_features[candid, :],\
+        policies[candid, :] = \
+            TransformFeatures(
+                board=boards[candid, :, :],
+                game_phase=game_phases[candid],
+                next_move_stone_type=next_move_stone_types[candid],
+                shl_map=shl_maps[candid, :, :, :],
+                top_shl_features=top_shl_features[candid, :],
+                policy=policies[candid, :],
+                transform_type=None)
+    
+    return boards,\
+           game_phases,\
+           next_move_stone_types,\
+           shl_maps,\
+           top_shl_features,\
+           policies,\
+           values
+
 if __name__ == "__main__":
     board = np.array(
         object=[[0, 0, 1],
