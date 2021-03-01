@@ -6,14 +6,14 @@ from deserializer import DeserializeRows
 
 class BatchGenerator:
     def __init__(self,
-                 input_size: int,
+                 board_size: int,
                  num_data_entries: int,
                  db_name: str,
                  db_host: str,
                  db_port: int,
                  db_user: str,
                  db_pass: str):
-        self.input_size_ = input_size
+        self.board_size_ = board_size
         self.conn_ = pg.connect(
             database=db_name,
             host=db_host,
@@ -95,7 +95,7 @@ class BatchGenerator:
         shl_maps,\
         policies,\
         values = DeserializeRows(
-            rows=rows, input_size=self.input_size_)
+            rows=rows, board_size=self.board_size_)
 
         return boards,\
                game_phases,\
@@ -106,7 +106,7 @@ class BatchGenerator:
 
 if __name__ == "__main__":
     gen = BatchGenerator(num_data_entries=None,
-                         input_size=11,
+                         board_size=11,
                          db_name="demoweb",
                          db_host="localhost",
                          db_port=5432,

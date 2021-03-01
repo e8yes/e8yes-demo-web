@@ -16,7 +16,7 @@ def SwitchStoneType(board: np.ndarray,
                     shl_map: np.ndarray,
                     next_move_stone_type: np.ndarray,
                     policy: np.ndarray,
-                    input_size: int):
+                    board_size: int):
     new_board = np.copy(a=board)
     new_board[board == 1] = 2
     new_board[board == 2] = 1
@@ -30,15 +30,15 @@ def SwitchStoneType(board: np.ndarray,
         shl_map[:,:,2:], shl_map[:,:,:2]
 
     new_policy = np.copy(a=policy)
-    new_policy[input_size*input_size + 0], \
-    new_policy[input_size*input_size + 1] = \
-        policy[input_size*input_size + 1], \
-        policy[input_size*input_size + 0]
+    new_policy[board_size*board_size + 0], \
+    new_policy[board_size*board_size + 1] = \
+        policy[board_size*board_size + 1], \
+        policy[board_size*board_size + 0]
 
-    new_policy[input_size*input_size + 3], \
-    new_policy[input_size*input_size + 4] = \
-        policy[input_size*input_size + 4], \
-        policy[input_size*input_size + 3]
+    new_policy[board_size*board_size + 3], \
+    new_policy[board_size*board_size + 4] = \
+        policy[board_size*board_size + 4], \
+        policy[board_size*board_size + 3]
 
     return new_board, \
            new_shl_map, \
@@ -56,14 +56,14 @@ def TransformFeatures(board: np.ndarray,
         transform_type = np.random.choice(
             a=np.arange(start=0, stop=16))
 
-    input_size = board.shape[0]
+    board_size = board.shape[0]
 
     if transform_type == 0:
         pass
     elif 1 <= transform_type <= 3:
         policy_plane = np.reshape(
-            a=policy[:input_size*input_size], 
-            newshape=(input_size, input_size),
+            a=policy[:board_size*board_size], 
+            newshape=(board_size, board_size),
             order="F")
         board, shl_map, policy_plane = RotationTransform(
             board=board, shl_map=shl_map, policy_plane=policy_plane,
@@ -71,13 +71,13 @@ def TransformFeatures(board: np.ndarray,
         policy = np.concatenate(
             (np.reshape(
                 a=policy_plane, 
-                newshape=(input_size*input_size),
+                newshape=(board_size*board_size),
                 order="F"),
-             policy[input_size*input_size:]), axis=0)
+             policy[board_size*board_size:]), axis=0)
     elif 4 <= transform_type <= 7:
         policy_plane = np.reshape(
-            a=policy[:input_size*input_size], 
-            newshape=(input_size, input_size),
+            a=policy[:board_size*board_size], 
+            newshape=(board_size, board_size),
             order="F")
 
         board = np.flip(board, axis=0)
@@ -91,9 +91,9 @@ def TransformFeatures(board: np.ndarray,
         policy = np.concatenate(
             (np.reshape(
                 a=policy_plane, 
-                newshape=(input_size*input_size),
+                newshape=(board_size*board_size),
                 order="F"),
-             policy[input_size*input_size:]), axis=0)
+             policy[board_size*board_size:]), axis=0)
     elif 8 <= transform_type <= 11:
         board,\
         shl_map,\
@@ -103,11 +103,11 @@ def TransformFeatures(board: np.ndarray,
             shl_map=shl_map,
             next_move_stone_type=next_move_stone_type,
             policy=policy,
-            input_size=input_size)
+            board_size=board_size)
 
         policy_plane = np.reshape(
-            a=policy[:input_size*input_size], 
-            newshape=(input_size, input_size),
+            a=policy[:board_size*board_size], 
+            newshape=(board_size, board_size),
             order="F")
 
         board, shl_map, policy_plane = RotationTransform(
@@ -117,9 +117,9 @@ def TransformFeatures(board: np.ndarray,
         policy = np.concatenate(
             (np.reshape(
                 a=policy_plane, 
-                newshape=(input_size*input_size),
+                newshape=(board_size*board_size),
                 order="F"),
-             policy[input_size*input_size:]), axis=0)
+             policy[board_size*board_size:]), axis=0)
     elif 12 <= transform_type <= 15:
         board,\
         shl_map,\
@@ -129,11 +129,11 @@ def TransformFeatures(board: np.ndarray,
             shl_map=shl_map,
             next_move_stone_type=next_move_stone_type,
             policy=policy,
-            input_size=input_size)
+            board_size=board_size)
 
         policy_plane = np.reshape(
-            a=policy[:input_size*input_size], 
-            newshape=(input_size, input_size),
+            a=policy[:board_size*board_size], 
+            newshape=(board_size, board_size),
             order="F")
 
         board = np.flip(board, axis=0)
@@ -147,9 +147,9 @@ def TransformFeatures(board: np.ndarray,
         policy = np.concatenate(
             (np.reshape(
                 a=policy_plane, 
-                newshape=(input_size*input_size),
+                newshape=(board_size*board_size),
                 order="F"),
-             policy[input_size*input_size:]), axis=0)
+             policy[board_size*board_size:]), axis=0)
 
     return board,\
            game_phase,\
