@@ -232,13 +232,14 @@ ShlComponents::ShlComponents(float primary_shl_count_black, float secondary_shl_
       primary_shl_count_white(primary_shl_count_white),
       secondary_shl_count_white(secondary_shl_count_white) {}
 
-ShlFeatures::ShlFeatures(unsigned width, unsigned height) : width(width), height(height) {}
+ShlFeatures::ShlFeatures(unsigned width, unsigned height, unsigned top_k)
+    : width(width), height(height), top_k(top_k) {}
 
 ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
                                std::optional<StoneType> next_move_stone_type, unsigned top_k) {
     assert(top_k >= 1);
 
-    ShlFeatures shl_map(board.Width(), board.Height());
+    ShlFeatures shl_map(board.Width(), board.Height(), top_k);
 
     for (int8_t y = 0; y < board.Height(); ++y) {
         for (int8_t x = 0; x < board.Width(); ++x) {
@@ -275,6 +276,20 @@ std::vector<float> ToDenseShlMap(ShlFeatures const &feature_map) {
     }
 
     return dense_map;
+}
+
+std::vector<float> TopKShlPositionlessFeatures(ShlFeatures const &feature_map) {
+    std::vector<float> features(4 * feature_map.top_k);
+
+    for (unsigned i = 0; i < feature_map.normalized_top_k_map.size(); ++i) {
+        auto const &[_, shl_components] = feature_map.normalized_top_k_map[i];
+        features[i * 4 + 0] = shl_components.primary_shl_count_black;
+        features[i * 4 + 1] = shl_components.secondary_shl_count_black;
+        features[i * 4 + 2] = shl_components.primary_shl_count_white;
+        features[i * 4 + 3] = shl_components.secondary_shl_count_black;
+    }
+
+    return features;
 }
 
 float ToShlScore(e8::ShlComponents const &shl_components) {

@@ -66,7 +66,7 @@ struct ShlComponents {
  * @brief The ShlMap struct A sparse representation of the SHL features.
  */
 struct ShlFeatures {
-    ShlFeatures(unsigned width, unsigned height);
+    ShlFeatures(unsigned width, unsigned height, unsigned top_k);
 
     // Width and height of the feature map. Should be in the same size of the board.
     unsigned width;
@@ -83,6 +83,8 @@ struct ShlFeatures {
     // Sum of raw component scores at those unsupressed SHL locations. The total will be
     // zero if the map is empty.
     float shl_score_total;
+
+    unsigned top_k;
 };
 
 /**
@@ -116,6 +118,11 @@ ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
  * map to a dense flat array in row major data layout.
  */
 std::vector<float> ToDenseShlMap(ShlFeatures const &feature_map);
+
+/**
+ * @brief TopKShlPositionlessFeatures Flattens the top K SHL features without position information.
+ */
+std::vector<float> TopKShlPositionlessFeatures(ShlFeatures const &feature_map);
 
 /**
  * @brief ToShlScore Computes the SHL score from the SHL components.
