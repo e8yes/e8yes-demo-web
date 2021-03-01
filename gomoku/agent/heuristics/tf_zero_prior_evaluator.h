@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TFMODEL_BASED_EVALUATOR_H
-#define TFMODEL_BASED_EVALUATOR_H
+#ifndef TF_ZERO_PRIOR_EVALUATOR_H
+#define TF_ZERO_PRIOR_EVALUATOR_H
 
 #include <cstdint>
 #include <memory>
@@ -60,4 +60,4 @@ class GomokuTfZeroPriorEvaluator : public GomokuEvaluatorInterface {
 
 } // namespace e8
 
-#endif // TFMODEL_BASED_EVALUATOR_H
+#endif // TF_ZERO_PRIOR_EVALUATOR_H

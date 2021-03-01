@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODELBASEDEVALUATOR_H
-#define MODELBASEDEVALUATOR_H
+#ifndef TFLITE_ZERO_PRIOR_EVALUATOR_H
+#define TFLITE_ZERO_PRIOR_EVALUATOR_H
 
 #include <cstdint>
 #include <memory>
@@ -60,4 +60,4 @@ class GomokuTfliteZeroPriorEvaluator : public GomokuEvaluatorInterface {
 
 } // namespace e8
 
-#endif // MODELBASEDEVALUATOR_H
+#endif // TFLITE_ZERO_PRIOR_EVALUATOR_H
