@@ -20,6 +20,7 @@
 
 #include <cstdint>
 #include <optional>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -111,6 +112,7 @@ struct ShlFeatures {
  * normalized by the sum of the remaining SHL scores. This gives the final SHL map.
  */
 ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
+                               std::unordered_set<MovePosition> const &double_contour,
                                std::optional<StoneType> next_move_stone_type, unsigned top_k);
 
 /**

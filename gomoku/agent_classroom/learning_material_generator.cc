@@ -25,6 +25,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/agent/heuristics/shl_feature.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/agent/search/mct_search.h"
@@ -187,8 +188,10 @@ GomokuActionId LearningMaterialGenerator::NextPlayerAction(GomokuBoardState cons
     }
 
     // Extracts serializable SHL features.
+    ContourBuilder contour_builder(board_state, /*order=*/2);
     ShlFeatures shl_features =
-        ComputeShlFeatures(board_state, /*next_move_stone_type=*/std::nullopt, /*top_k=*/10);
+        ComputeShlFeatures(board_state, contour_builder.Contour(),
+                           /*next_move_stone_type=*/std::nullopt, /*top_k=*/10);
     auto flat_shl_map = ToDenseShlMap(shl_features);
     auto top_shl_features = TopKShlPositionlessFeatures(shl_features);
 

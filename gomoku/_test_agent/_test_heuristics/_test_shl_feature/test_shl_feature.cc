@@ -17,15 +17,19 @@
 
 #include <cmath>
 #include <optional>
+#include <unordered_set>
 
 #include "common/unit_test_util/unit_test_util.h"
+#include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/agent/heuristics/shl_feature.h"
 #include "gomoku/game/board_state.h"
 
 bool EmptyBoardShlFeatureTest() {
     e8::GomokuBoardState board(/*width=*/11, /*height=*/11);
 
-    e8::ShlFeatures features = e8::ComputeShlFeatures(board, e8::StoneType::ST_BLACK, /*top_k=*/8);
+    e8::ShlFeatures features =
+        e8::ComputeShlFeatures(board, /*double_contour=*/std::unordered_set<e8::MovePosition>(),
+                               e8::StoneType::ST_BLACK, /*top_k=*/8);
 
     TEST_CONDITION(features.width == 11);
     TEST_CONDITION(features.height == 11);
@@ -66,7 +70,9 @@ bool ExampleBoardShlFeatureTest() {
     board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(4, 4)),
                       /*cached_game_result=*/std::nullopt);
 
-    e8::ShlFeatures features = e8::ComputeShlFeatures(board, e8::StoneType::ST_BLACK, /*top_k=*/5);
+    e8::ContourBuilder contour_builder(board, /*order=*/2);
+    e8::ShlFeatures features = e8::ComputeShlFeatures(board, contour_builder.Contour(),
+                                                      e8::StoneType::ST_BLACK, /*top_k=*/5);
 
     TEST_CONDITION(features.raw_map.size() == 63);
 

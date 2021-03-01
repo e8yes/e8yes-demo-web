@@ -236,26 +236,23 @@ ShlFeatures::ShlFeatures(unsigned width, unsigned height, unsigned top_k)
     : width(width), height(height), top_k(top_k) {}
 
 ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
+                               std::unordered_set<MovePosition> const &double_contour,
                                std::optional<StoneType> next_move_stone_type, unsigned top_k) {
     assert(top_k >= 1);
 
     ShlFeatures shl_map(board.Width(), board.Height(), top_k);
 
-    for (int8_t y = 0; y < board.Height(); ++y) {
-        for (int8_t x = 0; x < board.Width(); ++x) {
-            if (!IsDoubleContour(x, y, board)) {
-                continue;
-            }
+    for (auto candid_pos : double_contour) {
+        auto [primary_black, secondary_black] =
+            ShlCount(candid_pos.x, candid_pos.y, /*compute_for_stone_type=*/StoneType::ST_BLACK,
+                     next_move_stone_type, board);
+        auto [primary_white, secondary_white] =
+            ShlCount(candid_pos.x, candid_pos.y, /*compute_for_stone_type=*/StoneType::ST_WHITE,
+                     next_move_stone_type, board);
 
-            auto [primary_black, secondary_black] = ShlCount(
-                x, y, /*compute_for_stone_type=*/StoneType::ST_BLACK, next_move_stone_type, board);
-            auto [primary_white, secondary_white] = ShlCount(
-                x, y, /*compute_for_stone_type=*/StoneType::ST_WHITE, next_move_stone_type, board);
-
-            shl_map.raw_map.push_back(
-                std::make_pair(MovePosition(x, y), ShlComponents(primary_black, secondary_black,
-                                                                 primary_white, secondary_white)));
-        }
+        shl_map.raw_map.push_back(
+            std::make_pair(candid_pos, ShlComponents(primary_black, secondary_black, primary_white,
+                                                     secondary_white)));
     }
 
     NonTopKSuppression(top_k, &shl_map);
