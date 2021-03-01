@@ -64,9 +64,9 @@ class ContourBuilder {
   private:
     std::unordered_set<MovePosition> contour_;
     std::vector<bool> blacklist_;
-    int8_t const width_;
-    int8_t const height_;
-    int8_t const order_;
+    int8_t width_;
+    int8_t height_;
+    int8_t order_;
 };
 
 } // namespace e8

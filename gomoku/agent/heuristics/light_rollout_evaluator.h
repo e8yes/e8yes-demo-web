@@ -24,20 +24,12 @@
 #include <unordered_set>
 
 #include "common/thread/thread_pool.h"
+#include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/agent/heuristics/evaluator.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 
 namespace e8 {
-namespace light_rollout_evaluator_internal {
-
-struct BoardContour {
-    std::unordered_set<MovePosition> positions;
-};
-
-std::shared_ptr<BoardContour> BuildBoardContour(GomokuBoardState const &board);
-
-} // namespace light_rollout_evaluator_internal
 
 /**
  * @brief The GomokuLightRolloutEvaluator class Evaluate the board state by conducting random

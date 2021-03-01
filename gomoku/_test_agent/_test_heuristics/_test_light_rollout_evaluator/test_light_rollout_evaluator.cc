@@ -23,63 +23,6 @@
 #include "gomoku/agent/heuristics/light_rollout_evaluator.h"
 #include "gomoku/game/board_state.h"
 
-bool ContourTest() {
-    e8::GomokuBoardState board(/*width=*/5, /*height=*/5);
-
-    // - - - - -
-    // - x - - -
-    // - - - - -
-    // - - - x o
-    // - - - - -
-    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/1, /*y=*/1)),
-                      /*cached_game_result=*/std::nullopt);
-    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/3, /*y=*/3)),
-                      /*cached_game_result=*/std::nullopt);
-    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/3)),
-                      /*cached_game_result=*/std::nullopt);
-
-    // Contour
-    // ? ? ? - -
-    // ? x ? - -
-    // ? ? ? ? ?
-    // - - ? x o
-    // - - ? ? ?
-    std::shared_ptr<e8::light_rollout_evaluator_internal::BoardContour> contour =
-        e8::light_rollout_evaluator_internal::BuildBoardContour(board);
-
-    TEST_CONDITION(contour->positions.size() == 14);
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/0, /*y=*/0)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/1, /*y=*/0)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/2, /*y=*/0)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/0, /*y=*/1)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/2, /*y=*/1)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/0, /*y=*/2)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/1, /*y=*/2)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/2, /*y=*/2)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/3, /*y=*/2)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/4, /*y=*/2)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/2, /*y=*/3)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/2, /*y=*/4)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/3, /*y=*/4)) !=
-                   contour->positions.end());
-    TEST_CONDITION(contour->positions.find(e8::MovePosition(/*x=*/4, /*y=*/4)) !=
-                   contour->positions.end());
-
-    return true;
-}
-
 bool RewardEvaluationTest() {
     e8::GomokuBoardState board(/*width=*/7, /*height=*/7);
 
@@ -186,7 +129,6 @@ bool PolicyEvaluationTest() {
 
 int main() {
     e8::BeginTestSuite("light_rollout_evaluator");
-    e8::RunTest("ContourTest", ContourTest);
     e8::RunTest("RewardEvaluationTest", RewardEvaluationTest);
     e8::RunTest("PolicyEvaluationTest", PolicyEvaluationTest);
     e8::EndTestSuite();
