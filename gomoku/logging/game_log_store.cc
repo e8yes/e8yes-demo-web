@@ -88,8 +88,8 @@ struct GomokuGameEntity : public SqlEntityInterface {
 struct GomokuGameActionEntity : public SqlEntityInterface {
     GomokuGameActionEntity()
         : SqlEntityInterface({&game_id, &step_number, &action_number, &action_performed_by_player,
-                              &action_stone_type, &board_before, &game_phase, &stochastic_policy,
-                              &final_value, &created_at}) {}
+                              &action_stone_type, &board_before, &game_phase, &shl_map,
+                              &top_shl_features, &stochastic_policy, &final_value, &created_at}) {}
 
     GomokuGameActionEntity(GomokuGameActionEntity const &other) : GomokuGameActionEntity() {
         game_id = other.game_id;
@@ -99,6 +99,8 @@ struct GomokuGameActionEntity : public SqlEntityInterface {
         action_stone_type = other.action_stone_type;
         board_before = other.board_before;
         game_phase = other.game_phase;
+        shl_map = other.shl_map;
+        top_shl_features = other.top_shl_features;
         stochastic_policy = other.stochastic_policy;
         final_value = other.final_value;
         created_at = other.created_at;
@@ -112,6 +114,8 @@ struct GomokuGameActionEntity : public SqlEntityInterface {
         action_stone_type = other.action_stone_type;
         board_before = other.board_before;
         game_phase = other.game_phase;
+        shl_map = other.shl_map;
+        top_shl_features = other.top_shl_features;
         stochastic_policy = other.stochastic_policy;
         final_value = other.final_value;
         created_at = other.created_at;
@@ -125,6 +129,8 @@ struct GomokuGameActionEntity : public SqlEntityInterface {
     SqlInt action_stone_type = SqlInt("action_stone_type");
     SqlByteArr board_before = SqlByteArr("board_before");
     SqlInt game_phase = SqlInt("game_phase");
+    SqlFloatArr shl_map = SqlFloatArr("shl_map");
+    SqlFloatArr top_shl_features = SqlFloatArr("top_shl_features");
     SqlFloatArr stochastic_policy = SqlFloatArr("stochastic_policy");
     SqlFloat final_value = SqlFloat("final_value");
     SqlTimestamp created_at = SqlTimestamp("created_at");
@@ -206,6 +212,8 @@ void GameLogStore::LogGameAction(GameId game_id, GameStepNumber step_number,
                                  GomokuActionId action_number,
                                  PlayerSide action_performed_by_player, StoneType action_stone_type,
                                  GomokuBoardState const &board_before, GamePhase game_phase,
+                                 std::vector<float> const &shl_map,
+                                 std::vector<float> const &top_shl_features,
                                  std::vector<float> const &stochastic_policy) {
     GomokuGameActionEntity entity;
     *entity.game_id.ValuePtr() = game_id;
@@ -215,6 +223,8 @@ void GameLogStore::LogGameAction(GameId game_id, GameStepNumber step_number,
     *entity.action_stone_type.ValuePtr() = action_stone_type;
     *entity.board_before.ValuePtr() = ExtractBoardFeatures(board_before);
     *entity.game_phase.ValuePtr() = game_phase;
+    *entity.shl_map.ValuePtr() = shl_map;
+    *entity.top_shl_features.ValuePtr() = top_shl_features;
     *entity.stochastic_policy.ValuePtr() = stochastic_policy;
     *entity.created_at.ValuePtr() = CurrentTimestampMicros();
 

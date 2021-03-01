@@ -92,7 +92,8 @@ GomokuModelEntity InitializeFirstModel(std::string const &model_name, bool boots
                    GameLogPurpose::GLP_REPRESENTATIVE_DATA, db_host_name, db_name);
     }
 
-    return model_log_store->LogNewModel(model_name, model_output_path);
+    std::string model_dir_name = ModelFileName(model_output_path);
+    return model_log_store->LogNewModel(model_dir_name, model_output_path);
 }
 
 } // namespace
@@ -117,8 +118,6 @@ void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
 
     for (unsigned i = 0; i < num_iterations; ++i) {
         std::string model_dir_name = ModelFileName(*last_model->model_path.Value());
-        assert(model_dir_name == model_name);
-
         auto evaluator = std::make_shared<GomokuTfZeroPriorEvaluator>(
             *last_model->model_path.Value() + "/" + model_dir_name);
 
@@ -144,7 +143,6 @@ void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
                        GameLogPurpose::GLP_LEARNING_DATA, db_host_name, db_name);
 
             model_dir_name = ModelFileName(new_model_path);
-            assert(model_dir_name == model_name);
             GomokuModelEntity new_model =
                 model_log_store.LogNewModel(model_dir_name, new_model_path);
 

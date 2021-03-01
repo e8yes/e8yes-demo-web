@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <optional>
 #include <unordered_map>
+#include <vector>
 
 #include "gomoku/game/board_state.h"
 #include "gomoku/logging/common_types.h"
@@ -54,6 +55,8 @@ class GameLogStore {
     void LogGameAction(GameId game_id, GameStepNumber step_number, GomokuActionId action_number,
                        PlayerSide action_performed_by_player, StoneType action_stone_type,
                        GomokuBoardState const &board_before, GamePhase game_phase,
+                       std::vector<float> const &shl_map,
+                       std::vector<float> const &top_shl_features,
                        std::vector<float> const &stochastic_policy);
 
     /**

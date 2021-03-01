@@ -25,6 +25,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "gomoku/agent/heuristics/shl_feature.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/agent/search/mct_search.h"
 #include "gomoku/agent_classroom/learning_material_generator.h"
@@ -185,12 +186,21 @@ GomokuActionId LearningMaterialGenerator::NextPlayerAction(GomokuBoardState cons
         action_id = BestAction(policy);
     }
 
+    // Extracts serializable SHL features.
+    ShlFeatures shl_features =
+        ComputeShlFeatures(board_state, /*next_move_stone_type=*/std::nullopt, /*top_k=*/10);
+    auto flat_shl_map = ToDenseShlMap(shl_features);
+    auto top_shl_features = TopKShlPositionlessFeatures(shl_features);
+
+    // Extracts serializable policy.
     auto flattened_policy = FlattenPolicy(policy, board_state);
+
     GameStepNumber step_number = board_state.History().size();
+
     shared_data_->log_store->LogGameAction(
         *shared_data_->current_game_id, step_number, action_id, board_state.CurrentPlayerSide(),
         board_state.PlayerStoneType(board_state.CurrentPlayerSide()), board_state,
-        board_state.CurrentGamePhase(), flattened_policy);
+        board_state.CurrentGamePhase(), flat_shl_map, top_shl_features, flattened_policy);
 
     shared_data_->steps.push_back(LearningMaterialGeneratorSharedData::StepInfo(
         step_number, board_state.CurrentPlayerSide()));
