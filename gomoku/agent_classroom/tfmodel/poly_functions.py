@@ -1,4 +1,5 @@
 import os
+import re
 import tensorflow as tf
 
 def ReadModelName(model_import_path: str) -> str:
@@ -22,5 +23,11 @@ def SaveModel(model: any, model_export_path: str):
         signatures={"inference": model.__call__,
                     "loss": model.Loss})
 
-def RequireShlFeatures(model_name: str):
+def ReadBoardSize(model_name: str) -> int:
+    match = re.findall(pattern=r"_i\d+", string=model_name)
+    assert(len(match) == 1)
+    board_size = re.findall(pattern=r"\d+", string=match[0])
+    return int(board_size[0])
+
+def RequireShlFeatures(model_name: str) -> bool:
     return "shl" in model_name
