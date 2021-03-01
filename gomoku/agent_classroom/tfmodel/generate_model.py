@@ -10,7 +10,7 @@ import numpy as np
 from poly_functions import RequireShlFeatures
 from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModel
 from cnn_shared_model import GomokuCnnSharedModel
-from cnn_shl_shared_model import GomokuCnnShlSharedModel
+from cnn_shared_with_shl_model import GomokuCnnShlSharedModel
 
 def GenerateModel(model_name: str, model_output_path: str):
     logging.info("Constructing the graph...")
@@ -22,7 +22,7 @@ def GenerateModel(model_name: str, model_output_path: str):
         model = GomokuCnnResNetSharedTowerModel()
     elif "cnn_shared" in model_name:
         model = GomokuCnnSharedModel()
-    elif "cnn_shl_shared" in model_name:
+    elif "cnn_shared_with_shl" in model_name:
         model = GomokuCnnShlSharedModel()
     else:
         raise "Unkown model_name=" + str(model_name)

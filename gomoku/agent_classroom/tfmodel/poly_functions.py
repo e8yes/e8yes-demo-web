@@ -1,6 +1,11 @@
+from typing import List
 import os
 import re
 import tensorflow as tf
+
+import cnn_resnet_shared_tower_model
+import cnn_shared_model
+import cnn_shared_with_shl_model
 
 def ReadModelName(model_import_path: str) -> str:
     for entry in os.listdir(model_import_path):
@@ -30,4 +35,18 @@ def ReadBoardSize(model_name: str) -> int:
     return int(board_size[0])
 
 def RequireShlFeatures(model_name: str) -> bool:
-    return "shl" in model_name
+    return "with_shl" in model_name
+
+def TrainableVariables(model: any) -> List[tf.Variable]:
+    model_name = model.Name().numpy().decode("UTF-8")
+
+    if "gomoku_cnn_shared_tower" in model_name:
+        return cnn_resnet_shared_tower_model.\
+            CollectGomokuCnnResNetSharedTowerVariables(model)
+    elif "gomoku_cnn_shared" in model_name:
+        return cnn_shared_model.TrainableVariables(model)
+    elif "gomoku_cnn_shared_with_shl" in model_name:
+        return cnn_shared_with_shl_model.\
+            TrainableVariables(model)
+    
+    assert(False)

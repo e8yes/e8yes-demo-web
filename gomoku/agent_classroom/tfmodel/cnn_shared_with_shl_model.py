@@ -355,7 +355,7 @@ class GomokuCnnShlSharedModel(tf.Module):
     @tf.function(input_signature=[])
     def Name(self) -> tf.Tensor:
         return tf.constant(
-            value="gomoku_cnn_shl_shared_i{0}".format(INPUT_SIZE),
+            value="gomoku_cnn_shared_with_shl_i{0}".format(INPUT_SIZE),
             dtype=tf.string)
 
 def TrainableVariables(model: GomokuCnnShlSharedModel):

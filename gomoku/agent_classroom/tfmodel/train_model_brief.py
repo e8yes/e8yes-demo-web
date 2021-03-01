@@ -14,9 +14,9 @@ from poly_functions import ReadModelName
 from poly_functions import ReadBoardSize
 from poly_functions import LoadModel
 from poly_functions import SaveModel
+from poly_functions import TrainableVariables
 from augmentation import TransformFeatures
 from batch_generator import BatchGenerator
-from cnn_shared_model import TrainableVariables
 
 BATCH_SIZE = 50
 VALIDATION_BATCH_SIZE = 5000
