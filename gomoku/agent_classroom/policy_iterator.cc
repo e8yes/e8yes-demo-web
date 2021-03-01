@@ -36,7 +36,7 @@ namespace e8 {
 namespace {
 
 unsigned const kCheckPointInterval = 100;
-unsigned const kNumWarmUpGames = 1;
+unsigned const kNumWarmUpGames = 20;
 
 std::string ModelFileName(std::string const &model_path) {
     std::filesystem::path p(model_path);
@@ -54,11 +54,11 @@ std::string ModelFileName(std::string const &model_path) {
 }
 
 void GenerateEmptyModel(std::string const &source_tree_root, std::string const &model_output_path,
-                        std::string const &model_name) {
+                        std::string const &model_class) {
     std::string generate_model_executable =
         source_tree_root + "/gomoku/agent_classroom/tfmodel/generate_model.py";
     int rc = std::system((generate_model_executable + " --model_output_path=" + model_output_path +
-                          " --model_name=" + model_name)
+                          " --model_class=" + model_class)
                              .c_str());
     assert(rc == 0);
 }
@@ -72,12 +72,12 @@ void TrainModel(std::string const &source_tree_root, std::string const &model_in
                           " --model_output_path=" + model_output_path +
                           " --data_source=" + std::to_string(data_source) +
                           " --db_host=" + db_host_name + " --db_name=" + db_name +
-                          " --db_user=postgres --db_pass=password --num_data_entries=20000")
+                          " --db_user=postgres --db_pass=password --num_data_entries=50000")
                              .c_str());
     assert(rc == 0);
 }
 
-GomokuModelEntity InitializeFirstModel(std::string const &model_name, bool bootstrap_from_rep_data,
+GomokuModelEntity InitializeFirstModel(std::string const &model_class, bool bootstrap_from_rep_data,
                                        std::string const &source_tree_root,
                                        std::string const &model_storage_path,
                                        std::string const &db_host_name, std::string const &db_name,
@@ -86,20 +86,20 @@ GomokuModelEntity InitializeFirstModel(std::string const &model_name, bool boots
 
     std::string model_output_path = model_storage_path + "/" + std::to_string(timestamp);
 
-    GenerateEmptyModel(source_tree_root, model_output_path, model_name);
+    GenerateEmptyModel(source_tree_root, model_output_path, model_class);
     if (bootstrap_from_rep_data) {
         TrainModel(source_tree_root, model_output_path, model_output_path,
                    GameLogPurpose::GLP_REPRESENTATIVE_DATA, db_host_name, db_name);
     }
 
-    std::string model_dir_name = ModelFileName(model_output_path);
-    return model_log_store->LogNewModel(model_dir_name, model_output_path);
+    std::string model_name = ModelFileName(model_output_path);
+    return model_log_store->LogNewModel(model_name, model_output_path);
 }
 
 } // namespace
 
 void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
-                           std::string const &model_name, unsigned num_iterations,
+                           std::string const &model_class, unsigned num_iterations,
                            unsigned num_games_per_iteration, bool bootstrap_from_rep_data,
                            std::string const &source_tree_root,
                            std::string const &model_storage_path, std::string const &db_host_name,
@@ -112,17 +112,17 @@ void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
     std::optional<GomokuModelEntity> last_model = model_log_store.LastModel();
     if (!last_model.has_value()) {
         last_model =
-            InitializeFirstModel(model_name, bootstrap_from_rep_data, source_tree_root,
+            InitializeFirstModel(model_class, bootstrap_from_rep_data, source_tree_root,
                                  model_storage_path, db_host_name, db_name, &model_log_store);
     }
 
     for (unsigned i = 0; i < num_iterations; ++i) {
-        std::string model_dir_name = ModelFileName(*last_model->model_path.Value());
+        std::string model_name = ModelFileName(*last_model->model_path.Value());
         auto evaluator = std::make_shared<GomokuTfZeroPriorEvaluator>(
-            *last_model->model_path.Value() + "/" + model_dir_name);
+            *last_model->model_path.Value() + "/" + model_name);
 
         std::cout << "iteration=" << i << " games_played=" << i * num_games_per_iteration
-                  << " model_name=" << model_dir_name << std::endl;
+                  << " model_name=" << model_name << std::endl;
 
         GenerateLearningMaterial(GameLogPurpose::GLP_LEARNING_DATA, *last_model->id.Value(),
                                  evaluator, /*early_termination=*/false, schedule_id,
@@ -142,9 +142,8 @@ void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
             TrainModel(source_tree_root, *last_model->model_path.Value(), new_model_path,
                        GameLogPurpose::GLP_LEARNING_DATA, db_host_name, db_name);
 
-            model_dir_name = ModelFileName(new_model_path);
-            GomokuModelEntity new_model =
-                model_log_store.LogNewModel(model_dir_name, new_model_path);
+            model_name = ModelFileName(new_model_path);
+            GomokuModelEntity new_model = model_log_store.LogNewModel(model_name, new_model_path);
 
             last_model = new_model;
         } else {

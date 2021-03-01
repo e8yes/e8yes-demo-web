@@ -12,20 +12,20 @@ from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModel
 from cnn_shared_model import GomokuCnnSharedModel
 from cnn_shared_with_shl_model import GomokuCnnShlSharedModel
 
-def GenerateModel(model_name: str, model_output_path: str):
+def GenerateModel(model_class: str, model_output_path: str):
     logging.info("Constructing the graph...")
 
     tf.summary.trace_on(graph=True, profiler=False) 
 
     model = None
-    if "cnn_resnet_shared_tower" in model_name:
+    if model_class == "cnn_resnet_shared_tower":
         model = GomokuCnnResNetSharedTowerModel()
-    elif "cnn_shared_with_shl" in model_name:
+    elif model_class == "cnn_shared_with_shl":
         model = GomokuCnnShlSharedModel()
-    elif "cnn_shared" in model_name:
+    elif model_class == "cnn_shared":
         model = GomokuCnnSharedModel()
     else:
-        raise "Unkown model_name=" + str(model_name)
+        raise "Unkown model_class=" + str(model_class)
 
     boards = tf.constant(
         value=[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -170,7 +170,7 @@ def GenerateModel(model_name: str, model_output_path: str):
     policy = None
     value = None
 
-    if RequireShlFeatures(model_name=model_name):
+    if RequireShlFeatures(model_name=model_class):
         policy, value = model(
             boards,
             game_phases,
@@ -190,7 +190,7 @@ def GenerateModel(model_name: str, model_output_path: str):
     value_loss = None
     reg_loss = None
 
-    if RequireShlFeatures(model_name=model_name):
+    if RequireShlFeatures(model_name=model_class):
         loss, policy_loss, value_loss, reg_loss = model.Loss(
             boards,
             game_phases,
@@ -238,7 +238,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description="Generate an empty Gomoku tensorflow model")
-    parser.add_argument("--model_name",
+    parser.add_argument("--model_class",
         type=str,
         help="The type of model to generate.")
     parser.add_argument("--model_output_path",
@@ -246,11 +246,11 @@ if __name__ == "__main__":
         help="A path to write the model to. Do not specify a file name.")
 
     args = parser.parse_args()
-    model_name = args.model_name
+    model_class = args.model_class
     model_output_path = args.model_output_path
 
-    if model_name is None:
-        logging.error("Argument model_name is required.")
+    if model_class is None:
+        logging.error("Argument model_class is required.")
         parser.print_help()
         exit(-1)
 
@@ -260,4 +260,4 @@ if __name__ == "__main__":
         exit(-1)
 
     GenerateModel(
-        model_name=model_name, model_output_path=model_output_path)
+        model_class=model_class, model_output_path=model_output_path)
