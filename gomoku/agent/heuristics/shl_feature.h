@@ -20,10 +20,12 @@
 
 #include <cstdint>
 #include <optional>
+#include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
+#include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/game/board_state.h"
 
 namespace e8 {
@@ -64,32 +66,8 @@ struct ShlComponents {
 };
 
 /**
- * @brief The ShlMap struct A sparse representation of the SHL features.
- */
-struct ShlFeatures {
-    ShlFeatures(unsigned width, unsigned height, unsigned top_k);
-
-    // Width and height of the feature map. Should be in the same size of the board.
-    unsigned width;
-    unsigned height;
-
-    // Sparse 2D map storing the raw SHL components.
-    std::vector<std::pair<MovePosition, ShlComponents>> raw_map;
-
-    // Sparse 2D map storing the suppressed and normalized SHL components. The ordering of the
-    // following list indicates the rank of those top K ShlComponents. This list may not get filled
-    // up in the case when there isn't K SHL candidate scores.
-    std::vector<std::pair<MovePosition, ShlComponents>> normalized_top_k_map;
-
-    // Sum of raw component scores at those unsupressed SHL locations. The total will be
-    // zero if the map is empty.
-    float shl_score_total;
-
-    unsigned top_k;
-};
-
-/**
- * @brief ComputeShlFeatures Extract the Suggestive Hotspot Links (SHL) features from the board. The
+ * @brief The ShlFeatureBuilder class It helps extract the Suggestive Hotspot Links (SHL) features
+ * from the Gomoku board and provies data strctures to allow effcient incremental update. The
  * SHL features are extracted by looking at all possible links from all the double contour
  * positions for both stone types (See LinkStats for how a link is defined). An adjusted count is
  * then assigned for each link and stone type and is caluated as follow:
@@ -111,20 +89,75 @@ struct ShlFeatures {
  * positions. Other positions are erased. With the unsuppressed positions, the adjusted counts are
  * normalized by the sum of the remaining SHL scores. This gives the final SHL map.
  */
-ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
-                               std::unordered_set<MovePosition> const &double_contour,
-                               std::optional<StoneType> next_move_stone_type, unsigned top_k);
+class ShlFeatureBuilder {
+  public:
+    /**
+     * @brief ShlFeatureBuilder
+     *
+     * @param board
+     * @param double_contour
+     */
+    ShlFeatureBuilder(GomokuBoardState const &board);
 
-/**
- * @brief ToDenseShlMap The original SHL map is stored in sparse format. This function converts the
- * map to a dense flat array in row major data layout.
- */
-std::vector<float> ToDenseShlMap(ShlFeatures const &feature_map);
+    /**
+     * @brief AddStone
+     *
+     * @param board
+     */
+    void AddStone(GomokuBoardState const &board);
 
-/**
- * @brief TopKShlPositionlessFeatures Flattens the top K SHL features without position information.
- */
-std::vector<float> TopKShlPositionlessFeatures(ShlFeatures const &feature_map);
+    /**
+     * @brief NormalizedTopKMapSparse Processes the SHL features to a sparse 2D map storing the
+     * non-top-k-suppressed and normalized SHL components. The ordering of the following list
+     * indicates the rank of those top K ShlComponents. This list may not get filled up to exactly K
+     * elements in the case when there isn't K SHL candidate scores.
+     *
+     * @param top_k Non-top-K-suppression parameter.
+     * @param normalized Whether to normalize the remaining scores after supression.
+     * @return Ranked SHL features.
+     */
+    std::vector<std::pair<MovePosition, ShlComponents>>
+    TopKMapSparse(unsigned top_k, bool normalized,
+                  std::optional<StoneType> next_move_stone_type) const;
+
+    /**
+     * @brief NormalizedTopKMapDense The original SHL map produced by TopKMapSparse() is stored in
+     * sparse format. This function converts the map to a dense flat array in row major data layout.
+     *
+     * @param top_k Non-top-K-suppression parameter.
+     * @param normalized Whether to normalize the remaining scores after supression.
+     * @return A row major flat array representing the dense 3D ShL map with shape (width, height,
+     * 4).
+     */
+    std::vector<float> TopKMapDense(unsigned top_k, bool normalized,
+                                    std::optional<StoneType> next_move_stone_type) const;
+
+    /**
+     * @brief TopKShlPositionlessFeatures Takes the top K SHL features then flattens them and strips
+     * away position information.
+     *
+     * @param top_k Non-top-K-suppression parameter.
+     */
+    std::vector<float>
+    TopKShlPositionlessFeatures(unsigned top_k, bool normalized,
+                                std::optional<StoneType> next_move_stone_type) const;
+
+  private:
+    void UpdateShlFeaturesAt(MovePosition candid_pos, GomokuBoardState const &board);
+
+    void UpdateShlOverDirection(int dx, int dy, MovePosition pos,
+                                std::unordered_set<MovePosition> const &double_contour,
+                                GomokuBoardState const &board);
+
+    // Width and height of the feature map. Should be in the same size of the board.
+    unsigned const width_;
+    unsigned const height_;
+
+    // Sparse 2D map storing the raw SHL components.
+    std::unordered_map<MovePosition, ShlComponents> raw_map_;
+
+    ContourBuilder double_contour_builder_;
+};
 
 /**
  * @brief ToShlScore Computes the SHL score from the SHL components.

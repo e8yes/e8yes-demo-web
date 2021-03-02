@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cmath>
@@ -124,40 +125,23 @@ std::array<LinkStats, 4> LinkagesAt(int8_t x, int8_t y, StoneType compute_for_st
     return std::array<LinkStats, 4>({horizontal, vertical, diagnal, counter_diagnal});
 }
 
-float LinkageToAdjustedCount(LinkStats const &linkage, StoneType compute_for_stone_type,
-                             std::optional<StoneType> next_move_stone_type) {
-    float move_advantage;
-    if (next_move_stone_type.has_value()) {
-        if (compute_for_stone_type == *next_move_stone_type) {
-            move_advantage = 1;
-        } else {
-            move_advantage = 0.5f;
-        }
-    } else {
-        move_advantage = 1.0f;
-    }
-
-    float adjusted_count = std::max(0.0f, linkage.raw_count + move_advantage -
-                                              0.5f * linkage.holes - linkage.blockage);
-
-    return adjusted_count;
+float LinkageToAdjustedCount(LinkStats const &linkage) {
+    return linkage.raw_count - 0.5f * linkage.holes - linkage.blockage;
 }
 
 std::pair<float, float> ShlCount(int8_t x, int8_t y, StoneType compute_for_stone_type,
-                                 std::optional<StoneType> next_move_stone_type,
                                  GomokuBoardState const &board) {
     std::array<LinkStats, 4> linkages = LinkagesAt(x, y, compute_for_stone_type, board);
 
     std::array<float, 4> adjusted_counts;
     for (unsigned i = 0; i < 4; ++i) {
-        adjusted_counts[i] =
-            LinkageToAdjustedCount(linkages[i], compute_for_stone_type, next_move_stone_type);
+        adjusted_counts[i] = LinkageToAdjustedCount(linkages[i]);
     }
 
     std::sort(adjusted_counts.begin(), adjusted_counts.end(), std::greater<float>());
 
-    float primary_shl_count = std::pow(adjusted_counts[0], 2.5f);
-    float secondary_shl_count = std::pow(adjusted_counts[1], 2.5f);
+    float primary_shl_count = adjusted_counts[0];
+    float secondary_shl_count = adjusted_counts[1];
 
     return std::make_pair(primary_shl_count, secondary_shl_count);
 }
@@ -183,31 +167,37 @@ bool PositionAndShlScore::operator>(PositionAndShlScore const &rhs) const {
     return shl_score > rhs.shl_score;
 }
 
-void NonTopKSuppression(unsigned k, ShlFeatures *shl_map) {
+std::vector<std::pair<MovePosition, ShlComponents>>
+NonTopKSuppression(std::vector<std::pair<MovePosition, ShlComponents>> const &raw_map, unsigned k,
+                   float *shl_score_total) {
     std::vector<PositionAndShlScore> shl_scores;
-    for (auto &[position, raw_score] : shl_map->raw_map) {
+    for (auto &[position, raw_score] : raw_map) {
         shl_scores.push_back(PositionAndShlScore(position, raw_score));
     }
 
     std::sort(shl_scores.begin(), shl_scores.end(), std::greater<PositionAndShlScore>());
 
-    shl_map->shl_score_total = 0.0f;
+    std::vector<std::pair<MovePosition, ShlComponents>> suppressed_map;
+    *shl_score_total = 0.0f;
     for (unsigned i = 0; i < k && i < shl_scores.size(); ++i) {
-        shl_map->shl_score_total += shl_scores[i].shl_score;
-        shl_map->normalized_top_k_map.push_back(
+        *shl_score_total += shl_scores[i].shl_score;
+        suppressed_map.push_back(
             std::make_pair(shl_scores[i].position, shl_scores[i].shl_components));
     }
+
+    return suppressed_map;
 }
 
-void Normalize(ShlFeatures *shl_map) {
-    if (shl_map->raw_map.empty()) {
+void Normalize(float shl_score_total,
+               std::vector<std::pair<MovePosition, ShlComponents>> *shl_map) {
+    if (shl_map->empty()) {
         return;
     }
 
-    assert(shl_map->shl_score_total > 0.0f);
+    assert(shl_score_total > 0.0f);
 
-    float norm_factor = 1.0f / shl_map->shl_score_total;
-    for (auto &[_, shl_components] : shl_map->normalized_top_k_map) {
+    float norm_factor = 1.0f / shl_score_total;
+    for (auto &[_, shl_components] : *shl_map) {
         shl_components.primary_shl_count_black *= norm_factor;
         shl_components.secondary_shl_count_black *= norm_factor;
 
@@ -232,40 +222,185 @@ ShlComponents::ShlComponents(float primary_shl_count_black, float secondary_shl_
       primary_shl_count_white(primary_shl_count_white),
       secondary_shl_count_white(secondary_shl_count_white) {}
 
-ShlFeatures::ShlFeatures(unsigned width, unsigned height, unsigned top_k)
-    : width(width), height(height), top_k(top_k) {}
-
-ShlFeatures ComputeShlFeatures(GomokuBoardState const &board,
-                               std::unordered_set<MovePosition> const &double_contour,
-                               std::optional<StoneType> next_move_stone_type, unsigned top_k) {
-    assert(top_k >= 1);
-
-    ShlFeatures shl_map(board.Width(), board.Height(), top_k);
-
-    for (auto candid_pos : double_contour) {
-        auto [primary_black, secondary_black] =
-            ShlCount(candid_pos.x, candid_pos.y, /*compute_for_stone_type=*/StoneType::ST_BLACK,
-                     next_move_stone_type, board);
-        auto [primary_white, secondary_white] =
-            ShlCount(candid_pos.x, candid_pos.y, /*compute_for_stone_type=*/StoneType::ST_WHITE,
-                     next_move_stone_type, board);
-
-        shl_map.raw_map.push_back(
-            std::make_pair(candid_pos, ShlComponents(primary_black, secondary_black, primary_white,
-                                                     secondary_white)));
+ShlFeatureBuilder::ShlFeatureBuilder(GomokuBoardState const &board)
+    : width_(board.Width()), height_(board.Height()), double_contour_builder_(board, /*order=*/2) {
+    for (auto pos : double_contour_builder_.Contour()) {
+        this->UpdateShlFeaturesAt(pos, board);
     }
-
-    NonTopKSuppression(top_k, &shl_map);
-    Normalize(&shl_map);
-
-    return shl_map;
 }
 
-std::vector<float> ToDenseShlMap(ShlFeatures const &feature_map) {
-    std::vector<float> dense_map(feature_map.width * feature_map.height * 4);
+void ShlFeatureBuilder::UpdateShlFeaturesAt(MovePosition candid_pos,
+                                            GomokuBoardState const &board) {
+    auto [primary_black, secondary_black] =
+        ShlCount(candid_pos.x, candid_pos.y, /*compute_for_stone_type=*/StoneType::ST_BLACK, board);
+    auto [primary_white, secondary_white] =
+        ShlCount(candid_pos.x, candid_pos.y, /*compute_for_stone_type=*/StoneType::ST_WHITE, board);
 
-    for (auto const &[pos, shl_components] : feature_map.normalized_top_k_map) {
-        unsigned dst = (pos.x + pos.y * feature_map.width) * 4;
+    auto it = raw_map_.find(candid_pos);
+    if (it != raw_map_.end()) {
+        it->second = ShlComponents(primary_black, secondary_black, primary_white, secondary_white);
+    } else {
+        raw_map_.insert(std::make_pair(candid_pos, ShlComponents(primary_black, secondary_black,
+                                                                 primary_white, secondary_white)));
+    }
+}
+
+void ShlFeatureBuilder::UpdateShlOverDirection(
+    int dx, int dy, MovePosition pos, std::unordered_set<MovePosition> const &double_contour,
+    GomokuBoardState const &board) {
+    unsigned max_i = 6;
+
+    if (dx < 0) {
+        max_i = std::min(static_cast<unsigned>(-pos.x / dx), max_i);
+    } else if (dx > 0) {
+        max_i = std::min(static_cast<unsigned>((board.Width() - 1 - pos.x) / dx), max_i);
+    }
+
+    if (dy < 0) {
+        max_i = std::min(static_cast<unsigned>(-pos.y / dy), max_i);
+    } else if (dy > 0) {
+        max_i = std::min(static_cast<unsigned>((board.Height() - 1 - pos.y) / dy), max_i);
+    }
+
+    for (unsigned i = 1; i <= max_i; ++i) {
+        int8_t shifted_x = pos.x + i * dx;
+        int8_t shifted_y = pos.y + i * dy;
+
+        MovePosition candid_pos(shifted_x, shifted_y);
+
+        if (*board.ChessPieceStateAt(candid_pos) != StoneType::ST_NONE ||
+            double_contour.find(candid_pos) == double_contour.end()) {
+            continue;
+        }
+
+        this->UpdateShlFeaturesAt(candid_pos, board);
+    }
+}
+
+void ShlFeatureBuilder::AddStone(GomokuBoardState const &board) {
+    assert(!board.History().empty());
+    GomokuAction const &action = board.History()[board.History().size() - 1].action.second;
+    assert(action.stone_pos.has_value());
+
+    double_contour_builder_.AddStone(*action.stone_pos);
+
+    this->UpdateShlOverDirection(/*dx=*/-1, /*dy=*/0, *action.stone_pos,
+                                 double_contour_builder_.Contour(), board);
+    this->UpdateShlOverDirection(/*dx=*/-1, /*dy=*/-1, *action.stone_pos,
+                                 double_contour_builder_.Contour(), board);
+    this->UpdateShlOverDirection(/*dx=*/0, /*dy=*/-1, *action.stone_pos,
+                                 double_contour_builder_.Contour(), board);
+    this->UpdateShlOverDirection(/*dx=*/1, /*dy=*/-1, *action.stone_pos,
+                                 double_contour_builder_.Contour(), board);
+    this->UpdateShlOverDirection(/*dx=*/1, /*dy=*/0, *action.stone_pos,
+                                 double_contour_builder_.Contour(), board);
+    this->UpdateShlOverDirection(/*dx=*/1, /*dy=*/1, *action.stone_pos,
+                                 double_contour_builder_.Contour(), board);
+    this->UpdateShlOverDirection(/*dx=*/0, /*dy=*/1, *action.stone_pos,
+                                 double_contour_builder_.Contour(), board);
+    this->UpdateShlOverDirection(/*dx=*/-1, /*dy=*/1, *action.stone_pos,
+                                 double_contour_builder_.Contour(), board);
+
+    std::array<MovePosition, 8> new_potential_contour{
+        MovePosition(action.stone_pos->x - 2, action.stone_pos->y + 1),
+        MovePosition(action.stone_pos->x - 2, action.stone_pos->y - 1),
+        MovePosition(action.stone_pos->x - 1, action.stone_pos->y - 2),
+        MovePosition(action.stone_pos->x + 1, action.stone_pos->y - 2),
+        MovePosition(action.stone_pos->x + 2, action.stone_pos->y - 1),
+        MovePosition(action.stone_pos->x + 2, action.stone_pos->y + 1),
+        MovePosition(action.stone_pos->x + 1, action.stone_pos->y + 2),
+        MovePosition(action.stone_pos->x - 1, action.stone_pos->y + 2)};
+
+    for (auto const &contour : new_potential_contour) {
+        if (contour.x < 0 || contour.y < 0 || contour.x >= board.Width() ||
+            contour.y >= board.Height() ||
+            *board.ChessPieceStateAt(contour) != StoneType::ST_NONE ||
+            raw_map_.find(contour) != raw_map_.end()) {
+            continue;
+        }
+
+        this->UpdateShlFeaturesAt(contour, board);
+    }
+
+    raw_map_.erase(*action.stone_pos);
+}
+
+std::vector<std::pair<MovePosition, ShlComponents>>
+ShlFeatureBuilder::TopKMapSparse(unsigned top_k, bool normalized,
+                                 std::optional<StoneType> next_move_stone_type) const {
+    std::vector<std::pair<MovePosition, ShlComponents>> adjusted_shl_map;
+
+    for (auto const &[pos, shl_components] : raw_map_) {
+        float primary_shl_count_black;
+        float secondary_shl_count_black;
+        float primary_shl_count_white;
+        float secondary_shl_count_white;
+
+        if (next_move_stone_type.has_value()) {
+            switch (*next_move_stone_type) {
+            case ST_BLACK: {
+                primary_shl_count_black =
+                    std::pow(std::max(0.0f, shl_components.primary_shl_count_black + 1.0f), 2.5f);
+                secondary_shl_count_black =
+                    std::pow(std::max(0.0f, shl_components.secondary_shl_count_black + 1.0f), 2.5f);
+                primary_shl_count_white =
+                    std::pow(std::max(0.0f, shl_components.primary_shl_count_white + 0.5f), 2.5f);
+                secondary_shl_count_white =
+                    std::pow(std::max(0.0f, shl_components.secondary_shl_count_white + 0.5f), 2.5f);
+                break;
+            }
+            case ST_WHITE: {
+                primary_shl_count_black =
+                    std::pow(std::max(0.0f, shl_components.primary_shl_count_black + 0.5f), 2.5f);
+                secondary_shl_count_black =
+                    std::pow(std::max(0.0f, shl_components.secondary_shl_count_black + 0.5f), 2.5f);
+                primary_shl_count_white =
+                    std::pow(std::max(0.0f, shl_components.primary_shl_count_white + 1.0f), 2.5f);
+                secondary_shl_count_white =
+                    std::pow(std::max(0.0f, shl_components.secondary_shl_count_white + 1.0f), 2.5f);
+                break;
+            }
+            default: {
+                assert(false);
+            }
+            }
+        } else {
+            primary_shl_count_black =
+                std::pow(std::max(0.0f, shl_components.primary_shl_count_black + 1.0f), 2.5f);
+            secondary_shl_count_black =
+                std::pow(std::max(0.0f, shl_components.secondary_shl_count_black + 1.0f), 2.5f);
+            primary_shl_count_white =
+                std::pow(std::max(0.0f, shl_components.primary_shl_count_white + 1.0f), 2.5f);
+            secondary_shl_count_white =
+                std::pow(std::max(0.0f, shl_components.secondary_shl_count_white + 1.0f), 2.5f);
+        }
+
+        adjusted_shl_map.push_back(
+            std::make_pair(pos, ShlComponents(primary_shl_count_black, secondary_shl_count_black,
+                                              primary_shl_count_white, secondary_shl_count_white)));
+    }
+
+    float score_total;
+    std::vector<std::pair<MovePosition, ShlComponents>> suppressed_shl_map =
+        NonTopKSuppression(adjusted_shl_map, top_k, &score_total);
+
+    if (normalized) {
+        Normalize(score_total, &suppressed_shl_map);
+    }
+
+    return suppressed_shl_map;
+}
+
+std::vector<float>
+ShlFeatureBuilder::TopKMapDense(unsigned top_k, bool normalized,
+                                std::optional<StoneType> next_move_stone_type) const {
+    std::vector<std::pair<MovePosition, ShlComponents>> feature_map =
+        this->TopKMapSparse(top_k, normalized, next_move_stone_type);
+
+    std::vector<float> dense_map(width_ * height_ * 4);
+
+    for (auto const &[pos, shl_components] : feature_map) {
+        unsigned dst = (pos.x + pos.y * width_) * 4;
         dense_map[dst + 0] = shl_components.primary_shl_count_black;
         dense_map[dst + 1] = shl_components.secondary_shl_count_black;
         dense_map[dst + 2] = shl_components.primary_shl_count_white;
@@ -275,11 +410,15 @@ std::vector<float> ToDenseShlMap(ShlFeatures const &feature_map) {
     return dense_map;
 }
 
-std::vector<float> TopKShlPositionlessFeatures(ShlFeatures const &feature_map) {
-    std::vector<float> features(4 * feature_map.top_k);
+std::vector<float> ShlFeatureBuilder::TopKShlPositionlessFeatures(
+    unsigned top_k, bool normalized, std::optional<StoneType> next_move_stone_type) const {
+    std::vector<std::pair<MovePosition, ShlComponents>> feature_map =
+        this->TopKMapSparse(top_k, normalized, next_move_stone_type);
 
-    for (unsigned i = 0; i < feature_map.normalized_top_k_map.size(); ++i) {
-        auto const &[_, shl_components] = feature_map.normalized_top_k_map[i];
+    std::vector<float> features(4 * top_k);
+
+    for (unsigned i = 0; i < feature_map.size(); ++i) {
+        auto const &[_, shl_components] = feature_map[i];
         features[i * 4 + 0] = shl_components.primary_shl_count_black;
         features[i * 4 + 1] = shl_components.secondary_shl_count_black;
         features[i * 4 + 2] = shl_components.primary_shl_count_white;

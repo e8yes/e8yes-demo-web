@@ -25,7 +25,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/agent/heuristics/shl_feature.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/agent/search/mct_search.h"
@@ -188,12 +187,12 @@ GomokuActionId LearningMaterialGenerator::NextPlayerAction(GomokuBoardState cons
     }
 
     // Extracts serializable SHL features.
-    ContourBuilder contour_builder(board_state, /*order=*/2);
-    ShlFeatures shl_features =
-        ComputeShlFeatures(board_state, contour_builder.Contour(),
-                           /*next_move_stone_type=*/std::nullopt, /*top_k=*/10);
-    auto flat_shl_map = ToDenseShlMap(shl_features);
-    auto top_shl_features = TopKShlPositionlessFeatures(shl_features);
+    ShlFeatureBuilder feature_builder(board_state);
+    std::vector<float> shl_map =
+        feature_builder.TopKMapDense(/*top_k=*/15, /*normalized=*/true,
+                                     /*next_move_stone_type=*/std::nullopt);
+    std::vector<float> top_shl_features = feature_builder.TopKShlPositionlessFeatures(
+        /*top_k=*/15, /*normalized=*/true, /*next_move_stone_type=*/std::nullopt);
 
     // Extracts serializable policy.
     auto flattened_policy = FlattenPolicy(policy, board_state);
@@ -203,7 +202,7 @@ GomokuActionId LearningMaterialGenerator::NextPlayerAction(GomokuBoardState cons
     shared_data_->log_store->LogGameAction(
         *shared_data_->current_game_id, step_number, action_id, board_state.CurrentPlayerSide(),
         board_state.PlayerStoneType(board_state.CurrentPlayerSide()), board_state,
-        board_state.CurrentGamePhase(), flat_shl_map, top_shl_features, flattened_policy);
+        board_state.CurrentGamePhase(), shl_map, top_shl_features, flattened_policy);
 
     shared_data_->steps.push_back(LearningMaterialGeneratorSharedData::StepInfo(
         step_number, board_state.CurrentPlayerSide()));

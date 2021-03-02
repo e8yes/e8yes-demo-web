@@ -22,10 +22,11 @@
 #include <optional>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 #include "common/random/random_distribution.h"
 #include "common/random/random_source.h"
-#include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/agent/heuristics/evaluator.h"
 #include "gomoku/agent/heuristics/shl_feature.h"
 #include "gomoku/agent/heuristics/shl_rollout_evaluator.h"
@@ -38,12 +39,13 @@ namespace {
 
 unsigned kNumRollouts = 10;
 
-std::unordered_map<GomokuActionId, float> ShlPolicy(GomokuBoardState const &state,
-                                                    ShlFeatures const &shl_map) {
+std::unordered_map<GomokuActionId, float>
+ShlPolicy(GomokuBoardState const &state,
+          std::vector<std::pair<MovePosition, ShlComponents>> const &shl_map) {
     std::unordered_map<GomokuActionId, float> policy;
 
     float cdf = 0.0f;
-    for (auto const &[pos, shl_components] : shl_map.normalized_top_k_map) {
+    for (auto const &[pos, shl_components] : shl_map) {
         GomokuActionId action_id = state.MovePositionToActionId(pos);
         float shl_score = ToShlScore(shl_components);
         cdf += shl_score;
@@ -55,9 +57,10 @@ std::unordered_map<GomokuActionId, float> ShlPolicy(GomokuBoardState const &stat
     return policy;
 }
 
-std::unordered_map<GomokuActionId, float>
-RolloutPolicy(GomokuBoardState const &state, std::unordered_set<MovePosition> const &double_contour,
-              unsigned top_k, RandomSource *random_source) {
+std::unordered_map<GomokuActionId, float> RolloutPolicy(GomokuBoardState const &state,
+                                                        ShlFeatureBuilder const &feature_builder,
+                                                        unsigned top_k,
+                                                        RandomSource *random_source) {
     std::unordered_map<GomokuActionId, float> policy;
 
     switch (state.CurrentGamePhase()) {
@@ -74,8 +77,8 @@ RolloutPolicy(GomokuBoardState const &state, std::unordered_set<MovePosition> co
     }
     case GP_STANDARD_GOMOKU: {
         StoneType next_move_stone_type = state.PlayerStoneType(state.CurrentPlayerSide());
-        ShlFeatures shl_map =
-            ComputeShlFeatures(state, double_contour, next_move_stone_type, top_k);
+        std::vector<std::pair<MovePosition, ShlComponents>> const &shl_map =
+            feature_builder.TopKMapSparse(top_k, /*normalized=*/true, next_move_stone_type);
 
         policy = ShlPolicy(state, shl_map);
         break;
@@ -104,14 +107,14 @@ GomokuShlRolloutEvaluator::~GomokuShlRolloutEvaluator() {}
 float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
                                                 std::optional<MctNodeId> /*parent_state_id*/,
                                                 MctNodeId /*state_id*/) {
-    ContourBuilder contour_builder(state, /*order=*/2);
+    ShlFeatureBuilder contour_builder(state);
 
     PlayerSide evaluate_for_player = state.CurrentPlayerSide();
     float acc_reward = 0.0f;
 
     for (unsigned i = 0; i < kNumRollouts; ++i) {
         GomokuBoardState rollout_state = state;
-        ContourBuilder rollout_contour_builder = contour_builder;
+        ShlFeatureBuilder rollout_feature_builder = contour_builder;
         unsigned j = 0;
 
         GameResult game_result = rollout_state.CurrentGameResult();
@@ -122,7 +125,8 @@ float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
                 top_k = 8;
                 break;
             }
-            case 1: {
+            case 1:
+            case 2: {
                 top_k = 5;
                 break;
             }
@@ -133,7 +137,7 @@ float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
             }
 
             std::unordered_map<GomokuActionId, float> policy = RolloutPolicy(
-                rollout_state, rollout_contour_builder.Contour(), top_k, &pimpl_->random_source);
+                rollout_state, rollout_feature_builder, top_k, &pimpl_->random_source);
 
             GomokuActionId action_id = SampleAction(policy, &pimpl_->random_source);
             game_result = rollout_state.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
@@ -141,7 +145,7 @@ float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
             GomokuAction const &last_action =
                 rollout_state.History()[rollout_state.History().size() - 1].action.second;
             if (last_action.stone_pos.has_value()) {
-                rollout_contour_builder.AddStone(*last_action.stone_pos);
+                rollout_feature_builder.AddStone(rollout_state);
             }
 
             ++j;
@@ -199,9 +203,9 @@ GomokuShlRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
     case GP_STANDARD_GOMOKU: {
         StoneType next_move_stone_type = state.PlayerStoneType(state.CurrentPlayerSide());
 
-        ContourBuilder contour_builder(state, /*order=*/2);
-        ShlFeatures shl_map = ComputeShlFeatures(state, contour_builder.Contour(),
-                                                 next_move_stone_type, /*top_k=*/15);
+        ShlFeatureBuilder feature_builder(state);
+        std::vector<std::pair<MovePosition, ShlComponents>> const &shl_map =
+            feature_builder.TopKMapSparse(/*top_k=*/15, /*normalized=*/true, next_move_stone_type);
 
         policy = ShlPolicy(state, shl_map);
         break;
@@ -213,7 +217,7 @@ GomokuShlRolloutEvaluator::EvaluatePolicy(GomokuBoardState const &state,
 
 float GomokuShlRolloutEvaluator::ExplorationFactor() const { return 3.0f; }
 
-unsigned GomokuShlRolloutEvaluator::NumSimulations() const { return 1000; }
+unsigned GomokuShlRolloutEvaluator::NumSimulations() const { return 2000; }
 
 void GomokuShlRolloutEvaluator::ClearCache() {}
 

@@ -15,27 +15,26 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <optional>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 #include "common/unit_test_util/unit_test_util.h"
-#include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/agent/heuristics/shl_feature.h"
 #include "gomoku/game/board_state.h"
 
 bool EmptyBoardShlFeatureTest() {
     e8::GomokuBoardState board(/*width=*/11, /*height=*/11);
 
-    e8::ShlFeatures features =
-        e8::ComputeShlFeatures(board, /*double_contour=*/std::unordered_set<e8::MovePosition>(),
-                               e8::StoneType::ST_BLACK, /*top_k=*/8);
+    e8::ShlFeatureBuilder features_builder(board);
+    std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> shl_map =
+        features_builder.TopKMapSparse(/*top_k=*/8, /*normalized=*/true, e8::StoneType::ST_BLACK);
 
-    TEST_CONDITION(features.width == 11);
-    TEST_CONDITION(features.height == 11);
-    TEST_CONDITION(features.raw_map.empty());
-    TEST_CONDITION(features.normalized_top_k_map.empty());
-    TEST_CONDITION(features.shl_score_total == 0.0f);
+    TEST_CONDITION(shl_map.empty());
 
     return true;
 }
@@ -70,32 +69,98 @@ bool ExampleBoardShlFeatureTest() {
     board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(4, 4)),
                       /*cached_game_result=*/std::nullopt);
 
-    e8::ContourBuilder contour_builder(board, /*order=*/2);
-    e8::ShlFeatures features = e8::ComputeShlFeatures(board, contour_builder.Contour(),
-                                                      e8::StoneType::ST_BLACK, /*top_k=*/5);
+    e8::ShlFeatureBuilder features_builder(board);
+    std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> raw_shl_map =
+        features_builder.TopKMapSparse(/*top_k=*/121, /*normalized=*/true, e8::StoneType::ST_BLACK);
+    TEST_CONDITION(raw_shl_map.size() == 63);
 
-    TEST_CONDITION(features.raw_map.size() == 63);
+    std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> shl_map =
+        features_builder.TopKMapSparse(/*top_k=*/5, /*normalized=*/true, e8::StoneType::ST_BLACK);
 
-    TEST_CONDITION(features.normalized_top_k_map.size() == 5);
-    TEST_CONDITION(features.normalized_top_k_map[0].first == e8::MovePosition(3, 3));
-    TEST_CONDITION(
-        std::abs(e8::ToShlScore(features.normalized_top_k_map[0].second) - 0.281946123f) < 1e-3f);
+    TEST_CONDITION(shl_map.size() == 5);
+    TEST_CONDITION(shl_map[0].first == e8::MovePosition(3, 3));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[0].second) - 0.281946123f) < 1e-3f);
 
-    TEST_CONDITION(features.normalized_top_k_map[1].first == e8::MovePosition(7, 7));
-    TEST_CONDITION(
-        std::abs(e8::ToShlScore(features.normalized_top_k_map[1].second) - 0.209840357f) < 1e-3f);
+    TEST_CONDITION(shl_map[1].first == e8::MovePosition(7, 7));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[1].second) - 0.209840357f) < 1e-3f);
 
-    TEST_CONDITION(features.normalized_top_k_map[2].first == e8::MovePosition(2, 2));
-    TEST_CONDITION(
-        std::abs(e8::ToShlScore(features.normalized_top_k_map[2].second) - 0.187177047f) < 1e-3f);
+    TEST_CONDITION(shl_map[2].first == e8::MovePosition(2, 2));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[2].second) - 0.187177047f) < 1e-3f);
 
-    TEST_CONDITION(features.normalized_top_k_map[3].first == e8::MovePosition(5, 3));
-    TEST_CONDITION(
-        std::abs(e8::ToShlScore(features.normalized_top_k_map[3].second) - 0.168336704f) < 1e-3f);
+    TEST_CONDITION(shl_map[3].first == e8::MovePosition(5, 3));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[3].second) - 0.168336704f) < 1e-3f);
 
-    TEST_CONDITION(features.normalized_top_k_map[4].first == e8::MovePosition(8, 8));
-    TEST_CONDITION(
-        std::abs(e8::ToShlScore(features.normalized_top_k_map[4].second) - 0.152699724f) < 1e-3f);
+    TEST_CONDITION(shl_map[4].first == e8::MovePosition(8, 8));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[4].second) - 0.152699724f) < 1e-3f);
+
+    return true;
+}
+
+bool ExampleBoardIncrementalShlFeatureTest() {
+    e8::GomokuBoardState board(/*width=*/11, /*height=*/11);
+
+    e8::ShlFeatureBuilder features_builder(board);
+
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(4, 6)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(5, 5)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(5, 2)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+
+    board.ApplyAction(board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_WHITE),
+                      /*cached_game_result=*/std::nullopt);
+
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(9, 6)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(6, 6)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(6, 5)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(6, 3)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(8, 5)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(4, 3)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(4, 2)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(4, 4)),
+                      /*cached_game_result=*/std::nullopt);
+    features_builder.AddStone(board);
+
+    std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> raw_shl_map =
+        features_builder.TopKMapSparse(/*top_k=*/121, /*normalized=*/true, e8::StoneType::ST_BLACK);
+    TEST_CONDITION(raw_shl_map.size() == 63);
+
+    std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> shl_map =
+        features_builder.TopKMapSparse(/*top_k=*/5, /*normalized=*/true, e8::StoneType::ST_BLACK);
+
+    TEST_CONDITION(shl_map.size() == 5);
+    TEST_CONDITION(shl_map[0].first == e8::MovePosition(3, 3));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[0].second) - 0.281946123f) < 1e-3f);
+
+    TEST_CONDITION(shl_map[1].first == e8::MovePosition(7, 7));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[1].second) - 0.209840357f) < 1e-3f);
+
+    TEST_CONDITION(shl_map[2].first == e8::MovePosition(2, 2));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[2].second) - 0.187177047f) < 1e-3f);
+
+    TEST_CONDITION(shl_map[3].first == e8::MovePosition(5, 3));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[3].second) - 0.168336704f) < 1e-3f);
+
+    TEST_CONDITION(shl_map[4].first == e8::MovePosition(8, 8));
+    TEST_CONDITION(std::abs(e8::ToShlScore(shl_map[4].second) - 0.152699724f) < 1e-3f);
 
     return true;
 }
@@ -104,6 +169,7 @@ int main() {
     e8::BeginTestSuite("shl_feature");
     e8::RunTest("EmptyBoardShlFeatureTest", EmptyBoardShlFeatureTest);
     e8::RunTest("ExampleBoardShlFeatureTest", ExampleBoardShlFeatureTest);
+    e8::RunTest("ExampleBoardIncrementalShlFeatureTest", ExampleBoardIncrementalShlFeatureTest);
     e8::EndTestSuite();
     return 0;
 }
