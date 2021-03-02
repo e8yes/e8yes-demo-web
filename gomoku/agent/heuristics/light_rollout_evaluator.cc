@@ -18,6 +18,7 @@
 #include <array>
 #include <cassert>
 #include <cmath>
+#include <iostream>
 #include <memory>
 #include <optional>
 #include <unordered_map>
@@ -35,26 +36,26 @@
 namespace e8 {
 namespace {
 
-unsigned const kNumQValueSamples = 512;
-unsigned const kMaxSimulationSteps = 8;
-float const kRewardDiscount = 0.75f;
+unsigned const kNumValueSamples = 512;
+unsigned const kMaxSimulationSteps = 11;
+float const kRewardDiscount = 0.8f;
 
 class RolloutData : public TaskStorageInterface {
   public:
     RolloutData(GomokuBoardState const &board, ContourBuilder const &contour,
                 unsigned const num_samples, unsigned const job_idx);
 
-    void Init();
     bool SampleNext();
     float AccumulatedRewardFor(PlayerSide const stone_type) const;
     unsigned NumSamples() const;
+    void Reset();
 
   private:
     GomokuBoardState board_;
     ContourBuilder original_copy_;
     RandomSource random_source_;
 
-    std::optional<ContourBuilder> contour_builder_;
+    ContourBuilder contour_builder_;
     std::array<float, 2> reward_;
     unsigned num_steps_ = 0;
     unsigned const num_samples_;
@@ -64,11 +65,11 @@ class RolloutData : public TaskStorageInterface {
 RolloutData::RolloutData(GomokuBoardState const &board, ContourBuilder const &contour_builder,
                          unsigned const num_samples, unsigned const job_idx)
     : board_(board), original_copy_(contour_builder), random_source_(31 * (job_idx + 47128)),
-      reward_({0, 0}), num_samples_(num_samples) {
+      contour_builder_(contour_builder), reward_({0, 0}), num_samples_(num_samples) {
     max_sim_steps_ = kMaxSimulationSteps;
 }
 
-void RolloutData::Init() {
+void RolloutData::Reset() {
     contour_builder_ = original_copy_;
 
     while (num_steps_ > 0) {
@@ -103,16 +104,16 @@ MovePosition SelectRandomMoveFromContour(std::unordered_set<MovePosition> const 
 bool RolloutData::SampleNext() {
     ++num_steps_;
 
-    if (contour_builder_->Contour().empty()) {
+    if (contour_builder_.Contour().empty()) {
         // Can't make any more moves.
         return false;
     }
 
     MovePosition selected_move =
-        SelectRandomMoveFromContour(contour_builder_->Contour(), &random_source_);
+        SelectRandomMoveFromContour(contour_builder_.Contour(), &random_source_);
     assert(selected_move.x >= 0 && selected_move.x < board_.Width());
     assert(selected_move.y >= 0 && selected_move.y < board_.Height());
-    contour_builder_->AddStone(selected_move);
+    contour_builder_.AddStone(selected_move);
 
     GomokuActionId action_id = board_.MovePositionToActionId(selected_move);
     GameResult game_result = board_.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
@@ -156,10 +157,10 @@ void RolloutTask::Run(TaskStorageInterface *storage) const {
     RolloutData *data = static_cast<RolloutData *>(storage);
 
     for (unsigned i = 0; i < data->NumSamples(); ++i) {
-        data->Init();
         while (data->SampleNext()) {
             // Do nothing.
         }
+        data->Reset();
     }
 }
 
@@ -204,14 +205,14 @@ GomokuLightRolloutEvaluator::~GomokuLightRolloutEvaluator() {}
 float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
                                                   std::optional<MctNodeId> /*parent_state_id*/,
                                                   MctNodeId state_id) {
-    float q_value;
+    float value;
 
     switch (state.CurrentGamePhase()) {
     case GP_PLACE_3_STONES:
     case GP_SWAP2_DECISION:
     case GP_SWAP2_PLACE_2_STONES:
     case GP_STONE_TYPE_DECISION: {
-        q_value = 0.0f;
+        value = 0.0f;
         break;
     }
     case GP_STANDARD_GOMOKU: {
@@ -223,7 +224,7 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
         // unsigned const num_parallelism = 1;
         for (unsigned job_idx = 0; job_idx < num_parallelism; ++job_idx) {
             auto rollout_data = std::make_unique<RolloutData>(
-                state, *contour_cache_it->second, kNumQValueSamples / num_parallelism, job_idx);
+                state, *contour_cache_it->second, kNumValueSamples / num_parallelism, job_idx);
             pimpl_->thread_pool.Schedule(task, std::move(rollout_data));
         }
 
@@ -242,20 +243,20 @@ float GomokuLightRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
         }
 
         if (total_reward > 0) {
-            q_value = reward_diff / total_reward;
+            value = reward_diff / total_reward;
 
-            assert(q_value < 1.05f && q_value > -1.05f);
-            assert(!std::isinf(q_value));
-            assert(!std::isnan(q_value));
+            assert(value < 1.05f && value > -1.05f);
+            assert(!std::isinf(value));
+            assert(!std::isnan(value));
         } else {
-            q_value = 0;
+            value = 0;
         }
 
         break;
     }
     }
 
-    return q_value;
+    return value;
 }
 
 std::unordered_map<GomokuActionId, float>

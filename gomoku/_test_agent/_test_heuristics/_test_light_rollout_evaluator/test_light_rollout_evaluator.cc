@@ -74,6 +74,46 @@ bool RewardEvaluationTest() {
     return true;
 }
 
+bool RewardEvaluationTest2() {
+    // Player B will very likely win in this case whereas Player B will lose.
+    // - - - - - - - - - - -
+    // - - - - - - - - - - -
+    // - - - - - - - - - - -
+    // - - - - x - - - - - -
+    // - - - - - - - - - - -
+    // - - - - - - - - - - -
+    // - - - x - - - - - o -
+    // - - - - - - - - - o -
+    // - - - - - - - - - - -
+    // - - - - - - - - - - -
+    // - - - - - x - - - - -
+    e8::GomokuBoardState board(/*width=*/11, /*height=*/11);
+    e8::GomokuActionId action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/3, /*y=*/6));
+    board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/4, /*y=*/3));
+    board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/9, /*y=*/7));
+    board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+
+    action_id = board.Swap2DecisionToActionId(e8::Swap2Decision::SW2D_CHOOSE_WHITE);
+    board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/9, /*y=*/6));
+    board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+
+    action_id = board.MovePositionToActionId(e8::MovePosition(/*x=*/5, /*y=*/10));
+    board.ApplyAction(action_id, /*cached_game_result=*/std::nullopt);
+
+    e8::GomokuLightRolloutEvaluator evaluator;
+    float player_b_reward =
+        evaluator.EvaluateReward(board, /*parent_state_id=*/std::nullopt, /*state_id=*/3);
+    TEST_CONDITION(player_b_reward > 0);
+
+    return true;
+}
+
 bool PolicyEvaluationTest() {
     e8::GomokuBoardState board(/*width=*/7, /*height=*/7);
 
@@ -130,6 +170,7 @@ bool PolicyEvaluationTest() {
 int main() {
     e8::BeginTestSuite("light_rollout_evaluator");
     e8::RunTest("RewardEvaluationTest", RewardEvaluationTest);
+    e8::RunTest("RewardEvaluationTest2", RewardEvaluationTest2);
     e8::RunTest("PolicyEvaluationTest", PolicyEvaluationTest);
     e8::EndTestSuite();
     return 0;
