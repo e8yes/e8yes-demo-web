@@ -221,6 +221,9 @@ def Train(model_import_path: str,
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, 
+                        format="%(asctime)s %(levelname)s %(message)s")
+
     parser = argparse.ArgumentParser(
         description="Train an old model with the most recently generated game data.")
     parser.add_argument("--model_input_path",
@@ -286,9 +289,6 @@ if __name__ == "__main__":
         logging.error("Argument db_pass is required.")
         parser.print_help()
         exit(-1)
-
-    logging.basicConfig(level=logging.INFO, 
-                        format="%(asctime)s %(levelname)s %(message)s")
 
     model_name = ReadModelName(model_import_path=model_input_path)
     board_size = ReadBoardSize(model_name=model_name)

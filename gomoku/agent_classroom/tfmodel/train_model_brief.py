@@ -72,6 +72,7 @@ def Train(model_import_path: str,
                     game_phases,
                     next_move_stone_types,
                     shl_maps,
+                    top_shl_features,
                     policies,
                     values)
             else:
@@ -120,6 +121,7 @@ def Train(model_import_path: str,
             game_phases,
             next_move_stone_types,
             shl_maps,
+            top_shl_features,
             policies,
             values)
     else:
