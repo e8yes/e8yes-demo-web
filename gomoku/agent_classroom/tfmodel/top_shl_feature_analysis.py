@@ -21,7 +21,6 @@ top_shl_features, \
 policies, \
 values = \
     batch_gen.NextBatch(batch_size=100000,
-                        sample_from=0,
                         training_data=True)
 
 _, \
@@ -49,7 +48,6 @@ test_top_shl_features, \
 _, \
 test_values = \
     batch_gen.NextBatch(batch_size=100000,
-                        sample_from=0,
                         training_data=False)
 
 def ToX(top_shl_features, next_move_stone_types):
@@ -71,7 +69,7 @@ test_x = ToX(
     test_top_shl_features, test_next_move_stone_types)
 test_y = test_values
 
-model = GradientBoostingRegressor(n_estimators=10, max_depth=8)
+model = GradientBoostingRegressor(n_estimators=15, max_depth=8)
 model.fit(train_x, train_y)
 
 print("feature_importance=", model.feature_importances_)

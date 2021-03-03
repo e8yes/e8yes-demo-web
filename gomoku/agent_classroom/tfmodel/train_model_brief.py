@@ -22,7 +22,6 @@ BATCH_SIZE = 50
 VALIDATION_BATCH_SIZE = 5000
 
 def Train(model_import_path: str,
-          data_source: int,
           batch_gen: BatchGenerator,
           model_export_path: str) -> None:
     model = LoadModel(model_import_path=model_import_path)
@@ -40,7 +39,6 @@ def Train(model_import_path: str,
         policies, \
         values = \
             batch_gen.NextBatch(batch_size=BATCH_SIZE,
-                                sample_from=data_source,
                                 training_data=True)
 
         boards, \
@@ -107,7 +105,6 @@ def Train(model_import_path: str,
     policies, \
     values = \
         batch_gen.NextBatch(batch_size=VALIDATION_BATCH_SIZE,
-                            sample_from=data_source,
                             training_data=False)
     
     loss = None
@@ -149,9 +146,6 @@ if __name__ == "__main__":
     parser.add_argument("--model_output_path",
         type=str,
         help="A path to write the trained model to. Do not specify a file name.")
-    parser.add_argument("--data_source",
-        type=str,
-        help="An integer indicating from which data source the model will be trained.")
     parser.add_argument("--num_data_entries",
         type=str,
         help="The number of the latest game data entries used to train the model. "
@@ -172,7 +166,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     model_input_path = args.model_input_path
     model_output_path = args.model_output_path
-    data_source = args.data_source
     num_data_entries = args.num_data_entries
     db_host = args.db_host
     db_name = args.db_name
@@ -186,9 +179,6 @@ if __name__ == "__main__":
     if model_output_path is None:
         logging.error("Argument model_output_path is required.")
         parser.print_help()
-        exit(-1)
-    if data_source is None:
-        logging.error("Argument data_source is required.")
         exit(-1)
     if db_host is None:
         logging.error("Argument db_host is required.")
@@ -223,6 +213,5 @@ if __name__ == "__main__":
         db_pass=db_pass)
 
     Train(model_import_path=model_input_path,
-          data_source=data_source,
           batch_gen=batch_gen, 
           model_export_path=model_output_path)

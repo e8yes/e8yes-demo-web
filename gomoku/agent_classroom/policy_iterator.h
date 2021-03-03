@@ -38,7 +38,6 @@ namespace e8 {
  * @param num_iterations How many more iterations of learning material generation and model training
  * needs to be run.
  * @param num_games_per_iteration The number of games to run before model update.
- * @param bootstrap_from_rep_data If there is no past model, this argument tells the function
  * whether to initialize the first model by training it on the representative data set.
  * @param source_tree_root The root directory pointing to the project's code repository. This
  * function will launch python programs in the code repository.
@@ -50,8 +49,7 @@ namespace e8 {
  */
 void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
                            std::string const &model_name, unsigned num_iterations,
-                           unsigned num_games_per_iteration, bool bootstrap_from_rep_data,
-                           std::string const &source_tree_root,
+                           unsigned num_games_per_iteration, std::string const &source_tree_root,
                            std::string const &model_storage_path, std::string const &db_host_name,
                            std::string const &db_name, GameInstanceContainer *container);
 

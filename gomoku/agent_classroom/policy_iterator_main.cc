@@ -27,7 +27,6 @@ static char const kDbHostNameFlag[] = "db_host_name";
 static char const kDbNameFlag[] = "db_name";
 static char const kNumIterationsFlag[] = "num_iterations";
 static char const kNumGamesPerIterationFlag[] = "num_games_per_iteration";
-static char const kBootstrapFromRepDataFlag[] = "bootstrap_from_rep_data";
 static char const kSourceTreeRootFlag[] = "source_tree_root";
 static char const kModelStoragePathFlag[] = "model_storage_path";
 
@@ -43,8 +42,6 @@ int main(int argc, char *argv[]) {
         e8::ReadFlag(kNumIterationsFlag, unsigned(0), e8::FromString<unsigned>);
     unsigned num_games_per_iteration =
         e8::ReadFlag(kNumGamesPerIterationFlag, unsigned(0), e8::FromString<unsigned>);
-    bool bootstrap_from_rep_data =
-        e8::ReadFlag(kBootstrapFromRepDataFlag, bool(false), e8::FromString<bool>);
     std::string source_tree_root =
         e8::ReadFlag(kSourceTreeRootFlag, std::string(), e8::FromString<std::string>);
     std::string model_storage_path =
@@ -61,8 +58,8 @@ int main(int argc, char *argv[]) {
     e8::GameInstanceContainer::ScheduleId schedule_id =
         e8::AllocateGameInstanceContainerScheduleId();
     e8::IterateFromLastPolicy(schedule_id, model_class, num_iterations, num_games_per_iteration,
-                              bootstrap_from_rep_data, source_tree_root, model_storage_path,
-                              db_host_name, db_name, e8::DefaultGameInstanceContainer());
+                              source_tree_root, model_storage_path, db_host_name, db_name,
+                              e8::DefaultGameInstanceContainer());
 
     return 0;
 }

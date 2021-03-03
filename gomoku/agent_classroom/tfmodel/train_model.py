@@ -18,7 +18,6 @@ from augmentation import AugmentData
 from batch_generator import BatchGenerator
 
 def DataSetLoss(model: any,
-                data_source: int,
                 training_data: bool,
                 batch_gen: BatchGenerator,
                 require_shl: bool):
@@ -26,11 +25,9 @@ def DataSetLoss(model: any,
     num_batches = None
     if training_data:
         num_batches = min(batch_gen.NumDataEntries(
-            data_source=data_source,
             training_data=training_data) // batch_size + 1, 6)
     else:
         num_batches = batch_gen.NumDataEntries(
-            data_source=data_source,
             training_data=training_data) // batch_size + 1
 
     total_loss = 0
@@ -48,7 +45,6 @@ def DataSetLoss(model: any,
         policies, \
         values = \
             batch_gen.NextBatch(batch_size=batch_size,
-                                sample_from=data_source,
                                 training_data=training_data)
 
         loss = None
@@ -89,7 +85,6 @@ def DataSetLoss(model: any,
            num_data_points
 
 def Train(model_import_path: str,
-          data_source: int,
           batch_gen: BatchGenerator, 
           model_export_path: str) -> None:
     model = LoadModel(model_import_path=model_import_path)
@@ -105,8 +100,7 @@ def Train(model_import_path: str,
     best_loss = float("inf")
     tolerance = kTolerance
     evaluateAfterNumUpdates = \
-        batch_gen.NumDataEntries(data_source=data_source,
-                                 training_data=True) // kBatchSize
+        batch_gen.NumDataEntries(training_data=True) // kBatchSize
     if evaluateAfterNumUpdates == 0:
         evaluateAfterNumUpdates = 1
 
@@ -119,7 +113,6 @@ def Train(model_import_path: str,
             training_reg_loss, \
             training_n = \
                 DataSetLoss(model=model,
-                            data_source=data_source,
                             training_data=True,
                             batch_gen=batch_gen,
                             require_shl=require_shl)
@@ -130,7 +123,6 @@ def Train(model_import_path: str,
             test_reg_loss, \
             testing_n = \
                 DataSetLoss(model=model,
-                            data_source=data_source,
                             training_data=False,
                             batch_gen=batch_gen,
                             require_shl=require_shl)
@@ -172,7 +164,6 @@ def Train(model_import_path: str,
         policies, \
         values = \
             batch_gen.NextBatch(batch_size=kBatchSize,
-                                sample_from=data_source,
                                 training_data=True)
 
         boards, \
@@ -232,9 +223,6 @@ if __name__ == "__main__":
     parser.add_argument("--model_output_path",
         type=str,
         help="A path to write the trained model to. Do not specify a file name.")
-    parser.add_argument("--data_source",
-        type=str,
-        help="An integer indicating from which data source the model will be trained.")
     parser.add_argument("--num_data_entries",
         type=str,
         help="The number of the latest game data entries used to train the model. "
@@ -255,7 +243,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     model_input_path = args.model_input_path
     model_output_path = args.model_output_path
-    data_source = args.data_source
     num_data_entries = args.num_data_entries
     db_host = args.db_host
     db_name = args.db_name
@@ -269,9 +256,6 @@ if __name__ == "__main__":
     if model_output_path is None:
         logging.error("Argument model_output_path is required.")
         parser.print_help()
-        exit(-1)
-    if data_source is None:
-        logging.error("Argument data_source is required.")
         exit(-1)
     if db_host is None:
         logging.error("Argument db_host is required.")
@@ -303,6 +287,5 @@ if __name__ == "__main__":
         db_pass=db_pass)
 
     Train(model_import_path=model_input_path,
-          data_source=data_source,
           batch_gen=batch_gen, 
           model_export_path=model_output_path)

@@ -52,16 +52,14 @@ class BatchGenerator:
                                self.num_data_entries_)
     
     def NumDataEntries(self,
-                       data_source: int,
                        training_data: bool,
                        last_k_steps: int = None) -> int:
         cur = self.conn_.cursor()
         cur.execute(
             "SELECT COUNT(gga.*) FROM {0} AS gga "
             "JOIN gomoku_game gg ON gga.game_id = gg.id "
-            "WHERE gg.game_purpose={1} {2} " \
+            "WHERE gg.game_purpose IN (0, 1) {1} " \
                 .format(self.MostRecentDataSet_(last_k_steps=last_k_steps),
-                        data_source,
                         self.PartitionClause_(training_data=training_data)))
 
         row = cur.fetchall()
@@ -69,7 +67,6 @@ class BatchGenerator:
     
     def NextBatch(self,
                   batch_size: int,
-                  sample_from: int,
                   training_data: bool,
                   last_k_steps: int = None) -> Tuple[np.ndarray,
                                                      np.ndarray,
@@ -81,11 +78,10 @@ class BatchGenerator:
         cur = self.conn_.cursor()
         cur.execute("SELECT gga.* FROM {0} AS gga "
                     "JOIN gomoku_game gg ON gga.game_id = gg.id "
-                    "WHERE gg.game_purpose={1} {2} "
+                    "WHERE gg.game_purpose IN (0, 1) {1} "
                     "ORDER BY RANDOM() ASC "
-                    "LIMIT {3} ".\
+                    "LIMIT {2} ".\
             format(self.MostRecentDataSet_(last_k_steps=last_k_steps),
-                   sample_from,
                    self.PartitionClause_(training_data=training_data),
                    batch_size))
         rows = cur.fetchall()
@@ -116,9 +112,9 @@ if __name__ == "__main__":
                          db_user="postgres",
                          db_pass="password")
 
-    print("total=", gen.NumDataEntries(data_source=1, training_data=None))
-    print("training=", gen.NumDataEntries(data_source=1, training_data=True))
-    print("testing=", gen.NumDataEntries(data_source=1, training_data=False))
+    print("total=", gen.NumDataEntries(training_data=None))
+    print("training=", gen.NumDataEntries(training_data=True))
+    print("testing=", gen.NumDataEntries(training_data=False))
 
     boards, \
     game_phases, \
@@ -128,7 +124,6 @@ if __name__ == "__main__":
     policies, \
     values= \
         gen.NextBatch(batch_size=1,
-                      sample_from=1,
                       training_data=True)
 
     for i in range(boards.shape[0]):

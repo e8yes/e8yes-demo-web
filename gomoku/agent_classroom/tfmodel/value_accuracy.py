@@ -26,7 +26,6 @@ def LateGameValueAccuracy(
     values = \
         batch_gen.NextBatch(
             batch_size=100000,
-            sample_from=0,
             training_data=False,
             last_k_steps=last_k_steps)
 
