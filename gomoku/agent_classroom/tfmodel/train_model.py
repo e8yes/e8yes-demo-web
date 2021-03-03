@@ -7,15 +7,21 @@ import os
 import logging
 import tensorflow as tf
 import numpy as np
-from batch_generator import BatchGenerator
-from cnn_resnet_shared_tower_model import CollectGomokuCnnResNetSharedTowerVariables
-from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTower
-from cnn_resnet_shared_tower_model import GomokuCnnResNetSharedTowerModelName
 
-def DataSetLoss(model: GomokuCnnResNetSharedTower,
+from poly_functions import RequireShlFeatures
+from poly_functions import ReadModelName
+from poly_functions import ReadBoardSize
+from poly_functions import LoadModel
+from poly_functions import SaveModel
+from poly_functions import TrainableVariables
+from augmentation import AugmentData
+from batch_generator import BatchGenerator
+
+def DataSetLoss(model: any,
                 data_source: int,
                 training_data: bool,
-                batch_gen: BatchGenerator):
+                batch_gen: BatchGenerator,
+                require_shl: bool):
     batch_size = 1000
     num_batches = None
     if training_data:
@@ -30,95 +36,118 @@ def DataSetLoss(model: GomokuCnnResNetSharedTower,
     total_loss = 0
     total_policy_loss = 0
     total_value_loss = 0
+    total_reg_loss = 0
     num_data_points = 0
 
     for _ in range(num_batches):
         boards, \
-        game_phase_place_3_stones, \
-        game_phase_swap2_decision, \
-        game_phase_place_2_more_stones, \
-        game_phase_stone_type_decision, \
-        game_phase_standard_gomoku, \
+        game_phases, \
         next_move_stone_types, \
+        shl_maps, \
+        top_shl_features, \
         policies, \
         values = \
             batch_gen.NextBatch(batch_size=batch_size,
                                 sample_from=data_source,
-                                training_data=training_data,
-                                enable_augmentation=False)
+                                training_data=training_data)
 
-        loss, policy_loss, value_loss = model.Loss(
-            boards,
-            game_phase_place_3_stones,
-            game_phase_swap2_decision,
-            game_phase_place_2_more_stones,
-            game_phase_stone_type_decision,
-            game_phase_standard_gomoku,
-            next_move_stone_types,
-            policies,
-            values)
+        loss = None
+        policy_loss = None
+        value_loss = None
+        reg_loss = None
+
+        if require_shl:
+            loss, policy_loss, value_loss, reg_loss = model.Loss(
+                boards,
+                game_phases,
+                next_move_stone_types,
+                shl_maps,
+                top_shl_features,
+                policies,
+                values)
+        else:
+            loss, policy_loss, value_loss, reg_loss = model.Loss(
+                boards,
+                game_phases,
+                next_move_stone_types,
+                policies,
+                values)
 
         batch_num_data_points = boards.shape[0]
+
         total_loss += batch_num_data_points*loss.numpy()
         total_policy_loss += batch_num_data_points*policy_loss.numpy()
         total_value_loss += batch_num_data_points*value_loss.numpy()
+        total_reg_loss += batch_num_data_points*reg_loss.numpy()
+
         num_data_points += batch_num_data_points
 
     return total_loss / num_data_points, \
            total_policy_loss / num_data_points, \
            total_value_loss / num_data_points, \
+           total_reg_loss / num_data_points, \
            num_data_points
 
 def Train(model_import_path: str,
           data_source: int,
           batch_gen: BatchGenerator, 
-          test_batch_gen: BatchGenerator,
           model_export_path: str) -> None:
-    src = os.path.join(
-        model_import_path, GomokuCnnResNetSharedTowerModelName())
-    model = tf.saved_model.load(export_dir=src)
+    model = LoadModel(model_import_path=model_import_path)
+    model_name = ReadModelName(model_import_path=model_import_path)
+    require_shl = RequireShlFeatures(model_name)
+    model_vars = TrainableVariables(model=model)
 
     optimizer = tf.optimizers.Adamax()
 
-    model_vars = CollectGomokuCnnResNetSharedTowerVariables(model=model)
-
-    kTolerance = 3
-    kBatchSize = 100
+    kTolerance = 5
+    kBatchSize = 50
 
     best_loss = float("inf")
     tolerance = kTolerance
     evaluateAfterNumUpdates = \
         batch_gen.NumDataEntries(data_source=data_source,
-                                 training_data=True) // kBatchSize // 10
+                                 training_data=True) // kBatchSize
     if evaluateAfterNumUpdates == 0:
         evaluateAfterNumUpdates = 1
 
     i = 0
     while True:
         if i % evaluateAfterNumUpdates == 0:
-            training_loss, training_policy_loss, training_value_loss, training_n = \
+            training_loss, \
+            training_policy_loss, \
+            training_value_loss, \
+            training_reg_loss, \
+            training_n = \
                 DataSetLoss(model=model,
                             data_source=data_source,
                             training_data=True,
-                            batch_gen=test_batch_gen)
+                            batch_gen=batch_gen,
+                            require_shl=require_shl)
 
-            test_loss, test_policy_loss, test_value_loss, testing_n = \
+            test_loss, \
+            test_policy_loss, \
+            test_value_loss, \
+            test_reg_loss, \
+            testing_n = \
                 DataSetLoss(model=model,
                             data_source=data_source,
                             training_data=False,
-                            batch_gen=test_batch_gen)
+                            batch_gen=batch_gen,
+                            require_shl=require_shl)
 
             logging.info("iteration={0} "\
-                         "training=[l={1}, pl={2}, vl={3}, n={4}] "\
-                         "testing=[l={5}, pl={6}, vl={7}, n={8}]"\
+                        "training=[l={1}, pl={2}, vl={3}, rl={4}, n={5}] "\
+                        "testing=[l={6}, pl={7}, vl={8}, rl={9}, n={10}]"\
                 .format(i,
                         training_loss,
                         training_policy_loss,
                         training_value_loss,
+                        training_reg_loss,
                         training_n,
                         test_loss,
                         test_policy_loss,
                         test_value_loss,
+                        test_reg_loss,
                         testing_n))
 
             if test_loss < best_loss:
@@ -126,13 +155,7 @@ def Train(model_import_path: str,
                 tolerance = kTolerance
 
                 logging.info("Found a candidate model.")
-                dst = os.path.join(
-                    model_export_path, GomokuCnnResNetSharedTowerModelName())
-                tf.saved_model.save(
-                    obj=model,
-                    export_dir=dst,
-                    signatures={"inference": model.__call__,
-                                "loss": model.Loss})
+                SaveModel(model=model, model_export_path=model_export_path)
             else:
                 tolerance -= 1
 
@@ -142,30 +165,53 @@ def Train(model_import_path: str,
                     break
 
         boards, \
-        game_phase_place_3_stones, \
-        game_phase_swap2_decision, \
-        game_phase_place_2_more_stones, \
-        game_phase_stone_type_decision, \
-        game_phase_standard_gomoku, \
+        game_phases, \
         next_move_stone_types, \
+        shl_maps, \
+        top_shl_features, \
         policies, \
         values = \
             batch_gen.NextBatch(batch_size=kBatchSize,
                                 sample_from=data_source,
-                                training_data=True,
-                                enable_augmentation=True)
+                                training_data=True)
+
+        boards, \
+        game_phases, \
+        next_move_stone_types, \
+        shl_maps, \
+        top_shl_features, \
+        policies, \
+        values = \
+            AugmentData(
+                boards=boards,
+                game_phases=game_phases,
+                next_move_stone_types=next_move_stone_types,
+                shl_maps=shl_maps,
+                top_shl_features=top_shl_features,
+                policies=policies,
+                values=values,
+                percentage=0.1)
 
         with tf.GradientTape() as tape:
-            loss, _, _ = model.Loss(
-                boards,
-                game_phase_place_3_stones,
-                game_phase_swap2_decision,
-                game_phase_place_2_more_stones,
-                game_phase_stone_type_decision,
-                game_phase_standard_gomoku,
-                next_move_stone_types,
-                policies,
-                values)
+            loss = None
+
+            if require_shl:
+                loss, _, _, _ = model.Loss(
+                    boards,
+                    game_phases,
+                    next_move_stone_types,
+                    shl_maps,
+                    top_shl_features,
+                    policies,
+                    values)
+            else:
+                loss, _, _, _ = model.Loss(
+                    boards,
+                    game_phases,
+                    next_move_stone_types,
+                    policies,
+                    values)
+
             grads = tape.gradient(target=loss, sources=model_vars)
             optimizer.apply_gradients(grads_and_vars=zip(grads, model_vars))
 
@@ -244,22 +290,19 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, 
                         format="%(asctime)s %(levelname)s %(message)s")
 
-    batch_gen = BatchGenerator(num_data_entries=num_data_entries,
-                               db_name=db_name,
-                               db_host=db_host,
-                               db_port=5432,
-                               db_user=db_user,
-                               db_pass=db_pass)
+    model_name = ReadModelName(model_import_path=model_input_path)
+    board_size = ReadBoardSize(model_name=model_name)
 
-    test_batch_gen = BatchGenerator(num_data_entries=num_data_entries,
-                                    db_name=db_name,
-                                    db_host=db_host,
-                                    db_port=5432,
-                                    db_user=db_user,
-                                    db_pass=db_pass)
+    batch_gen = BatchGenerator(
+        board_size=board_size,
+        num_data_entries=num_data_entries,
+        db_name=db_name,
+        db_host=db_host,
+        db_port=5432,
+        db_user=db_user,
+        db_pass=db_pass)
 
     Train(model_import_path=model_input_path,
           data_source=data_source,
           batch_gen=batch_gen, 
-          test_batch_gen=test_batch_gen,
           model_export_path=model_output_path)
