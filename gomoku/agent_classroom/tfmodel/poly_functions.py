@@ -43,10 +43,10 @@ def TrainableVariables(model: any) -> List[tf.Variable]:
     if "gomoku_cnn_shared_tower" in model_name:
         return cnn_resnet_shared_tower_model.\
             CollectGomokuCnnResNetSharedTowerVariables(model)
-    elif "gomoku_cnn_shared" in model_name:
-        return cnn_shared_model.TrainableVariables(model)
     elif "gomoku_cnn_shared_with_shl" in model_name:
         return cnn_shared_with_shl_model.\
             TrainableVariables(model)
+    elif "gomoku_cnn_shared" in model_name:
+        return cnn_shared_model.TrainableVariables(model)
     
     assert(False)
