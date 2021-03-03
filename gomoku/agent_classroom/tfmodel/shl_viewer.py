@@ -336,7 +336,7 @@ def FetchActionHistory(game_id: int,
             game_phase=game_phase,
             board=BoardData(bytes(row[5])),
             next_move_stone_type=next_move_stone_type,
-            policy=PolicyData(row[7]),
+            policy=PolicyData(row[9]),
             action_number=row[2])
         history.append(record)
 
@@ -418,7 +418,7 @@ def Replay(history: List[ActionHistoryRecord]):
         shl_map = ComputeShlMap(
             board=history[i].board_, 
             next_move_stone_type=history[i].next_move_stone_type_,
-            k=5)
+            k=15)
         normalized_shl_map = NormalizeShlMap(shl_map=shl_map)
 
         PrintBoard(
