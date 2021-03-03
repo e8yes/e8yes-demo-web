@@ -39,7 +39,7 @@ class LinearCnnLayer(tf.Module):
 class CnnLayers(tf.Module):
     def __init__(self, num_features: int):
         num_input_channels = num_features
-        num_filters = 40
+        num_filters = 32
         kernel_size = 5
         self.conv_kernel1 = tf.Variable(
             name="conv_kernel1",
@@ -54,9 +54,9 @@ class CnnLayers(tf.Module):
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
         self.prelu1 = PRelu(num_features=num_filters)
         
-        kernel_size = 3
+        kernel_size = 5
         num_input_channels = num_filters
-        num_filters = 40
+        num_filters = 32
         self.conv_kernel2 = tf.Variable(
             name="conv_kernel2",
             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
@@ -70,9 +70,9 @@ class CnnLayers(tf.Module):
             initial_value=tf.zeros(shape=[num_filters], dtype=tf.float32))
         self.prelu2 = PRelu(num_features=num_filters)
 
-        kernel_size = 1
+        kernel_size = 3
         num_input_channels = num_filters
-        num_filters = 40
+        num_filters = 32
         self.conv_kernel3 = tf.Variable(
             name="conv_kernel3",
             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
@@ -88,7 +88,7 @@ class CnnLayers(tf.Module):
 
         kernel_size = 1
         num_input_channels = num_filters
-        num_filters = 40
+        num_filters = 32
         self.conv_kernel4 = tf.Variable(
             name="conv_kernel4",
             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
@@ -203,62 +203,62 @@ class PolicyLayer(tf.Module):
     def TransformVariables(self) -> List[tf.Tensor]:
         return [self.conv_kernel, self.weights]
 
-class ValueLayer(tf.Module):
-    def __init__(self, num_top_shl_features: int):
-        num_inputs = num_top_shl_features + 5 + 3
-        num_outputs = 64
-        self.weights1 = tf.Variable(
-            name="value_weights1",
-            initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
-                shape=[num_inputs, num_outputs],
-                stddev=math.sqrt(2/(num_inputs)),
-                dtype=tf.float32))
-        self.biases1 = tf.Variable(
-            name="policy_biases1",
-            initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
-        self.prelu1 = PRelu(num_features=num_outputs)
+# class ValueLayer(tf.Module):
+#     def __init__(self, num_top_shl_features: int):
+#         num_inputs = num_top_shl_features + 5 + 3
+#         num_outputs = 64
+#         self.weights1 = tf.Variable(
+#             name="value_weights1",
+#             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
+#                 shape=[num_inputs, num_outputs],
+#                 stddev=math.sqrt(2/(num_inputs)),
+#                 dtype=tf.float32))
+#         self.biases1 = tf.Variable(
+#             name="policy_biases1",
+#             initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
+#         self.prelu1 = PRelu(num_features=num_outputs)
 
-        num_inputs = num_outputs
-        num_outputs = 1
-        self.weights2 = tf.Variable(
-            name="value_weights2",
-            initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
-                shape=[num_inputs, num_outputs],
-                stddev=math.sqrt(2/(num_inputs)),
-                dtype=tf.float32))
-        self.biases2 = tf.Variable(
-            name="policy_biases2",
-            initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
+#         num_inputs = num_outputs
+#         num_outputs = 1
+#         self.weights2 = tf.Variable(
+#             name="value_weights2",
+#             initial_value=tf.random.truncated_normal( # pylint: disable=unexpected-keyword-arg
+#                 shape=[num_inputs, num_outputs],
+#                 stddev=math.sqrt(2/(num_inputs)),
+#                 dtype=tf.float32))
+#         self.biases2 = tf.Variable(
+#             name="policy_biases2",
+#             initial_value=tf.zeros(shape=[num_outputs], dtype=tf.float32))
 
-    @tf.function
-    def __call__(self,
-                 top_shl_features: tf.Tensor,
-                 game_phases: tf.Tensor,
-                 next_move_stone_types: tf.Tensor) -> tf.Tensor:
-        value_features = tf.concat( # pylint: disable=unexpected-keyword-arg, no-value-for-parameter
-            values=[top_shl_features, 
-                    game_phases,
-                    next_move_stone_types],
-            axis=1,
-            name="value_features")
+#     @tf.function
+#     def __call__(self,
+#                  top_shl_features: tf.Tensor,
+#                  game_phases: tf.Tensor,
+#                  next_move_stone_types: tf.Tensor) -> tf.Tensor:
+#         value_features = tf.concat( # pylint: disable=unexpected-keyword-arg, no-value-for-parameter
+#             values=[top_shl_features, 
+#                     game_phases,
+#                     next_move_stone_types],
+#             axis=1,
+#             name="value_features")
 
-        value_scores_linear = tf.matmul(
-            a=value_features,
-            b=self.weights1,
-            name="value_dense1") + self.biases1
-        value_scores = self.prelu1(value_scores_linear)
+#         value_scores_linear = tf.matmul(
+#             a=value_features,
+#             b=self.weights1,
+#             name="value_dense1") + self.biases1
+#         value_scores = self.prelu1(value_scores_linear)
 
-        value_score = tf.matmul(
-            a=value_scores,
-            b=self.weights2,
-            name="value_dense2") + self.biases2
-        value = tf.tanh(x=value_score, name="value")
+#         value_score = tf.matmul(
+#             a=value_scores,
+#             b=self.weights2,
+#             name="value_dense2") + self.biases2
+#         value = tf.tanh(x=value_score, name="value")
 
-        return tf.reshape(tensor=value, shape=[-1])
+#         return tf.reshape(tensor=value, shape=[-1])
 
-    @tf.function
-    def TransformVariables(self) -> List[tf.Tensor]:
-        return [self.weights1, self.weights2]
+#     @tf.function
+#     def TransformVariables(self) -> List[tf.Tensor]:
+#         return [self.weights1, self.weights2]
 
 class GomokuCnnShlSharedModel(tf.Module):
     def __init__(self):
@@ -266,8 +266,8 @@ class GomokuCnnShlSharedModel(tf.Module):
             input_size=INPUT_SIZE)
         self.linear_cnn_layer = LinearCnnLayer(num_features=2 + 5 + 3 + 4)
         self.cnn_layers = CnnLayers(num_features=2 + 5 + 3 + 4)
-        self.policy_layer = PolicyLayer(num_features=40)
-        self.value_layer = ValueLayer(num_top_shl_features=60)
+        self.policy_layer = PolicyLayer(num_features=32)
+        # self.value_layer = ValueLayer(num_top_shl_features=60)
 
     @tf.function(
         input_signature=[
@@ -288,18 +288,18 @@ class GomokuCnnShlSharedModel(tf.Module):
             game_phases,
             next_move_stone_types,
             shl_map)
-        
-        value = self.value_layer(
-            top_shl_features=top_shl_features,
-            game_phases=feature_planes[:, 0, 0, 2:7],
-            next_move_stone_types=feature_planes[:, 0, 0, 7:10])
-        
+
+        # value = self.value_layer(
+        #     top_shl_features=top_shl_features,
+        #     game_phases=feature_planes[:, 0, 0, 2:7],
+        #     next_move_stone_types=feature_planes[:, 0, 0, 7:10])
+
         conv_features_linear = self.linear_cnn_layer(feature_planes)
         conv_features = self.cnn_layers(conv_features_linear)
 
         policy, policy_logits = self.policy_layer(conv_features)
 
-        return policy, value, policy_logits
+        return policy, 0, policy_logits
 
     @tf.function(
         input_signature=[
@@ -326,8 +326,7 @@ class GomokuCnnShlSharedModel(tf.Module):
     @tf.function
     def TransformVariables(self) -> List[tf.Tensor]:
         return self.cnn_layers.TransformVariables() + \
-               self.policy_layer.TransformVariables() + \
-               self.value_layer.TransformVariables()
+               self.policy_layer.TransformVariables() # + self.value_layer.TransformVariables()
 
     @tf.function(
         input_signature=[
@@ -350,7 +349,7 @@ class GomokuCnnShlSharedModel(tf.Module):
                                          tf.Tensor,
                                          tf.Tensor,
                                          tf.Tensor]:
-        _, pred_values, policy_logits = self.Infer(
+        _, _, policy_logits = self.Infer(
             boards,
             game_phases,
             next_move_stone_types,
@@ -364,8 +363,9 @@ class GomokuCnnShlSharedModel(tf.Module):
             input_tensor=policy_losses, axis=0)
 
         # Value loss.
-        value_loss = tf.losses.mean_squared_error(
-            y_true=values, y_pred=pred_values)
+        # value_loss = tf.losses.mean_squared_error(
+        #     y_true=values, y_pred=pred_values)
+        value_loss = 0
         
         # Regularization loss.
         l2_loss = 0
@@ -404,11 +404,12 @@ def TrainableVariables(model: GomokuCnnShlSharedModel):
             model.policy_layer.prelu.alphas,
             model.policy_layer.weights,
             model.policy_layer.biases,
-            model.value_layer.prelu1.alphas,
-            model.value_layer.weights1,
-            model.value_layer.biases1,
-            model.value_layer.weights2,
-            model.value_layer.biases2]
+            # model.value_layer.prelu1.alphas,
+            # model.value_layer.weights1,
+            # model.value_layer.biases1,
+            # model.value_layer.weights2,
+            # model.value_layer.biases2
+            ]
 
 def PrintModelParameterInfo():
     model = GomokuCnnShlSharedModel()
