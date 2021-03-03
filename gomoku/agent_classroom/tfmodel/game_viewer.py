@@ -95,7 +95,7 @@ def FetchActionHistory(game_id: int,
             game_phase=game_phase,
             board=BoardData(bytes(row[5])),
             next_move_stone_type=next_move_stone_type,
-            policy=PolicyData(row[7]),
+            policy=PolicyData(row[9]),
             action_number=row[2])
         history.append(record)
 
