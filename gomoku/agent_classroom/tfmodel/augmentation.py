@@ -31,7 +31,7 @@ def SwitchStoneType(board: np.ndarray,
         shl_map[:,:,2:], shl_map[:,:,:2]
 
     new_top_shl_features = np.copy(a=top_shl_features)
-    for i in range(10):
+    for i in range(top_shl_features.shape[0] // 4):
         new_top_shl_features[4*i + 0] = top_shl_features[i*4 + 2]
         new_top_shl_features[4*i + 1] = top_shl_features[i*4 + 3]
         new_top_shl_features[4*i + 2] = top_shl_features[i*4 + 0]

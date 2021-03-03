@@ -49,7 +49,7 @@ def DeserializeRows(rows: List[any],
     shl_maps = np.zeros(
         shape=(actual_batch_size, board_size, board_size, 4), dtype=np.float32)
     top_shl_features = np.zeros(
-        shape=(actual_batch_size, 40), dtype=np.float32)
+        shape=(actual_batch_size, 60), dtype=np.float32)
 
     policies = np.zeros(
         shape=(actual_batch_size, board_size*board_size + 5), dtype=np.float32)
