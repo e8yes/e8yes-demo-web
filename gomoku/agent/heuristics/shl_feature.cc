@@ -279,7 +279,7 @@ void ShlFeatureBuilder::UpdateShlOverDirection(
 
 void ShlFeatureBuilder::AddStone(GomokuBoardState const &board) {
     assert(!board.History().empty());
-    GomokuAction const &action = board.History()[board.History().size() - 1].action.second;
+    GomokuAction const &action = board.LastAction()->action.second;
     assert(action.stone_pos.has_value());
 
     double_contour_builder_.AddStone(*action.stone_pos);

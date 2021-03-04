@@ -92,17 +92,16 @@ struct ShlComponents {
 class ShlFeatureBuilder {
   public:
     /**
-     * @brief ShlFeatureBuilder
-     *
-     * @param board
-     * @param double_contour
+     * @brief ShlFeatureBuilder Builds a brand new SHL feature map for the specified board state.
      */
     ShlFeatureBuilder(GomokuBoardState const &board);
 
     /**
-     * @brief AddStone
+     * @brief AddStone Synchronizes the SHL feature map with board after a stone is placed  onto the
+     * board. It detects the affected SHL map positions and updates their feature values.
      *
-     * @param board
+     * @param board The board must be one stone different than the feature map. The last action in
+     * the board must be a stone action.
      */
     void AddStone(GomokuBoardState const &board);
 
