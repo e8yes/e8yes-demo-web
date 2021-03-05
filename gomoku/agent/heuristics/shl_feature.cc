@@ -20,13 +20,17 @@
 #include <cassert>
 #include <cmath>
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <tuple>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "gomoku/agent/heuristics/contour.h"
 #include "gomoku/agent/heuristics/shl_feature.h"
+#include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 
 namespace e8 {
@@ -74,6 +78,10 @@ std::tuple<int8_t, int8_t, bool> LinkageCountsAtWithDirection(int8_t x, int8_t y
         }
         case PUNCTUATION: {
             ++i;
+
+            if (i > 6) {
+                return std::make_tuple(raw_count, holes, blocked);
+            }
 
             int8_t shifted_x = x + i * dx;
             int8_t shifted_y = y + i * dy;
@@ -235,6 +243,12 @@ void ShlFeatureBuilder::UpdateShlFeaturesAt(MovePosition candid_pos,
         ShlCount(candid_pos.x, candid_pos.y, /*compute_for_stone_type=*/StoneType::ST_BLACK, board);
     auto [primary_white, secondary_white] =
         ShlCount(candid_pos.x, candid_pos.y, /*compute_for_stone_type=*/StoneType::ST_WHITE, board);
+
+    if (primary_black == 0.0f && secondary_black == 0.0f && primary_white == 0.0f &&
+        secondary_white == 0.0f) {
+        raw_map_.erase(candid_pos);
+        return;
+    }
 
     auto it = raw_map_.find(candid_pos);
     if (it != raw_map_.end()) {
@@ -432,5 +446,64 @@ float ToShlScore(e8::ShlComponents const &shl_components) {
     return shl_components.primary_shl_count_black + shl_components.secondary_shl_count_black +
            shl_components.primary_shl_count_white + shl_components.secondary_shl_count_white;
 }
+
+struct ShlFeatureBuilderCache::ShlFeatureBuilderCacheInternal {
+    std::unordered_map<MctNodeId, ShlFeatureBuilder> cache_;
+};
+
+ShlFeatureBuilderCache::ShlFeatureBuilderCache()
+    : pimpl_(std::make_unique<ShlFeatureBuilderCacheInternal>()) {}
+
+ShlFeatureBuilderCache::~ShlFeatureBuilderCache() {}
+
+ShlFeatureBuilder const &ShlFeatureBuilderCache::Update(std::optional<MctNodeId> parent_state_id,
+                                                        MctNodeId state_id,
+                                                        GomokuBoardState const &board) {
+    auto current_state_it = pimpl_->cache_.find(state_id);
+    if (current_state_it != pimpl_->cache_.end()) {
+        auto const &[_, builder] = *current_state_it;
+        return builder;
+    }
+
+    if (!parent_state_id.has_value()) {
+        auto const &insertion =
+            pimpl_->cache_.insert(std::make_pair(state_id, ShlFeatureBuilder(board)));
+        assert(insertion.second == true);
+        auto const &[_, builder] = *insertion.first;
+        return builder;
+    }
+
+    auto parent_state_it = pimpl_->cache_.find(*parent_state_id);
+    if (parent_state_it == pimpl_->cache_.end()) {
+        assert(!board.History().empty());
+
+        // Adds the missing parent.
+        GomokuBoardState parent_board(board);
+        parent_board.RetractAction();
+
+        auto const &insertion = pimpl_->cache_.insert(
+            std::make_pair(*parent_state_id, ShlFeatureBuilder(parent_board)));
+        assert(insertion.second == true);
+
+        parent_state_it = insertion.first;
+    }
+
+    auto const &insertion =
+        pimpl_->cache_.insert(std::make_pair(state_id, ShlFeatureBuilder(parent_state_it->second)));
+    assert(insertion.second);
+
+    auto &[_, builder] = *insertion.first;
+
+    auto action_record = board.LastAction();
+    assert(action_record.has_value());
+    GomokuAction const &action = action_record->action.second;
+    if (action.stone_pos.has_value()) {
+        builder.AddStone(board);
+    }
+
+    return builder;
+}
+
+void ShlFeatureBuilderCache::Clear() { pimpl_->cache_.clear(); }
 
 } // namespace e8

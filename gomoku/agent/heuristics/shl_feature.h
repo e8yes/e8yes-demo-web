@@ -19,6 +19,7 @@
 #define SHL_FEATURE_H
 
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <unordered_map>
 #include <unordered_set>
@@ -26,6 +27,7 @@
 #include <vector>
 
 #include "gomoku/agent/heuristics/contour.h"
+#include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 
 namespace e8 {
@@ -165,6 +167,37 @@ class ShlFeatureBuilder {
  * secondary_count_white
  */
 float ToShlScore(e8::ShlComponents const &shl_components);
+
+/**
+ * @brief The ShlFeatureCache class Allows incremental update of the feature builder in a search
+ * tree.
+ */
+class ShlFeatureBuilderCache {
+  public:
+    ShlFeatureBuilderCache();
+    ~ShlFeatureBuilderCache();
+
+    /**
+     * @brief Update This needs to be called in each tree expansion. It finds the delta between the
+     * parent state, if there is any, and updates the feature builder for the expanded state.
+     *
+     * @param parent_state_id If the parent state is empty, this function will build a brand new
+     * feature builder. Otherwise, it will update from the parent state's feature builder.
+     * @param board The board from the state pointed to by the state_id.
+     * @return The updated feature builder for the expanded state.
+     */
+    ShlFeatureBuilder const &Update(std::optional<MctNodeId> parent_state_id, MctNodeId state_id,
+                                    GomokuBoardState const &board);
+
+    /**
+     * @brief Clear Empty the cache.
+     */
+    void Clear();
+
+  private:
+    struct ShlFeatureBuilderCacheInternal;
+    std::unique_ptr<ShlFeatureBuilderCacheInternal> pimpl_;
+};
 
 } // namespace e8
 

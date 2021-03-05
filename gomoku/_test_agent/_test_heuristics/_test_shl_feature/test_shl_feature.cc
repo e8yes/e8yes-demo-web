@@ -25,6 +25,7 @@
 
 #include "common/unit_test_util/unit_test_util.h"
 #include "gomoku/agent/heuristics/shl_feature.h"
+#include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 
 bool EmptyBoardShlFeatureTest() {
@@ -72,7 +73,7 @@ bool ExampleBoardShlFeatureTest() {
     e8::ShlFeatureBuilder features_builder(board);
     std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> raw_shl_map =
         features_builder.TopKMapSparse(/*top_k=*/121, /*normalized=*/true, e8::StoneType::ST_BLACK);
-    TEST_CONDITION(raw_shl_map.size() == 63);
+    TEST_CONDITION(raw_shl_map.size() == 55);
 
     std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> shl_map =
         features_builder.TopKMapSparse(/*top_k=*/5, /*normalized=*/true, e8::StoneType::ST_BLACK);
@@ -141,7 +142,7 @@ bool ExampleBoardIncrementalShlFeatureTest() {
 
     std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> raw_shl_map =
         features_builder.TopKMapSparse(/*top_k=*/121, /*normalized=*/true, e8::StoneType::ST_BLACK);
-    TEST_CONDITION(raw_shl_map.size() == 63);
+    TEST_CONDITION(raw_shl_map.size() == 55);
 
     std::vector<std::pair<e8::MovePosition, e8::ShlComponents>> shl_map =
         features_builder.TopKMapSparse(/*top_k=*/5, /*normalized=*/true, e8::StoneType::ST_BLACK);
@@ -165,11 +166,87 @@ bool ExampleBoardIncrementalShlFeatureTest() {
     return true;
 }
 
+bool ShlFeatureBuilderCacheStartsFromEmptyBoardTest() {
+    e8::GomokuBoardState board(/*width=*/11, /*height=*/11);
+
+    e8::MctNodeId next_id = 1;
+
+    e8::ShlFeatureBuilderCache cache;
+    e8::ShlFeatureBuilder const &builder1 =
+        cache.Update(/*parent_state_id=*/std::nullopt, /*state_id=*/next_id, board);
+    auto feature_map = builder1.TopKMapSparse(/*top_k=*/121, /*normalized=*/true,
+                                              /*next_move_stone_type=*/std::nullopt);
+    TEST_CONDITION(feature_map.empty());
+
+    ++next_id;
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(4, 6)),
+                      /*cached_game_result=*/std::nullopt);
+    e8::ShlFeatureBuilder const &builder2 =
+        cache.Update(/*parent_state_id=*/next_id - 1, /*state_id=*/next_id, board);
+    auto feature_map_dense = builder2.TopKMapDense(/*top_k=*/121, /*normalized=*/true,
+                                                   /*next_move_stone_type=*/std::nullopt);
+    auto ground_truth_feature_map =
+        e8::ShlFeatureBuilder(board).TopKMapDense(/*top_k=*/121, /*normalized=*/true,
+                                                  /*next_move_stone_type=*/std::nullopt);
+    TEST_CONDITION(feature_map_dense == ground_truth_feature_map);
+
+    ++next_id;
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(5, 5)),
+                      /*cached_game_result=*/std::nullopt);
+    e8::ShlFeatureBuilder const &builder3 =
+        cache.Update(/*parent_state_id=*/next_id - 1, /*state_id=*/next_id, board);
+    feature_map_dense = builder3.TopKMapDense(/*top_k=*/121, /*normalized=*/true,
+                                              /*next_move_stone_type=*/std::nullopt);
+    ground_truth_feature_map =
+        e8::ShlFeatureBuilder(board).TopKMapDense(/*top_k=*/121, /*normalized=*/true,
+                                                  /*next_move_stone_type=*/std::nullopt);
+    TEST_CONDITION(feature_map_dense == ground_truth_feature_map);
+
+    return true;
+}
+
+bool ShlFeatureBuilderCacheMissingParentTest() {
+    e8::GomokuBoardState board(/*width=*/11, /*height=*/11);
+
+    e8::MctNodeId next_id = 1;
+
+    e8::ShlFeatureBuilderCache cache;
+    ++next_id;
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(4, 6)),
+                      /*cached_game_result=*/std::nullopt);
+    e8::ShlFeatureBuilder const &builder2 =
+        cache.Update(/*parent_state_id=*/next_id - 1, /*state_id=*/next_id, board);
+    auto feature_map = builder2.TopKMapDense(/*top_k=*/121, /*normalized=*/true,
+                                             /*next_move_stone_type=*/std::nullopt);
+    auto ground_truth_feature_map =
+        e8::ShlFeatureBuilder(board).TopKMapDense(/*top_k=*/121, /*normalized=*/true,
+                                                  /*next_move_stone_type=*/std::nullopt);
+    TEST_CONDITION(feature_map == ground_truth_feature_map);
+
+    ++next_id;
+    board.ApplyAction(board.MovePositionToActionId(e8::MovePosition(5, 5)),
+                      /*cached_game_result=*/std::nullopt);
+    e8::ShlFeatureBuilder const &builder3 =
+        cache.Update(/*parent_state_id=*/next_id - 1, /*state_id=*/next_id, board);
+    feature_map = builder3.TopKMapDense(/*top_k=*/121, /*normalized=*/true,
+                                        /*next_move_stone_type=*/std::nullopt);
+    ground_truth_feature_map =
+        e8::ShlFeatureBuilder(board).TopKMapDense(/*top_k=*/121, /*normalized=*/true,
+                                                  /*next_move_stone_type=*/std::nullopt);
+    TEST_CONDITION(feature_map == ground_truth_feature_map);
+
+    return true;
+}
+
 int main() {
     e8::BeginTestSuite("shl_feature");
     e8::RunTest("EmptyBoardShlFeatureTest", EmptyBoardShlFeatureTest);
     e8::RunTest("ExampleBoardShlFeatureTest", ExampleBoardShlFeatureTest);
     e8::RunTest("ExampleBoardIncrementalShlFeatureTest", ExampleBoardIncrementalShlFeatureTest);
+    e8::RunTest("Example2BoardIncrementalShlFeatureTest", Example2BoardIncrementalShlFeatureTest);
+    e8::RunTest("ShlFeatureBuilderCacheStartsFromEmptyBoardTest",
+                ShlFeatureBuilderCacheStartsFromEmptyBoardTest);
+    e8::RunTest("ShlFeatureBuilderCacheMissingParentTest", ShlFeatureBuilderCacheMissingParentTest);
     e8::EndTestSuite();
     return 0;
 }
