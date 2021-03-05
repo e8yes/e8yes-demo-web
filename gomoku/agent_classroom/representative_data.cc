@@ -18,7 +18,7 @@
 #include <memory>
 #include <string>
 
-#include "gomoku/agent/heuristics/light_rollout_evaluator.h"
+#include "gomoku/agent/heuristics/shl_rollout_evaluator.h"
 #include "gomoku/agent_classroom/learning_material_generator.h"
 #include "gomoku/agent_classroom/representative_data.h"
 #include "gomoku/game/game_instance_container.h"
@@ -28,9 +28,9 @@ namespace e8 {
 void GenerateRepresentativeData(GameInstanceContainer::ScheduleId schedule_id,
                                 unsigned target_num_games, std::string const &db_host_name,
                                 std::string const &db_name, GameInstanceContainer *container) {
-    auto evaluator = std::make_shared<GomokuLightRolloutEvaluator>();
+    auto evaluator = std::make_shared<GomokuShlRolloutEvaluator>();
     GenerateLearningMaterial(GameLogPurpose::GLP_REPRESENTATIVE_DATA, /*model_id=*/std::nullopt,
-                             evaluator, /*early_termination=*/true, schedule_id, target_num_games,
+                             evaluator, /*early_termination=*/false, schedule_id, target_num_games,
                              db_host_name, db_name, container);
 }
 

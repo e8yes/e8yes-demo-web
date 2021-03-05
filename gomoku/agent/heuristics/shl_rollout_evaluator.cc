@@ -106,7 +106,7 @@ struct GomokuShlRolloutEvaluator::GomokuShlRolloutEvaluatorInternal {
 };
 
 GomokuShlRolloutEvaluator::GomokuShlRolloutEvaluatorInternal::GomokuShlRolloutEvaluatorInternal()
-    : random_source(13) {}
+    : random_source() {}
 
 GomokuShlRolloutEvaluator::GomokuShlRolloutEvaluator()
     : pimpl_(std::make_unique<GomokuShlRolloutEvaluatorInternal>()) {}

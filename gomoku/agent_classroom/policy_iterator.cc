@@ -78,7 +78,7 @@ void TrainModel(bool heavy_training, std::string const &source_tree_root,
     int rc = std::system((train_model_executable + " --model_input_path=" + model_input_path +
                           " --model_output_path=" + model_output_path +
                           " --db_host=" + db_host_name + " --db_name=" + db_name +
-                          " --db_user=postgres --db_pass=password --num_data_entries=50000")
+                          " --db_user=postgres --db_pass=password --num_data_entries=100000")
                              .c_str());
     assert(rc == 0);
 }

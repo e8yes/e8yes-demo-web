@@ -243,7 +243,6 @@ int main() {
     e8::RunTest("EmptyBoardShlFeatureTest", EmptyBoardShlFeatureTest);
     e8::RunTest("ExampleBoardShlFeatureTest", ExampleBoardShlFeatureTest);
     e8::RunTest("ExampleBoardIncrementalShlFeatureTest", ExampleBoardIncrementalShlFeatureTest);
-    e8::RunTest("Example2BoardIncrementalShlFeatureTest", Example2BoardIncrementalShlFeatureTest);
     e8::RunTest("ShlFeatureBuilderCacheStartsFromEmptyBoardTest",
                 ShlFeatureBuilderCacheStartsFromEmptyBoardTest);
     e8::RunTest("ShlFeatureBuilderCacheMissingParentTest", ShlFeatureBuilderCacheMissingParentTest);
