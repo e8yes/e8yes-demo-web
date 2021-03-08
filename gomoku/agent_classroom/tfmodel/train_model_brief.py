@@ -18,7 +18,7 @@ from poly_functions import TrainableVariables
 from augmentation import AugmentData
 from batch_generator import BatchGenerator
 
-BATCH_SIZE = 50
+BATCH_SIZE = 100
 VALIDATION_BATCH_SIZE = 5000
 
 def Train(model_import_path: str,
@@ -30,7 +30,7 @@ def Train(model_import_path: str,
 
     optimizer = tf.optimizers.Adamax(learning_rate=1e-3)
 
-    for i in range(20):
+    for i in range(50):
         boards, \
         game_phases, \
         next_move_stone_types, \
@@ -70,7 +70,6 @@ def Train(model_import_path: str,
                     game_phases,
                     next_move_stone_types,
                     shl_maps,
-                    top_shl_features,
                     policies,
                     values)
             else:
@@ -118,7 +117,6 @@ def Train(model_import_path: str,
             game_phases,
             next_move_stone_types,
             shl_maps,
-            top_shl_features,
             policies,
             values)
     else:

@@ -158,8 +158,6 @@ def GenerateModel(model_class: str, model_output_path: str):
          np.reshape(a=primary_shl_count_white, newshape=(-1, 11, 11, 1)),
          np.reshape(a=secondary_shl_count_white, newshape=(-1, 11, 11, 1))),
         axis=3)
-    
-    shl_top_shl_features = np.ones(shape=(2, 60), dtype=np.float32)
 
     ground_truth_policy = tf.constant(
         value=[[0.007936508]*126,
@@ -177,8 +175,7 @@ def GenerateModel(model_class: str, model_output_path: str):
             boards,
             game_phases,
             next_move_stone_types,
-            shl_map,
-            shl_top_shl_features)
+            shl_map)
     else:
         policy, value = model(
             boards,
@@ -199,7 +196,6 @@ def GenerateModel(model_class: str, model_output_path: str):
             game_phases,
             next_move_stone_types,
             shl_map,
-            shl_top_shl_features,
             ground_truth_policy,
             ground_truth_value)
     else:

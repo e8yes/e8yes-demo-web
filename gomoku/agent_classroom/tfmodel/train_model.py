@@ -41,7 +41,7 @@ def DataSetLoss(model: any,
         game_phases, \
         next_move_stone_types, \
         shl_maps, \
-        top_shl_features, \
+        _, \
         policies, \
         values = \
             batch_gen.NextBatch(batch_size=batch_size,
@@ -58,7 +58,6 @@ def DataSetLoss(model: any,
                 game_phases,
                 next_move_stone_types,
                 shl_maps,
-                top_shl_features,
                 policies,
                 values)
         else:
@@ -95,7 +94,7 @@ def Train(model_import_path: str,
     optimizer = tf.optimizers.Adamax()
 
     kTolerance = 5
-    kBatchSize = 50
+    kBatchSize = 1000
 
     best_loss = float("inf")
     tolerance = kTolerance
@@ -192,7 +191,6 @@ def Train(model_import_path: str,
                     game_phases,
                     next_move_stone_types,
                     shl_maps,
-                    top_shl_features,
                     policies,
                     values)
             else:
