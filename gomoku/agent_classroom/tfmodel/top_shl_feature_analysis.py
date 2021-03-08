@@ -4,6 +4,10 @@ from sklearn.ensemble import GradientBoostingRegressor
 from batch_generator import BatchGenerator
 from augmentation import AugmentData
 
+from sklearn import __version__ as sklearn_ver
+
+print(sklearn_ver)
+
 batch_gen = BatchGenerator(
         board_size=11,
         num_data_entries=None,
@@ -20,11 +24,11 @@ shl_maps, \
 top_shl_features, \
 policies, \
 values = \
-    batch_gen.NextBatch(batch_size=100000,
+    batch_gen.NextBatch(batch_size=200000,
                         training_data=True)
 
 _, \
-_, \
+game_phases, \
 next_move_stone_types, \
 _, \
 top_shl_features, \
@@ -41,16 +45,19 @@ values = \
         percentage=1)
 
 _, \
-_, \
+test_game_phases, \
 test_next_move_stone_types, \
 _, \
 test_top_shl_features, \
 _, \
 test_values = \
-    batch_gen.NextBatch(batch_size=100000,
-                        training_data=False)
+    batch_gen.NextBatch(batch_size=200000,
+                        training_data=False,
+                        last_k_steps=14)
 
-def ToX(top_shl_features, next_move_stone_types):
+def ToX(top_shl_features, 
+        next_move_stone_types,
+        game_phases):
     next_move_one_hot = np.zeros(
         (next_move_stone_types.shape[0], 3),
         dtype=np.float32)
@@ -58,19 +65,38 @@ def ToX(top_shl_features, next_move_stone_types):
     next_move_one_hot[next_move_stone_types == 1, 1] = 1
     next_move_one_hot[next_move_stone_types == 2, 2] = 1
 
+    game_phases_one_hot = np.zeros(
+        (game_phases.shape[0], 5),
+        dtype=np.float32)
+    game_phases_one_hot[game_phases == 0, 0] = 1
+    game_phases_one_hot[game_phases == 1, 1] = 1
+    game_phases_one_hot[game_phases == 2, 2] = 1
+    game_phases_one_hot[game_phases == 3, 3] = 1
+    game_phases_one_hot[game_phases == 4, 4] = 1
+
     return np.concatenate(
-        (top_shl_features, next_move_one_hot), axis=1)
+        (top_shl_features, 
+         next_move_one_hot,
+         game_phases_one_hot), axis=1)
 
 
-train_x = ToX(top_shl_features, next_move_stone_types)
+train_x = ToX(
+    top_shl_features,
+    next_move_stone_types,
+    game_phases)
 train_y = values
 
 test_x = ToX(
-    test_top_shl_features, test_next_move_stone_types)
+    test_top_shl_features,
+    test_next_move_stone_types,
+    test_game_phases)
 test_y = test_values
 
-model = GradientBoostingRegressor(n_estimators=15, max_depth=8)
+model = GradientBoostingRegressor(n_estimators=200, max_depth=8)
+
+print("Begin training...")
 model.fit(train_x, train_y)
+print("Finished training.")
 
 print("feature_importance=", model.feature_importances_)
 
