@@ -12,6 +12,9 @@ from poly_functions import LoadModel
 from poly_functions import ReadModelName
 from poly_functions import ReadBoardSize
 
+def CrossEntropy(y_true, y_pred):
+    return np.sum(-y_true*np.log(y_pred + 1e-5), axis=1)
+
 def ArgmaxPolicyAccuracy(
     model: any,
     batch_gen: BatchGenerator,
@@ -21,11 +24,12 @@ def ArgmaxPolicyAccuracy(
     game_phases, \
     next_move_stone_types, \
     shl_maps, \
-    top_shl_features, \
+    _, \
     policies, \
     _ = \
         batch_gen.NextBatch(
-            batch_size=100000,
+            batch_size=batch_gen.NumDataEntries(
+                training_data=False, last_k_steps=last_k_steps),
             training_data=False,
             last_k_steps=last_k_steps)
 
@@ -35,8 +39,7 @@ def ArgmaxPolicyAccuracy(
             boards,
             game_phases,
             next_move_stone_types,
-            shl_maps,
-            top_shl_features)
+            shl_maps)
     else:
         policy_preds, _ = model(
             boards,
@@ -56,9 +59,16 @@ def ArgmaxPolicyAccuracy(
         a=action_preds == action_ground_truth, axis=0)
     num_correct_shl = np.sum(
         a=shl_action_preds == action_ground_truth, axis=0)
+    
+    heuristics_ce = np.mean(
+        CrossEntropy(policies[:, :121], policy_preds[:, :121]), axis=0)
+    shl_ce = np.mean(
+        CrossEntropy(policies[:, :121], flat_shl_scores), axis=0)
 
     return num_correct_heuristics / policies.shape[0], \
            num_correct_shl / policies.shape[0], \
+           heuristics_ce, \
+           shl_ce, \
            policies.shape[0]
 
 
@@ -135,10 +145,14 @@ if __name__ == "__main__":
         db_user=db_user,
         db_pass=db_pass)
 
-    heuristics_acc, shl_acc, n = ArgmaxPolicyAccuracy(
+    heuristics_acc, shl_acc, \
+    heuristics_ce, shl_ce, \
+    n = ArgmaxPolicyAccuracy(
         model=model,
         batch_gen=gen,
         last_k_steps=k,
         require_shl=RequireShlFeatures(model_name))
     logging.info("ArgmaxPolicyAccuracy={0}, {1}; n={2}"\
         .format(heuristics_acc, shl_acc, n))
+    logging.info("CrossEntropy={0}, {1}; n={2}"\
+        .format(heuristics_ce, shl_ce, n))
