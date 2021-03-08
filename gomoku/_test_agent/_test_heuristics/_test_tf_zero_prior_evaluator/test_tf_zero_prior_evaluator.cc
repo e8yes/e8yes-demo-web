@@ -18,6 +18,7 @@
 #include <cmath>
 #include <memory>
 #include <optional>
+#include <unordered_map>
 
 #include "common/unit_test_util/unit_test_util.h"
 #include "gomoku/agent/heuristics/tf_zero_prior_evaluator.h"

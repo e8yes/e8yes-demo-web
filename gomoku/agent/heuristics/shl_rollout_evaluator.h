@@ -25,6 +25,7 @@
 
 #include "common/thread/thread_pool.h"
 #include "gomoku/agent/heuristics/evaluator.h"
+#include "gomoku/agent/heuristics/shl_feature.h"
 #include "gomoku/agent/search/mct_node.h"
 #include "gomoku/game/board_state.h"
 
@@ -52,6 +53,19 @@ class GomokuShlRolloutEvaluator : public GomokuEvaluatorInterface {
     unsigned NumSimulations() const override;
 
     void ClearCache() override;
+
+    /**
+     * @brief GetFeatureBuilderForState Incrementally updates the feature builder cache and returns
+     * the feature builder corresponding to the requested state.
+     *
+     * @param state State that the feature builder is to be constructed for.
+     * @param parent_state_id ID of the parent state if there is any.
+     * @param state_id ID of the state to compute the feature builder for..
+     * @return The updated feature builder for the requested state.
+     */
+    ShlFeatureBuilder const &GetFeatureBuilderForState(GomokuBoardState const &state,
+                                                       std::optional<MctNodeId> parent_state_id,
+                                                       MctNodeId state_id);
 
   private:
     struct GomokuShlRolloutEvaluatorInternal;

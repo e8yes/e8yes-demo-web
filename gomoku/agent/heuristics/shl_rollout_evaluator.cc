@@ -117,7 +117,7 @@ float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
                                                 std::optional<MctNodeId> parent_state_id,
                                                 MctNodeId state_id) {
     ShlFeatureBuilder const &feature_builder =
-        pimpl_->feature_builder_cache.Update(parent_state_id, state_id, state);
+        this->GetFeatureBuilderForState(state, parent_state_id, state_id);
 
     PlayerSide evaluate_for_player = state.CurrentPlayerSide();
     float acc_reward = 0.0f;
@@ -194,7 +194,7 @@ float GomokuShlRolloutEvaluator::EvaluateReward(GomokuBoardState const &state,
 std::unordered_map<GomokuActionId, float> GomokuShlRolloutEvaluator::EvaluatePolicy(
     GomokuBoardState const &state, std::optional<MctNodeId> parent_state_id, MctNodeId state_id) {
     ShlFeatureBuilder const &feature_builder =
-        pimpl_->feature_builder_cache.Update(parent_state_id, state_id, state);
+        this->GetFeatureBuilderForState(state, parent_state_id, state_id);
 
     std::unordered_map<GomokuActionId, float> policy;
 
@@ -230,5 +230,10 @@ float GomokuShlRolloutEvaluator::ExplorationFactor() const { return 3.0f; }
 unsigned GomokuShlRolloutEvaluator::NumSimulations() const { return 2000; }
 
 void GomokuShlRolloutEvaluator::ClearCache() { pimpl_->feature_builder_cache.Clear(); }
+
+ShlFeatureBuilder const &GomokuShlRolloutEvaluator::GetFeatureBuilderForState(
+    GomokuBoardState const &state, std::optional<MctNodeId> parent_state_id, MctNodeId state_id) {
+    return pimpl_->feature_builder_cache.Update(parent_state_id, state_id, state);
+}
 
 } // namespace e8
