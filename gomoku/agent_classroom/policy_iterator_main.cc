@@ -16,6 +16,7 @@
  */
 
 #include <cassert>
+#include <stdlib.h>
 #include <string>
 
 #include "common/flags/parse_flags.h"
@@ -31,6 +32,10 @@ static char const kSourceTreeRootFlag[] = "source_tree_root";
 static char const kModelStoragePathFlag[] = "model_storage_path";
 
 int main(int argc, char *argv[]) {
+    setenv("TF_NUM_INTEROP_THREADS", "1", /*overwrite=*/1);
+    setenv("TF_NUM_INTRAOP_THREADS", "1", /*overwrite=*/1);
+    setenv("OMP_NUM_THREADS", "1", /*overwrite=*/1);
+
     e8::Argv(argc, argv);
 
     std::string model_class =

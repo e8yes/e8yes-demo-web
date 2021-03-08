@@ -24,6 +24,7 @@
 #include <vector>
 
 #include "common/time_util/time_util.h"
+#include "gomoku/agent/heuristics/shl_model_evaluator.h"
 #include "gomoku/agent/heuristics/tf_zero_prior_evaluator.h"
 #include "gomoku/agent_classroom/learning_material_generator.h"
 #include "gomoku/agent_classroom/policy_iterator.h"
@@ -36,7 +37,7 @@ namespace e8 {
 namespace {
 
 unsigned const kCheckPointInterval = 100;
-unsigned const kNumWarmUpGames = 20;
+unsigned const kNumWarmUpGames = 1;
 
 std::string ModelFileName(std::string const &model_path) {
     std::filesystem::path p(model_path);
@@ -78,7 +79,7 @@ void TrainModel(bool heavy_training, std::string const &source_tree_root,
     int rc = std::system((train_model_executable + " --model_input_path=" + model_input_path +
                           " --model_output_path=" + model_output_path +
                           " --db_host=" + db_host_name + " --db_name=" + db_name +
-                          " --db_user=postgres --db_pass=password --num_data_entries=100000")
+                          " --db_user=postgres --db_pass=password --num_data_entries=1000000")
                              .c_str());
     assert(rc == 0);
 }
@@ -122,8 +123,8 @@ void IterateFromLastPolicy(GameInstanceContainer::ScheduleId schedule_id,
 
     for (unsigned i = 0; i < num_iterations; ++i) {
         std::string model_name = ModelFileName(*last_model->model_path.Value());
-        auto evaluator = std::make_shared<GomokuTfZeroPriorEvaluator>(
-            *last_model->model_path.Value() + "/" + model_name);
+        auto evaluator = std::make_shared<GomokuShlModelEvaluator>(*last_model->model_path.Value() +
+                                                                   "/" + model_name);
 
         std::cout << "iteration=" << i << " games_played=" << i * num_games_per_iteration
                   << " model_name=" << model_name << std::endl;
