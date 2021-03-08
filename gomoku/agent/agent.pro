@@ -19,6 +19,7 @@ SOURCES += \
     heuristics/evaluator.cc \
     heuristics/light_rollout_evaluator.cc \
     heuristics/shl_feature.cc \
+    heuristics/shl_model_evaluator.cc \
     heuristics/shl_rollout_evaluator.cc \
     heuristics/tf_zero_prior_evaluator.cc \
     heuristics/tflite_zero_prior_evaluator.cc \
@@ -31,6 +32,7 @@ HEADERS += \
     heuristics/evaluator.h \
     heuristics/light_rollout_evaluator.h \
     heuristics/shl_feature.h \
+    heuristics/shl_model_evaluator.h \
     heuristics/shl_rollout_evaluator.h \
     heuristics/tf_zero_prior_evaluator.h \
     heuristics/tflite_zero_prior_evaluator.h \
