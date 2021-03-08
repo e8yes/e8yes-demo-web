@@ -15,6 +15,7 @@ SUBDIRS = \
         _test_agent/_test_heuristics/_test_light_rollout_evaluator/_test_light_rollout_evaluator.pro \
         _test_agent/_test_heuristics/_test_tflite_zero_prior_evaluator/_test_tflite_zero_prior_evaluator.pro \
         _test_agent/_test_heuristics/_test_tf_zero_prior_evaluator/_test_tf_zero_prior_evaluator.pro \
+        _test_agent/_test_heuristics/_test_shl_model_evaluator/_test_shl_model_evaluator.pro \
         _test_agent/_test_search/_test_mct_search/_test_mct_search.pro
 
 CONFIG += ordered

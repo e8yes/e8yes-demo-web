@@ -116,9 +116,9 @@ std::unordered_map<GomokuActionId, float> RenormalizePolicy(GomokuBoardState con
 
 } // namespace
 
-struct GomokuShlModelEvaluator::GomokuShlModelEnsembleEvaluatorInternal {
-    GomokuShlModelEnsembleEvaluatorInternal(std::string const &model_path);
-    ~GomokuShlModelEnsembleEvaluatorInternal();
+struct GomokuShlModelEvaluator::GomokuShlModelEvaluatorInternal {
+    GomokuShlModelEvaluatorInternal(std::string const &model_path);
+    ~GomokuShlModelEvaluatorInternal();
 
     std::unordered_map<GomokuActionId, float> ModelBasedPolicy(GomokuBoardState const &state,
                                                                std::vector<float> const &shl_map);
@@ -135,8 +135,8 @@ struct GomokuShlModelEvaluator::GomokuShlModelEnsembleEvaluatorInternal {
     GomokuShlRolloutEvaluator shl_rollout_evaluator;
 };
 
-GomokuShlModelEvaluator::GomokuShlModelEnsembleEvaluatorInternal::
-    GomokuShlModelEnsembleEvaluatorInternal(std::string const &model_path) {
+GomokuShlModelEvaluator::GomokuShlModelEvaluatorInternal::GomokuShlModelEvaluatorInternal(
+    std::string const &model_path) {
     graph = TF_NewGraph();
     graph_def = TF_NewBuffer();
 
@@ -151,8 +151,7 @@ GomokuShlModelEvaluator::GomokuShlModelEnsembleEvaluatorInternal::
     TF_DeleteSessionOptions(session_options);
 }
 
-GomokuShlModelEvaluator::GomokuShlModelEnsembleEvaluatorInternal::
-    ~GomokuShlModelEnsembleEvaluatorInternal() {
+GomokuShlModelEvaluator::GomokuShlModelEvaluatorInternal::~GomokuShlModelEvaluatorInternal() {
     TF_DeleteTensor(board_input_value);
     TF_DeleteTensor(game_phase_input_value);
     TF_DeleteTensor(next_move_stone_type_input_value);
@@ -168,7 +167,7 @@ GomokuShlModelEvaluator::GomokuShlModelEnsembleEvaluatorInternal::
 }
 
 std::unordered_map<GomokuActionId, float>
-GomokuShlModelEvaluator::GomokuShlModelEnsembleEvaluatorInternal::ModelBasedPolicy(
+GomokuShlModelEvaluator::GomokuShlModelEvaluatorInternal::ModelBasedPolicy(
     GomokuBoardState const &state, std::vector<float> const &shl_map) {
     if (board_input_value == nullptr) {
         // Allocate tensors when it's the first time running inference.
@@ -253,7 +252,7 @@ GomokuShlModelEvaluator::GomokuShlModelEnsembleEvaluatorInternal::ModelBasedPoli
 }
 
 GomokuShlModelEvaluator::GomokuShlModelEvaluator(std::string const &model_path)
-    : pimpl_(std::make_unique<GomokuShlModelEnsembleEvaluatorInternal>(model_path)) {}
+    : pimpl_(std::make_unique<GomokuShlModelEvaluatorInternal>(model_path)) {}
 
 GomokuShlModelEvaluator::~GomokuShlModelEvaluator() {}
 
@@ -276,7 +275,7 @@ std::unordered_map<GomokuActionId, float> GomokuShlModelEvaluator::EvaluatePolic
 
 float GomokuShlModelEvaluator::ExplorationFactor() const { return 3.0f; }
 
-unsigned GomokuShlModelEvaluator::NumSimulations() const { return 1400; }
+unsigned GomokuShlModelEvaluator::NumSimulations() const { return 1500; }
 
 void GomokuShlModelEvaluator::ClearCache() { pimpl_->shl_rollout_evaluator.ClearCache(); }
 

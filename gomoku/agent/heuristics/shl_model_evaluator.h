@@ -57,8 +57,8 @@ class GomokuShlModelEvaluator : public GomokuEvaluatorInterface {
     void ClearCache() override;
 
   private:
-    struct GomokuShlModelEnsembleEvaluatorInternal;
-    std::unique_ptr<GomokuShlModelEnsembleEvaluatorInternal> pimpl_;
+    struct GomokuShlModelEvaluatorInternal;
+    std::unique_ptr<GomokuShlModelEvaluatorInternal> pimpl_;
 };
 
 } // namespace e8
