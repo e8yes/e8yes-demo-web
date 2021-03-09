@@ -376,6 +376,22 @@ CREATE TABLE IF NOT EXISTS gomoku_game_action (
   FOREIGN KEY (game_id) REFERENCES gomoku_game (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS gomoku_rollout_denoiser_features (
+  game_id BIGINT NOT NULL,
+  step_number INT NOT NULL,
+  rollouts_number INT NOT NULL,
+  num_rollouts INT NOT NULL,
+  value_seq_distributions FLOAT [] NOT NULL,
+  value_seq_num_moves INT [] NOT NULL,
+  value_seq_num_flips INT [] NOT NULL,
+  value_outcomes FLOAT [] NOT NULL,
+  value_outcome_mean FLOAT NOT NULL,
+  value_outcome_var FLOAT NOT NULL,
+  ground_truth_value FLOAT NOT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  PRIMARY KEY (game_id, step_number, rollouts_number),
+  FOREIGN KEY (game_id, step_number) REFERENCES gomoku_game_action (game_id, step_number) ON DELETE CASCADE);
+
 CREATE OR REPLACE FUNCTION HASH_BIGINT(src_val BIGINT) RETURNS BIGINT AS $$
 BEGIN
   src_val := MOD(((src_val >> 16) # src_val) * 73244475, 2147483647);
