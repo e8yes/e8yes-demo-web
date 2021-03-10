@@ -59,7 +59,7 @@ class ModelLogStore {
      * @brief ModelLogStore All the logs will be written to the specified connection reservoir
      * target.
      */
-    ModelLogStore(ConnectionReservoirInterface *conns);
+    explicit ModelLogStore(ConnectionReservoirInterface *conns);
 
     /**
      * @brief LastModel Get the last created model if there is any.

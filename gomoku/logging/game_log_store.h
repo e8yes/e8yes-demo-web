@@ -18,9 +18,7 @@
 #ifndef GAME_LOG_STORE_H
 #define GAME_LOG_STORE_H
 
-#include <cstdint>
 #include <optional>
-#include <unordered_map>
 #include <vector>
 
 #include "gomoku/game/board_state.h"
@@ -39,7 +37,7 @@ class GameLogStore {
      * @brief GameLogStore All the logs will be written to the specified connection reservoir
      * target.
      */
-    GameLogStore(ConnectionReservoirInterface *conns);
+    explicit GameLogStore(ConnectionReservoirInterface *conns);
 
     /**
      * @brief LogNewGeneratorGame Creates a new game entry and returns an ID pointing to the entry.

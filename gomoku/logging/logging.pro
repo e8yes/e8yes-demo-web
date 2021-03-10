@@ -16,11 +16,13 @@ INCLUDEPATH += $$PWD/../../
 
 SOURCES += \
     game_log_store.cc \
-    model_log_store.cc
+    model_log_store.cc \
+    rollout_denoiser_feature_log_store.cc
 HEADERS += \
     common_types.h \
     game_log_store.h \
-    model_log_store.h
+    model_log_store.h \
+    rollout_denoiser_feature_log_store.h
 
 # Default rules for deployment.
 unix {

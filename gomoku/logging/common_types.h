@@ -33,6 +33,8 @@ using ModelId = int64_t;
 using GameId = int64_t;
 using GameStepNumber = unsigned;
 
+using RolloutDenoiserTrialNumber = unsigned;
+
 } // namespace e8
 
 #endif // COMMON_TYPES_H
