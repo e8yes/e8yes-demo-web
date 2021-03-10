@@ -382,6 +382,7 @@ CREATE TABLE IF NOT EXISTS gomoku_rollout_denoiser_features (
   rollouts_number INT NOT NULL,
   num_rollouts INT NOT NULL,
   value_seq_distributions FLOAT [] NOT NULL,
+  suboptimality_histogram INT [] NOT NULL,
   value_seq_num_moves INT [] NOT NULL,
   value_seq_num_flips INT [] NOT NULL,
   value_outcomes FLOAT [] NOT NULL,
