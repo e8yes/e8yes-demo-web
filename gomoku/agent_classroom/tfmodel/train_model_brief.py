@@ -15,6 +15,8 @@ from poly_functions import ReadBoardSize
 from poly_functions import LoadModel
 from poly_functions import SaveModel
 from poly_functions import TrainableVariables
+from poly_functions import LockModelFile
+from poly_functions import UnlockModelFile
 from augmentation import AugmentData
 from batch_generator import BatchGenerator
 
@@ -24,6 +26,9 @@ VALIDATION_BATCH_SIZE = 5000
 def Train(model_import_path: str,
           batch_gen: BatchGenerator,
           model_export_path: str) -> None:
+    lock = LockModelFile(
+        model_path=model_import_path, lock_name="global_lock_file")
+
     model = LoadModel(model_import_path=model_import_path)
 
     model_vars = TrainableVariables(model=model)
@@ -95,6 +100,8 @@ def Train(model_import_path: str,
 
     logging.info("Saving model...")
     SaveModel(model=model, model_export_path=model_export_path)
+
+    UnlockModelFile(lock_file=lock)
 
     boards, \
     game_phases, \

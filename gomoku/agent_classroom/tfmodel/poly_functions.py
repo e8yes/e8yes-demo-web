@@ -17,11 +17,11 @@ def ReadModelName(model_import_path: str) -> str:
             return entry
     return None
 
-def LockModelFile(model_path: str) -> IO[Any]:
+def LockModelFile(model_path: str, lock_name: str) -> IO[Any]:
     if not os.path.exists(model_path):
         os.makedirs(model_path)
 
-    lock_file_path = os.path.join(model_path, "lockfile")
+    lock_file_path = os.path.join(model_path, lock_name)
     if not os.path.exists(lock_file_path):
         lock_file = open(file=lock_file_path, mode="w")
         lock_file.close()
@@ -34,7 +34,8 @@ def UnlockModelFile(lock_file: IO[Any]) -> None:
     lock_file.close()
 
 def LoadModel(model_import_path: str) -> any:
-    lock_file = LockModelFile(model_path=model_import_path)
+    lock_file = LockModelFile(
+        model_path=model_import_path, lock_name="lock_file")
 
     model_name = ReadModelName(model_import_path=model_import_path)
     model = tf.saved_model.load(
@@ -45,7 +46,8 @@ def LoadModel(model_import_path: str) -> any:
     return model
 
 def SaveModel(model: any, model_export_path: str) -> None:
-    lock_file = LockModelFile(model_path=model_export_path)
+    lock_file = LockModelFile(
+        model_path=model_export_path, lock_name="lock_file")
 
     model_name = model.Name().numpy().decode("UTF-8")
     tf.saved_model.save(
