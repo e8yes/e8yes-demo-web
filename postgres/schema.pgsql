@@ -342,6 +342,8 @@ CREATE SEQUENCE IF NOT EXISTS gomoku_game_id_seq
 
 CREATE TABLE IF NOT EXISTS gomoku_game (
     id BIGINT NOT NULL DEFAULT nextval('gomoku_game_id_seq'),
+    board_width INT NOT NULL,
+    board_height INT NOT NULL,
     game_purpose INT NOT NULL,
     player_a_id BIGINT NULL,
     player_b_id BIGINT NULL,
