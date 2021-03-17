@@ -442,6 +442,14 @@ std::vector<float> ShlFeatureBuilder::TopKShlPositionlessFeatures(
     return features;
 }
 
+ShlFeatureBuilder &ShlFeatureBuilder::operator=(ShlFeatureBuilder const &rhs) {
+    assert(width_ == rhs.width_);
+    assert(height_ == rhs.height_);
+    raw_map_ = rhs.raw_map_;
+    double_contour_builder_ = rhs.double_contour_builder_;
+    return *this;
+}
+
 float ToShlScore(e8::ShlComponents const &shl_components) {
     return shl_components.primary_shl_count_black + shl_components.secondary_shl_count_black +
            shl_components.primary_shl_count_white + shl_components.secondary_shl_count_white;

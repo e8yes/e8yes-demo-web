@@ -262,6 +262,12 @@ class GomokuBoardState {
      */
     void PrintBoard() const;
 
+    /**
+     * @brief operator = Copy assignment operator. The rvalue must have the same width and height
+     * for it to by copyable. Otherwise, this function will fail.
+     */
+    GomokuBoardState &operator=(GomokuBoardState rhs);
+
   private:
     uint8_t MaxConnectedStonesFrom(MovePosition const &pos, StoneType const stone_type) const;
 

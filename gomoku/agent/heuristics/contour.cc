@@ -16,6 +16,7 @@
  */
 
 #include <algorithm>
+#include <cassert>
 #include <cstdint>
 #include <optional>
 #include <unordered_set>
@@ -93,5 +94,14 @@ void ContourBuilder::AddStone(MovePosition const &stone_pos) {
 }
 
 std::unordered_set<MovePosition> const &ContourBuilder::Contour() const { return contour_; }
+
+ContourBuilder &ContourBuilder::operator=(ContourBuilder const &rhs) {
+    assert(width_ == rhs.width_);
+    assert(height_ == rhs.height_);
+    assert(order_ == rhs.order_);
+    contour_ = rhs.contour_;
+    blacklist_ = rhs.blacklist_;
+    return *this;
+}
 
 } // namespace e8

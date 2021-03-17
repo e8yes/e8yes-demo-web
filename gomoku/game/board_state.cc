@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cstdint>
@@ -405,6 +406,21 @@ void GomokuBoardState::PrintBoard() const {
         }
         std::cout << std::endl;
     }
+}
+
+GomokuBoardState &GomokuBoardState::operator=(GomokuBoardState rhs) {
+    assert(width_ == rhs.width_);
+    assert(height_ == rhs.height_);
+    std::swap(game_result_, rhs.game_result_);
+    std::swap(current_game_phase_, rhs.current_game_phase_);
+    std::swap(current_player_side_, rhs.current_player_side_);
+    std::swap(board_, rhs.board_);
+    std::swap(player_stone_type_, rhs.player_stone_type_);
+    std::swap(history_, rhs.history_);
+    std::swap(swap2_decision_legal_actions_, rhs.swap2_decision_legal_actions_);
+    std::swap(stone_type_decision_legal_actions_, rhs.stone_type_decision_legal_actions_);
+    std::swap(standard_gomoku_legal_actions_, rhs.standard_gomoku_legal_actions_);
+    return *this;
 }
 
 StoneState *GomokuBoardState::ChessPieceStateAt(MovePosition const &pos) {

@@ -143,6 +143,12 @@ class ShlFeatureBuilder {
     TopKShlPositionlessFeatures(unsigned top_k, bool normalized,
                                 std::optional<StoneType> next_move_stone_type) const;
 
+    /**
+     * @brief operator = Assignment operator. The rvalue must have the same width and height. Or
+     * else, this function will fail.
+     */
+    ShlFeatureBuilder &operator=(ShlFeatureBuilder const &rhs);
+
   private:
     void UpdateShlFeaturesAt(MovePosition candid_pos, GomokuBoardState const &board);
 

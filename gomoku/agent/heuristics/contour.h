@@ -61,12 +61,18 @@ class ContourBuilder {
      */
     std::unordered_set<MovePosition> const &Contour() const;
 
+    /**
+     * @brief operator = Assignment operator. The rvalue must have the same width, height and order.
+     * Or else, this function will fail.
+     */
+    ContourBuilder &operator=(ContourBuilder const &rhs);
+
   private:
     std::unordered_set<MovePosition> contour_;
     std::vector<bool> blacklist_;
-    int8_t width_;
-    int8_t height_;
-    int8_t order_;
+    int8_t const width_;
+    int8_t const height_;
+    int8_t const order_;
 };
 
 } // namespace e8
