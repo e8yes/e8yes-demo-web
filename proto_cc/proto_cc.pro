@@ -16,6 +16,8 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 HEADERS += \
     chat_message.grpc.pb.h \
     chat_message.pb.h \
+    command.grpc.pb.h \
+    command.pb.h \
     delta.grpc.pb.h \
     delta.pb.h \
     encryption_source.grpc.pb.h \
@@ -46,6 +48,8 @@ HEADERS += \
     real_time_message.pb.h \
     service_chat_message.grpc.pb.h \
     service_chat_message.pb.h \
+    service_command_queue.grpc.pb.h \
+    service_command_queue.pb.h \
     service_file.grpc.pb.h \
     service_file.pb.h \
     service_gomoku_classroom.grpc.pb.h \
@@ -60,6 +64,10 @@ HEADERS += \
     service_message_subscriber.pb.h \
     service_node_state.grpc.pb.h \
     service_node_state.pb.h \
+    service_raft.grpc.pb.h \
+    service_raft.pb.h \
+    service_replication.grpc.pb.h \
+    service_replication.pb.h \
     service_socialnetwork.grpc.pb.h \
     service_socialnetwork.pb.h \
     service_system.grpc.pb.h \
@@ -73,6 +81,8 @@ HEADERS += \
 SOURCES += \
     chat_message.grpc.pb.cc \
     chat_message.pb.cc \
+    command.grpc.pb.cc \
+    command.pb.cc \
     delta.grpc.pb.cc \
     delta.pb.cc \
     encryption_source.grpc.pb.cc \
@@ -103,6 +113,8 @@ SOURCES += \
     real_time_message.pb.cc \
     service_chat_message.grpc.pb.cc \
     service_chat_message.pb.cc \
+    service_command_queue.grpc.pb.cc \
+    service_command_queue.pb.cc \
     service_file.grpc.pb.cc \
     service_file.pb.cc \
     service_gomoku_classroom.grpc.pb.cc \
@@ -117,6 +129,10 @@ SOURCES += \
     service_message_subscriber.pb.cc \
     service_node_state.grpc.pb.cc \
     service_node_state.pb.cc \
+    service_raft.grpc.pb.cc \
+    service_raft.pb.cc \
+    service_replication.grpc.pb.cc \
+    service_replication.pb.cc \
     service_socialnetwork.grpc.pb.cc \
     service_socialnetwork.pb.cc \
     service_system.grpc.pb.cc \

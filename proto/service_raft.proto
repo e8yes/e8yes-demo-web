@@ -1,0 +1,114 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "command.proto";
+
+message GrantVoteRequest {
+    string candidate_id = 1;
+    int64 candidate_term = 2;
+    CommandQueueLiveness candidate_liveness = 3;
+}
+
+message GrantVoteResponse {
+    bool vote_granted = 1;
+}
+
+
+message AppendCommandEntriesRequest {
+    int64 term = 1;
+    int64 overwrite_from = 2;
+    repeated CommandEntry overwrite_with = 3;
+}
+
+message AppendCommandEntriesResponse {
+    bool successful = 1;
+    int64 current_term = 2;
+}
+
+
+message NotifyCommitProgressRequest {
+    int64 term = 1;
+    int64 safe_commit_progress = 2;
+}
+
+message NotifyCommitProgressResponse {
+}
+
+
+message EnqueueCommandRequest {
+    CommandEntry command = 1;
+}
+
+message EnqueueCommandResponse {
+    // The leader status of the node that was called.
+    bool leader = 1;
+
+    // If leader is true, this is the index that the command will appear as if 
+    // it's ever committed. Otherwise, this value is not usable.
+    int64 command_index = 2;
+
+    // The current term which the node is at. This value is not usable if the
+    // leader status is false.
+    int64 term = 3;
+}
+
+
+/*
+ * Service that a single Raft peer provides.
+ */
+service RaftService {
+    /*
+     * Each raft node can only vote once per term. If the raft node has a 
+     * ballot left for the requested CandidateTerm, it votes for the client. 
+     * Otherwise, it rejects the voting request.
+     */
+    rpc GrantVote(GrantVoteRequest) returns (GrantVoteResponse);
+
+    /* 
+     * It handles messages sent from the client (leader). It only proceeds to
+     * process and the message when the client sender's term is at the minimum 
+     * of that of the current node. Then it checks if everything before the 
+     * start index is free of conflict. This is true iff. 
+     * log_term@k(source A) == log_term@k(source B). If so, it proceeds to 
+     * replicate logs from the start index.
+     */
+    rpc AppendCommandEntries(AppendCommandEntriesRequest) returns 
+        (AppendCommandEntriesResponse);
+
+    /*
+     * Notifies the node about the global commit progress, that is, all the 
+     * logs that have been replicated by a quorum. It will update the heartbeat 
+     * clock as an indication that it receives a message from the leader.
+     */
+    rpc NotifyCommitProgress(NotifyCommitProgressRequest) returns
+        (NotifyCommitProgressResponse);
+    
+    /*
+     * The service using Raft (e.g. a k/v server) wants to start agreement on
+     * the next command to be appended to Raft's log. If this server isn't the
+     * leader, it returns immediately with the status indicated in the
+     * response. Otherwise, it starts the agreement. There is no guarantee that
+     * this command will ever be committed to the Raft log, since the leader
+     * may fail or lose an election.
+     */
+    rpc EnqueueCommand(EnqueueCommandRequest) returns 
+        (EnqueueCommandResponse);
+}

@@ -1,0 +1,62 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "nullable_primitives.proto";
+
+enum RunCommandError {
+    RCE_NONE = 0;
+    RCE_WRONG_NODE = 1;
+    RCE_TIMED_OUT = 2;
+}
+
+message RunCommandRequest {
+    // Unique ID which identifies the run event of the command.
+    string run_event_id = 1;
+
+    // The command to run across the peers.
+    bytes command = 2;
+}
+
+message RunCommandResponse {
+    // Error status. Retry the command on the same node when this field has
+    // value RCE_TIMED_OUT.
+    RunCommandError error = 1;
+
+    // Use the address to retry the command when the error field has the value
+    // RCE_WRONG_NODE.
+    NullableString retry_address = 2;
+
+    // Only read this value when the error field has the value RCE_WRONG_NODE.
+    bytes return_value = 3;
+}
+
+/*
+ * Service to replicate command execution sequence amount multiple nodes.
+ */
+service ReplicationService {
+    /*
+     * Runs a command across the peers. The command should be uniquely 
+     * identified by its run_event_id, so it will run at exactly once if the 
+     * call succeed and none the otherwise. The RPC will only succeed when the
+     * current node the service is running on has the leader status.
+     */
+    rpc RunCommand(RunCommandRequest) returns (RunCommandResponse);
+}
