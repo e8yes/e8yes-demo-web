@@ -10,7 +10,6 @@ QMAKE_CXXFLAGS_RELEASE += -O3 -flto -march=native
 QMAKE_LFLAGS_RELEASE -= -Wl,-O1
 QMAKE_LFLAGS_RELEASE += -O3 -flto -march=native
 
-DEFINES += DEMOWEBLIB_LIBRARY
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 HEADERS += \
@@ -48,8 +47,6 @@ HEADERS += \
     real_time_message.pb.h \
     service_chat_message.grpc.pb.h \
     service_chat_message.pb.h \
-    service_command_queue.grpc.pb.h \
-    service_command_queue.pb.h \
     service_file.grpc.pb.h \
     service_file.pb.h \
     service_gomoku_classroom.grpc.pb.h \
@@ -113,8 +110,6 @@ SOURCES += \
     real_time_message.pb.cc \
     service_chat_message.grpc.pb.cc \
     service_chat_message.pb.cc \
-    service_command_queue.grpc.pb.cc \
-    service_command_queue.pb.cc \
     service_file.grpc.pb.cc \
     service_file.pb.cc \
     service_gomoku_classroom.grpc.pb.cc \
