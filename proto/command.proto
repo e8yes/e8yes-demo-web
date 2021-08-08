@@ -23,9 +23,3 @@ message CommandEntry {
     string run_event_id = 1;
     bytes command = 2;
 }
-
-// States that determines how up-to-date a log source is.
-message CommandQueueLiveness {
-    int64 command_progress = 1;
-    int64 highest_term = 2;
-}

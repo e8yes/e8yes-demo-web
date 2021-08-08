@@ -20,11 +20,12 @@ syntax = "proto3";
 package e8;
 
 import "command.proto";
+import "raft.proto";
 
 message GrantVoteRequest {
     string candidate_id = 1;
     int64 candidate_term = 2;
-    CommandQueueLiveness candidate_liveness = 3;
+    LogSourceLiveness candidate_liveness = 3;
 }
 
 message GrantVoteResponse {
@@ -35,7 +36,7 @@ message GrantVoteResponse {
 message AppendCommandEntriesRequest {
     int64 term = 1;
     int64 overwrite_from = 2;
-    repeated CommandEntry overwrite_with = 3;
+    repeated LogEntry overwrite_with = 3;
 }
 
 message AppendCommandEntriesResponse {
@@ -65,8 +66,8 @@ message EnqueueCommandResponse {
     // it's ever committed. Otherwise, this value is not usable.
     int64 command_index = 2;
 
-    // The current term which the node is at. This value is not usable if the
-    // leader status is false.
+    // The term at which the node enqueues the command. This value is not 
+    // usable if the leader status is false.
     int64 term = 3;
 }
 
@@ -100,7 +101,7 @@ service RaftService {
      */
     rpc NotifyCommitProgress(NotifyCommitProgressRequest) returns
         (NotifyCommitProgressResponse);
-    
+
     /*
      * The service using Raft (e.g. a k/v server) wants to start agreement on
      * the next command to be appended to Raft's log. If this server isn't the

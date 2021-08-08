@@ -29,6 +29,12 @@ message LogEntry {
     CommandEntry entry = 2;
 }
 
+// States that determines how up-to-date a log source is.
+message LogSourceLiveness {
+    int64 log_progress = 1;
+    int64 highest_log_term = 2;
+}
+
 // All the states in a raft node that needs to be persisted.
 message RaftPersistentStates {
     // ID of the node the states belong to.
