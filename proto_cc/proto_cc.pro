@@ -43,6 +43,8 @@ HEADERS += \
     pagination.pb.h \
     permission.grpc.pb.h \
     permission.pb.h \
+    raft.grpc.pb.h \
+    raft.pb.h \
     real_time_message.grpc.pb.h \
     real_time_message.pb.h \
     service_chat_message.grpc.pb.h \
@@ -106,6 +108,8 @@ SOURCES += \
     pagination.pb.cc \
     permission.grpc.pb.cc \
     permission.pb.cc \
+    raft.grpc.pb.cc \
+    raft.pb.cc \
     real_time_message.grpc.pb.cc \
     real_time_message.pb.cc \
     service_chat_message.grpc.pb.cc \
