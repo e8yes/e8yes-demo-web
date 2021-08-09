@@ -19,13 +19,13 @@ INCLUDEPATH += ../../
 
 
 SOURCES += \
-    merge_logs.cc \
+    journal.cc \
     role_at_term.cc \
     schedule.cc
 
 HEADERS += \
     common_types.h \
-    merge_logs.h \
+    journal.h \
     role_at_term.h \
     schedule.h
 

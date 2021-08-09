@@ -90,7 +90,7 @@ class RoleAtTerm {
      * properly transitioned accordingly. This happens when the new_term is at least as high as the
      * current term and must be higher when the triggering event is ENCOUNTERED_HIGHER_TERM_MESSAGE.
      */
-    bool UpgradeTerm(RaftNodeId node_id, RaftTerm new_term, TermUpgradeReason reason);
+    bool UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpgradeReason reason);
 
   private:
     std::unique_ptr<std::mutex> lock_;

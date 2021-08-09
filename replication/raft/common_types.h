@@ -22,8 +22,8 @@
 
 namespace e8 {
 
-// Uniquely identifies a raft node.
-using RaftNodeId = std::string;
+// Uniquely identifies a raft node. Format: ipv4/ipv6:port.
+using RaftMachineAddress = std::string;
 
 } // namespace e8
 

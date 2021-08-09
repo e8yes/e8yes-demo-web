@@ -53,7 +53,7 @@ std::pair<RaftTerm, RaftRole> RoleAtTerm::TermAndRole() const {
     return std::make_pair(term_, role_);
 }
 
-bool RoleAtTerm::UpgradeTerm(RaftNodeId node_id, RaftTerm new_term, TermUpgradeReason reason) {
+bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpgradeReason reason) {
     std::lock_guard<std::mutex> const lock(*lock_);
 
     if (new_term < term_) {
@@ -83,7 +83,7 @@ bool RoleAtTerm::UpgradeTerm(RaftNodeId node_id, RaftTerm new_term, TermUpgradeR
             break;
         }
         default: {
-            std::cerr << "At node=" << node_id << ": illegal term upgrade reason=" << reason
+            std::cerr << "At node=" << node << ": illegal term upgrade reason=" << reason
                       << std::endl;
             return false;
         }
@@ -107,7 +107,7 @@ bool RoleAtTerm::UpgradeTerm(RaftNodeId node_id, RaftTerm new_term, TermUpgradeR
             break;
         }
         default: {
-            std::cerr << "At node=" << node_id << ": illegal term upgrade reason=" << reason
+            std::cerr << "At node=" << node << ": illegal term upgrade reason=" << reason
                       << std::endl;
             return false;
         }
@@ -126,7 +126,7 @@ bool RoleAtTerm::UpgradeTerm(RaftNodeId node_id, RaftTerm new_term, TermUpgradeR
             break;
         }
         default: {
-            std::cerr << "At node=" << node_id << ": illegal term upgrade reason=" << reason
+            std::cerr << "At node=" << node << ": illegal term upgrade reason=" << reason
                       << std::endl;
             return false;
         }
@@ -136,7 +136,7 @@ bool RoleAtTerm::UpgradeTerm(RaftNodeId node_id, RaftTerm new_term, TermUpgradeR
     }
     }
 
-    std::cout << "At node=" << node_id << ": term=" << term_ << "->" << new_term
+    std::cout << "At node=" << node << ": term=" << term_ << "->" << new_term
               << " role=" << RoleString(role_) << "->" << RoleString(new_role)
               << " reason=" << reason << std::endl;
 
