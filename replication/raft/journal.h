@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MERGE_LOGS_H
-#define MERGE_LOGS_H
+#ifndef RAFT_JOURNAL_H
+#define RAFT_JOURNAL_H
 
 #include <google/protobuf/repeated_field.h>
 #include <memory>
@@ -86,4 +86,4 @@ class RaftJournal {
 
 } // namespace e8
 
-#endif // MERGE_LOGS_H
+#endif // RAFT_JOURNAL_H

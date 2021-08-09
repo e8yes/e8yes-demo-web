@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCHEDULE_H
-#define SCHEDULE_H
+#ifndef RAFT_SCHEDULE_H
+#define RAFT_SCHEDULE_H
 
 #include <memory>
 #include <semaphore.h>
@@ -123,4 +123,4 @@ class LeaderSchedule {
 
 } // namespace e8
 
-#endif // SCHEDULE_H
+#endif // RAFT_SCHEDULE_H

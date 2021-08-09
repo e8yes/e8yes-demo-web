@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PERSISTER_H
-#define PERSISTER_H
+#ifndef RAFT_PERSISTER_H
+#define RAFT_PERSISTER_H
 
 #include <fstream>
 #include <google/protobuf/repeated_field.h>
@@ -84,4 +84,4 @@ class RaftPersister {
 
 } // namespace e8
 
-#endif // PERSISTER_H
+#endif // RAFT_PERSISTER_H

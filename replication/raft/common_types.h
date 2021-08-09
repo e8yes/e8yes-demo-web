@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COMMON_TYPES_H
-#define COMMON_TYPES_H
+#ifndef RAFT_COMMON_TYPES_H
+#define RAFT_COMMON_TYPES_H
 
 #include <string>
 
@@ -43,4 +43,4 @@ enum RaftRole {
 
 } // namespace e8
 
-#endif // COMMON_TYPES_H
+#endif // RAFT_COMMON_TYPES_H

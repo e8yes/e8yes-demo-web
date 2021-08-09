@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROLE_AT_TERM_H
-#define ROLE_AT_TERM_H
+#ifndef RAFT_ROLE_AT_TERM_H
+#define RAFT_ROLE_AT_TERM_H
 
 #include <cstdint>
 #include <memory>
@@ -83,4 +83,4 @@ class RoleAtTerm {
 
 } // namespace e8
 
-#endif // ROLE_AT_TERM_H
+#endif // RAFT_ROLE_AT_TERM_H
