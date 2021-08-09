@@ -46,6 +46,14 @@ RaftJournal::RaftJournal(std::shared_ptr<RaftPersister> const &persister,
 
 RaftJournal::~RaftJournal() {}
 
+void RaftJournal::AppendLog(LogEntry const &log_entry) {
+    std::lock_guard<RaftPersister> const guard(*persister_);
+
+    *persister_->LogEntriesRef()->Add() = log_entry;
+
+    persister_->Persist();
+}
+
 void RaftJournal::MergeForeignLogs(
     unsigned from, google::protobuf::RepeatedField<LogEntry> const &foreign_log_entries) {
     std::lock_guard<RaftPersister> const guard(*persister_);
