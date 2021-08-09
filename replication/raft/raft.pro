@@ -20,12 +20,14 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     merge_logs.cc \
-    role_at_term.cc
+    role_at_term.cc \
+    schedule.cc
 
 HEADERS += \
     common_types.h \
     merge_logs.h \
-    role_at_term.h
+    role_at_term.h \
+    schedule.h
 
 # Default rules for deployment.
 unix {
