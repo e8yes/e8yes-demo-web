@@ -19,12 +19,17 @@
 #define ACOMMON_TIME_H
 
 #include <cstdint>
+#include <time.h>
 
 namespace e8 {
 
 using TimestampSecs = int64_t;
 using TimestampMillis = int64_t;
 using TimestampMicros = int64_t;
+
+using TimeIntervalSecs = int64_t;
+using TimeIntervalMillis = int64_t;
+using TimeIntervalMicros = int64_t;
 
 /**
  * @brief CurrentTimestampSecs Current Unix epoch with second precision.
@@ -46,6 +51,12 @@ TimestampMicros CurrentTimestampMicros();
  * @return Ever-non-decreasing ID.
  */
 int64_t TemporalId();
+
+/**
+ * @brief FutureTimeSpec Creates a time spec set to amount_millis in the future.
+ * @param amount_millis The number of milliseconds further in the future.
+ */
+timespec FutureTimeSpec(TimestampMillis amount_millis);
 
 } // namespace e8
 

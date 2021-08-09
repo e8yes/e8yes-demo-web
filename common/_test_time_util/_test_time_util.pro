@@ -17,6 +17,8 @@ INCLUDEPATH += $$PWD/../../
 SOURCES += \
     test_time_util.cc
 
+LIBS += -pthread
+
 unix:!macx: LIBS += -L$$OUT_PWD/../unit_test_util/ -lunit_test_util
 
 INCLUDEPATH += $$PWD/../unit_test_util

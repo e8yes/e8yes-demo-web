@@ -16,7 +16,10 @@
  */
 
 #include <chrono>
+#include <cmath>
+#include <semaphore.h>
 #include <thread>
+#include <time.h>
 
 #include "common/time_util/time_util.h"
 #include "common/unit_test_util/unit_test_util.h"
@@ -80,12 +83,29 @@ bool TimestampSecsDurationTest() {
     return true;
 }
 
+bool FutureTimeSpecTest() {
+    e8::TimestampMillis timestamp1 = e8::CurrentTimestampMillis();
+
+    timespec ts = e8::FutureTimeSpec(/*amount_millis=*/1987);
+    sem_t sem;
+    sem_init(&sem, /*__pshared=*/0, /*__value=*/0);
+    sem_timedwait(&sem, &ts);
+
+    e8::TimestampMillis timestamp2 = e8::CurrentTimestampMillis();
+
+    TEST_CONDITION(timestamp2 > timestamp1);
+    TEST_CONDITION(std::abs(timestamp2 - timestamp1 - 1987) < 10);
+
+    return true;
+}
+
 int main() {
     e8::BeginTestSuite("time_util");
     e8::RunTest("TimestampRelativePrecisionTest", TimestampRelativePrecisionTest);
     e8::RunTest("TimestampMicrosDurationTest", TimestampMicrosDurationTest);
     e8::RunTest("TimestampMillisDurationTest", TimestampMillisDurationTest);
     e8::RunTest("TimestampSecsDurationTest", TimestampSecsDurationTest);
+    e8::RunTest("FutureTimeSpecTest", FutureTimeSpecTest);
     e8::EndTestSuite();
     return 0;
 }

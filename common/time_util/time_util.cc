@@ -17,6 +17,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <time.h>
 
 #include "common/time_util/time_util.h"
 
@@ -48,6 +49,21 @@ int64_t TemporalId() {
     auto dura = std::chrono::duration_cast<std::chrono::microseconds>(micros.time_since_epoch());
     int64_t timestamp = dura.count() - 1588490444394000L;
     return timestamp;
+}
+
+timespec FutureTimeSpec(TimestampMillis amount_millis) {
+    timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+
+    TimestampSecs secs = amount_millis / 1000;
+    TimestampMillis remainder = amount_millis % 1000;
+
+    int64_t nanos = ts.tv_nsec + remainder * 1000 * 1000;
+    TimestampSecs carry = nanos / (1000 * 1000 * 1000);
+    ts.tv_nsec = nanos % (1000 * 1000 * 1000);
+    ts.tv_sec += secs + carry;
+
+    return ts;
 }
 
 } // namespace e8
