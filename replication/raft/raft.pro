@@ -20,12 +20,14 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     journal.cc \
+    persister.cc \
     role_at_term.cc \
     schedule.cc
 
 HEADERS += \
     common_types.h \
     journal.h \
+    persister.h \
     role_at_term.h \
     schedule.h
 

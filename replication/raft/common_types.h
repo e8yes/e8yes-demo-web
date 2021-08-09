@@ -25,6 +25,22 @@ namespace e8 {
 // Uniquely identifies a raft node. Format: ipv4/ipv6:port.
 using RaftMachineAddress = std::string;
 
+/**
+ * A valid raft term is a non-negative integer. But it can be used to indicate error by setting it
+ * to be negative.
+ */
+using RaftTerm = int64_t;
+
+/**
+ * @brief The RaftRole enum Defines the role status a node could have at some moment in time.
+ */
+enum RaftRole {
+    RAFT_INVALID_ROLE,
+    RAFT_FOLLOWER,
+    RAFT_CANDIDATE,
+    RAFT_LEADER,
+};
+
 } // namespace e8
 
 #endif // COMMON_TYPES_H

@@ -18,10 +18,13 @@
 #include <cassert>
 #include <cstdint>
 #include <iostream>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <utility>
 
+#include "replication/raft/common_types.h"
+#include "replication/raft/persister.h"
 #include "replication/raft/role_at_term.h"
 
 namespace e8 {
@@ -43,31 +46,33 @@ std::string RoleString(RaftRole role) {
 
 } // namespace
 
-RoleAtTerm::RoleAtTerm() : lock_(std::make_unique<std::mutex>()), term_(0), role_(RAFT_FOLLOWER) {}
+RoleAtTerm::RoleAtTerm(std::shared_ptr<RaftPersister> const &persister) : persister_(persister) {}
 
 RoleAtTerm::~RoleAtTerm() {}
 
 std::pair<RaftTerm, RaftRole> RoleAtTerm::TermAndRole() const {
-    std::lock_guard<std::mutex> const lock(*lock_);
+    std::lock_guard<RaftPersister> const lock(*persister_);
 
-    return std::make_pair(term_, role_);
+    return persister_->TermAndRole();
 }
 
 bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpgradeReason reason) {
-    std::lock_guard<std::mutex> const lock(*lock_);
+    std::lock_guard<RaftPersister> const lock(*persister_);
 
-    if (new_term < term_) {
+    auto [current_term, current_role] = persister_->TermAndRole();
+
+    if (new_term < current_term) {
         return false;
     }
 
-    if (new_term == term_ && reason == ENCOUNTERED_HIGHER_TERM_MESSAGE) {
+    if (new_term == current_term && reason == ENCOUNTERED_HIGHER_TERM_MESSAGE) {
         // new_term must be higher than the existing value.
         return false;
     }
 
     RaftRole new_role;
 
-    switch (role_) {
+    switch (current_role) {
     case RAFT_INVALID_ROLE: {
         assert(false);
         break;
@@ -136,12 +141,12 @@ bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpg
     }
     }
 
-    std::cout << "At node=" << node << ": term=" << term_ << "->" << new_term
-              << " role=" << RoleString(role_) << "->" << RoleString(new_role)
+    std::cout << "At node=" << node << ": term=" << current_term << "->" << new_term
+              << " role=" << RoleString(current_role) << "->" << RoleString(new_role)
               << " reason=" << reason << std::endl;
 
-    term_ = new_term;
-    role_ = new_role;
+    persister_->SetTermAndRole(std::make_pair(new_term, new_role));
+    persister_->Persist();
 
     return true;
 }

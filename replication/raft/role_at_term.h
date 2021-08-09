@@ -20,35 +20,19 @@
 
 #include <cstdint>
 #include <memory>
-#include <mutex>
 #include <string>
 #include <utility>
 
 #include "replication/raft/common_types.h"
+#include "replication/raft/persister.h"
 
 namespace e8 {
 
 /**
- * A valid raft term is a non-negative integer. But it can be used to indicate error by setting it
- * to be negative.
- */
-using RaftTerm = int64_t;
-
-/**
- * @brief The RaftRole enum Defines the role status a node could have at some moment in time.
- */
-enum RaftRole {
-    RAFT_INVALID_ROLE,
-    RAFT_FOLLOWER,
-    RAFT_CANDIDATE,
-    RAFT_LEADER,
-};
-
-/**
- * @brief The RoleAtTerm class It keeps track of what role the node should play at the latest term.
- * Raft role is coupled with the term number. It also allows the atomic access to the term-role pair
- * and facilitates monotonic term increments and proper role transition based on term upgrade
- * events. This object is thread safe.
+ * @brief The RoleAtTerm class It keeps track of what role the node should play at the latest term
+ * and persists any changes to the role or term. Raft role is coupled with the term number. It
+ * allows atomic access to the term-role pair and facilitates monotonic term increments and proper
+ * role transition based on term upgrade events. This object is thread safe.
  */
 class RoleAtTerm {
   public:
@@ -60,9 +44,10 @@ class RoleAtTerm {
     };
 
     /**
-     * @brief RoleAtTerm Term is initialized to zero while role is initialized RAFT_FOLLOWER.
+     * @brief RoleAtTerm The role and term is recovered from the persister. Any future changes to
+     * either term or role will be immediately saved by this persister.
      */
-    RoleAtTerm();
+    RoleAtTerm(std::shared_ptr<RaftPersister> const &persister);
     ~RoleAtTerm();
 
     /**
@@ -93,9 +78,7 @@ class RoleAtTerm {
     bool UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpgradeReason reason);
 
   private:
-    std::unique_ptr<std::mutex> lock_;
-    RaftTerm term_;
-    RaftRole role_;
+    std::shared_ptr<RaftPersister> persister_;
 };
 
 } // namespace e8

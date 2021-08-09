@@ -20,13 +20,12 @@
 
 #include <google/protobuf/repeated_field.h>
 #include <memory>
-#include <mutex>
 #include <string>
 #include <utility>
 
 #include "proto_cc/command.pb.h"
 #include "proto_cc/raft.pb.h"
-#include "replication/raft/role_at_term.h"
+#include "replication/raft/persister.h"
 
 namespace e8 {
 
@@ -49,15 +48,13 @@ class RaftCommitListener {
 class RaftJournal {
   public:
     /**
-     * @brief RaftJournal On constuction of this object, it will attempt to recover the persistent
-     * states from the specified log file, if one exists.
+     * @brief RaftJournal Tells the object o manage on top of the persister.
      *
      * @param commit_listener The listener will be notified with committed log entries.
-     * @param log_path File path to the local file system to persist log entries for crash recovery
-     * purposes.
+     * @param persister The persistent device which holds the log data and manages persistence.
      */
-    RaftJournal(std::shared_ptr<RaftCommitListener> const &commit_listener,
-                std::string const &log_path);
+    RaftJournal(std::shared_ptr<RaftPersister> const &persister,
+                std::shared_ptr<RaftCommitListener> const &commit_listener);
     ~RaftJournal();
 
     /**
@@ -69,25 +66,16 @@ class RaftJournal {
      *
      * @param from The starting position of the local log source to overwrite.
      * @param foreign_log_entries Partial foreign log entries to overwrite from.
-     * @param term_and_role The current term and role of the caller that starts this call.
      */
     void MergeForeignLogs(unsigned from,
-                          google::protobuf::RepeatedField<LogEntry> const &foreign_log_entries,
-                          std::pair<RaftTerm, RaftRole> const &term_and_role);
+                          google::protobuf::RepeatedField<LogEntry> const &foreign_log_entries);
 
   private:
-    void Persist(std::pair<RaftTerm, RaftRole> const &term_and_role);
-    void Recover();
-
-    std::mutex lock_;
-
-    RaftPersistentStates data_;
+    std::shared_ptr<RaftPersister> persister_;
 
     std::shared_ptr<RaftCommitListener> commit_listener_;
     unsigned commit_progress_;
     unsigned listener_progress_;
-
-    std::string const log_path_;
 };
 
 } // namespace e8
