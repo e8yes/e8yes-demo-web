@@ -31,6 +31,7 @@ namespace e8 {
 /**
  * @brief The RaftForeground class The service using Raft (e.g. a k/v server) wants to start
  * agreement on the next command to be appended to Raft's log. This is the object for that purpose.
+ * Do not create more than one foreground on the same context.
  */
 class RaftForeground {
   public:
