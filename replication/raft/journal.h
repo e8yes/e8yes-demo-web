@@ -78,6 +78,16 @@ class RaftJournal {
     void MergeForeignLogs(unsigned from,
                           google::protobuf::RepeatedField<LogEntry> const &foreign_log_entries);
 
+    /**
+     * @brief Stale Given the lastest log progress and highest log term the foreign journal have,
+     * deduce if it misses any of the local log entries that have committed or are about to commit.
+     * Note that, it's not the same as checking if the foreign journal misses any of the local log
+     * entries. For log entries that were added in previous terms, the foreign journal could not
+     * have contained them but still consider fresh. That is because those log entries are subject
+     * to potential overwrite and are not, for the moment, sending to the state machine.
+     */
+    bool Stale(LogSourceLiveness const &foreign_liveness);
+
   private:
     std::shared_ptr<RaftPersister> persister_;
 

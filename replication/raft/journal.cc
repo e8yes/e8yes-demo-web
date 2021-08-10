@@ -90,4 +90,24 @@ void RaftJournal::MergeForeignLogs(
     persister_->Persist();
 }
 
+bool RaftJournal::Stale(LogSourceLiveness const &foreign_liveness) {
+    std::lock_guard<RaftPersister> const guard(*persister_);
+
+    if (persister_->LogEntriesRef()->empty()) {
+        // The foreign journal can not be stale compared to an empty journal.
+        return false;
+    }
+
+    RaftTerm highest_log_term = persister_->LogEntriesRef()->rbegin()->term();
+    if (foreign_liveness.highest_log_term() > highest_log_term) {
+        return false;
+    }
+
+    if (foreign_liveness.highest_log_term() == highest_log_term) {
+        return foreign_liveness.log_progress() > persister_->LogEntriesRef()->size();
+    }
+
+    return true;
+}
+
 } // namespace e8
