@@ -19,7 +19,6 @@ syntax = "proto3";
 
 package e8;
 
-import "command.proto";
 import "raft.proto";
 
 message GrantVoteRequest {
@@ -54,24 +53,6 @@ message NotifyCommitProgressResponse {
 }
 
 
-message EnqueueCommandRequest {
-    CommandEntry command = 1;
-}
-
-message EnqueueCommandResponse {
-    // The leader status of the node that was called.
-    bool leader = 1;
-
-    // If leader is true, this is the index that the command will appear as if 
-    // it's ever committed. Otherwise, this value is not usable.
-    int64 command_index = 2;
-
-    // The term at which the node enqueues the command. This value is not 
-    // usable if the leader status is false.
-    int64 term = 3;
-}
-
-
 /*
  * Service that a single Raft peer provides.
  */
@@ -101,15 +82,4 @@ service RaftService {
      */
     rpc NotifyCommitProgress(NotifyCommitProgressRequest) returns
         (NotifyCommitProgressResponse);
-
-    /*
-     * The service using Raft (e.g. a k/v server) wants to start agreement on
-     * the next command to be appended to Raft's log. If this server isn't the
-     * leader, it returns immediately with the status indicated in the
-     * response. Otherwise, it starts the agreement. There is no guarantee that
-     * this command will ever be committed to the Raft log, since the leader
-     * may fail or lose an election.
-     */
-    rpc EnqueueCommand(EnqueueCommandRequest) returns 
-        (EnqueueCommandResponse);
 }
