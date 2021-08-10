@@ -25,6 +25,7 @@
 
 #include "proto_cc/command.pb.h"
 #include "proto_cc/raft.pb.h"
+#include "replication/raft/common_types.h"
 #include "replication/raft/journal.h"
 #include "replication/raft/persister.h"
 
@@ -56,12 +57,20 @@ unsigned RaftJournal::AppendLog(LogEntry const &log_entry) {
     return persister_->LogEntriesRef()->size() - 1;
 }
 
-void RaftJournal::MergeForeignLogs(
-    unsigned from, google::protobuf::RepeatedField<LogEntry> const &foreign_log_entries) {
+bool RaftJournal::MergeForeignLogs(
+    unsigned from, google::protobuf::RepeatedField<LogEntry> const &foreign_log_entries,
+    RaftTerm preceding_log_term) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
-    // start_index shouldn't be after the end of the local logs.
-    assert(from <= static_cast<unsigned>(foreign_log_entries.size()));
+    if (from > static_cast<unsigned>(foreign_log_entries.size())) {
+        // Replicating too far in the future, there are missing entries.
+        return false;
+    }
+
+    if (from != 0 && preceding_log_term != (*persister_->LogEntriesRef())[from - 1].term()) {
+        // There are some previous log entries which are unresolved.
+        return false;
+    }
 
     for (unsigned i = 0; i < static_cast<unsigned>(foreign_log_entries.size()); i++) {
         unsigned target_index = from + i;
@@ -88,6 +97,8 @@ void RaftJournal::MergeForeignLogs(
     }
 
     persister_->Persist();
+
+    return true;
 }
 
 bool RaftJournal::Stale(LogSourceLiveness const &foreign_liveness) {
