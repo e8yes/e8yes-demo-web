@@ -44,8 +44,15 @@ RaftForeground::BoardcastCommand(CommandEntry const &command_entry) {
     auto [term, role] = context_->role_at_term->TermAndRole();
 
     if (role != RAFT_LEADER) {
-        // TODO: Returns the correct retry address when the leader tracker is implemented.
-        return BoardcastResult("");
+        std::optional<RaftMachineAddress> possible_leader = context_->voting_record->LastVotedFor();
+
+        if (possible_leader->empty()) {
+            // Retry the call on this node for the time being since we don't know who the leader is.
+            return BoardcastResult(context_->me);
+        } else {
+            // The node we voted for could possibly be the leader if it wins the election.
+            return BoardcastResult(*possible_leader);
+        }
     }
 
     // Adds the log entry to the journal and let the background leader task picks up and replicate

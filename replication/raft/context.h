@@ -23,6 +23,7 @@
 #include <unordered_set>
 
 #include "replication/raft/common_types.h"
+#include "replication/raft/election.h"
 #include "replication/raft/journal.h"
 #include "replication/raft/persister.h"
 #include "replication/raft/role_at_term.h"
@@ -62,6 +63,8 @@ struct RaftContext {
     std::unique_ptr<FollowerSchedule> follower_schedule;
     std::unique_ptr<CandidateSchedule> candidate_schedule;
     std::unique_ptr<LeaderSchedule> leader_schedule;
+
+    std::unique_ptr<RaftVotingRecord> voting_record;
 };
 
 /**

@@ -21,6 +21,7 @@
 
 #include "replication/raft/common_types.h"
 #include "replication/raft/context.h"
+#include "replication/raft/election.h"
 #include "replication/raft/journal.h"
 #include "replication/raft/persister.h"
 #include "replication/raft/role_at_term.h"
@@ -44,6 +45,8 @@ CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
     context->follower_schedule = std::make_unique<FollowerSchedule>(schedule_config);
     context->candidate_schedule = std::make_unique<CandidateSchedule>(schedule_config);
     context->leader_schedule = std::make_unique<LeaderSchedule>(schedule_config);
+
+    context->voting_record = std::make_unique<RaftVotingRecord>();
 
     return context;
 }
