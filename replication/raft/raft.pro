@@ -19,6 +19,7 @@ INCLUDEPATH += ../../
 
 
 SOURCES += \
+    context.cc \
     journal.cc \
     persister.cc \
     role_at_term.cc \
@@ -26,6 +27,7 @@ SOURCES += \
 
 HEADERS += \
     common_types.h \
+    context.h \
     journal.h \
     persister.h \
     role_at_term.h \
