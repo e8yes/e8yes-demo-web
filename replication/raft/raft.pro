@@ -19,6 +19,7 @@ INCLUDEPATH += ../../
 
 
 SOURCES += \
+    background.cc \
     context.cc \
     journal.cc \
     persister.cc \
@@ -26,6 +27,7 @@ SOURCES += \
     schedule.cc
 
 HEADERS += \
+    background.h \
     common_types.h \
     context.h \
     journal.h \
