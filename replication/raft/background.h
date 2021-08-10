@@ -43,6 +43,8 @@ namespace e8 {
  *  Constantly publishing and committing logs as well as sending heartbeats to the followers.\
  *
  * Please look at the service_raft.proto for information about what RPCs the Raft werver provides.
+ *
+ * Note, never run more than one background task on the same context.
  */
 class RaftBackground : public TaskInterface {
   public:

@@ -21,6 +21,7 @@ INCLUDEPATH += ../../
 SOURCES += \
     background.cc \
     context.cc \
+    foreground.cc \
     journal.cc \
     persister.cc \
     role_at_term.cc \
@@ -30,6 +31,7 @@ HEADERS += \
     background.h \
     common_types.h \
     context.h \
+    foreground.h \
     journal.h \
     persister.h \
     role_at_term.h \

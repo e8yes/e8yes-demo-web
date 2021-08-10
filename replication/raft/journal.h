@@ -60,8 +60,10 @@ class RaftJournal {
     /**
      * @brief AppendLog Appends a new log to the local log source and persists the updated local
      * logs.
+     *
+     * @return The index at which the log entry has appended.
      */
-    void AppendLog(LogEntry const &log_entry);
+    unsigned AppendLog(LogEntry const &log_entry);
 
     /**
      * @brief MergeForeignLogs Overwrites and appends the local logs with foreign logs starting from
