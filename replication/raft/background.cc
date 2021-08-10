@@ -25,19 +25,31 @@
 #include "replication/raft/background.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/context.h"
+#include "replication/raft/service/raft_service.h"
 
 namespace e8 {
 namespace {
 
-std::unique_ptr<grpc::Server> StartRaftServer(RaftMachineAddress const &machine_address) {
+struct ServerAndService {
+    std::unique_ptr<grpc::Server> server;
+    std::unique_ptr<RaftServiceImpl> service;
+};
+
+ServerAndService StartRaftServer(std::shared_ptr<RaftContext> const &context) {
+    auto service = std::make_unique<RaftServiceImpl>(context);
+
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 
     grpc::ServerBuilder builder;
-    builder.AddListeningPort(machine_address, grpc::InsecureServerCredentials());
-    // TODO: register Raft service here when it is implemented.
+    builder.AddListeningPort(context->me, grpc::InsecureServerCredentials());
+    builder.RegisterService(service.get());
 
-    return builder.BuildAndStart();
+    ServerAndService result;
+    result.server = builder.BuildAndStart();
+    result.service = std::move(service);
+
+    return result;
 }
 
 void ShutdownRaftServer(std::unique_ptr<grpc::Server> const &server) {
@@ -56,13 +68,13 @@ RaftBackground::~RaftBackground() {}
 void RaftBackground::Shutdown() { done_ = true; }
 
 void RaftBackground::Run(TaskStorageInterface *) const {
-    auto raft_server = StartRaftServer(context_->me);
+    ServerAndService server_and_service = StartRaftServer(context_);
 
     while (!done_) {
         // TODO: Plays the current raft role.
     }
 
-    ShutdownRaftServer(raft_server);
+    ShutdownRaftServer(server_and_service.server);
 }
 
 bool RaftBackground::DropResourceOnCompletion() const { return true; }

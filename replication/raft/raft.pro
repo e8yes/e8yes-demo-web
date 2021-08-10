@@ -26,7 +26,8 @@ SOURCES += \
     journal.cc \
     persister.cc \
     role_at_term.cc \
-    schedule.cc
+    schedule.cc \
+    service/raft_service.cc
 
 HEADERS += \
     background.h \
@@ -37,7 +38,8 @@ HEADERS += \
     journal.h \
     persister.h \
     role_at_term.h \
-    schedule.h
+    schedule.h \
+    service/raft_service.h
 
 # Default rules for deployment.
 unix {

@@ -22,7 +22,7 @@ package e8;
 import "raft.proto";
 
 message GrantVoteRequest {
-    string candidate_id = 1;
+    string candidate_machine_address = 1;
     int64 candidate_term = 2;
     LogSourceLiveness candidate_liveness = 3;
 }
