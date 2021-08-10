@@ -54,4 +54,34 @@ grpc::Status RaftServiceImpl::GrantVote(grpc::ServerContext *, GrantVoteRequest 
     return grpc::Status::OK;
 }
 
+grpc::Status RaftServiceImpl::MergeLogEntries(grpc::ServerContext *,
+                                              MergeLogEntriesRequest const *request,
+                                              MergeLogEntriesResponse *response) {
+    std::lock_guard<std::mutex> guard(append_command_lock_);
+
+    auto [term, _] = context_->role_at_term->TermAndRole();
+    if (request->term() < term) {
+        // Reject an out-of-date leader.
+        response->set_successful(false);
+        response->set_current_term(term);
+        return grpc::Status::OK;
+    }
+
+    context_->role_at_term->UpgradeTerm(context_->me, request->term(),
+                                        RoleAtTerm::ENCOUNTERED_HIGHER_TERM_MESSAGE);
+
+    bool resolvable = context_->journal->MergeForeignLogs(
+        request->overwrite_from(), request->overwrite_with(), request->preceding_term());
+    if (!resolvable) {
+        // Fails to reconcile with the alien log source.
+        response->set_successful(false);
+        response->set_current_term(request->term());
+        return grpc::Status::OK;
+    }
+
+    response->set_successful(true);
+    response->set_current_term(request->term());
+    return grpc::Status::OK;
+}
+
 } // namespace e8

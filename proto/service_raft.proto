@@ -32,13 +32,22 @@ message GrantVoteResponse {
 }
 
 
-message AppendCommandEntriesRequest {
+message MergeLogEntriesRequest {
+    // The term of the foreign node.
     int64 term = 1;
+
+    // Starting index in the local log to overwrite from.
     int64 overwrite_from = 2;
+
+    // Foreign logs to overwrite with.
     repeated LogEntry overwrite_with = 3;
+
+    // For concatenability check. The term of the log just before the index
+    // overwrite_from
+    int64 preceding_term = 4;
 }
 
-message AppendCommandEntriesResponse {
+message MergeLogEntriesResponse {
     bool successful = 1;
     int64 current_term = 2;
 }
@@ -72,8 +81,8 @@ service RaftService {
      * log_term@k(source A) == log_term@k(source B). If so, it proceeds to 
      * replicate logs from the start index.
      */
-    rpc AppendCommandEntries(AppendCommandEntriesRequest) returns 
-        (AppendCommandEntriesResponse);
+    rpc MergeLogEntries(MergeLogEntriesRequest) returns 
+        (MergeLogEntriesResponse);
 
     /*
      * Notifies the node about the global commit progress, that is, all the 

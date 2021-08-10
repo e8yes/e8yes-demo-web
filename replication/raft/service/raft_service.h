@@ -20,6 +20,7 @@
 
 #include <grpcpp/grpcpp.h>
 #include <memory>
+#include <mutex>
 
 #include "proto_cc/service_raft.grpc.pb.h"
 #include "proto_cc/service_raft.pb.h"
@@ -41,8 +42,12 @@ class RaftServiceImpl : public RaftService::Service {
     grpc::Status GrantVote(grpc::ServerContext *, GrantVoteRequest const *request,
                            GrantVoteResponse *response) override;
 
+    grpc::Status MergeLogEntries(grpc::ServerContext *, MergeLogEntriesRequest const *request,
+                                 MergeLogEntriesResponse *response) override;
+
   private:
     std::shared_ptr<RaftContext> context_;
+    std::mutex append_command_lock_;
 };
 
 } // namespace e8

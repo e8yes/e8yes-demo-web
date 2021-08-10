@@ -58,7 +58,7 @@ unsigned RaftJournal::AppendLog(LogEntry const &log_entry) {
 }
 
 bool RaftJournal::MergeForeignLogs(
-    unsigned from, google::protobuf::RepeatedField<LogEntry> const &foreign_log_entries,
+    unsigned from, google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
     RaftTerm preceding_log_term) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 

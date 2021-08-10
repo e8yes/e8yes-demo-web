@@ -83,7 +83,7 @@ class RaftJournal {
      * local journal.
      */
     bool MergeForeignLogs(unsigned from,
-                          google::protobuf::RepeatedField<LogEntry> const &foreign_log_entries,
+                          google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
                           RaftTerm preceding_log_term);
 
     /**
