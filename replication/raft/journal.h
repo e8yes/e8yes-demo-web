@@ -69,12 +69,12 @@ class RaftJournal {
     /**
      * @brief MergeForeignLogs Overwrites and appends the local logs with foreign logs starting from
      * the "from" index. Note that the "from" index can set at the end of the local logs but no more
-     * further, otherwise, it's unresolvable and will interrupt the merge and return false. It also
-     * checks if the log term preceding the "from" index of the local logs agrees with the foreign.
-     * A disagreement means the previous logs are unresolved and will also make the call return
-     * false immediately. After the merge operation, logs that are different from the foreign source
-     * and those come after these entries will be deleted and replaced with the foreign entries.
-     * After the local log content is modified, it persists the updated local logs.
+     * further. Otherwise, it's unresolvable, and the function will interrupt the merge and return
+     * false. It also checks if the log term preceding the "from" index of the local logs agrees
+     * with the foreign. A disagreement means the previous logs are unresolved and will make the
+     * call return false immediately. After the merge operation, logs that are different from the
+     * foreign source and those come after these entries will be deleted and replaced with the
+     * foreign entries. After the local log content is modified, it persists the updated local logs.
      *
      * @param from The starting position of the local log source to overwrite.
      * @param foreign_log_entries Partial foreign log entries to overwrite from.
