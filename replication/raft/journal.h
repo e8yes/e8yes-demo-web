@@ -37,10 +37,10 @@ namespace e8 {
 class RaftCommitListener {
   public:
     /**
-     * @brief AfterCommit When a log entry has been committed, this will be called so that the state
-     * machine can change its state according to the command carried in the log.
+     * @brief ApplyCommit When a log entry has been committed, this will be called so that the state
+     * machine can change its states according to the command carried in the log.
      */
-    virtual void AfterCommit(CommandEntry const &entry) = 0;
+    virtual void Apply(CommandEntry const &entry) = 0;
 };
 
 /**
@@ -96,12 +96,22 @@ class RaftJournal {
      */
     bool Stale(LogSourceLiveness const &foreign_liveness);
 
+    /**
+     * @brief PushCommitProgress Synchronizes local commit progress with the commit progress
+     * requested by the leader and pushes all the committed log commands to the state machine
+     * connected to by the commit_listener (passed in during construction).
+     *
+     * @param safe_commit_progress The highest commit progress where all logs within the range
+     * [0, safe_commit_progress) has all been replicated by a quorum as well as here locally in the
+     * journal.
+     */
+    void PushCommitProgress(unsigned safe_commit_progress);
+
   private:
     std::shared_ptr<RaftPersister> persister_;
 
     std::shared_ptr<RaftCommitListener> commit_listener_;
     unsigned commit_progress_;
-    unsigned listener_progress_;
 };
 
 } // namespace e8

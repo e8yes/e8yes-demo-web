@@ -16,7 +16,6 @@
  */
 
 #include <cassert>
-#include <fstream>
 #include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <mutex>
@@ -42,8 +41,10 @@ void TruncateLogsTo(unsigned new_size, google::protobuf::RepeatedPtrField<LogEnt
 
 RaftJournal::RaftJournal(std::shared_ptr<RaftPersister> const &persister,
                          std::shared_ptr<RaftCommitListener> const &commit_listener)
-    : persister_(persister), commit_listener_(commit_listener), commit_progress_(0),
-      listener_progress_(0) {}
+    : persister_(persister), commit_listener_(commit_listener), commit_progress_(0) {
+    assert(persister_ != nullptr);
+    assert(commit_listener_ != nullptr);
+}
 
 RaftJournal::~RaftJournal() {}
 
@@ -119,6 +120,24 @@ bool RaftJournal::Stale(LogSourceLiveness const &foreign_liveness) {
     }
 
     return true;
+}
+
+void RaftJournal::PushCommitProgress(unsigned safe_commit_progress) {
+    std::lock_guard<RaftPersister> const guard(*persister_);
+
+    if (safe_commit_progress <= commit_progress_) {
+        // Nothing to commit.
+        return;
+    }
+
+    // Can't commit beyond what is replicated to the local journal.
+    assert(safe_commit_progress <= static_cast<unsigned>(persister_->LogEntriesRef()->size()));
+
+    // Pushes logs to the state machine.
+    while (commit_progress_ < safe_commit_progress) {
+        commit_listener_->Apply((*persister_->LogEntriesRef())[commit_progress_].entry());
+        ++commit_progress_;
+    }
 }
 
 } // namespace e8
