@@ -39,15 +39,21 @@ class RaftServiceImpl : public RaftService::Service {
     explicit RaftServiceImpl(std::shared_ptr<RaftContext> const &context);
     virtual ~RaftServiceImpl() override;
 
-    grpc::Status GrantVote(grpc::ServerContext *, GrantVoteRequest const *request,
+    grpc::Status GrantVote(grpc::ServerContext *context, GrantVoteRequest const *request,
                            GrantVoteResponse *response) override;
 
-    grpc::Status MergeLogEntries(grpc::ServerContext *, MergeLogEntriesRequest const *request,
+    grpc::Status MergeLogEntries(grpc::ServerContext *context,
+                                 MergeLogEntriesRequest const *request,
                                  MergeLogEntriesResponse *response) override;
+
+    grpc::Status PushCommitProgress(grpc::ServerContext *context,
+                                    PushCommitProgressRequest const *request,
+                                    PushCommitProgressResponse *response) override;
 
   private:
     std::shared_ptr<RaftContext> context_;
-    std::mutex append_command_lock_;
+    std::mutex merge_log_entries_lock_;
+    std::mutex set_commit_progress_lock_;
 };
 
 } // namespace e8

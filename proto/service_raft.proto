@@ -53,12 +53,12 @@ message MergeLogEntriesResponse {
 }
 
 
-message NotifyCommitProgressRequest {
+message PushCommitProgressRequest {
     int64 term = 1;
     int64 safe_commit_progress = 2;
 }
 
-message NotifyCommitProgressResponse {
+message PushCommitProgressResponse {
 }
 
 
@@ -85,10 +85,11 @@ service RaftService {
         (MergeLogEntriesResponse);
 
     /*
-     * Notifies the node about the global commit progress, that is, all the 
-     * logs that have been replicated by a quorum. It will update the heartbeat 
-     * clock as an indication that it receives a message from the leader.
+     * Notifies the node about the furthest commit progress it is able to set, 
+     * that is, all the logs that have been replicated by a quorum as well as 
+     * locally. The node should update the heartbeat clock as an indication 
+     * that it receives a message from the leader.
      */
-    rpc NotifyCommitProgress(NotifyCommitProgressRequest) returns
-        (NotifyCommitProgressResponse);
+    rpc PushCommitProgress(PushCommitProgressRequest) returns
+        (PushCommitProgressResponse);
 }

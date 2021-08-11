@@ -57,7 +57,7 @@ grpc::Status RaftServiceImpl::GrantVote(grpc::ServerContext *, GrantVoteRequest 
 grpc::Status RaftServiceImpl::MergeLogEntries(grpc::ServerContext *,
                                               MergeLogEntriesRequest const *request,
                                               MergeLogEntriesResponse *response) {
-    std::lock_guard<std::mutex> guard(append_command_lock_);
+    std::lock_guard<std::mutex> guard(merge_log_entries_lock_);
 
     auto [term, _] = context_->role_at_term->TermAndRole();
     if (request->term() < term) {
@@ -67,6 +67,7 @@ grpc::Status RaftServiceImpl::MergeLogEntries(grpc::ServerContext *,
         return grpc::Status::OK;
     }
 
+    context_->follower_schedule->ConfirmHeartbeat();
     context_->role_at_term->UpgradeTerm(context_->me, request->term(),
                                         RoleAtTerm::ENCOUNTERED_HIGHER_TERM_MESSAGE);
 
@@ -81,6 +82,26 @@ grpc::Status RaftServiceImpl::MergeLogEntries(grpc::ServerContext *,
 
     response->set_successful(true);
     response->set_current_term(request->term());
+    return grpc::Status::OK;
+}
+
+grpc::Status RaftServiceImpl::PushCommitProgress(grpc::ServerContext *,
+                                                 PushCommitProgressRequest const *request,
+                                                 PushCommitProgressResponse *) {
+    std::lock_guard<std::mutex> guard(set_commit_progress_lock_);
+
+    auto [term, _] = context_->role_at_term->TermAndRole();
+    if (request->term() < term) {
+        // Reject an out-of-date leader.
+        return grpc::Status::OK;
+    }
+
+    context_->follower_schedule->ConfirmHeartbeat();
+    context_->role_at_term->UpgradeTerm(context_->me, request->term(),
+                                        RoleAtTerm::ENCOUNTERED_HIGHER_TERM_MESSAGE);
+
+    context_->journal->PushCommitProgress(request->safe_commit_progress());
+
     return grpc::Status::OK;
 }
 
