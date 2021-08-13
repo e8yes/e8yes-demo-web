@@ -36,6 +36,9 @@ namespace e8 {
  */
 class RaftCommitListener {
   public:
+    RaftCommitListener();
+    virtual ~RaftCommitListener();
+
     /**
      * @brief ApplyCommit When a log entry has been committed, this will be called so that the state
      * machine can change its states according to the command carried in the log.
