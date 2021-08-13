@@ -47,7 +47,8 @@ class RaftCommitListener {
 };
 
 /**
- * @brief The RaftJournal class Handles logging and commit in a thread-safe and crash-safe manner.
+ * @brief The RaftJournal class Handles local logging and commit in a thread-safe and crash-safe
+ * manner.
  */
 class RaftJournal {
   public:
