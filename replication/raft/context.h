@@ -25,6 +25,7 @@
 #include "replication/raft/common_types.h"
 #include "replication/raft/election.h"
 #include "replication/raft/journal.h"
+#include "replication/raft/peer_set.h"
 #include "replication/raft/persister.h"
 #include "replication/raft/role_at_term.h"
 #include "replication/raft/schedule.h"
@@ -54,7 +55,7 @@ struct RaftConfig {
  */
 struct RaftContext {
     RaftMachineAddress me;
-    std::unordered_set<RaftMachineAddress> peers;
+    std::unique_ptr<RaftPeerSet> peers;
 
     std::shared_ptr<RaftPersister> persister;
     std::unique_ptr<RoleAtTerm> role_at_term;

@@ -19,10 +19,12 @@
 #include <string>
 #include <unordered_set>
 
+#include "proto_cc/service_raft.grpc.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/context.h"
 #include "replication/raft/election.h"
 #include "replication/raft/journal.h"
+#include "replication/raft/peer_set.h"
 #include "replication/raft/persister.h"
 #include "replication/raft/role_at_term.h"
 #include "replication/raft/schedule.h"
@@ -35,7 +37,7 @@ CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
     std::shared_ptr<RaftContext> context = std::make_shared<RaftContext>();
 
     context->me = config.me;
-    context->peers = config.peers;
+    context->peers = std::make_unique<RaftPeerSet>(config.peers);
 
     context->persister = std::make_shared<RaftPersister>(config.log_path);
     context->role_at_term = std::make_unique<RoleAtTerm>(context->persister);
