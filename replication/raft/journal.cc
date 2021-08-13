@@ -43,7 +43,7 @@ RaftCommitListener::RaftCommitListener() {}
 
 RaftCommitListener::~RaftCommitListener() {}
 
-RaftJournal::RaftJournal(std::shared_ptr<RaftPersister> const &persister,
+RaftJournal::RaftJournal(RaftPersister *persister,
                          std::shared_ptr<RaftCommitListener> const &commit_listener)
     : persister_(persister), commit_listener_(commit_listener), commit_progress_(0) {
     assert(persister_ != nullptr);

@@ -54,10 +54,10 @@ class RaftJournal {
     /**
      * @brief RaftJournal Tells the object o manage on top of the persister.
      *
-     * @param commit_listener The listener will be notified with committed log entries.
      * @param persister The persistent device which holds the log data and manages persistence.
+     * @param commit_listener The listener will be notified with committed log entries.
      */
-    RaftJournal(std::shared_ptr<RaftPersister> const &persister,
+    RaftJournal(RaftPersister *persister,
                 std::shared_ptr<RaftCommitListener> const &commit_listener);
     ~RaftJournal();
 
@@ -111,7 +111,7 @@ class RaftJournal {
     void PushCommitProgress(unsigned safe_commit_progress);
 
   private:
-    std::shared_ptr<RaftPersister> persister_;
+    RaftPersister *persister_;
 
     std::shared_ptr<RaftCommitListener> commit_listener_;
     unsigned commit_progress_;

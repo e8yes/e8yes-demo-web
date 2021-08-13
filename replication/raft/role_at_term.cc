@@ -18,7 +18,6 @@
 #include <cassert>
 #include <cstdint>
 #include <iostream>
-#include <memory>
 #include <mutex>
 #include <string>
 #include <utility>
@@ -46,7 +45,7 @@ std::string RoleString(RaftRole role) {
 
 } // namespace
 
-RoleAtTerm::RoleAtTerm(std::shared_ptr<RaftPersister> const &persister) : persister_(persister) {}
+RoleAtTerm::RoleAtTerm(RaftPersister *persister) : persister_(persister) {}
 
 RoleAtTerm::~RoleAtTerm() {}
 

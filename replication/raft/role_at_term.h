@@ -19,7 +19,6 @@
 #define RAFT_ROLE_AT_TERM_H
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -47,7 +46,7 @@ class RoleAtTerm {
      * @brief RoleAtTerm The role and term is recovered from the persister. Any future changes to
      * either term or role will be immediately saved by this persister.
      */
-    RoleAtTerm(std::shared_ptr<RaftPersister> const &persister);
+    RoleAtTerm(RaftPersister *persister);
     ~RoleAtTerm();
 
     /**
@@ -78,7 +77,7 @@ class RoleAtTerm {
     bool UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpgradeReason reason);
 
   private:
-    std::shared_ptr<RaftPersister> persister_;
+    RaftPersister *persister_;
 };
 
 } // namespace e8

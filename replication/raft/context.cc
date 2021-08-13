@@ -41,8 +41,8 @@ CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
     context->peers = std::make_unique<RaftPeerSet>(config.peers);
 
     context->persister = std::make_shared<RaftPersister>(config.log_path);
-    context->role_at_term = std::make_unique<RoleAtTerm>(context->persister);
-    context->journal = std::make_unique<RaftJournal>(context->persister, commit_listener);
+    context->role_at_term = std::make_unique<RoleAtTerm>(context->persister.get());
+    context->journal = std::make_unique<RaftJournal>(context->persister.get(), commit_listener);
 
     RaftScheduleConfig schedule_config = FastElectionRaftScheduleConfig(config.unavailability);
     context->follower_schedule = std::make_unique<FollowerSchedule>(schedule_config);
