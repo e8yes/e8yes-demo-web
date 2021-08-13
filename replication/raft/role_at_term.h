@@ -37,7 +37,7 @@ class RoleAtTerm {
   public:
     enum TermUpgradeReason {
         LACK_OF_HEARTBEAT,
-        SPLIT_VOTES,
+        LOST_AN_ELECTION,
         WON_AN_ELECTION,
         ENCOUNTERED_HIGHER_TERM_MESSAGE,
     };

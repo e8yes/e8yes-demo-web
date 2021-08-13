@@ -97,7 +97,7 @@ bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpg
     }
     case RAFT_CANDIDATE: {
         switch (reason) {
-        case SPLIT_VOTES:
+        case LOST_AN_ELECTION:
         case LACK_OF_HEARTBEAT: {
             new_role = RAFT_CANDIDATE;
             break;
