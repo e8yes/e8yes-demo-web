@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = \
-    raft
+    raft \
+    _test_raft/_test_context
 
 CONFIG += ordered
