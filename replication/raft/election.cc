@@ -158,6 +158,8 @@ RaftElectionCommittee::Result::~Result() {}
 
 bool RaftElectionCommittee::Result::Won() const { return num_votes_ >= quorum_size_; }
 
+unsigned RaftElectionCommittee::Result::VoteCount() const { return num_votes_; }
+
 void RaftElectionCommittee::Result::AddVote() {
     std::lock_guard<std::mutex> guard(mu_);
     ++num_votes_;

@@ -77,6 +77,11 @@ class RaftElectionCommittee {
         bool Won() const;
 
         /**
+         * @brief VoteCount The number of votes the candidate currently receives.
+         */
+        unsigned VoteCount() const;
+
+        /**
          * @brief AddVote The candidates gets one more vote.
          */
         void AddVote();
