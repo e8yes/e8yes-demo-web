@@ -67,4 +67,8 @@ RaftForeground::BoardcastCommand(CommandEntry const &command_entry) {
     return BoardcastResult(log_index, term);
 }
 
+std::pair<RaftTerm, RaftRole> RaftForeground::TermAndRole() const {
+    return context_->role_at_term->TermAndRole();
+}
+
 } // namespace e8

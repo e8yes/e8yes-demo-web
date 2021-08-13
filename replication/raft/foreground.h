@@ -21,6 +21,7 @@
 #include <memory>
 #include <mutex>
 #include <optional>
+#include <utility>
 
 #include "proto_cc/command.pb.h"
 #include "replication/raft/common_types.h"
@@ -69,6 +70,12 @@ class RaftForeground {
      * @return See above for the description of the return values.
      */
     BoardcastResult BoardcastCommand(CommandEntry const &command_entry);
+
+    /**
+     * @brief TermAndRole Returns the current term and role the node is holding for testing
+     * purposes.
+     */
+    std::pair<RaftTerm, RaftRole> TermAndRole() const;
 
   private:
     std::shared_ptr<RaftContext> context_;
