@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <chrono>
 #include <grpcpp/grpcpp.h>
 #include <memory>
@@ -120,7 +121,12 @@ std::optional<RaftMachineAddress> RaftVotingRecord::LastVotedFor() const { retur
 RaftElectionCommittee::RaftElectionCommittee(RaftPeerSet *peers, unsigned quorum_size,
                                              TimeIntervalMillis election_timeout_millis)
     : peers_(peers), quorum_size_(quorum_size), election_timeout_millis_(election_timeout_millis),
-      thread_pool_(peers->PeerCount()) {}
+      thread_pool_(peers->PeerCount()) {
+    assert(quorum_size >= peers->PeerCount() / 2 + 1);
+    assert(quorum_size <= peers->PeerCount());
+}
+
+RaftElectionCommittee::~RaftElectionCommittee() {}
 
 std::shared_ptr<RaftElectionCommittee::Result>
 RaftElectionCommittee::StartElection(RaftTerm for_term,

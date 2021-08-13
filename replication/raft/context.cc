@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -49,6 +50,8 @@ CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
     context->leader_schedule = std::make_unique<LeaderSchedule>(schedule_config);
 
     context->voting_record = std::make_unique<RaftVotingRecord>();
+    context->election_committee = std::make_unique<RaftElectionCommittee>(
+        context->peers.get(), config.quorum_size, schedule_config.election_timeout_millis);
 
     return context;
 }

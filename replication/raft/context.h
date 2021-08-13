@@ -42,6 +42,11 @@ struct RaftConfig {
     // The machine addresses of all the Raft peers, including the local node.
     std::unordered_set<RaftMachineAddress> peers;
 
+    // The minimum number of nodes that are required to reach agreement to form concensus over a
+    // log entry or Raft leadership. The quorum size must be at least
+    // floor(peers->PeerCount()/2) + 1, so that there is at most one quorum among the peers.
+    unsigned quorum_size;
+
     // File path to the local file system for storing Raft persistent states.
     std::string log_path;
 
@@ -66,6 +71,7 @@ struct RaftContext {
     std::unique_ptr<LeaderSchedule> leader_schedule;
 
     std::unique_ptr<RaftVotingRecord> voting_record;
+    std::unique_ptr<RaftElectionCommittee> election_committee;
 };
 
 /**
