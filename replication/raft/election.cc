@@ -93,7 +93,7 @@ void CollectVoteTask::Run(TaskStorageInterface *data) const {
                          std::chrono::milliseconds(args->election_timeout_millis));
 
     grpc::Status status = args->target_stub->GrantVote(&context, request, &response);
-    if (status.ok() || !response.vote_granted()) {
+    if (!status.ok() || !response.vote_granted()) {
         return;
     }
 
@@ -138,7 +138,7 @@ RaftElectionCommittee::StartElection(RaftTerm for_term,
 
     for (auto const &[peer_address, peer_stub] : *peers_) {
         if (peer_address == candidate_machine_address) {
-            // Votes for ourselves.
+            // Self vote.
             result->AddVote();
             continue;
         }
