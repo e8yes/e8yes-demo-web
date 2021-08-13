@@ -90,6 +90,12 @@ class RaftJournal {
                           RaftTerm preceding_log_term);
 
     /**
+     * @brief Liveness Returns the liveness states of the current journal. It could be used to
+     * compare against other journal to determine how up-to-date the journal is.
+     */
+    LogSourceLiveness Liveness() const;
+
+    /**
      * @brief Stale Given the lastest log progress and highest log term the foreign journal have,
      * deduce if it misses any of the local log entries that have committed or are about to commit.
      * Note that, it's not the same as checking if the foreign journal misses any of the local log

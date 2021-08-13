@@ -62,6 +62,21 @@ unsigned RaftJournal::AppendLog(LogEntry const &log_entry) {
     return persister_->LogEntriesRef()->size() - 1;
 }
 
+LogSourceLiveness RaftJournal::Liveness() const {
+    std::lock_guard<RaftPersister> const guard(*persister_);
+
+    LogSourceLiveness liveness;
+    liveness.set_log_progress(persister_->LogEntriesRef()->size());
+
+    if (persister_->LogEntriesRef()->empty()) {
+        liveness.set_highest_log_term(0);
+    } else {
+        liveness.set_highest_log_term(persister_->LogEntriesRef()->rbegin()->term());
+    }
+
+    return liveness;
+}
+
 bool RaftJournal::MergeForeignLogs(
     unsigned from, google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
     RaftTerm preceding_log_term) {
