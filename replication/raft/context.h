@@ -25,6 +25,7 @@
 #include "replication/raft/common_types.h"
 #include "replication/raft/election.h"
 #include "replication/raft/journal.h"
+#include "replication/raft/journal_replicator.h"
 #include "replication/raft/peer_set.h"
 #include "replication/raft/persister.h"
 #include "replication/raft/role_at_term.h"
@@ -59,16 +60,17 @@ struct RaftConfig {
  * @brief The RaftContext struct Data and objects shared by both the Raft foreground and background.
  */
 struct RaftContext {
-    RaftMachineAddress me;
-    std::unique_ptr<RaftPeerSet> peers;
-
-    std::shared_ptr<RaftPersister> persister;
-    std::unique_ptr<RoleAtTerm> role_at_term;
-    std::unique_ptr<RaftJournal> journal;
-
     std::unique_ptr<FollowerSchedule> follower_schedule;
     std::unique_ptr<CandidateSchedule> candidate_schedule;
     std::unique_ptr<LeaderSchedule> leader_schedule;
+
+    RaftMachineAddress me;
+    std::unique_ptr<RaftPeerSet> peers;
+
+    std::unique_ptr<RaftPersister> persister;
+    std::unique_ptr<RoleAtTerm> role_at_term;
+    std::unique_ptr<RaftJournal> journal;
+    std::unique_ptr<RaftJournalReplicator> journal_replicator;
 
     std::unique_ptr<RaftVotingRecord> voting_record;
     std::unique_ptr<RaftElectionCommittee> election_committee;

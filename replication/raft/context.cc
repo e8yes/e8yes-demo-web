@@ -25,6 +25,7 @@
 #include "replication/raft/context.h"
 #include "replication/raft/election.h"
 #include "replication/raft/journal.h"
+#include "replication/raft/journal_replicator.h"
 #include "replication/raft/peer_set.h"
 #include "replication/raft/persister.h"
 #include "replication/raft/role_at_term.h"
@@ -37,17 +38,19 @@ CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
                   RaftConfig const &config) {
     std::shared_ptr<RaftContext> context = std::make_shared<RaftContext>();
 
-    context->me = config.me;
-    context->peers = std::make_unique<RaftPeerSet>(config.peers);
-
-    context->persister = std::make_shared<RaftPersister>(config.log_path);
-    context->role_at_term = std::make_unique<RoleAtTerm>(context->persister.get());
-    context->journal = std::make_unique<RaftJournal>(context->persister.get(), commit_listener);
-
     RaftScheduleConfig schedule_config = FastElectionRaftScheduleConfig(config.unavailability);
     context->follower_schedule = std::make_unique<FollowerSchedule>(schedule_config);
     context->candidate_schedule = std::make_unique<CandidateSchedule>(schedule_config);
     context->leader_schedule = std::make_unique<LeaderSchedule>(schedule_config);
+
+    context->me = config.me;
+    context->peers = std::make_unique<RaftPeerSet>(config.peers);
+
+    context->persister = std::make_unique<RaftPersister>(config.log_path);
+    context->role_at_term = std::make_unique<RoleAtTerm>(context->persister.get());
+    context->journal = std::make_unique<RaftJournal>(context->persister.get(), commit_listener);
+    context->journal_replicator = std::make_unique<RaftJournalReplicator>(
+        context->journal.get(), context->peers.get(), schedule_config.heartbeat_millis);
 
     context->voting_record = std::make_unique<RaftVotingRecord>();
     context->election_committee = std::make_unique<RaftElectionCommittee>(
