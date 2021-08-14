@@ -101,7 +101,7 @@ class RaftElectionCommittee {
      * @param election_timeout_millis The *recommended* number of milliseconds to time out a
      * GrantVote() RPC.
      */
-    RaftElectionCommittee(RaftPeerSet *peers, unsigned quorum_size,
+    RaftElectionCommittee(RaftPeerSet const *peers, unsigned quorum_size,
                           TimeIntervalMillis election_timeout_millis);
     ~RaftElectionCommittee();
 
@@ -122,7 +122,7 @@ class RaftElectionCommittee {
                                           LogSourceLiveness const &candidate_log_liveness);
 
   private:
-    RaftPeerSet *peers_;
+    RaftPeerSet const *peers_;
     unsigned const quorum_size_;
     TimeIntervalMillis const election_timeout_millis_;
     ThreadPool thread_pool_;

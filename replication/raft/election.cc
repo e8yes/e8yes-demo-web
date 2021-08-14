@@ -118,7 +118,7 @@ void RaftVotingRecord::VoteFor(RaftMachineAddress candidate_address) {
 
 std::optional<RaftMachineAddress> RaftVotingRecord::LastVotedFor() const { return last_voted_for_; }
 
-RaftElectionCommittee::RaftElectionCommittee(RaftPeerSet *peers, unsigned quorum_size,
+RaftElectionCommittee::RaftElectionCommittee(RaftPeerSet const *peers, unsigned quorum_size,
                                              TimeIntervalMillis election_timeout_millis)
     : peers_(peers), quorum_size_(quorum_size), election_timeout_millis_(election_timeout_millis),
       thread_pool_(peers->PeerCount()) {
