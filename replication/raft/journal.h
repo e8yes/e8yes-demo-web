@@ -91,6 +91,24 @@ class RaftJournal {
                           RaftTerm preceding_log_term);
 
     /**
+     * @brief Export Copies the specified portion of the local log entries to the output_buffer. It
+     * will not touch what the ouput_buffer already has.
+     *
+     * @param start The starting index of the logs to copy from. It's valid to set the start index
+     * to the end of the journal. In that case, nothing will be copied. However, if it's beyond the
+     * end of the journal, the function will return false and the output_buffer doesn't get
+     * modified. The value of preceding_log_term shouldn't be used if the function doesn't succeed.
+     * @param output_buffer The buffer array to which the logs are copied.
+     * @param preceding_log_term The log term of the entry just before the start index. This is used
+     * by the importing end to test if the portion of logs is resolvable. If the start index is 0,
+     * the preceding_log_term will be set to 0.
+     *
+     * @return Whether the start index is valid, and consequently, if the function succeeds.
+     */
+    bool Export(unsigned start, google::protobuf::RepeatedPtrField<LogEntry> *output_buffer,
+                RaftTerm *preceding_log_term) const;
+
+    /**
      * @brief Liveness Returns the liveness states of the current journal. It could be used to
      * compare against other journal to determine how up-to-date the journal is.
      */

@@ -121,6 +121,29 @@ bool RaftJournal::MergeForeignLogs(
     return true;
 }
 
+bool RaftJournal::Export(unsigned start,
+                         google::protobuf::RepeatedPtrField<LogEntry> *output_buffer,
+                         RaftTerm *preceding_log_term) const {
+    std::lock_guard<RaftPersister> const guard(*persister_);
+
+    if (start > static_cast<unsigned>(persister_->LogEntriesRef()->size())) {
+        *preceding_log_term = RaftTerm();
+        return false;
+    }
+
+    for (unsigned i = start; i < static_cast<unsigned>(persister_->LogEntriesRef()->size()); ++i) {
+        *output_buffer->Add() = (*persister_->LogEntriesRef())[i];
+    }
+
+    if (start == 0) {
+        *preceding_log_term = RaftTerm();
+    } else {
+        *preceding_log_term = (*persister_->LogEntriesRef())[start - 1].term();
+    }
+
+    return true;
+}
+
 bool RaftJournal::Stale(LogSourceLiveness const &foreign_liveness) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
