@@ -111,14 +111,23 @@ class LeaderSchedule {
     void WakeUp();
 
     /**
+     * @brief BeginWork Notifies the schedule that the caller has started a new leader cycle. The
+     * caller should end the leader cycle by calling the Sleep() function. The amount of sleep will
+     * be deducted by the amount spent in work, that is, the time spent between BeginWork() and
+     * Sleep().
+     */
+    void BeginWork();
+
+    /**
      * @brief Sleep This should be called in each log agreement cycle to save computation resource
      * when idle.
      */
     void Sleep();
 
   private:
-    sem_t tasks_;
     RaftScheduleConfig config_;
+    sem_t tasks_;
+    TimestampMillis begin_work_timestamp_millis_;
 };
 
 } // namespace e8

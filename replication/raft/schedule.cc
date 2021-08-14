@@ -65,14 +65,31 @@ void CandidateSchedule::WaitForElectionResult() {
     std::this_thread::sleep_for(std::chrono::milliseconds(config_.election_timeout_millis));
 }
 
-LeaderSchedule::LeaderSchedule(RaftScheduleConfig const &config) : config_(config) {}
+LeaderSchedule::LeaderSchedule(RaftScheduleConfig const &config)
+    : config_(config), begin_work_timestamp_millis_(0) {
+    sem_init(&tasks_, /*__pshared=*/0, /*__value=*/0);
+}
 
-LeaderSchedule::~LeaderSchedule() {}
+LeaderSchedule::~LeaderSchedule() { sem_destroy(&tasks_); }
 
 void LeaderSchedule::WakeUp() { sem_post(&tasks_); }
 
+void LeaderSchedule::BeginWork() { begin_work_timestamp_millis_ = CurrentTimestampMillis(); }
+
 void LeaderSchedule::Sleep() {
-    timespec ts = FutureTimeSpec(config_.heartbeat_millis);
+    TimestampMillis current_timestamp_millis = CurrentTimestampMillis();
+    TimeIntervalMillis work_amount = current_timestamp_millis - begin_work_timestamp_millis_;
+
+    TimeIntervalMillis sleep_amount;
+    if (config_.heartbeat_millis > work_amount) {
+        // There is still time for sleep;
+        sleep_amount = config_.heartbeat_millis - work_amount;
+    } else {
+        // Overworked already.
+        sleep_amount = 0;
+    }
+
+    timespec ts = FutureTimeSpec(sleep_amount);
     sem_timedwait(&tasks_, &ts);
 
     // All previously added tasks will be collectively processed. It's ok to empty the entire task
