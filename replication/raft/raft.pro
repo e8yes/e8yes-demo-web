@@ -24,6 +24,7 @@ SOURCES += \
     election.cc \
     foreground.cc \
     journal.cc \
+    journal_replicator.cc \
     peer_set.cc \
     persister.cc \
     role_at_term.cc \
@@ -37,6 +38,7 @@ HEADERS += \
     election.h \
     foreground.h \
     journal.h \
+    journal_replicator.h \
     peer_set.h \
     persister.h \
     role_at_term.h \
