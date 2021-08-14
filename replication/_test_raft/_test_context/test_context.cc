@@ -56,13 +56,14 @@ bool CreateContextTest() {
     auto listener = std::make_shared<TestCommitListener>();
     std::shared_ptr<e8::RaftContext> context = e8::CreateRaftContext(listener, config);
 
-    TEST_CONDITION(context->peers != nullptr);
-    TEST_CONDITION(context->persister != nullptr);
-    TEST_CONDITION(context->journal != nullptr);
-    TEST_CONDITION(context->role_at_term != nullptr);
     TEST_CONDITION(context->follower_schedule != nullptr);
     TEST_CONDITION(context->candidate_schedule != nullptr);
     TEST_CONDITION(context->leader_schedule != nullptr);
+    TEST_CONDITION(context->peers != nullptr);
+    TEST_CONDITION(context->persister != nullptr);
+    TEST_CONDITION(context->journal != nullptr);
+    TEST_CONDITION(context->journal_replicator != nullptr);
+    TEST_CONDITION(context->role_at_term != nullptr);
     TEST_CONDITION(context->voting_record != nullptr);
     TEST_CONDITION(context->election_committee != nullptr);
 
