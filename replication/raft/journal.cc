@@ -75,9 +75,9 @@ LogSourceLiveness RaftJournal::Liveness() const {
     return liveness;
 }
 
-bool RaftJournal::MergeForeignLogs(
-    unsigned from, google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
-    RaftTerm preceding_log_term) {
+bool RaftJournal::Import(unsigned from,
+                         google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
+                         RaftTerm preceding_log_term) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
     if (from > static_cast<unsigned>(foreign_log_entries.size())) {

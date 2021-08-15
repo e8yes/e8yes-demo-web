@@ -76,7 +76,7 @@ grpc::Status RaftServiceImpl::MergeLogEntries(grpc::ServerContext *,
     context_->role_at_term->UpgradeTerm(context_->me, request->term(),
                                         RoleAtTerm::ENCOUNTERED_HIGHER_TERM_MESSAGE);
 
-    bool resolvable = context_->journal->MergeForeignLogs(
+    bool resolvable = context_->journal->Import(
         request->overwrite_from(), request->overwrite_with(), request->preceding_term());
     if (!resolvable) {
         // Fails to reconcile with the alien log source.

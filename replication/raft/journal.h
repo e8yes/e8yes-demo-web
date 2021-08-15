@@ -71,8 +71,8 @@ class RaftJournal {
     unsigned AppendLog(LogEntry const &log_entry);
 
     /**
-     * @brief MergeForeignLogs Overwrites and appends the local logs with foreign logs starting from
-     * the "from" index. Note that the "from" index can set at the end of the local logs but no more
+     * @brief Import Overwrites and appends the local logs with foreign logs starting from the
+     * "from" index. Note that the "from" index can set at the end of the local logs but no more
      * further. Otherwise, it's unresolvable, and the function will interrupt the merge and return
      * false. It also checks if the log term preceding the "from" index of the local logs agrees
      * with the foreign. A disagreement means the previous logs are unresolved and will make the
@@ -86,9 +86,9 @@ class RaftJournal {
      * @return Returns if the merge is successful or not. An unsucessful merge does not change the
      * local journal.
      */
-    bool MergeForeignLogs(unsigned from,
-                          google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
-                          RaftTerm preceding_log_term);
+    bool Import(unsigned from,
+                google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
+                RaftTerm preceding_log_term);
 
     /**
      * @brief Export Copies the specified portion of the local log entries to the output_buffer. It
