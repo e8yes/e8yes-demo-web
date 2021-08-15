@@ -36,8 +36,14 @@ class RaftPeerSet {
   public:
     /**
      * @brief RaftPeerSet Builds connections from the specified set of machine addresses.
+     *
+     * @param peer_machine_addresses The machine addresses used to connect to each peer through the
+     * network.
+     * @param quorum_size The minimum number of agreements among the peers to make up a majority,
+     * should be at least floor(peers->PeerCount()/2) + 1
      */
-    explicit RaftPeerSet(std::unordered_set<RaftMachineAddress> const &peer_machine_addresses);
+    RaftPeerSet(std::unordered_set<RaftMachineAddress> const &peer_machine_addresses,
+                unsigned quorum_size);
     ~RaftPeerSet();
 
     std::unordered_map<RaftMachineAddress, std::unique_ptr<RaftService::Stub>>::const_iterator
@@ -52,6 +58,12 @@ class RaftPeerSet {
     unsigned PeerCount() const;
 
     /**
+     * @brief QuorumSize The minimum number of agreements (about a matter) among the peers to make
+     * up a majority.
+     */
+    unsigned QuorumSize() const;
+
+    /**
      * @brief Stub Looks up a peer connection by the specified machine address. The machine address
      * must exists in the peer set. Or else, this function will fail.
      */
@@ -59,6 +71,7 @@ class RaftPeerSet {
 
   private:
     std::unordered_map<RaftMachineAddress, std::unique_ptr<RaftService::Stub>> peers_;
+    unsigned quorum_size_;
 };
 
 } // namespace e8

@@ -96,13 +96,10 @@ class RaftElectionCommittee {
      * @brief RaftElectionCommittee Sets up election rules.
      *
      * @param peers Connection to each peer's Raft server.
-     * @param quorum_size The number of votes to make up a quorum, should be at least
-     * floor(peers->PeerCount()/2) + 1
      * @param election_timeout_millis The *recommended* number of milliseconds to time out a
      * GrantVote() RPC.
      */
-    RaftElectionCommittee(RaftPeerSet const *peers, unsigned quorum_size,
-                          TimeIntervalMillis election_timeout_millis);
+    RaftElectionCommittee(RaftPeerSet const *peers, TimeIntervalMillis election_timeout_millis);
     ~RaftElectionCommittee();
 
     /**
@@ -123,7 +120,6 @@ class RaftElectionCommittee {
 
   private:
     RaftPeerSet const *peers_;
-    unsigned const quorum_size_;
     TimeIntervalMillis const election_timeout_millis_;
     ThreadPool thread_pool_;
 };

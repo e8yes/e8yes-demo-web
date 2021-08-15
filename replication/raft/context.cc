@@ -20,7 +20,6 @@
 #include <string>
 #include <unordered_set>
 
-#include "proto_cc/service_raft.grpc.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/context.h"
 #include "replication/raft/election.h"
@@ -44,17 +43,18 @@ CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
     context->leader_schedule = std::make_unique<LeaderSchedule>(schedule_config);
 
     context->me = config.me;
-    context->peers = std::make_unique<RaftPeerSet>(config.peers);
+    context->peers = std::make_unique<RaftPeerSet>(config.peers, config.quorum_size);
 
     context->persister = std::make_unique<RaftPersister>(config.log_path);
+
     context->role_at_term = std::make_unique<RoleAtTerm>(context->persister.get());
+
     context->journal = std::make_unique<RaftJournal>(context->persister.get(), commit_listener);
     context->journal_replicator = std::make_unique<RaftJournalReplicator>(
         context->journal.get(), context->peers.get(), schedule_config.heartbeat_millis);
-
     context->voting_record = std::make_unique<RaftVotingRecord>();
     context->election_committee = std::make_unique<RaftElectionCommittee>(
-        context->peers.get(), config.quorum_size, schedule_config.election_timeout_millis);
+        context->peers.get(), schedule_config.election_timeout_millis);
 
     return context;
 }

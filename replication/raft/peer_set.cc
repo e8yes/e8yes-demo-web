@@ -28,7 +28,12 @@
 
 namespace e8 {
 
-RaftPeerSet::RaftPeerSet(std::unordered_set<RaftMachineAddress> const &peer_machine_addresses) {
+RaftPeerSet::RaftPeerSet(std::unordered_set<RaftMachineAddress> const &peer_machine_addresses,
+                         unsigned quorum_size)
+    : quorum_size_(quorum_size) {
+    assert(quorum_size >= peer_machine_addresses.size() / 2 + 1);
+    assert(quorum_size <= peer_machine_addresses.size());
+
     for (auto const &peer_address : peer_machine_addresses) {
         auto peer_channel = grpc::CreateChannel(peer_address, grpc::InsecureChannelCredentials());
         auto stub = RaftService::NewStub(peer_channel);
@@ -39,6 +44,8 @@ RaftPeerSet::RaftPeerSet(std::unordered_set<RaftMachineAddress> const &peer_mach
 RaftPeerSet::~RaftPeerSet() {}
 
 unsigned RaftPeerSet::PeerCount() const { return peers_.size(); }
+
+unsigned RaftPeerSet::QuorumSize() const { return quorum_size_; }
 
 RaftService::Stub *RaftPeerSet::Stub(RaftMachineAddress const &machine_address) const {
     auto it = peers_.find(machine_address);

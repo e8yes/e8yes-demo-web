@@ -15,7 +15,6 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cassert>
 #include <chrono>
 #include <grpcpp/grpcpp.h>
 #include <memory>
@@ -118,13 +117,10 @@ void RaftVotingRecord::VoteFor(RaftMachineAddress candidate_address) {
 
 std::optional<RaftMachineAddress> RaftVotingRecord::LastVotedFor() const { return last_voted_for_; }
 
-RaftElectionCommittee::RaftElectionCommittee(RaftPeerSet const *peers, unsigned quorum_size,
+RaftElectionCommittee::RaftElectionCommittee(RaftPeerSet const *peers,
                                              TimeIntervalMillis election_timeout_millis)
-    : peers_(peers), quorum_size_(quorum_size), election_timeout_millis_(election_timeout_millis),
-      thread_pool_(peers->PeerCount()) {
-    assert(quorum_size >= peers->PeerCount() / 2 + 1);
-    assert(quorum_size <= peers->PeerCount());
-}
+    : peers_(peers), election_timeout_millis_(election_timeout_millis),
+      thread_pool_(peers->PeerCount()) {}
 
 RaftElectionCommittee::~RaftElectionCommittee() {}
 
@@ -132,7 +128,7 @@ std::shared_ptr<RaftElectionCommittee::Result>
 RaftElectionCommittee::StartElection(RaftTerm for_term,
                                      RaftMachineAddress candidate_machine_address,
                                      LogSourceLiveness const &candidate_log_liveness) {
-    auto result = std::make_shared<Result>(quorum_size_);
+    auto result = std::make_shared<Result>(peers_->QuorumSize());
 
     auto collect_vote_task = std::make_shared<CollectVoteTask>();
 
