@@ -18,7 +18,6 @@
 #ifndef RAFT_FOREGROUND_H
 #define RAFT_FOREGROUND_H
 
-#include <memory>
 #include <mutex>
 #include <optional>
 #include <utility>
@@ -36,7 +35,7 @@ namespace e8 {
  */
 class RaftForeground {
   public:
-    RaftForeground(std::shared_ptr<RaftContext> const &context);
+    RaftForeground(RaftContext *context);
     ~RaftForeground();
 
     /**
@@ -78,7 +77,7 @@ class RaftForeground {
     std::pair<RaftTerm, RaftRole> TermAndRole() const;
 
   private:
-    std::shared_ptr<RaftContext> context_;
+    RaftContext *context_;
     std::mutex lock_;
 };
 

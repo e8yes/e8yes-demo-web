@@ -15,7 +15,6 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <memory>
 #include <mutex>
 #include <optional>
 
@@ -26,7 +25,7 @@
 
 namespace e8 {
 
-RaftForeground::RaftForeground(std::shared_ptr<RaftContext> const &context) : context_(context) {}
+RaftForeground::RaftForeground(RaftContext *context) : context_(context) {}
 
 RaftForeground::~RaftForeground() {}
 

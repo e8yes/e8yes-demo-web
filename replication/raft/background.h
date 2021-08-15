@@ -18,8 +18,6 @@
 #ifndef RAFT_BACKGROUND_H
 #define RAFT_BACKGROUND_H
 
-#include <memory>
-
 #include "common/thread/thread_pool.h"
 #include "replication/raft/context.h"
 
@@ -48,7 +46,7 @@ namespace e8 {
  */
 class RaftBackground : public TaskInterface {
   public:
-    RaftBackground(std::shared_ptr<RaftContext> const &context);
+    RaftBackground(RaftContext *context);
     virtual ~RaftBackground() override;
 
     /**
@@ -64,7 +62,7 @@ class RaftBackground : public TaskInterface {
     bool DropResourceOnCompletion() const override;
 
   private:
-    std::shared_ptr<RaftContext> context_;
+    RaftContext *context_;
     bool done_;
 };
 

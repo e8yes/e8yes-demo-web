@@ -19,7 +19,6 @@
 #define RAFT_SERVICE_H
 
 #include <grpcpp/grpcpp.h>
-#include <memory>
 #include <mutex>
 
 #include "proto_cc/service_raft.grpc.pb.h"
@@ -36,7 +35,7 @@ class RaftServiceImpl : public RaftService::Service {
     /**
      * @brief RaftServiceImpl The service will read/write the context whenever request arrives.
      */
-    explicit RaftServiceImpl(std::shared_ptr<RaftContext> const &context);
+    explicit RaftServiceImpl(RaftContext *context);
     virtual ~RaftServiceImpl() override;
 
     grpc::Status GrantVote(grpc::ServerContext *context, GrantVoteRequest const *request,
@@ -51,7 +50,7 @@ class RaftServiceImpl : public RaftService::Service {
                                     PushCommitProgressResponse *response) override;
 
   private:
-    std::shared_ptr<RaftContext> context_;
+    RaftContext *context_;
     std::mutex merge_log_entries_lock_;
     std::mutex set_commit_progress_lock_;
 };

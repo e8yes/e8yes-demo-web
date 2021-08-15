@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <grpcpp/grpcpp.h>
-#include <memory>
 #include <mutex>
 
 #include "proto_cc/service_raft.grpc.pb.h"
@@ -27,12 +27,14 @@
 
 namespace e8 {
 
-RaftServiceImpl::RaftServiceImpl(std::shared_ptr<RaftContext> const &context) : context_(context) {}
+RaftServiceImpl::RaftServiceImpl(RaftContext *context) : context_(context) {}
 
 RaftServiceImpl::~RaftServiceImpl() {}
 
 grpc::Status RaftServiceImpl::GrantVote(grpc::ServerContext *, GrantVoteRequest const *request,
                                         GrantVoteResponse *response) {
+    assert(request->candidate_term() >= 0);
+
     std::lock_guard<RaftVotingRecord> guard(*context_->voting_record);
 
     auto [term, _] = context_->role_at_term->TermAndRole();
@@ -57,11 +59,14 @@ grpc::Status RaftServiceImpl::GrantVote(grpc::ServerContext *, GrantVoteRequest 
 grpc::Status RaftServiceImpl::MergeLogEntries(grpc::ServerContext *,
                                               MergeLogEntriesRequest const *request,
                                               MergeLogEntriesResponse *response) {
+    assert(request->term() >= 0);
+    assert(request->overwrite_from() >= 0);
+
     std::lock_guard<std::mutex> guard(merge_log_entries_lock_);
 
     auto [term, _] = context_->role_at_term->TermAndRole();
     if (request->term() < term) {
-        // Reject an out-of-date leader.
+        // Rejects an out-of-date leader to prevent logs get overwritten with obsolete data.
         response->set_successful(false);
         response->set_current_term(term);
         return grpc::Status::OK;
@@ -88,11 +93,14 @@ grpc::Status RaftServiceImpl::MergeLogEntries(grpc::ServerContext *,
 grpc::Status RaftServiceImpl::PushCommitProgress(grpc::ServerContext *,
                                                  PushCommitProgressRequest const *request,
                                                  PushCommitProgressResponse *) {
+    assert(request->term() >= 0);
+    assert(request->safe_commit_progress() >= 0);
+
     std::lock_guard<std::mutex> guard(set_commit_progress_lock_);
 
     auto [term, _] = context_->role_at_term->TermAndRole();
     if (request->term() < term) {
-        // Reject an out-of-date leader.
+        // Rejects an out-of-date leader to filter out false heartbeats.
         return grpc::Status::OK;
     }
 

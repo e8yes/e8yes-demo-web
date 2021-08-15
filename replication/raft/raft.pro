@@ -20,6 +20,7 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     background.cc \
+    commit_pusher.cc \
     context.cc \
     election.cc \
     foreground.cc \
@@ -33,6 +34,7 @@ SOURCES += \
 
 HEADERS += \
     background.h \
+    commit_pusher.h \
     common_types.h \
     context.h \
     election.h \
