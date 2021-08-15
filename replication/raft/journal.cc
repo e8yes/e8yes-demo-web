@@ -17,7 +17,6 @@
 
 #include <cassert>
 #include <google/protobuf/repeated_field.h>
-#include <memory>
 #include <mutex>
 #include <string>
 #include <utility>
@@ -43,8 +42,7 @@ RaftCommitListener::RaftCommitListener() {}
 
 RaftCommitListener::~RaftCommitListener() {}
 
-RaftJournal::RaftJournal(RaftPersister *persister,
-                         std::shared_ptr<RaftCommitListener> const &commit_listener)
+RaftJournal::RaftJournal(RaftPersister *persister, RaftCommitListener *commit_listener)
     : persister_(persister), commit_listener_(commit_listener), commit_progress_(0) {
     assert(persister_ != nullptr);
     assert(commit_listener_ != nullptr);

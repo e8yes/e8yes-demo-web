@@ -33,10 +33,9 @@
 
 namespace e8 {
 
-std::shared_ptr<RaftContext>
-CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
-                  RaftConfig const &config) {
-    std::shared_ptr<RaftContext> context = std::make_shared<RaftContext>();
+std::unique_ptr<RaftContext> CreateRaftContext(RaftCommitListener *commit_listener,
+                                               RaftConfig const &config) {
+    auto context = std::make_unique<RaftContext>();
 
     RaftScheduleConfig schedule_config = FastElectionRaftScheduleConfig(config.unavailability);
     context->follower_schedule = std::make_unique<FollowerSchedule>(schedule_config);

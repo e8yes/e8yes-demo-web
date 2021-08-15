@@ -53,8 +53,8 @@ bool CreateContextTest() {
     config.log_path = "./test_raft_log";
     config.unavailability = 1.0f;
 
-    auto listener = std::make_shared<TestCommitListener>();
-    std::shared_ptr<e8::RaftContext> context = e8::CreateRaftContext(listener, config);
+    auto listener = std::make_unique<TestCommitListener>();
+    std::unique_ptr<e8::RaftContext> context = e8::CreateRaftContext(listener.get(), config);
 
     TEST_CONDITION(context->follower_schedule != nullptr);
     TEST_CONDITION(context->candidate_schedule != nullptr);

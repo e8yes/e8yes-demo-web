@@ -89,9 +89,8 @@ struct RaftContext {
  *
  * @return It should always return a valid context.
  */
-std::shared_ptr<RaftContext>
-CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
-                  RaftConfig const &config);
+std::unique_ptr<RaftContext> CreateRaftContext(RaftCommitListener *commit_listener,
+                                               RaftConfig const &config);
 
 } // namespace e8
 

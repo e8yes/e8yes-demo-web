@@ -19,7 +19,6 @@
 #define RAFT_JOURNAL_H
 
 #include <google/protobuf/repeated_field.h>
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -60,8 +59,7 @@ class RaftJournal {
      * @param persister The persistent device which holds the log data and manages persistence.
      * @param commit_listener The listener will be notified with committed log entries.
      */
-    RaftJournal(RaftPersister *persister,
-                std::shared_ptr<RaftCommitListener> const &commit_listener);
+    RaftJournal(RaftPersister *persister, RaftCommitListener *commit_listener);
     ~RaftJournal();
 
     /**
@@ -148,8 +146,7 @@ class RaftJournal {
 
   private:
     RaftPersister *persister_;
-
-    std::shared_ptr<RaftCommitListener> commit_listener_;
+    RaftCommitListener *commit_listener_;
     unsigned commit_progress_;
 };
 
