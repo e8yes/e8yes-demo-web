@@ -144,6 +144,22 @@ bool RaftJournal::Export(unsigned start,
     return true;
 }
 
+unsigned RaftJournal::EndWithTerm(RaftTerm term, unsigned end) const {
+    std::lock_guard<RaftPersister> const guard(*persister_);
+
+    if (end > static_cast<unsigned>(persister_->LogEntriesRef()->size())) {
+        end = persister_->LogEntriesRef()->size();
+    }
+
+    for (unsigned i = end; i > 0; --i) {
+        if ((*persister_->LogEntriesRef())[i - 1].term() == term) {
+            return i;
+        }
+    }
+
+    return 0;
+}
+
 bool RaftJournal::Stale(LogSourceLiveness const &foreign_liveness) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 

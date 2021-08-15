@@ -32,7 +32,9 @@ namespace e8 {
 
 /**
  * @brief The RaftCommitListener class Used by the state machine to respond to the committed log
- * entries when they are sufficiently replicated.
+ * entries when they are sufficiently replicated. The listener must respond and return quickly. In
+ * principle, its processing time must be *on average* an order of magnitude less than the heartbeat
+ * interval, though occasional spikes are manageable.
  */
 class RaftCommitListener {
   public:
@@ -107,6 +109,15 @@ class RaftJournal {
      */
     bool Export(unsigned start, google::protobuf::RepeatedPtrField<LogEntry> *output_buffer,
                 RaftTerm *preceding_log_term) const;
+
+    /**
+     * @brief EndWithTerm Searches for the greatest boundary B in the interval [0, end] where the
+     * log term of the entries in the range [0, B) is less than or equal to the specified term.
+     * Consequently, the smallest value of B is zero.
+     *
+     * @return The greatest boundary.
+     */
+    unsigned EndWithTerm(RaftTerm term, unsigned end) const;
 
     /**
      * @brief Liveness Returns the liveness states of the current journal. It could be used to
