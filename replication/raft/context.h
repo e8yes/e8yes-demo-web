@@ -22,6 +22,7 @@
 #include <string>
 #include <unordered_set>
 
+#include "replication/raft/commit_pusher.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/election.h"
 #include "replication/raft/journal.h"
@@ -68,9 +69,12 @@ struct RaftContext {
     std::unique_ptr<RaftPeerSet> peers;
 
     std::unique_ptr<RaftPersister> persister;
+
     std::unique_ptr<RoleAtTerm> role_at_term;
+
     std::unique_ptr<RaftJournal> journal;
     std::unique_ptr<RaftJournalReplicator> journal_replicator;
+    std::unique_ptr<RaftCommitPusher> commit_pusher;
 
     std::unique_ptr<RaftVotingRecord> voting_record;
     std::unique_ptr<RaftElectionCommittee> election_committee;

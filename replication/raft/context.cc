@@ -20,6 +20,7 @@
 #include <string>
 #include <unordered_set>
 
+#include "replication/raft/commit_pusher.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/context.h"
 #include "replication/raft/election.h"
@@ -52,6 +53,9 @@ CreateRaftContext(std::shared_ptr<RaftCommitListener> const &commit_listener,
     context->journal = std::make_unique<RaftJournal>(context->persister.get(), commit_listener);
     context->journal_replicator = std::make_unique<RaftJournalReplicator>(
         context->journal.get(), context->peers.get(), schedule_config.heartbeat_millis);
+    context->commit_pusher = std::make_unique<RaftCommitPusher>(
+        context->journal.get(), context->peers.get(), schedule_config.heartbeat_millis);
+
     context->voting_record = std::make_unique<RaftVotingRecord>();
     context->election_committee = std::make_unique<RaftElectionCommittee>(
         context->peers.get(), schedule_config.election_timeout_millis);
