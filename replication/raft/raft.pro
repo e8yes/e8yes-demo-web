@@ -28,6 +28,7 @@ SOURCES += \
     journal_replicator.cc \
     peer_set.cc \
     persister.cc \
+    raft_instance.cc \
     role_at_term.cc \
     schedule.cc \
     service/raft_service.cc
@@ -43,6 +44,7 @@ HEADERS += \
     journal_replicator.h \
     peer_set.h \
     persister.h \
+    raft_instance.h \
     role_at_term.h \
     schedule.h \
     service/raft_service.h
