@@ -43,6 +43,21 @@ std::string RoleString(RaftRole role) {
     }
 }
 
+std::string TermUpgradeReasonString(RoleAtTerm::TermUpgradeReason reason) {
+    switch (reason) {
+    case RoleAtTerm::LACK_OF_HEARTBEAT:
+        return "LACK_OF_HEARTBEAT";
+    case RoleAtTerm::LOST_AN_ELECTION:
+        return "LOST_AN_ELECTION";
+    case RoleAtTerm::WON_AN_ELECTION:
+        return "WON_AN_ELECTION";
+    case RoleAtTerm::ENCOUNTERED_HIGHER_TERM_MESSAGE:
+        return "ENCOUNTERED_HIGHER_TERM_MESSAGE";
+    default:
+        return "INVALID_REASON";
+    }
+}
+
 } // namespace
 
 RoleAtTerm::RoleAtTerm(RaftPersister *persister) : persister_(persister) {}
@@ -87,7 +102,8 @@ bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpg
             break;
         }
         default: {
-            std::cerr << "At node=" << node << ": illegal term upgrade reason=" << reason
+            std::cerr << "At node=" << node
+                      << ": illegal term upgrade reason=" << TermUpgradeReasonString(reason)
                       << std::endl;
             return false;
         }
@@ -97,8 +113,7 @@ bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpg
     }
     case RAFT_CANDIDATE: {
         switch (reason) {
-        case LOST_AN_ELECTION:
-        case LACK_OF_HEARTBEAT: {
+        case LOST_AN_ELECTION: {
             new_role = RAFT_CANDIDATE;
             break;
         }
@@ -111,7 +126,8 @@ bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpg
             break;
         }
         default: {
-            std::cerr << "At node=" << node << ": illegal term upgrade reason=" << reason
+            std::cerr << "At node=" << node
+                      << ": illegal term upgrade reason=" << TermUpgradeReasonString(reason)
                       << std::endl;
             return false;
         }
@@ -130,7 +146,8 @@ bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpg
             break;
         }
         default: {
-            std::cerr << "At node=" << node << ": illegal term upgrade reason=" << reason
+            std::cerr << "At node=" << node
+                      << ": illegal term upgrade reason=" << TermUpgradeReasonString(reason)
                       << std::endl;
             return false;
         }
@@ -142,12 +159,19 @@ bool RoleAtTerm::UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpg
 
     std::cout << "At node=" << node << ": term=" << current_term << "->" << new_term
               << " role=" << RoleString(current_role) << "->" << RoleString(new_role)
-              << " reason=" << reason << std::endl;
+              << " reason=" << TermUpgradeReasonString(reason) << std::endl;
 
     persister_->SetTermAndRole(std::make_pair(new_term, new_role));
     persister_->Persist();
 
     return true;
+}
+
+void RoleAtTerm::SetTermAndRole(RaftTerm term, RaftRole role) {
+    std::lock_guard<RaftPersister> const lock(*persister_);
+
+    persister_->SetTermAndRole(std::make_pair(term, role));
+    persister_->Persist();
 }
 
 } // namespace e8

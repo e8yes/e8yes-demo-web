@@ -76,6 +76,12 @@ class RoleAtTerm {
      */
     bool UpgradeTerm(RaftMachineAddress node, RaftTerm new_term, TermUpgradeReason reason);
 
+    /**
+     * @brief SetTermAndRole Set the values of the term-role pair, for easing the unit testing
+     * effort.
+     */
+    void SetTermAndRole(RaftTerm term, RaftRole role);
+
   private:
     RaftPersister *persister_;
 };
