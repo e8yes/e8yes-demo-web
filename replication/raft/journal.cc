@@ -80,7 +80,7 @@ bool RaftJournal::Import(unsigned from,
                          RaftTerm preceding_log_term) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
-    if (from > static_cast<unsigned>(foreign_log_entries.size())) {
+    if (from > static_cast<unsigned>(persister_->LogEntriesRef()->size())) {
         // Replicating too far in the future, there are missing entries.
         return false;
     }
@@ -172,7 +172,7 @@ bool RaftJournal::Stale(LogSourceLiveness const &foreign_liveness) {
     }
 
     if (foreign_liveness.highest_log_term() == highest_log_term) {
-        return foreign_liveness.log_progress() > persister_->LogEntriesRef()->size();
+        return persister_->LogEntriesRef()->size() > foreign_liveness.log_progress();
     }
 
     return true;
