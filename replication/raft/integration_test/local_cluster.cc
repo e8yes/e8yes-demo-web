@@ -23,63 +23,132 @@
 #include <unordered_set>
 #include <vector>
 
+#include "common/time_util/time_util.h"
+#include "proto_cc/command.pb.h"
 #include "replication/raft/common_types.h"
+#include "replication/raft/context.h"
 #include "replication/raft/integration_test/local_cluster.h"
 #include "replication/raft/journal.h"
 #include "replication/raft/raft_instance.h"
+#include "replication/raft/schedule.h"
 
 namespace e8 {
 namespace {
 
+constexpr char const *kTestHost = "localhost";
 unsigned const kTestPortBeginRange = 12345;
 constexpr char const *kTestLogFilePrefix = "local_raft_log";
-float const kTestAvailability = 1.0f;
+
+class NoOpCommitListener : public RaftCommitListener {
+  public:
+    NoOpCommitListener() = default;
+    ~NoOpCommitListener() override = default;
+
+    void Apply(CommandEntry const & /*entry*/) override {}
+};
+
+RaftMachineAddress NodeAddress(unsigned port) {
+    return std::string(kTestHost) + ":" + std::to_string(port);
+}
+
+std::string LogPath(RaftMachineAddress const node_address) {
+    return std::string("./") + kTestLogFilePrefix + "." + node_address;
+}
 
 } // namespace
 
-std::unordered_map<RaftMachineAddress, std::unique_ptr<RaftInstance>>
-StartLocalRaftCluster(std::unordered_set<RaftCommitListener *> const &listeners,
-                      unsigned quorum_size) {
-    std::unordered_set<RaftMachineAddress> peer_addresses;
-    for (unsigned port = kTestPortBeginRange; port < kTestPortBeginRange + listeners.size();
-         ++port) {
-        peer_addresses.insert("localhost:" + std::to_string(port));
-    }
+LocalRaftCluster::LocalRaftCluster() : started_(false) {}
 
-    std::unordered_map<RaftMachineAddress, std::unique_ptr<RaftInstance>> cluster;
-
-    auto peer_it = peer_addresses.begin();
-    for (auto commit_listener : listeners) {
-        RaftConfig config;
-        config.me = *peer_it;
-        config.peers = peer_addresses;
-        config.log_path = std::string("./") + kTestLogFilePrefix + "." + config.me;
-        config.quorum_size = quorum_size;
-        config.unavailability = kTestAvailability;
-
-        ++peer_it;
-
-        auto raft = std::make_unique<RaftInstance>(commit_listener, config);
-
-        cluster.insert(std::make_pair(config.me, std::move(raft)));
-    }
-
-    return cluster;
-}
-
-void DestroyLocalRaftCluster(
-    std::unordered_map<RaftMachineAddress, std::unique_ptr<RaftInstance>> *cluster) {
+LocalRaftCluster::~LocalRaftCluster() {
     std::vector<std::string> log_files;
-    for (auto const &[address, _] : *cluster) {
-        log_files.push_back(std::string("./") + kTestLogFilePrefix + "." + address);
+    for (auto const &[address, _] : nodes_) {
+        log_files.push_back(LogPath(address));
     }
 
-    cluster->clear();
+    nodes_.clear();
 
     for (auto const &log_file : log_files) {
         int result = std::remove(log_file.c_str());
         assert(result == 0);
     }
+}
+
+LocalRaftCluster &
+LocalRaftCluster::AddNode(std::shared_ptr<RaftCommitListener> const &commit_listener) {
+    Node initial_node;
+    if (commit_listener == nullptr) {
+        initial_node.commit_listener = std::make_shared<NoOpCommitListener>();
+    } else {
+        initial_node.commit_listener = commit_listener;
+    }
+
+    RaftMachineAddress node_address = NodeAddress(kTestPortBeginRange + nodes_.size());
+    nodes_.insert(std::make_pair(node_address, std::move(initial_node)));
+
+    return *this;
+}
+
+void LocalRaftCluster::Start(unsigned quorum_size, float unavailability) {
+    assert(started_ == false);
+
+    std::unordered_set<RaftMachineAddress> peers;
+    for (auto const &[addr, _] : nodes_) {
+        peers.insert(addr);
+    }
+
+    for (auto &[addr, node] : nodes_) {
+        node.config.me = addr;
+        node.config.peers = peers;
+        node.config.log_path = LogPath(addr);
+        node.config.quorum_size = quorum_size;
+        node.config.unavailability = unavailability;
+
+        std::remove(node.config.log_path.c_str());
+
+        node.instance = std::make_unique<RaftInstance>(node.commit_listener.get(), node.config);
+    }
+
+    started_ = true;
+}
+
+void LocalRaftCluster::Recover(RaftMachineAddress const &node_address) {
+    auto it = nodes_.find(node_address);
+    assert(it != nodes_.end());
+
+    auto &[_, node] = *it;
+    assert(node.instance == nullptr);
+    node.instance = std::make_unique<RaftInstance>(node.commit_listener.get(), node.config);
+}
+
+void LocalRaftCluster::Shutdown(RaftMachineAddress const &node_address) {
+    auto it = nodes_.find(node_address);
+    assert(it != nodes_.end());
+
+    auto &[_, node] = *it;
+    assert(node.instance != nullptr);
+    node.instance = nullptr;
+}
+
+void LocalRaftCluster::SetUnreliableNetwork(bool /*enable*/) {
+    // TODO: introduces artificial unreliable communication.
+}
+
+TimeIntervalMillis LocalRaftCluster::LocalRaftCluster::ElectionTimeout() const {
+    assert(!nodes_.empty());
+
+    RaftScheduleConfig config =
+        FastElectionRaftScheduleConfig(nodes_.begin()->second.config.unavailability);
+    return config.heartbeat_max_timeout_millis + config.election_timeout_millis;
+}
+
+std::unordered_map<RaftMachineAddress, LocalRaftCluster::Node>::const_iterator
+LocalRaftCluster::begin() const {
+    return nodes_.begin();
+}
+
+std::unordered_map<RaftMachineAddress, LocalRaftCluster::Node>::const_iterator
+LocalRaftCluster::end() const {
+    return nodes_.end();
 }
 
 } // namespace e8

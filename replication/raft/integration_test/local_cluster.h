@@ -22,30 +22,79 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "common/time_util/time_util.h"
 #include "replication/raft/common_types.h"
+#include "replication/raft/context.h"
 #include "replication/raft/journal.h"
 #include "replication/raft/raft_instance.h"
 
 namespace e8 {
 
 /**
- * @brief StartLocalRaftCluster Starts a Raft cluster running locally and returns raft instances
- * representing the individual nodes.
- *
- * @param listeners A set of commit listeners that will connect to an individual Raft node. The size
- * of the listener set determines the size of the cluster.
- * @param quorum_size Decides what will be considered a quorum in this cluster.
- * @return Raft instances keyed by their unique machine address.
+ * @brief The LocalRaftCluster class Manages a testing cluster of locally running Raft nodes.
  */
-std::unordered_map<RaftMachineAddress, std::unique_ptr<RaftInstance>>
-StartLocalRaftCluster(std::unordered_set<RaftCommitListener *> const &listeners,
-                      unsigned quorum_size);
+class LocalRaftCluster {
+  public:
+    /**
+     * @brief The Node struct Consists of
+     * 1. The configuration to start the Raft instance.
+     * 2. Owns the commit listener object that listens to the instance.
+     * 3. The Raft instance. It could be a nullptr if it's stopped.
+     */
+    struct Node {
+        RaftConfig config;
+        std::shared_ptr<RaftCommitListener> commit_listener;
+        std::unique_ptr<RaftInstance> instance;
+    };
 
-/**
- * @brief ShutdownLocalRaftCluster Shuts down the cluster and cleans up resource.
- */
-void DestroyLocalRaftCluster(
-    std::unordered_map<RaftMachineAddress, std::unique_ptr<RaftInstance>> *cluster);
+    /**
+     * @brief LocalRaftCluster The constructor doesn't start a local cluster. See the Start().
+     */
+    LocalRaftCluster();
+    ~LocalRaftCluster();
+
+    /**
+     * @brief AddNode Adds a node to the cluster with the specified commit listner. If the commit
+     * listener is empty, it will fallback to a default no-op listner. The client can't add node
+     * once the cluster has started.
+     */
+    LocalRaftCluster &AddNode(std::shared_ptr<RaftCommitListener> const &commit_listener);
+
+    /**
+     * @brief Start Starts the cluster will the specified quorum size and unavailability preference.
+     */
+    void Start(unsigned quorum_size, float unavailability = 1.0f);
+
+    /**
+     * @brief Recover Restarts a node that is currently down. If the node is still running, this
+     * function will fail.
+     */
+    void Recover(RaftMachineAddress const &node_address);
+
+    /**
+     * @brief Shutdown Stops a currently running node. If the node is shut, this function will fail.
+     */
+    void Shutdown(RaftMachineAddress const &node_address);
+
+    /**
+     * @brief SetUnreliableNetwork Makes the Raft communication unreliable or brings it back to the
+     * normal state.
+     */
+    void SetUnreliableNetwork(bool enable);
+
+    /**
+     * @brief ElectionTimeout The maximum election timeout the nodes are using.
+     */
+    TimeIntervalMillis ElectionTimeout() const;
+
+    // Iterates through the nodes in the cluster.
+    std::unordered_map<RaftMachineAddress, Node>::const_iterator begin() const;
+    std::unordered_map<RaftMachineAddress, Node>::const_iterator end() const;
+
+  private:
+    bool started_;
+    std::unordered_map<RaftMachineAddress, Node> nodes_;
+};
 
 } // namespace e8
 
