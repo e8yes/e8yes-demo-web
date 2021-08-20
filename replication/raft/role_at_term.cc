@@ -29,20 +29,6 @@
 namespace e8 {
 namespace {
 
-std::string RoleString(RaftRole role) {
-    switch (role) {
-    case RAFT_LEADER:
-        return "RAFT_LEADER";
-    case RAFT_CANDIDATE:
-        return "RAFT_CANDIDATE";
-    case RAFT_FOLLOWER:
-        return "RAFT_FOLLOWER";
-    case RAFT_INVALID_ROLE:
-    default:
-        return "RAFT_INVALID_ROLE";
-    }
-}
-
 std::string TermUpgradeReasonString(RoleAtTerm::TermUpgradeReason reason) {
     switch (reason) {
     case RoleAtTerm::LACK_OF_HEARTBEAT:

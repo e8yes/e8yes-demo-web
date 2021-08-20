@@ -108,7 +108,12 @@ unsigned QuorumReplicationRrogress(RaftJournalReplicator::Progress const &progre
 
     std::sort(progresses.begin(), progresses.end(), std::greater<unsigned>());
 
-    assert(quorum_size <= progresses.size());
+    if (progresses.size() < quorum_size) {
+        // We haven't known enough nodes' replication progress. We'll simply assume they made zero
+        // progress.
+        return 0;
+    }
+
     return progresses[quorum_size - 1];
 }
 

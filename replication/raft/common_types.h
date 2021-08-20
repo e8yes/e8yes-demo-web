@@ -41,6 +41,20 @@ enum RaftRole {
     RAFT_LEADER,
 };
 
+inline std::string RoleString(RaftRole role) {
+    switch (role) {
+    case RAFT_LEADER:
+        return "RAFT_LEADER";
+    case RAFT_CANDIDATE:
+        return "RAFT_CANDIDATE";
+    case RAFT_FOLLOWER:
+        return "RAFT_FOLLOWER";
+    case RAFT_INVALID_ROLE:
+    default:
+        return "RAFT_INVALID_ROLE";
+    }
+}
+
 } // namespace e8
 
 #endif // RAFT_COMMON_TYPES_H

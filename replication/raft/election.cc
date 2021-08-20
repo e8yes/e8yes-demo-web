@@ -148,7 +148,8 @@ RaftElectionCommittee::StartElection(RaftTerm for_term,
     return result;
 }
 
-RaftElectionCommittee::Result::Result(unsigned quorum_size) : quorum_size_(quorum_size) {}
+RaftElectionCommittee::Result::Result(unsigned quorum_size)
+    : num_votes_(0), quorum_size_(quorum_size) {}
 
 RaftElectionCommittee::Result::~Result() {}
 

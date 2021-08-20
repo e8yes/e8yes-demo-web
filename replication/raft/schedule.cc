@@ -39,7 +39,7 @@ RaftScheduleConfig FastElectionRaftScheduleConfig(float scale) {
 }
 
 FollowerSchedule::FollowerSchedule(RaftScheduleConfig const &config)
-    : ticks_(0), config_(config), random_source_(std::make_unique<RandomSource>(/*seed=*/137)) {}
+    : ticks_(0), config_(config), random_source_(std::make_unique<RandomSource>()) {}
 
 FollowerSchedule::~FollowerSchedule() {}
 

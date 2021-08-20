@@ -37,6 +37,15 @@ struct ServerAndService {
     std::unique_ptr<RaftServiceImpl> service;
 };
 
+std::string SwapTo0000(RaftMachineAddress const &machine_address) {
+    std::size_t pos = machine_address.find_last_of(":");
+    assert(pos > 0);
+    assert(pos < machine_address.size() - 1);
+    std::string port_suffix = machine_address.substr(pos, machine_address.size());
+
+    return std::string("0.0.0.0") + port_suffix;
+}
+
 ServerAndService StartRaftServer(RaftContext *context) {
     auto service = std::make_unique<RaftServiceImpl>(context);
 
@@ -44,7 +53,8 @@ ServerAndService StartRaftServer(RaftContext *context) {
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 
     grpc::ServerBuilder builder;
-    builder.AddListeningPort(context->me, grpc::InsecureServerCredentials());
+    std::string listening_address = SwapTo0000(context->me);
+    builder.AddListeningPort(listening_address, grpc::InsecureServerCredentials());
     builder.RegisterService(service.get());
 
     ServerAndService result;
@@ -107,13 +117,15 @@ void DoLeader(RaftContext *context, RaftTerm leader_term) {
 
 } // namespace
 
-RaftBackground::RaftBackground(RaftContext *context) : context_(context) {}
+RaftBackground::RaftBackground(RaftContext *context) : context_(context), done_(false) {}
 
 RaftBackground::~RaftBackground() {}
 
 void RaftBackground::Shutdown() { done_ = true; }
 
 void RaftBackground::Run(TaskStorageInterface *) const {
+    std::cout << "At node=" << context_->me << ": background task started." << std::endl;
+
     ServerAndService server_and_service = StartRaftServer(context_);
 
     while (!done_) {
@@ -139,6 +151,8 @@ void RaftBackground::Run(TaskStorageInterface *) const {
     }
 
     ShutdownRaftServer(server_and_service.server.get());
+
+    std::cout << "At node=" << context_->me << ": background task shutdown." << std::endl;
 }
 
 bool RaftBackground::DropResourceOnCompletion() const { return false; }
