@@ -25,6 +25,7 @@ SOURCES += \
     election.cc \
     foreground.cc \
     integration_test/local_cluster.cc \
+    integration_test/role_monitor.cc \
     journal.cc \
     journal_replicator.cc \
     peer_set.cc \
@@ -42,6 +43,7 @@ HEADERS += \
     election.h \
     foreground.h \
     integration_test/local_cluster.h \
+    integration_test/role_monitor.h \
     journal.h \
     journal_replicator.h \
     peer_set.h \
