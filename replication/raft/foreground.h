@@ -48,15 +48,15 @@ class RaftForeground {
         // The current node isn't the leader at the moment. But it knows the leader *might* be the
         // retry_node. The client should try sending the same command to the retry_node at the next
         // attempt.
-        std::optional<RaftMachineAddress> const retry_node;
+        std::optional<RaftMachineAddress> retry_node;
 
         // The index that the command will appear as if it's ever committed. Do not use this value
         // when retry_node isn't std::nullopt.
-        unsigned const log_index;
+        unsigned log_index;
 
         // The term when the command is appended to the log. Do not use this value when retry_node
         // isn't std::nullopt.
-        RaftTerm const term;
+        RaftTerm term;
     };
 
     /**

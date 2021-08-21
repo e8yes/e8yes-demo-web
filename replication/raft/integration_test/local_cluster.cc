@@ -88,6 +88,12 @@ LocalRaftCluster::AddNode(std::shared_ptr<RaftCommitListener> const &commit_list
     return *this;
 }
 
+LocalRaftCluster::Node const &LocalRaftCluster::Get(RaftMachineAddress const &node_address) const {
+    auto it = nodes_.find(node_address);
+    assert(it != nodes_.end());
+    return it->second;
+}
+
 void LocalRaftCluster::Start(unsigned quorum_size, float unavailability) {
     assert(started_ == false);
 

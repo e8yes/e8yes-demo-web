@@ -61,6 +61,12 @@ class LocalRaftCluster {
     LocalRaftCluster &AddNode(std::shared_ptr<RaftCommitListener> const &commit_listener);
 
     /**
+     * @brief Get Retrives a node by its address. It returns a const reference to the node stored
+     * internally.
+     */
+    Node const &Get(RaftMachineAddress const &node_address) const;
+
+    /**
      * @brief Start Starts the cluster will the specified quorum size and unavailability preference.
      */
     void Start(unsigned quorum_size, float unavailability = 1.0f);
