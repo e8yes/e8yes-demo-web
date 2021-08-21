@@ -79,6 +79,7 @@ class RaftForeground {
   private:
     RaftContext *context_;
     std::mutex lock_;
+    RandomSource random_source_;
 };
 
 } // namespace e8

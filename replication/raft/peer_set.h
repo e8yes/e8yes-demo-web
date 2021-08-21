@@ -23,6 +23,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "common/random/random_source.h"
 #include "proto_cc/service_raft.grpc.pb.h"
 #include "proto_cc/service_raft.pb.h"
 #include "replication/raft/common_types.h"
@@ -64,6 +65,11 @@ class RaftPeerSet {
     unsigned QuorumSize() const;
 
     /**
+     * @brief PickRandom Picks a peer randomly and returns its machine address.
+     */
+    RaftMachineAddress PickRandom();
+
+    /**
      * @brief Stub Looks up a peer connection by the specified machine address. The machine address
      * must exists in the peer set. Or else, this function will fail.
      */
@@ -71,6 +77,8 @@ class RaftPeerSet {
 
   private:
     std::unordered_map<RaftMachineAddress, std::unique_ptr<RaftService::Stub>> peers_;
+    std::unordered_map<RaftMachineAddress, float> peer_weights_;
+    RandomSource random_source_;
     unsigned quorum_size_;
 };
 

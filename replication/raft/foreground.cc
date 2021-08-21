@@ -17,6 +17,7 @@
 
 #include <mutex>
 #include <optional>
+#include <utility>
 
 #include "proto_cc/command.pb.h"
 #include "replication/raft/common_types.h"
@@ -46,8 +47,8 @@ RaftForeground::BoardcastCommand(CommandEntry const &command_entry) {
         std::optional<RaftMachineAddress> possible_leader = context_->voting_record->LastVotedFor();
 
         if (possible_leader->empty()) {
-            // Retry the call on this node for the time being since we don't know who the leader is.
-            return BoardcastResult(context_->me);
+            // Picks a random node to retry since we have no idea where the leader is.
+            return BoardcastResult(context_->peers->PickRandom());
         } else {
             // The node we voted for could possibly be the leader if it wins the election.
             return BoardcastResult(*possible_leader);
