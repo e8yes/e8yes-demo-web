@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     raft \
+    runner \
     _test_raft/_test_schedule \
     _test_raft/_test_peer_set \
     _test_raft/_test_persister \
