@@ -45,6 +45,12 @@ class RaftCommitListener {
      * machine can change its states according to the command carried in the log.
      */
     virtual void Apply(CommandEntry const &entry) = 0;
+
+    /**
+     * @brief Reset When the Raft node got shutdown in a integration testing situation, this
+     * function gets called to undo all the applied commands.
+     */
+    virtual void Reset();
 };
 
 /**

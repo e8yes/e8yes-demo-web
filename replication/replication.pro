@@ -7,6 +7,7 @@ SUBDIRS = \
     _test_raft/_test_role_at_term \
     _test_raft/_test_journal \
     _test_raft/_test_context \
-    _test_raft/_test_election
+    _test_raft/_test_election \
+    _test_raft/_test_agreement
 
 CONFIG += ordered

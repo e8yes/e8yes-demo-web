@@ -57,6 +57,11 @@ void RaftReplicationMonitor::Listener::Apply(CommandEntry const &entry) {
     commited_entries.push_back(entry);
 }
 
+void RaftReplicationMonitor::Listener::Reset() {
+    std::lock_guard<std::mutex> guard(mu);
+    commited_entries.clear();
+}
+
 RaftReplicationMonitor::RaftReplicationMonitor(LocalRaftCluster const *cluster)
     : cluster_(cluster) {}
 

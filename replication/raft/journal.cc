@@ -42,6 +42,8 @@ RaftCommitListener::RaftCommitListener() {}
 
 RaftCommitListener::~RaftCommitListener() {}
 
+void RaftCommitListener::Reset() {}
+
 RaftJournal::RaftJournal(RaftPersister *persister, RaftCommitListener *commit_listener)
     : persister_(persister), commit_listener_(commit_listener), commit_progress_(0) {
     assert(persister_ != nullptr);

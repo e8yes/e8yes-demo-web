@@ -133,6 +133,7 @@ void LocalRaftCluster::Shutdown(RaftMachineAddress const &node_address) {
     auto &[_, node] = *it;
     assert(node.instance != nullptr);
     node.instance = nullptr;
+    node.commit_listener->Reset();
 }
 
 void LocalRaftCluster::SetUnreliableNetwork(bool /*enable*/) {

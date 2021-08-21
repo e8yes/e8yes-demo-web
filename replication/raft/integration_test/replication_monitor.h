@@ -45,6 +45,8 @@ class RaftReplicationMonitor {
 
         void Apply(CommandEntry const &entry) override;
 
+        void Reset() override;
+
         std::mutex mu;
         std::vector<CommandEntry> commited_entries;
     };

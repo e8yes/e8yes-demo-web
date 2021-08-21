@@ -58,6 +58,7 @@ google::protobuf::RepeatedPtrField<LogEntry> *RaftPersister::LogEntriesRef() {
 
 void RaftPersister::Persist() {
     assert(file_.is_open());
+    file_.seekp(std::ios_base::beg);
     states_.SerializeToOstream(&file_);
     file_.flush();
 }
