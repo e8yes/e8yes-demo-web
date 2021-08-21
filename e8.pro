@@ -1,8 +1,10 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     third_party/base64/base64.pro \
+    third_party/uuid/uuid.pro \
     proto_cc/proto_cc.pro \
     common/common.pro \
+    replication/replication.pro \
     distributor/distributor.pro \
     postgres/postgres.pro \
     keygen/keygenw.pro \
