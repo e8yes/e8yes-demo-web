@@ -43,7 +43,7 @@ class RaftRoleMonitor {
      * @brief RaftRoleMonitor Specifies the cluster to monitor for, then starts up the background
      * monitoring task.
      */
-    RaftRoleMonitor(LocalRaftCluster const *cluster);
+    explicit RaftRoleMonitor(LocalRaftCluster const *cluster);
     ~RaftRoleMonitor();
 
     /**

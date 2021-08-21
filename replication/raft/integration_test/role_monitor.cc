@@ -37,7 +37,7 @@ TimeIntervalMillis kInspectionInterval = 20;
 
 class RaftRoleMonitorImpl : public TaskInterface {
   public:
-    RaftRoleMonitorImpl(LocalRaftCluster const *cluster);
+    explicit RaftRoleMonitorImpl(LocalRaftCluster const *cluster);
     ~RaftRoleMonitorImpl();
 
     void Run(TaskStorageInterface *) const override;
@@ -150,7 +150,7 @@ LocalRaftCluster const *RaftRoleMonitorImpl::Cluster() const { return cluster_; 
 RaftRoleMonitor::RaftRoleMonitor(LocalRaftCluster const *cluster)
     : pimpl_(std::make_shared<role_monitor_internal::RaftRoleMonitorImpl>(cluster)),
       monitor_thread_(/*num_workers=*/1) {
-    monitor_thread_.Schedule(pimpl_, /*task_data=*/nullptr);
+    monitor_thread_.Schedule(pimpl_);
 }
 
 RaftRoleMonitor::~RaftRoleMonitor() {

@@ -31,7 +31,7 @@ RaftInstance::RaftInstance(RaftCommitListener *commit_listener, RaftConfig const
       foreground_(std::make_unique<RaftForeground>(context_.get())),
       background_(std::make_shared<RaftBackground>(context_.get())),
       background_thread_(/*num_workers=*/1) {
-    background_thread_.Schedule(background_, /*task_data=*/nullptr);
+    background_thread_.Schedule(background_);
 }
 
 RaftInstance::~RaftInstance() {
