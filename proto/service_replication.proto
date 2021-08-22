@@ -49,7 +49,8 @@ message RunCommandResponse {
 }
 
 /*
- * Service to replicate command execution sequence amount multiple nodes.
+ * Service a single replication instance provides to replicate command 
+ * execution sequence amount multiple nodes.
  */
 service ReplicationService {
     /*
