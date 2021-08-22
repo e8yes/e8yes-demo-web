@@ -19,10 +19,13 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     client.cc \
+    fulfillment_pool.cc \
     future.cc
 
 HEADERS += \
     client.h \
+    common_types.h \
+    fulfillment_pool.h \
     future.h
 
 # Default rules for deployment.
