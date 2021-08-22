@@ -52,7 +52,7 @@ class ReplicationInstance {
      */
     struct RunCommandResult {
         RunCommandResult(RunCommandError error, std::optional<RaftMachineAddress> retry_node);
-        RunCommandResult(RunCommandError error, std::string return_value);
+        RunCommandResult(std::string return_value, RunCommandError error);
 
         // Error status. Retry the command on the same node when this field has value RCE_TIMED_OUT.
         RunCommandError error;

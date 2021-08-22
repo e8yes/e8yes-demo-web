@@ -43,13 +43,21 @@ ReplicationInstance::ReplicationInstance(CommandRunnerInterface *runner,
 
 ReplicationInstance::~ReplicationInstance() {}
 
+ReplicationInstance::RunCommandResult::RunCommandResult(
+    RunCommandError error, std::optional<RaftMachineAddress> retry_node)
+    : error(error), retry_node(retry_node) {}
+
+ReplicationInstance::RunCommandResult::RunCommandResult(std::string return_value,
+                                                        RunCommandError error)
+    : error(error), return_value(return_value) {}
+
 ReplicationInstance::RunCommandResult
 ReplicationInstance::RunCommand(std::string const &command,
                                 ReplicationRunEventId const &run_event_id) {
     ReplicationFuture *future = fulfillments_->NewRunEvent(run_event_id);
     if (future->Fulfilled()) {
         auto [return_value, error] = future->Evaluate(fulfillment_timeout_);
-        return RunCommandResult(error, return_value);
+        return RunCommandResult(return_value, error);
     }
 
     CommandEntry command_entry;
@@ -59,11 +67,11 @@ ReplicationInstance::RunCommand(std::string const &command,
     RaftForeground::BoardcastResult boardcast_result =
         raft_->Foreground()->BoardcastCommand(command_entry);
     if (boardcast_result.retry_node.has_value()) {
-        return RunCommandResult(RunCommandError::RCE_WRONG_NODE, *boardcast_result.retry_node);
+        return RunCommandResult(RunCommandError::RCE_WRONG_NODE, boardcast_result.retry_node);
     }
 
     auto [return_value, error] = future->Evaluate(fulfillment_timeout_);
-    return RunCommandResult(error, return_value);
+    return RunCommandResult(return_value, error);
 }
 
 } // namespace e8
