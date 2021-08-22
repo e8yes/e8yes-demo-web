@@ -21,6 +21,7 @@
 #include <memory>
 
 #include "common/thread/thread_pool.h"
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/background.h"
 #include "replication/raft/context.h"
 #include "replication/raft/foreground.h"
@@ -38,7 +39,8 @@ class RaftInstance {
     /**
      * @brief RaftInstance Runs a new Raft instance with the specified commit listener and
      * configuration. By the end of the construction, a Raft background will be running and will
-     * only terminate when this instance is destructed.
+     * only terminate when this instance is destructed. The Raft instance does not own the
+     * commit_listener object, so it must outlive the instance.
      */
     RaftInstance(RaftCommitListener *commit_listener, RaftConfig const &config);
     ~RaftInstance();

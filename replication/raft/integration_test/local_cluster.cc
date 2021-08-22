@@ -17,6 +17,7 @@
 
 #include <cassert>
 #include <cstdio>
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -25,6 +26,7 @@
 
 #include "common/time_util/time_util.h"
 #include "proto_cc/command.pb.h"
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/context.h"
 #include "replication/raft/integration_test/local_cluster.h"
@@ -97,19 +99,19 @@ LocalRaftCluster::Node const &LocalRaftCluster::Get(RaftMachineAddress const &no
 void LocalRaftCluster::Start(unsigned quorum_size, float unavailability) {
     assert(started_ == false);
 
-    std::unordered_set<RaftMachineAddress> peers;
+    google::protobuf::RepeatedPtrField<RaftMachineAddress> peers;
     for (auto const &[addr, _] : nodes_) {
-        peers.insert(addr);
+        *peers.Add() = addr;
     }
 
     for (auto &[addr, node] : nodes_) {
-        node.config.me = addr;
-        node.config.peers = peers;
-        node.config.log_path = LogPath(addr);
-        node.config.quorum_size = quorum_size;
-        node.config.unavailability = unavailability;
+        node.config.set_me(addr);
+        *node.config.mutable_peers() = peers;
+        node.config.set_log_path(LogPath(addr));
+        node.config.set_quorum_size(quorum_size);
+        node.config.set_unavailability(unavailability);
 
-        std::remove(node.config.log_path.c_str());
+        std::remove(node.config.log_path().c_str());
 
         node.instance = std::make_unique<RaftInstance>(node.commit_listener.get(), node.config);
     }
@@ -143,8 +145,9 @@ void LocalRaftCluster::SetUnreliableNetwork(bool /*enable*/) {
 TimeIntervalMillis LocalRaftCluster::LocalRaftCluster::ElectionTimeout() const {
     assert(!nodes_.empty());
 
-    RaftScheduleConfig config =
-        FastElectionRaftScheduleConfig(nodes_.begin()->second.config.unavailability);
+    auto const &[_, some_node] = *nodes_.begin();
+
+    RaftScheduleConfig config = FastElectionRaftScheduleConfig(some_node.config.unavailability());
     return config.heartbeat_max_timeout_millis + config.election_timeout_millis;
 }
 

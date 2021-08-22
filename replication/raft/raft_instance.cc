@@ -18,6 +18,7 @@
 #include <memory>
 
 #include "common/thread/thread_pool.h"
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/background.h"
 #include "replication/raft/context.h"
 #include "replication/raft/foreground.h"

@@ -22,6 +22,7 @@
 #include <string>
 #include <unordered_set>
 
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/commit_pusher.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/election.h"
@@ -33,29 +34,6 @@
 #include "replication/raft/schedule.h"
 
 namespace e8 {
-
-/**
- * @brief The RaftConfig struct Defines the environment that Raft will work on.
- */
-struct RaftConfig {
-    // The machine address of the local node.
-    RaftMachineAddress me;
-
-    // The machine addresses of all the Raft peers, including the local node.
-    std::unordered_set<RaftMachineAddress> peers;
-
-    // The minimum number of nodes that are required to reach agreement to form concensus over a
-    // log entry or Raft leadership. The quorum size must be at least
-    // floor(peers->PeerCount()/2) + 1, so that there is at most one quorum among the peers.
-    unsigned quorum_size;
-
-    // File path to the local file system for storing Raft persistent states.
-    std::string log_path;
-
-    // The acceptable scale of unavailability. To achieve minimum down time, set this to 1.9.
-    // However, higher scale reduces network traffic and computation.
-    float unavailability;
-};
 
 /**
  * @brief The RaftContext struct Data and objects shared by both the Raft foreground and background.

@@ -21,6 +21,27 @@ package e8;
 
 import "command.proto";
 
+// Defines the environment Raft will work on.
+message RaftConfig {
+    // The machine address of the local node.
+    string me = 1;
+
+    // The machine addresses of all the Raft peers, including the local node.
+    repeated string peers = 2;
+
+    // The minimum number of nodes that are required to reach agreement to form concensus over a
+    // log entry or Raft leadership. The quorum size must be at least
+    // floor(peers->PeerCount()/2) + 1, so that there is at most one quorum among the peers.
+    int32 quorum_size = 3;
+
+    // File path to the local file system for storing Raft persistent states.
+    string log_path = 4;
+
+    // The acceptable scale of unavailability. To achieve minimum down time, set this to 1.9.
+    // However, higher scale reduces network traffic and computation.
+    float unavailability = 5;
+}
+
 message LogEntry {
     // The term the leader is at when adding this log entyr.
     int64 term = 1;

@@ -21,6 +21,7 @@
 
 #include "common/unit_test_util/unit_test_util.h"
 #include "proto_cc/command.pb.h"
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/context.h"
 #include "replication/raft/journal.h"
 
@@ -40,18 +41,18 @@ void TestCommitListener::Apply(e8::CommandEntry const & /*entry*/) {}
 
 bool CreateContextTest() {
     e8::RaftConfig config;
-    config.me = "localhost:11110";
+    config.set_me("localhost:11110");
 
-    config.peers.insert(config.me);
-    config.peers.insert("localhost:11111");
-    config.peers.insert("localhost:11112");
-    config.peers.insert("localhost:11113");
-    config.peers.insert("localhost:11114");
+    config.mutable_peers()->Add("localhost:11110");
+    config.mutable_peers()->Add("localhost:11111");
+    config.mutable_peers()->Add("localhost:11112");
+    config.mutable_peers()->Add("localhost:11113");
+    config.mutable_peers()->Add("localhost:11114");
 
-    config.quorum_size = 3;
+    config.set_quorum_size(3);
 
-    config.log_path = "./test_raft_log";
-    config.unavailability = 1.0f;
+    config.set_log_path("./test_raft_log");
+    config.set_unavailability(1.0f);
 
     auto listener = std::make_unique<TestCommitListener>();
     std::unique_ptr<e8::RaftContext> context = e8::CreateRaftContext(listener.get(), config);

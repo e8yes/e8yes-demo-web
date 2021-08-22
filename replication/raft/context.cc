@@ -15,11 +15,13 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <cassert>
 #include <memory>
 #include <string>
 #include <unordered_set>
 
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/commit_pusher.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/context.h"
@@ -37,15 +39,16 @@ std::unique_ptr<RaftContext> CreateRaftContext(RaftCommitListener *commit_listen
                                                RaftConfig const &config) {
     auto context = std::make_unique<RaftContext>();
 
-    RaftScheduleConfig schedule_config = FastElectionRaftScheduleConfig(config.unavailability);
+    RaftScheduleConfig schedule_config = FastElectionRaftScheduleConfig(config.unavailability());
     context->follower_schedule = std::make_unique<FollowerSchedule>(schedule_config);
     context->candidate_schedule = std::make_unique<CandidateSchedule>(schedule_config);
     context->leader_schedule = std::make_unique<LeaderSchedule>(schedule_config);
 
-    context->me = config.me;
-    context->peers = std::make_unique<RaftPeerSet>(config.peers, config.quorum_size);
+    context->me = config.me();
+    std::unordered_set<RaftMachineAddress> peer_set(config.peers().begin(), config.peers().end());
+    context->peers = std::make_unique<RaftPeerSet>(peer_set, config.quorum_size());
 
-    context->persister = std::make_unique<RaftPersister>(config.log_path);
+    context->persister = std::make_unique<RaftPersister>(config.log_path());
 
     context->role_at_term = std::make_unique<RoleAtTerm>(context->persister.get());
 

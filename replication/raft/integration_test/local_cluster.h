@@ -23,6 +23,7 @@
 #include <unordered_set>
 
 #include "common/time_util/time_util.h"
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/context.h"
 #include "replication/raft/journal.h"
