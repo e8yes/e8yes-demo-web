@@ -36,7 +36,7 @@ namespace e8 {
  * @brief The ReplicationConfig struct Tells the client the peer addresses that will respond to the
  * RunCommand() RPC.
  */
-struct ReplicationConfig {
+struct ReplicationClientConfig {
     std::unordered_set<RaftMachineAddress> peers;
 };
 
@@ -46,7 +46,7 @@ struct ReplicationConfig {
  */
 class ReplicationClient {
   public:
-    ReplicationClient(ReplicationConfig const &config);
+    ReplicationClient(ReplicationClientConfig const &config);
     ~ReplicationClient();
 
     /**

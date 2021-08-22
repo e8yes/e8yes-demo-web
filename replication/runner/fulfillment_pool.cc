@@ -31,7 +31,7 @@ FulfillmentPool::FulfillmentPool() : mu_(std::make_unique<std::mutex>()) {}
 
 FulfillmentPool::~FulfillmentPool() {}
 
-ReplicationFuture *FulfillmentPool::NewRunEvent(RunEventId const &run_event_id) {
+ReplicationFuture *FulfillmentPool::NewRunEvent(ReplicationRunEventId const &run_event_id) {
     std::lock_guard guard(*mu_);
 
     auto it = futures_.find(run_event_id);
@@ -43,13 +43,13 @@ ReplicationFuture *FulfillmentPool::NewRunEvent(RunEventId const &run_event_id) 
     return it->second.get();
 }
 
-void FulfillmentPool::Fulfill(RunEventId const &run_event_id, std::string const &return_value,
-                              RunCommandError err) {
+void FulfillmentPool::Fulfill(ReplicationRunEventId const &run_event_id,
+                              std::string const &return_value, RunCommandError err) {
     ReplicationFuture *future = this->NewRunEvent(run_event_id);
     future->FulFill(return_value, err);
 }
 
-bool FulfillmentPool::Fulfilled(RunEventId const &run_event_id) const {
+bool FulfillmentPool::Fulfilled(ReplicationRunEventId const &run_event_id) const {
     std::lock_guard guard(*mu_);
 
     auto it = futures_.find(run_event_id);

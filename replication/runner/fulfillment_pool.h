@@ -45,7 +45,7 @@ class FulfillmentPool {
      * regardless of their fulfillment status unless they are cleared out by explicitly calling the
      * Clear() function.
      */
-    ReplicationFuture *NewRunEvent(RunEventId const &run_event_id);
+    ReplicationFuture *NewRunEvent(ReplicationRunEventId const &run_event_id);
 
     /**
      * @brief Fulfill Makes the task associated with the run event fulfill. Once a call event is
@@ -56,13 +56,13 @@ class FulfillmentPool {
      * @param return_value The result of the computation task.
      * @param err Error arisen from the computation task.
      */
-    void Fulfill(RunEventId const &run_event_id, std::string const &return_value,
+    void Fulfill(ReplicationRunEventId const &run_event_id, std::string const &return_value,
                  RunCommandError err);
 
     /**
      * @brief Fulfilled Checks if the fulfillment task associated with the run event had fulfilled.
      */
-    bool Fulfilled(RunEventId const &run_event_id) const;
+    bool Fulfilled(ReplicationRunEventId const &run_event_id) const;
 
     /**
      * @brief Clear Clears all the fulfillment tasks. The Clear() call should not create any race
@@ -72,7 +72,7 @@ class FulfillmentPool {
     void Clear();
 
   private:
-    std::unordered_map<RunEventId, std::unique_ptr<ReplicationFuture>> futures_;
+    std::unordered_map<ReplicationRunEventId, std::unique_ptr<ReplicationFuture>> futures_;
     std::unique_ptr<std::mutex> mu_;
 };
 

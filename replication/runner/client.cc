@@ -34,7 +34,7 @@
 
 namespace e8 {
 
-ReplicationClient::ReplicationClient(ReplicationConfig const &config) {
+ReplicationClient::ReplicationClient(ReplicationClientConfig const &config) {
     for (auto const &peer : config.peers) {
         auto peer_channel = grpc::CreateChannel(peer, grpc::InsecureChannelCredentials());
         auto stub = ReplicationService::NewStub(peer_channel);
@@ -59,7 +59,7 @@ std::string ReplicationClient::RunCommand(std::string const &command) {
     char uuid_string[UUID4_STR_BUFFER_SIZE];
     uuid4_to_s(uuid, uuid_string, sizeof(uuid_string));
 
-    RunEventId run_event_id(uuid_string);
+    ReplicationRunEventId run_event_id(uuid_string);
 
     while (true) {
         RunCommandRequest request;

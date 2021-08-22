@@ -5,7 +5,7 @@
 
 namespace e8 {
 
-using RunEventId = std::string;
+using ReplicationRunEventId = std::string;
 
 } // namespace e8
 
