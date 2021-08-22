@@ -29,6 +29,7 @@
 #include "proto_cc/service_replication.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/runner/client.h"
+#include "replication/runner/common_types.h"
 #include "third_party/uuid/uuid4.h"
 
 namespace e8 {
@@ -58,7 +59,7 @@ std::string ReplicationClient::RunCommand(std::string const &command) {
     char uuid_string[UUID4_STR_BUFFER_SIZE];
     uuid4_to_s(uuid, uuid_string, sizeof(uuid_string));
 
-    std::string run_event_id(uuid_string);
+    RunEventId run_event_id(uuid_string);
 
     while (true) {
         RunCommandRequest request;

@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef REPLICATION_RUNNER_CLIENT_H
-#define REPLICATION_RUNNER_CLIENT_H
+#ifndef REPLICATION_CLIENT_H
+#define REPLICATION_CLIENT_H
 
 #include <memory>
 #include <string>
@@ -67,4 +67,4 @@ class ReplicationClient {
 
 } // namespace e8
 
-#endif // REPLICATION_RUNNER_CLIENT_H
+#endif // REPLICATION_CLIENT_H
