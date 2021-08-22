@@ -19,14 +19,20 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     client.cc \
+    command_queue.cc \
     fulfillment_pool.cc \
-    future.cc
+    future.cc \
+    runner.cc \
+    service/replication_service.cc
 
 HEADERS += \
     client.h \
+    command_queue.h \
     common_types.h \
     fulfillment_pool.h \
-    future.h
+    future.h \
+    runner.h \
+    service/replication_service.h
 
 # Default rules for deployment.
 unix {

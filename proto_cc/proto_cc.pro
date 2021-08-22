@@ -47,6 +47,8 @@ HEADERS += \
     raft.pb.h \
     real_time_message.grpc.pb.h \
     real_time_message.pb.h \
+    replication.grpc.pb.h \
+    replication.pb.h \
     service_chat_message.grpc.pb.h \
     service_chat_message.pb.h \
     service_file.grpc.pb.h \
@@ -112,6 +114,8 @@ SOURCES += \
     raft.pb.cc \
     real_time_message.grpc.pb.cc \
     real_time_message.pb.cc \
+    replication.grpc.pb.cc \
+    replication.pb.cc \
     service_chat_message.grpc.pb.cc \
     service_chat_message.pb.cc \
     service_file.grpc.pb.cc \
