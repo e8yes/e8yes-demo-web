@@ -18,9 +18,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
-    client.cc
+    client.cc \
+    future.cc
+
 HEADERS += \
-    client.h
+    client.h \
+    future.h
 
 # Default rules for deployment.
 unix {
