@@ -11,6 +11,7 @@ SUBDIRS = \
     _test_raft/_test_election \
     _test_raft/_test_agreement \
     _test_runner/_test_future \
-    _test_runner/_test_fulfillment_pool
+    _test_runner/_test_fulfillment_pool \
+    _test_runner/_test_command_queue
 
 CONFIG += ordered

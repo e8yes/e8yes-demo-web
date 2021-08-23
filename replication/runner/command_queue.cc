@@ -25,6 +25,10 @@
 
 namespace e8 {
 
+CommandRunnerInterface::CommandRunnerInterface() {}
+
+CommandRunnerInterface::~CommandRunnerInterface() {}
+
 CommandQueueProcessor::CommandQueueProcessor(FulfillmentPool *fulfillments,
                                              CommandRunnerInterface *runner)
     : fulfillments_(fulfillments), runner_(runner) {}
