@@ -35,7 +35,17 @@ class CommandRunnerInterface {
     CommandRunnerInterface();
     virtual ~CommandRunnerInterface();
 
+    /**
+     * @brief Run Runs the specified command given the class's current state and returns the result
+     * from the run.
+     */
     virtual std::string Run(std::string const &command) = 0;
+
+    /**
+     * @brief Reset When the replication node gets shutdown in a integration testing situation, this
+     * function gets called to undo all the applied commands.
+     */
+    virtual void Reset();
 };
 
 /**

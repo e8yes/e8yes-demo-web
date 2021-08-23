@@ -18,6 +18,7 @@
 #ifndef REPLICATION_CLIENT_H
 #define REPLICATION_CLIENT_H
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -57,12 +58,18 @@ class ReplicationClient {
      */
     std::string RunCommand(std::string const &command);
 
+    /**
+     * @brief NumRpcs Returns the number of RPCs sent out so far, for performance checks.
+     */
+    uint64_t NumRpcs() const;
+
   private:
     std::unordered_map<RaftMachineAddress, std::unique_ptr<ReplicationService::Stub>> peer_stubs_;
     std::unordered_map<RaftMachineAddress, float> peer_weights_;
     RandomSource random_source_;
     RaftMachineAddress possible_leader_;
     UUID4_STATE_T uuid_state_;
+    uint64_t num_rpcs_;
 };
 
 } // namespace e8

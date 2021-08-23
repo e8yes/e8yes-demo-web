@@ -34,7 +34,7 @@
 
 namespace e8 {
 
-ReplicationClient::ReplicationClient(ReplicationClientConfig const &config) {
+ReplicationClient::ReplicationClient(ReplicationClientConfig const &config) : num_rpcs_(0) {
     for (auto const &peer : config.peers) {
         auto peer_channel = grpc::CreateChannel(peer, grpc::InsecureChannelCredentials());
         auto stub = ReplicationService::NewStub(peer_channel);
@@ -71,6 +71,7 @@ std::string ReplicationClient::RunCommand(std::string const &command) {
         grpc::ClientContext context;
         grpc::Status status =
             peer_stubs_[possible_leader_]->RunCommand(&context, request, &response);
+        ++num_rpcs_;
 
         if (!status.ok() || response.error() == RunCommandError::RCE_TIMED_OUT) {
             // Unreachable/stuck in a wrong network partition. Picks a random node and retries.
@@ -88,5 +89,7 @@ std::string ReplicationClient::RunCommand(std::string const &command) {
         }
     }
 }
+
+uint64_t ReplicationClient::NumRpcs() const { return num_rpcs_; }
 
 } // namespace e8

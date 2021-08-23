@@ -22,6 +22,8 @@ SOURCES += \
     command_queue.cc \
     fulfillment_pool.cc \
     future.cc \
+    integration_test/key_value_store.cc \
+    integration_test/local_cluster.cc \
     runner.cc \
     service/replication_service.cc
 
@@ -31,6 +33,8 @@ HEADERS += \
     common_types.h \
     fulfillment_pool.h \
     future.h \
+    integration_test/key_value_store.h \
+    integration_test/local_cluster.h \
     runner.h \
     service/replication_service.h
 

@@ -29,6 +29,8 @@ CommandRunnerInterface::CommandRunnerInterface() {}
 
 CommandRunnerInterface::~CommandRunnerInterface() {}
 
+void CommandRunnerInterface::Reset() {}
+
 CommandQueueProcessor::CommandQueueProcessor(FulfillmentPool *fulfillments,
                                              CommandRunnerInterface *runner)
     : fulfillments_(fulfillments), runner_(runner) {}
