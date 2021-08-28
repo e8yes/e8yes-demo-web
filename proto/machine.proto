@@ -1,0 +1,70 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+// Specifies the amount of each type of capability the machine has.
+message WeightedCapabilities {
+    // All types of capability of concern.
+    enum Type {
+        INVALID_TYPE = 0;
+
+        // General computation hardware.
+        CPU = 1;
+
+        // Main memory.
+        RAM = 2;
+
+        // Persistent (disk) storage.
+        STORAGE = 3;
+
+        // Coral accelerator.
+        CORAL = 4;
+    }
+
+    // The number of standardized general computation units the machine has.
+    float cpu = 1;
+
+    // The number of gigabytes of main memory the machine has.
+    float ram = 2;
+
+    // The number of gigabytes of disk storage the machine has.
+    float storage = 3;
+
+    // The number of coral accelerators the machine has.
+    float coral = 4;
+}
+
+// Describes the basic information about a machine that the cluster monitor
+// needs to know for placement, replication and recovery.
+message Machine {
+    // The machine's static IPv4/v6 address.
+    string address = 1;
+
+    // The machine's capability.
+    WeightedCapabilities capabilities = 2;
+
+    // The registered resource workers that receives migration or replication 
+    // commands from the cluster monitor. Keyed by the resource worker's unique
+    // name with the worker's listening port as value.
+    map<string, int32> resource_worker_ports = 3;
+
+    // Should any client be allowed to contact this machine.
+    bool reachable = 4;
+}
