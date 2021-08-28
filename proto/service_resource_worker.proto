@@ -1,0 +1,54 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "cluster.proto";
+
+
+message MigrateResourcesRequest {
+    ClusterMapRevision revision = 1;
+}
+
+message MigrateResourcesResponse {
+}
+
+
+message ReplicateResourcesRequest {
+    ClusterMapRevision revision = 1;
+}
+
+message ReplicateResourcesResponse {
+}
+
+// Service a resource worker must provide. A resource worker handles a 
+// collection of certain type of resources. This interface allows these 
+// resources to be properly located and replicated in response to events that
+// triggers cluster map revision.
+service ResourceWorkerService {
+    // Relocates all resources affected due to the specified cluster map 
+    // revision.
+    rpc MigrateResources(MigrateResourcesRequest) returns
+        (MigrateResourcesResponse);
+
+    // Replicates all resouces that lack enough degree of replication due to 
+    // the specified cluster map revision.
+    rpc ReplicateResources(ReplicateResourcesRequest) returns
+        (ReplicateResourcesResponse);
+}
