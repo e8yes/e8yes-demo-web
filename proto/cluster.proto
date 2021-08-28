@@ -1,0 +1,98 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "bucket.proto";
+import "machine.proto";
+
+// A tree node is either a logical bucket or a physical machine.
+message ClusterTreeNode {
+    // Describes all the supported grouping elements, in increasing 
+    // granularity. A machine node must be an exterior tree node while a root
+    // must be the root node. More granular grouping elements must live under 
+    // a subtree of the coarser elements.
+    enum Hierarchy {
+        INVALID_HIERARCHY = 0;
+        ROOT = 1;
+        ROOM = 2;
+        ROW = 3;
+        CABINET = 4;
+        SHELF = 5;
+        MACHINE = 6;
+    }
+
+    // The current hierarchy it's at.
+    Hierarchy hierarchy = 1;
+
+    oneof tree_node {
+        // Internal logical tree node that can group a children buckets or 
+        // machines.
+        Bucket bucket = 2;
+
+        // External physical tree node that describes a machine.
+        Machine machine = 3;
+    }
+}
+
+// A hierarchical (tree) description of a cluster. It divides and groups 
+// machines by logical location elements (See ClusterTreeNode::Hierarchy for 
+// what location elements it supports). It allows, for example, a flexible 
+// placement rule to find 3 replicas located in machines that are placed in the
+// same room but in 3 different rows.
+message ClusterMap {
+    // The version epoch of the current cluster description.
+    int64 version_epoch = 1;
+
+    // The hierarchical description. Each tree node, either a logical bucket or 
+    // a physical machine, is keyed by a label that is unique across the 
+    // cluster.
+    map<string, ClusterTreeNode> tree_nodes = 2;
+}
+
+// Describes how a version of cluster map is formed from a previous version by
+// tree node addition, removal and state update.
+message ClusterMapRevision {
+    enum Operation {
+        INVALID_OPERATION = 0;
+        ADD_TREE_NODE = 1;
+        DELETE_TREE_NODE = 2;
+        UPDATE_TREE_NODE = 3;
+    }
+
+    message Revision {
+        string node_label = 1;
+        Operation operation = 2;
+
+        oneof tree_node {
+            Bucket bucket = 3;
+            Machine machine = 4;
+        }
+    }
+
+    // The older cluster map to base the revision delta from.
+    int64 from_version_epoch = 1;
+
+    // The newer target cluster map to revise to.
+    int64 to_version_epoch = 2;
+
+    // The list of addition, removal and state update operations needed. Order
+    // doesn't matter.
+    repeated Revision revisions = 3;
+}
