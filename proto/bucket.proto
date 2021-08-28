@@ -1,0 +1,100 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "machine.proto";
+
+// Data to reconstruct the hash buckets and the replica probing parameter.
+message UniformBucketData {
+    // The ringed hash buckets.
+    repeated string child_labels = 1;
+
+    // The prime value used to locate the next replica location.
+    int64 prime = 2;
+}
+
+// Data to reconstruct the linked list.
+message ListBucketData {
+    // Ordered linked list nodes.
+    repeated string child_labels = 1;
+}
+
+// Data to reconstruct the tree.
+message TreeBucketData {
+    //  Definition of a tree node in the bucket.
+    message TreeBucketNode {
+        // Label of the left child node.
+        string left_child_label = 1;
+
+        // Label of the right child node.
+        string right_child_label = 2;
+
+        // Summed capability weights over the left subtree.
+        WeightedCapabilities left_child_weights = 3;
+
+        // Summed capability weights over the right subtree.
+        WeightedCapabilities right_child_weights = 4;
+    }
+
+    // Tree nodes keyed by its unique label.
+    map<string, TreeBucketNode> tree_nodes = 1;
+}
+
+// Data to reconstruct the straw can.
+message StrawBucketData {
+    // The choice of function to transform the capability weight to a straw 
+    // length multiplier.
+    enum WeightFunction {
+        INVALID_FUNCTION = 0;
+        LINEAR = 1;
+    }
+
+    // The unordered set of children.
+    repeated string child_labels = 1;
+
+    // The function to scale the straw length by capability weight.
+    WeightFunction weight_function = 2;
+}
+
+// A logical grouping element. It describes the information necessary to build
+// a data structure around the child nodes as well as the hardware and access
+// capability of the group.
+message Bucket {
+    oneof children {
+        // Children should be stored by a unform bucket.
+        UniformBucketData uniform_bucket = 1;
+
+        // Children should be stored by a list bucket.
+        ListBucketData list_bucket = 2;
+
+        // Children should be stored by a tree bucket.
+        TreeBucketData tree_bucket = 3;
+
+        // Children should be stored by a straw bucket.
+        StrawBucketData straw_bucket = 4;
+    }
+
+    // Visitor to this bucket must only require a subset of the supported name
+    // spaces to access the children.
+    repeated string suppported_name_spaces = 5;
+
+    // The summed capability weights of all children.
+    WeightedCapabilities capabilities = 6;
+}
