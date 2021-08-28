@@ -96,3 +96,20 @@ message ClusterMapRevision {
     // doesn't matter.
     repeated Revision revisions = 3;
 }
+
+// A list of reasons why one might want to modify a cluster map. This allows
+// the cluster monitor to pick up appropiate strategies in response to 
+// different events.
+enum ClusterMapRevisionReason {
+    // Bad reasoning.
+    CMRR_INVALID = 0;
+
+    // The client wants to register a new resource worker.
+    CMRR_REGISTER_RESOURCE_WORKER = 1;
+
+    // The client wants to decomission a resource worker.
+    CMRR_UNREGISTER_RESOURCE_WORKER = 2;
+
+    // The client encountered a failed resource worker.
+    CMRR_REPORT_RESOURCE_WORKER_FAILURE = 3;
+}
