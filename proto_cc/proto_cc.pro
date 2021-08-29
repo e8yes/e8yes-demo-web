@@ -13,8 +13,12 @@ QMAKE_LFLAGS_RELEASE += -O3 -flto -march=native
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 HEADERS += \
+    bucket.grpc.pb.h \
+    bucket.pb.h \
     chat_message.grpc.pb.h \
     chat_message.pb.h \
+    cluster.grpc.pb.h \
+    cluster.pb.h \
     command.grpc.pb.h \
     command.pb.h \
     delta.grpc.pb.h \
@@ -29,6 +33,8 @@ HEADERS += \
     identity.pb.h \
     invitation_status.grpc.pb.h \
     invitation_status.pb.h \
+    machine.grpc.pb.h \
+    machine.pb.h \
     message_channel.grpc.pb.h \
     message_channel.pb.h \
     message_queue_stats.grpc.pb.h \
@@ -51,6 +57,8 @@ HEADERS += \
     replication.pb.h \
     service_chat_message.grpc.pb.h \
     service_chat_message.pb.h \
+    service_cluster_monitor.grpc.pb.h \
+    service_cluster_monitor.pb.h \
     service_file.grpc.pb.h \
     service_file.pb.h \
     service_gomoku_classroom.grpc.pb.h \
@@ -69,19 +77,30 @@ HEADERS += \
     service_raft.pb.h \
     service_replication.grpc.pb.h \
     service_replication.pb.h \
+    service_resource_worker.grpc.pb.h \
+    service_resource_worker.pb.h \
     service_socialnetwork.grpc.pb.h \
     service_socialnetwork.pb.h \
     service_system.grpc.pb.h \
     service_system.pb.h \
     service_user.grpc.pb.h \
     service_user.pb.h \
+    tensorflow/example.grpc.pb.h \
+    tensorflow/example.pb.h \
+    tensorflow/feature.grpc.pb.h \
+    tensorflow/feature.pb.h \
     user_profile.grpc.pb.h \
     user_profile.pb.h \
     user_relation.grpc.pb.h \
     user_relation.pb.h
+
 SOURCES += \
+    bucket.grpc.pb.cc \
+    bucket.pb.cc \
     chat_message.grpc.pb.cc \
     chat_message.pb.cc \
+    cluster.grpc.pb.cc \
+    cluster.pb.cc \
     command.grpc.pb.cc \
     command.pb.cc \
     delta.grpc.pb.cc \
@@ -96,6 +115,8 @@ SOURCES += \
     identity.pb.cc \
     invitation_status.grpc.pb.cc \
     invitation_status.pb.cc \
+    machine.grpc.pb.cc \
+    machine.pb.cc \
     message_channel.grpc.pb.cc \
     message_channel.pb.cc \
     message_queue_stats.grpc.pb.cc \
@@ -118,6 +139,8 @@ SOURCES += \
     replication.pb.cc \
     service_chat_message.grpc.pb.cc \
     service_chat_message.pb.cc \
+    service_cluster_monitor.grpc.pb.cc \
+    service_cluster_monitor.pb.cc \
     service_file.grpc.pb.cc \
     service_file.pb.cc \
     service_gomoku_classroom.grpc.pb.cc \
@@ -136,12 +159,18 @@ SOURCES += \
     service_raft.pb.cc \
     service_replication.grpc.pb.cc \
     service_replication.pb.cc \
+    service_resource_worker.grpc.pb.cc \
+    service_resource_worker.pb.cc \
     service_socialnetwork.grpc.pb.cc \
     service_socialnetwork.pb.cc \
     service_system.grpc.pb.cc \
     service_system.pb.cc \
     service_user.grpc.pb.cc \
     service_user.pb.cc \
+    tensorflow/example.grpc.pb.cc \
+    tensorflow/example.pb.cc \
+    tensorflow/feature.grpc.pb.cc \
+    tensorflow/feature.pb.cc \
     user_profile.grpc.pb.cc \
     user_profile.pb.cc \
     user_relation.grpc.pb.cc \
