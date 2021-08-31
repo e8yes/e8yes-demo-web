@@ -18,7 +18,9 @@
 #ifndef PLACEMENT_BUCKET_H
 #define PLACEMENT_BUCKET_H
 
+#include <memory>
 #include <optional>
+#include <shared_mutex>
 
 #include "cluster/placement/common_types.h"
 #include "proto_cc/bucket.pb.h"
@@ -43,7 +45,7 @@ class BucketInterface {
      * funciton returns a std::nullopt only when the bucket is empty.
      */
     virtual std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource,
-                                                       unsigned num_failures) = 0;
+                                                       unsigned num_failures) const = 0;
 
     /**
      * @brief AddChild Adds a child node to the bucket.
@@ -66,7 +68,33 @@ class BucketInterface {
     /**
      * @brief ToProto Exports the bucket data structure as a Bucket proto.
      */
-    virtual Bucket const &ToProto() const = 0;
+    virtual Bucket ToProto() const = 0;
+};
+
+/**
+ * @brief The UniformBucket class Distributes resources uniformly across the children without
+ * consideration of their hardware capabilities. It's capable of achieving O(1) time select.
+ * However, adding or removing any children will result in a complete reshuffling of the resources
+ * that live under this bucket. This object is thread safe.
+ */
+class UniformBucket : public BucketInterface {
+  public:
+    UniformBucket(UniformBucketData const &data);
+    ~UniformBucket() override;
+
+    std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource,
+                                               unsigned num_failures) const override;
+
+    bool AddChild(ClusterTreeNodeLabel const &label,
+                  WeightedCapabilities const &child_weight) override;
+
+    bool RemoveChild(ClusterTreeNodeLabel const &label) override;
+
+    Bucket ToProto() const override;
+
+  private:
+    UniformBucketData data_;
+    std::unique_ptr<std::shared_mutex> mu_;
 };
 
 } // namespace e8

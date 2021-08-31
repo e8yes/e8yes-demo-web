@@ -18,10 +18,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
-    bucket.cc
+    bucket.cc \
+    cluster_map.cc
 
 HEADERS += \
     bucket.h \
+    cluster_map.h \
     common_types.h
 
 # Default rules for deployment.

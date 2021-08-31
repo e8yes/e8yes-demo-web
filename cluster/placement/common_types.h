@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COMMON_TYPES_H
-#define COMMON_TYPES_H
+#ifndef PLACEMENT_COMMON_TYPES
+#define PLACEMENT_COMMON_TYPES
 
 #include <cstdint>
 #include <string>
@@ -56,4 +56,4 @@ struct ResourceDescriptor {
 
 } // namespace e8
 
-#endif // COMMON_TYPES_H
+#endif // PLACEMENT_COMMON_TYPES
