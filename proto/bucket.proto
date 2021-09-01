@@ -40,21 +40,23 @@ message ListBucketData {
 message TreeBucketData {
     //  Definition of a tree node in the bucket.
     message TreeBucketNode {
-        // Label of the left child node.
-        string left_child_label = 1;
+        // Unique label across the entire cluster map.
+        string map_label = 1;
 
-        // Label of the right child node.
-        string right_child_label = 2;
+        // Tree label of the left child node.
+        string left_child_tree_label = 2;
 
-        // Summed capability weights over the left subtree.
-        WeightedCapabilities left_child_weights = 3;
-
-        // Summed capability weights over the right subtree.
-        WeightedCapabilities right_child_weights = 4;
+        // Tree label of the right child node.
+        string right_child_tree_label = 3;
     }
 
-    // Tree nodes keyed by its unique label.
+    // Tree nodes keyed by its tree label. Note, this tree label is only unique
+    // within this bucket.
     map<string, TreeBucketNode> tree_nodes = 1;
+
+    // The tree label of the root node. Don't use the value of this field when
+    // tree_nodes is empty.
+    string root_node_tree_label = 2;
 }
 
 // Data to reconstruct the straw can.

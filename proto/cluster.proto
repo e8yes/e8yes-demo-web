@@ -64,6 +64,10 @@ message ClusterMap {
     // a physical machine, is keyed by a label that is unique across the 
     // cluster.
     map<string, ClusterTreeNode> tree_nodes = 2;
+
+    // The label of the root node. Don't use the value of this field when the
+    // field tree_nodes is empty.
+    string root_label = 3;
 }
 
 // Describes how a version of cluster map is formed from a previous version by
