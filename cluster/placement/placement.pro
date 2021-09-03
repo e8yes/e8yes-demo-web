@@ -19,10 +19,12 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     bucket.cc \
+    capability.cc \
     cluster_map.cc
 
 HEADERS += \
     bucket.h \
+    capability.h \
     cluster_map.h \
     common_types.h
 
