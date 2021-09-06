@@ -56,18 +56,14 @@ message ClusterTreeNode {
 // what location elements it supports). It allows, for example, a flexible 
 // placement rule to find 3 replicas located in machines that are placed in the
 // same room but in 3 different rows.
-message ClusterMap {
+message ClusterMapData {
     // The version epoch of the current cluster description.
     int64 version_epoch = 1;
 
     // The hierarchical description. Each tree node, either a logical bucket or 
     // a physical machine, is keyed by a label that is unique across the 
-    // cluster.
+    // cluster. The root node has a special label: "root".
     map<string, ClusterTreeNode> tree_nodes = 2;
-
-    // The label of the root node. Don't use the value of this field when the
-    // field tree_nodes is empty.
-    string root_label = 3;
 }
 
 // Describes how a version of cluster map is formed from a previous version by
