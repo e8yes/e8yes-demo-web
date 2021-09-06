@@ -24,28 +24,48 @@
 #include "proto_cc/machine.pb.h"
 
 namespace e8 {
-namespace {
 
-template <typename ForEachFn>
-void ForEachCapability(WeightedCapabilities *lvalue, WeightedCapabilities const &rvalue,
-                       ForEachFn for_each_fn) {
-    float cpu = lvalue->cpu();
-    float ram = lvalue->ram();
-    float storage = lvalue->storage();
-    float coral = lvalue->coral();
-
-    for_each_fn(&cpu, rvalue.cpu());
-    for_each_fn(&ram, rvalue.ram());
-    for_each_fn(&storage, rvalue.storage());
-    for_each_fn(&coral, rvalue.coral());
-
-    lvalue->set_cpu(cpu);
-    lvalue->set_ram(ram);
-    lvalue->set_storage(storage);
-    lvalue->set_coral(coral);
+float GetCapabilityByType(WeightedCapabilities::Type type,
+                          WeightedCapabilities const &capabilities) {
+    switch (type) {
+    case WeightedCapabilities::CPU:
+        return capabilities.cpu();
+    case WeightedCapabilities::RAM:
+        return capabilities.ram();
+    case WeightedCapabilities::STORAGE:
+        return capabilities.storage();
+    case WeightedCapabilities::CORAL:
+        return capabilities.coral();
+    default:
+        assert(false);
+    }
 }
 
-} // namespace
+void SetCapabilityByType(WeightedCapabilities::Type type, float value,
+                         WeightedCapabilities *capabilities) {
+    switch (type) {
+    case WeightedCapabilities::CPU:
+        capabilities->set_cpu(value);
+        break;
+    case WeightedCapabilities::RAM:
+        capabilities->set_ram(value);
+        break;
+    case WeightedCapabilities::STORAGE:
+        capabilities->set_storage(value);
+        break;
+    case WeightedCapabilities::CORAL:
+        capabilities->set_coral(value);
+        break;
+    default:
+        assert(false);
+    }
+}
+
+std::vector<WeightedCapabilities::Type> WeightedCapabilityTypes() {
+    return std::vector<WeightedCapabilities::Type>{
+        WeightedCapabilities::CPU, WeightedCapabilities::RAM, WeightedCapabilities::STORAGE,
+        WeightedCapabilities::CORAL};
+}
 
 ClusterCapability::Node::Node(ClusterTreeNodeLabel const &parent, bool external)
     : parent(parent), external(external) {}
@@ -71,18 +91,21 @@ void ClusterCapability::UpdateAllParent(Node node, WeightedCapabilities const &d
 
         current_node = &parent_node;
 
-        ForEachCapability(&current_node->capabilities, delta, [add](float *lvalue, float rvalue) {
+        for (auto type : WeightedCapabilityTypes()) {
+            float old_value = GetCapabilityByType(type, current_node->capabilities);
+            float delta_value = GetCapabilityByType(type, delta);
+
             if (add) {
-                *lvalue += rvalue;
+                SetCapabilityByType(type, old_value + delta_value, &current_node->capabilities);
             } else {
-                *lvalue -= rvalue;
+                SetCapabilityByType(type, old_value - delta_value, &current_node->capabilities);
             }
-        });
+        }
     } while (current_node->parent != current_node_label);
 }
 
 bool ClusterCapability::AddBucket(ClusterTreeNodeLabel const &parent_label,
-                                    ClusterTreeNodeLabel const &node_label) {
+                                  ClusterTreeNodeLabel const &node_label) {
     assert(node_label != parent_label);
 
     auto parent_it = tree_.find(parent_label);
@@ -95,8 +118,8 @@ bool ClusterCapability::AddBucket(ClusterTreeNodeLabel const &parent_label,
 }
 
 bool ClusterCapability::AddMachine(ClusterTreeNodeLabel const &parent_label,
-                                    ClusterTreeNodeLabel const &node_label,
-                                    WeightedCapabilities const &capabilities) {
+                                   ClusterTreeNodeLabel const &node_label,
+                                   WeightedCapabilities const &capabilities) {
     assert(node_label != parent_label);
 
     Node node(parent_label, /*external=*/true);
@@ -126,7 +149,7 @@ bool ClusterCapability::Remove(ClusterTreeNodeLabel const &node_label) {
     return true;
 }
 
-WeightedCapabilities ClusterCapability::Capability(ClusterTreeNodeLabel const &node_label) {
+WeightedCapabilities ClusterCapability::Capability(ClusterTreeNodeLabel const &node_label) const {
     auto it = tree_.find(node_label);
     assert(it != tree_.end());
 

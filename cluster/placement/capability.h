@@ -87,7 +87,7 @@ class ClusterCapability {
      * @param node_label Label of the node to be queried.
      * @return The capabilities of the node in question.
      */
-    WeightedCapabilities Capability(ClusterTreeNodeLabel const &node_label);
+    WeightedCapabilities Capability(ClusterTreeNodeLabel const &node_label) const;
 
   private:
     struct Node {
@@ -103,6 +103,23 @@ class ClusterCapability {
     ClusterTreeNodeLabel const root_;
     std::unordered_map<ClusterTreeNodeLabel, Node> tree_;
 };
+
+/**
+ * @brief GetCapabilityByType Gets the value of a specific capability by type.
+ */
+float GetCapabilityByType(WeightedCapabilities::Type type,
+                          WeightedCapabilities const &capabilities);
+
+/**
+ * @brief SetCapabilityByType Sets the value of a specific capability by type.
+ */
+void SetCapabilityByType(WeightedCapabilities::Type type, float value,
+                         WeightedCapabilities *capabilities);
+
+/**
+ * @brief WeightedCapabilityTypes Returns a list of all capability types.
+ */
+std::vector<WeightedCapabilities::Type> WeightedCapabilityTypes();
 
 } // namespace e8
 
