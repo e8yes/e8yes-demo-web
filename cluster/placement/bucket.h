@@ -22,7 +22,9 @@
 #include <optional>
 #include <shared_mutex>
 
+#include "cluster/placement/capability.h"
 #include "cluster/placement/common_types.h"
+#include "cluster/placement/score.h"
 #include "proto_cc/bucket.pb.h"
 #include "proto_cc/machine.pb.h"
 
@@ -38,32 +40,33 @@ class BucketInterface {
     virtual ~BucketInterface();
 
     /**
-     * @brief Select Selects a tree node from the bucket for the allocation or location of the
+     * @brief Select Selects a tree node from the bucket for the placement or location of the
      * specified resource. The selection process distributes the resource pseudo-probabilistically
      * based on the its most outstanding required capability to one of the children. Changing
      * the parameter num_failures may or may not make the function return a different child. The
-     * funciton returns a std::nullopt only when the bucket is empty.
+     * funciton returns a std::nullopt only when the bucket is empty or it couldn't find any
+     * suitable children for the resource.
      */
-    virtual std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource,
-                                                       unsigned num_failures) const = 0;
+    virtual std::optional<ClusterTreeNodeLabel>
+    Select(ResourceDescriptor const &resource, unsigned num_failures,
+           ClusterCapability const &cluster_capabilities) const = 0;
 
     /**
      * @brief AddChild Adds a child node to the bucket.
      *
-     * @param label The label of the child node to be added.
+     * @param child_label The label of the child node to be added.
      * @param child_weight The capability weights the child node has.
      * @return True if the child node has not already existed.
      */
-    virtual bool AddChild(ClusterTreeNodeLabel const &label,
-                          WeightedCapabilities const &child_weight) = 0;
+    virtual bool AddChild(ClusterTreeNodeLabel const &child_label) = 0;
 
     /**
      * @brief RemoveChild Removes a node from the bucket.
      *
-     * @param label The label of the child node to be removed.
+     * @param child_label The label of the child node to be removed.
      * @return True if the child node does exist in the bucket.
      */
-    virtual bool RemoveChild(ClusterTreeNodeLabel const &label) = 0;
+    virtual bool RemoveChild(ClusterTreeNodeLabel const &child_label) = 0;
 
     /**
      * @brief ToProto Exports the bucket data structure as a Bucket proto.
@@ -82,18 +85,50 @@ class UniformBucket : public BucketInterface {
     UniformBucket(UniformBucketData const &data);
     ~UniformBucket() override;
 
-    std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource,
-                                               unsigned num_failures) const override;
+    std::optional<ClusterTreeNodeLabel>
+    Select(ResourceDescriptor const &resource, unsigned num_failures,
+           ClusterCapability const &cluster_capabilities) const override;
 
-    bool AddChild(ClusterTreeNodeLabel const &label,
-                  WeightedCapabilities const &child_weight) override;
+    bool AddChild(ClusterTreeNodeLabel const &child_label) override;
 
-    bool RemoveChild(ClusterTreeNodeLabel const &label) override;
+    bool RemoveChild(ClusterTreeNodeLabel const &child_label) override;
 
     Bucket ToProto() const override;
 
   private:
     UniformBucketData data_;
+    std::unique_ptr<std::shared_mutex> mu_;
+};
+
+/**
+ * @brief The ListBucket class Distributes resources according to the distribution of the children's
+ * hardware capabilities. It takes O(n) time to select a tree node for a bucket with n children.
+ * Adding children requires optimal resource movement. However, removing children in the middle of
+ * the list results in large amount of shuffling.
+ */
+class ListBucket : public BucketInterface {
+  public:
+    /**
+     * @brief ListBucket Constructs a list bucket from the ListBucketData proto and a custom scorer.
+     * The scorer helps convert children's capabilities to a distribution which the Select()
+     * function places a resource pseudo-randomly with.
+     */
+    ListBucket(ListBucketData const &data, std::unique_ptr<CapabilityScoreInterface> &&scorer);
+    ~ListBucket() override;
+
+    std::optional<ClusterTreeNodeLabel>
+    Select(ResourceDescriptor const &resource, unsigned num_failures,
+           ClusterCapability const &cluster_capabilities) const override;
+
+    bool AddChild(ClusterTreeNodeLabel const &child_label) override;
+
+    bool RemoveChild(ClusterTreeNodeLabel const &child_label) override;
+
+    Bucket ToProto() const override;
+
+  private:
+    ListBucketData data_;
+    std::unique_ptr<CapabilityScoreInterface> scorer_;
     std::unique_ptr<std::shared_mutex> mu_;
 };
 
