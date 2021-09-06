@@ -20,13 +20,15 @@ INCLUDEPATH += ../../
 SOURCES += \
     bucket.cc \
     capability.cc \
-    cluster_map.cc
+    cluster_map.cc \
+    score.cc
 
 HEADERS += \
     bucket.h \
     capability.h \
     cluster_map.h \
-    common_types.h
+    common_types.h \
+    score.h
 
 # Default rules for deployment.
 unix {
