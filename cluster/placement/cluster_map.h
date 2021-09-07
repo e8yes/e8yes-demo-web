@@ -18,7 +18,18 @@
 #ifndef PLACEMENT_CLUSTER_MAP_H
 #define PLACEMENT_CLUSTER_MAP_H
 
+#include <google/protobuf/map.h>
+#include <memory>
+#include <optional>
+#include <shared_mutex>
+#include <unordered_map>
+#include <utility>
+
+#include "cluster/placement/bucket.h"
+#include "cluster/placement/capability.h"
 #include "cluster/placement/common_types.h"
+#include "proto_cc/cluster.pb.h"
+#include "proto_cc/machine.pb.h"
 
 namespace e8 {
 
@@ -27,6 +38,59 @@ namespace e8 {
  * to the cluster map.
  */
 ClusterTreeNodeLabel AllocateClusterTreeNodeLabel();
+
+/**
+ * @brief The ClusterMap class Supports a hierarchical (tree) description of a cluster. It divides
+ * and groups machines by logical location elements (See ClusterTreeNode::Hierarchy for what
+ * location elements it supports). It allows, for example, a flexible  placement rule to find 3
+ * replicas located in machines that are placed in the same room but in 3 different rows.
+ */
+class ClusterMap {
+  public:
+    /**
+     * @brief ClusterMap Constructs an empty cluster.
+     */
+    ClusterMap();
+
+    /**
+     * @brief ClusterMap Recovers the cluster description from the specified proto.
+     */
+    ClusterMap(ClusterMapData const &cluster_map_data);
+
+    ~ClusterMap();
+
+    /**
+     * @brief ToProto Exports the current cluster description to a proto.
+     */
+    ClusterMapData ToProto() const;
+
+  private:
+    struct BucketOrMachine {
+        BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy,
+                        std::unique_ptr<BucketInterface> &&bucket);
+        BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy, Machine const &machine);
+
+        ClusterTreeNode::Hierarchy hierarchy;
+        std::unique_ptr<BucketInterface> bucket;
+        std::optional<Machine> machine;
+    };
+
+    std::unordered_map<ClusterTreeNodeLabel, BucketOrMachine>::iterator
+    ImportNode(ClusterTreeNodeLabel const &parent_label, ClusterTreeNodeLabel const &node_label,
+               ClusterTreeNode const &node_proto);
+
+    void
+    ImportChildren(ClusterTreeNodeLabel const &parent_label, BucketOrMachine const &parent_node,
+                   google::protobuf::Map<ClusterTreeNodeLabel, ClusterTreeNode> const &tree_proto);
+
+    void ExportNode(ClusterTreeNodeLabel const &node_label,
+                    google::protobuf::Map<ClusterTreeNodeLabel, ClusterTreeNode> *proto) const;
+
+    ClusterMapVersionEpoch version_;
+    ClusterCapability capabilities_;
+    std::unordered_map<ClusterTreeNodeLabel, BucketOrMachine> tree_;
+    std::unique_ptr<std::shared_mutex> mu_;
+};
 
 } // namespace e8
 

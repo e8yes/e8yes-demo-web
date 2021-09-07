@@ -54,6 +54,9 @@ struct ResourceDescriptor {
     WeightedCapabilities required_capabilities;
 };
 
+// The version of a cluster map description.
+using ClusterMapVersionEpoch = int64_t;
+
 } // namespace e8
 
 #endif // PLACEMENT_COMMON_TYPES
