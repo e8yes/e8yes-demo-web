@@ -69,6 +69,11 @@ class BucketInterface {
     virtual bool RemoveChild(ClusterTreeNodeLabel const &child_label) = 0;
 
     /**
+     * @brief Children Returns a list of children the bucket currently has.
+     */
+    virtual std::vector<ClusterTreeNodeLabel> Children() const = 0;
+
+    /**
      * @brief ToProto Exports the bucket data structure as a Bucket proto.
      */
     virtual Bucket ToProto() const = 0;
@@ -92,6 +97,8 @@ class UniformBucket : public BucketInterface {
     bool AddChild(ClusterTreeNodeLabel const &child_label) override;
 
     bool RemoveChild(ClusterTreeNodeLabel const &child_label) override;
+
+    std::vector<ClusterTreeNodeLabel> Children() const override;
 
     Bucket ToProto() const override;
 
@@ -124,6 +131,8 @@ class ListBucket : public BucketInterface {
 
     bool RemoveChild(ClusterTreeNodeLabel const &child_label) override;
 
+    std::vector<ClusterTreeNodeLabel> Children() const override;
+
     Bucket ToProto() const override;
 
   private:
@@ -131,6 +140,13 @@ class ListBucket : public BucketInterface {
     std::unique_ptr<CapabilityScoreInterface> scorer_;
     std::unique_ptr<std::shared_mutex> mu_;
 };
+
+/**
+ * @brief CreateBucket Creates a bucket with the specified proto and scorer. The bucket
+ * implementation is chosen based on the proto.
+ */
+std::unique_ptr<BucketInterface> CreateBucket(Bucket const &proto,
+                                              std::unique_ptr<CapabilityScoreInterface> &&scorer);
 
 } // namespace e8
 

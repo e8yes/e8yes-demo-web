@@ -100,6 +100,13 @@ bool UniformBucket::RemoveChild(ClusterTreeNodeLabel const &child_label) {
     return true;
 }
 
+std::vector<ClusterTreeNodeLabel> UniformBucket::Children() const {
+    SharedLockGuard guard(*mu_);
+
+    return std::vector<ClusterTreeNodeLabel>(data_.child_labels().begin(),
+                                             data_.child_labels().end());
+}
+
 Bucket UniformBucket::ToProto() const {
     SharedLockGuard guard(*mu_);
 
@@ -207,12 +214,43 @@ bool ListBucket::RemoveChild(ClusterTreeNodeLabel const &child_label) {
     return true;
 }
 
+std::vector<ClusterTreeNodeLabel> ListBucket::Children() const {
+    SharedLockGuard guard(*mu_);
+
+    return std::vector<ClusterTreeNodeLabel>(data_.child_labels().begin(),
+                                             data_.child_labels().end());
+}
+
 Bucket ListBucket::ToProto() const {
     SharedLockGuard guard(*mu_);
 
     Bucket bucket;
     *bucket.mutable_list_bucket() = data_;
     return bucket;
+}
+
+std::unique_ptr<BucketInterface> CreateBucket(Bucket const &proto,
+                                              std::unique_ptr<CapabilityScoreInterface> &&scorer) {
+    switch (proto.children_case()) {
+    case Bucket::ChildrenCase::kUniformBucket: {
+        return std::make_unique<UniformBucket>(proto.uniform_bucket());
+    }
+    case Bucket::ChildrenCase::kListBucket: {
+        return std::make_unique<ListBucket>(proto.list_bucket(), std::move(scorer));
+    }
+    case Bucket::ChildrenCase::kTreeBucket: {
+        // TODO: Implements tree bucket.
+        assert(false);
+    }
+    case Bucket::ChildrenCase::kStrawBucket: {
+        // TODO: Implements straw bucket.
+        assert(false);
+    }
+    case Bucket::ChildrenCase::CHILDREN_NOT_SET:
+    default: {
+        assert(false);
+    }
+    }
 }
 
 } // namespace e8
