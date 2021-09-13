@@ -19,6 +19,7 @@
 #include <cassert>
 #include <google/protobuf/map.h>
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <shared_mutex>
 #include <unordered_map>
@@ -47,6 +48,19 @@ struct UuidState {
 };
 
 UuidState gUuidState;
+
+class SharedLockGuard {
+  public:
+    SharedLockGuard(std::shared_mutex &mu);
+    ~SharedLockGuard();
+
+  private:
+    std::shared_mutex &mu_;
+};
+
+SharedLockGuard::SharedLockGuard(std::shared_mutex &mu) : mu_(mu) { mu_.lock_shared(); }
+
+SharedLockGuard::~SharedLockGuard() { mu_.unlock_shared(); }
 
 } // namespace
 
@@ -321,6 +335,8 @@ ClusterMap::Placement &ClusterMap::Placement::Select(ClusterTreeNode::Hierarchy 
 }
 
 std::vector<Machine> ClusterMap::Placement::Emit() const {
+    pimpl_->mu.unlock_shared(); // Locked by the TakeRootFor() call.
+
     if (error_) {
         return std::vector<Machine>();
     }
@@ -338,11 +354,15 @@ std::vector<Machine> ClusterMap::Placement::Emit() const {
 }
 
 ClusterMap::Placement ClusterMap::TakeRootFor(ResourceDescriptor const &resource) const {
+    pimpl_->mu.lock_shared(); // Unlocks when the Emit() function is called.
+
     cluster_map_internal::TreeIterator root_it = pimpl_->RootIterator();
     return Placement(resource, root_it, pimpl_.get());
 }
 
 ClusterMapData ClusterMap::ToProto() const {
+    SharedLockGuard guard(pimpl_->mu);
+
     ClusterMapData cluster_map_proto;
     cluster_map_proto.set_version_epoch(pimpl_->Version());
     pimpl_->ExportNode(kRootLabel, cluster_map_proto.mutable_tree_nodes());

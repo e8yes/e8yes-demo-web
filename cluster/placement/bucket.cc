@@ -19,9 +19,7 @@
 #include <cassert>
 #include <functional>
 #include <memory>
-#include <mutex>
 #include <optional>
-#include <shared_mutex>
 #include <string>
 #include <vector>
 
@@ -34,19 +32,6 @@
 namespace e8 {
 namespace {
 
-class SharedLockGuard {
-  public:
-    SharedLockGuard(std::shared_mutex &mu);
-    ~SharedLockGuard();
-
-  private:
-    std::shared_mutex &mu_;
-};
-
-SharedLockGuard::SharedLockGuard(std::shared_mutex &mu) : mu_(mu) { mu_.lock_shared(); }
-
-SharedLockGuard::~SharedLockGuard() { mu_.unlock_shared(); }
-
 bool EnterWithProbability(size_t hash, float p) { return hash % 16384 < p * 16384; }
 
 } // namespace
@@ -55,16 +40,13 @@ BucketInterface::BucketInterface() {}
 
 BucketInterface::~BucketInterface() {}
 
-UniformBucket::UniformBucket(UniformBucketData const &data)
-    : data_(data), mu_(std::make_unique<std::shared_mutex>()) {}
+UniformBucket::UniformBucket(UniformBucketData const &data) : data_(data) {}
 
 UniformBucket::~UniformBucket() {}
 
 std::optional<ClusterTreeNodeLabel>
 UniformBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
                       ClusterCapability const & /*cluster_capabilities*/) const {
-    SharedLockGuard guard(*mu_);
-
     if (data_.child_labels().empty()) {
         return std::nullopt;
     }
@@ -77,8 +59,6 @@ UniformBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigne
 }
 
 bool UniformBucket::AddChild(ClusterTreeNodeLabel const &child_label) {
-    std::lock_guard guard(*mu_);
-
     auto it = std::find(data_.child_labels().begin(), data_.child_labels().end(), child_label);
     if (it != data_.child_labels().end()) {
         return false;
@@ -89,8 +69,6 @@ bool UniformBucket::AddChild(ClusterTreeNodeLabel const &child_label) {
 }
 
 bool UniformBucket::RemoveChild(ClusterTreeNodeLabel const &child_label) {
-    std::lock_guard guard(*mu_);
-
     auto it = std::find(data_.child_labels().begin(), data_.child_labels().end(), child_label);
     if (it == data_.child_labels().end()) {
         return false;
@@ -101,15 +79,11 @@ bool UniformBucket::RemoveChild(ClusterTreeNodeLabel const &child_label) {
 }
 
 std::vector<ClusterTreeNodeLabel> UniformBucket::Children() const {
-    SharedLockGuard guard(*mu_);
-
     return std::vector<ClusterTreeNodeLabel>(data_.child_labels().begin(),
                                              data_.child_labels().end());
 }
 
 Bucket UniformBucket::ToProto() const {
-    SharedLockGuard guard(*mu_);
-
     Bucket bucket;
     *bucket.mutable_uniform_bucket() = data_;
     return bucket;
@@ -117,15 +91,13 @@ Bucket UniformBucket::ToProto() const {
 
 ListBucket::ListBucket(ListBucketData const &data,
                        std::unique_ptr<CapabilityScoreInterface> &&scorer)
-    : data_(data), scorer_(std::move(scorer)), mu_(std::make_unique<std::shared_mutex>()) {}
+    : data_(data), scorer_(std::move(scorer)) {}
 
 ListBucket::~ListBucket() {}
 
 std::optional<ClusterTreeNodeLabel>
 ListBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
                    ClusterCapability const &cluster_capabilities) const {
-    SharedLockGuard guard(*mu_);
-
     if (data_.child_labels().empty()) {
         return std::nullopt;
     }
@@ -184,8 +156,6 @@ ListBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned n
 }
 
 bool ListBucket::AddChild(ClusterTreeNodeLabel const &child_label) {
-    std::lock_guard guard(*mu_);
-
     auto it = std::find(data_.child_labels().begin(), data_.child_labels().end(), child_label);
     if (it != data_.child_labels().end()) {
         return false;
@@ -203,8 +173,6 @@ bool ListBucket::AddChild(ClusterTreeNodeLabel const &child_label) {
 }
 
 bool ListBucket::RemoveChild(ClusterTreeNodeLabel const &child_label) {
-    std::lock_guard guard(*mu_);
-
     auto it = std::find(data_.child_labels().begin(), data_.child_labels().end(), child_label);
     if (it == data_.child_labels().end()) {
         return false;
@@ -215,15 +183,11 @@ bool ListBucket::RemoveChild(ClusterTreeNodeLabel const &child_label) {
 }
 
 std::vector<ClusterTreeNodeLabel> ListBucket::Children() const {
-    SharedLockGuard guard(*mu_);
-
     return std::vector<ClusterTreeNodeLabel>(data_.child_labels().begin(),
                                              data_.child_labels().end());
 }
 
 Bucket ListBucket::ToProto() const {
-    SharedLockGuard guard(*mu_);
-
     Bucket bucket;
     *bucket.mutable_list_bucket() = data_;
     return bucket;

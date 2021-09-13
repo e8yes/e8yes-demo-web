@@ -64,8 +64,7 @@ ClusterTreeNodeLabel AllocateClusterTreeNodeLabel();
 /**
  * @brief The ClusterMap class Supports a hierarchical (tree) description of a cluster. It divides
  * and groups machines by logical location elements (See ClusterTreeNode::Hierarchy for what
- * location elements it supports). It allows, for example, a flexible  placement rule to find 3
- * replicas located in machines that are placed in the same room but in 3 different rows.
+ * location elements it supports). This class is thread safe.
  */
 class ClusterMap {
   public:

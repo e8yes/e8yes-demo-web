@@ -20,7 +20,6 @@
 
 #include <memory>
 #include <optional>
-#include <shared_mutex>
 
 #include "cluster/placement/capability.h"
 #include "cluster/placement/common_types.h"
@@ -83,7 +82,7 @@ class BucketInterface {
  * @brief The UniformBucket class Distributes resources uniformly across the children without
  * consideration of their hardware capabilities. It's capable of achieving O(1) time select.
  * However, adding or removing any children will result in a complete reshuffling of the resources
- * that live under this bucket. This object is thread safe.
+ * that live under this bucket.
  */
 class UniformBucket : public BucketInterface {
   public:
@@ -104,7 +103,6 @@ class UniformBucket : public BucketInterface {
 
   private:
     UniformBucketData data_;
-    std::unique_ptr<std::shared_mutex> mu_;
 };
 
 /**
@@ -138,7 +136,6 @@ class ListBucket : public BucketInterface {
   private:
     ListBucketData data_;
     std::unique_ptr<CapabilityScoreInterface> scorer_;
-    std::unique_ptr<std::shared_mutex> mu_;
 };
 
 /**
