@@ -15,11 +15,14 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <cassert>
+#include <google/protobuf/map.h>
 #include <memory>
 #include <optional>
 #include <shared_mutex>
 #include <unordered_map>
+#include <utility>
 
 #include "cluster/placement/bucket.h"
 #include "cluster/placement/capability.h"
@@ -35,6 +38,9 @@ namespace {
 
 constexpr char const *kRootLabel = "root";
 
+unsigned const kMaxFailureFactor = 2;
+unsigned const kMaxBucketCollisions = 3;
+
 struct UuidState {
     UuidState() { uuid4_seed(&uuid_state); }
     UUID4_STATE_T uuid_state;
@@ -44,27 +50,62 @@ UuidState gUuidState;
 
 } // namespace
 
-ClusterTreeNodeLabel AllocateClusterTreeNodeLabel() {
-    UUID4_T uuid;
-    uuid4_gen(&gUuidState.uuid_state, &uuid);
+namespace cluster_map_internal {
 
-    char uuid_string[UUID4_STR_BUFFER_SIZE];
-    uuid4_to_s(uuid, uuid_string, sizeof(uuid_string));
-
-    return ClusterTreeNodeLabel(uuid_string);
+BucketOrMachine::BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy,
+                                 std::unique_ptr<BucketInterface> &&bucket)
+    : hierarchy(hierarchy), bucket(std::move(bucket)) {
+    assert(hierarchy != e8::ClusterTreeNode::INVALID_HIERARCHY);
 }
 
-ClusterMap::BucketOrMachine::BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy,
-                                             std::unique_ptr<BucketInterface> &&bucket)
-    : hierarchy(hierarchy), bucket(std::move(bucket)) {}
+BucketOrMachine::BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy, Machine const &machine)
+    : hierarchy(hierarchy), machine(machine) {
+    assert(hierarchy != e8::ClusterTreeNode::INVALID_HIERARCHY);
+}
 
-ClusterMap::BucketOrMachine::BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy,
-                                             Machine const &machine)
-    : hierarchy(hierarchy), machine(machine) {}
+class ClusterMapImpl {
+  public:
+    ClusterMapImpl(ClusterMapVersionEpoch version);
+    ~ClusterMapImpl();
 
-std::unordered_map<ClusterTreeNodeLabel, ClusterMap::BucketOrMachine>::iterator
-ClusterMap::ImportNode(ClusterTreeNodeLabel const &parent_label,
-                       ClusterTreeNodeLabel const &node_label, ClusterTreeNode const &node_proto) {
+    TreeIterator ImportNode(ClusterTreeNodeLabel const &parent_label,
+                            ClusterTreeNodeLabel const &node_label,
+                            ClusterTreeNode const &node_proto);
+
+    void
+    ImportChildren(ClusterTreeNodeLabel const &parent_label, BucketOrMachine const &parent_node,
+                   google::protobuf::Map<ClusterTreeNodeLabel, ClusterTreeNode> const &tree_proto);
+
+    void ExportNode(ClusterTreeNodeLabel const &node_label,
+                    google::protobuf::Map<ClusterTreeNodeLabel, ClusterTreeNode> *proto) const;
+
+    ClusterCapability const &Capabilities() const;
+
+    TreeIterator GetNode(ClusterTreeNodeLabel const &label) const;
+
+    TreeIterator RootIterator() const;
+
+    unsigned NodeCount() const;
+
+    ClusterMapVersionEpoch Version() const;
+
+  public:
+    std::shared_mutex mu;
+
+  private:
+    ClusterMapVersionEpoch version_;
+    ClusterCapability capabilities_;
+    std::unordered_map<ClusterTreeNodeLabel, BucketOrMachine> tree_;
+};
+
+ClusterMapImpl::ClusterMapImpl(ClusterMapVersionEpoch version)
+    : version_(version), capabilities_(kRootLabel) {}
+
+ClusterMapImpl::~ClusterMapImpl() {}
+
+TreeIterator ClusterMapImpl::ImportNode(ClusterTreeNodeLabel const &parent_label,
+                                        ClusterTreeNodeLabel const &node_label,
+                                        ClusterTreeNode const &node_proto) {
     if (node_proto.has_bucket()) {
         if (node_label != parent_label) {
             // Not a root node.
@@ -89,7 +130,7 @@ ClusterMap::ImportNode(ClusterTreeNodeLabel const &parent_label,
     }
 }
 
-void ClusterMap::ImportChildren(
+void ClusterMapImpl::ImportChildren(
     ClusterTreeNodeLabel const &parent_label, BucketOrMachine const &parent_node,
     google::protobuf::Map<ClusterTreeNodeLabel, ClusterTreeNode> const &tree_proto) {
     if (parent_node.machine.has_value()) {
@@ -109,10 +150,10 @@ void ClusterMap::ImportChildren(
     }
 }
 
-void ClusterMap::ExportNode(
+void ClusterMapImpl::ExportNode(
     ClusterTreeNodeLabel const &node_label,
     google::protobuf::Map<ClusterTreeNodeLabel, ClusterTreeNode> *proto) const {
-    auto it = tree_.find(node_label);
+    TreeIterator it = tree_.find(node_label);
     assert(it != tree_.end());
     auto const &[_, node] = *it;
 
@@ -134,12 +175,42 @@ void ClusterMap::ExportNode(
     }
 }
 
+ClusterCapability const &ClusterMapImpl::Capabilities() const { return capabilities_; }
+
+TreeIterator ClusterMapImpl::GetNode(ClusterTreeNodeLabel const &label) const {
+    auto it = tree_.find(label);
+    assert(it != tree_.end());
+    return it;
+}
+
+TreeIterator ClusterMapImpl::RootIterator() const {
+    auto it = tree_.find(kRootLabel);
+    assert(it != tree_.end());
+    return it;
+}
+
+unsigned ClusterMapImpl::NodeCount() const { return tree_.size(); }
+
+ClusterMapVersionEpoch ClusterMapImpl::Version() const { return version_; }
+
+} // namespace cluster_map_internal
+
+ClusterTreeNodeLabel AllocateClusterTreeNodeLabel() {
+    UUID4_T uuid;
+    uuid4_gen(&gUuidState.uuid_state, &uuid);
+
+    char uuid_string[UUID4_STR_BUFFER_SIZE];
+    uuid4_to_s(uuid, uuid_string, sizeof(uuid_string));
+
+    return ClusterTreeNodeLabel(uuid_string);
+}
+
 ClusterMap::ClusterMap()
-    : version_(ClusterMapVersionEpoch()), capabilities_(kRootLabel),
-      mu_(std::make_unique<std::shared_mutex>()) {}
+    : pimpl_(std::make_unique<cluster_map_internal::ClusterMapImpl>(ClusterMapVersionEpoch())) {}
 
 ClusterMap::ClusterMap(ClusterMapData const &cluster_map_data)
-    : version_(cluster_map_data.version_epoch()), capabilities_(kRootLabel) {
+    : pimpl_(std::make_unique<cluster_map_internal::ClusterMapImpl>(
+          cluster_map_data.version_epoch())) {
     if (cluster_map_data.tree_nodes().empty()) {
         return;
     }
@@ -149,16 +220,132 @@ ClusterMap::ClusterMap(ClusterMapData const &cluster_map_data)
     assert(proto_it->second.has_bucket());
 
     auto const &[_, root_node_proto] = *proto_it;
-    auto const &[__, root_node] = *this->ImportNode(kRootLabel, kRootLabel, root_node_proto);
-    this->ImportChildren(kRootLabel, root_node, cluster_map_data.tree_nodes());
+    auto const &[__, root_node] = *pimpl_->ImportNode(kRootLabel, kRootLabel, root_node_proto);
+    pimpl_->ImportChildren(kRootLabel, root_node, cluster_map_data.tree_nodes());
 }
 
 ClusterMap::~ClusterMap() {}
 
+ClusterMap::Placement::Placement(ResourceDescriptor const &resource,
+                                 cluster_map_internal::TreeIterator const &root_it,
+                                 cluster_map_internal::ClusterMapImpl *pimpl)
+    : resource_(resource), pimpl_(pimpl), sink_({root_it}), error_(false) {}
+
+ClusterMap::Placement::~Placement() {}
+
+bool ClusterMap::Placement::DescentFrom(BucketInterface const &bucket,
+                                        ClusterTreeNode::Hierarchy hierarchy,
+                                        ResourceDescriptor const &resource, ReplicationRank rank,
+                                        std::vector<cluster_map_internal::TreeIterator> *sink) {
+    BucketInterface const *current_bucket = &bucket;
+    unsigned num_failures = 0;
+    unsigned num_bucket_failures = 0;
+
+    while (num_failures < kMaxFailureFactor * pimpl_->NodeCount()) {
+        std::optional<ClusterTreeNodeLabel> child =
+            current_bucket->Select(resource, rank, num_failures, pimpl_->Capabilities());
+        if (!child.has_value()) {
+            // The bucket can't house the requested resource. Retry descent.
+            ++num_failures;
+            num_bucket_failures = 0;
+            current_bucket = &bucket;
+            continue;
+        }
+
+        cluster_map_internal::TreeIterator child_node_it = pimpl_->GetNode(*child);
+        auto const &[_, child_node] = *child_node_it;
+
+        if (child_node.hierarchy < hierarchy) {
+            // The current hierarchy is too coarse. Continue descent.
+            assert(child_node.bucket != nullptr);
+            current_bucket = child_node.bucket.get();
+            continue;
+        }
+
+        if (child_node.hierarchy > hierarchy) {
+            // The requested hierarchy doesn't exist. Retry descent.
+            ++num_failures;
+            num_bucket_failures = 0;
+            current_bucket = &bucket;
+            continue;
+        }
+
+        auto sink_it = std::find_if(
+            sink_.begin(), sink_.end(),
+            [&child](cluster_map_internal::TreeIterator const &it) { return it->first == *child; });
+        if (sink_it == sink_.end()) {
+            // Found a desired node to place the resource.
+            sink->push_back(child_node_it);
+            return true;
+        }
+
+        if (num_bucket_failures < kMaxBucketCollisions) {
+            // Encounters collision. Retry bucket.
+            ++num_failures;
+            ++num_bucket_failures;
+        } else {
+            // Too many collision failures. Retry descent.
+            ++num_failures;
+            num_bucket_failures = 0;
+            current_bucket = &bucket;
+        }
+    }
+
+    return false;
+}
+
+ClusterMap::Placement &ClusterMap::Placement::Select(ClusterTreeNode::Hierarchy hierarchy,
+                                                     unsigned num_items) {
+    if (error_) {
+        return *this;
+    }
+
+    // The sink values of the last select becomes our source.
+    source_ = sink_;
+    sink_.clear();
+
+    for (auto const &input : source_) {
+        // The requested hierarchy must be more granular than the source.
+        assert(hierarchy > input->second.hierarchy);
+        assert(input->second.bucket != nullptr);
+
+        for (unsigned i = 0; i < num_items; ++i) {
+            if (!this->DescentFrom(*input->second.bucket, hierarchy, resource_, i, &sink_)) {
+                error_ = true;
+                return *this;
+            }
+        }
+    }
+
+    return *this;
+}
+
+std::vector<Machine> ClusterMap::Placement::Emit() const {
+    if (error_) {
+        return std::vector<Machine>();
+    }
+
+    std::vector<Machine> result(sink_.size());
+
+    std::transform(sink_.begin(), sink_.end(), result.begin(),
+                   [](cluster_map_internal::TreeIterator const &machine_it) {
+                       auto const &[label, node] = *machine_it;
+                       assert(node.machine.has_value());
+                       return *node.machine;
+                   });
+
+    return result;
+}
+
+ClusterMap::Placement ClusterMap::TakeRootFor(ResourceDescriptor const &resource) const {
+    cluster_map_internal::TreeIterator root_it = pimpl_->RootIterator();
+    return Placement(resource, root_it, pimpl_.get());
+}
+
 ClusterMapData ClusterMap::ToProto() const {
     ClusterMapData cluster_map_proto;
-    cluster_map_proto.set_version_epoch(version_);
-    this->ExportNode(kRootLabel, cluster_map_proto.mutable_tree_nodes());
+    cluster_map_proto.set_version_epoch(pimpl_->Version());
+    pimpl_->ExportNode(kRootLabel, cluster_map_proto.mutable_tree_nodes());
 
     return cluster_map_proto;
 }

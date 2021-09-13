@@ -18,20 +18,42 @@
 #ifndef PLACEMENT_CLUSTER_MAP_H
 #define PLACEMENT_CLUSTER_MAP_H
 
-#include <google/protobuf/map.h>
 #include <memory>
-#include <optional>
-#include <shared_mutex>
 #include <unordered_map>
-#include <utility>
+#include <vector>
 
 #include "cluster/placement/bucket.h"
-#include "cluster/placement/capability.h"
 #include "cluster/placement/common_types.h"
 #include "proto_cc/cluster.pb.h"
 #include "proto_cc/machine.pb.h"
 
 namespace e8 {
+
+namespace cluster_map_internal {
+
+/**
+ * @brief The BucketOrMachine struct A tree node in the hierarchical cluster map.
+ */
+struct BucketOrMachine {
+    BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy,
+                    std::unique_ptr<BucketInterface> &&bucket);
+    BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy, Machine const &machine);
+
+    ClusterTreeNode::Hierarchy hierarchy;
+    std::unique_ptr<BucketInterface> bucket;
+    std::optional<Machine> machine;
+};
+
+// An constant iterator pointing to a tree node.
+using TreeIterator =
+    std::unordered_map<ClusterTreeNodeLabel, cluster_map_internal::BucketOrMachine>::const_iterator;
+
+/**
+ * @brief ClusterMap's hidden internal implementation.
+ */
+class ClusterMapImpl;
+
+} // namespace cluster_map_internal
 
 /**
  * @brief AllocateClusterTreeNodeLabel Allocates a unique tree node label for addition of the node
@@ -48,6 +70,55 @@ ClusterTreeNodeLabel AllocateClusterTreeNodeLabel();
 class ClusterMap {
   public:
     /**
+     * @brief The Placement class Accepts custom placement rules and determines resource placements.
+     */
+    class Placement {
+      public:
+        /**
+         * @brief Placement The object should be constructed by calling the
+         * ClusterMap::TakeRootFor() function.
+         */
+        Placement(ResourceDescriptor const &resource,
+                  cluster_map_internal::TreeIterator const &root_it,
+                  cluster_map_internal::ClusterMapImpl *pimpl);
+        ~Placement();
+
+        /**
+         * @brief Select Selects child items from the buckets produced from the previous Select()
+         * call, if there is any. Otherwise, it begins the selection from the root. Each hierarchy
+         * can only be selected once and the last selection must end at the machine hierarchy. By
+         * using a sequence of Select() calls, the client is able to specify a flexible placement
+         * rule. For example, one is able to place the resource with 3 replicas located in machines
+         * that are placed in the same room but in 3 different rows.
+         *
+         * @param hierarchy The hierarchy to select at.
+         * @param num_items The number of items to select at the current hierarchy.
+         */
+        Placement &Select(ClusterTreeNode::Hierarchy hierarchy, unsigned num_items);
+
+        /**
+         * @brief Emit Emits all the selected machines in descreasing rank if the selection didn't
+         * result in error. Otherwise, it returns an empty list. The number of machines in the list
+         * is the product of item counts in all previous Select() calls. Notes, the last Select()
+         * call must select at the machine hierarchy, or this function will fail.
+         */
+        std::vector<Machine> Emit() const;
+
+      private:
+        bool DescentFrom(BucketInterface const &bucket, ClusterTreeNode::Hierarchy hierarchy,
+                         ResourceDescriptor const &resource, ReplicationRank rank,
+                         std::vector<cluster_map_internal::TreeIterator> *sink);
+
+        ResourceDescriptor const resource_;
+        cluster_map_internal::ClusterMapImpl *const pimpl_;
+
+        std::vector<cluster_map_internal::TreeIterator> source_;
+        std::vector<cluster_map_internal::TreeIterator> sink_;
+
+        bool error_;
+    };
+
+    /**
      * @brief ClusterMap Constructs an empty cluster.
      */
     ClusterMap();
@@ -60,36 +131,18 @@ class ClusterMap {
     ~ClusterMap();
 
     /**
+     * @brief TakeRoot Constructs a placement object for the specified resource given the current
+     * cluster map. The cluster map object must live longer than the returned placement object.
+     */
+    Placement TakeRootFor(ResourceDescriptor const &resource) const;
+
+    /**
      * @brief ToProto Exports the current cluster description to a proto.
      */
     ClusterMapData ToProto() const;
 
   private:
-    struct BucketOrMachine {
-        BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy,
-                        std::unique_ptr<BucketInterface> &&bucket);
-        BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy, Machine const &machine);
-
-        ClusterTreeNode::Hierarchy hierarchy;
-        std::unique_ptr<BucketInterface> bucket;
-        std::optional<Machine> machine;
-    };
-
-    std::unordered_map<ClusterTreeNodeLabel, BucketOrMachine>::iterator
-    ImportNode(ClusterTreeNodeLabel const &parent_label, ClusterTreeNodeLabel const &node_label,
-               ClusterTreeNode const &node_proto);
-
-    void
-    ImportChildren(ClusterTreeNodeLabel const &parent_label, BucketOrMachine const &parent_node,
-                   google::protobuf::Map<ClusterTreeNodeLabel, ClusterTreeNode> const &tree_proto);
-
-    void ExportNode(ClusterTreeNodeLabel const &node_label,
-                    google::protobuf::Map<ClusterTreeNodeLabel, ClusterTreeNode> *proto) const;
-
-    ClusterMapVersionEpoch version_;
-    ClusterCapability capabilities_;
-    std::unordered_map<ClusterTreeNodeLabel, BucketOrMachine> tree_;
-    std::unique_ptr<std::shared_mutex> mu_;
+    std::unique_ptr<cluster_map_internal::ClusterMapImpl> pimpl_;
 };
 
 } // namespace e8
