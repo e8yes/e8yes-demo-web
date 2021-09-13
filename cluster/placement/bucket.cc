@@ -61,7 +61,7 @@ UniformBucket::UniformBucket(UniformBucketData const &data)
 UniformBucket::~UniformBucket() {}
 
 std::optional<ClusterTreeNodeLabel>
-UniformBucket::Select(ResourceDescriptor const &resource, unsigned num_failures,
+UniformBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
                       ClusterCapability const & /*cluster_capabilities*/) const {
     SharedLockGuard guard(*mu_);
 
@@ -69,7 +69,7 @@ UniformBucket::Select(ResourceDescriptor const &resource, unsigned num_failures,
         return std::nullopt;
     }
 
-    unsigned jumps = resource.rank + num_failures;
+    unsigned jumps = rank + num_failures;
     size_t final_hash = std::hash<std::string>()(resource.key) + jumps * data_.prime();
     unsigned location = final_hash % data_.child_labels().size();
 
@@ -122,7 +122,7 @@ ListBucket::ListBucket(ListBucketData const &data,
 ListBucket::~ListBucket() {}
 
 std::optional<ClusterTreeNodeLabel>
-ListBucket::Select(ResourceDescriptor const &resource, unsigned num_failures,
+ListBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
                    ClusterCapability const &cluster_capabilities) const {
     SharedLockGuard guard(*mu_);
 
@@ -130,7 +130,7 @@ ListBucket::Select(ResourceDescriptor const &resource, unsigned num_failures,
         return std::nullopt;
     }
 
-    unsigned jumps = resource.rank + num_failures;
+    unsigned jumps = rank + num_failures;
 
     std::vector<WeightedCapabilities> children_capabilities(data_.child_labels_size());
     std::transform(

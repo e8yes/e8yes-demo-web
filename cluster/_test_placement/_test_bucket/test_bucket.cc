@@ -39,7 +39,7 @@ WillSelect(e8::ResourceDescriptor const &resource, e8::BucketInterface *bucket,
 
     for (unsigned f = 0; f < max_failure_tolerance; ++f) {
         std::optional<e8::ClusterTreeNodeLabel> child =
-            bucket->Select(resource, f, cluster_capabilities);
+            bucket->Select(resource, /*replica=*/0, f, cluster_capabilities);
         if (child.has_value()) {
             visited.insert(*child);
         }
@@ -50,48 +50,37 @@ WillSelect(e8::ResourceDescriptor const &resource, e8::BucketInterface *bucket,
 
 bool GeneralTest(e8::BucketInterface *bucket, bool test_capability_distribution) {
     // 5 different resources with varying hardware capability requirements.
-    e8::ResourceDescriptor cpu_hungry_resource;
-    cpu_hungry_resource.key = "a";
-    cpu_hungry_resource.rank = 0;
-    cpu_hungry_resource.num_replicas = 2;
+    e8::ResourceDescriptor cpu_hungry_resource(/*key=*/"a");
     cpu_hungry_resource.required_capabilities.set_cpu(4.0f);
 
-    e8::ResourceDescriptor ram_hungry_resource;
-    ram_hungry_resource.key = "b";
-    ram_hungry_resource.rank = 0;
-    ram_hungry_resource.num_replicas = 2;
+    e8::ResourceDescriptor ram_hungry_resource(/*key=*/"b");
     ram_hungry_resource.required_capabilities.set_ram(4.0f);
 
-    e8::ResourceDescriptor storage_hungry_resource;
-    storage_hungry_resource.key = "c";
-    storage_hungry_resource.rank = 0;
-    storage_hungry_resource.num_replicas = 2;
+    e8::ResourceDescriptor storage_hungry_resource(/*key=*/"c");
     storage_hungry_resource.required_capabilities.set_storage(4.0f);
 
-    e8::ResourceDescriptor coral_hungry_resource;
-    coral_hungry_resource.key = "d";
-    coral_hungry_resource.rank = 0;
-    coral_hungry_resource.num_replicas = 2;
+    e8::ResourceDescriptor coral_hungry_resource(/*key=*/"d");
     coral_hungry_resource.required_capabilities.set_coral(4.0f);
 
-    e8::ResourceDescriptor dont_care_resource;
-    dont_care_resource.key = "e";
-    dont_care_resource.rank = 0;
-    dont_care_resource.num_replicas = 2;
+    e8::ResourceDescriptor dont_care_resource(/*key=*/"e");
 
     auto cluster_capabilities = std::make_shared<e8::ClusterCapability>(/*root=*/"root");
 
     // The bucket should be empty at this moment.
-    std::optional<e8::ClusterTreeNodeLabel> child =
-        bucket->Select(cpu_hungry_resource, /*num_failures=*/0, *cluster_capabilities);
+    std::optional<e8::ClusterTreeNodeLabel> child = bucket->Select(
+        cpu_hungry_resource, /*replica=*/0, /*num_failures=*/0, *cluster_capabilities);
     TEST_CONDITION(!child.has_value());
-    child = bucket->Select(ram_hungry_resource, /*num_failures=*/0, *cluster_capabilities);
+    child = bucket->Select(ram_hungry_resource, /*replica=*/0, /*num_failures=*/0,
+                           *cluster_capabilities);
     TEST_CONDITION(!child.has_value());
-    child = bucket->Select(storage_hungry_resource, /*num_failures=*/0, *cluster_capabilities);
+    child = bucket->Select(storage_hungry_resource, /*replica=*/0, /*num_failures=*/0,
+                           *cluster_capabilities);
     TEST_CONDITION(!child.has_value());
-    child = bucket->Select(coral_hungry_resource, /*num_failures=*/0, *cluster_capabilities);
+    child = bucket->Select(coral_hungry_resource, /*replica=*/0, /*num_failures=*/0,
+                           *cluster_capabilities);
     TEST_CONDITION(!child.has_value());
-    child = bucket->Select(dont_care_resource, /*num_failures=*/0, *cluster_capabilities);
+    child = bucket->Select(dont_care_resource, /*replica=*/0, /*num_failures=*/0,
+                           *cluster_capabilities);
     TEST_CONDITION(!child.has_value());
 
     // 4 different nodes equiped with varying hardware capability
@@ -156,19 +145,23 @@ bool GeneralTest(e8::BucketInterface *bucket, bool test_capability_distribution)
     // Checks if the bucket distribute resource according to the hardware capability setting and
     // requirement.
     if (test_capability_distribution) {
-        child = bucket->Select(cpu_hungry_resource, /*num_failures=*/0, *cluster_capabilities);
+        child = bucket->Select(cpu_hungry_resource, /*replica=*/0, /*num_failures=*/0,
+                               *cluster_capabilities);
         TEST_CONDITION(child.has_value());
         TEST_CONDITION(*child == high_performance_cpu_node);
 
-        child = bucket->Select(ram_hungry_resource, /*num_failures=*/0, *cluster_capabilities);
+        child = bucket->Select(ram_hungry_resource, /*replica=*/0, /*num_failures=*/0,
+                               *cluster_capabilities);
         TEST_CONDITION(child.has_value());
         TEST_CONDITION(*child == high_ram_capacity_node);
 
-        child = bucket->Select(storage_hungry_resource, /*num_failures=*/0, *cluster_capabilities);
+        child = bucket->Select(storage_hungry_resource, /*replica=*/0, /*num_failures=*/0,
+                               *cluster_capabilities);
         TEST_CONDITION(child.has_value());
         TEST_CONDITION(*child == high_storage_capacity_node);
 
-        child = bucket->Select(coral_hungry_resource, /*num_failures=*/0, *cluster_capabilities);
+        child = bucket->Select(coral_hungry_resource, /*replica=*/0, /*num_failures=*/0,
+                               *cluster_capabilities);
         TEST_CONDITION(child.has_value());
         TEST_CONDITION(*child == coral_node);
     }

@@ -40,15 +40,11 @@ using ReplicationRank = int32_t;
  * @brief The ResourceDescriptor struct Describes information about a keyed resource.
  */
 struct ResourceDescriptor {
+    ResourceDescriptor(ResourceKey const &key) : key(key) {}
+
     // The key of the resource. It must be unique among all resource workers within the cluster
     // that manages this type of resource.
-    ResourceKey key;
-
-    // The replica of the resource it refers to.
-    ReplicationRank rank;
-
-    // The maximum number of replicas this resource should have.
-    unsigned num_replicas;
+    ResourceKey const key;
 
     // The hardware capabilities this resource requires.
     WeightedCapabilities required_capabilities;

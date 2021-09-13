@@ -41,14 +41,14 @@ class BucketInterface {
 
     /**
      * @brief Select Selects a tree node from the bucket for the placement or location of the
-     * specified resource. The selection process distributes the resource pseudo-probabilistically
-     * based on the its most outstanding required capability to one of the children. Changing
-     * the parameter num_failures may or may not make the function return a different child. The
-     * funciton returns a std::nullopt only when the bucket is empty or it couldn't find any
-     * suitable children for the resource.
+     * specified resource of particular rank (replica). The selection process distributes the
+     * resource pseudo-probabilistically based on the its most outstanding required capability to
+     * one of the children. Changing the parameter num_failures may or may not make the function
+     * return a different child. The funciton returns a std::nullopt only when the bucket is empty
+     * or it couldn't find any suitable children for the resource.
      */
     virtual std::optional<ClusterTreeNodeLabel>
-    Select(ResourceDescriptor const &resource, unsigned num_failures,
+    Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
            ClusterCapability const &cluster_capabilities) const = 0;
 
     /**
@@ -91,7 +91,7 @@ class UniformBucket : public BucketInterface {
     ~UniformBucket() override;
 
     std::optional<ClusterTreeNodeLabel>
-    Select(ResourceDescriptor const &resource, unsigned num_failures,
+    Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
            ClusterCapability const &cluster_capabilities) const override;
 
     bool AddChild(ClusterTreeNodeLabel const &child_label) override;
@@ -124,7 +124,7 @@ class ListBucket : public BucketInterface {
     ~ListBucket() override;
 
     std::optional<ClusterTreeNodeLabel>
-    Select(ResourceDescriptor const &resource, unsigned num_failures,
+    Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
            ClusterCapability const &cluster_capabilities) const override;
 
     bool AddChild(ClusterTreeNodeLabel const &child_label) override;
