@@ -34,84 +34,118 @@ namespace {
 
 bool EnterWithProbability(size_t hash, float p) { return hash % 16384 < p * 16384; }
 
+void AddCapabilities(WeightedCapabilities const &delta, WeightedCapabilities *target) {
+    for (auto type : WeightedCapabilityTypes()) {
+        float value = GetCapabilityByType(type, *target);
+        float delta_value = GetCapabilityByType(type, delta);
+
+        SetCapabilityByType(type, value + delta_value, target);
+    }
+}
+
 } // namespace
+
+BucketInterface::Child::Child(ClusterTreeNodeLabel const &label,
+                              WeightedCapabilities const &capabilities)
+    : label(label), capabilities(capabilities) {}
 
 BucketInterface::BucketInterface() {}
 
 BucketInterface::~BucketInterface() {}
 
-UniformBucket::UniformBucket(UniformBucketData const &data) : data_(data) {}
+UniformBucket::UniformBucket(UniformBucketData const &data) : prime_(data.prime()) {
+    for (auto const &child_label : data.child_labels()) {
+        children_.push_back(Child(child_label, WeightedCapabilities()));
+    }
+}
 
 UniformBucket::~UniformBucket() {}
 
-std::optional<ClusterTreeNodeLabel>
-UniformBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
-                      ClusterCapability const & /*cluster_capabilities*/) const {
-    if (data_.child_labels().empty()) {
+std::optional<ClusterTreeNodeLabel> UniformBucket::Select(ResourceDescriptor const &resource,
+                                                          unsigned rank,
+                                                          unsigned num_failures) const {
+    if (children_.empty()) {
         return std::nullopt;
     }
 
     unsigned jumps = rank + num_failures;
-    size_t final_hash = std::hash<std::string>()(resource.key) + jumps * data_.prime();
-    unsigned location = final_hash % data_.child_labels().size();
+    size_t final_hash = std::hash<std::string>()(resource.key) + jumps * prime_;
+    unsigned location = final_hash % children_.size();
 
-    return data_.child_labels(location);
+    return children_[location].label;
 }
 
 bool UniformBucket::AddChild(ClusterTreeNodeLabel const &child_label) {
-    auto it = std::find(data_.child_labels().begin(), data_.child_labels().end(), child_label);
-    if (it != data_.child_labels().end()) {
+    auto it =
+        std::find_if(children_.begin(), children_.end(), [child_label](Child const &child) -> bool {
+            return child.label == child_label;
+        });
+    if (it != children_.end()) {
         return false;
     }
 
-    *data_.mutable_child_labels()->Add() = child_label;
+    children_.push_back(Child(child_label, WeightedCapabilities()));
     return true;
 }
 
 bool UniformBucket::RemoveChild(ClusterTreeNodeLabel const &child_label) {
-    auto it = std::find(data_.child_labels().begin(), data_.child_labels().end(), child_label);
-    if (it == data_.child_labels().end()) {
+    auto it =
+        std::find_if(children_.begin(), children_.end(), [child_label](Child const &child) -> bool {
+            return child.label == child_label;
+        });
+    if (it == children_.end()) {
         return false;
     }
 
-    data_.mutable_child_labels()->erase(it);
+    children_.erase(it);
     return true;
 }
 
-std::vector<ClusterTreeNodeLabel> UniformBucket::Children() const {
-    return std::vector<ClusterTreeNodeLabel>(data_.child_labels().begin(),
-                                             data_.child_labels().end());
+std::vector<BucketInterface::Child> UniformBucket::Children() const { return children_; }
+
+void UniformBucket::AddCapabilitiesFor(ClusterTreeNodeLabel const &child_label,
+                                       WeightedCapabilities const &delta) {
+    auto it =
+        std::find_if(children_.begin(), children_.end(), [child_label](Child const &child) -> bool {
+            return child.label == child_label;
+        });
+    assert(it != children_.end());
+
+    AddCapabilities(delta, &it->capabilities);
 }
 
 Bucket UniformBucket::ToProto() const {
     Bucket bucket;
-    *bucket.mutable_uniform_bucket() = data_;
+    bucket.mutable_uniform_bucket()->set_prime(prime_);
+
+    for (auto const &child : children_) {
+        *bucket.mutable_uniform_bucket()->add_child_labels() = child.label;
+    }
+
     return bucket;
 }
 
 ListBucket::ListBucket(ListBucketData const &data,
                        std::unique_ptr<CapabilityScoreInterface> &&scorer)
-    : data_(data), scorer_(std::move(scorer)) {}
+    : child_labels_(data.child_labels_size()), children_capabilities_(data.child_labels_size()),
+      scorer_(std::move(scorer)) {
+
+    for (int i = 0; i < data.child_labels_size(); ++i) {
+        child_labels_[i] = data.child_labels()[i];
+    }
+}
 
 ListBucket::~ListBucket() {}
 
-std::optional<ClusterTreeNodeLabel>
-ListBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
-                   ClusterCapability const &cluster_capabilities) const {
-    if (data_.child_labels().empty()) {
+std::optional<ClusterTreeNodeLabel> ListBucket::Select(ResourceDescriptor const &resource,
+                                                       unsigned rank, unsigned num_failures) const {
+    if (child_labels_.empty()) {
         return std::nullopt;
     }
 
     unsigned jumps = rank + num_failures;
 
-    std::vector<WeightedCapabilities> children_capabilities(data_.child_labels_size());
-    std::transform(
-        data_.child_labels().begin(), data_.child_labels().end(), children_capabilities.begin(),
-        [&cluster_capabilities](ClusterTreeNodeLabel const &child_label) -> WeightedCapabilities {
-            return cluster_capabilities.Capability(child_label);
-        });
-
-    std::vector<float> scores = scorer_->Score(children_capabilities, resource);
+    std::vector<float> scores = scorer_->Score(children_capabilities_, resource);
     if (scores.empty()) {
         // None of the children is able to satisfy the resource.
         return std::nullopt;
@@ -134,8 +168,8 @@ ListBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned n
     // At this point, we have shown the ith selection probability inductively.
     float sum_p = 0.0f;
 
-    for (int i = 0; i < data_.child_labels_size(); ++i) {
-        std::string hash_key = resource.key + std::to_string(jumps) + data_.child_labels(i);
+    for (unsigned i = 0; i < child_labels_.size(); ++i) {
+        std::string hash_key = resource.key + std::to_string(jumps) + child_labels_[i];
         size_t random_variable = std::hash<std::string>()(hash_key);
 
         float p;
@@ -146,50 +180,66 @@ ListBucket::Select(ResourceDescriptor const &resource, unsigned rank, unsigned n
         }
 
         if (EnterWithProbability(random_variable, p)) {
-            return data_.child_labels(i);
+            return child_labels_[i];
         }
 
         sum_p += p;
     }
 
-    return *data_.child_labels().rbegin();
+    return *child_labels_.rbegin();
 }
 
 bool ListBucket::AddChild(ClusterTreeNodeLabel const &child_label) {
-    auto it = std::find(data_.child_labels().begin(), data_.child_labels().end(), child_label);
-    if (it != data_.child_labels().end()) {
+    assert(child_labels_.size() == children_capabilities_.size());
+
+    if (std::find(child_labels_.begin(), child_labels_.end(), child_label) != child_labels_.end()) {
         return false;
     }
 
-    data_.mutable_child_labels()->Add();
-
-    for (int i = data_.child_labels_size() - 1; i >= 1; --i) {
-        *data_.mutable_child_labels(i) = data_.child_labels(i - 1);
-    }
-
-    *data_.mutable_child_labels(0) = child_label;
-
+    child_labels_.insert(child_labels_.begin(), child_label);
+    children_capabilities_.insert(children_capabilities_.begin(), WeightedCapabilities());
     return true;
 }
 
 bool ListBucket::RemoveChild(ClusterTreeNodeLabel const &child_label) {
-    auto it = std::find(data_.child_labels().begin(), data_.child_labels().end(), child_label);
-    if (it == data_.child_labels().end()) {
+    assert(child_labels_.size() == children_capabilities_.size());
+
+    auto it = std::find(child_labels_.begin(), child_labels_.end(), child_label);
+    if (it == child_labels_.end()) {
         return false;
     }
 
-    data_.mutable_child_labels()->erase(it);
+    children_capabilities_.erase(children_capabilities_.begin() + (it - child_labels_.begin()));
+    child_labels_.erase(it);
     return true;
 }
 
-std::vector<ClusterTreeNodeLabel> ListBucket::Children() const {
-    return std::vector<ClusterTreeNodeLabel>(data_.child_labels().begin(),
-                                             data_.child_labels().end());
+std::vector<BucketInterface::Child> ListBucket::Children() const {
+    assert(child_labels_.size() == children_capabilities_.size());
+
+    std::vector<BucketInterface::Child> children;
+    for (unsigned i = 0; i < child_labels_.size(); ++i) {
+        children.push_back(Child(child_labels_[i], children_capabilities_[i]));
+    }
+
+    return children;
+}
+
+void ListBucket::AddCapabilitiesFor(ClusterTreeNodeLabel const &child_label,
+                                    WeightedCapabilities const &delta) {
+    auto it = std::find(child_labels_.begin(), child_labels_.end(), child_label);
+    assert(it != child_labels_.end());
+
+    AddCapabilities(delta, &children_capabilities_[it - child_labels_.begin()]);
 }
 
 Bucket ListBucket::ToProto() const {
     Bucket bucket;
-    *bucket.mutable_list_bucket() = data_;
+
+    for (auto const &child_label : child_labels_) {
+        *bucket.mutable_list_bucket()->add_child_labels() = child_label;
+    }
+
     return bucket;
 }
 

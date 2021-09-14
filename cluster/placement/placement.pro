@@ -21,6 +21,7 @@ SOURCES += \
     bucket.cc \
     capability.cc \
     cluster_map.cc \
+    hierarchy.cc \
     score.cc
 
 HEADERS += \
@@ -28,6 +29,7 @@ HEADERS += \
     capability.h \
     cluster_map.h \
     common_types.h \
+    hierarchy.h \
     score.h
 
 # Default rules for deployment.

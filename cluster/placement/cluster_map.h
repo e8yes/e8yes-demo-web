@@ -19,41 +19,15 @@
 #define PLACEMENT_CLUSTER_MAP_H
 
 #include <memory>
-#include <unordered_map>
+#include <shared_mutex>
 #include <vector>
 
-#include "cluster/placement/bucket.h"
 #include "cluster/placement/common_types.h"
+#include "cluster/placement/hierarchy.h"
 #include "proto_cc/cluster.pb.h"
 #include "proto_cc/machine.pb.h"
 
 namespace e8 {
-
-namespace cluster_map_internal {
-
-/**
- * @brief The BucketOrMachine struct A tree node in the hierarchical cluster map.
- */
-struct BucketOrMachine {
-    BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy,
-                    std::unique_ptr<BucketInterface> &&bucket);
-    BucketOrMachine(ClusterTreeNode::Hierarchy hierarchy, Machine const &machine);
-
-    ClusterTreeNode::Hierarchy hierarchy;
-    std::unique_ptr<BucketInterface> bucket;
-    std::optional<Machine> machine;
-};
-
-// An constant iterator pointing to a tree node.
-using TreeIterator =
-    std::unordered_map<ClusterTreeNodeLabel, cluster_map_internal::BucketOrMachine>::const_iterator;
-
-/**
- * @brief ClusterMap's hidden internal implementation.
- */
-class ClusterMapImpl;
-
-} // namespace cluster_map_internal
 
 /**
  * @brief AllocateClusterTreeNodeLabel Allocates a unique tree node label for addition of the node
@@ -62,9 +36,8 @@ class ClusterMapImpl;
 ClusterTreeNodeLabel AllocateClusterTreeNodeLabel();
 
 /**
- * @brief The ClusterMap class Supports a hierarchical (tree) description of a cluster. It divides
- * and groups machines by logical location elements (See ClusterTreeNode::Hierarchy for what
- * location elements it supports). This class is thread safe.
+ * @brief The ClusterMap class Manages cluster map revision, versioning, resource placement and
+ * proto import/export. This class is thread safe.
  */
 class ClusterMap {
   public:
@@ -77,9 +50,8 @@ class ClusterMap {
          * @brief Placement The object should be constructed by calling the
          * ClusterMap::TakeRootFor() function.
          */
-        Placement(ResourceDescriptor const &resource,
-                  cluster_map_internal::TreeIterator const &root_it,
-                  cluster_map_internal::ClusterMapImpl *pimpl);
+        Placement(ResourceDescriptor const &resource, ClusterHierarchy *hierarchy,
+                  std::shared_mutex *mu);
         ~Placement();
 
         /**
@@ -106,13 +78,14 @@ class ClusterMap {
       private:
         bool DescentFrom(BucketInterface const &bucket, ClusterTreeNode::Hierarchy hierarchy,
                          ResourceDescriptor const &resource, ReplicationRank rank,
-                         std::vector<cluster_map_internal::TreeIterator> *sink);
+                         std::vector<ClusterHierarchy::BucketOrMachine const *> *sink);
 
         ResourceDescriptor const resource_;
-        cluster_map_internal::ClusterMapImpl *const pimpl_;
+        ClusterHierarchy *hierarchy_;
+        std::shared_mutex *mu_;
 
-        std::vector<cluster_map_internal::TreeIterator> source_;
-        std::vector<cluster_map_internal::TreeIterator> sink_;
+        std::vector<ClusterHierarchy::BucketOrMachine const *> source_;
+        std::vector<ClusterHierarchy::BucketOrMachine const *> sink_;
 
         bool error_;
     };
@@ -141,7 +114,9 @@ class ClusterMap {
     ClusterMapData ToProto() const;
 
   private:
-    std::unique_ptr<cluster_map_internal::ClusterMapImpl> pimpl_;
+    ClusterMapVersionEpoch version_;
+    std::unique_ptr<ClusterHierarchy> hierarchy_;
+    std::unique_ptr<std::shared_mutex> mu_;
 };
 
 } // namespace e8

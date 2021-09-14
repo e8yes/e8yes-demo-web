@@ -18,10 +18,11 @@
 #ifndef PLACEMENT_BUCKET_H
 #define PLACEMENT_BUCKET_H
 
+#include <list>
 #include <memory>
 #include <optional>
+#include <vector>
 
-#include "cluster/placement/capability.h"
 #include "cluster/placement/common_types.h"
 #include "cluster/placement/score.h"
 #include "proto_cc/bucket.pb.h"
@@ -35,26 +36,35 @@ namespace e8 {
  */
 class BucketInterface {
   public:
+    /**
+     * @brief The Child struct
+     */
+    struct Child {
+        Child(ClusterTreeNodeLabel const &label, WeightedCapabilities const &capabilities);
+
+        ClusterTreeNodeLabel label;
+        WeightedCapabilities capabilities;
+    };
+
     BucketInterface();
     virtual ~BucketInterface();
 
     /**
      * @brief Select Selects a tree node from the bucket for the placement or location of the
      * specified resource of particular rank (replica). The selection process distributes the
-     * resource pseudo-probabilistically based on the its most outstanding required capability to
-     * one of the children. Changing the parameter num_failures may or may not make the function
-     * return a different child. The funciton returns a std::nullopt only when the bucket is empty
-     * or it couldn't find any suitable children for the resource.
+     * resource pseudo-probabilistically based on the distribution of capability scores over the
+     * children (see CapabilityScoreInterface for how the scores is calculated). Changing the
+     * parameter num_failures may or may not make the function return a different child. The
+     * funciton returns a std::nullopt only when the bucket is empty or it couldn't find any
+     * suitable children for the resource.
      */
     virtual std::optional<ClusterTreeNodeLabel>
-    Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
-           ClusterCapability const &cluster_capabilities) const = 0;
+    Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures) const = 0;
 
     /**
-     * @brief AddChild Adds a child node to the bucket.
+     * @brief AddChild Adds a child node with zero capabilities to the bucket.
      *
-     * @param child_label The label of the child node to be added.
-     * @param child_weight The capability weights the child node has.
+     * @param child_label Label of the child to be added.
      * @return True if the child node has not already existed.
      */
     virtual bool AddChild(ClusterTreeNodeLabel const &child_label) = 0;
@@ -70,7 +80,17 @@ class BucketInterface {
     /**
      * @brief Children Returns a list of children the bucket currently has.
      */
-    virtual std::vector<ClusterTreeNodeLabel> Children() const = 0;
+    virtual std::vector<Child> Children() const = 0;
+
+    /**
+     * @brief AddCapabilitiesFor Adds the capability deltas to one of its children. The function
+     * will fail if the specified child doesn't exist.
+     *
+     * @param child_label Label of the child to be added delta to.
+     * @param delta The delta capability values to be added to the child.
+     */
+    virtual void AddCapabilitiesFor(ClusterTreeNodeLabel const &child_label,
+                                    WeightedCapabilities const &delta) = 0;
 
     /**
      * @brief ToProto Exports the bucket data structure as a Bucket proto.
@@ -82,34 +102,37 @@ class BucketInterface {
  * @brief The UniformBucket class Distributes resources uniformly across the children without
  * consideration of their hardware capabilities. It's capable of achieving O(1) time select.
  * However, adding or removing any children will result in a complete reshuffling of the resources
- * that live under this bucket.
+ * that live under this bucket. This class isn't thread safe.
  */
 class UniformBucket : public BucketInterface {
   public:
     UniformBucket(UniformBucketData const &data);
     ~UniformBucket() override;
 
-    std::optional<ClusterTreeNodeLabel>
-    Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
-           ClusterCapability const &cluster_capabilities) const override;
+    std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource, unsigned rank,
+                                               unsigned num_failures) const override;
 
     bool AddChild(ClusterTreeNodeLabel const &child_label) override;
 
     bool RemoveChild(ClusterTreeNodeLabel const &child_label) override;
 
-    std::vector<ClusterTreeNodeLabel> Children() const override;
+    std::vector<Child> Children() const override;
+
+    void AddCapabilitiesFor(ClusterTreeNodeLabel const &child_label,
+                            WeightedCapabilities const &delta) override;
 
     Bucket ToProto() const override;
 
   private:
-    UniformBucketData data_;
+    std::vector<Child> children_;
+    unsigned prime_;
 };
 
 /**
  * @brief The ListBucket class Distributes resources according to the distribution of the children's
  * hardware capabilities. It takes O(n) time to select a tree node for a bucket with n children.
  * Adding children requires optimal resource movement. However, removing children in the middle of
- * the list results in large amount of shuffling.
+ * the list results in large amount of shuffling. This class isn't thread safe.
  */
 class ListBucket : public BucketInterface {
   public:
@@ -121,20 +144,23 @@ class ListBucket : public BucketInterface {
     ListBucket(ListBucketData const &data, std::unique_ptr<CapabilityScoreInterface> &&scorer);
     ~ListBucket() override;
 
-    std::optional<ClusterTreeNodeLabel>
-    Select(ResourceDescriptor const &resource, unsigned rank, unsigned num_failures,
-           ClusterCapability const &cluster_capabilities) const override;
+    std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource, unsigned rank,
+                                               unsigned num_failures) const override;
 
     bool AddChild(ClusterTreeNodeLabel const &child_label) override;
 
     bool RemoveChild(ClusterTreeNodeLabel const &child_label) override;
 
-    std::vector<ClusterTreeNodeLabel> Children() const override;
+    std::vector<Child> Children() const override;
+
+    void AddCapabilitiesFor(ClusterTreeNodeLabel const &child_label,
+                            WeightedCapabilities const &delta) override;
 
     Bucket ToProto() const override;
 
   private:
-    ListBucketData data_;
+    std::vector<ClusterTreeNodeLabel> child_labels_;
+    std::vector<WeightedCapabilities> children_capabilities_;
     std::unique_ptr<CapabilityScoreInterface> scorer_;
 };
 
