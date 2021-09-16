@@ -131,7 +131,7 @@ class ClusterHierarchy {
     unsigned NodeCount() const;
 
   private:
-    void UpdateAllParents(ClusterTreeNodeLabel const &node_label, BucketOrMachine const &node,
+    void UpdateAllAncestors(ClusterTreeNodeLabel const &node_label, BucketOrMachine const &node,
                           WeightedCapabilities const &delta);
 
     void RemoveSubtree(ClusterTreeNodeLabel const &node_label);

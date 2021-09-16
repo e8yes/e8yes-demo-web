@@ -32,7 +32,7 @@ namespace {
 
 constexpr char const *kRootLabel = "root";
 
-WeightedCapabilities Negate(WeightedCapabilities const &capabilities) {
+WeightedCapabilities NegateCapabilities(WeightedCapabilities const &capabilities) {
     WeightedCapabilities negated;
 
     for (auto type : WeightedCapabilityTypes()) {
@@ -58,9 +58,9 @@ ClusterHierarchy::ClusterHierarchy() {}
 
 ClusterHierarchy::~ClusterHierarchy() {}
 
-void ClusterHierarchy::UpdateAllParents(ClusterTreeNodeLabel const &node_label,
-                                        BucketOrMachine const &node,
-                                        WeightedCapabilities const &delta) {
+void ClusterHierarchy::UpdateAllAncestors(ClusterTreeNodeLabel const &node_label,
+                                          BucketOrMachine const &node,
+                                          WeightedCapabilities const &delta) {
     BucketOrMachine const *child_node = &node;
     ClusterTreeNodeLabel child_node_label = node_label;
 
@@ -125,7 +125,7 @@ bool ClusterHierarchy::AddMachine(ClusterTreeNodeLabel const &parent_label,
         return false;
     }
 
-    this->UpdateAllParents(node_label, *it->second, machine.capabilities());
+    this->UpdateAllAncestors(node_label, *it->second, machine.capabilities());
 
     return true;
 }
@@ -135,8 +135,8 @@ void ClusterHierarchy::RemoveSubtree(ClusterTreeNodeLabel const &node_label) {
     assert(it != tree_.end());
 
     if (it->second->machine.has_value()) {
-        WeightedCapabilities delta = Negate(it->second->machine->capabilities());
-        this->UpdateAllParents(node_label, *it->second, delta);
+        WeightedCapabilities delta = NegateCapabilities(it->second->machine->capabilities());
+        this->UpdateAllAncestors(node_label, *it->second, delta);
 
         tree_.erase(it);
 
