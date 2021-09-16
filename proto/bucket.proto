@@ -38,25 +38,8 @@ message ListBucketData {
 
 // Data to reconstruct the tree.
 message TreeBucketData {
-    //  Definition of a tree node in the bucket.
-    message TreeBucketNode {
-        // Unique label across the entire cluster map.
-        string map_label = 1;
-
-        // Tree label of the left child node.
-        string left_child_tree_label = 2;
-
-        // Tree label of the right child node.
-        string right_child_tree_label = 3;
-    }
-
-    // Tree nodes keyed by its tree label. Note, this tree label is only unique
-    // within this bucket.
-    map<string, TreeBucketNode> tree_nodes = 1;
-
-    // The tree label of the root node. Don't use the value of this field when
-    // tree_nodes is empty.
-    string root_node_tree_label = 2;
+    // A list of child labels to be organized into a balanced binary tree.
+    repeated string child_labels = 1;
 }
 
 // Data to reconstruct the straw can.
