@@ -215,10 +215,18 @@ bool ListBucketTest() {
     return GeneralTest(&bucket, /*test_capability_distribution=*/true);
 }
 
+bool TreeBucketTest() {
+    e8::TreeBucketData data;
+
+    e8::TreeBucket bucket(data, std::make_unique<e8::MostDemandingCapabilityScore>());
+    return GeneralTest(&bucket, /*test_capability_distribution=*/true);
+}
+
 int main() {
     e8::BeginTestSuite("placement_bucket");
     e8::RunTest("UniformBucketTest", UniformBucketTest);
     e8::RunTest("ListBucketTest", ListBucketTest);
+    e8::RunTest("TreeBucketTest", TreeBucketTest);
     e8::EndTestSuite();
     return 0;
 }
