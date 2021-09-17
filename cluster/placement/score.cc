@@ -26,11 +26,12 @@ namespace e8 {
 namespace {
 
 WeightedCapabilities::Type MostDemandingCapability(WeightedCapabilities const &capabilities) {
-    float most_demanding_capability_value = 0.0f;
+    WeightedCapabilities::FixedPoint most_demanding_capability_value =
+        CapabilityFixedPointFromFloat(0.0f);
     WeightedCapabilities::Type most_demanding_capability = WeightedCapabilities::INVALID_TYPE;
 
     for (auto type : WeightedCapabilityTypes()) {
-        float value = GetCapabilityByType(type, capabilities);
+        WeightedCapabilities::FixedPoint value = GetCapabilityByType(type, capabilities);
         if (value > most_demanding_capability_value) {
             most_demanding_capability = type;
             most_demanding_capability_value = value;
@@ -77,7 +78,8 @@ MostDemandingCapabilityScore::Score(std::vector<WeightedCapabilities> const &can
     float normalizer = 0.0f;
 
     for (unsigned i = 0; i < candidates.size(); ++i) {
-        float candid_value = GetCapabilityByType(most_demanding_capability, candidates[i]);
+        float candid_value = ToFloat(GetCapabilityByType(most_demanding_capability, candidates[i]));
+
         score[i] = candid_value;
         normalizer += candid_value;
     }

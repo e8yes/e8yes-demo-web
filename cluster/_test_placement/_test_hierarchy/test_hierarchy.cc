@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "cluster/placement/bucket.h"
+#include "cluster/placement/capability.h"
 #include "cluster/placement/hierarchy.h"
 #include "common/unit_test_util/unit_test_util.h"
 #include "proto_cc/bucket.pb.h"
@@ -30,28 +31,28 @@ bool OneLayerTest() {
     // There are 4 machines.
     e8::Machine machine1;
     machine1.set_address("192.168.1.1");
-    machine1.mutable_capabilities()->set_cpu(4.0f);
-    machine1.mutable_capabilities()->set_ram(1.0f);
-    machine1.mutable_capabilities()->set_storage(32.0f);
+    *machine1.mutable_capabilities()->mutable_cpu() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *machine1.mutable_capabilities()->mutable_ram() = e8::CapabilityFixedPointFromFloat(1.0f);
+    *machine1.mutable_capabilities()->mutable_storage() = e8::CapabilityFixedPointFromFloat(32.0f);
 
     e8::Machine machine2;
     machine1.set_address("192.168.1.2");
-    machine2.mutable_capabilities()->set_cpu(4.0f);
-    machine2.mutable_capabilities()->set_ram(1.0f);
-    machine2.mutable_capabilities()->set_storage(16.0f);
+    *machine2.mutable_capabilities()->mutable_cpu() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *machine2.mutable_capabilities()->mutable_ram() = e8::CapabilityFixedPointFromFloat(1.0f);
+    *machine2.mutable_capabilities()->mutable_storage() = e8::CapabilityFixedPointFromFloat(16.0f);
 
     e8::Machine machine3;
     machine1.set_address("192.168.1.3");
-    machine3.mutable_capabilities()->set_cpu(8.0f);
-    machine3.mutable_capabilities()->set_ram(4.0f);
-    machine3.mutable_capabilities()->set_storage(16.0f);
+    *machine3.mutable_capabilities()->mutable_cpu() = e8::CapabilityFixedPointFromFloat(8.0f);
+    *machine3.mutable_capabilities()->mutable_ram() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *machine3.mutable_capabilities()->mutable_storage() = e8::CapabilityFixedPointFromFloat(16.0f);
 
     e8::Machine machine4;
     machine1.set_address("192.168.1.4");
-    machine4.mutable_capabilities()->set_cpu(8.0f);
-    machine4.mutable_capabilities()->set_ram(4.0f);
-    machine4.mutable_capabilities()->set_storage(32.0f);
-    machine4.mutable_capabilities()->set_coral(1.0f);
+    *machine4.mutable_capabilities()->mutable_cpu() = e8::CapabilityFixedPointFromFloat(8.0f);
+    *machine4.mutable_capabilities()->mutable_ram() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *machine4.mutable_capabilities()->mutable_storage() = e8::CapabilityFixedPointFromFloat(32.0f);
+    *machine4.mutable_capabilities()->mutable_coral() = e8::CapabilityFixedPointFromFloat(1.0f);
 
     // 4 machines organized under the root.
     e8::UniformBucketData root_bucket_proto;
@@ -164,28 +165,28 @@ bool MultiLayerTest() {
     // There are 4 machines.
     e8::Machine machine1;
     machine1.set_address("192.168.1.1");
-    machine1.mutable_capabilities()->set_cpu(4.0f);
-    machine1.mutable_capabilities()->set_ram(1.0f);
-    machine1.mutable_capabilities()->set_storage(32.0f);
+    *machine1.mutable_capabilities()->mutable_cpu() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *machine1.mutable_capabilities()->mutable_ram() = e8::CapabilityFixedPointFromFloat(1.0f);
+    *machine1.mutable_capabilities()->mutable_storage() = e8::CapabilityFixedPointFromFloat(32.0f);
 
     e8::Machine machine2;
     machine1.set_address("192.168.1.2");
-    machine2.mutable_capabilities()->set_cpu(4.0f);
-    machine2.mutable_capabilities()->set_ram(1.0f);
-    machine2.mutable_capabilities()->set_storage(16.0f);
+    *machine2.mutable_capabilities()->mutable_cpu() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *machine2.mutable_capabilities()->mutable_ram() = e8::CapabilityFixedPointFromFloat(1.0f);
+    *machine2.mutable_capabilities()->mutable_storage() = e8::CapabilityFixedPointFromFloat(16.0f);
 
     e8::Machine machine3;
     machine1.set_address("192.168.1.3");
-    machine3.mutable_capabilities()->set_cpu(8.0f);
-    machine3.mutable_capabilities()->set_ram(4.0f);
-    machine3.mutable_capabilities()->set_storage(16.0f);
+    *machine3.mutable_capabilities()->mutable_cpu() = e8::CapabilityFixedPointFromFloat(8.0f);
+    *machine3.mutable_capabilities()->mutable_ram() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *machine3.mutable_capabilities()->mutable_storage() = e8::CapabilityFixedPointFromFloat(16.0f);
 
     e8::Machine machine4;
     machine1.set_address("192.168.1.4");
-    machine4.mutable_capabilities()->set_cpu(8.0f);
-    machine4.mutable_capabilities()->set_ram(4.0f);
-    machine4.mutable_capabilities()->set_storage(32.0f);
-    machine4.mutable_capabilities()->set_coral(1.0f);
+    *machine4.mutable_capabilities()->mutable_cpu() = e8::CapabilityFixedPointFromFloat(8.0f);
+    *machine4.mutable_capabilities()->mutable_ram() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *machine4.mutable_capabilities()->mutable_storage() = e8::CapabilityFixedPointFromFloat(32.0f);
+    *machine4.mutable_capabilities()->mutable_coral() = e8::CapabilityFixedPointFromFloat(1.0f);
 
     /*           root
      *     |              |
@@ -268,14 +269,14 @@ bool MultiLayerTest() {
     TEST_CONDITION(children[0].label == "row1");
     TEST_CONDITION(children[1].label == "row2");
 
-    TEST_CONDITION(children[0].capabilities.cpu() == 8.0f);
-    TEST_CONDITION(children[0].capabilities.ram() == 2.0f);
-    TEST_CONDITION(children[0].capabilities.storage() == 48.0f);
+    TEST_CONDITION(e8::ToFloat(children[0].capabilities.cpu()) == 8.0f);
+    TEST_CONDITION(e8::ToFloat(children[0].capabilities.ram()) == 2.0f);
+    TEST_CONDITION(e8::ToFloat(children[0].capabilities.storage()) == 48.0f);
 
-    TEST_CONDITION(children[1].capabilities.cpu() == 16.0f);
-    TEST_CONDITION(children[1].capabilities.ram() == 8.0f);
-    TEST_CONDITION(children[1].capabilities.storage() == 48.0f);
-    TEST_CONDITION(children[1].capabilities.coral() == 1.0f);
+    TEST_CONDITION(e8::ToFloat(children[1].capabilities.cpu()) == 16.0f);
+    TEST_CONDITION(e8::ToFloat(children[1].capabilities.ram()) == 8.0f);
+    TEST_CONDITION(e8::ToFloat(children[1].capabilities.storage()) == 48.0f);
+    TEST_CONDITION(e8::ToFloat(children[1].capabilities.coral()) == 1.0f);
 
     // Checks removal.
     bool removed = hierarchy.Remove("row1");

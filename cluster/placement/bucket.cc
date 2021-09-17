@@ -34,26 +34,6 @@ namespace {
 
 bool EnterWithProbability(size_t hash, float p) { return hash % 16384 < p * 16384; }
 
-WeightedCapabilities NegateCapabilities(WeightedCapabilities const &capabilities) {
-    WeightedCapabilities negated;
-
-    for (auto type : WeightedCapabilityTypes()) {
-        float value = GetCapabilityByType(type, capabilities);
-        SetCapabilityByType(type, -value, &negated);
-    }
-
-    return negated;
-}
-
-void AddCapabilities(WeightedCapabilities const &delta, WeightedCapabilities *target) {
-    for (auto type : WeightedCapabilityTypes()) {
-        float value = GetCapabilityByType(type, *target);
-        float delta_value = GetCapabilityByType(type, delta);
-
-        SetCapabilityByType(type, value + delta_value, target);
-    }
-}
-
 } // namespace
 
 BucketInterface::Child::Child(ClusterTreeNodeLabel const &label,
@@ -122,7 +102,7 @@ void UniformBucket::AddCapabilitiesFor(ClusterTreeNodeLabel const &child_label,
         });
     assert(it != children_.end());
 
-    AddCapabilities(delta, &it->capabilities);
+    it->capabilities += delta;
 }
 
 Bucket UniformBucket::ToProto() const {
@@ -242,7 +222,7 @@ void ListBucket::AddCapabilitiesFor(ClusterTreeNodeLabel const &child_label,
     auto it = std::find(child_labels_.begin(), child_labels_.end(), child_label);
     assert(it != child_labels_.end());
 
-    AddCapabilities(delta, &children_capabilities_[it - child_labels_.begin()]);
+    children_capabilities_[it - child_labels_.begin()] += delta;
 }
 
 Bucket ListBucket::ToProto() const {
@@ -305,12 +285,12 @@ void TreeBucket::Node::Clear() {
 
     label.reset();
 
-    WeightedCapabilities deduction = NegateCapabilities(capabilities);
+    WeightedCapabilities deduction = capabilities;
 
     Node *current_ancestor = this;
     do {
         --current_ancestor->num_external_nodes;
-        e8::AddCapabilities(deduction, &current_ancestor->capabilities);
+        current_ancestor->capabilities -= deduction;
 
         current_ancestor = current_ancestor->parent;
     } while (current_ancestor != nullptr);
@@ -332,7 +312,7 @@ void TreeBucket::Node::AddCapabilities(WeightedCapabilities const &delta) {
 
     Node *current_ancestor = this;
     do {
-        e8::AddCapabilities(delta, &current_ancestor->capabilities);
+        current_ancestor->capabilities += delta;
         current_ancestor = current_ancestor->parent;
     } while (current_ancestor != nullptr);
 }

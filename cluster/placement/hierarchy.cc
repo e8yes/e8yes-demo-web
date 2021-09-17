@@ -28,22 +28,6 @@
 #include "proto_cc/machine.pb.h"
 
 namespace e8 {
-namespace {
-
-constexpr char const *kRootLabel = "root";
-
-WeightedCapabilities NegateCapabilities(WeightedCapabilities const &capabilities) {
-    WeightedCapabilities negated;
-
-    for (auto type : WeightedCapabilityTypes()) {
-        float value = GetCapabilityByType(type, capabilities);
-        SetCapabilityByType(type, -value, &negated);
-    }
-
-    return negated;
-}
-
-} // namespace
 
 ClusterHierarchy::BucketOrMachine::BucketOrMachine(ClusterTreeNodeLabel const &parent_label,
                                                    ClusterTreeNode::Hierarchy hierarchy,
@@ -78,14 +62,14 @@ void ClusterHierarchy::UpdateAllAncestors(ClusterTreeNodeLabel const &node_label
 }
 
 bool ClusterHierarchy::AddRoot(std::unique_ptr<BucketInterface> &&bucket) {
-    auto root_it = tree_.find(kRootLabel);
+    auto root_it = tree_.find(kClusterHierarchyRootLabel);
     if (root_it != tree_.end()) {
         return false;
     }
 
-    auto node =
-        std::make_unique<BucketOrMachine>(kRootLabel, ClusterTreeNode::ROOT, std::move(bucket));
-    tree_.insert(std::make_pair(kRootLabel, std::move(node)));
+    auto node = std::make_unique<BucketOrMachine>(kClusterHierarchyRootLabel, ClusterTreeNode::ROOT,
+                                                  std::move(bucket));
+    tree_.insert(std::make_pair(kClusterHierarchyRootLabel, std::move(node)));
 
     return true;
 }
@@ -95,7 +79,7 @@ bool ClusterHierarchy::AddBucket(ClusterTreeNodeLabel const &parent_label,
                                  ClusterTreeNode::Hierarchy hierarchy,
                                  std::unique_ptr<BucketInterface> &&bucket) {
     assert(node_label != parent_label);
-    assert(node_label != kRootLabel);
+    assert(node_label != kClusterHierarchyRootLabel);
 
     auto parent_it = tree_.find(parent_label);
     assert(parent_it != tree_.end());
@@ -116,7 +100,7 @@ bool ClusterHierarchy::AddBucket(ClusterTreeNodeLabel const &parent_label,
 bool ClusterHierarchy::AddMachine(ClusterTreeNodeLabel const &parent_label,
                                   ClusterTreeNodeLabel const &node_label, Machine const &machine) {
     assert(node_label != parent_label);
-    assert(node_label != kRootLabel);
+    assert(node_label != kClusterHierarchyRootLabel);
 
     auto node = std::make_unique<BucketOrMachine>(parent_label, machine);
 
@@ -133,10 +117,10 @@ bool ClusterHierarchy::AddMachine(ClusterTreeNodeLabel const &parent_label,
 void ClusterHierarchy::RemoveSubtree(ClusterTreeNodeLabel const &node_label) {
     auto it = tree_.find(node_label);
     assert(it != tree_.end());
+    auto const &[_, node] = *it;
 
-    if (it->second->machine.has_value()) {
-        WeightedCapabilities delta = NegateCapabilities(it->second->machine->capabilities());
-        this->UpdateAllAncestors(node_label, *it->second, delta);
+    if (node->machine.has_value()) {
+        this->UpdateAllAncestors(node_label, *node, -node->machine->capabilities());
 
         tree_.erase(it);
 
@@ -144,7 +128,7 @@ void ClusterHierarchy::RemoveSubtree(ClusterTreeNodeLabel const &node_label) {
     }
 
     assert(it->second->bucket != nullptr);
-    for (auto const &child : it->second->bucket->Children()) {
+    for (auto const &child : node->bucket->Children()) {
         this->RemoveSubtree(child.label);
     }
 
@@ -161,7 +145,7 @@ bool ClusterHierarchy::Remove(ClusterTreeNodeLabel const &node_label) {
 
     this->RemoveSubtree(node_label);
 
-    if (node_label == kRootLabel) {
+    if (node_label == kClusterHierarchyRootLabel) {
         return true;
     }
 
@@ -174,7 +158,7 @@ bool ClusterHierarchy::Remove(ClusterTreeNodeLabel const &node_label) {
 }
 
 ClusterHierarchy::BucketOrMachine const *ClusterHierarchy::Root() const {
-    auto root_it = tree_.find(kRootLabel);
+    auto root_it = tree_.find(kClusterHierarchyRootLabel);
     if (root_it == tree_.end()) {
         return nullptr;
     }

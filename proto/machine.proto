@@ -38,17 +38,24 @@ message WeightedCapabilities {
         CORAL = 4;
     }
 
+    message FixedPoint {
+        // The 4 least significant digits represents the fraction of the value 
+        // while the rest are used to represent the integer part. e.g. 12340001
+        // represents the value 1234.0001.
+        int64 integer_and_fraction = 1;
+    }
+
     // The number of standardized general computation units the machine has.
-    float cpu = 1;
+    FixedPoint cpu = 1;
 
     // The number of gigabytes of main memory the machine has.
-    float ram = 2;
+    FixedPoint ram = 2;
 
     // The number of gigabytes of disk storage the machine has.
-    float storage = 3;
+    FixedPoint storage = 3;
 
     // The number of coral accelerators the machine has.
-    float coral = 4;
+    FixedPoint coral = 4;
 }
 
 // Describes the basic information about a machine that the cluster monitor

@@ -50,16 +50,20 @@ std::unordered_set<e8::ClusterTreeNodeLabel> WillSelect(e8::ResourceDescriptor c
 bool GeneralTest(e8::BucketInterface *bucket, bool test_capability_distribution) {
     // 5 different resources with varying hardware capability requirements.
     e8::ResourceDescriptor cpu_hungry_resource(/*key=*/"a");
-    cpu_hungry_resource.required_capabilities.set_cpu(4.0f);
+    *cpu_hungry_resource.required_capabilities.mutable_cpu() =
+        e8::CapabilityFixedPointFromFloat(4.0f);
 
     e8::ResourceDescriptor ram_hungry_resource(/*key=*/"b");
-    ram_hungry_resource.required_capabilities.set_ram(4.0f);
+    *ram_hungry_resource.required_capabilities.mutable_ram() =
+        e8::CapabilityFixedPointFromFloat(4.0f);
 
     e8::ResourceDescriptor storage_hungry_resource(/*key=*/"c");
-    storage_hungry_resource.required_capabilities.set_storage(4.0f);
+    *storage_hungry_resource.required_capabilities.mutable_storage() =
+        e8::CapabilityFixedPointFromFloat(4.0f);
 
     e8::ResourceDescriptor coral_hungry_resource(/*key=*/"d");
-    coral_hungry_resource.required_capabilities.set_coral(4.0f);
+    *coral_hungry_resource.required_capabilities.mutable_coral() =
+        e8::CapabilityFixedPointFromFloat(4.0f);
 
     e8::ResourceDescriptor dont_care_resource(/*key=*/"e");
 
@@ -79,31 +83,31 @@ bool GeneralTest(e8::BucketInterface *bucket, bool test_capability_distribution)
     // 4 different nodes equiped with varying hardware capability
     e8::ClusterTreeNodeLabel high_performance_cpu_node = e8::AllocateClusterTreeNodeLabel();
     e8::WeightedCapabilities high_performance_cpu_capabilities;
-    high_performance_cpu_capabilities.set_cpu(4.0f);
-    high_performance_cpu_capabilities.set_ram(0.0f);
-    high_performance_cpu_capabilities.set_storage(0.0f);
-    high_performance_cpu_capabilities.set_coral(0.0f);
+    *high_performance_cpu_capabilities.mutable_cpu() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *high_performance_cpu_capabilities.mutable_storage() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *high_performance_cpu_capabilities.mutable_coral() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *high_performance_cpu_capabilities.mutable_ram() = e8::CapabilityFixedPointFromFloat(0.0f);
 
     e8::ClusterTreeNodeLabel high_ram_capacity_node = e8::AllocateClusterTreeNodeLabel();
     e8::WeightedCapabilities high_ram_capacity_capabilities;
-    high_ram_capacity_capabilities.set_cpu(0.0f);
-    high_ram_capacity_capabilities.set_ram(4.0f);
-    high_ram_capacity_capabilities.set_storage(0.0f);
-    high_ram_capacity_capabilities.set_coral(0.0f);
+    *high_ram_capacity_capabilities.mutable_cpu() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *high_ram_capacity_capabilities.mutable_ram() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *high_ram_capacity_capabilities.mutable_storage() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *high_ram_capacity_capabilities.mutable_coral() = e8::CapabilityFixedPointFromFloat(0.0f);
 
     e8::ClusterTreeNodeLabel high_storage_capacity_node = e8::AllocateClusterTreeNodeLabel();
     e8::WeightedCapabilities high_storage_capacity_capabilities;
-    high_storage_capacity_capabilities.set_cpu(0.0f);
-    high_storage_capacity_capabilities.set_ram(0.0f);
-    high_storage_capacity_capabilities.set_storage(4.0f);
-    high_storage_capacity_capabilities.set_coral(0.0f);
+    *high_storage_capacity_capabilities.mutable_cpu() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *high_storage_capacity_capabilities.mutable_ram() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *high_storage_capacity_capabilities.mutable_storage() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *high_storage_capacity_capabilities.mutable_coral() = e8::CapabilityFixedPointFromFloat(0.0f);
 
     e8::ClusterTreeNodeLabel coral_node = e8::AllocateClusterTreeNodeLabel();
     e8::WeightedCapabilities coral_capabilities;
-    coral_capabilities.set_cpu(0.0f);
-    coral_capabilities.set_ram(0.0f);
-    coral_capabilities.set_storage(0.0f);
-    coral_capabilities.set_coral(4.0f);
+    *coral_capabilities.mutable_cpu() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *coral_capabilities.mutable_ram() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *coral_capabilities.mutable_storage() = e8::CapabilityFixedPointFromFloat(0.0f);
+    *coral_capabilities.mutable_coral() = e8::CapabilityFixedPointFromFloat(4.0f);
 
     // Adds nodes to the bucket, and checks that the bucket does not allow double addings/overrides.
     bool added = bucket->AddChild(high_performance_cpu_node);

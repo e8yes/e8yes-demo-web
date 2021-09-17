@@ -28,19 +28,105 @@ namespace e8 {
 /**
  * @brief GetCapabilityByType Gets the value of a specific capability by type.
  */
-float GetCapabilityByType(WeightedCapabilities::Type type,
-                          WeightedCapabilities const &capabilities);
+WeightedCapabilities::FixedPoint GetCapabilityByType(WeightedCapabilities::Type type,
+                                                     WeightedCapabilities const &capabilities);
 
 /**
  * @brief SetCapabilityByType Sets the value of a specific capability by type.
  */
-void SetCapabilityByType(WeightedCapabilities::Type type, float value,
+void SetCapabilityByType(WeightedCapabilities::Type type,
+                         WeightedCapabilities::FixedPoint const &value,
                          WeightedCapabilities *capabilities);
 
 /**
  * @brief WeightedCapabilityTypes Returns a list of all capability types.
  */
 std::vector<WeightedCapabilities::Type> WeightedCapabilityTypes();
+
+/**
+ * @brief operator + Calulates the sum of two capabilities by adding each type's values
+ * individually.
+ */
+WeightedCapabilities operator+(WeightedCapabilities const &a, WeightedCapabilities const &b);
+
+/**
+ * @brief operator += Addition assignment.
+ */
+WeightedCapabilities &operator+=(WeightedCapabilities &a, WeightedCapabilities const &b);
+
+/**
+ * @brief operator - Calulates the difference of two capabilities by adding each type's values
+ * individually.
+ */
+WeightedCapabilities operator-(WeightedCapabilities const &a, WeightedCapabilities const &b);
+
+/**
+ * @brief operator -= Subtraction assignment.
+ */
+WeightedCapabilities &operator-=(WeightedCapabilities &a, WeightedCapabilities const &b);
+
+/**
+ * @brief operator - Negates the capability values individually.
+ */
+WeightedCapabilities operator-(WeightedCapabilities const &a);
+
+/**
+ * @brief CapabilityFixedPointFromFloat Creates a fixed point representation from a floating point
+ * value.
+ */
+WeightedCapabilities::FixedPoint CapabilityFixedPointFromFloat(float value);
+
+/**
+ * @brief ToFloat Converts a fixed point representation to a floating point value.
+ */
+float ToFloat(WeightedCapabilities::FixedPoint const &value);
+
+/**
+ * @brief operator + Adds two fixed point values.
+ */
+WeightedCapabilities::FixedPoint operator+(WeightedCapabilities::FixedPoint const &a,
+                                           WeightedCapabilities::FixedPoint const &b);
+
+/**
+ * @brief operator - Subtracts two fixed point values.
+ */
+WeightedCapabilities::FixedPoint operator-(WeightedCapabilities::FixedPoint const &a,
+                                           WeightedCapabilities::FixedPoint const &b);
+
+/**
+ * @brief operator - Negates a fixed point value.
+ */
+WeightedCapabilities::FixedPoint operator-(WeightedCapabilities::FixedPoint const &a);
+
+/**
+ * @brief operator < Compares if a is less than b in fixed point.
+ */
+bool operator<(WeightedCapabilities::FixedPoint const &a,
+               WeightedCapabilities::FixedPoint const &b);
+
+/**
+ * @brief operator <= Compares if a is less than or equals to b in fixed point.
+ */
+bool operator<=(WeightedCapabilities::FixedPoint const &a,
+                WeightedCapabilities::FixedPoint const &b);
+
+/**
+ * @brief operator == Compares if a is equal to b in fixed point.
+ */
+bool operator==(WeightedCapabilities::FixedPoint const &a,
+                WeightedCapabilities::FixedPoint const &b);
+
+/**
+ * @brief operator > Compares if a is greater than b in fixed point.
+ */
+bool operator>(WeightedCapabilities::FixedPoint const &a,
+               WeightedCapabilities::FixedPoint const &b);
+
+/**
+ * @brief operator >= Compares if a is greater than or equals to b in fixed point.
+ */
+bool operator>=(WeightedCapabilities::FixedPoint const &a,
+                WeightedCapabilities::FixedPoint const &b);
 
 } // namespace e8
 

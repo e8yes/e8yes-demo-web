@@ -38,8 +38,6 @@
 namespace e8 {
 namespace {
 
-constexpr char const *kRootLabel = "root";
-
 unsigned const kMaxFailureFactor = 2;
 unsigned const kMaxBucketCollisions = 3;
 
@@ -71,7 +69,7 @@ ClusterHierarchy::BucketOrMachine const *CreateNode(ClusterTreeNodeLabel const &
         auto bucket =
             CreateBucket(node_proto.bucket(), std::make_unique<MostDemandingCapabilityScore>());
 
-        if (node_label == kRootLabel) {
+        if (node_label == kClusterHierarchyRootLabel) {
             hierarchy->AddRoot(std::move(bucket));
         } else {
             hierarchy->AddBucket(parent_label, node_label, node_proto.hierarchy(),
@@ -152,7 +150,8 @@ ClusterMap::ClusterMap(ClusterMapData const &cluster_map_data)
         return;
     }
 
-    ImportNode(kRootLabel, kRootLabel, cluster_map_data.tree_nodes(), hierarchy_.get());
+    ImportNode(kClusterHierarchyRootLabel, kClusterHierarchyRootLabel,
+               cluster_map_data.tree_nodes(), hierarchy_.get());
 }
 
 ClusterMap::~ClusterMap() {}
@@ -278,7 +277,7 @@ ClusterMapData ClusterMap::ToProto() const {
     cluster_map_proto.set_version_epoch(version_);
 
     if (hierarchy_->Root() != nullptr) {
-        ExportNode(kRootLabel, *hierarchy_->Root(), *hierarchy_,
+        ExportNode(kClusterHierarchyRootLabel, *hierarchy_->Root(), *hierarchy_,
                    cluster_map_proto.mutable_tree_nodes());
     }
 

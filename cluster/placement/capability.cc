@@ -16,6 +16,7 @@
  */
 
 #include <cassert>
+#include <cstdint>
 #include <unordered_map>
 #include <utility>
 
@@ -25,8 +26,8 @@
 
 namespace e8 {
 
-float GetCapabilityByType(WeightedCapabilities::Type type,
-                          WeightedCapabilities const &capabilities) {
+WeightedCapabilities::FixedPoint GetCapabilityByType(WeightedCapabilities::Type type,
+                                                     WeightedCapabilities const &capabilities) {
     switch (type) {
     case WeightedCapabilities::CPU:
         return capabilities.cpu();
@@ -41,20 +42,37 @@ float GetCapabilityByType(WeightedCapabilities::Type type,
     }
 }
 
-void SetCapabilityByType(WeightedCapabilities::Type type, float value,
+void SetCapabilityByType(WeightedCapabilities::Type type,
+                         WeightedCapabilities::FixedPoint const &value,
                          WeightedCapabilities *capabilities) {
     switch (type) {
     case WeightedCapabilities::CPU:
-        capabilities->set_cpu(value);
+        if (!capabilities->has_cpu() && value.integer_and_fraction() == 0) {
+            break;
+        }
+
+        *capabilities->mutable_cpu() = value;
         break;
     case WeightedCapabilities::RAM:
-        capabilities->set_ram(value);
+        if (!capabilities->has_ram() && value.integer_and_fraction() == 0) {
+            break;
+        }
+
+        *capabilities->mutable_ram() = value;
         break;
     case WeightedCapabilities::STORAGE:
-        capabilities->set_storage(value);
+        if (!capabilities->has_storage() && value.integer_and_fraction() == 0) {
+            break;
+        }
+
+        *capabilities->mutable_storage() = value;
         break;
     case WeightedCapabilities::CORAL:
-        capabilities->set_coral(value);
+        if (!capabilities->has_coral() && value.integer_and_fraction() == 0) {
+            break;
+        }
+
+        *capabilities->mutable_coral() = value;
         break;
     default:
         assert(false);
@@ -65,6 +83,100 @@ std::vector<WeightedCapabilities::Type> WeightedCapabilityTypes() {
     return std::vector<WeightedCapabilities::Type>{
         WeightedCapabilities::CPU, WeightedCapabilities::RAM, WeightedCapabilities::STORAGE,
         WeightedCapabilities::CORAL};
+}
+
+WeightedCapabilities operator+(WeightedCapabilities const &a, WeightedCapabilities const &b) {
+    WeightedCapabilities result;
+    for (auto type : WeightedCapabilityTypes()) {
+        WeightedCapabilities::FixedPoint a_value = GetCapabilityByType(type, a);
+        WeightedCapabilities::FixedPoint b_value = GetCapabilityByType(type, b);
+        SetCapabilityByType(type, a_value + b_value, &result);
+    }
+    return result;
+}
+
+WeightedCapabilities &operator+=(WeightedCapabilities &a, WeightedCapabilities const &b) {
+    a = a + b;
+    return a;
+}
+
+WeightedCapabilities operator-(WeightedCapabilities const &a, WeightedCapabilities const &b) {
+    WeightedCapabilities result;
+    for (auto type : WeightedCapabilityTypes()) {
+        WeightedCapabilities::FixedPoint a_value = GetCapabilityByType(type, a);
+        WeightedCapabilities::FixedPoint b_value = GetCapabilityByType(type, b);
+        SetCapabilityByType(type, a_value - b_value, &result);
+    }
+    return result;
+}
+
+WeightedCapabilities &operator-=(WeightedCapabilities &a, WeightedCapabilities const &b) {
+    a = a - b;
+    return a;
+}
+
+WeightedCapabilities operator-(WeightedCapabilities const &a) {
+    WeightedCapabilities result;
+    for (auto type : WeightedCapabilityTypes()) {
+        WeightedCapabilities::FixedPoint a_value = GetCapabilityByType(type, a);
+        SetCapabilityByType(type, -a_value, &result);
+    }
+    return result;
+}
+
+WeightedCapabilities::FixedPoint CapabilityFixedPointFromFloat(float value) {
+    WeightedCapabilities::FixedPoint fp;
+    fp.set_integer_and_fraction(static_cast<int64_t>(value * 10000.0));
+    return fp;
+}
+
+float ToFloat(WeightedCapabilities::FixedPoint const &value) {
+    return value.integer_and_fraction() / 10000.0;
+}
+
+WeightedCapabilities::FixedPoint operator+(WeightedCapabilities::FixedPoint const &a,
+                                           WeightedCapabilities::FixedPoint const &b) {
+    WeightedCapabilities::FixedPoint result;
+    result.set_integer_and_fraction(a.integer_and_fraction() + b.integer_and_fraction());
+    return result;
+}
+
+WeightedCapabilities::FixedPoint operator-(WeightedCapabilities::FixedPoint const &a,
+                                           WeightedCapabilities::FixedPoint const &b) {
+    WeightedCapabilities::FixedPoint result;
+    result.set_integer_and_fraction(a.integer_and_fraction() - b.integer_and_fraction());
+    return result;
+}
+
+WeightedCapabilities::FixedPoint operator-(WeightedCapabilities::FixedPoint const &a) {
+    WeightedCapabilities::FixedPoint negated;
+    negated.set_integer_and_fraction(-a.integer_and_fraction());
+    return negated;
+}
+
+bool operator<(WeightedCapabilities::FixedPoint const &a,
+               WeightedCapabilities::FixedPoint const &b) {
+    return a.integer_and_fraction() < b.integer_and_fraction();
+}
+
+bool operator<=(WeightedCapabilities::FixedPoint const &a,
+                WeightedCapabilities::FixedPoint const &b) {
+    return a.integer_and_fraction() < b.integer_and_fraction();
+}
+
+bool operator==(WeightedCapabilities::FixedPoint const &a,
+                WeightedCapabilities::FixedPoint const &b) {
+    return a.integer_and_fraction() == b.integer_and_fraction();
+}
+
+bool operator>(WeightedCapabilities::FixedPoint const &a,
+               WeightedCapabilities::FixedPoint const &b) {
+    return a.integer_and_fraction() > b.integer_and_fraction();
+}
+
+bool operator>=(WeightedCapabilities::FixedPoint const &a,
+                WeightedCapabilities::FixedPoint const &b) {
+    return a.integer_and_fraction() >= b.integer_and_fraction();
 }
 
 } // namespace e8

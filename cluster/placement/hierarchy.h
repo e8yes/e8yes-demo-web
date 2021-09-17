@@ -29,6 +29,8 @@
 
 namespace e8 {
 
+constexpr char const *kClusterHierarchyRootLabel = "root";
+
 /**
  * @brief The ClusterHierarchy class Supports a hierarchical (tree) description of a cluster. It
  * divides and groups machines by logical location elements (See ClusterTreeNode::Hierarchy for what
@@ -132,7 +134,7 @@ class ClusterHierarchy {
 
   private:
     void UpdateAllAncestors(ClusterTreeNodeLabel const &node_label, BucketOrMachine const &node,
-                          WeightedCapabilities const &delta);
+                            WeightedCapabilities const &delta);
 
     void RemoveSubtree(ClusterTreeNodeLabel const &node_label);
 

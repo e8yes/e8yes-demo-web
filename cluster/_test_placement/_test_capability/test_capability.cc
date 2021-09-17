@@ -21,27 +21,23 @@
 
 bool AddCapabilitiesTest() {
     e8::WeightedCapabilities a;
-    a.set_cpu(1);
-    a.set_ram(4);
-    a.set_storage(32);
-    a.set_coral(1);
+    *a.mutable_cpu() = e8::CapabilityFixedPointFromFloat(1.0f);
+    *a.mutable_ram() = e8::CapabilityFixedPointFromFloat(4.0f);
+    *a.mutable_storage() = e8::CapabilityFixedPointFromFloat(32.0f);
+    *a.mutable_coral() = e8::CapabilityFixedPointFromFloat(1.0f);
 
     e8::WeightedCapabilities b;
-    b.set_cpu(1);
-    b.set_ram(-2);
-    b.set_storage(0.5f);
-    b.set_coral(0);
+    *b.mutable_cpu() = e8::CapabilityFixedPointFromFloat(1.0f);
+    *b.mutable_ram() = e8::CapabilityFixedPointFromFloat(-2.0f);
+    *b.mutable_storage() = e8::CapabilityFixedPointFromFloat(0.5f);
+    *b.mutable_coral() = e8::CapabilityFixedPointFromFloat(0.0f);
 
-    for (auto type : e8::WeightedCapabilityTypes()) {
-        float a_value = e8::GetCapabilityByType(type, a);
-        float b_value = e8::GetCapabilityByType(type, b);
-        e8::SetCapabilityByType(type, a_value + b_value, &a);
-    }
+    e8::WeightedCapabilities c = a + b;
 
-    TEST_CONDITION(a.cpu() == 2.0f);
-    TEST_CONDITION(a.ram() == 2.0f);
-    TEST_CONDITION(a.storage() == 32.5f);
-    TEST_CONDITION(a.coral() == 1.0f);
+    TEST_CONDITION(e8::ToFloat(c.cpu()) == 2.0f);
+    TEST_CONDITION(e8::ToFloat(c.ram()) == 2.0f);
+    TEST_CONDITION(e8::ToFloat(c.storage()) == 32.5f);
+    TEST_CONDITION(e8::ToFloat(c.coral()) == 1.0f);
 
     return true;
 }
