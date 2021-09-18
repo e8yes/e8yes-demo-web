@@ -127,6 +127,29 @@ void ExportNode(ClusterTreeNodeLabel const &node_label,
     }
 }
 
+void AddNode(ClusterMapRevision::Action const &action, ClusterHierarchy *hierarchy) {
+    assert(action.operation() == ClusterMapRevision::ADD_TREE_NODE);
+
+    if (action.tree_node().has_bucket()) {
+        if (action.node_label() == kClusterHierarchyRootLabel) {
+            std::unique_ptr<BucketInterface> bucket = CreateBucket(
+                action.tree_node().bucket(), std::make_unique<MostDemandingCapabilityScore>());
+            bool added = hierarchy->AddRoot(std::move(bucket));
+            assert(added == true);
+        } else {
+            std::unique_ptr<BucketInterface> bucket = CreateBucket(
+                action.tree_node().bucket(), std::make_unique<MostDemandingCapabilityScore>());
+            bool added = hierarchy->AddBucket(action.parent_label(), action.node_label(),
+                                              action.tree_node().hierarchy(), std::move(bucket));
+            assert(added == true);
+        }
+    } else {
+        assert(action.tree_node().has_machine());
+        hierarchy->AddMachine(action.parent_label(), action.node_label(),
+                              action.tree_node().machine());
+    }
+}
+
 } // namespace
 
 ClusterTreeNodeLabel AllocateClusterTreeNodeLabel() {
@@ -153,6 +176,8 @@ ClusterMap::ClusterMap(ClusterMapData const &cluster_map_data)
     ImportNode(kClusterHierarchyRootLabel, kClusterHierarchyRootLabel,
                cluster_map_data.tree_nodes(), hierarchy_.get());
 }
+
+ClusterMap::ClusterMap(ClusterMap const &other) : ClusterMap(other.ToProto()) {}
 
 ClusterMap::~ClusterMap() {}
 
@@ -262,6 +287,40 @@ std::vector<Machine> ClusterMap::Placement::Emit() const {
                    });
 
     return result;
+}
+
+ClusterMapVersionEpoch ClusterMap::Version() const { return version_; }
+
+bool ClusterMap::Revise(ClusterMapRevision const &revision) {
+    std::lock_guard guard(*mu_);
+
+    if (revision.from_version_epoch() != version_) {
+        // Version mistmatch.
+        return false;
+    }
+
+    assert(revision.to_version_epoch() >= revision.from_version_epoch());
+
+    for (auto const &action : revision.actions()) {
+        switch (action.operation()) {
+        case ClusterMapRevision::ADD_TREE_NODE: {
+            AddNode(action, hierarchy_.get());
+            break;
+        }
+        case ClusterMapRevision::DELETE_TREE_NODE: {
+            bool removed = hierarchy_->Remove(action.node_label());
+            assert(removed == true);
+            break;
+        }
+        case ClusterMapRevision::INVALID_OPERATION:
+        default: {
+            assert(false);
+        }
+        }
+    }
+
+    version_ = revision.to_version_epoch();
+    return true;
 }
 
 ClusterMap::Placement ClusterMap::TakeRootFor(ResourceDescriptor const &resource) const {

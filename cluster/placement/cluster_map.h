@@ -22,6 +22,7 @@
 #include <shared_mutex>
 #include <vector>
 
+#include "cluster/placement/bucket.h"
 #include "cluster/placement/common_types.h"
 #include "cluster/placement/hierarchy.h"
 #include "proto_cc/cluster.pb.h"
@@ -100,7 +101,24 @@ class ClusterMap {
      */
     ClusterMap(ClusterMapData const &cluster_map_data);
 
+    /**
+     * @brief ClusterMap Copy constructor.
+     */
+    ClusterMap(ClusterMap const &other);
+
     ~ClusterMap();
+
+    /**
+     * @brief Version The current cluster map version.
+     */
+    ClusterMapVersionEpoch Version() const;
+
+    /**
+     * @brief Revise Applies revision to the cluster map. If the revision isn't based on the current
+     * version of the cluster map, it returns false. Otherwise, it applies actions from the revision
+     * object to upgrade the cluster map.
+     */
+    bool Revise(ClusterMapRevision const &revision);
 
     /**
      * @brief TakeRoot Constructs a placement object for the specified resource given the current
