@@ -226,11 +226,20 @@ bool TreeBucketTest() {
     return GeneralTest(&bucket, /*test_capability_distribution=*/true);
 }
 
+bool StrawBucketTest() {
+    e8::StrawBucketData data;
+    data.set_weight_function(e8::StrawBucketData::LINEAR);
+
+    e8::StrawBucket bucket(data, std::make_unique<e8::MostDemandingCapabilityScore>());
+    return GeneralTest(&bucket, /*test_capability_distribution=*/true);
+}
+
 int main() {
     e8::BeginTestSuite("placement_bucket");
     e8::RunTest("UniformBucketTest", UniformBucketTest);
     e8::RunTest("ListBucketTest", ListBucketTest);
     e8::RunTest("TreeBucketTest", TreeBucketTest);
+    e8::RunTest("StrawBucketTest", StrawBucketTest);
     e8::EndTestSuite();
     return 0;
 }

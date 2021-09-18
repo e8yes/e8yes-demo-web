@@ -131,10 +131,11 @@ class UniformBucket : public BucketInterface {
 
 /**
  * @brief The ListBucket class A list bucket organizes child elements into a linked list and scans
- * through the list to place a resource. So, it's capable of distributing resources according to
- * children's hardware capabilities. It takes O(n) time to select a child item with n children.
- * Adding children is optimally in terms of resource movement. However, removing children in the
- * middle of the list results in large amount of shuffling. This class isn't thread safe.
+ * through the list (in the worst case) to place a resource. So, it's capable of distributing
+ * resources according to children's hardware capabilities. It takes O(n) time to select a child
+ * item with n children. Adding children is optimally in terms of resource movement. However,
+ * removing children in the middle of the list results in large amount of shuffling. This class
+ * isn't thread safe.
  */
 class ListBucket : public BucketInterface {
   public:
@@ -331,6 +332,46 @@ class TreeBucket : public BucketInterface {
     std::unique_ptr<CapabilityScoreInterface> scorer_;
     std::unique_ptr<Node> root_;
     unsigned depth_;
+};
+
+/**
+ * @brief The StrawBucket class A straw bucket views each child element as a straw with length
+ * proportional to its hardware capabilities with respect to a resource. The straw's actual length
+ * is perturbed by a deterministic pseudo-random variable. The longest straw gets picked up. The
+ * selection performance is low because it always has to scan through all the straw to compute the
+ * straw lengths to figure out which one is the longest. However, adding and removing child element
+ * results in minimal resource movement.
+ */
+class StrawBucket : public BucketInterface {
+  public:
+    /**
+     * @brief StrawBucket Constructs a straw bucket from the StrawBucketData proto and a custom
+     * scorer. The scorer helps convert children's capabilities with respect to a particular
+     * resource to a distribution which the Select() function places a resource pseudo-randomly
+     * with.
+     */
+    StrawBucket(StrawBucketData const &data, std::unique_ptr<CapabilityScoreInterface> &&scorer);
+    ~StrawBucket();
+
+    std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource, unsigned rank,
+                                               unsigned num_failures) const override;
+
+    bool AddChild(ClusterTreeNodeLabel const &child_label) override;
+
+    bool RemoveChild(ClusterTreeNodeLabel const &child_label) override;
+
+    std::vector<Child> Children() const override;
+
+    void AddCapabilitiesFor(ClusterTreeNodeLabel const &child_label,
+                            WeightedCapabilities const &delta) override;
+
+    Bucket ToProto() const override;
+
+  private:
+    std::unique_ptr<CapabilityScoreInterface> scorer_;
+    StrawBucketData::WeightFunction weight_function_;
+    std::vector<ClusterTreeNodeLabel> child_labels_;
+    std::vector<WeightedCapabilities> children_capabilities_;
 };
 
 /**
