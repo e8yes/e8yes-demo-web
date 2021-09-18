@@ -136,7 +136,7 @@ std::optional<ClusterTreeNodeLabel> ListBucket::Select(ResourceDescriptor const 
 
     std::vector<float> scores = scorer_->Score(children_capabilities_, resource);
     if (scores.empty()) {
-        // None of the children is able to satisfy the resource.
+        // None of the children is able to satisfy with the resource's requirement.
         return std::nullopt;
     }
 
@@ -458,6 +458,7 @@ std::optional<ClusterTreeNodeLabel> TreeBucket::Select(ResourceDescriptor const 
                                                         current_node->RightChild()->Capabilities()},
                                                        resource);
             if (scores.empty()) {
+                // None of the children is able to satisfy with the resource's requirement.
                 return std::nullopt;
             }
 
@@ -575,15 +576,15 @@ std::optional<ClusterTreeNodeLabel> StrawBucket::Select(ResourceDescriptor const
 
     std::vector<float> scores = scorer_->Score(children_capabilities_, resource);
     if (scores.empty()) {
-        // None of the children is able to satisfy the resource.
+        // None of the children is able to satisfy with the resource's requirement.
         return std::nullopt;
     }
 
     std::string jumps = std::to_string(rank + num_failures);
     std::string key_and_jumps = resource.key + jumps;
 
-    // Let the straws (random variables scaled by the capability scores) competes against each
-    // other. The longest straw gets selected.
+    // Let the straws (random variables scaled by capability scores) compete against each other.
+    // The longest straw gets selected.
     unsigned longest_straw = 0;
     float max_straw_length = 0.0f;
     for (unsigned i = 0; i < scores.size(); ++i) {
