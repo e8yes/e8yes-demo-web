@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "cluster/placement/bucket.h"
+#include "cluster/placement/bucket_uniform.h"
 #include "cluster/placement/capability.h"
 #include "cluster/placement/hierarchy.h"
 #include "common/unit_test_util/unit_test_util.h"

@@ -20,6 +20,10 @@
 #include <unordered_set>
 
 #include "cluster/placement/bucket.h"
+#include "cluster/placement/bucket_list.h"
+#include "cluster/placement/bucket_straw.h"
+#include "cluster/placement/bucket_tree.h"
+#include "cluster/placement/bucket_uniform.h"
 #include "cluster/placement/capability.h"
 #include "cluster/placement/cluster_map.h"
 #include "cluster/placement/common_types.h"

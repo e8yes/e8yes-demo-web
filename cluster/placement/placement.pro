@@ -19,6 +19,10 @@ INCLUDEPATH += ../../
 
 SOURCES += \
     bucket.cc \
+    bucket_list.cc \
+    bucket_straw.cc \
+    bucket_tree.cc \
+    bucket_uniform.cc \
     capability.cc \
     cluster_map.cc \
     hierarchy.cc \
@@ -26,6 +30,10 @@ SOURCES += \
 
 HEADERS += \
     bucket.h \
+    bucket_list.h \
+    bucket_straw.h \
+    bucket_tree.h \
+    bucket_uniform.h \
     capability.h \
     cluster_map.h \
     common_types.h \

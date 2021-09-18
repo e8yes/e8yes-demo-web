@@ -5,6 +5,7 @@ SUBDIRS = \
     proto_cc/proto_cc.pro \
     common/common.pro \
     replication/replication.pro \
+    cluster/cluster.pro \
     distributor/distributor.pro \
     postgres/postgres.pro \
     keygen/keygenw.pro \
