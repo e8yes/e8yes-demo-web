@@ -117,6 +117,12 @@ bool operator==(WeightedCapabilities::FixedPoint const &a,
                 WeightedCapabilities::FixedPoint const &b);
 
 /**
+ * @brief operator != Compares if a is different from b in fixed point.
+ */
+bool operator!=(WeightedCapabilities::FixedPoint const &a,
+                WeightedCapabilities::FixedPoint const &b);
+
+/**
  * @brief operator > Compares if a is greater than b in fixed point.
  */
 bool operator>(WeightedCapabilities::FixedPoint const &a,

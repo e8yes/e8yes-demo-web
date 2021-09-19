@@ -161,12 +161,17 @@ bool operator<(WeightedCapabilities::FixedPoint const &a,
 
 bool operator<=(WeightedCapabilities::FixedPoint const &a,
                 WeightedCapabilities::FixedPoint const &b) {
-    return a.integer_and_fraction() < b.integer_and_fraction();
+    return a.integer_and_fraction() <= b.integer_and_fraction();
 }
 
 bool operator==(WeightedCapabilities::FixedPoint const &a,
                 WeightedCapabilities::FixedPoint const &b) {
     return a.integer_and_fraction() == b.integer_and_fraction();
+}
+
+bool operator!=(WeightedCapabilities::FixedPoint const &a,
+                WeightedCapabilities::FixedPoint const &b) {
+    return !(a == b);
 }
 
 bool operator>(WeightedCapabilities::FixedPoint const &a,
