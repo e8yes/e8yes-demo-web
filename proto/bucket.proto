@@ -79,7 +79,4 @@ message Bucket {
     // Visitor to this bucket must only require a subset of the supported name
     // spaces to access the children.
     repeated string suppported_name_spaces = 5;
-
-    // The summed capability weights of all children.
-    WeightedCapabilities capabilities = 6;
 }
