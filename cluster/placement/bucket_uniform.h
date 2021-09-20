@@ -18,6 +18,7 @@
 #ifndef PLACEMENT_BUCKET_UNIFORM_H
 #define PLACEMENT_BUCKET_UNIFORM_H
 
+#include <google/protobuf/repeated_field.h>
 #include <optional>
 #include <vector>
 
@@ -36,7 +37,9 @@ namespace e8 {
  */
 class UniformBucket : public BucketInterface {
   public:
-    UniformBucket(UniformBucketData const &data);
+    UniformBucket(
+        UniformBucketData const &data,
+        google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces);
     ~UniformBucket() override;
 
     std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource, unsigned rank,

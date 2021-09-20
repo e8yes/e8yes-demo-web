@@ -19,6 +19,7 @@
 #define PLACEMENT_COMMON_TYPES
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -31,6 +32,9 @@ using ResourceKey = std::string;
 
 // The unique label of either a bucket or machine.
 using ClusterTreeNodeLabel = std::string;
+
+// For specifying what set of namespaces a tree node belongs to.
+using ClusterTreeNodeNamespace = std::string;
 
 // The replica number of a particular resource. The 0th replica is the original copy. Negative ranks
 // are reserved for error indication.
@@ -45,6 +49,10 @@ struct ResourceDescriptor {
     // The key of the resource. It must be unique among all resource workers within the cluster
     // that manages this type of resource.
     ResourceKey const key;
+
+    // Which namespace of a cluster does this resource belong to if specified, otherwse, the
+    // placement algorithm is allowed to place this resource anywhere in a cluster.
+    std::optional<ClusterTreeNodeNamespace> name_space;
 
     // The hardware capabilities this resource requires.
     WeightedCapabilities required_capabilities;

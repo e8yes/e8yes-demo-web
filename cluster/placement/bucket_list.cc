@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cassert>
 #include <functional>
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <optional>
 #include <string>
@@ -38,10 +39,12 @@ bool EnterWithProbability(size_t hash, float p) { return hash % 16384 < p * 1638
 
 } // namespace
 
-ListBucket::ListBucket(ListBucketData const &data,
-                       std::unique_ptr<CapabilityScoreInterface> &&scorer)
-    : child_labels_(data.child_labels_size()), children_capabilities_(data.child_labels_size()),
-      scorer_(std::move(scorer)) {
+ListBucket::ListBucket(
+    ListBucketData const &data,
+    google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces,
+    std::unique_ptr<CapabilityScoreInterface> &&scorer)
+    : BucketInterface(supported_namespaces), child_labels_(data.child_labels_size()),
+      children_capabilities_(data.child_labels_size()), scorer_(std::move(scorer)) {
 
     for (int i = 0; i < data.child_labels_size(); ++i) {
         child_labels_[i] = data.child_labels()[i];
@@ -52,6 +55,10 @@ ListBucket::~ListBucket() {}
 
 std::optional<ClusterTreeNodeLabel> ListBucket::Select(ResourceDescriptor const &resource,
                                                        unsigned rank, unsigned num_failures) const {
+    if (!this->SupportNameSpace(resource.name_space)) {
+        return std::nullopt;
+    }
+
     if (child_labels_.empty()) {
         return std::nullopt;
     }

@@ -18,6 +18,7 @@
 #ifndef PLACEMENT_BUCKET_STRAW_H
 #define PLACEMENT_BUCKET_STRAW_H
 
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <optional>
 #include <vector>
@@ -46,7 +47,10 @@ class StrawBucket : public BucketInterface {
      * resource to a distribution which the Select() function places a resource pseudo-randomly
      * with.
      */
-    StrawBucket(StrawBucketData const &data, std::unique_ptr<CapabilityScoreInterface> &&scorer);
+    StrawBucket(
+        StrawBucketData const &data,
+        google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces,
+        std::unique_ptr<CapabilityScoreInterface> &&scorer);
     ~StrawBucket();
 
     std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource, unsigned rank,

@@ -18,6 +18,7 @@
 #ifndef PLACEMENT_BUCKET_LIST_H
 #define PLACEMENT_BUCKET_LIST_H
 
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <optional>
 #include <vector>
@@ -45,7 +46,10 @@ class ListBucket : public BucketInterface {
      * The scorer helps convert children's capabilities with respect to a particular resource to a
      * distribution which the Select() function places a resource pseudo-randomly with.
      */
-    ListBucket(ListBucketData const &data, std::unique_ptr<CapabilityScoreInterface> &&scorer);
+    ListBucket(
+        ListBucketData const &data,
+        google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces,
+        std::unique_ptr<CapabilityScoreInterface> &&scorer);
     ~ListBucket() override;
 
     std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource, unsigned rank,

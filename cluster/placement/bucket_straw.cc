@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cassert>
 #include <functional>
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <optional>
 #include <string>
@@ -33,10 +34,13 @@
 
 namespace e8 {
 
-StrawBucket::StrawBucket(StrawBucketData const &data,
-                         std::unique_ptr<CapabilityScoreInterface> &&scorer)
-    : scorer_(std::move(scorer)), weight_function_(data.weight_function()),
-      child_labels_(data.child_labels_size()), children_capabilities_(data.child_labels_size()) {
+StrawBucket::StrawBucket(
+    StrawBucketData const &data,
+    google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces,
+    std::unique_ptr<CapabilityScoreInterface> &&scorer)
+    : BucketInterface(supported_namespaces), scorer_(std::move(scorer)),
+      weight_function_(data.weight_function()), child_labels_(data.child_labels_size()),
+      children_capabilities_(data.child_labels_size()) {
 
     for (auto const &child_label : data.child_labels()) {
         child_labels_.push_back(child_label);
@@ -48,6 +52,10 @@ StrawBucket::~StrawBucket() {}
 std::optional<ClusterTreeNodeLabel> StrawBucket::Select(ResourceDescriptor const &resource,
                                                         unsigned rank,
                                                         unsigned num_failures) const {
+    if (!this->SupportNameSpace(resource.name_space)) {
+        return std::nullopt;
+    }
+
     if (child_labels_.empty()) {
         return std::nullopt;
     }

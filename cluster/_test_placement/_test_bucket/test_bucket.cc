@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <optional>
 #include <unordered_set>
@@ -31,6 +32,8 @@
 #include "proto_cc/bucket.pb.h"
 
 namespace {
+
+constexpr char const *kDefaultNameSpace = "default";
 
 /**
  * @brief WillSelect Records all the nodes we have visisted from the bucket by placing the specified
@@ -70,6 +73,10 @@ bool GeneralTest(e8::BucketInterface *bucket, bool test_capability_distribution)
         e8::CapabilityFixedPointFromFloat(4.0f);
 
     e8::ResourceDescriptor dont_care_resource(/*key=*/"e");
+    dont_care_resource.name_space = kDefaultNameSpace;
+
+    e8::ResourceDescriptor out_of_name_space_resource(/*key=*/"d");
+    out_of_name_space_resource.name_space = "no_such_name_space";
 
     // The bucket should be empty at this moment.
     std::optional<e8::ClusterTreeNodeLabel> child =
@@ -159,9 +166,13 @@ bool GeneralTest(e8::BucketInterface *bucket, bool test_capability_distribution)
         TEST_CONDITION(*child == coral_node);
     }
 
-    // Checks if the bucket iterates through all nodes by repeatedly placing a don't-care-resource.
+    // Checks if the bucket rejects an out-of-name-space resource.
     std::unordered_set<e8::ClusterTreeNodeLabel> selected =
-        WillSelect(dont_care_resource, bucket, /*max_failure_tolerance=*/4 * 4);
+        WillSelect(out_of_name_space_resource, bucket, /*max_failure_tolerance=*/4 * 4);
+    TEST_CONDITION(selected.empty());
+
+    // Checks if the bucket iterates through all nodes by repeatedly placing a don't-care-resource.
+    selected = WillSelect(dont_care_resource, bucket, /*max_failure_tolerance=*/4 * 4);
     TEST_CONDITION(selected.size() == 4);
     TEST_CONDITION(selected.find(high_performance_cpu_node) != selected.end());
     TEST_CONDITION(selected.find(high_ram_capacity_node) != selected.end());
@@ -212,21 +223,32 @@ bool UniformBucketTest() {
     e8::UniformBucketData data;
     data.set_prime(13);
 
-    e8::UniformBucket bucket(data);
+    google::protobuf::RepeatedPtrField<e8::ClusterTreeNodeNamespace> supported_name_space;
+    supported_name_space.Add(kDefaultNameSpace);
+
+    e8::UniformBucket bucket(data, supported_name_space);
     return GeneralTest(&bucket, /*test_capability_distribution=*/false);
 }
 
 bool ListBucketTest() {
     e8::ListBucketData data;
 
-    e8::ListBucket bucket(data, std::make_unique<e8::MostDemandingCapabilityScore>());
+    google::protobuf::RepeatedPtrField<e8::ClusterTreeNodeNamespace> supported_name_space;
+    supported_name_space.Add(kDefaultNameSpace);
+
+    e8::ListBucket bucket(data, supported_name_space,
+                          std::make_unique<e8::MostDemandingCapabilityScore>());
     return GeneralTest(&bucket, /*test_capability_distribution=*/true);
 }
 
 bool TreeBucketTest() {
     e8::TreeBucketData data;
 
-    e8::TreeBucket bucket(data, std::make_unique<e8::MostDemandingCapabilityScore>());
+    google::protobuf::RepeatedPtrField<e8::ClusterTreeNodeNamespace> supported_name_space;
+    supported_name_space.Add(kDefaultNameSpace);
+
+    e8::TreeBucket bucket(data, supported_name_space,
+                          std::make_unique<e8::MostDemandingCapabilityScore>());
     return GeneralTest(&bucket, /*test_capability_distribution=*/true);
 }
 
@@ -234,7 +256,11 @@ bool StrawBucketTest() {
     e8::StrawBucketData data;
     data.set_weight_function(e8::StrawBucketData::LINEAR);
 
-    e8::StrawBucket bucket(data, std::make_unique<e8::MostDemandingCapabilityScore>());
+    google::protobuf::RepeatedPtrField<e8::ClusterTreeNodeNamespace> supported_name_space;
+    supported_name_space.Add(kDefaultNameSpace);
+
+    e8::StrawBucket bucket(data, supported_name_space,
+                           std::make_unique<e8::MostDemandingCapabilityScore>());
     return GeneralTest(&bucket, /*test_capability_distribution=*/true);
 }
 

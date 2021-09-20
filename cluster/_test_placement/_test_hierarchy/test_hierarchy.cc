@@ -15,19 +15,30 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <vector>
 
 #include "cluster/placement/bucket.h"
 #include "cluster/placement/bucket_uniform.h"
 #include "cluster/placement/capability.h"
+#include "cluster/placement/common_types.h"
 #include "cluster/placement/hierarchy.h"
 #include "common/unit_test_util/unit_test_util.h"
 #include "proto_cc/bucket.pb.h"
 #include "proto_cc/machine.pb.h"
 
+namespace {
+
+constexpr char const *kDefaultNameSpace = "default";
+
+} // namespace
+
 bool OneLayerTest() {
     e8::ClusterHierarchy hierarchy;
+
+    google::protobuf::RepeatedPtrField<e8::ClusterTreeNodeNamespace> supported_name_spaces;
+    supported_name_spaces.Add(kDefaultNameSpace);
 
     // There are 4 machines.
     e8::Machine machine1;
@@ -63,10 +74,12 @@ bool OneLayerTest() {
     *root_bucket_proto.add_child_labels() = "machine3";
     *root_bucket_proto.add_child_labels() = "machine4";
 
-    bool added = hierarchy.AddRoot(std::make_unique<e8::UniformBucket>(root_bucket_proto));
+    bool added = hierarchy.AddRoot(
+        std::make_unique<e8::UniformBucket>(root_bucket_proto, supported_name_spaces));
     TEST_CONDITION(added == true);
 
-    added = hierarchy.AddRoot(std::make_unique<e8::UniformBucket>(root_bucket_proto));
+    added = hierarchy.AddRoot(
+        std::make_unique<e8::UniformBucket>(root_bucket_proto, supported_name_spaces));
     TEST_CONDITION(added == false);
 
     added = hierarchy.AddMachine(/*parent_label=*/"root", /*node_label=*/"machine1", machine1);
@@ -163,6 +176,9 @@ bool OneLayerTest() {
 bool MultiLayerTest() {
     e8::ClusterHierarchy hierarchy;
 
+    google::protobuf::RepeatedPtrField<e8::ClusterTreeNodeNamespace> supported_name_spaces;
+    supported_name_spaces.Add(kDefaultNameSpace);
+
     // There are 4 machines.
     e8::Machine machine1;
     machine1.set_address("192.168.1.1");
@@ -211,16 +227,19 @@ bool MultiLayerTest() {
     *row2_bucket_proto.add_child_labels() = "machine3";
     *row2_bucket_proto.add_child_labels() = "machine4";
 
-    bool added = hierarchy.AddRoot(std::make_unique<e8::UniformBucket>(root_bucket_proto));
+    bool added = hierarchy.AddRoot(
+        std::make_unique<e8::UniformBucket>(root_bucket_proto, supported_name_spaces));
     TEST_CONDITION(added == true);
 
-    added = hierarchy.AddBucket(/*parent_label=*/"root", /*node_label=*/"row1",
-                                /*hierarchy=*/e8::ClusterTreeNode::ROW,
-                                std::make_unique<e8::UniformBucket>(row1_bucket_proto));
+    added = hierarchy.AddBucket(
+        /*parent_label=*/"root", /*node_label=*/"row1",
+        /*hierarchy=*/e8::ClusterTreeNode::ROW,
+        std::make_unique<e8::UniformBucket>(row1_bucket_proto, supported_name_spaces));
     TEST_CONDITION(added == true);
-    added = hierarchy.AddBucket(/*parent_label=*/"root", /*node_label=*/"row2",
-                                /*hierarchy=*/e8::ClusterTreeNode::ROW,
-                                std::make_unique<e8::UniformBucket>(row2_bucket_proto));
+    added = hierarchy.AddBucket(
+        /*parent_label=*/"root", /*node_label=*/"row2",
+        /*hierarchy=*/e8::ClusterTreeNode::ROW,
+        std::make_unique<e8::UniformBucket>(row2_bucket_proto, supported_name_spaces));
     TEST_CONDITION(added == true);
 
     added = hierarchy.AddMachine(/*parent_label=*/"row1", /*node_label=*/"machine1", machine1);
@@ -233,16 +252,19 @@ bool MultiLayerTest() {
     TEST_CONDITION(added == true);
 
     // Double adding.
-    added = hierarchy.AddRoot(std::make_unique<e8::UniformBucket>(root_bucket_proto));
+    added = hierarchy.AddRoot(
+        std::make_unique<e8::UniformBucket>(root_bucket_proto, supported_name_spaces));
     TEST_CONDITION(added == false);
 
-    added = hierarchy.AddBucket(/*parent_label=*/"root", /*node_label=*/"row1",
-                                /*hierarchy=*/e8::ClusterTreeNode::ROW,
-                                std::make_unique<e8::UniformBucket>(row1_bucket_proto));
+    added = hierarchy.AddBucket(
+        /*parent_label=*/"root", /*node_label=*/"row1",
+        /*hierarchy=*/e8::ClusterTreeNode::ROW,
+        std::make_unique<e8::UniformBucket>(row1_bucket_proto, supported_name_spaces));
     TEST_CONDITION(added == false);
-    added = hierarchy.AddBucket(/*parent_label=*/"root", /*node_label=*/"row2",
-                                /*hierarchy=*/e8::ClusterTreeNode::ROW,
-                                std::make_unique<e8::UniformBucket>(row2_bucket_proto));
+    added = hierarchy.AddBucket(
+        /*parent_label=*/"root", /*node_label=*/"row2",
+        /*hierarchy=*/e8::ClusterTreeNode::ROW,
+        std::make_unique<e8::UniformBucket>(row2_bucket_proto, supported_name_spaces));
     TEST_CONDITION(added == false);
 
     added = hierarchy.AddMachine(/*parent_label=*/"row1", /*node_label=*/"machine1", machine1);

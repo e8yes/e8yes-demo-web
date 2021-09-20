@@ -18,6 +18,7 @@
 #ifndef PLACEMENT_BUCKET_TREE_H
 #define PLACEMENT_BUCKET_TREE_H
 
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <optional>
 #include <string>
@@ -46,7 +47,10 @@ class TreeBucket : public BucketInterface {
      * resource to a distribution which the Select() function places a resource pseudo-randomly
      * with.
      */
-    TreeBucket(TreeBucketData const &data, std::unique_ptr<CapabilityScoreInterface> &&scorer);
+    TreeBucket(
+        TreeBucketData const &data,
+        google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces,
+        std::unique_ptr<CapabilityScoreInterface> &&scorer);
     ~TreeBucket();
 
     std::optional<ClusterTreeNodeLabel> Select(ResourceDescriptor const &resource, unsigned rank,

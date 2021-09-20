@@ -18,9 +18,11 @@
 #ifndef PLACEMENT_BUCKET_H
 #define PLACEMENT_BUCKET_H
 
+#include <google/protobuf/repeated_field.h>
 #include <list>
 #include <memory>
 #include <optional>
+#include <unordered_set>
 #include <vector>
 
 #include "cluster/placement/common_types.h"
@@ -46,7 +48,12 @@ class BucketInterface {
         WeightedCapabilities capabilities;
     };
 
-    BucketInterface();
+    /**
+     * @brief BucketInterface
+     * @param supported_namespaces
+     */
+    BucketInterface(
+        google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces);
     virtual ~BucketInterface();
 
     /**
@@ -96,6 +103,15 @@ class BucketInterface {
      * @brief ToProto Exports the bucket data structure as a Bucket proto.
      */
     virtual Bucket ToProto() const = 0;
+
+  protected:
+    /**
+     * @brief SupportNamespace
+     */
+    bool SupportNameSpace(std::optional<ClusterTreeNodeNamespace> const &name_space) const;
+
+  private:
+    std::unordered_set<ClusterTreeNodeNamespace> supported_names_paces_;
 };
 
 /**

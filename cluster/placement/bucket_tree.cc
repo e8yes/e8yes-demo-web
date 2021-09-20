@@ -17,6 +17,7 @@
 
 #include <cassert>
 #include <functional>
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <optional>
 #include <string>
@@ -136,9 +137,12 @@ TreeBucket::Node const *TreeBucket::Node::LeftChild() const { return left.get();
 
 TreeBucket::Node const *TreeBucket::Node::RightChild() const { return right.get(); }
 
-TreeBucket::TreeBucket(TreeBucketData const &data,
-                       std::unique_ptr<CapabilityScoreInterface> &&scorer)
-    : scorer_(std::move(scorer)), root_(std::make_unique<Node>()), depth_(0) {
+TreeBucket::TreeBucket(
+    TreeBucketData const &data,
+    google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces,
+    std::unique_ptr<CapabilityScoreInterface> &&scorer)
+    : BucketInterface(supported_namespaces), scorer_(std::move(scorer)),
+      root_(std::make_unique<Node>()), depth_(0) {
 
     for (auto const &child_label : data.child_labels()) {
         bool added = this->AddChild(child_label);
@@ -238,6 +242,10 @@ TreeBucket::Node *TreeBucket::EmptyNodeFrom(Node *subtree_root) {
 
 std::optional<ClusterTreeNodeLabel> TreeBucket::Select(ResourceDescriptor const &resource,
                                                        unsigned rank, unsigned num_failures) const {
+    if (!this->SupportNameSpace(resource.name_space)) {
+        return std::nullopt;
+    }
+
     if (root_->ExternalNodeCount() == 0) {
         return std::nullopt;
     }

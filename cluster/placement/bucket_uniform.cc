@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cassert>
 #include <functional>
+#include <google/protobuf/repeated_field.h>
 #include <optional>
 #include <string>
 #include <vector>
@@ -31,7 +32,10 @@
 
 namespace e8 {
 
-UniformBucket::UniformBucket(UniformBucketData const &data) : prime_(data.prime()) {
+UniformBucket::UniformBucket(
+    UniformBucketData const &data,
+    google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_namespaces)
+    : BucketInterface(supported_namespaces), prime_(data.prime()) {
     for (auto const &child_label : data.child_labels()) {
         children_.push_back(Child(child_label, WeightedCapabilities()));
     }
@@ -42,6 +46,10 @@ UniformBucket::~UniformBucket() {}
 std::optional<ClusterTreeNodeLabel> UniformBucket::Select(ResourceDescriptor const &resource,
                                                           unsigned rank,
                                                           unsigned num_failures) const {
+    if (!this->SupportNameSpace(resource.name_space)) {
+        return std::nullopt;
+    }
+
     if (children_.empty()) {
         return std::nullopt;
     }

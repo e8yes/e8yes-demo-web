@@ -16,9 +16,11 @@
  */
 
 #include <cassert>
+#include <google/protobuf/repeated_field.h>
 #include <list>
 #include <memory>
 #include <optional>
+#include <unordered_set>
 #include <vector>
 
 #include "cluster/placement/bucket.h"
@@ -37,24 +39,36 @@ BucketInterface::Child::Child(ClusterTreeNodeLabel const &label,
                               WeightedCapabilities const &capabilities)
     : label(label), capabilities(capabilities) {}
 
-BucketInterface::BucketInterface() {}
+BucketInterface::BucketInterface(
+    google::protobuf::RepeatedPtrField<ClusterTreeNodeNamespace> const &supported_name_spaces)
+    : supported_names_paces_(supported_name_spaces.begin(), supported_name_spaces.end()) {}
 
 BucketInterface::~BucketInterface() {}
+
+bool BucketInterface::SupportNameSpace(
+    std::optional<ClusterTreeNodeNamespace> const &name_space) const {
+    return !name_space.has_value() ||
+           supported_names_paces_.find(*name_space) != supported_names_paces_.end();
+}
 
 std::unique_ptr<BucketInterface> CreateBucket(Bucket const &proto,
                                               std::unique_ptr<CapabilityScoreInterface> &&scorer) {
     switch (proto.children_case()) {
     case Bucket::ChildrenCase::kUniformBucket: {
-        return std::make_unique<UniformBucket>(proto.uniform_bucket());
+        return std::make_unique<UniformBucket>(proto.uniform_bucket(),
+                                               proto.suppported_name_spaces());
     }
     case Bucket::ChildrenCase::kListBucket: {
-        return std::make_unique<ListBucket>(proto.list_bucket(), std::move(scorer));
+        return std::make_unique<ListBucket>(proto.list_bucket(), proto.suppported_name_spaces(),
+                                            std::move(scorer));
     }
     case Bucket::ChildrenCase::kTreeBucket: {
-        return std::make_unique<TreeBucket>(proto.tree_bucket(), std::move(scorer));
+        return std::make_unique<TreeBucket>(proto.tree_bucket(), proto.suppported_name_spaces(),
+                                            std::move(scorer));
     }
     case Bucket::ChildrenCase::kStrawBucket: {
-        return std::make_unique<StrawBucket>(proto.straw_bucket(), std::move(scorer));
+        return std::make_unique<StrawBucket>(proto.straw_bucket(), proto.suppported_name_spaces(),
+                                             std::move(scorer));
     }
     case Bucket::ChildrenCase::CHILDREN_NOT_SET:
     default: {
