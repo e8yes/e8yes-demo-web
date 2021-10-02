@@ -19,9 +19,7 @@
 #include <cassert>
 #include <google/protobuf/map.h>
 #include <memory>
-#include <mutex>
 #include <optional>
-#include <shared_mutex>
 #include <unordered_map>
 #include <utility>
 
@@ -47,19 +45,6 @@ struct UuidState {
 };
 
 UuidState gUuidState;
-
-class SharedLockGuard {
-  public:
-    SharedLockGuard(std::shared_mutex &mu);
-    ~SharedLockGuard();
-
-  private:
-    std::shared_mutex &mu_;
-};
-
-SharedLockGuard::SharedLockGuard(std::shared_mutex &mu) : mu_(mu) { mu_.lock_shared(); }
-
-SharedLockGuard::~SharedLockGuard() { mu_.unlock_shared(); }
 
 ClusterHierarchy::BucketOrMachine const *CreateNode(ClusterTreeNodeLabel const &node_label,
                                                     ClusterTreeNodeLabel const &parent_label,
@@ -127,6 +112,21 @@ void ExportNode(ClusterTreeNodeLabel const &node_label,
     }
 }
 
+void ExportMachines(ClusterHierarchy::BucketOrMachine const &node,
+                    ClusterHierarchy const &hierarchy, std::vector<Machine> *machines) {
+    if (node.machine.has_value()) {
+        machines->push_back(*node.machine);
+        return;
+    }
+
+    assert(node.bucket != nullptr);
+
+    for (auto const &child : node.bucket->Children()) {
+        ClusterHierarchy::BucketOrMachine const *child_node = hierarchy.Node(child.label);
+        ExportMachines(*child_node, hierarchy, machines);
+    }
+}
+
 void AddNode(ClusterMapRevision::Action const &action, ClusterHierarchy *hierarchy) {
     assert(action.operation() == ClusterMapRevision::ADD_TREE_NODE);
 
@@ -162,29 +162,26 @@ ClusterTreeNodeLabel AllocateClusterTreeNodeLabel() {
     return ClusterTreeNodeLabel(uuid_string);
 }
 
-ClusterMap::ClusterMap()
-    : version_(ClusterMapVersionEpoch()), hierarchy_(std::make_unique<ClusterHierarchy>()),
-      mu_(std::make_unique<std::shared_mutex>()) {}
+ClusterMap::ClusterMap() : version_(ClusterMapVersionEpoch()) {}
 
 ClusterMap::ClusterMap(ClusterMapData const &cluster_map_data)
-    : version_(cluster_map_data.version_epoch()), hierarchy_(std::make_unique<ClusterHierarchy>()),
-      mu_(std::make_unique<std::shared_mutex>()) {
+    : version_(cluster_map_data.version_epoch()) {
     if (cluster_map_data.tree_nodes().empty()) {
         return;
     }
 
     ImportNode(kClusterHierarchyRootLabel, kClusterHierarchyRootLabel,
-               cluster_map_data.tree_nodes(), hierarchy_.get());
+               cluster_map_data.tree_nodes(), &hierarchy_);
 }
 
 ClusterMap::ClusterMap(ClusterMap const &other) : ClusterMap(other.ToProto()) {}
 
 ClusterMap::~ClusterMap() {}
 
-ClusterMap::Placement::Placement(ResourceDescriptor const &resource, ClusterHierarchy *hierarchy,
-                                 std::shared_mutex *mu)
-    : resource_(resource), hierarchy_(hierarchy), mu_(mu), sink_({hierarchy->Root()}),
-      error_(hierarchy->Root() == nullptr) {}
+ClusterMap::Placement::Placement(ResourceDescriptor const &resource,
+                                 ClusterHierarchy const &hierarchy)
+    : resource_(resource), hierarchy_(hierarchy), sink_({hierarchy.Root()}),
+      error_(hierarchy.Root() == nullptr) {}
 
 ClusterMap::Placement::~Placement() {}
 
@@ -196,7 +193,7 @@ bool ClusterMap::Placement::DescentFrom(
     unsigned num_failures = 0;
     unsigned num_bucket_failures = 0;
 
-    while (num_failures < kMaxFailureFactor * hierarchy_->NodeCount()) {
+    while (num_failures < kMaxFailureFactor * hierarchy_.NodeCount()) {
         std::optional<ClusterTreeNodeLabel> child_label =
             current_bucket->Select(resource, rank, num_failures);
         if (!child_label.has_value()) {
@@ -207,7 +204,7 @@ bool ClusterMap::Placement::DescentFrom(
             continue;
         }
 
-        ClusterHierarchy::BucketOrMachine const *child_node = hierarchy_->Node(*child_label);
+        ClusterHierarchy::BucketOrMachine const *child_node = hierarchy_.Node(*child_label);
 
         if (child_node->hierarchy < hierarchy) {
             // The current hierarchy is too coarse. Continue descent.
@@ -272,8 +269,6 @@ ClusterMap::Placement &ClusterMap::Placement::Select(ClusterTreeNode::Hierarchy 
 }
 
 std::vector<Machine> ClusterMap::Placement::Emit() const {
-    mu_->unlock_shared(); // Locked by the TakeRootFor() call.
-
     if (error_) {
         return std::vector<Machine>();
     }
@@ -292,8 +287,6 @@ std::vector<Machine> ClusterMap::Placement::Emit() const {
 ClusterMapVersionEpoch ClusterMap::Version() const { return version_; }
 
 bool ClusterMap::Revise(ClusterMapRevision const &revision) {
-    std::lock_guard guard(*mu_);
-
     if (revision.from_version_epoch() != version_) {
         // Version mistmatch.
         return false;
@@ -304,11 +297,11 @@ bool ClusterMap::Revise(ClusterMapRevision const &revision) {
     for (auto const &action : revision.actions()) {
         switch (action.operation()) {
         case ClusterMapRevision::ADD_TREE_NODE: {
-            AddNode(action, hierarchy_.get());
+            AddNode(action, &hierarchy_);
             break;
         }
         case ClusterMapRevision::DELETE_TREE_NODE: {
-            bool removed = hierarchy_->Remove(action.node_label());
+            bool removed = hierarchy_.Remove(action.node_label());
             assert(removed == true);
             break;
         }
@@ -323,20 +316,22 @@ bool ClusterMap::Revise(ClusterMapRevision const &revision) {
     return true;
 }
 
-ClusterMap::Placement ClusterMap::TakeRootFor(ResourceDescriptor const &resource) const {
-    mu_->lock_shared(); // Unlocks when the Emit() function is called.
+std::vector<Machine> ClusterMap::Machines() const {
+    std::vector<Machine> machines;
+    ExportMachines(*hierarchy_.Root(), hierarchy_, &machines);
+    return machines;
+}
 
-    return Placement(resource, hierarchy_.get(), mu_.get());
+ClusterMap::Placement ClusterMap::TakeRootFor(ResourceDescriptor const &resource) const {
+    return Placement(resource, hierarchy_);
 }
 
 ClusterMapData ClusterMap::ToProto() const {
-    SharedLockGuard guard(*mu_);
-
     ClusterMapData cluster_map_proto;
     cluster_map_proto.set_version_epoch(version_);
 
-    if (hierarchy_->Root() != nullptr) {
-        ExportNode(kClusterHierarchyRootLabel, *hierarchy_->Root(), *hierarchy_,
+    if (hierarchy_.Root() != nullptr) {
+        ExportNode(kClusterHierarchyRootLabel, *hierarchy_.Root(), hierarchy_,
                    cluster_map_proto.mutable_tree_nodes());
     }
 

@@ -18,8 +18,6 @@
 #ifndef PLACEMENT_CLUSTER_MAP_H
 #define PLACEMENT_CLUSTER_MAP_H
 
-#include <memory>
-#include <shared_mutex>
 #include <vector>
 
 #include "cluster/placement/bucket.h"
@@ -38,7 +36,7 @@ ClusterTreeNodeLabel AllocateClusterTreeNodeLabel();
 
 /**
  * @brief The ClusterMap class Manages cluster map revision, versioning, resource placement and
- * proto import/export. This class is thread safe.
+ * proto import/export. This class isn't thread safe.
  */
 class ClusterMap {
   public:
@@ -51,8 +49,7 @@ class ClusterMap {
          * @brief Placement The object should be constructed by calling the
          * ClusterMap::TakeRootFor() function.
          */
-        Placement(ResourceDescriptor const &resource, ClusterHierarchy *hierarchy,
-                  std::shared_mutex *mu);
+        Placement(ResourceDescriptor const &resource, ClusterHierarchy const &hierarchy);
         ~Placement();
 
         /**
@@ -82,8 +79,7 @@ class ClusterMap {
                          std::vector<ClusterHierarchy::BucketOrMachine const *> *sink);
 
         ResourceDescriptor const resource_;
-        ClusterHierarchy *hierarchy_;
-        std::shared_mutex *mu_;
+        ClusterHierarchy const &hierarchy_;
 
         std::vector<ClusterHierarchy::BucketOrMachine const *> source_;
         std::vector<ClusterHierarchy::BucketOrMachine const *> sink_;
@@ -121,6 +117,11 @@ class ClusterMap {
     bool Revise(ClusterMapRevision const &revision);
 
     /**
+     * @brief Machines Returns all the machines there are in the cluster map.
+     */
+    std::vector<Machine> Machines() const;
+
+    /**
      * @brief TakeRoot Constructs a placement object for the specified resource given the current
      * cluster map. The cluster map object must live longer than the returned placement object.
      */
@@ -133,8 +134,7 @@ class ClusterMap {
 
   private:
     ClusterMapVersionEpoch version_;
-    std::unique_ptr<ClusterHierarchy> hierarchy_;
-    std::unique_ptr<std::shared_mutex> mu_;
+    ClusterHierarchy hierarchy_;
 };
 
 } // namespace e8
