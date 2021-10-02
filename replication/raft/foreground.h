@@ -71,8 +71,7 @@ class RaftForeground {
     BoardcastResult BoardcastCommand(CommandEntry const &command_entry);
 
     /**
-     * @brief TermAndRole Returns the current term and role the node is holding for testing
-     * purposes.
+     * @brief TermAndRole Returns the current term and role the node is holding.
      */
     std::pair<RaftTerm, RaftRole> TermAndRole() const;
 
