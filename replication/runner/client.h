@@ -29,7 +29,7 @@
 #include "proto_cc/service_replication.grpc.pb.h"
 #include "proto_cc/service_replication.pb.h"
 #include "replication/raft/common_types.h"
-#include "third_party/uuid/uuid4.h"
+#include "replication/runner/run_event_id.h"
 
 namespace e8 {
 
@@ -68,7 +68,7 @@ class ReplicationClient {
     std::unordered_map<RaftMachineAddress, float> peer_weights_;
     RandomSource random_source_;
     RaftMachineAddress possible_leader_;
-    UUID4_STATE_T uuid_state_;
+    ReplicationRunEventIdGenerator run_event_id_gen_;
     uint64_t num_rpcs_;
 };
 

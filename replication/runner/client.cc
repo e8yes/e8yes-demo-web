@@ -16,6 +16,7 @@
  */
 
 #include <chrono>
+#include <cstdint>
 #include <grpcpp/grpcpp.h>
 #include <memory>
 #include <string>
@@ -29,8 +30,7 @@
 #include "proto_cc/service_replication.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/runner/client.h"
-#include "replication/runner/common_types.h"
-#include "third_party/uuid/uuid4.h"
+#include "replication/runner/run_event_id.h"
 
 namespace e8 {
 
@@ -46,20 +46,12 @@ ReplicationClient::ReplicationClient(ReplicationClientConfig const &config) : nu
     // The RunCommand() call will correct the leader address later on. We simply use the first node
     // in the peer set as a placeholder.
     possible_leader_ = *config.peers.begin();
-
-    uuid4_seed(&uuid_state_);
 }
 
 ReplicationClient::~ReplicationClient() {}
 
 std::string ReplicationClient::RunCommand(std::string const &command) {
-    UUID4_T uuid;
-    uuid4_gen(&uuid_state_, &uuid);
-
-    char uuid_string[UUID4_STR_BUFFER_SIZE];
-    uuid4_to_s(uuid, uuid_string, sizeof(uuid_string));
-
-    ReplicationRunEventId run_event_id(uuid_string);
+    ReplicationRunEventId run_event_id = run_event_id_gen_.Generate();
 
     while (true) {
         RunCommandRequest request;

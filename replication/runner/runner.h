@@ -28,8 +28,8 @@
 #include "replication/raft/common_types.h"
 #include "replication/raft/raft_instance.h"
 #include "replication/runner/command_queue.h"
-#include "replication/runner/common_types.h"
 #include "replication/runner/fulfillment_pool.h"
+#include "replication/runner/run_event_id.h"
 
 namespace e8 {
 
@@ -72,6 +72,11 @@ class ReplicationInstance {
      */
     RunCommandResult RunCommand(std::string const &command,
                                 ReplicationRunEventId const &run_event_id);
+
+    /**
+     * @brief Leader Checks if the instance is currently a leader.
+     */
+    bool Leader() const;
 
   private:
     std::unique_ptr<FulfillmentPool> fulfillments_;

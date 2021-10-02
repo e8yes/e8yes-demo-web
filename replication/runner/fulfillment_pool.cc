@@ -21,7 +21,7 @@
 #include <unordered_map>
 
 #include "proto_cc/service_replication.pb.h"
-#include "replication/runner/common_types.h"
+#include "replication/runner/run_event_id.h"
 #include "replication/runner/fulfillment_pool.h"
 #include "replication/runner/future.h"
 

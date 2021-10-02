@@ -27,9 +27,9 @@
 #include "replication/raft/common_types.h"
 #include "replication/raft/raft_instance.h"
 #include "replication/runner/command_queue.h"
-#include "replication/runner/common_types.h"
 #include "replication/runner/fulfillment_pool.h"
 #include "replication/runner/future.h"
+#include "replication/runner/run_event_id.h"
 #include "replication/runner/runner.h"
 
 namespace e8 {
@@ -72,6 +72,11 @@ ReplicationInstance::RunCommand(std::string const &command,
 
     auto [return_value, error] = future->Evaluate(fulfillment_timeout_);
     return RunCommandResult(return_value, error);
+}
+
+bool ReplicationInstance::Leader() const {
+    auto [_, role] = raft_->Foreground()->TermAndRole();
+    return role == RAFT_LEADER;
 }
 
 } // namespace e8
