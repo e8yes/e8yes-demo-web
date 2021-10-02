@@ -1,0 +1,75 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "cluster.proto";
+
+// Adds the specified revision to the pending queue. The revision must not be a
+// composite, meaning the the revision must only span 1 version of change. The
+// version of cluster map which it's going to revise from must be that with all
+// the pending & work-in-progress revisions applied. Otherwise, the command 
+// will fail.
+message EnqueueClusterRevisionCommand {
+    ClusterMapRevision revision = 1;
+}
+
+message EnqueueClusterRevisionResult {
+    bool successful = 1;
+}
+
+// Marks the specified revision as applied so that other pending revisions can
+// get processed. 
+message ApplyClusterRevisionCommand {
+    ClusterMapRevision revision = 1;
+}
+
+message ApplyClusterRevisionResult {
+    bool successful = 1;
+}
+
+// Gets the revisions starting from the specified version epoch, if there is 
+// any. The epoch can not newer than the newest revision ever enqueued. The 
+// scope parameter indicates whether to include work-in-progress revision and
+// pending revisions that has not yet been worked on. The returned revisions
+// are merged into one redundancy-free revision object.
+message GetClusterRevisionCommand {
+    enum Scope {
+        INVALID_SCOPE = 0;
+        APPLIED = 1;
+        APPLIED_WIP = 2;
+        APPLIED_WIP_PENDING = 3;
+    }
+
+    Scope scope = 1;
+    int64 starting_from_epoch = 2;
+}
+
+message GetClusterRevisionResult {
+    ClusterMapRevision revision = 1;
+}
+
+// A cluster revision command that can be run on the monitors.
+message ClusterRevisionCommand {
+    oneof command {
+        EnqueueClusterRevisionCommand enqueue_revision = 1;
+        ApplyClusterRevisionCommand apply_revision = 2;
+        GetClusterRevisionCommand get_revision = 3;
+    }
+}
