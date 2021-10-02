@@ -1,7 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = \
-    third_party/base64/base64.pro \
-    third_party/uuid/uuid.pro \
+    third_party \
     proto_cc/proto_cc.pro \
     common/common.pro \
     replication/replication.pro \
