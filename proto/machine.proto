@@ -66,12 +66,4 @@ message Machine {
 
     // The machine's capability.
     WeightedCapabilities capabilities = 2;
-
-    // The registered resource workers that receives migration or replication 
-    // commands from the cluster monitor. Keyed by the resource worker's unique
-    // name with the worker's listening port as value.
-    map<string, int32> resource_worker_ports = 3;
-
-    // Should any client be allowed to contact this machine.
-    bool reachable = 4;
 }

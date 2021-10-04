@@ -51,25 +51,21 @@ e8::ClusterMapData Proto() {
     e8::ClusterTreeNode machine4;
     machine1.set_hierarchy(e8::ClusterTreeNode::MACHINE);
     machine1.mutable_machine()->set_address("192.168.1.201");
-    machine1.mutable_machine()->set_reachable(true);
     *machine1.mutable_machine()->mutable_capabilities()->mutable_cpu() =
         e8::CapabilityFixedPointFromFloat(1);
 
     machine2.set_hierarchy(e8::ClusterTreeNode::MACHINE);
     machine2.mutable_machine()->set_address("192.168.1.202");
-    machine2.mutable_machine()->set_reachable(true);
     *machine2.mutable_machine()->mutable_capabilities()->mutable_ram() =
         e8::CapabilityFixedPointFromFloat(1);
 
     machine3.set_hierarchy(e8::ClusterTreeNode::MACHINE);
     machine3.mutable_machine()->set_address("192.168.1.203");
-    machine3.mutable_machine()->set_reachable(true);
     *machine3.mutable_machine()->mutable_capabilities()->mutable_storage() =
         e8::CapabilityFixedPointFromFloat(1);
 
     machine4.set_hierarchy(e8::ClusterTreeNode::MACHINE);
     machine4.mutable_machine()->set_address("192.168.1.204");
-    machine4.mutable_machine()->set_reachable(true);
     *machine4.mutable_machine()->mutable_capabilities()->mutable_coral() =
         e8::CapabilityFixedPointFromFloat(1);
 
