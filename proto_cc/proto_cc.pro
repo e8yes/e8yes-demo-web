@@ -19,8 +19,8 @@ HEADERS += \
     chat_message.pb.h \
     cluster.grpc.pb.h \
     cluster.pb.h \
-    cluster_monitor_command.grpc.pb.h \
-    cluster_monitor_command.pb.h \
+    cluster_revision_command.grpc.pb.h \
+    cluster_revision_command.pb.h \
     command.grpc.pb.h \
     command.pb.h \
     delta.grpc.pb.h \
@@ -103,8 +103,8 @@ SOURCES += \
     chat_message.pb.cc \
     cluster.grpc.pb.cc \
     cluster.pb.cc \
-    cluster_monitor_command.grpc.pb.cc \
-    cluster_monitor_command.pb.cc \
+    cluster_revision_command.grpc.pb.cc \
+    cluster_revision_command.pb.cc \
     command.grpc.pb.cc \
     command.pb.cc \
     delta.grpc.pb.cc \
