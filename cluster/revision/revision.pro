@@ -18,9 +18,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
+    conductor.cc \
     store.cc
 
+
 HEADERS += \
+    condutor.h \
     store.h
 
 # Default rules for deployment.
