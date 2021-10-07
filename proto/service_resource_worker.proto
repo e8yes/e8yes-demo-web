@@ -22,33 +22,35 @@ package e8;
 import "cluster.proto";
 
 
-message MigrateResourcesRequest {
+message ApplyClusterMapRevisionRequest {
+    // The revision the resource worker to be ingested and processed.
     ClusterMapRevision revision = 1;
+
+    // The maximum number of milliseconds within which the procedure must
+    // stream at least 1 response object as a status update to the client.
+    int64 status_update_interval_millis = 2;
 }
 
-message MigrateResourcesResponse {
+message ApplyClusterMapRevisionResponse {
+    // Checks if all objects has been correctly processed.
+    bool successful = 1;
+
+    // The number of objects gets processed by the time this response was
+    // streamed.
+    int64 num_objects_processed = 2;
+
+    // The total number of objects that need to be processed.
+    int64 total_num_objects = 3;
 }
 
-
-message ReplicateResourcesRequest {
-    ClusterMapRevision revision = 1;
-}
-
-message ReplicateResourcesResponse {
-}
-
-// Service a resource worker must provide. A resource worker handles a 
-// collection of certain type of resources. This interface allows these 
-// resources to be properly located and replicated in response to events that
-// triggers cluster map revision.
+// Service that a resource worker must provide. A resource worker handles a
+// collection of certain type of resources. This interface requests these
+// resources to be properly located and replicated in response to cluster map
+// revision events where the current cluster map updates to a newer version.
 service ResourceWorkerService {
-    // Relocates all resources affected due to the specified cluster map 
-    // revision.
-    rpc MigrateResources(MigrateResourcesRequest) returns
-        (MigrateResourcesResponse);
-
-    // Replicates all resouces that lack enough degree of replication due to 
-    // the specified cluster map revision.
-    rpc ReplicateResources(ReplicateResourcesRequest) returns
-        (ReplicateResourcesResponse);
+    // Relocates / increases the number of replications of the worker's
+    // affected resources due the the specified cluster map revision. If the
+    // worker has a local copy of the cluster map, brings it up-to-date.
+    rpc ApplyClusterMapRevision(ApplyClusterMapRevisionRequest) returns
+        (stream ApplyClusterMapRevisionResponse);
 }
