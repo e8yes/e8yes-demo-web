@@ -65,11 +65,27 @@ message GetClusterRevisionResult {
     ClusterMapRevision revision = 1;
 }
 
-// A cluster revision command that can be run on the monitors.
+// A generic cluster revision command.
 message ClusterRevisionCommand {
+    // ID of the resource service for which the revision command intends to 
+    // run.
+    string resource_service_id = 1;
+
+    // A collection of all possible types of commands.
     oneof command {
-        EnqueueClusterRevisionCommand enqueue_revision = 1;
-        ApplyClusterRevisionCommand apply_revision = 2;
-        GetClusterRevisionCommand get_revision = 3;
+        EnqueueClusterRevisionCommand enqueue_revision = 2;
+        ApplyClusterRevisionCommand apply_revision = 3;
+        GetClusterRevisionCommand get_revision = 4;
+    }
+}
+
+// A generic result of a cluster revision command.
+message ClusterRevisionResult {
+    // A collection of all possible of types of results, each corresponding to
+    // a revision command.
+    oneof result {
+        EnqueueClusterRevisionResult enqueue_result = 1;
+        ApplyClusterRevisionResult apply_result = 2;
+        GetClusterRevisionResult get_result = 3;
     }
 }
