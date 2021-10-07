@@ -52,6 +52,21 @@ using ResourceServiceId = std::string;
  */
 class ClusterRevisionStore {
   public:
+    struct RevisionSpecs {
+        RevisionSpecs(ResourceServiceId const &resource_service_id, ClusterMap const &cluster_map,
+                      ClusterMapRevision const &revision);
+        ~RevisionSpecs();
+
+        // The resource service this revision is going to apply to.
+        ResourceServiceId resource_service_id;
+
+        // The cluster map the revision is based on.
+        ClusterMap cluster_map;
+
+        // The revision to apply to the cluster map.
+        ClusterMapRevision revision;
+    };
+
     ClusterRevisionStore();
     ~ClusterRevisionStore();
 
@@ -62,12 +77,11 @@ class ClusterRevisionStore {
     ClusterRevisionResult Run(ClusterRevisionCommand const &command);
 
     /**
-     * @brief WorkInProgress Fetches one of the currently work-in-progress revision if there is any.
-     * Otherwise, it returns any empty cluster map and std::nullopt revision. When more than one
-     * resource worker has its work-in-progress revision, only one revision is selected, randomly.
-     * So in that situation, this function isn't idempotent.
+     * @brief WorkInProgress Fetches one of the currently work-in-progress revisions if there is
+     * any. When more than one resource service has its work-in-progress revision, only one revision
+     * is selected, randomly. So in that situation, this function isn't idempotent.
      */
-    std::pair<ClusterMap, std::optional<ClusterMapRevision>> WorkInProgress() const;
+    std::optional<RevisionSpecs> WorkInProgress() const;
 
   private:
     /**

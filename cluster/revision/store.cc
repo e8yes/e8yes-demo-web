@@ -70,6 +70,13 @@ ClusterRevisionStore::ClusterRevisionStore()
 
 ClusterRevisionStore::~ClusterRevisionStore() {}
 
+ClusterRevisionStore::RevisionSpecs::RevisionSpecs(ResourceServiceId const &resource_service_id,
+                                                   ClusterMap const &cluster_map,
+                                                   ClusterMapRevision const &revision)
+    : resource_service_id(resource_service_id), cluster_map(cluster_map), revision(revision) {}
+
+ClusterRevisionStore::RevisionSpecs::~RevisionSpecs() {}
+
 EnqueueClusterRevisionResult
 ClusterRevisionStore::ResourceServiceClusterState::Enqueue(ClusterMapRevision const &revision) {
     assert(revision.from_version_epoch() ==
@@ -238,8 +245,7 @@ ClusterRevisionResult ClusterRevisionStore::Run(ClusterRevisionCommand const &co
     return result;
 }
 
-std::pair<ClusterMap, std::optional<ClusterMapRevision>>
-ClusterRevisionStore::WorkInProgress() const {
+std::optional<ClusterRevisionStore::RevisionSpecs> ClusterRevisionStore::WorkInProgress() const {
     std::lock_guard<std::mutex> guard(*mu_);
 
     std::unordered_map<ResourceServiceId, float> weights;
@@ -251,7 +257,7 @@ ClusterRevisionStore::WorkInProgress() const {
 
     if (weights.empty()) {
         // None of the services.
-        return std::make_pair(ClusterMap(), std::nullopt);
+        return std::nullopt;
     }
 
     for (auto &[_, weight] : weights) {
@@ -259,7 +265,10 @@ ClusterRevisionStore::WorkInProgress() const {
     }
 
     ResourceServiceId selected_service = SampleFrom(weights, random_source_.get());
-    return services_.at(selected_service).WorkInProgress();
+    auto const &[cluster_map, revision] = services_.at(selected_service).WorkInProgress();
+    assert(revision.has_value());
+
+    return RevisionSpecs(selected_service, cluster_map, *revision);
 }
 
 } // namespace e8
