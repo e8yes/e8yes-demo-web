@@ -24,7 +24,7 @@ import "cluster.proto";
 // Adds the specified revision to the pending queue. The revision must not be a
 // composite, meaning the the revision must only span 1 version of change. The
 // version of cluster map which it's going to revise from must be that with all
-// the pending & work-in-progress revisions applied. Otherwise, the command 
+// the pending & work-in-progress revisions applied. Otherwise, the command
 // will fail.
 message EnqueueClusterRevisionCommand {
     ClusterMapRevision revision = 1;
@@ -35,7 +35,7 @@ message EnqueueClusterRevisionResult {
 }
 
 // Marks the specified revision as applied so that other pending revisions can
-// get processed. 
+// get processed.
 message ApplyClusterRevisionCommand {
     ClusterMapRevision revision = 1;
 }
@@ -44,8 +44,8 @@ message ApplyClusterRevisionResult {
     bool successful = 1;
 }
 
-// Gets the revisions starting from the specified version epoch, if there is 
-// any. The epoch can not newer than the newest revision ever enqueued. The 
+// Gets the revisions starting from the specified version epoch, if there is
+// any. The epoch can not be newer than the newest revision ever enqueued. The
 // scope parameter indicates whether to include work-in-progress revision and
 // pending revisions that has not yet been worked on. The returned revisions
 // are merged into one redundancy-free revision object.
@@ -67,7 +67,7 @@ message GetClusterRevisionResult {
 
 // A generic cluster revision command.
 message ClusterRevisionCommand {
-    // ID of the resource service for which the revision command intends to 
+    // ID of the resource service for which the revision command intends to
     // run.
     string resource_service_id = 1;
 
