@@ -18,12 +18,14 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 INCLUDEPATH += ../../
 
 SOURCES += \
+    background.cc \
     boardcast.cc \
     conductor.cc \
     store.cc
 
 
 HEADERS += \
+    background.h \
     boardcast.h \
     condutor.h \
     store.h
