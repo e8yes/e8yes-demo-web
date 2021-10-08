@@ -35,7 +35,7 @@
 namespace e8 {
 namespace {
 
-TimeIntervalMillis const kWipRevisionPollingInterval = 1000;
+TimeIntervalMillis const kWipRevisionPollingInterval = 5000;
 float const kRevisionBoardcastRate = 0.01f;
 unsigned const kMaxRevisionBoardcastRetries = 5;
 
@@ -54,6 +54,10 @@ void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
             continue;
         }
 
+        // Pulls directly from the local store to avoid network & I/O. It's ok to pull an outdated
+        // revision because pushing it is harmless. Since we've waited for
+        // kWipRevisionPollingInterval after committed an ApplyClusterRevisionCommand, the chance of
+        // still pulling an outdated revision locally is low.
         std::optional<ClusterRevisionStore::RevisionSpecs> revision_specs =
             this_conductor_->LocalStore()->WorkInProgress();
         if (!revision_specs.has_value()) {
