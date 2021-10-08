@@ -17,6 +17,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <google/protobuf/repeated_field.h>
 #include <grpcpp/grpcpp.h>
 #include <memory>
 #include <string>
@@ -33,6 +34,12 @@
 #include "replication/runner/run_event_id.h"
 
 namespace e8 {
+
+ReplicationClientConfig::ReplicationClientConfig() {}
+
+ReplicationClientConfig::ReplicationClientConfig(
+    google::protobuf::RepeatedPtrField<RaftMachineAddress> const &peers)
+    : peers(peers.begin(), peers.end()) {}
 
 ReplicationClient::ReplicationClient(ReplicationClientConfig const &config) : num_rpcs_(0) {
     for (auto const &peer : config.peers) {

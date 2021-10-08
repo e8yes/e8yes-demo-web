@@ -19,6 +19,7 @@
 #define REPLICATION_CLIENT_H
 
 #include <cstdint>
+#include <google/protobuf/repeated_field.h>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -38,6 +39,9 @@ namespace e8 {
  * RunCommand() RPC.
  */
 struct ReplicationClientConfig {
+    ReplicationClientConfig();
+    ReplicationClientConfig(google::protobuf::RepeatedPtrField<RaftMachineAddress> const &peers);
+
     std::unordered_set<RaftMachineAddress> peers;
 };
 
