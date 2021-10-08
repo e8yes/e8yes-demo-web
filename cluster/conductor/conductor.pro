@@ -23,7 +23,7 @@ SOURCES += \
     client.cc \
     conductor.cc \
     instance.cc \
-    store.cc
+    revision_store.cc
 
 
 HEADERS += \
@@ -32,7 +32,7 @@ HEADERS += \
     client.h \
     condutor.h \
     instance.h \
-    store.h
+    revision_store.h
 
 # Default rules for deployment.
 unix {

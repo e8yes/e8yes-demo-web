@@ -24,7 +24,7 @@
 #include "cluster/conductor/background.h"
 #include "cluster/conductor/boardcast.h"
 #include "cluster/conductor/condutor.h"
-#include "cluster/conductor/store.h"
+#include "cluster/conductor/revision_store.h"
 #include "cluster/placement/cluster_map.h"
 #include "common/thread/thread_pool.h"
 #include "common/time_util/time_util.h"

@@ -20,7 +20,7 @@
 
 #include "cluster/conductor/client.h"
 #include "cluster/conductor/condutor.h"
-#include "cluster/conductor/store.h"
+#include "cluster/conductor/revision_store.h"
 #include "proto_cc/cluster_conductor_command.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 #include "replication/runner/runner.h"

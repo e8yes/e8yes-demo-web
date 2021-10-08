@@ -23,7 +23,7 @@
 #include <utility>
 #include <vector>
 
-#include "cluster/conductor/store.h"
+#include "cluster/conductor/revision_store.h"
 #include "cluster/placement/cluster_map.h"
 #include "cluster/placement/common_types.h"
 #include "common/random/random_source.h"

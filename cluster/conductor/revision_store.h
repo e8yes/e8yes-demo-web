@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CLUSTER_CONDUCTOR_STORE_H
-#define CLUSTER_CONDUCTOR_STORE_H
+#ifndef CLUSTER_CONDUCTOR_REVISION_STORE_H
+#define CLUSTER_CONDUCTOR_REVISION_STORE_H
 
 #include <memory>
 #include <mutex>
@@ -145,4 +145,4 @@ class ClusterRevisionStore {
 
 } // namespace e8
 
-#endif // CLUSTER_CONDUCTOR_STORE_H
+#endif // CLUSTER_CONDUCTOR_REVISION_STORE_H
