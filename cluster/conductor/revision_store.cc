@@ -77,6 +77,10 @@ ClusterRevisionStore::RevisionSpecs::RevisionSpecs(ResourceServiceId const &reso
 
 ClusterRevisionStore::RevisionSpecs::~RevisionSpecs() {}
 
+ClusterRevisionStore::ResourceServiceClusterState::ResourceServiceClusterState() {}
+
+ClusterRevisionStore::ResourceServiceClusterState::~ResourceServiceClusterState() {}
+
 EnqueueClusterRevisionResult
 ClusterRevisionStore::ResourceServiceClusterState::Enqueue(ClusterMapRevision const &revision) {
     assert(revision.from_version_epoch() ==
