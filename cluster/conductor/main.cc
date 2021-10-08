@@ -39,7 +39,8 @@ e8::ReplicationConfig LoadReplicationConfig(std::string const &file) {
                         (std::istreambuf_iterator<char>()));
 
     e8::ReplicationConfig config;
-    google::protobuf::TextFormat::ParseFromString(content, &config);
+    bool success = google::protobuf::TextFormat::ParseFromString(content, &config);
+    assert(success);
 
     return config;
 }
