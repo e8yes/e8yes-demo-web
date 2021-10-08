@@ -46,7 +46,7 @@ struct ReplicationClientConfig {
 };
 
 /**
- * @brief The ReplicationClient class The client to interacts with the replication service. It
+ * @brief The ReplicationClient class The client to interact with the replication service. It
  * encapsulates all the error handling of a CP system.
  */
 class ReplicationClient {

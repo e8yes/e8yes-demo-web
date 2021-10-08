@@ -18,9 +18,9 @@
 #ifndef CLUSTER_CONDUCTOR_H
 #define CLUSTER_CONDUCTOR_H
 
+#include "cluster/conductor/client.h"
 #include "cluster/conductor/store.h"
 #include "proto_cc/cluster_revision_command.pb.h"
-#include "replication/runner/client.h"
 #include "replication/runner/runner.h"
 
 namespace e8 {
@@ -34,7 +34,7 @@ class ClusterRevisionConductor {
   public:
     ClusterRevisionConductor(ClusterRevisionStore const *local_store,
                              ReplicationInstance *conductor_replicator,
-                             ReplicationClient *conductor_client);
+                             ClusterConductorClient *conductor_client);
     ~ClusterRevisionConductor();
 
     /**
@@ -61,7 +61,7 @@ class ClusterRevisionConductor {
   private:
     ClusterRevisionStore const *local_store_;
     ReplicationInstance *conductor_replicator_;
-    ReplicationClient *conductor_client_;
+    ClusterConductorClient *conductor_client_;
 };
 
 } // namespace e8

@@ -20,6 +20,7 @@ INCLUDEPATH += ../../
 SOURCES += \
     background.cc \
     boardcast.cc \
+    client.cc \
     conductor.cc \
     store.cc
 
@@ -27,6 +28,7 @@ SOURCES += \
 HEADERS += \
     background.h \
     boardcast.h \
+    client.h \
     condutor.h \
     store.h
 

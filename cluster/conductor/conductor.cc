@@ -15,19 +15,21 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <string>
 
+#include "cluster/conductor/client.h"
 #include "cluster/conductor/condutor.h"
 #include "cluster/conductor/store.h"
+#include "proto_cc/cluster_conductor_command.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
-#include "replication/runner/client.h"
 #include "replication/runner/runner.h"
 
 namespace e8 {
 
 ClusterRevisionConductor::ClusterRevisionConductor(ClusterRevisionStore const *local_store,
                                                    ReplicationInstance *conductor_replicator,
-                                                   ReplicationClient *conductor_client)
+                                                   ClusterConductorClient *conductor_client)
     : local_store_(local_store), conductor_replicator_(conductor_replicator),
       conductor_client_(conductor_client) {}
 
@@ -36,11 +38,12 @@ ClusterRevisionConductor::~ClusterRevisionConductor() {}
 bool ClusterRevisionConductor::ShouldBoardcast() const { return conductor_replicator_->Leader(); }
 
 ClusterRevisionResult ClusterRevisionConductor::RunCommand(ClusterRevisionCommand const &command) {
-    std::string result_bytes = conductor_client_->RunCommand(command.SerializeAsString());
+    ClusterConductorCommand conductor_command;
+    *conductor_command.mutable_revision() = command;
 
-    ClusterRevisionResult result;
-    result.ParseFromString(result_bytes);
-    return result;
+    ClusterConductorCommandResult result = conductor_client_->RunCommand(conductor_command);
+    assert(result.has_revision_result());
+    return result.revision_result();
 }
 
 ClusterRevisionStore const *ClusterRevisionConductor::LocalStore() const { return local_store_; }
