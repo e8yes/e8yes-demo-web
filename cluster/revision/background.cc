@@ -42,10 +42,8 @@ unsigned const kMaxRevisionBoardcastRetries = 5;
 } // namespace
 
 ClusterRevisionBackground::ClusterRevisionBackground(
-    ClusterRevisionStore *local_cluster_revision_store,
     ClusterRevisionConductorInterface *this_conductor)
-    : local_cluster_revisions_(local_cluster_revision_store), this_conductor_(this_conductor),
-      done_(false) {}
+    : this_conductor_(this_conductor), done_(false) {}
 
 ClusterRevisionBackground::~ClusterRevisionBackground() {}
 
@@ -58,7 +56,7 @@ void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
         }
 
         std::optional<ClusterRevisionStore::RevisionSpecs> revision_specs =
-            local_cluster_revisions_->WorkInProgress();
+            this_conductor_->LocalStore()->WorkInProgress();
         if (!revision_specs.has_value()) {
             continue;
         }

@@ -38,12 +38,10 @@ namespace e8 {
 class ClusterRevisionBackground : public TaskInterface {
   public:
     /**
-     * @brief ClusterRevisionBackground It takes in the local cluster revision store where it stores
-     * all the committed revision entries. It may not always have the latest revisions, but it
-     * eventually will. The conductor allows the background task to drop its.
+     * @brief ClusterRevisionBackground This background task wraps on the revision conductor and
+     * pushes revisions to the cluster when it's possible.
      */
-    ClusterRevisionBackground(ClusterRevisionStore *local_cluster_revision_store,
-                              ClusterRevisionConductorInterface *this_conductor);
+    ClusterRevisionBackground(ClusterRevisionConductorInterface *this_conductor);
     ~ClusterRevisionBackground() override;
 
     void Run(TaskStorageInterface *) const override;
@@ -56,7 +54,6 @@ class ClusterRevisionBackground : public TaskInterface {
     void Shutdown();
 
   private:
-    ClusterRevisionStore *const local_cluster_revisions_;
     ClusterRevisionConductorInterface *const this_conductor_;
     bool done_;
 };

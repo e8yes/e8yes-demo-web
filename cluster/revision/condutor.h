@@ -18,6 +18,7 @@
 #ifndef CLUSTER_REVISION_CONDUTOR_H
 #define CLUSTER_REVISION_CONDUTOR_H
 
+#include "cluster/revision/store.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 
 namespace e8 {
@@ -41,9 +42,17 @@ class ClusterRevisionConductorInterface {
 
     /**
      * @brief RunCommand Runs the specified command over all the revision conductors, if there are
-     * multiple.
+     * multiple. This function blocks until the command is committed and gets processed by a
+     * majority of command runners.
      */
     virtual ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command) = 0;
+
+    /**
+     * @brief LocalStore Returns a constant pointer to the local revision store for querying
+     * purposes. This allows the client of the conductor to bypass Raft's logging mechanism to read
+     * the store's states when it doesn't care if a state gets updated by previous write operations.
+     */
+    virtual ClusterRevisionStore const *LocalStore();
 };
 
 } // namespace e8
