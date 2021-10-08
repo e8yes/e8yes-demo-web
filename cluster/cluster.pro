@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     placement \
-    revision \
+    conductor \
     _test_placement/_test_capability \
     _test_placement/_test_bucket \
     _test_placement/_test_hierarchy \

@@ -23,9 +23,9 @@
 #include <utility>
 #include <vector>
 
+#include "cluster/conductor/store.h"
 #include "cluster/placement/cluster_map.h"
 #include "cluster/placement/common_types.h"
-#include "cluster/revision/store.h"
 #include "common/random/random_source.h"
 #include "common/random/sample.h"
 #include "proto_cc/cluster.pb.h"

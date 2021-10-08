@@ -21,8 +21,8 @@
 #include <memory>
 #include <vector>
 
-#include "cluster/revision/boardcast.h"
-#include "cluster/revision/condutor.h"
+#include "cluster/conductor/boardcast.h"
+#include "cluster/conductor/condutor.h"
 #include "common/random/random_source.h"
 #include "common/random/uniform_distribution.h"
 #include "common/thread/thread_pool.h"

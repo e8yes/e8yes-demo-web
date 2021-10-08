@@ -21,11 +21,11 @@
 #include <thread>
 #include <vector>
 
+#include "cluster/conductor/background.h"
+#include "cluster/conductor/boardcast.h"
+#include "cluster/conductor/condutor.h"
+#include "cluster/conductor/store.h"
 #include "cluster/placement/cluster_map.h"
-#include "cluster/revision/background.h"
-#include "cluster/revision/boardcast.h"
-#include "cluster/revision/condutor.h"
-#include "cluster/revision/store.h"
 #include "common/thread/thread_pool.h"
 #include "common/time_util/time_util.h"
 #include "proto_cc/cluster.pb.h"

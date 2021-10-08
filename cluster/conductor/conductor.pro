@@ -1,6 +1,6 @@
 CONFIG -= qt
 
-TARGET = cluster_revision
+TARGET = cluster_conductor
 TEMPLATE = lib
 
 DEFINES += CLUSTER_REVISION_LIBRARY

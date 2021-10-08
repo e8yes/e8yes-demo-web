@@ -15,12 +15,12 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CLUSTER_REVISION_BOARDCAST_H
-#define CLUSTER_REVISION_BOARDCAST_H
+#ifndef CLUSTER_CONDUCTOR_BOARDCAST_H
+#define CLUSTER_CONDUCTOR_BOARDCAST_H
 
 #include <vector>
 
-#include "cluster/revision/condutor.h"
+#include "cluster/conductor/condutor.h"
 #include "proto_cc/cluster.pb.h"
 #include "proto_cc/machine.pb.h"
 
@@ -56,4 +56,4 @@ bool BoardcastRevisionWithRetry(ClusterMapRevision const &revision,
 
 } // namespace e8
 
-#endif // CLUSTER_REVISION_BOARDCAST_H
+#endif // CLUSTER_CONDUCTOR_BOARDCAST_H

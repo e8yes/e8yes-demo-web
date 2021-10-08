@@ -15,7 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cluster/revision/condutor.h"
+#include "cluster/conductor/condutor.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 
 namespace e8 {

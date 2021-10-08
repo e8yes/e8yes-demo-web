@@ -15,10 +15,10 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CLUSTER_REVISION_CONDUTOR_H
-#define CLUSTER_REVISION_CONDUTOR_H
+#ifndef CLUSTER_CONDUCTOR_H
+#define CLUSTER_CONDUCTOR_H
 
-#include "cluster/revision/store.h"
+#include "cluster/conductor/store.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 
 namespace e8 {
@@ -57,4 +57,4 @@ class ClusterRevisionConductorInterface {
 
 } // namespace e8
 
-#endif // CLUSTER_REVISION_CONDUTOR_H
+#endif // CLUSTER_CONDUCTOR_H

@@ -15,13 +15,13 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CLUSTER_REVISION_BACKGROUND_H
-#define CLUSTER_REVISION_BACKGROUND_H
+#ifndef CLUSTER_CONDUCTOR_BACKGROUND_H
+#define CLUSTER_CONDUCTOR_BACKGROUND_H
 
 #include <memory>
 
-#include "cluster/revision/condutor.h"
-#include "cluster/revision/store.h"
+#include "cluster/conductor/condutor.h"
+#include "cluster/conductor/store.h"
 #include "common/thread/thread_pool.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 
@@ -60,4 +60,4 @@ class ClusterRevisionBackground : public TaskInterface {
 
 } // namespace e8
 
-#endif // CLUSTER_REVISION_BACKGROUND_H
+#endif // CLUSTER_CONDUCTOR_BACKGROUND_H
