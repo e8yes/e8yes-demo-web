@@ -47,7 +47,7 @@ TimeIntervalMillis RandomizedStatusUpdateInterval(RandomSource *random_source) {
 
 struct BoardcastArgs : public TaskStorageInterface {
     BoardcastArgs(Machine const *target_machine, ClusterMapRevision const &revision,
-                  ClusterRevisionConductorInterface const &this_conductor);
+                  ClusterRevisionConductor const &this_conductor);
     ~BoardcastArgs();
 
     RandomSource random_source;
@@ -55,7 +55,7 @@ struct BoardcastArgs : public TaskStorageInterface {
     // Task args.
     Machine const *target_machine;
     ClusterMapRevision const &revision;
-    ClusterRevisionConductorInterface const &this_conductor;
+    ClusterRevisionConductor const &this_conductor;
 
     // Task return values.
     bool dropped;
@@ -63,7 +63,7 @@ struct BoardcastArgs : public TaskStorageInterface {
 };
 
 BoardcastArgs::BoardcastArgs(Machine const *target_machine, ClusterMapRevision const &revision,
-                             ClusterRevisionConductorInterface const &this_conductor)
+                             ClusterRevisionConductor const &this_conductor)
     : target_machine(target_machine), revision(revision), this_conductor(this_conductor),
       dropped(false), successful(false) {}
 
@@ -122,7 +122,7 @@ bool BoardcastTask::DropResourceOnCompletion() const { return false; }
 
 bool BoardcastRevision(ClusterMapRevision const &revision,
                        std::vector<Machine> const &target_machines, float rate,
-                       ClusterRevisionConductorInterface const &this_conductor,
+                       ClusterRevisionConductor const &this_conductor,
                        std::vector<Machine> *unsuccessful_machines) {
     unsigned num_parallel_boardcasts =
         std::max(1u, static_cast<unsigned>(target_machines.size() * rate));
@@ -156,7 +156,7 @@ bool BoardcastRevision(ClusterMapRevision const &revision,
 
 bool BoardcastRevisionWithRetry(ClusterMapRevision const &revision,
                                 std::vector<Machine> target_machines, float rate,
-                                ClusterRevisionConductorInterface const &this_conductor,
+                                ClusterRevisionConductor const &this_conductor,
                                 unsigned num_retries, std::vector<Machine> *unsuccessful_machines) {
     for (unsigned i = 0; i < num_retries + 1; ++i) {
         bool completed = BoardcastRevision(revision, target_machines, rate, this_conductor,

@@ -42,7 +42,7 @@ namespace e8 {
  */
 bool BoardcastRevision(ClusterMapRevision const &revision,
                        std::vector<Machine> const &target_machines, float rate,
-                       ClusterRevisionConductorInterface const &this_conductor,
+                       ClusterRevisionConductor const &this_conductor,
                        std::vector<Machine> *unsuccessful_machines);
 
 /**
@@ -51,7 +51,7 @@ bool BoardcastRevision(ClusterMapRevision const &revision,
  */
 bool BoardcastRevisionWithRetry(ClusterMapRevision const &revision,
                                 std::vector<Machine> target_machines, float rate,
-                                ClusterRevisionConductorInterface const &this_conductor,
+                                ClusterRevisionConductor const &this_conductor,
                                 unsigned num_retries, std::vector<Machine> *unsuccessful_machines);
 
 } // namespace e8

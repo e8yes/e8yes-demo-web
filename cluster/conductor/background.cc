@@ -41,8 +41,7 @@ unsigned const kMaxRevisionBoardcastRetries = 5;
 
 } // namespace
 
-ClusterRevisionBackground::ClusterRevisionBackground(
-    ClusterRevisionConductorInterface *this_conductor)
+ClusterRevisionBackground::ClusterRevisionBackground(ClusterRevisionConductor *this_conductor)
     : this_conductor_(this_conductor), done_(false) {}
 
 ClusterRevisionBackground::~ClusterRevisionBackground() {}
@@ -77,7 +76,7 @@ void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
         apply_revision_command.set_resource_service_id(revision_specs->resource_service_id);
         *apply_revision_command.mutable_apply_revision()->mutable_revision() =
             revision_specs->revision;
-        ClusterRevisionResult result = this_conductor_->RunCommand(apply_revision_command);
+        this_conductor_->RunCommand(apply_revision_command);
     }
 }
 

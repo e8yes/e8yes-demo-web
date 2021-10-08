@@ -20,6 +20,8 @@
 
 #include "cluster/conductor/store.h"
 #include "proto_cc/cluster_revision_command.pb.h"
+#include "replication/runner/client.h"
+#include "replication/runner/runner.h"
 
 namespace e8 {
 
@@ -28,31 +30,38 @@ namespace e8 {
  * must provide. A revision conductor can potentially run in replicas. It conducts the boardcast of
  * cluster revision messages to the cluster in a fault-tolerant manner.
  */
-class ClusterRevisionConductorInterface {
+class ClusterRevisionConductor {
   public:
-    ClusterRevisionConductorInterface();
-    virtual ~ClusterRevisionConductorInterface();
+    ClusterRevisionConductor(ClusterRevisionStore const *local_store,
+                             ReplicationInstance *conductor_replicator,
+                             ReplicationClient *conductor_client);
+    ~ClusterRevisionConductor();
 
     /**
      * @brief ShouldBoardcast If the revision conductor runs in replicas, only one instance should
      * be allow to boardcast the revision during most of the period to save communication bandwidth,
      * though it's ok to briefly have multiple boardcaster.
      */
-    virtual bool ShouldBoardcast() const = 0;
+    bool ShouldBoardcast() const;
 
     /**
      * @brief RunCommand Runs the specified command over all the revision conductors, if there are
      * multiple. This function blocks until the command is committed and gets processed by a
      * majority of command runners.
      */
-    virtual ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command) = 0;
+    ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command);
 
     /**
      * @brief LocalStore Returns a constant pointer to the local revision store for querying
      * purposes. This allows the client of the conductor to bypass Raft's logging mechanism to read
      * the store's states when it doesn't care if a state gets updated by previous write operations.
      */
-    virtual ClusterRevisionStore const *LocalStore();
+    ClusterRevisionStore const *LocalStore() const;
+
+  private:
+    ClusterRevisionStore const *local_store_;
+    ReplicationInstance *conductor_replicator_;
+    ReplicationClient *conductor_client_;
 };
 
 } // namespace e8
