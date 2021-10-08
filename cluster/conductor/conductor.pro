@@ -22,6 +22,7 @@ SOURCES += \
     boardcast.cc \
     client.cc \
     conductor.cc \
+    instance.cc \
     store.cc
 
 
@@ -30,6 +31,7 @@ HEADERS += \
     boardcast.h \
     client.h \
     condutor.h \
+    instance.h \
     store.h
 
 # Default rules for deployment.
