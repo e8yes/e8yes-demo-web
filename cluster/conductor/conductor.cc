@@ -15,13 +15,34 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <string>
+
 #include "cluster/conductor/condutor.h"
+#include "cluster/conductor/store.h"
 #include "proto_cc/cluster_revision_command.pb.h"
+#include "replication/runner/client.h"
+#include "replication/runner/runner.h"
 
 namespace e8 {
 
-ClusterRevisionConductorInterface::ClusterRevisionConductorInterface() {}
+ClusterRevisionConductor::ClusterRevisionConductor(ClusterRevisionStore const *local_store,
+                                                   ReplicationInstance *conductor_replicator,
+                                                   ReplicationClient *conductor_client)
+    : local_store_(local_store), conductor_replicator_(conductor_replicator),
+      conductor_client_(conductor_client) {}
 
-ClusterRevisionConductorInterface::~ClusterRevisionConductorInterface() {}
+ClusterRevisionConductor::~ClusterRevisionConductor() {}
+
+bool ClusterRevisionConductor::ShouldBoardcast() const { return conductor_replicator_->Leader(); }
+
+ClusterRevisionResult ClusterRevisionConductor::RunCommand(ClusterRevisionCommand const &command) {
+    std::string result_bytes = conductor_client_->RunCommand(command.SerializeAsString());
+
+    ClusterRevisionResult result;
+    result.ParseFromString(result_bytes);
+    return result;
+}
+
+ClusterRevisionStore const *ClusterRevisionConductor::LocalStore() const { return local_store_; }
 
 } // namespace e8
