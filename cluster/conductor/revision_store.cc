@@ -34,25 +34,20 @@
 namespace e8 {
 namespace {
 
-ClusterMapRevision MergeRevisions(std::vector<ClusterMapRevision> const &revisions, unsigned start,
-                                  unsigned end) {
-    if (start == revisions.size()) {
-        assert(end == start);
-
-        ClusterMapRevision revision;
-        revision.set_from_version_epoch(start);
-        revision.set_to_version_epoch(end);
-
-        return revision;
-    }
-
+std::optional<ClusterMapRevision> MergeRevisions(std::vector<ClusterMapRevision> const &revisions,
+                                                 unsigned start, unsigned end) {
     assert(end <= revisions.size());
-    assert(start < end);
+    assert(start <= end);
+
+    if (start == end) {
+        return std::nullopt;
+    }
 
     // TODO: We could eleminate redundant operations.
     ClusterMapRevision merged;
-    merged.set_from_version_epoch(start);
-    merged.set_to_version_epoch(end - 1);
+
+    merged.set_from_version_epoch(revisions[start].from_version_epoch());
+    merged.set_to_version_epoch(revisions[end - 1].to_version_epoch());
 
     for (unsigned i = start; i < end; ++i) {
         for (auto const &action : revisions[i].actions()) {
@@ -88,20 +83,18 @@ ClusterRevisionStore::ResourceServiceClusterState::Enqueue(ClusterMapRevision co
 
     EnqueueClusterRevisionResult result;
 
+    ClusterMapVersionEpoch last_epoch;
     if (all_revisions_.empty()) {
-        assert(revision.from_version_epoch() == ClusterMapVersionEpoch());
         assert(!wip_revision_.has_value());
         assert(!pending_revision_.has_value());
 
-        all_revisions_.push_back(revision);
-        wip_revision_ = revision;
-
-        result.set_successful(true);
-        return result;
+        last_epoch = ClusterMapVersionEpoch();
+    } else {
+        ClusterMapRevision const &last_revision = *all_revisions_.rbegin();
+        last_epoch = last_revision.to_version_epoch();
     }
 
-    ClusterMapRevision const &last_revision = *all_revisions_.rbegin();
-    if (revision.from_version_epoch() != last_revision.to_version_epoch()) {
+    if (revision.from_version_epoch() != last_epoch) {
         // New revision purposal doesn't continue from the last enqueued revision.
         result.set_successful(false);
         return result;
@@ -128,8 +121,10 @@ ClusterRevisionStore::ResourceServiceClusterState::Enqueue(ClusterMapRevision co
     }
 
     // There has been a pending revision already. Merges with the existing pending revision.
-    pending_revision_ = MergeRevisions(
+    std::optional<ClusterMapRevision> merged_pending_revision = MergeRevisions(
         std::vector<ClusterMapRevision>{*pending_revision_, revision}, /*start=*/0, /*end=*/2);
+    assert(merged_pending_revision.has_value());
+    pending_revision_ = *merged_pending_revision;
 
     result.set_successful(true);
     return result;
@@ -166,8 +161,8 @@ ClusterRevisionStore::ResourceServiceClusterState::Apply(ClusterMapRevision cons
 GetClusterRevisionResult
 ClusterRevisionStore::ResourceServiceClusterState::Get(ClusterMapVersionEpoch starting_from_epoch,
                                                        GetClusterRevisionCommand::Scope scope) {
-    assert(starting_from_epoch >= 0);
-    assert(static_cast<unsigned>(starting_from_epoch) <= all_revisions_.size());
+    assert(starting_from_epoch >= 1);
+    assert(static_cast<unsigned>(starting_from_epoch) - 1 <= all_revisions_.size());
 
     GetClusterRevisionResult result;
 
@@ -175,7 +170,7 @@ ClusterRevisionStore::ResourceServiceClusterState::Get(ClusterMapVersionEpoch st
     switch (scope) {
     case GetClusterRevisionCommand::APPLIED: {
         if (wip_revision_.has_value()) {
-            end = wip_revision_->from_version_epoch() + 1;
+            end = wip_revision_->from_version_epoch();
         } else {
             end = all_revisions_.size();
         }
@@ -183,7 +178,7 @@ ClusterRevisionStore::ResourceServiceClusterState::Get(ClusterMapVersionEpoch st
     }
     case GetClusterRevisionCommand::APPLIED_WIP: {
         if (wip_revision_.has_value()) {
-            end = wip_revision_->to_version_epoch() + 1;
+            end = wip_revision_->to_version_epoch();
         } else {
             end = all_revisions_.size();
         }
@@ -198,7 +193,11 @@ ClusterRevisionStore::ResourceServiceClusterState::Get(ClusterMapVersionEpoch st
     }
     }
 
-    *result.mutable_revision() = MergeRevisions(all_revisions_, starting_from_epoch, end);
+    std::optional<ClusterMapRevision> merged =
+        MergeRevisions(all_revisions_, starting_from_epoch - 1, end);
+    if (merged.has_value()) {
+        *result.mutable_revision() = *merged;
+    }
 
     return result;
 }
