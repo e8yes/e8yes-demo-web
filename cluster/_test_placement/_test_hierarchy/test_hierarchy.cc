@@ -69,10 +69,6 @@ bool OneLayerTest() {
     // 4 machines organized under the root.
     e8::UniformBucketData root_bucket_proto;
     root_bucket_proto.set_prime(13);
-    *root_bucket_proto.add_child_labels() = "machine1";
-    *root_bucket_proto.add_child_labels() = "machine2";
-    *root_bucket_proto.add_child_labels() = "machine3";
-    *root_bucket_proto.add_child_labels() = "machine4";
 
     bool added = hierarchy.AddRoot(
         std::make_unique<e8::UniformBucket>(root_bucket_proto, supported_name_spaces));
@@ -214,18 +210,12 @@ bool MultiLayerTest() {
     // 4 machines organized under the root.
     e8::UniformBucketData root_bucket_proto;
     root_bucket_proto.set_prime(13);
-    *root_bucket_proto.add_child_labels() = "row1";
-    *root_bucket_proto.add_child_labels() = "row2";
 
     e8::UniformBucketData row1_bucket_proto;
     row1_bucket_proto.set_prime(13);
-    *row1_bucket_proto.add_child_labels() = "machine1";
-    *row1_bucket_proto.add_child_labels() = "machine2";
 
     e8::UniformBucketData row2_bucket_proto;
     row2_bucket_proto.set_prime(13);
-    *row2_bucket_proto.add_child_labels() = "machine3";
-    *row2_bucket_proto.add_child_labels() = "machine4";
 
     bool added = hierarchy.AddRoot(
         std::make_unique<e8::UniformBucket>(root_bucket_proto, supported_name_spaces));

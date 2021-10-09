@@ -84,8 +84,10 @@ bool ClusterHierarchy::AddBucket(ClusterTreeNodeLabel const &parent_label,
     auto parent_it = tree_.find(parent_label);
     assert(parent_it != tree_.end());
     assert(hierarchy > parent_it->second->hierarchy);
+    assert(parent_it->second->bucket != nullptr);
     assert(!parent_it->second->machine.has_value());
 
+    // Creates the new node then adds it to the tree if it has not already been added.
     auto node_it = tree_.find(node_label);
     if (node_it != tree_.end()) {
         return false;
@@ -93,6 +95,10 @@ bool ClusterHierarchy::AddBucket(ClusterTreeNodeLabel const &parent_label,
 
     auto node = std::make_unique<BucketOrMachine>(parent_label, hierarchy, std::move(bucket));
     tree_.insert(std::make_pair(node_label, std::move(node)));
+
+    // Notifies the parent bucket about the new child.
+    bool added_to_bucket = parent_it->second->bucket->AddChild(node_label);
+    assert(added_to_bucket == true);
 
     return true;
 }
@@ -102,12 +108,19 @@ bool ClusterHierarchy::AddMachine(ClusterTreeNodeLabel const &parent_label,
     assert(node_label != parent_label);
     assert(node_label != kClusterHierarchyRootLabel);
 
+    // Creates the new node then adds it to the tree.
     auto node = std::make_unique<BucketOrMachine>(parent_label, machine);
-
     auto [it, successful] = tree_.insert(std::make_pair(node_label, std::move(node)));
     if (!successful) {
         return false;
     }
+
+    // Notifies the parent bucket about the new child.
+    auto parent_it = tree_.find(parent_label);
+    assert(parent_it != tree_.end());
+    assert(parent_it->second->bucket != nullptr);
+    bool added_to_bucket = parent_it->second->bucket->AddChild(node_label);
+    assert(added_to_bucket == true);
 
     this->UpdateAllAncestors(node_label, *it->second, machine.capabilities());
 
