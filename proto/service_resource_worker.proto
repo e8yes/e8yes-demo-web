@@ -35,12 +35,20 @@ message ApplyClusterMapRevisionResponse {
     // Checks if all objects has been correctly processed.
     bool successful = 1;
 
+    // When the apply request fails, a non-negative number in this field 
+    // indicates the machine must revise from the said version.
+    int64 require_starting_version = 2;
+
+    // When the apply request fails, this field indicates the number of objects
+    // fails to relocate/replicate.
+    int64 num_corrupted_objects = 3;
+
     // The number of objects gets processed by the time this response was
     // streamed.
-    int64 num_objects_processed = 2;
+    int64 num_objects_processed = 4;
 
     // The total number of objects that need to be processed.
-    int64 total_num_objects = 3;
+    int64 total_num_objects = 5;
 }
 
 // Service that a resource worker must provide. A resource worker handles a
