@@ -66,10 +66,9 @@ void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
 
         // Attempts to boardcast the revision.
         std::vector<Machine> unsuccessful_machines;
-        bool complete = BoardcastRevisionWithRetry(
-            revision_specs->revision, revision_specs->cluster_map.Machines(),
-            kRevisionBoardcastRate, *this_conductor_, kMaxRevisionBoardcastRetries,
-            &unsuccessful_machines);
+        bool complete =
+            BoardcastRevisionWithRetry(*revision_specs, kRevisionBoardcastRate, *this_conductor_,
+                                       kMaxRevisionBoardcastRetries, &unsuccessful_machines);
         if (!complete) {
             continue;
         }
@@ -79,7 +78,7 @@ void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
         ClusterRevisionCommand apply_revision_command;
         apply_revision_command.set_resource_service_id(revision_specs->resource_service_id);
         *apply_revision_command.mutable_apply_revision()->mutable_revision() =
-            revision_specs->revision;
+            revision_specs->WipRevision();
         this_conductor_->RunCommand(apply_revision_command);
     }
 }

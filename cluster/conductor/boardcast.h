@@ -21,16 +21,17 @@
 #include <vector>
 
 #include "cluster/conductor/condutor.h"
-#include "proto_cc/cluster.pb.h"
+#include "cluster/conductor/revision_store.h"
 #include "proto_cc/machine.pb.h"
 
 namespace e8 {
 
 /**
- * @brief BoardcastRevision Boardcasts the specified revision to the specified set of machines.
+ * @brief BoardcastRevision Boardcasts revisions to the cluster to keep as many machines in-sync as
+ * possible and keeps track of those that fail to get updated.
  *
- * @param revision The revision to be boardcasted.
- * @param target_machines The set of machines to boardcast the revision to.
+ * @param revision_specs Contains all the revisions that need to boardcast and the cluster that need
+ * to boardcast to.
  * @param rate At what proportion the revision is sent to the set of machines simultaneously.
  * @param this_conductor The conductor instance the client of this function is holding. When the
  * conductor adivces not to boardcast, this function will terminate as soon as possible and returns
@@ -40,18 +41,16 @@ namespace e8 {
  * @return true iff. the revision has boardcasted to the target machines without it being dropped by
  * the conductor.
  */
-bool BoardcastRevision(ClusterMapRevision const &revision,
-                       std::vector<Machine> const &target_machines, float rate,
+bool BoardcastRevision(ClusterRevisionStore::RevisionSpecs const &revision_specs, float rate,
                        ClusterRevisionConductor const &this_conductor,
                        std::vector<Machine> *unsuccessful_machines);
 
 /**
- * @brief BoardcastRevisionWithRetry The same as the above excepts it takes the failed machines and
- * retry the revision upon them for num_retries times.
+ * @brief BoardcastRevisionWithRetry The same as the above excepts it takes those failed machines
+ * and retry the revision upon them for num_retries times.
  */
-bool BoardcastRevisionWithRetry(ClusterMapRevision const &revision,
-                                std::vector<Machine> target_machines, float rate,
-                                ClusterRevisionConductor const &this_conductor,
+bool BoardcastRevisionWithRetry(ClusterRevisionStore::RevisionSpecs const &revision_specs,
+                                float rate, ClusterRevisionConductor const &this_conductor,
                                 unsigned num_retries, std::vector<Machine> *unsuccessful_machines);
 
 } // namespace e8

@@ -32,10 +32,10 @@
 #include "proto_cc/cluster_revision_command.pb.h"
 
 namespace e8 {
-namespace {
 
-std::optional<ClusterMapRevision> MergeRevisions(std::vector<ClusterMapRevision> const &revisions,
-                                                 unsigned start, unsigned end) {
+std::optional<ClusterMapRevision>
+MergeClusterMapRevisions(std::vector<ClusterMapRevision> const &revisions, unsigned start,
+                         unsigned end) {
     assert(end <= revisions.size());
     assert(start <= end);
 
@@ -58,8 +58,6 @@ std::optional<ClusterMapRevision> MergeRevisions(std::vector<ClusterMapRevision>
     return merged;
 }
 
-} // namespace
-
 ClusterRevisionStore::ClusterRevisionStore()
     : random_source_(std::make_unique<RandomSource>()), mu_(std::make_unique<std::mutex>()) {}
 
@@ -67,12 +65,24 @@ ClusterRevisionStore::~ClusterRevisionStore() {}
 
 ClusterRevisionStore::RevisionSpecs::RevisionSpecs(ResourceServiceId const &resource_service_id,
                                                    ClusterMap const &cluster_map,
-                                                   ClusterMapRevision const &revision)
-    : resource_service_id(resource_service_id), cluster_map(cluster_map), revision(revision) {}
+                                                   std::vector<ClusterMapRevision> const &revisions,
+                                                   ClusterMapVersionEpoch wip_starting_version)
+    : resource_service_id(resource_service_id), cluster_map(cluster_map), revisions(revisions),
+      wip_from_version_epoch(wip_starting_version) {}
 
 ClusterRevisionStore::RevisionSpecs::~RevisionSpecs() {}
 
-ClusterRevisionStore::ResourceServiceClusterState::ResourceServiceClusterState() {}
+ClusterMapRevision ClusterRevisionStore::RevisionSpecs::WipRevision() const {
+    std::optional<ClusterMapRevision> merged =
+        MergeClusterMapRevisions(revisions, wip_from_version_epoch, revisions.size());
+    assert(merged.has_value());
+
+    return *merged;
+}
+
+ClusterRevisionStore::ResourceServiceClusterState::ResourceServiceClusterState(
+    ResourceServiceId const &resource_service_id)
+    : resource_service_id_(resource_service_id) {}
 
 ClusterRevisionStore::ResourceServiceClusterState::~ResourceServiceClusterState() {}
 
@@ -121,7 +131,7 @@ ClusterRevisionStore::ResourceServiceClusterState::Enqueue(ClusterMapRevision co
     }
 
     // There has been a pending revision already. Merges with the existing pending revision.
-    std::optional<ClusterMapRevision> merged_pending_revision = MergeRevisions(
+    std::optional<ClusterMapRevision> merged_pending_revision = MergeClusterMapRevisions(
         std::vector<ClusterMapRevision>{*pending_revision_, revision}, /*start=*/0, /*end=*/2);
     assert(merged_pending_revision.has_value());
     pending_revision_ = *merged_pending_revision;
@@ -194,7 +204,7 @@ ClusterRevisionStore::ResourceServiceClusterState::Get(ClusterMapVersionEpoch st
     }
 
     std::optional<ClusterMapRevision> merged =
-        MergeRevisions(all_revisions_, starting_from_epoch - 1, end);
+        MergeClusterMapRevisions(all_revisions_, starting_from_epoch - 1, end);
     if (merged.has_value()) {
         *result.mutable_revision() = *merged;
     }
@@ -206,9 +216,15 @@ bool ClusterRevisionStore::ResourceServiceClusterState::HasWorkInProgress() cons
     return wip_revision_.has_value();
 }
 
-std::pair<ClusterMap, std::optional<ClusterMapRevision>>
+ClusterRevisionStore::RevisionSpecs
 ClusterRevisionStore::ResourceServiceClusterState::WorkInProgress() const {
-    return std::make_pair(cluster_map_, wip_revision_);
+    assert(wip_revision_.has_value());
+
+    std::vector<ClusterMapRevision> revision_of_interest(
+        all_revisions_.begin(), all_revisions_.begin() + wip_revision_->to_version_epoch());
+
+    return RevisionSpecs(resource_service_id_, cluster_map_, revision_of_interest,
+                         wip_revision_->from_version_epoch());
 }
 
 ClusterRevisionResult ClusterRevisionStore::Run(ClusterRevisionCommand const &command) {
@@ -216,10 +232,11 @@ ClusterRevisionResult ClusterRevisionStore::Run(ClusterRevisionCommand const &co
 
     auto service_it = services_.find(command.resource_service_id());
     if (service_it == services_.end()) {
-        service_it = services_
-                         .insert(std::make_pair(command.resource_service_id(),
-                                                ResourceServiceClusterState()))
-                         .first;
+        service_it =
+            services_
+                .insert(std::make_pair(command.resource_service_id(),
+                                       ResourceServiceClusterState(command.resource_service_id())))
+                .first;
     }
 
     auto &[_, service_states] = *service_it;
@@ -268,10 +285,7 @@ std::optional<ClusterRevisionStore::RevisionSpecs> ClusterRevisionStore::WorkInP
     }
 
     ResourceServiceId selected_service = SampleFrom(weights, random_source_.get());
-    auto const &[cluster_map, revision] = services_.at(selected_service).WorkInProgress();
-    assert(revision.has_value());
-
-    return RevisionSpecs(selected_service, cluster_map, *revision);
+    return services_.at(selected_service).WorkInProgress();
 }
 
 } // namespace e8

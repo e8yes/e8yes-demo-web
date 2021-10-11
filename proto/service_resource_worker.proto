@@ -37,7 +37,7 @@ message ApplyClusterMapRevisionResponse {
 
     // When the apply request fails, a non-negative number in this field 
     // indicates the machine must revise from the said version.
-    int64 require_starting_version = 2;
+    int64 require_from_version_epoch = 2;
 
     // When the apply request fails, this field indicates the number of objects
     // fails to relocate/replicate.

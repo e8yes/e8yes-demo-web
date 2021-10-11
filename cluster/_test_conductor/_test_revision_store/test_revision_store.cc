@@ -244,7 +244,9 @@ bool EnqueueAndWorkInProgressTest() {
     TEST_CONDITION(wip_specs.has_value());
     TEST_CONDITION(wip_specs->resource_service_id == "test");
     TEST_CONDITION(wip_specs->cluster_map.Version() == 0);
-    TEST_CONDITION(wip_specs->revision.DebugString() == revision.DebugString());
+    TEST_CONDITION(wip_specs->revisions.size() == 1);
+    TEST_CONDITION(wip_specs->revisions.rbegin()->DebugString() == revision.DebugString());
+    TEST_CONDITION(wip_specs->wip_from_version_epoch == 0);
 
     return true;
 }
@@ -296,7 +298,9 @@ bool EnqueueAndApplyThenWorkInProgressTest() {
     TEST_CONDITION(wip_specs.has_value());
     TEST_CONDITION(wip_specs->resource_service_id == "test");
     TEST_CONDITION(wip_specs->cluster_map.Version() == 1);
-    TEST_CONDITION(wip_specs->revision.DebugString() == revision2.DebugString());
+    TEST_CONDITION(wip_specs->revisions.size() == 2);
+    TEST_CONDITION(wip_specs->revisions.rbegin()->DebugString() == revision2.DebugString());
+    TEST_CONDITION(wip_specs->wip_from_version_epoch == 1);
 
     // Applies the add-child revision, then nothing is work-in-progress.
     e8::ClusterRevisionCommand apply_command2;
