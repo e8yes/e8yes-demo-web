@@ -83,9 +83,10 @@ bool ClusterHierarchy::AddBucket(ClusterTreeNodeLabel const &parent_label,
 
     auto parent_it = tree_.find(parent_label);
     assert(parent_it != tree_.end());
-    assert(hierarchy > parent_it->second->hierarchy);
-    assert(parent_it->second->bucket != nullptr);
-    assert(!parent_it->second->machine.has_value());
+    auto &[_, parent_node] = *parent_it;
+    assert(hierarchy > parent_node->hierarchy);
+    assert(parent_node->bucket != nullptr);
+    assert(!parent_node->machine.has_value());
 
     // Creates the new node then adds it to the tree if it has not already been added.
     auto node_it = tree_.find(node_label);
@@ -96,9 +97,9 @@ bool ClusterHierarchy::AddBucket(ClusterTreeNodeLabel const &parent_label,
     auto node = std::make_unique<BucketOrMachine>(parent_label, hierarchy, std::move(bucket));
     tree_.insert(std::make_pair(node_label, std::move(node)));
 
-    // Notifies the parent bucket about the new child.
-    bool added_to_bucket = parent_it->second->bucket->AddChild(node_label);
-    assert(added_to_bucket == true);
+    // Notifies the parent bucket about the new child, though the parent could have already learned
+    // about it in the case of a proto import.
+    parent_node->bucket->AddChild(node_label);
 
     return true;
 }
@@ -115,12 +116,13 @@ bool ClusterHierarchy::AddMachine(ClusterTreeNodeLabel const &parent_label,
         return false;
     }
 
-    // Notifies the parent bucket about the new child.
+    // Notifies the parent bucket about the new child, though the parent could have already learned
+    // about it in the case of a proto import.
     auto parent_it = tree_.find(parent_label);
     assert(parent_it != tree_.end());
-    assert(parent_it->second->bucket != nullptr);
-    bool added_to_bucket = parent_it->second->bucket->AddChild(node_label);
-    assert(added_to_bucket == true);
+    auto &[_, parent_node] = *parent_it;
+    assert(parent_node->bucket != nullptr);
+    parent_node->bucket->AddChild(node_label);
 
     this->UpdateAllAncestors(node_label, *it->second, machine.capabilities());
 
