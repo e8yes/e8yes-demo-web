@@ -73,13 +73,21 @@ void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
             continue;
         }
 
-        // TODO: we should report the unsuccessful machines.
-
-        ClusterRevisionCommand apply_revision_command;
-        apply_revision_command.set_resource_service_id(revision_specs->resource_service_id);
-        *apply_revision_command.mutable_apply_revision()->mutable_revision() =
-            revision_specs->WipRevision();
-        this_conductor_->RunCommand(apply_revision_command);
+        // TODO: we should report the unsuccessful machines so the error can be triaged and handled.
+        // TODO: Excludes failed machines that were handled from the unsuccessful_machines list.
+        if (unsuccessful_machines.empty()) {
+            // The revision is error-free, meaning the entire cluster is in-sync. We can safely mark
+            // it as applied.
+            ClusterRevisionCommand apply_revision_command;
+            apply_revision_command.set_resource_service_id(revision_specs->resource_service_id);
+            *apply_revision_command.mutable_apply_revision()->mutable_revision() =
+                revision_specs->WipRevision();
+            this_conductor_->RunCommand(apply_revision_command);
+        } else {
+            // TODO: Makes it possible to let healthy machines receive the latest updates even in
+            // face of failures (perhaps apply the current revision as unresolved, and unresolved
+            // revision could be retrieved from the WorkInProgress() call).
+        }
     }
 }
 
