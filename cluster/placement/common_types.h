@@ -27,6 +27,9 @@
 
 namespace e8 {
 
+// For specifying the IP address of a resource worker service.
+using ResourceWorkerAddress = std::string;
+
 // The unique key of a particular resource.
 using ResourceKey = std::string;
 
