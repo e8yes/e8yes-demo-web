@@ -19,7 +19,7 @@
 #include <string>
 
 #include "cluster/conductor/client.h"
-#include "cluster/conductor/condutor.h"
+#include "cluster/conductor/conductor.h"
 #include "cluster/conductor/revision_store.h"
 #include "proto_cc/cluster_conductor_command.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"

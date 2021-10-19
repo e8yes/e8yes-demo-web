@@ -32,7 +32,7 @@ HEADERS += \
     background.h \
     boardcast.h \
     client.h \
-    condutor.h \
+    conductor.h \
     instance.h \
     integration_test/local_cluster.h \
     integration_test/mock_resource_service.h \

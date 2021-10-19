@@ -19,7 +19,7 @@
 #include <vector>
 
 #include "cluster/conductor/boardcast.h"
-#include "cluster/conductor/condutor.h"
+#include "cluster/conductor/conductor.h"
 #include "cluster/conductor/integration_test/local_cluster.h"
 #include "cluster/conductor/integration_test/mock_resource_service.h"
 #include "cluster/conductor/revision_store.h"

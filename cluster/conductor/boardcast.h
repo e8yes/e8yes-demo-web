@@ -20,7 +20,7 @@
 
 #include <vector>
 
-#include "cluster/conductor/condutor.h"
+#include "cluster/conductor/conductor.h"
 #include "cluster/conductor/revision_store.h"
 #include "proto_cc/machine.pb.h"
 

@@ -20,7 +20,7 @@
 
 #include <memory>
 
-#include "cluster/conductor/condutor.h"
+#include "cluster/conductor/conductor.h"
 #include "cluster/conductor/revision_store.h"
 #include "common/thread/thread_pool.h"
 #include "proto_cc/cluster_revision_command.pb.h"

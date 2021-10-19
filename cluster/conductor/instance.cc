@@ -20,7 +20,7 @@
 
 #include "cluster/conductor/background.h"
 #include "cluster/conductor/client.h"
-#include "cluster/conductor/condutor.h"
+#include "cluster/conductor/conductor.h"
 #include "cluster/conductor/instance.h"
 #include "cluster/conductor/revision_store.h"
 #include "common/thread/thread_pool.h"
