@@ -23,6 +23,8 @@ SOURCES += \
     client.cc \
     conductor.cc \
     instance.cc \
+    integration_test/local_cluster.cc \
+    integration_test/mock_resource_service.cc \
     revision_store.cc
 
 
@@ -32,6 +34,8 @@ HEADERS += \
     client.h \
     condutor.h \
     instance.h \
+    integration_test/local_cluster.h \
+    integration_test/mock_resource_service.h \
     revision_store.h
 
 # Default rules for deployment.
