@@ -41,7 +41,8 @@ unsigned const kMaxRevisionBoardcastRetries = 5;
 
 } // namespace
 
-ClusterRevisionBackground::ClusterRevisionBackground(ClusterRevisionConductor *this_conductor)
+ClusterRevisionBackground::ClusterRevisionBackground(
+    ClusterRevisionConductorInterface *this_conductor)
     : this_conductor_(this_conductor), done_(false) {}
 
 ClusterRevisionBackground::~ClusterRevisionBackground() {}

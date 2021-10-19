@@ -27,6 +27,10 @@
 
 namespace e8 {
 
+ClusterRevisionConductorInterface::ClusterRevisionConductorInterface() {}
+
+ClusterRevisionConductorInterface::~ClusterRevisionConductorInterface() {}
+
 ClusterRevisionConductor::ClusterRevisionConductor(ClusterRevisionStore const *local_store,
                                                    ReplicationInstance *conductor_replicator,
                                                    ClusterConductorClient *conductor_client)

@@ -41,7 +41,7 @@ class ClusterRevisionBackground : public TaskInterface {
      * @brief ClusterRevisionBackground This background task wraps on the revision conductor and
      * pushes revisions to the cluster when it's possible.
      */
-    ClusterRevisionBackground(ClusterRevisionConductor *this_conductor);
+    ClusterRevisionBackground(ClusterRevisionConductorInterface *this_conductor);
     ~ClusterRevisionBackground() override;
 
     void Run(TaskStorageInterface *) const override;
@@ -54,7 +54,7 @@ class ClusterRevisionBackground : public TaskInterface {
     void Shutdown();
 
   private:
-    ClusterRevisionConductor *const this_conductor_;
+    ClusterRevisionConductorInterface *const this_conductor_;
     bool done_;
 };
 

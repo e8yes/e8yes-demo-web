@@ -27,36 +27,51 @@ namespace e8 {
 
 /**
  * @brief The ClusterRevisionConductorInterface class Defines the functions a revision conductor
- * must provide. A revision conductor can potentially run in replicas. It conducts the boardcast of
- * cluster revision messages to the cluster in a fault-tolerant manner.
+ * must provide.
  */
-class ClusterRevisionConductor {
+class ClusterRevisionConductorInterface {
   public:
-    ClusterRevisionConductor(ClusterRevisionStore const *local_store,
-                             ReplicationInstance *conductor_replicator,
-                             ClusterConductorClient *conductor_client);
-    ~ClusterRevisionConductor();
+    ClusterRevisionConductorInterface();
+    virtual ~ClusterRevisionConductorInterface();
 
     /**
      * @brief ShouldBoardcast If the revision conductor runs in replicas, only one instance should
      * be allow to boardcast the revision during most of the period to save communication bandwidth,
      * though it's ok to briefly have multiple boardcaster.
      */
-    bool ShouldBoardcast() const;
+    virtual bool ShouldBoardcast() const = 0;
 
     /**
      * @brief RunCommand Runs the specified command over all the revision conductors, if there are
      * multiple. This function blocks until the command is committed and gets processed by a
      * majority of command runners.
      */
-    ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command);
+    virtual ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command) = 0;
 
     /**
      * @brief LocalStore Returns a constant pointer to the local revision store for querying
      * purposes. This allows the client of the conductor to bypass Raft's logging mechanism to read
      * the store's states when it doesn't care if a state gets updated by previous write operations.
      */
-    ClusterRevisionStore const *LocalStore() const;
+    virtual ClusterRevisionStore const *LocalStore() const = 0;
+};
+
+/**
+ * @brief The ClusterRevisionConductor A revision conductor that can potentially run in replicas. It
+ * conducts the boardcast of cluster revision messages to the cluster in a fault-tolerant manner.
+ */
+class ClusterRevisionConductor : public ClusterRevisionConductorInterface {
+  public:
+    ClusterRevisionConductor(ClusterRevisionStore const *local_store,
+                             ReplicationInstance *conductor_replicator,
+                             ClusterConductorClient *conductor_client);
+    ~ClusterRevisionConductor() override;
+
+    bool ShouldBoardcast() const override;
+
+    ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command) override;
+
+    ClusterRevisionStore const *LocalStore() const override;
 
   private:
     ClusterRevisionStore const *local_store_;

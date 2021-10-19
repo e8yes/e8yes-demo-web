@@ -42,7 +42,7 @@ namespace e8 {
  * the conductor.
  */
 bool BoardcastRevision(ClusterRevisionStore::RevisionSpecs const &revision_specs, float rate,
-                       ClusterRevisionConductor const &this_conductor,
+                       ClusterRevisionConductorInterface const &this_conductor,
                        std::vector<Machine> *unsuccessful_machines);
 
 /**
@@ -50,7 +50,7 @@ bool BoardcastRevision(ClusterRevisionStore::RevisionSpecs const &revision_specs
  * and retry the revision upon them for num_retries times.
  */
 bool BoardcastRevisionWithRetry(ClusterRevisionStore::RevisionSpecs const &revision_specs,
-                                float rate, ClusterRevisionConductor const &this_conductor,
+                                float rate, ClusterRevisionConductorInterface const &this_conductor,
                                 unsigned num_retries, std::vector<Machine> *unsuccessful_machines);
 
 } // namespace e8

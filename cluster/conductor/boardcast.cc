@@ -39,9 +39,8 @@
 namespace e8 {
 namespace {
 
-TimeIntervalMillis const kStatusUpdateIntervalMin = 5000;
-TimeIntervalMillis const kStatusUpdateIntervalMax = 10000;
-TimeIntervalMillis const kStatusUpdateTimeout = 2 * kStatusUpdateIntervalMax;
+TimeIntervalMillis const kStatusUpdateIntervalMin = 100;
+TimeIntervalMillis const kStatusUpdateIntervalMax = 200;
 
 TimeIntervalMillis RandomizedStatusUpdateInterval(RandomSource *random_source) {
     std::vector<int> rv = DrawUniformInts(kStatusUpdateIntervalMin, kStatusUpdateIntervalMax,
@@ -53,8 +52,6 @@ ApplyClusterMapRevisionResponse ApplyClusterMapRevision(ClusterMapRevision const
                                                         RandomSource *random_source,
                                                         ResourceWorkerService::Stub *target_stub) {
     grpc::ClientContext context;
-    context.set_deadline(std::chrono::system_clock::now() +
-                         std::chrono::milliseconds(kStatusUpdateTimeout));
 
     ApplyClusterMapRevisionRequest request;
     TimeIntervalMillis status_update_interval = RandomizedStatusUpdateInterval(random_source);
@@ -68,6 +65,9 @@ ApplyClusterMapRevisionResponse ApplyClusterMapRevision(ClusterMapRevision const
     while (stream->Read(&response)) {
         // TODO: Currently the progress information is discarded. It may be instead stored for
         // progress check by the client of the BoardcastRevision() function.
+
+        // TODO: Timeout the RPC if we haven't received any status update for several update
+        // intervals.
     }
 
     return response;
@@ -76,7 +76,7 @@ ApplyClusterMapRevisionResponse ApplyClusterMapRevision(ClusterMapRevision const
 struct BoardcastArgs : public TaskStorageInterface {
     BoardcastArgs(Machine const *target_machine, std::vector<ClusterMapRevision> const &revisions,
                   ClusterMapVersionEpoch wip_starting_version,
-                  ClusterRevisionConductor const &this_conductor);
+                  ClusterRevisionConductorInterface const &this_conductor);
     ~BoardcastArgs();
 
     RandomSource random_source;
@@ -85,7 +85,7 @@ struct BoardcastArgs : public TaskStorageInterface {
     Machine const *target_machine;
     std::vector<ClusterMapRevision> const &revisions;
     ClusterMapVersionEpoch const wip_from_version_epoch;
-    ClusterRevisionConductor const &this_conductor;
+    ClusterRevisionConductorInterface const &this_conductor;
 
     // Task return values.
     bool dropped;
@@ -95,7 +95,7 @@ struct BoardcastArgs : public TaskStorageInterface {
 BoardcastArgs::BoardcastArgs(Machine const *target_machine,
                              std::vector<ClusterMapRevision> const &revisions,
                              ClusterMapVersionEpoch wip_from_version_epoch,
-                             ClusterRevisionConductor const &this_conductor)
+                             ClusterRevisionConductorInterface const &this_conductor)
     : target_machine(target_machine), revisions(revisions),
       wip_from_version_epoch(wip_from_version_epoch), this_conductor(this_conductor),
       dropped(false), successful(false) {}
@@ -153,10 +153,14 @@ bool BoardcastTask::DropResourceOnCompletion() const { return false; }
 bool BoardcastRevision(std::vector<ClusterMapRevision> const &revision_history,
                        ClusterMapVersionEpoch wip_from_version_epoch,
                        std::vector<Machine> const &target_machines, float rate,
-                       ClusterRevisionConductor const &this_conductor,
+                       ClusterRevisionConductorInterface const &this_conductor,
                        std::vector<Machine> *unsuccessful_machines) {
-    assert(!revision_history.empty());
-    assert(wip_from_version_epoch < revision_history.rbegin()->to_version_epoch());
+    assert(wip_from_version_epoch < static_cast<int>(revision_history.size()));
+
+    if (revision_history.empty()) {
+        // Nothing to boardcast.
+        return true;
+    }
 
     unsigned num_parallel_boardcasts =
         std::max(1u, static_cast<unsigned>(target_machines.size() * rate));
@@ -189,20 +193,40 @@ bool BoardcastRevision(std::vector<ClusterMapRevision> const &revision_history,
     return !dropped;
 }
 
+std::vector<Machine> TargetMachines(ClusterRevisionStore::RevisionSpecs const &revision_specs) {
+    std::vector<Machine> target_machines = revision_specs.cluster_map.Machines();
+
+    if (revision_specs.wip_from_version_epoch < 0) {
+        return target_machines;
+    }
+
+    for (unsigned i = revision_specs.wip_from_version_epoch; i < revision_specs.revisions.size();
+         ++i) {
+        for (auto const &action : revision_specs.revisions[i].actions()) {
+            if (action.operation() == ClusterMapRevision::ADD_TREE_NODE &&
+                action.tree_node().has_machine()) {
+                target_machines.push_back(action.tree_node().machine());
+            }
+        }
+    }
+
+    return target_machines;
+}
+
 } // namespace
 
 bool BoardcastRevision(ClusterRevisionStore::RevisionSpecs const &revision_specs, float rate,
-                       ClusterRevisionConductor const &this_conductor,
+                       ClusterRevisionConductorInterface const &this_conductor,
                        std::vector<Machine> *unsuccessful_machines) {
     return BoardcastRevision(revision_specs.revisions, revision_specs.wip_from_version_epoch,
-                             revision_specs.cluster_map.Machines(), rate, this_conductor,
+                             TargetMachines(revision_specs), rate, this_conductor,
                              unsuccessful_machines);
 }
 
 bool BoardcastRevisionWithRetry(ClusterRevisionStore::RevisionSpecs const &revision_specs,
-                                float rate, ClusterRevisionConductor const &this_conductor,
+                                float rate, ClusterRevisionConductorInterface const &this_conductor,
                                 unsigned num_retries, std::vector<Machine> *unsuccessful_machines) {
-    std::vector<Machine> target_machines = revision_specs.cluster_map.Machines();
+    std::vector<Machine> target_machines = TargetMachines(revision_specs);
     for (unsigned i = 0; i < num_retries + 1; ++i) {
         bool completed =
             BoardcastRevision(revision_specs.revisions, revision_specs.wip_from_version_epoch,
