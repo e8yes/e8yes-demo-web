@@ -318,6 +318,11 @@ bool ClusterMap::Revise(ClusterMapRevision const &revision) {
 
 std::vector<Machine> ClusterMap::Machines() const {
     std::vector<Machine> machines;
+
+    if (hierarchy_.Root() == nullptr) {
+        return machines;
+    }
+
     ExportMachines(*hierarchy_.Root(), hierarchy_, &machines);
     return machines;
 }
