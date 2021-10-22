@@ -20,6 +20,7 @@ syntax = "proto3";
 package e8;
 
 import "cluster.proto";
+import "machine.proto";
 
 // Adds the specified revision to the pending queue. The revision must not be a
 // composite, meaning the the revision must only span 1 version of change. The
@@ -32,6 +33,129 @@ message EnqueueClusterRevisionCommand {
 
 message EnqueueClusterRevisionResult {
     bool successful = 1;
+}
+
+// Polls all the currently pending revisions.
+message PollPendingClusterRevisionCommand {
+}
+
+message PollPendingClusterRevisionResult {
+    // All the pending revisions merged into one single object if there are any.
+    ClusterMapRevision revision = 1;
+}
+
+// Creates new work to apply all the pending revisions to the specified target
+// machines. Then, empties the pending queue if the work could be successfully
+// created.
+message CreateClusterRevisionWorkCommand {
+    // The version of cluster map that the client believes the first pending 
+    // revision is based off.
+    int64 from_version_epoch = 1;
+
+    // The version of cluster map that the pending revisions will change into.
+    int64 to_version_epoch = 2;
+
+    // All the machines (including those to be added) that needs to be notified
+    // of the pending revisions.
+    repeated Machine target_machines = 3;
+}
+
+message CreateClusterRevisionWorkResult {
+    // Indicates if new work is created and the pending revisions are removed 
+    // from the queue.
+    bool successful = 1;
+
+    // If the command wasn't successful, this field tells if it failed because
+    // the pending queue was empty, and no work could have been created from 
+    // it.
+    bool has_pending = 2;
+
+    // If the command wasn't successful while has_pending is true, it could be
+    // because the client didn't supply the most up-to-date pending version 
+    // epochs. This field allows the client to update its knowledge.
+    ClusterMapRevision revision = 3;
+}
+
+// Gets all the currently ongoing revision work.
+message GetAllClusterRevisionWorkCommand {
+}
+
+message GetAllClusterRevisionWorkResult {
+    message Work {
+        // The version of the cluster map that the target machines are holding.
+        int64 machine_version_epoch = 1;
+
+        // Target machines where all the work-in-progress revision will apply
+        // to.
+        repeated Machine target_machines = 2;
+    }
+
+    // A list of revision history covering all the applied and work-in-progress
+    // entries. Each entry is a non-composite revision.
+    repeated ClusterMapRevision all_revisions = 1;
+
+    // A list of all the ongoing work with machine_version_epoch sorted in
+    // ascending order.
+    repeated Work all_work = 2;
+}
+
+// Updates a piece of revision work with a new set of target machines.
+message UpdateClusterRevisionWorkCommand {
+    // The key of the revision work. The work must have previously been 
+    // created by the CreateClusterRevisionWorkCommand.
+    int64 machine_version_epoch = 1;
+
+    // This field must be non-empty.
+    repeated Machine target_machines = 2;
+}
+
+message UpdateClusterRevisionWorkResult {
+}
+
+// Marks a piece of revision work as finished and removes it from the 
+// ongoing work pool.
+message FinishClusterRevisionWorkCommand {
+    // The key of the revision work.
+    int64 machine_version_epoch = 1;
+}
+
+message FinishClusterRevisionWorkResult {
+    // The command is successful if the work keyed by machine_version_epoch
+    // exists in the pool.
+    bool successful = 1;
+}
+
+// Returns a history list of all revisions.
+message ListRevisionHistoryCommand {
+}
+
+message ListRevisionHistoryResult {
+    // The revision object annotated by its current status.
+    message Revision {
+        enum Status {
+            // Can't happen.
+            INVALID = 0;
+
+            // The revision is a finished work and was applied to the entire
+            // cluster.
+            APPLIED = 1;
+
+            // The revision is currently scheduled to be worked on.
+            WORK_IN_PROGRESS = 2;
+
+            // The revision sits in the pending queue, waiting to be scheduled.
+            PENDING = 3;
+        }
+
+        // The revision object.
+        ClusterMapRevision revision = 1;
+
+        // The revision's current status.
+        Status status = 2;
+    }
+
+    // The history list.
+    repeated Revision history = 1;
 }
 
 // Marks the specified revision as applied so that other pending revisions can
@@ -73,9 +197,17 @@ message ClusterRevisionCommand {
 
     // A collection of all possible types of commands.
     oneof command {
+        // NOTE: The following 3 commands are deprecated.
         EnqueueClusterRevisionCommand enqueue_revision = 2;
         ApplyClusterRevisionCommand apply_revision = 3;
         GetClusterRevisionCommand get_revision = 4;
+
+        PollPendingClusterRevisionCommand poll_revision = 5;
+        CreateClusterRevisionWorkCommand create_work = 6;
+        GetAllClusterRevisionWorkCommand get_all_work = 7;
+        UpdateClusterRevisionWorkCommand update_work = 8;
+        FinishClusterRevisionWorkCommand finish_work = 9;
+        ListRevisionHistoryCommand list_revision_history = 10;
     }
 }
 
@@ -84,8 +216,16 @@ message ClusterRevisionResult {
     // A collection of all possible of types of results, each corresponding to
     // a revision command.
     oneof result {
+        // NOTE: The following 3 command results are deprecated.
         EnqueueClusterRevisionResult enqueue_result = 1;
         ApplyClusterRevisionResult apply_result = 2;
         GetClusterRevisionResult get_result = 3;
+
+        PollPendingClusterRevisionResult poll_result = 4;
+        CreateClusterRevisionWorkResult create_work_result = 5;
+        GetAllClusterRevisionWorkResult get_all_work_result = 6;
+        UpdateClusterRevisionWorkResult update_work_result = 7;
+        FinishClusterRevisionWorkCommand finish_work_result = 8;
+        ListRevisionHistoryResult list_result = 9;
     }
 }
