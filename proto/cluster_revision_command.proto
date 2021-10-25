@@ -78,8 +78,6 @@ message CreateClusterRevisionWorkResult {
 
 // Gets all the currently ongoing revision work.
 message GetAllClusterRevisionWorkCommand {
-    // Gets all revision work starting from this version epoch.
-    int64 from_version_epoch = 1;
 }
 
 message GetAllClusterRevisionWorkResult {
@@ -89,13 +87,12 @@ message GetAllClusterRevisionWorkResult {
 
     // A list of ongoing work, with machine_version_epoch sorted in ascending
     // order, started from from_version_epoch.
-    ClusterRevisionWork all_work = 2;
+    repeated ClusterRevisionWork all_work = 2;
 }
 
 // Updates a piece of revision work with a new set of target machines.
 message UpdateClusterRevisionWorkCommand {
-    // The key of the revision work. The work must have previously been 
-    // created by the CreateClusterRevisionWorkCommand.
+    // The key of the revision work.
     int64 machine_version_epoch = 1;
 
     // This field must be non-empty.
@@ -103,6 +100,9 @@ message UpdateClusterRevisionWorkCommand {
 }
 
 message UpdateClusterRevisionWorkResult {
+    // The command is successful if the work keyed by machine_version_epoch
+    // exists in the pool.
+    bool successful = 1;
 }
 
 // Marks a piece of revision work as finished and removes it from the 
@@ -218,7 +218,7 @@ message ClusterRevisionResult {
         CreateClusterRevisionWorkResult create_work_result = 5;
         GetAllClusterRevisionWorkResult get_all_work_result = 6;
         UpdateClusterRevisionWorkResult update_work_result = 7;
-        FinishClusterRevisionWorkCommand finish_work_result = 8;
+        FinishClusterRevisionWorkResult finish_work_result = 8;
         ListRevisionHistoryResult list_result = 9;
     }
 }
