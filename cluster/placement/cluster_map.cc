@@ -30,6 +30,7 @@
 #include "cluster/placement/hierarchy.h"
 #include "cluster/placement/score.h"
 #include "proto_cc/cluster.pb.h"
+#include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/machine.pb.h"
 #include "third_party/uuid/uuid4.h"
 

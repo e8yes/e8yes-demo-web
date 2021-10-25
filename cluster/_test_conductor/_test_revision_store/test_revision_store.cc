@@ -23,6 +23,7 @@
 #include "common/unit_test_util/unit_test_util.h"
 #include "proto_cc/bucket.pb.h"
 #include "proto_cc/cluster.pb.h"
+#include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 
 namespace {

@@ -22,6 +22,7 @@
 
 #include "cluster/placement/cluster_map.h"
 #include "common/random/random_source.h"
+#include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/service_resource_worker.grpc.pb.h"
 #include "proto_cc/service_resource_worker.pb.h"
 

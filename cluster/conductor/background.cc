@@ -28,7 +28,7 @@
 #include "cluster/placement/cluster_map.h"
 #include "common/thread/thread_pool.h"
 #include "common/time_util/time_util.h"
-#include "proto_cc/cluster.pb.h"
+#include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 #include "proto_cc/machine.pb.h"
 

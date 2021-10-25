@@ -21,6 +21,8 @@ HEADERS += \
     cluster.pb.h \
     cluster_conductor_command.grpc.pb.h \
     cluster_conductor_command.pb.h \
+    cluster_revision.grpc.pb.h \
+    cluster_revision.pb.h \
     cluster_revision_command.grpc.pb.h \
     cluster_revision_command.pb.h \
     command.grpc.pb.h \
@@ -107,6 +109,8 @@ SOURCES += \
     cluster.pb.cc \
     cluster_conductor_command.grpc.pb.cc \
     cluster_conductor_command.pb.cc \
+    cluster_revision.grpc.pb.cc \
+    cluster_revision.pb.cc \
     cluster_revision_command.grpc.pb.cc \
     cluster_revision_command.pb.cc \
     command.grpc.pb.cc \

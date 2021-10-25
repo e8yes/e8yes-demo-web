@@ -1,0 +1,88 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "bucket.proto";
+import "cluster.proto";
+import "machine.proto";
+
+
+// Describes how a version of cluster map is formed from a previous version by
+// tree node addition, removal and state update.
+message ClusterMapRevision {
+    enum Operation {
+        INVALID_OPERATION = 0;
+        ADD_TREE_NODE = 1;
+        DELETE_TREE_NODE = 2;
+    }
+
+    message Action {
+        // The type of operation to perform.
+        Operation operation = 1;
+
+        // The parent label of the cluster element to operation on. This field
+        // is unnecessary if it's a deletion operation.
+        string parent_label = 2;
+
+        // The label of the cluster element to operation on.
+        string node_label = 3;
+
+        // The parameters of the element to operate on. This field is
+        // unnecessary if it's a deletion operation.
+        ClusterTreeNode tree_node = 4;
+    }
+
+    // The older cluster map to base the revision delta from.
+    int64 from_version_epoch = 1;
+
+    // The newer target cluster map to revise to.
+    int64 to_version_epoch = 2;
+
+    // The list of addition, removal and state update operations needed. Order
+    // matters.
+    repeated Action actions = 3;
+}
+
+// A list of reasons why one might want to modify a cluster map. This allows
+// the cluster monitor to pick up appropiate strategies in response to 
+// different events.
+enum ClusterMapRevisionReason {
+    // Bad reasoning.
+    CMRR_INVALID = 0;
+
+    // The client wants to register a new resource worker.
+    CMRR_REGISTER_RESOURCE_WORKER = 1;
+
+    // The client wants to decomission a resource worker.
+    CMRR_UNREGISTER_RESOURCE_WORKER = 2;
+
+    // The client encountered a failed resource worker.
+    CMRR_REPORT_RESOURCE_WORKER_FAILURE = 3;
+}
+
+//
+message ClusterRevisionWork {
+    // The version of the cluster map that the target machines are holding.
+    int64 machine_version_epoch = 1;
+
+    // Target machines where all the work-in-progress revision will apply
+    // to.
+    repeated Machine target_machines = 2;
+}

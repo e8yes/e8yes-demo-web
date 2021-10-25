@@ -23,7 +23,7 @@
 #include "cluster/placement/bucket.h"
 #include "cluster/placement/common_types.h"
 #include "cluster/placement/hierarchy.h"
-#include "proto_cc/cluster.pb.h"
+#include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/machine.pb.h"
 
 namespace e8 {

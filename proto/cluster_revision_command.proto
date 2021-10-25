@@ -19,7 +19,7 @@ syntax = "proto3";
 
 package e8;
 
-import "cluster.proto";
+import "cluster_revision.proto";
 import "machine.proto";
 
 // Adds the specified revision to the pending queue. The revision must not be a
@@ -78,25 +78,18 @@ message CreateClusterRevisionWorkResult {
 
 // Gets all the currently ongoing revision work.
 message GetAllClusterRevisionWorkCommand {
+    // Gets all revision work starting from this version epoch.
+    int64 from_version_epoch = 1;
 }
 
 message GetAllClusterRevisionWorkResult {
-    message Work {
-        // The version of the cluster map that the target machines are holding.
-        int64 machine_version_epoch = 1;
-
-        // Target machines where all the work-in-progress revision will apply
-        // to.
-        repeated Machine target_machines = 2;
-    }
-
     // A list of revision history covering all the applied and work-in-progress
     // entries. Each entry is a non-composite revision.
     repeated ClusterMapRevision all_revisions = 1;
 
-    // A list of all the ongoing work with machine_version_epoch sorted in
-    // ascending order.
-    repeated Work all_work = 2;
+    // A list of ongoing work, with machine_version_epoch sorted in ascending
+    // order, started from from_version_epoch.
+    ClusterRevisionWork all_work = 2;
 }
 
 // Updates a piece of revision work with a new set of target machines.

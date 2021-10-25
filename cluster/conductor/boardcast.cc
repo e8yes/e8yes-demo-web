@@ -31,7 +31,7 @@
 #include "common/random/uniform_distribution.h"
 #include "common/thread/thread_pool.h"
 #include "common/time_util/time_util.h"
-#include "proto_cc/cluster.pb.h"
+#include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/machine.pb.h"
 #include "proto_cc/service_resource_worker.grpc.pb.h"
 #include "proto_cc/service_resource_worker.pb.h"

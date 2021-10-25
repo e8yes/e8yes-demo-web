@@ -19,7 +19,7 @@ syntax = "proto3";
 
 package e8;
 
-import "cluster.proto";
+import "cluster_revision.proto";
 
 
 message ApplyClusterMapRevisionRequest {
