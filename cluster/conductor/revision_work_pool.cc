@@ -1,0 +1,279 @@
+/**
+ * e8yes demo web.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <cassert>
+#include <google/protobuf/repeated_field.h>
+#include <map>
+#include <optional>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+#include "cluster/conductor/revision_store.h"
+#include "cluster/conductor/revision_work_pool.h"
+#include "cluster/placement/cluster_map.h"
+#include "cluster/placement/common_types.h"
+#include "proto_cc/cluster.pb.h"
+#include "proto_cc/cluster_revision.pb.h"
+#include "proto_cc/cluster_revision_command.pb.h"
+
+namespace e8 {
+
+ClusterRevisionWorkPool::ResourceServiceClusterState::ResourceServiceClusterState() {}
+
+ClusterRevisionWorkPool::ResourceServiceClusterState::~ResourceServiceClusterState() {}
+
+EnqueueClusterRevisionResult
+ClusterRevisionWorkPool::ResourceServiceClusterState::EnqueuePendingRevision(
+    EnqueueClusterRevisionCommand const &command) {
+    assert(command.revision().from_version_epoch() ==
+           command.revision().to_version_epoch() - 1); // New revision can not be a composite.
+
+    EnqueueClusterRevisionResult result;
+
+    ClusterMapVersionEpoch last_epoch;
+    if (all_revisions_.empty()) {
+        assert(work_pool_.empty());
+        assert(!pending_revision_.has_value());
+
+        last_epoch = ClusterMapVersionEpoch();
+    } else {
+        ClusterMapRevision const &last_revision = *all_revisions_.rbegin();
+        last_epoch = last_revision.to_version_epoch();
+    }
+
+    if (command.revision().from_version_epoch() != last_epoch) {
+        // New revision purposal doesn't continue from the last enqueued revision.
+        result.set_successful(false);
+        return result;
+    }
+
+    *all_revisions_.Add() = command.revision();
+
+    if (!pending_revision_.has_value()) {
+        // There is revision to be worked on, but there hasn't been any pending revision yet.
+        // Schedules this revision to sit in the pending position.
+        pending_revision_ = command.revision();
+
+        result.set_successful(true);
+        return result;
+    }
+
+    // There has been a pending revision already. Merges with the existing pending revision.
+    std::optional<ClusterMapRevision> merged_pending_revision = MergeClusterMapRevisions(
+        std::vector<ClusterMapRevision>{*pending_revision_, command.revision()}, /*start=*/0,
+        /*end=*/2);
+    assert(merged_pending_revision.has_value());
+    pending_revision_ = *merged_pending_revision;
+
+    result.set_successful(true);
+    return result;
+}
+
+PollPendingClusterRevisionResult
+ClusterRevisionWorkPool::ResourceServiceClusterState::PollPendingRevision(
+    PollPendingClusterRevisionCommand const & /*command*/) {
+    PollPendingClusterRevisionResult result;
+
+    if (!pending_revision_.has_value()) {
+        return result;
+    }
+
+    *result.mutable_revision() = *pending_revision_;
+    return result;
+}
+
+CreateClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterState::CreateWork(
+    CreateClusterRevisionWorkCommand const &command) {
+    CreateClusterRevisionWorkResult result;
+
+    if (!pending_revision_.has_value()) {
+        result.set_successful(false);
+        result.set_has_pending(false);
+        return result;
+    }
+
+    result.set_has_pending(true);
+
+    if (command.from_version_epoch() != pending_revision_->from_version_epoch() ||
+        command.to_version_epoch() != pending_revision_->to_version_epoch()) {
+        result.set_successful(false);
+        *result.mutable_revision() = *pending_revision_;
+        return result;
+    }
+
+    ClusterRevisionWork new_work;
+    new_work.set_machine_version_epoch(pending_revision_->from_version_epoch());
+    *new_work.mutable_target_machines() = command.target_machines();
+
+    bool added_to_pool =
+        work_pool_.insert(std::make_pair(new_work.machine_version_epoch(), new_work)).second;
+    assert(added_to_pool); // The work must not have existed in the pool, or else the command's
+                           // version epochs could not have matched with the pending revision's.
+
+    pending_revision_.reset();
+
+    result.set_successful(true);
+    return result;
+}
+
+GetAllClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterState::GetAllWork(
+    GetAllClusterRevisionWorkCommand const & /*command*/) {
+    GetAllClusterRevisionWorkResult result;
+    *result.mutable_all_revisions() = all_revisions_;
+
+    for (auto const &[_, work] : work_pool_) {
+        *result.add_all_work() = work;
+    }
+
+    return result;
+}
+
+UpdateClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterState::UpdateWork(
+    UpdateClusterRevisionWorkCommand const &command) {
+    assert(!command.target_machines().empty()); // If there is no target machine, the client should
+                                                // have used the FinishClusterRevisionWorkCommand.
+
+    UpdateClusterRevisionWorkResult result;
+
+    auto work_it = work_pool_.find(command.machine_version_epoch());
+    if (work_it == work_pool_.end()) {
+        result.set_successful(false);
+        return result;
+    }
+
+    auto &[_, work] = *work_it;
+    *work.mutable_target_machines() = command.target_machines();
+
+    result.set_successful(true);
+    return result;
+}
+
+FinishClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterState::FinishWork(
+    FinishClusterRevisionWorkCommand const &command) {
+    unsigned num_removed = work_pool_.erase(command.machine_version_epoch());
+
+    FinishClusterRevisionWorkResult result;
+    result.set_successful(num_removed == 1);
+
+    return result;
+}
+
+ListRevisionHistoryResult ClusterRevisionWorkPool::ResourceServiceClusterState::ListHistory(
+    ListRevisionHistoryCommand const & /*command*/) {
+    ListRevisionHistoryResult result;
+
+    // Figures out the index ranges where work-in-progress and pending revivions span across the
+    // revision history. The rest of the entries are then applied revisions.
+    unsigned wip_range_begin;
+    unsigned wip_range_end;
+    if (!work_pool_.empty()) {
+        wip_range_begin = work_pool_.begin()->first;
+        wip_range_end = work_pool_.rbegin()->first - 1;
+    } else {
+        wip_range_begin = all_revisions_.size();
+        wip_range_end = all_revisions_.size();
+    }
+
+    unsigned pending_range_begin;
+    unsigned pending_range_end;
+    if (pending_revision_.has_value()) {
+        pending_range_begin = pending_revision_->from_version_epoch();
+        pending_range_end = pending_revision_->to_version_epoch() - 1;
+    } else {
+        pending_range_begin = all_revisions_.size();
+        pending_range_end = all_revisions_.size();
+    }
+
+    assert(wip_range_begin <= wip_range_end);
+    assert(pending_range_begin <= pending_range_end);
+    assert(wip_range_end < pending_range_begin);
+
+    // Annotates each revision entry's status according the above ranges.
+    for (unsigned i = 0; i < static_cast<unsigned>(all_revisions_.size()); ++i) {
+        ListRevisionHistoryResult::Revision *revision = result.add_history();
+
+        *revision->mutable_revision() = all_revisions_[i];
+
+        if (i <= wip_range_begin && i <= wip_range_end) {
+            revision->set_status(ListRevisionHistoryResult::Revision::WORK_IN_PROGRESS);
+        } else if (i <= pending_range_begin && i <= pending_range_end) {
+            revision->set_status(ListRevisionHistoryResult::Revision::PENDING);
+        } else {
+            revision->set_status(ListRevisionHistoryResult::Revision::APPLIED);
+        }
+    }
+
+    return result;
+}
+
+ClusterRevisionWorkPool::ClusterRevisionWorkPool() {}
+
+ClusterRevisionWorkPool::~ClusterRevisionWorkPool() {}
+
+ClusterRevisionResult ClusterRevisionWorkPool::Run(ClusterRevisionCommand const &command) {
+    auto service_it = services_.find(command.resource_service_id());
+    if (service_it == services_.end()) {
+        service_it = services_
+                         .insert(std::make_pair(command.resource_service_id(),
+                                                ResourceServiceClusterState()))
+                         .first;
+    }
+
+    auto &[_, service_states] = *service_it;
+
+    ClusterRevisionResult result;
+    switch (command.command_case()) {
+    case ClusterRevisionCommand::CommandCase::kEnqueueRevision: {
+        *result.mutable_enqueue_result() =
+            service_states.EnqueuePendingRevision(command.enqueue_revision());
+        break;
+    }
+    case ClusterRevisionCommand::CommandCase::kPollRevision: {
+        *result.mutable_poll_result() = service_states.PollPendingRevision(command.poll_revision());
+        break;
+    }
+    case ClusterRevisionCommand::CommandCase::kCreateWork: {
+        *result.mutable_create_work_result() = service_states.CreateWork(command.create_work());
+        break;
+    }
+    case ClusterRevisionCommand::CommandCase::kGetAllWork: {
+        *result.mutable_get_all_work_result() = service_states.GetAllWork(command.get_all_work());
+        break;
+    }
+    case ClusterRevisionCommand::CommandCase::kUpdateWork: {
+        *result.mutable_update_work_result() = service_states.UpdateWork(command.update_work());
+        break;
+    }
+    case ClusterRevisionCommand::CommandCase::kFinishWork: {
+        *result.mutable_finish_work_result() = service_states.FinishWork(command.finish_work());
+        break;
+    }
+    case ClusterRevisionCommand::CommandCase::kListRevisionHistory: {
+        *result.mutable_list_result() = service_states.ListHistory(command.list_revision_history());
+        break;
+    }
+    default: {
+        assert(false);
+    }
+    }
+
+    return result;
+}
+
+} // namespace e8
