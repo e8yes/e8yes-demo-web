@@ -180,18 +180,8 @@ ListRevisionHistoryResult ClusterRevisionWorkPool::ResourceServiceClusterState::
 
     // Figures out the index ranges where work-in-progress and pending revivions span across the
     // revision history. The rest of the entries are then applied revisions.
-    unsigned wip_range_begin;
-    unsigned wip_range_end;
-    if (!work_pool_.empty()) {
-        wip_range_begin = work_pool_.begin()->first;
-        wip_range_end = work_pool_.rbegin()->first - 1;
-    } else {
-        wip_range_begin = all_revisions_.size();
-        wip_range_end = all_revisions_.size();
-    }
-
-    unsigned pending_range_begin;
-    unsigned pending_range_end;
+    int pending_range_begin;
+    int pending_range_end;
     if (pending_revision_.has_value()) {
         pending_range_begin = pending_revision_->from_version_epoch();
         pending_range_end = pending_revision_->to_version_epoch() - 1;
@@ -200,19 +190,29 @@ ListRevisionHistoryResult ClusterRevisionWorkPool::ResourceServiceClusterState::
         pending_range_end = all_revisions_.size();
     }
 
+    int wip_range_begin;
+    int wip_range_end;
+    if (!work_pool_.empty()) {
+        wip_range_begin = work_pool_.begin()->first;
+        wip_range_end = pending_range_begin - 1;
+    } else {
+        wip_range_begin = -1;
+        wip_range_end = -1;
+    }
+
     assert(wip_range_begin <= wip_range_end);
     assert(pending_range_begin <= pending_range_end);
     assert(wip_range_end < pending_range_begin);
 
     // Annotates each revision entry's status according the above ranges.
-    for (unsigned i = 0; i < static_cast<unsigned>(all_revisions_.size()); ++i) {
+    for (int i = 0; i < all_revisions_.size(); ++i) {
         ListRevisionHistoryResult::Revision *revision = result.add_history();
 
         *revision->mutable_revision() = all_revisions_[i];
 
-        if (i <= wip_range_begin && i <= wip_range_end) {
+        if (wip_range_begin <= i && i <= wip_range_end) {
             revision->set_status(ListRevisionHistoryResult::Revision::WORK_IN_PROGRESS);
-        } else if (i <= pending_range_begin && i <= pending_range_end) {
+        } else if (pending_range_begin <= i && i <= pending_range_end) {
             revision->set_status(ListRevisionHistoryResult::Revision::PENDING);
         } else {
             revision->set_status(ListRevisionHistoryResult::Revision::APPLIED);

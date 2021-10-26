@@ -69,7 +69,7 @@ using ResourceServiceId = std::string;
  *                                 │                      │             │
  *                                 └──────────┬───────────┘             │
  *                                            │            update work on machine failures
- *                                       select work                    │
+ *                                        get work                      │
  *                                            │                         │
  *                                            ▼                         │
  *                                   conductor does work────────────────┘

@@ -13,7 +13,7 @@ QMAKE_LFLAGS_RELEASE += -O3 -flto -march=native
 INCLUDEPATH += $$PWD/../../../
 
 SOURCES += \
-    test_revision_store.cc
+    test_revision_work_pool.cc
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../common/unit_test_util/release/ -lunit_test_util
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../common/unit_test_util/debug/ -lunit_test_util
