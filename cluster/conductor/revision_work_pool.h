@@ -18,12 +18,12 @@
 #ifndef CLUSTER_CONDUCTOR_REVISION_WORK_POOL_H
 #define CLUSTER_CONDUCTOR_REVISION_WORK_POOL_H
 
-#include <google/protobuf/repeated_field.h>
 #include <map>
 #include <optional>
 #include <string>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include "cluster/placement/cluster_map.h"
 #include "cluster/placement/common_types.h"
@@ -148,7 +148,7 @@ class ClusterRevisionWorkPool {
         ListRevisionHistoryResult ListHistory(ListRevisionHistoryCommand const &command);
 
       private:
-        google::protobuf::RepeatedPtrField<ClusterMapRevision> all_revisions_;
+        std::vector<ClusterMapRevision> all_revisions_;
         std::map<ClusterMapVersionEpoch, ClusterRevisionWork> work_pool_;
         std::optional<ClusterMapRevision> pending_revision_;
     };

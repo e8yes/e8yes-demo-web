@@ -22,6 +22,15 @@ package e8;
 import "cluster_revision.proto";
 import "machine.proto";
 
+// Returns the ID of all the resource services that have ever appeared as of
+// now.
+message PollClusterResourceServiceCommand {
+}
+
+message PollClusterResourceServiceResult {
+    repeated string resource_services = 1;
+}
+
 // Adds the specified revision to the pending queue. The revision must not be a
 // composite, meaning the the revision must only span 1 version of change. The
 // version of cluster map which it's going to revise from must be that with all
@@ -41,7 +50,11 @@ message PollPendingClusterRevisionCommand {
 
 message PollPendingClusterRevisionResult {
     // All the pending revisions merged into one single object if there are any.
-    ClusterMapRevision revision = 1;
+    ClusterMapRevision pending_revision = 1;
+
+    // A merged revision history covering all the applied and work-in-progress
+    // entries (everything other than the pendings).
+    ClusterMapRevision all_revision = 2;
 }
 
 // Creates new work to apply all the pending revisions to the specified target
@@ -70,10 +83,11 @@ message CreateClusterRevisionWorkResult {
     // it.
     bool has_pending = 2;
 
-    // If the command wasn't successful while has_pending is true, it could be
-    // because the client didn't supply the most up-to-date pending version 
-    // epochs. This field allows the client to update its knowledge.
-    ClusterMapRevision revision = 3;
+    // If the command wasn't successful while has_pending is true, it ought to
+    // be the case where the client didn't supply the most up-to-date pending
+    // version epochs. In this situation, this field will be true, and the
+    // client should poll the pending queue again to update its knowledge.
+    bool pending_versions_mismatch = 3;
 }
 
 // Gets all the currently ongoing revision work.
@@ -190,17 +204,19 @@ message ClusterRevisionCommand {
 
     // A collection of all possible types of commands.
     oneof command {
-        // NOTE: The following 3 commands are deprecated.
-        EnqueueClusterRevisionCommand enqueue_revision = 2;
-        ApplyClusterRevisionCommand apply_revision = 3;
-        GetClusterRevisionCommand get_revision = 4;
+        PollClusterResourceServiceCommand poll_resource_service = 2;
+        EnqueueClusterRevisionCommand enqueue_revision = 3;
 
-        PollPendingClusterRevisionCommand poll_revision = 5;
-        CreateClusterRevisionWorkCommand create_work = 6;
-        GetAllClusterRevisionWorkCommand get_all_work = 7;
-        UpdateClusterRevisionWorkCommand update_work = 8;
-        FinishClusterRevisionWorkCommand finish_work = 9;
-        ListRevisionHistoryCommand list_revision_history = 10;
+        // NOTE: The following 2 commands are deprecated.
+        ApplyClusterRevisionCommand apply_revision = 4;
+        GetClusterRevisionCommand get_revision = 5;
+
+        PollPendingClusterRevisionCommand poll_revision = 6;
+        CreateClusterRevisionWorkCommand create_work = 7;
+        GetAllClusterRevisionWorkCommand get_all_work = 8;
+        UpdateClusterRevisionWorkCommand update_work = 9;
+        FinishClusterRevisionWorkCommand finish_work = 10;
+        ListRevisionHistoryCommand list_revision_history = 11;
     }
 }
 
@@ -209,16 +225,18 @@ message ClusterRevisionResult {
     // A collection of all possible of types of results, each corresponding to
     // a revision command.
     oneof result {
-        // NOTE: The following 3 command results are deprecated.
-        EnqueueClusterRevisionResult enqueue_result = 1;
-        ApplyClusterRevisionResult apply_result = 2;
-        GetClusterRevisionResult get_result = 3;
+        PollClusterResourceServiceResult poll_resource_service_result = 1;
+        EnqueueClusterRevisionResult enqueue_result = 2;
 
-        PollPendingClusterRevisionResult poll_result = 4;
-        CreateClusterRevisionWorkResult create_work_result = 5;
-        GetAllClusterRevisionWorkResult get_all_work_result = 6;
-        UpdateClusterRevisionWorkResult update_work_result = 7;
-        FinishClusterRevisionWorkResult finish_work_result = 8;
-        ListRevisionHistoryResult list_result = 9;
+        // NOTE: The following 2 command results are deprecated.
+        ApplyClusterRevisionResult apply_result = 3;
+        GetClusterRevisionResult get_result = 4;
+
+        PollPendingClusterRevisionResult poll_result = 5;
+        CreateClusterRevisionWorkResult create_work_result = 6;
+        GetAllClusterRevisionWorkResult get_all_work_result = 7;
+        UpdateClusterRevisionWorkResult update_work_result = 8;
+        FinishClusterRevisionWorkResult finish_work_result = 9;
+        ListRevisionHistoryResult list_result = 10;
     }
 }

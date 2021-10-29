@@ -62,6 +62,46 @@ e8::ClusterMapRevision::Action AddChildAction(e8::ClusterTreeNodeLabel const &ch
 
 } // namespace
 
+bool PollResourceServiceTest() {
+    e8::ClusterRevisionWorkPool work_pool;
+
+    // Polls and checks if the work pool's initial state is empty.
+    e8::ClusterRevisionCommand poll_resource_service_command;
+    *poll_resource_service_command.mutable_poll_resource_service() =
+        e8::PollClusterResourceServiceCommand();
+    e8::ClusterRevisionResult result = work_pool.Run(poll_resource_service_command);
+    TEST_CONDITION(result.has_poll_resource_service_result());
+    TEST_CONDITION(result.poll_resource_service_result().resource_services_size() == 0);
+
+    // Enqueues a revision for the test resource service.
+    e8::ClusterMapRevision revision;
+    revision.set_from_version_epoch(0);
+    revision.set_to_version_epoch(1);
+    *revision.add_actions() = AddRootAction();
+
+    e8::ClusterRevisionCommand enqueue_command;
+    enqueue_command.set_resource_service_id("test");
+    *enqueue_command.mutable_enqueue_revision()->mutable_revision() = revision;
+    work_pool.Run(enqueue_command);
+
+    result = work_pool.Run(poll_resource_service_command);
+    TEST_CONDITION(result.has_poll_resource_service_result());
+    TEST_CONDITION(result.poll_resource_service_result().resource_services_size() == 1);
+    TEST_CONDITION(result.poll_resource_service_result().resource_services(0) == "test");
+
+    // Enqueues a revision for the test2 resource service.
+    e8::ClusterRevisionCommand enqueue_command2;
+    enqueue_command2.set_resource_service_id("test2");
+    *enqueue_command2.mutable_enqueue_revision()->mutable_revision() = revision;
+    work_pool.Run(enqueue_command2);
+
+    result = work_pool.Run(poll_resource_service_command);
+    TEST_CONDITION(result.has_poll_resource_service_result());
+    TEST_CONDITION(result.poll_resource_service_result().resource_services_size() == 2);
+
+    return true;
+}
+
 bool EnqueueRejectionTest() {
     e8::ClusterRevisionWorkPool work_pool;
 
@@ -137,8 +177,8 @@ bool EnqueueAndPollTest() {
     *poll_command.mutable_poll_revision() = e8::PollPendingClusterRevisionCommand();
     result = work_pool.Run(poll_command);
     TEST_CONDITION(result.has_poll_result());
-    TEST_CONDITION(result.poll_result().has_revision());
-    TEST_CONDITION(result.poll_result().revision().DebugString() == revision.DebugString());
+    TEST_CONDITION(result.poll_result().has_pending_revision());
+    TEST_CONDITION(result.poll_result().pending_revision().DebugString() == revision.DebugString());
 
     // Enqueues another revision.
     e8::ClusterMapRevision revision2;
@@ -157,9 +197,9 @@ bool EnqueueAndPollTest() {
     // Polls to ses if the second revision gets aggregated into the pending revision object.
     result = work_pool.Run(poll_command);
     TEST_CONDITION(result.has_poll_result());
-    TEST_CONDITION(result.poll_result().revision().from_version_epoch() == 0);
-    TEST_CONDITION(result.poll_result().revision().to_version_epoch() == 2);
-    TEST_CONDITION(result.poll_result().revision().actions_size() ==
+    TEST_CONDITION(result.poll_result().pending_revision().from_version_epoch() == 0);
+    TEST_CONDITION(result.poll_result().pending_revision().to_version_epoch() == 2);
+    TEST_CONDITION(result.poll_result().pending_revision().actions_size() ==
                    revision.actions_size() + revision2.actions_size());
 
     return true;
@@ -178,7 +218,7 @@ bool EnqueueAndCreateWorkTest() {
     TEST_CONDITION(result.has_create_work_result());
     TEST_CONDITION(!result.create_work_result().successful());
     TEST_CONDITION(!result.create_work_result().has_pending());
-    TEST_CONDITION(!result.create_work_result().has_revision());
+    TEST_CONDITION(!result.create_work_result().pending_versions_mismatch());
 
     // Enqueues the add-root and add-child revisions.
     e8::ClusterMapRevision revision;
@@ -209,8 +249,7 @@ bool EnqueueAndCreateWorkTest() {
     TEST_CONDITION(result.has_create_work_result());
     TEST_CONDITION(!result.create_work_result().successful());
     TEST_CONDITION(result.create_work_result().has_pending());
-    TEST_CONDITION(result.create_work_result().revision().from_version_epoch() == 0);
-    TEST_CONDITION(result.create_work_result().revision().to_version_epoch() == 2);
+    TEST_CONDITION(result.create_work_result().pending_versions_mismatch());
 
     // Creates new work with proper version epochs.
     create_work_command.mutable_create_work()->set_from_version_epoch(0);
@@ -223,10 +262,13 @@ bool EnqueueAndCreateWorkTest() {
 
     // Checks that the pending queue is empty after the successful work creation.
     e8::ClusterRevisionCommand poll_command;
+    poll_command.set_resource_service_id("test");
     *poll_command.mutable_poll_revision() = e8::PollPendingClusterRevisionCommand();
     result = work_pool.Run(poll_command);
     TEST_CONDITION(result.has_poll_result());
-    TEST_CONDITION(!result.poll_result().has_revision());
+    TEST_CONDITION(!result.poll_result().has_pending_revision());
+    TEST_CONDITION(result.poll_result().all_revision().from_version_epoch() == 0);
+    TEST_CONDITION(result.poll_result().all_revision().to_version_epoch() == 2);
 
     return true;
 }
@@ -540,6 +582,7 @@ bool ListHistoryTest() {
 
 int main() {
     e8::BeginTestSuite("cluster_conductor_revision_store");
+    e8::RunTest("PollResourceServiceTest", PollResourceServiceTest);
     e8::RunTest("EnqueueRejectionTest", EnqueueRejectionTest);
     e8::RunTest("EnqueueAndPollTest", EnqueueAndPollTest);
     e8::RunTest("EnqueueAndCreateWorkTest", EnqueueAndCreateWorkTest);

@@ -16,7 +16,6 @@
  */
 
 #include <cassert>
-#include <google/protobuf/repeated_field.h>
 #include <map>
 #include <optional>
 #include <string>
@@ -63,7 +62,7 @@ ClusterRevisionWorkPool::ResourceServiceClusterState::EnqueuePendingRevision(
         return result;
     }
 
-    *all_revisions_.Add() = command.revision();
+    all_revisions_.push_back(command.revision());
 
     if (!pending_revision_.has_value()) {
         // There is revision to be worked on, but there hasn't been any pending revision yet.
@@ -91,10 +90,23 @@ ClusterRevisionWorkPool::ResourceServiceClusterState::PollPendingRevision(
     PollPendingClusterRevisionResult result;
 
     if (!pending_revision_.has_value()) {
+        std::optional<ClusterMapRevision> applied_and_wip =
+            MergeClusterMapRevisions(all_revisions_, /*start=*/0, all_revisions_.size());
+        if (applied_and_wip.has_value()) {
+            *result.mutable_all_revision() = *applied_and_wip;
+        }
+
         return result;
     }
 
-    *result.mutable_revision() = *pending_revision_;
+    *result.mutable_pending_revision() = *pending_revision_;
+
+    std::optional<ClusterMapRevision> applied_and_wip = MergeClusterMapRevisions(
+        all_revisions_, /*start=*/0, pending_revision_->from_version_epoch());
+    if (applied_and_wip.has_value()) {
+        *result.mutable_all_revision() = *applied_and_wip;
+    }
+
     return result;
 }
 
@@ -113,7 +125,7 @@ CreateClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterS
     if (command.from_version_epoch() != pending_revision_->from_version_epoch() ||
         command.to_version_epoch() != pending_revision_->to_version_epoch()) {
         result.set_successful(false);
-        *result.mutable_revision() = *pending_revision_;
+        result.set_pending_versions_mismatch(true);
         return result;
     }
 
@@ -135,7 +147,9 @@ CreateClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterS
 GetAllClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterState::GetAllWork(
     GetAllClusterRevisionWorkCommand const & /*command*/) {
     GetAllClusterRevisionWorkResult result;
-    *result.mutable_all_revisions() = all_revisions_;
+    for (auto const &revision : all_revisions_) {
+        *result.add_all_revisions() = revision;
+    }
 
     for (auto const &[_, work] : work_pool_) {
         *result.add_all_work() = work;
@@ -205,7 +219,7 @@ ListRevisionHistoryResult ClusterRevisionWorkPool::ResourceServiceClusterState::
     assert(wip_range_end < pending_range_begin);
 
     // Annotates each revision entry's status according the above ranges.
-    for (int i = 0; i < all_revisions_.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(all_revisions_.size()); ++i) {
         ListRevisionHistoryResult::Revision *revision = result.add_history();
 
         *revision->mutable_revision() = all_revisions_[i];
@@ -227,6 +241,18 @@ ClusterRevisionWorkPool::ClusterRevisionWorkPool() {}
 ClusterRevisionWorkPool::~ClusterRevisionWorkPool() {}
 
 ClusterRevisionResult ClusterRevisionWorkPool::Run(ClusterRevisionCommand const &command) {
+    if (command.has_poll_resource_service()) {
+        ClusterRevisionResult result;
+        *result.mutable_poll_resource_service_result() = PollClusterResourceServiceResult();
+
+        for (auto const &[resource_service_id, _] : services_) {
+            result.mutable_poll_resource_service_result()->add_resource_services(
+                resource_service_id);
+        }
+
+        return result;
+    }
+
     auto service_it = services_.find(command.resource_service_id());
     if (service_it == services_.end()) {
         service_it = services_
