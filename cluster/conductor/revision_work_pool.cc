@@ -131,7 +131,7 @@ CreateClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterS
 
     ClusterRevisionWork new_work;
     new_work.set_machine_version_epoch(pending_revision_->from_version_epoch());
-    *new_work.mutable_target_machines() = command.target_machines();
+    *new_work.mutable_targets() = command.targets();
 
     bool added_to_pool =
         work_pool_.insert(std::make_pair(new_work.machine_version_epoch(), new_work)).second;
@@ -160,8 +160,8 @@ GetAllClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterS
 
 UpdateClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterState::UpdateWork(
     UpdateClusterRevisionWorkCommand const &command) {
-    assert(!command.target_machines().empty()); // If there is no target machine, the client should
-                                                // have used the FinishClusterRevisionWorkCommand.
+    assert(!command.targets().empty()); // If there is no target machine, the client should
+                                        // have used the FinishClusterRevisionWorkCommand.
 
     UpdateClusterRevisionWorkResult result;
 
@@ -172,7 +172,7 @@ UpdateClusterRevisionWorkResult ClusterRevisionWorkPool::ResourceServiceClusterS
     }
 
     auto &[_, work] = *work_it;
-    *work.mutable_target_machines() = command.target_machines();
+    *work.mutable_targets() = command.targets();
 
     result.set_successful(true);
     return result;

@@ -254,8 +254,12 @@ bool EnqueueAndCreateWorkTest() {
     // Creates new work with proper version epochs.
     create_work_command.mutable_create_work()->set_from_version_epoch(0);
     create_work_command.mutable_create_work()->set_to_version_epoch(2);
-    *create_work_command.mutable_create_work()->add_target_machines() =
-        revision2.actions(0).tree_node().machine();
+
+    e8::ClusterRevisionWork::Target target;
+    target.set_node_label(revision2.actions(0).node_label());
+    *target.mutable_machine() = revision2.actions(0).tree_node().machine();
+    *create_work_command.mutable_create_work()->add_targets() = target;
+
     result = work_pool.Run(create_work_command);
     TEST_CONDITION(result.has_create_work_result());
     TEST_CONDITION(result.create_work_result().successful());
@@ -303,8 +307,12 @@ bool EnqueueAndCreateWorkThenGetWorkTest() {
     create_work_command.set_resource_service_id("test");
     create_work_command.mutable_create_work()->set_from_version_epoch(0);
     create_work_command.mutable_create_work()->set_to_version_epoch(2);
-    *create_work_command.mutable_create_work()->add_target_machines() =
-        revision2.actions(0).tree_node().machine();
+
+    e8::ClusterRevisionWork::Target target;
+    target.set_node_label(revision2.actions(0).node_label());
+    *target.mutable_machine() = revision2.actions(0).tree_node().machine();
+    *create_work_command.mutable_create_work()->add_targets() = target;
+
     e8::ClusterRevisionResult result = work_pool.Run(create_work_command);
     TEST_CONDITION(result.has_create_work_result());
     TEST_CONDITION(result.create_work_result().successful());
@@ -318,9 +326,11 @@ bool EnqueueAndCreateWorkThenGetWorkTest() {
     TEST_CONDITION(result.has_get_all_work_result());
     TEST_CONDITION(result.get_all_work_result().all_revisions().size() == 2);
     TEST_CONDITION(result.get_all_work_result().all_work().size() == 1);
-    TEST_CONDITION(result.get_all_work_result().all_work()[0].machine_version_epoch() == 0);
-    TEST_CONDITION(result.get_all_work_result().all_work()[0].target_machines().size() == 1);
-    TEST_CONDITION(result.get_all_work_result().all_work()[0].target_machines(0).DebugString() ==
+    TEST_CONDITION(result.get_all_work_result().all_work(0).machine_version_epoch() == 0);
+    TEST_CONDITION(result.get_all_work_result().all_work(0).targets().size() == 1);
+    TEST_CONDITION(result.get_all_work_result().all_work(0).targets(0).node_label() ==
+                   revision2.actions(0).node_label());
+    TEST_CONDITION(result.get_all_work_result().all_work(0).targets(0).machine().DebugString() ==
                    revision2.actions(0).tree_node().machine().DebugString());
 
     return true;
@@ -368,8 +378,12 @@ bool EnqueueAndCreateWorkThenUpdateWorkTest() {
     e8::ClusterRevisionCommand update_work_command;
     update_work_command.set_resource_service_id("test");
     update_work_command.mutable_update_work()->set_machine_version_epoch(1);
-    *update_work_command.mutable_update_work()->add_target_machines() =
-        revision2.actions(0).tree_node().machine();
+
+    e8::ClusterRevisionWork::Target target;
+    target.set_node_label(revision2.actions(0).node_label());
+    *target.mutable_machine() = revision2.actions(0).tree_node().machine();
+    *update_work_command.mutable_update_work()->add_targets() = target;
+
     e8::ClusterRevisionResult result = work_pool.Run(update_work_command);
     TEST_CONDITION(result.has_update_work_result());
     TEST_CONDITION(result.update_work_result().successful());
@@ -382,8 +396,10 @@ bool EnqueueAndCreateWorkThenUpdateWorkTest() {
     TEST_CONDITION(result.has_get_all_work_result());
     TEST_CONDITION(result.get_all_work_result().all_work().size() == 2);
     TEST_CONDITION(result.get_all_work_result().all_work(1).machine_version_epoch() == 1);
-    TEST_CONDITION(result.get_all_work_result().all_work(1).target_machines().size() == 1);
-    TEST_CONDITION(result.get_all_work_result().all_work(1).target_machines(0).DebugString() ==
+    TEST_CONDITION(result.get_all_work_result().all_work(1).targets().size() == 1);
+    TEST_CONDITION(result.get_all_work_result().all_work(1).targets(0).node_label() ==
+                   revision2.actions(0).node_label());
+    TEST_CONDITION(result.get_all_work_result().all_work(1).targets(0).machine().DebugString() ==
                    revision2.actions(0).tree_node().machine().DebugString());
 
     return true;

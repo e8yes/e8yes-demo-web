@@ -77,12 +77,21 @@ enum ClusterMapRevisionReason {
     CMRR_REPORT_RESOURCE_WORKER_FAILURE = 3;
 }
 
-//
+// A revision work is the ask to bring a set of machine targets of same version
+// epoch to a higher, or more up-to-date, version epoch.
 message ClusterRevisionWork {
+    // Defines a machine target that needs to be updated.
+    message Target {
+        // The unique node label of the machine target.
+        string node_label = 1;
+
+        // The machine's definition.
+        Machine machine = 2;
+    }
+
     // The version of the cluster map that the target machines are holding.
     int64 machine_version_epoch = 1;
 
-    // Target machines where all the work-in-progress revision will apply
-    // to.
-    repeated Machine target_machines = 2;
+    // The set of target machines which needs to be updated.
+    repeated Target targets = 2;
 }

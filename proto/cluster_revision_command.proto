@@ -20,7 +20,7 @@ syntax = "proto3";
 package e8;
 
 import "cluster_revision.proto";
-import "machine.proto";
+
 
 // Returns the ID of all the resource services that have ever appeared as of
 // now.
@@ -70,7 +70,7 @@ message CreateClusterRevisionWorkCommand {
 
     // All the machines (including those to be added) that needs to be notified
     // of the pending revisions.
-    repeated Machine target_machines = 3;
+    repeated ClusterRevisionWork.Target targets = 3;
 }
 
 message CreateClusterRevisionWorkResult {
@@ -110,7 +110,7 @@ message UpdateClusterRevisionWorkCommand {
     int64 machine_version_epoch = 1;
 
     // This field must be non-empty.
-    repeated Machine target_machines = 2;
+    repeated ClusterRevisionWork.Target targets = 2;
 }
 
 message UpdateClusterRevisionWorkResult {
