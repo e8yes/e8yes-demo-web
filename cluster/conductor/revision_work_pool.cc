@@ -23,7 +23,6 @@
 #include <utility>
 #include <vector>
 
-#include "cluster/conductor/revision_store.h"
 #include "cluster/conductor/revision_work_pool.h"
 #include "cluster/placement/cluster_map.h"
 #include "cluster/placement/common_types.h"
@@ -32,6 +31,31 @@
 #include "proto_cc/cluster_revision_command.pb.h"
 
 namespace e8 {
+
+std::optional<ClusterMapRevision>
+MergeClusterMapRevisions(std::vector<ClusterMapRevision> const &revisions, unsigned start,
+                         unsigned end) {
+    assert(end <= revisions.size());
+    assert(start <= end);
+
+    if (start == end) {
+        return std::nullopt;
+    }
+
+    // TODO: We could eleminate redundant operations.
+    ClusterMapRevision merged;
+
+    merged.set_from_version_epoch(revisions[start].from_version_epoch());
+    merged.set_to_version_epoch(revisions[end - 1].to_version_epoch());
+
+    for (unsigned i = start; i < end; ++i) {
+        for (auto const &action : revisions[i].actions()) {
+            *merged.mutable_actions()->Add() = action;
+        }
+    }
+
+    return merged;
+}
 
 ClusterRevisionWorkPool::ResourceServiceClusterState::ResourceServiceClusterState() {}
 

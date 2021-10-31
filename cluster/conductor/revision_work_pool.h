@@ -38,6 +38,21 @@ namespace e8 {
 using ResourceServiceId = std::string;
 
 /**
+ * @brief MergeClusterMapRevisions Merges a sublist of cluster map revisions into one compact
+ * object.
+ *
+ * @param revisions A list of revisions to be selected to merge.
+ * @param start The index (inclusive) that marks the starting range of the sublist. The value of
+ * "start" can reach "end," in that case the function returns a nullopt.
+ * @param end The index (exclusive) that marks the ending range of the sublist. The value of "end"
+ * can't exceed the size of the revision list, or else, the function will fail.
+ * @return The merged revision object if the sublist is not empty.
+ */
+std::optional<ClusterMapRevision>
+MergeClusterMapRevisions(std::vector<ClusterMapRevision> const &revisions, unsigned start,
+                         unsigned end);
+
+/**
  * @brief The ClusterRevisionWorkPool class Manages the state transition of the cluster map
  * revisions. It responds to commands that modify and query the states of cluster map revision work.
  * This lays the foundation for a set of conductor nodes to apply revision to the cluster in a

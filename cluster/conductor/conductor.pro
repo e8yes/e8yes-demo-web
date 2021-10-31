@@ -25,7 +25,6 @@ SOURCES += \
     instance.cc \
     integration_test/local_cluster.cc \
     integration_test/mock_resource_service.cc \
-    revision_store.cc \
     revision_work_crud.cc \
     revision_work_pool.cc
 
@@ -38,7 +37,6 @@ HEADERS += \
     instance.h \
     integration_test/local_cluster.h \
     integration_test/mock_resource_service.h \
-    revision_store.h \
     revision_work_crud.h \
     revision_work_pool.h
 

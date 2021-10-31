@@ -20,7 +20,6 @@
 
 #include "cluster/conductor/client.h"
 #include "cluster/conductor/conductor.h"
-#include "cluster/conductor/revision_store.h"
 #include "proto_cc/cluster_conductor_command.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 #include "replication/runner/runner.h"
@@ -31,11 +30,9 @@ ClusterRevisionConductorInterface::ClusterRevisionConductorInterface() {}
 
 ClusterRevisionConductorInterface::~ClusterRevisionConductorInterface() {}
 
-ClusterRevisionConductor::ClusterRevisionConductor(ClusterRevisionStore const *local_store,
-                                                   ReplicationInstance *conductor_replicator,
+ClusterRevisionConductor::ClusterRevisionConductor(ReplicationInstance *conductor_replicator,
                                                    ClusterConductorClient *conductor_client)
-    : local_store_(local_store), conductor_replicator_(conductor_replicator),
-      conductor_client_(conductor_client) {}
+    : conductor_replicator_(conductor_replicator), conductor_client_(conductor_client) {}
 
 ClusterRevisionConductor::~ClusterRevisionConductor() {}
 
@@ -49,7 +46,5 @@ ClusterRevisionResult ClusterRevisionConductor::RunCommand(ClusterRevisionComman
     assert(result.has_revision_result());
     return result.revision_result();
 }
-
-ClusterRevisionStore const *ClusterRevisionConductor::LocalStore() const { return local_store_; }
 
 } // namespace e8

@@ -19,7 +19,6 @@
 #define CLUSTER_CONDUCTOR_H
 
 #include "cluster/conductor/client.h"
-#include "cluster/conductor/revision_store.h"
 #include "proto_cc/cluster_revision_command.pb.h"
 #include "replication/runner/runner.h"
 
@@ -47,13 +46,6 @@ class ClusterRevisionConductorInterface {
      * majority of command runners.
      */
     virtual ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command) = 0;
-
-    /**
-     * @brief LocalStore Returns a constant pointer to the local revision store for querying
-     * purposes. This allows the client of the conductor to bypass Raft's logging mechanism to read
-     * the store's states when it doesn't care if a state gets updated by previous write operations.
-     */
-    virtual ClusterRevisionStore const *LocalStore() const = 0;
 };
 
 /**
@@ -62,8 +54,7 @@ class ClusterRevisionConductorInterface {
  */
 class ClusterRevisionConductor : public ClusterRevisionConductorInterface {
   public:
-    ClusterRevisionConductor(ClusterRevisionStore const *local_store,
-                             ReplicationInstance *conductor_replicator,
+    ClusterRevisionConductor(ReplicationInstance *conductor_replicator,
                              ClusterConductorClient *conductor_client);
     ~ClusterRevisionConductor() override;
 
@@ -71,10 +62,7 @@ class ClusterRevisionConductor : public ClusterRevisionConductorInterface {
 
     ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command) override;
 
-    ClusterRevisionStore const *LocalStore() const override;
-
   private:
-    ClusterRevisionStore const *local_store_;
     ReplicationInstance *conductor_replicator_;
     ClusterConductorClient *conductor_client_;
 };

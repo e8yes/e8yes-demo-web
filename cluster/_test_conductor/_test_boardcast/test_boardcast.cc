@@ -39,8 +39,6 @@ class MockLeaderRevisionConductor : public e8::ClusterRevisionConductorInterface
     bool ShouldBoardcast() const override;
 
     e8::ClusterRevisionResult RunCommand(e8::ClusterRevisionCommand const &command) override;
-
-    e8::ClusterRevisionStore const *LocalStore() const override;
 };
 
 MockLeaderRevisionConductor::MockLeaderRevisionConductor() {}
@@ -53,8 +51,6 @@ e8::ClusterRevisionResult
 MockLeaderRevisionConductor::RunCommand(e8::ClusterRevisionCommand const & /*command*/) {
     assert(false);
 }
-
-e8::ClusterRevisionStore const *MockLeaderRevisionConductor::LocalStore() const { assert(false); }
 
 e8::ClusterMapRevision::Action AddRootAction() {
     e8::Bucket root_bucket;

@@ -25,7 +25,7 @@
 
 #include "cluster/conductor/boardcast.h"
 #include "cluster/conductor/conductor.h"
-#include "cluster/conductor/revision_store.h"
+#include "cluster/conductor/revision_work_pool.h"
 #include "cluster/placement/common_types.h"
 #include "common/random/random_source.h"
 #include "common/random/uniform_distribution.h"

@@ -22,7 +22,7 @@
 #include "cluster/conductor/client.h"
 #include "cluster/conductor/conductor.h"
 #include "cluster/conductor/instance.h"
-#include "cluster/conductor/revision_store.h"
+#include "cluster/conductor/revision_work_pool.h"
 #include "common/thread/thread_pool.h"
 #include "proto_cc/cluster_conductor_command.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
@@ -39,10 +39,11 @@ struct ConductorStores : public CommandRunnerInterface {
 
     std::string Run(std::string const &command) override;
 
-    std::unique_ptr<ClusterRevisionStore> revision_store;
+    std::unique_ptr<ClusterRevisionWorkPool> revision_work_pool;
 };
 
-ConductorStores::ConductorStores() : revision_store(std::make_unique<ClusterRevisionStore>()) {}
+ConductorStores::ConductorStores()
+    : revision_work_pool(std::make_unique<ClusterRevisionWorkPool>()) {}
 
 ConductorStores::~ConductorStores() {}
 
@@ -54,7 +55,8 @@ std::string ConductorStores::Run(std::string const &command) {
 
     switch (conductor_command.command_case()) {
     case ClusterConductorCommand::CommandCase::kRevision: {
-        ClusterRevisionResult revision_result = revision_store->Run(conductor_command.revision());
+        ClusterRevisionResult revision_result =
+            revision_work_pool->Run(conductor_command.revision());
         *result.mutable_revision_result() = revision_result;
         break;
     }
@@ -87,8 +89,8 @@ ConductorInstance::ConductorInstanceImpl::ConductorInstanceImpl(
           std::make_unique<ReplicationInstance>(stores_.get(), replication_config)),
       conductor_client_(std::make_unique<ClusterConductorClient>(
           ReplicationClientConfig(replication_config.raft_config().peers()))),
-      revision_conductor_(std::make_unique<ClusterRevisionConductor>(
-          stores_->revision_store.get(), conductor_replicator_.get(), conductor_client_.get())),
+      revision_conductor_(std::make_unique<ClusterRevisionConductor>(conductor_replicator_.get(),
+                                                                     conductor_client_.get())),
       background_(std::make_shared<ClusterRevisionBackground>(revision_conductor_.get())),
       background_thread_(std::make_unique<ThreadPool>(/*hardware_concurrency=*/1)) {
 

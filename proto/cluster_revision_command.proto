@@ -206,17 +206,12 @@ message ClusterRevisionCommand {
     oneof command {
         PollClusterResourceServiceCommand poll_resource_service = 2;
         EnqueueClusterRevisionCommand enqueue_revision = 3;
-
-        // NOTE: The following 2 commands are deprecated.
-        ApplyClusterRevisionCommand apply_revision = 4;
-        GetClusterRevisionCommand get_revision = 5;
-
-        PollPendingClusterRevisionCommand poll_revision = 6;
-        CreateClusterRevisionWorkCommand create_work = 7;
-        GetAllClusterRevisionWorkCommand get_all_work = 8;
-        UpdateClusterRevisionWorkCommand update_work = 9;
-        FinishClusterRevisionWorkCommand finish_work = 10;
-        ListRevisionHistoryCommand list_revision_history = 11;
+        PollPendingClusterRevisionCommand poll_revision = 4;
+        CreateClusterRevisionWorkCommand create_work = 5;
+        GetAllClusterRevisionWorkCommand get_all_work = 6;
+        UpdateClusterRevisionWorkCommand update_work = 7;
+        FinishClusterRevisionWorkCommand finish_work = 8;
+        ListRevisionHistoryCommand list_revision_history = 9;
     }
 }
 
@@ -227,16 +222,11 @@ message ClusterRevisionResult {
     oneof result {
         PollClusterResourceServiceResult poll_resource_service_result = 1;
         EnqueueClusterRevisionResult enqueue_result = 2;
-
-        // NOTE: The following 2 command results are deprecated.
-        ApplyClusterRevisionResult apply_result = 3;
-        GetClusterRevisionResult get_result = 4;
-
-        PollPendingClusterRevisionResult poll_result = 5;
-        CreateClusterRevisionWorkResult create_work_result = 6;
-        GetAllClusterRevisionWorkResult get_all_work_result = 7;
-        UpdateClusterRevisionWorkResult update_work_result = 8;
-        FinishClusterRevisionWorkResult finish_work_result = 9;
-        ListRevisionHistoryResult list_result = 10;
+        PollPendingClusterRevisionResult poll_result = 3;
+        CreateClusterRevisionWorkResult create_work_result = 4;
+        GetAllClusterRevisionWorkResult get_all_work_result = 5;
+        UpdateClusterRevisionWorkResult update_work_result = 6;
+        FinishClusterRevisionWorkResult finish_work_result = 7;
+        ListRevisionHistoryResult list_result = 8;
     }
 }
