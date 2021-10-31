@@ -63,8 +63,6 @@ HEADERS += \
     replication.pb.h \
     service_chat_message.grpc.pb.h \
     service_chat_message.pb.h \
-    service_cluster_monitor.grpc.pb.h \
-    service_cluster_monitor.pb.h \
     service_file.grpc.pb.h \
     service_file.pb.h \
     service_gomoku_classroom.grpc.pb.h \
@@ -151,8 +149,6 @@ SOURCES += \
     replication.pb.cc \
     service_chat_message.grpc.pb.cc \
     service_chat_message.pb.cc \
-    service_cluster_monitor.grpc.pb.cc \
-    service_cluster_monitor.pb.cc \
     service_file.grpc.pb.cc \
     service_file.pb.cc \
     service_gomoku_classroom.grpc.pb.cc \
