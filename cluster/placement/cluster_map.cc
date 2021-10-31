@@ -113,10 +113,12 @@ void ExportNode(ClusterTreeNodeLabel const &node_label,
     }
 }
 
-void ExportMachines(ClusterHierarchy::BucketOrMachine const &node,
-                    ClusterHierarchy const &hierarchy, std::vector<Machine> *machines) {
+void ExportMachines(ClusterTreeNodeLabel const &node_label,
+                    ClusterHierarchy::BucketOrMachine const &node,
+                    ClusterHierarchy const &hierarchy,
+                    std::vector<ClusterMap::LabelAndMachine> *machines) {
     if (node.machine.has_value()) {
-        machines->push_back(*node.machine);
+        machines->push_back(ClusterMap::LabelAndMachine(node_label, *node.machine));
         return;
     }
 
@@ -124,7 +126,7 @@ void ExportMachines(ClusterHierarchy::BucketOrMachine const &node,
 
     for (auto const &child : node.bucket->Children()) {
         ClusterHierarchy::BucketOrMachine const *child_node = hierarchy.Node(child.label);
-        ExportMachines(*child_node, hierarchy, machines);
+        ExportMachines(child.label, *child_node, hierarchy, machines);
     }
 }
 
@@ -317,14 +319,14 @@ bool ClusterMap::Revise(ClusterMapRevision const &revision) {
     return true;
 }
 
-std::vector<Machine> ClusterMap::Machines() const {
-    std::vector<Machine> machines;
+std::vector<ClusterMap::LabelAndMachine> ClusterMap::Machines() const {
+    std::vector<LabelAndMachine> machines;
 
     if (hierarchy_.Root() == nullptr) {
         return machines;
     }
 
-    ExportMachines(*hierarchy_.Root(), hierarchy_, &machines);
+    ExportMachines(kClusterHierarchyRootLabel, *hierarchy_.Root(), hierarchy_, &machines);
     return machines;
 }
 

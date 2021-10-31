@@ -16,21 +16,18 @@
  */
 
 #include <chrono>
-#include <memory>
 #include <optional>
 #include <thread>
-#include <vector>
 
 #include "cluster/conductor/background.h"
 #include "cluster/conductor/boardcast.h"
 #include "cluster/conductor/conductor.h"
-#include "cluster/conductor/revision_store.h"
-#include "cluster/placement/cluster_map.h"
+#include "cluster/conductor/revision_work_crud.h"
+#include "common/random/random_source.h"
 #include "common/thread/thread_pool.h"
 #include "common/time_util/time_util.h"
 #include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
-#include "proto_cc/machine.pb.h"
 
 namespace e8 {
 namespace {
@@ -43,51 +40,58 @@ unsigned const kMaxRevisionBoardcastRetries = 5;
 
 ClusterRevisionBackground::ClusterRevisionBackground(
     ClusterRevisionConductorInterface *this_conductor)
-    : this_conductor_(this_conductor), done_(false) {}
+    : this_conductor_(this_conductor), random_source_(std::make_unique<RandomSource>()),
+      done_(false) {}
 
 ClusterRevisionBackground::~ClusterRevisionBackground() {}
 
 void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
     while (!done_) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(kWipRevisionPollingInterval));
-
         if (!this_conductor_->ShouldBoardcast()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(kWipRevisionPollingInterval));
             continue;
         }
 
-        // Pulls directly from the local store to avoid network & I/O. It's ok to pull an outdated
-        // revision because pushing it is harmless. Since we've waited for
-        // kWipRevisionPollingInterval after committed an ApplyClusterRevisionCommand, the chance of
-        // still pulling an outdated revision locally is low.
-        std::optional<ClusterRevisionStore::RevisionSpecs> revision_specs =
-            this_conductor_->LocalStore()->WorkInProgress();
-        if (!revision_specs.has_value()) {
+        //
+        std::optional<PollPendingRevisionResult> poll_pending_result =
+            PollPendingRevision(this_conductor_, random_source_.get());
+        if (poll_pending_result.has_value()) {
+            CreateNewRevisionWork(poll_pending_result->resource_service_id, this_conductor_,
+                                  &poll_pending_result->pending_revision,
+                                  &poll_pending_result->all_revision);
+        }
+
+        std::optional<SelectRevisionWorkResult> select_work_result =
+            SelectRevisionWork(this_conductor_, random_source_.get());
+        if (!select_work_result.has_value()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(kWipRevisionPollingInterval));
             continue;
         }
 
         // Attempts to boardcast the revision.
-        std::vector<Machine> unsuccessful_machines;
-        bool complete =
-            BoardcastRevisionWithRetry(*revision_specs, kRevisionBoardcastRate, *this_conductor_,
-                                       kMaxRevisionBoardcastRetries, &unsuccessful_machines);
+        ClusterRevisionWork leftover_work;
+        bool complete = BoardcastRevisionWithRetry(
+            select_work_result->selected_work, select_work_result->all_revisions,
+            kRevisionBoardcastRate, *this_conductor_, kMaxRevisionBoardcastRetries, &leftover_work);
         if (!complete) {
             continue;
         }
 
-        // TODO: we should report the unsuccessful machines so the error can be triaged and handled.
-        // TODO: Excludes failed machines that were handled from the unsuccessful_machines list.
-        if (unsuccessful_machines.empty()) {
-            // The revision is error-free, meaning the entire cluster is in-sync. We can safely mark
-            // it as applied.
-            ClusterRevisionCommand apply_revision_command;
-            apply_revision_command.set_resource_service_id(revision_specs->resource_service_id);
-            *apply_revision_command.mutable_apply_revision()->mutable_revision() =
-                revision_specs->WipRevision();
-            this_conductor_->RunCommand(apply_revision_command);
+        if (leftover_work.targets().empty()) {
+            // The revision work's boardcast is error-free, meaning the entire cluster is in-sync.
+            // We can safely mark it as finished.
+            FinishRevisionWork(select_work_result->resource_service_id,
+                               select_work_result->selected_work, this_conductor_);
         } else {
-            // TODO: Makes it possible to let healthy machines receive the latest updates even in
-            // face of failures (perhaps apply the current revision as unresolved, and unresolved
-            // revision could be retrieved from the WorkInProgress() call).
+            // The revision isn't completely done. Some machine targets failed to acknowledge the
+            // change. We'll put these machine targets back to the work and retry the next time the
+            // work is selected.
+            UpdateRevisionWork(select_work_result->resource_service_id, leftover_work,
+                               this_conductor_);
+
+            // TODO: we should report the unsuccessful machines so the error can be triaged and
+            // handled.
+            // TODO: Excludes failed machines that were handled from the unsuccessful_machines list.
         }
     }
 }

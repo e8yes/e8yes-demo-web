@@ -18,6 +18,7 @@
 #ifndef PLACEMENT_CLUSTER_MAP_H
 #define PLACEMENT_CLUSTER_MAP_H
 
+#include <utility>
 #include <vector>
 
 #include "cluster/placement/bucket.h"
@@ -40,6 +41,11 @@ ClusterTreeNodeLabel AllocateClusterTreeNodeLabel();
  */
 class ClusterMap {
   public:
+    /**
+     * Machine description with its cluster map node label.
+     */
+    using LabelAndMachine = std::pair<ClusterTreeNodeLabel, Machine>;
+
     /**
      * @brief The Placement class Accepts custom placement rules and determines resource placements.
      */
@@ -119,7 +125,7 @@ class ClusterMap {
     /**
      * @brief Machines Returns all the machines there are in the cluster map.
      */
-    std::vector<Machine> Machines() const;
+    std::vector<LabelAndMachine> Machines() const;
 
     /**
      * @brief TakeRoot Constructs a placement object for the specified resource given the current

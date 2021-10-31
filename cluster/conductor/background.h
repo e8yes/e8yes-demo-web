@@ -21,11 +21,11 @@
 #include <memory>
 
 #include "cluster/conductor/conductor.h"
-#include "cluster/conductor/revision_store.h"
+#include "common/random/random_source.h"
 #include "common/thread/thread_pool.h"
-#include "proto_cc/cluster_revision_command.pb.h"
 
 namespace e8 {
+namespace cluster_revision_background_internal {} // namespace cluster_revision_background_internal
 
 /**
  * @brief The ClusterRevisionBackground class The background task to continuely poll
@@ -55,6 +55,7 @@ class ClusterRevisionBackground : public TaskInterface {
 
   private:
     ClusterRevisionConductorInterface *const this_conductor_;
+    std::unique_ptr<RandomSource> random_source_;
     bool done_;
 };
 

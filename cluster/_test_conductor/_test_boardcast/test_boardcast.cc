@@ -22,7 +22,6 @@
 #include "cluster/conductor/conductor.h"
 #include "cluster/conductor/integration_test/local_cluster.h"
 #include "cluster/conductor/integration_test/mock_resource_service.h"
-#include "cluster/conductor/revision_store.h"
 #include "cluster/placement/cluster_map.h"
 #include "cluster/placement/common_types.h"
 #include "common/unit_test_util/unit_test_util.h"
@@ -113,15 +112,21 @@ bool BoardcastRevisionAllSuccessfulTest() {
     *revision1.add_actions() =
         AddChildAction(/*child_label=*/"child1", cluster.GetWorkerNode(0).address);
 
-    e8::ClusterRevisionStore::RevisionSpecs specs(/*resource_service_id=*/"test", e8::ClusterMap(),
-                                                  std::vector<e8::ClusterMapRevision>({revision1}),
-                                                  /*wip_from_version_epoch=*/0);
+    e8::ClusterRevisionWork revision_work;
+    revision_work.set_machine_version_epoch(0);
+    revision_work.add_targets();
+    revision_work.mutable_targets(0)->set_node_label(revision1.actions(1).node_label());
+    *revision_work.mutable_targets(0)->mutable_machine() =
+        revision1.actions(1).tree_node().machine();
 
-    std::vector<e8::Machine> unsuccessful_machines;
-    bool complete = e8::BoardcastRevision(specs, /*rate=*/0.5f, MockLeaderRevisionConductor(),
-                                          &unsuccessful_machines);
+    std::vector<e8::ClusterMapRevision> all_revisions;
+    all_revisions.push_back(revision1);
+
+    e8::ClusterRevisionWork leftover_work;
+    bool complete = e8::BoardcastRevision(revision_work, all_revisions, /*rate=*/0.5f,
+                                          MockLeaderRevisionConductor(), &leftover_work);
     TEST_CONDITION(complete);
-    TEST_CONDITION(unsuccessful_machines.empty());
+    TEST_CONDITION(leftover_work.targets().empty());
     TEST_CONDITION(cluster.GetWorkerNode(0).service->GetClusterMap().Version() == 1);
     TEST_CONDITION(cluster.GetWorkerNode(1).service->GetClusterMap().Version() == 0);
     TEST_CONDITION(cluster.GetWorkerNode(2).service->GetClusterMap().Version() == 0);
@@ -156,14 +161,18 @@ bool BoardcastRevisionAllSuccessfulTest() {
     *revision2.add_actions() =
         AddChildAction(/*child_label=*/"child10", cluster.GetWorkerNode(9).address);
 
-    specs.cluster_map.Revise(revision1);
-    specs.revisions.push_back(revision2);
-    specs.wip_from_version_epoch = 1;
+    for (auto const &action : revision2.actions()) {
+        e8::ClusterRevisionWork::Target *target = revision_work.add_targets();
+        target->set_node_label(action.node_label());
+        *target->mutable_machine() = action.tree_node().machine();
+    }
 
-    complete = e8::BoardcastRevision(specs, /*rate=*/0.5f, MockLeaderRevisionConductor(),
-                                     &unsuccessful_machines);
+    all_revisions.push_back(revision2);
+
+    complete = e8::BoardcastRevision(revision_work, all_revisions, /*rate=*/0.5f,
+                                     MockLeaderRevisionConductor(), &leftover_work);
     TEST_CONDITION(complete);
-    TEST_CONDITION(unsuccessful_machines.empty());
+    TEST_CONDITION(leftover_work.targets().empty());
     TEST_CONDITION(cluster.GetWorkerNode(0).service->GetClusterMap().Version() == 2);
     TEST_CONDITION(cluster.GetWorkerNode(1).service->GetClusterMap().Version() == 2);
     TEST_CONDITION(cluster.GetWorkerNode(2).service->GetClusterMap().Version() == 2);
