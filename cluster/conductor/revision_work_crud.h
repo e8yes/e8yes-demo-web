@@ -51,7 +51,8 @@ struct PollPendingRevisionResult {
 /**
  * @brief PollPendingRevision Randomly selects from one of the resource services that has a pending
  * revision and polls from it. See the structure PollPendingRevisionResult for what this function
- * returns. If none of the resource services have a pending revision, it returns a std::nullopt.
+ * returns. If none of the resource services have a pending revision or the revision conductor is no
+ * longer an active boardcastor, it returns a std::nullopt.
  */
 std::optional<PollPendingRevisionResult>
 PollPendingRevision(ClusterRevisionConductorInterface *revision_conductor,
@@ -69,7 +70,8 @@ PollPendingRevision(ClusterRevisionConductorInterface *revision_conductor,
  * determining the target machines. This function will keep the history up-to-date during the work
  * creation.
  * @return It returns true when a new piece of work could be created on the resource service. It
- * returns false, only when there's no pending revision to create work from.
+ * returns false, when there's no pending revision to create work from or the revision conductor is
+ * no longer an active boardcaster.
  */
 bool CreateNewRevisionWork(ResourceServiceId const &resource_service_id,
                            ClusterRevisionConductorInterface *revision_conductor,
@@ -101,7 +103,8 @@ struct SelectRevisionWorkResult {
  * @brief SelectRevisionWork Randomly selects from one of the resource services that has at least
  * one piece of revision work. Then, it random selects a piece of revision work if there are
  * multiple. See the structure SelectRevisionWorkResult for what this function returns. If none of
- * the resource services have revision work, it returns a std::nullopt.
+ * the resource services have revision work or the revision conductor is no longer an active
+ * boardcastor, it returns a std::nullopt.
  */
 std::optional<SelectRevisionWorkResult>
 SelectRevisionWork(ClusterRevisionConductorInterface *revision_conductor,
@@ -112,7 +115,8 @@ SelectRevisionWork(ClusterRevisionConductorInterface *revision_conductor,
  *
  * @param resource_service_id ID of the resource service the revision work belongs to.
  * @param work The revision work with new machine targets.
- * @return True if the revision work exists.
+ * @return True if the revision work exists and the revision conductor is currently an active
+ * boardcastor.
  */
 bool UpdateRevisionWork(ResourceServiceId const &resource_service_id,
                         ClusterRevisionWork const &work,
@@ -123,7 +127,8 @@ bool UpdateRevisionWork(ResourceServiceId const &resource_service_id,
  *
  * @param resource_service_id ID of the resource service the revision work belongs to.
  * @param work The revision work to be marked as finish.
- * @return True if the revision work exists.
+ * @return True if the revision work exists and the revision conductor is currently an active
+ * boardcastor.
  */
 bool FinishRevisionWork(ResourceServiceId const &resource_service_id,
                         ClusterRevisionWork const &work,

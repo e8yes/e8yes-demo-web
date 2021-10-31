@@ -98,6 +98,9 @@ void ClusterConductorBackground::Run(TaskStorageInterface *) const {
 
 bool ClusterConductorBackground::DropResourceOnCompletion() const { return false; }
 
-void ClusterConductorBackground::Shutdown() { done_ = true; }
+void ClusterConductorBackground::Shutdown() {
+    done_ = true;
+    this_conductor_->Shutdown();
+}
 
 } // namespace e8

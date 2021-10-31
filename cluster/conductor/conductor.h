@@ -18,8 +18,11 @@
 #ifndef CLUSTER_CONDUCTOR_H
 #define CLUSTER_CONDUCTOR_H
 
+#include <optional>
+
 #include "cluster/conductor/client.h"
 #include "proto_cc/cluster_revision_command.pb.h"
+#include "replication/runner/run_event_id.h"
 #include "replication/runner/runner.h"
 
 namespace e8 {
@@ -41,11 +44,20 @@ class ClusterRevisionConductorInterface {
     virtual bool ShouldBoardcast() const = 0;
 
     /**
-     * @brief RunCommand Runs the specified command over all the revision conductors, if there are
-     * multiple. This function blocks until the command is committed and gets processed by a
-     * majority of command runners.
+     * @brief RunCommand Runs the specified command on the local revision conductor instance. This
+     * function blocks until the command is committed and gets processed by a majority of conductor
+     * instance's revision work pool. Howver, if the local conductor instance isn't an active (loses
+     * leader status or gets shut down) boardcastor, it will return an std::nullopt.
      */
-    virtual ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command) = 0;
+    virtual std::optional<ClusterRevisionResult>
+    RunCommand(ClusterRevisionCommand const &command) = 0;
+
+    /**
+     * @brief Shutdown Unblocks all the currently running command. If the command hasn't returned in
+     * time, the RunCommand() function will return an std::nullopt. This function should only be
+     * used once.
+     */
+    virtual void Shutdown() = 0;
 };
 
 /**
@@ -54,17 +66,19 @@ class ClusterRevisionConductorInterface {
  */
 class ClusterRevisionConductor : public ClusterRevisionConductorInterface {
   public:
-    ClusterRevisionConductor(ReplicationInstance *conductor_replicator,
-                             ClusterConductorClient *conductor_client);
+    ClusterRevisionConductor(ReplicationInstance *conductor_replicator);
     ~ClusterRevisionConductor() override;
 
     bool ShouldBoardcast() const override;
 
-    ClusterRevisionResult RunCommand(ClusterRevisionCommand const &command) override;
+    std::optional<ClusterRevisionResult> RunCommand(ClusterRevisionCommand const &command) override;
+
+    void Shutdown() override;
 
   private:
-    ReplicationInstance *conductor_replicator_;
-    ClusterConductorClient *conductor_client_;
+    ReplicationInstance *replicated_conductor_;
+    ReplicationRunEventIdGenerator run_event_id_gen_;
+    bool running_;
 };
 
 } // namespace e8

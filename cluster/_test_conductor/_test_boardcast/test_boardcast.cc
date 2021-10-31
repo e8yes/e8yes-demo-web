@@ -16,6 +16,7 @@
  */
 
 #include <cassert>
+#include <optional>
 #include <vector>
 
 #include "cluster/conductor/boardcast.h"
@@ -38,7 +39,10 @@ class MockLeaderRevisionConductor : public e8::ClusterRevisionConductorInterface
 
     bool ShouldBoardcast() const override;
 
-    e8::ClusterRevisionResult RunCommand(e8::ClusterRevisionCommand const &command) override;
+    std::optional<e8::ClusterRevisionResult>
+    RunCommand(e8::ClusterRevisionCommand const &command) override;
+
+    void Shutdown() override;
 };
 
 MockLeaderRevisionConductor::MockLeaderRevisionConductor() {}
@@ -47,10 +51,12 @@ MockLeaderRevisionConductor::~MockLeaderRevisionConductor() {}
 
 bool MockLeaderRevisionConductor::ShouldBoardcast() const { return true; }
 
-e8::ClusterRevisionResult
+std::optional<e8::ClusterRevisionResult>
 MockLeaderRevisionConductor::RunCommand(e8::ClusterRevisionCommand const & /*command*/) {
     assert(false);
 }
+
+void MockLeaderRevisionConductor::Shutdown() { assert(false); }
 
 e8::ClusterMapRevision::Action AddRootAction() {
     e8::Bucket root_bucket;

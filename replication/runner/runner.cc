@@ -43,6 +43,8 @@ ReplicationInstance::ReplicationInstance(CommandRunnerInterface *runner,
 
 ReplicationInstance::~ReplicationInstance() {}
 
+ReplicationInstance::RunCommandResult::RunCommandResult() {}
+
 ReplicationInstance::RunCommandResult::RunCommandResult(
     RunCommandError error, std::optional<RaftMachineAddress> retry_node)
     : error(error), retry_node(retry_node) {}

@@ -51,6 +51,7 @@ class ReplicationInstance {
      * @brief The RunCommandResult struct Returns by the RunCommand() call.
      */
     struct RunCommandResult {
+        RunCommandResult();
         RunCommandResult(RunCommandError error, std::optional<RaftMachineAddress> retry_node);
         RunCommandResult(std::string return_value, RunCommandError error);
 
@@ -60,7 +61,7 @@ class ReplicationInstance {
         // Use the address to retry the command when the error field has the value RCE_WRONG_NODE.
         std::optional<RaftMachineAddress> retry_node;
 
-        // Only read this value when the error field has the value RCE_WRONG_NODE.
+        // Only read this value when the error field has the value RCE_NONE.
         std::string return_value;
     };
 

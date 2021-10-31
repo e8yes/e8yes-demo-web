@@ -16,12 +16,15 @@
  */
 
 #include <cassert>
+#include <optional>
 #include <string>
 
 #include "cluster/conductor/client.h"
 #include "cluster/conductor/conductor.h"
 #include "proto_cc/cluster_conductor_command.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
+#include "proto_cc/service_replication.pb.h"
+#include "replication/runner/run_event_id.h"
 #include "replication/runner/runner.h"
 
 namespace e8 {
@@ -30,21 +33,36 @@ ClusterRevisionConductorInterface::ClusterRevisionConductorInterface() {}
 
 ClusterRevisionConductorInterface::~ClusterRevisionConductorInterface() {}
 
-ClusterRevisionConductor::ClusterRevisionConductor(ReplicationInstance *conductor_replicator,
-                                                   ClusterConductorClient *conductor_client)
-    : conductor_replicator_(conductor_replicator), conductor_client_(conductor_client) {}
+ClusterRevisionConductor::ClusterRevisionConductor(ReplicationInstance *conductor_replicator)
+    : replicated_conductor_(conductor_replicator), running_(true) {}
 
 ClusterRevisionConductor::~ClusterRevisionConductor() {}
 
-bool ClusterRevisionConductor::ShouldBoardcast() const { return conductor_replicator_->Leader(); }
+bool ClusterRevisionConductor::ShouldBoardcast() const { return replicated_conductor_->Leader(); }
 
-ClusterRevisionResult ClusterRevisionConductor::RunCommand(ClusterRevisionCommand const &command) {
+std::optional<ClusterRevisionResult>
+ClusterRevisionConductor::RunCommand(ClusterRevisionCommand const &command) {
     ClusterConductorCommand conductor_command;
     *conductor_command.mutable_revision() = command;
 
-    ClusterConductorCommandResult result = conductor_client_->RunCommand(conductor_command);
-    assert(result.has_revision_result());
-    return result.revision_result();
+    ReplicationRunEventId run_event_id = run_event_id_gen_.Generate();
+    ReplicationInstance::RunCommandResult run_command_result;
+
+    do {
+        run_command_result =
+            replicated_conductor_->RunCommand(conductor_command.SerializeAsString(), run_event_id);
+    } while (running_ && run_command_result.error == RunCommandError::RCE_TIMED_OUT);
+
+    if (run_command_result.error != RunCommandError::RCE_NONE) {
+        return std::nullopt;
+    }
+
+    ClusterRevisionResult result;
+    result.ParseFromString(run_command_result.return_value);
+
+    return result;
 }
+
+void ClusterRevisionConductor::Shutdown() { running_ = false; }
 
 } // namespace e8

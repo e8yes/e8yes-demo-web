@@ -58,14 +58,15 @@ bool PollResourceServicePendingRevision(ResourceServiceId const &resource_servic
     poll_pending_revision_command.set_resource_service_id(resource_service_id);
     *poll_pending_revision_command.mutable_poll_revision() = PollPendingClusterRevisionCommand();
 
-    ClusterRevisionResult poll_pending_result =
+    std::optional<ClusterRevisionResult> poll_pending_result =
         revision_conductor->RunCommand(poll_pending_revision_command);
-    if (!poll_pending_result.poll_result().has_pending_revision()) {
+    if (!poll_pending_result.has_value() ||
+        !poll_pending_result->poll_result().has_pending_revision()) {
         return false;
     }
 
-    *pending_revision = poll_pending_result.poll_result().pending_revision();
-    *all_revision = poll_pending_result.poll_result().all_revision();
+    *pending_revision = poll_pending_result->poll_result().pending_revision();
+    *all_revision = poll_pending_result->poll_result().all_revision();
 
     return true;
 }
@@ -81,10 +82,14 @@ PollPendingRevision(ClusterRevisionConductorInterface *revision_conductor,
     ClusterRevisionCommand poll_resource_service_command;
     *poll_resource_service_command.mutable_poll_resource_service() =
         PollClusterResourceServiceCommand();
-    ClusterRevisionResult result = revision_conductor->RunCommand(poll_resource_service_command);
+    std::optional<ClusterRevisionResult> result =
+        revision_conductor->RunCommand(poll_resource_service_command);
+    if (!result.has_value()) {
+        return std::nullopt;
+    }
 
     google::protobuf::RepeatedPtrField<ResourceServiceId> candidate_resource_service =
-        result.poll_resource_service_result().resource_services();
+        result->poll_resource_service_result().resource_services();
 
     // Randomly selects from the candidate list until we find a candidate resource service that has
     // a pending revision. We don't have to update the candidate list because it's ok that we'll get
@@ -112,7 +117,7 @@ PollPendingRevision(ClusterRevisionConductorInterface *revision_conductor,
 bool CreateNewRevisionWork(ResourceServiceId const &resource_service_id,
                            ClusterRevisionConductorInterface *revision_conductor,
                            ClusterMapRevision *pending_revision, ClusterMapRevision *all_revision) {
-    ClusterRevisionResult create_work_result;
+    std::optional<ClusterRevisionResult> create_work_result;
 
     do {
         ClusterRevisionCommand create_work_command;
@@ -126,11 +131,12 @@ bool CreateNewRevisionWork(ResourceServiceId const &resource_service_id,
 
         create_work_result = revision_conductor->RunCommand(create_work_command);
 
-        if (!create_work_result.create_work_result().has_pending()) {
+        if (!create_work_result.has_value() ||
+            !create_work_result->create_work_result().has_pending()) {
             return false;
         }
 
-        if (!create_work_result.create_work_result().pending_versions_mismatch()) {
+        if (!create_work_result->create_work_result().pending_versions_mismatch()) {
             // Fixes the pending version by polling the latest pending revision again.
             bool has_pending = PollResourceServicePendingRevision(
                 resource_service_id, revision_conductor, pending_revision, all_revision);
@@ -138,7 +144,7 @@ bool CreateNewRevisionWork(ResourceServiceId const &resource_service_id,
                 return false;
             }
         }
-    } while (!create_work_result.create_work_result().successful());
+    } while (!create_work_result->create_work_result().successful());
 
     return true;
 }
@@ -155,10 +161,14 @@ SelectRevisionWork(ClusterRevisionConductorInterface *revision_conductor,
     ClusterRevisionCommand poll_resource_service_command;
     *poll_resource_service_command.mutable_poll_resource_service() =
         PollClusterResourceServiceCommand();
-    ClusterRevisionResult result = revision_conductor->RunCommand(poll_resource_service_command);
+    std::optional<ClusterRevisionResult> result =
+        revision_conductor->RunCommand(poll_resource_service_command);
+    if (!result.has_value()) {
+        return std::nullopt;
+    }
 
     google::protobuf::RepeatedPtrField<ResourceServiceId> candidate_resource_service =
-        result.poll_resource_service_result().resource_services();
+        result->poll_resource_service_result().resource_services();
 
     // Randomly selects from the candidate list until we find a candidate resource service that has
     // at least a work-in-progress revision. If there are multiple work-in-progress revisions, we .
@@ -173,25 +183,28 @@ SelectRevisionWork(ClusterRevisionConductorInterface *revision_conductor,
         get_all_work_command.set_resource_service_id(candidate_resource_service[candidate_index]);
         *get_all_work_command.mutable_get_all_work() = GetAllClusterRevisionWorkCommand();
 
-        ClusterRevisionResult work = revision_conductor->RunCommand(get_all_work_command);
-
-        if (work.get_all_work_result().all_work().empty()) {
-            candidate_resource_service.erase(candidate_resource_service.begin() + candidate_index);
-            continue;
+        std::optional<ClusterRevisionResult> work =
+            revision_conductor->RunCommand(get_all_work_command);
+        if (!work.has_value()) {
+            return std::nullopt;
         }
 
-        unsigned selected_work_index = DrawUniformInts(
-            /*lower_bound=*/0, /*upper_bound=*/work.get_all_work_result().all_work().size(),
-            /*num_instances=*/1, random_source)[0];
-        ClusterRevisionWork const &selected_work =
-            work.get_all_work_result().all_work(selected_work_index);
+        if (!work->get_all_work_result().all_work().empty()) {
+            unsigned selected_work_index = DrawUniformInts(
+                /*lower_bound=*/0, /*upper_bound=*/work->get_all_work_result().all_work().size(),
+                /*num_instances=*/1, random_source)[0];
+            ClusterRevisionWork const &selected_work =
+                work->get_all_work_result().all_work(selected_work_index);
 
-        std::vector<ClusterMapRevision> candidate_revision_history(
-            {work.get_all_work_result().all_revisions().begin(),
-             work.get_all_work_result().all_revisions().end()});
+            std::vector<ClusterMapRevision> candidate_revision_history(
+                {work->get_all_work_result().all_revisions().begin(),
+                 work->get_all_work_result().all_revisions().end()});
 
-        return SelectRevisionWorkResult(candidate_resource_service[candidate_index], selected_work,
-                                        candidate_revision_history);
+            return SelectRevisionWorkResult(candidate_resource_service[candidate_index],
+                                            selected_work, candidate_revision_history);
+        }
+
+        candidate_resource_service.erase(candidate_resource_service.begin() + candidate_index);
     }
 
     return std::nullopt;
@@ -206,9 +219,10 @@ bool UpdateRevisionWork(ResourceServiceId const &resource_service_id,
         work.machine_version_epoch());
     *update_work_command.mutable_update_work()->mutable_targets() = work.targets();
 
-    ClusterRevisionResult result = revision_conductor->RunCommand(update_work_command);
+    std::optional<ClusterRevisionResult> result =
+        revision_conductor->RunCommand(update_work_command);
 
-    return result.update_work_result().successful();
+    return result.has_value() && result->update_work_result().successful();
 }
 
 bool FinishRevisionWork(ResourceServiceId const &resource_service_id,
@@ -219,9 +233,10 @@ bool FinishRevisionWork(ResourceServiceId const &resource_service_id,
     finish_work_command.mutable_finish_work()->set_machine_version_epoch(
         work.machine_version_epoch());
 
-    ClusterRevisionResult result = revision_conductor->RunCommand(finish_work_command);
+    std::optional<ClusterRevisionResult> result =
+        revision_conductor->RunCommand(finish_work_command);
 
-    return result.finish_work_result().successful();
+    return result.has_value() && result->finish_work_result().successful();
 }
 
 } // namespace e8
