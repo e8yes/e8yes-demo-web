@@ -28,21 +28,21 @@ namespace e8 {
 namespace cluster_revision_background_internal {} // namespace cluster_revision_background_internal
 
 /**
- * @brief The ClusterRevisionBackground class The background task to continuely poll
+ * @brief The ClusterConductorBackground class The background task to continuely poll
  * work-in-progress revisions from the revision store and boardcast them to the cluster whenever the
  * conductor allows it to boardcast. If the conductor loses boardcast power either because of a
  * crash or network issue, and when there is some other conductor which gains the boardcast power,
  * its background task will pick up the revision and redo the boardcast. This ensures there is
  * always at least one agent to make the entire cluster in sync with the conductors.
  */
-class ClusterRevisionBackground : public TaskInterface {
+class ClusterConductorBackground : public TaskInterface {
   public:
     /**
      * @brief ClusterRevisionBackground This background task wraps on the revision conductor and
      * pushes revisions to the cluster when it's possible.
      */
-    ClusterRevisionBackground(ClusterRevisionConductorInterface *this_conductor);
-    ~ClusterRevisionBackground() override;
+    ClusterConductorBackground(ClusterRevisionConductorInterface *this_conductor);
+    ~ClusterConductorBackground() override;
 
     void Run(TaskStorageInterface *) const override;
 

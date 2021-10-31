@@ -78,7 +78,7 @@ struct ConductorInstance::ConductorInstanceImpl {
     std::unique_ptr<ReplicationInstance> conductor_replicator_;
     std::unique_ptr<ClusterConductorClient> conductor_client_;
     std::unique_ptr<ClusterRevisionConductor> revision_conductor_;
-    std::shared_ptr<ClusterRevisionBackground> background_;
+    std::shared_ptr<ClusterConductorBackground> background_;
     std::unique_ptr<ThreadPool> background_thread_;
 };
 
@@ -91,7 +91,7 @@ ConductorInstance::ConductorInstanceImpl::ConductorInstanceImpl(
           ReplicationClientConfig(replication_config.raft_config().peers()))),
       revision_conductor_(std::make_unique<ClusterRevisionConductor>(conductor_replicator_.get(),
                                                                      conductor_client_.get())),
-      background_(std::make_shared<ClusterRevisionBackground>(revision_conductor_.get())),
+      background_(std::make_shared<ClusterConductorBackground>(revision_conductor_.get())),
       background_thread_(std::make_unique<ThreadPool>(/*hardware_concurrency=*/1)) {
 
     background_thread_->Schedule(background_);

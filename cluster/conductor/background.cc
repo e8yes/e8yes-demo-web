@@ -38,14 +38,14 @@ unsigned const kMaxRevisionBoardcastRetries = 5;
 
 } // namespace
 
-ClusterRevisionBackground::ClusterRevisionBackground(
+ClusterConductorBackground::ClusterConductorBackground(
     ClusterRevisionConductorInterface *this_conductor)
     : this_conductor_(this_conductor), random_source_(std::make_unique<RandomSource>()),
       done_(false) {}
 
-ClusterRevisionBackground::~ClusterRevisionBackground() {}
+ClusterConductorBackground::~ClusterConductorBackground() {}
 
-void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
+void ClusterConductorBackground::Run(TaskStorageInterface *) const {
     while (!done_) {
         if (!this_conductor_->ShouldBoardcast()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(kWipRevisionPollingInterval));
@@ -96,8 +96,8 @@ void ClusterRevisionBackground::Run(TaskStorageInterface *) const {
     }
 }
 
-bool ClusterRevisionBackground::DropResourceOnCompletion() const { return false; }
+bool ClusterConductorBackground::DropResourceOnCompletion() const { return false; }
 
-void ClusterRevisionBackground::Shutdown() { done_ = true; }
+void ClusterConductorBackground::Shutdown() { done_ = true; }
 
 } // namespace e8
