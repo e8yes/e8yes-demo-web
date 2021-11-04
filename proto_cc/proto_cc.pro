@@ -87,8 +87,12 @@ HEADERS += \
     service_socialnetwork.pb.h \
     service_system.grpc.pb.h \
     service_system.pb.h \
+    service_task_manager.grpc.pb.h \
+    service_task_manager.pb.h \
     service_user.grpc.pb.h \
     service_user.pb.h \
+    task.grpc.pb.h \
+    task.pb.h \
     tensorflow/example.grpc.pb.h \
     tensorflow/example.pb.h \
     tensorflow/feature.grpc.pb.h \
@@ -173,8 +177,12 @@ SOURCES += \
     service_socialnetwork.pb.cc \
     service_system.grpc.pb.cc \
     service_system.pb.cc \
+    service_task_manager.grpc.pb.cc \
+    service_task_manager.pb.cc \
     service_user.grpc.pb.cc \
     service_user.pb.cc \
+    task.grpc.pb.cc \
+    task.pb.cc \
     tensorflow/example.grpc.pb.cc \
     tensorflow/example.pb.cc \
     tensorflow/feature.grpc.pb.cc \

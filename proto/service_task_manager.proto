@@ -1,0 +1,125 @@
+/**
+ * e8yes demo web server.
+ *
+ * <p>Copyright (C) 2020 Chifeng Wen {daviesx66@gmail.com}
+ *
+ * <p>This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * <p>You should have received a copy of the GNU General Public License along with this program. If
+ * not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+package e8;
+
+import "task.proto";
+
+message LaunchTaskRequest {
+    // The configuration of the task to be launched.
+    LaunchConfig launch_config = 1;
+}
+
+message LaunchTaskResponse {
+    // Indicates if there's any error occured during the launch.
+    LaunchTaskError error = 1;
+
+    // If the above error is an OS_ERROR, this field indicates the error code
+    // returned from the local machine's operating system.
+    int64 os_return_code = 2;
+
+    // The information about the launched task when the launch was error free.
+    TaskBasicInfo task = 3;
+}
+
+
+message TerminateTaskRequest {
+    // ID of the task (locates at the LaunchConfig) to be terminated.
+    string task_id = 1;
+}
+
+message TerminateTaskResponse {
+    // Indicates if the task was successfully terminated.
+    bool successful = 1;
+
+    // If this code is non-zero, the task failed by an operating system error,
+    // and this code indicates the detail of the error. If this code is zero
+    // while the termination fails, the task must have already terminated.
+    int64 os_return_code = 2;
+}
+
+
+message DeleteStartupTaskConfigRequest {
+    // ID of the task (locates at the LaunchConfig) to be removed from the
+    // startup list.
+    string task_id = 1;
+}
+
+message DeleteStartupTaskConfigResponse {
+    // This field is true when the task was indeed in the startup list.
+    bool successful = 1;
+}
+
+
+message ListStartupTaskConfigRequest {
+}
+
+message ListStartupTaskConfigResponse {
+    // The startup list.
+    repeated LaunchConfig configs = 1;
+}
+
+
+message ListRunningTaskRequest {
+}
+
+message ListRunningTaskResponse {
+    // An array of basic information about each running task.
+    repeated TaskBasicInfo basic_info = 1;
+
+    // An array of runtime information about each running task.
+    repeated TaskRuntimeInfo runtime_info = 2;  
+}
+
+
+message ListTaskHistoryRequest {
+}
+
+message ListTaskHistoryResponse {
+    // A history of all launched tasks.
+    repeated TaskBasicInfo history = 1;
+}
+
+// A service to manage locally running tasks (programs).
+service TaskManagerService {
+    // Launches a new task and returns information of the task if the launch
+    // was successful. The information will also be persisted as part of the
+    // history. If the task is intended to run at startup, it will also add
+    // the task to the startup list.
+    rpc LaunchTask (LaunchTaskRequest) returns (LaunchTaskResponse);
+
+    // Terminates a task launched by this service.
+    rpc TerminateTask (TerminateTaskRequest) returns (TerminateTaskResponse);
+
+    // Removes a startup task.
+    rpc DeleteStartupTaskConfig (DeleteStartupTaskConfigRequest) returns
+        (DeleteStartupTaskConfigResponse);
+
+    // Returns a list of startup task configurations.
+    rpc ListStartupTaskConfig (ListStartupTaskConfigRequest) returns
+        (ListStartupTaskConfigResponse);
+
+    // Returns a list of all currently running tasks launched by this service.
+    rpc ListRunningTask (ListRunningTaskRequest) returns
+        (ListRunningTaskResponse);
+
+    // Returns the task history.
+    rpc ListTaskHistory (ListTaskHistoryRequest) returns
+        (ListTaskHistoryResponse);
+}
