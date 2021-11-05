@@ -56,9 +56,9 @@ message TerminateTaskResponse {
 
 
 message DeleteStartupTaskConfigRequest {
-    // ID of the task (locates at the LaunchConfig) to be removed from the
-    // startup list.
-    string task_id = 1;
+    // ID of the startup launch configuration to be removed from the startup
+    // list.
+    string config_id = 1;
 }
 
 message DeleteStartupTaskConfigResponse {
