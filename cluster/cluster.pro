@@ -1,7 +1,10 @@
 TEMPLATE = subdirs
 SUBDIRS = \
+    task_manager \
     placement \
+    performer \
     conductor \
+    task_manager/task_manager_main.pro \
     conductor/conductor_main.pro \
     _test_placement/_test_capability \
     _test_placement/_test_bucket \
