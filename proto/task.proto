@@ -40,8 +40,8 @@ message LaunchConfig {
         BUILD = 3;
     }
 
-    // A unique ID to assign to the task when launched.
-    string task_id = 1;
+    // A unique ID for this configuration.
+    string config_id = 1;
 
     // Where to look for the binary file.
     BinaryDirectory binary_directory = 2;
@@ -78,12 +78,11 @@ enum LaunchTaskError {
 // Basic and relatively static information about a launched task (it doesn't
 // have to be running).
 message TaskBasicInfo {
-    // The configuration used to launch this task.
-    LaunchConfig launch_config = 1;
+    // A unique ID allocated for this task.
+    string task_id = 1;
 
-    // The process ID allocated by the operating system when the task is
-    // running.
-    int64 process_id = 2;
+    // The configuration used to launch this task.
+    LaunchConfig launch_config = 2;
 
     // The local timestamp at which the task was launched.
     int64 launch_timestamp_millis = 3;
@@ -113,13 +112,13 @@ message TaskRuntimeInfo {
 }
 
 // Stores all the tasks ever launched.
-message TaskHistory {
+message TaskHistoryData {
     // All tasks' basic information keyed by the task's ID.
     map<string, TaskBasicInfo> history = 1;
 }
 
 // Stores the startup task list.
-message StartupTaskConfigStore {
+message StartupTaskConfigData {
     // All startup task's launch configuration keyed by the task's ID.
-    map<string, LaunchConfig> launchConfig = 1;
+    repeated LaunchConfig startup_task_launch_configs = 1;
 }
