@@ -114,6 +114,12 @@ class TaskRegistry {
      */
     QueryRunningTaskResult RunningTasks() const;
 
+    /**
+     * @brief AddTermination This function is for testing purposes. It allows the caller, instead of
+     * from the operating system, to notify the registry that the specified process has terminated.
+     */
+    void AddTermination(pid_t process_id);
+
   private:
     struct TaskRegistryImpl;
 

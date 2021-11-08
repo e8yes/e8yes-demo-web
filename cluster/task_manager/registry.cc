@@ -125,9 +125,16 @@ class TerminationHandler : public TaskInterface {
     void Run(TaskStorageInterface *) const override;
     bool DropResourceOnCompletion() const override;
     void Shutdown();
+    std::optional<pid_t> NextTermination();
+    bool TryTermination(pid_t termination);
+    void PutbackTermination(pid_t termination);
+    void AddTermination(pid_t termination);
 
   private:
     bool running_;
+
+    std::queue<pid_t> todos_;
+    std::mutex mu_;
 
     std::unordered_map<pid_t, TaskBasicInfo> *running_tasks_;
     std::mutex *running_tasks_mu_;
@@ -142,47 +149,58 @@ TerminationHandler::TerminationHandler(std::unordered_map<pid_t, TaskBasicInfo> 
 
 TerminationHandler::~TerminationHandler() {}
 
-std::optional<pid_t> NextTermination(std::queue<pid_t> *todos) {
+std::optional<pid_t> TerminationHandler::NextTermination() {
     pid_t termination = wait(nullptr);
     if (termination != -1) {
         return termination;
     }
 
-    if (!todos->empty()) {
-        termination = todos->front();
-        todos->pop();
+    std::lock_guard guard(mu_);
+
+    if (!todos_.empty()) {
+        termination = todos_.front();
+        todos_.pop();
         return termination;
     }
 
     return std::nullopt;
 }
 
-bool TryTermination(pid_t termination, std::unordered_map<pid_t, TaskBasicInfo> *running_tasks,
-                    std::mutex *running_tasks_mu, TaskHistoryStore *history) {
-    std::lock_guard guard(*running_tasks_mu);
-    auto task_it = running_tasks->find(termination);
-    if (task_it == running_tasks->end()) {
+bool TerminationHandler::TryTermination(pid_t termination) {
+    std::lock_guard guard(*running_tasks_mu_);
+
+    auto task_it = running_tasks_->find(termination);
+    if (task_it == running_tasks_->end()) {
         return false;
     }
 
-    history->MarkTermination(task_it->second.task_id());
-    running_tasks->erase(task_it);
+    history_->MarkTermination(task_it->second.task_id());
+    running_tasks_->erase(task_it);
 
     return true;
 }
 
+void TerminationHandler::PutbackTermination(pid_t termination) {
+    std::lock_guard guard(mu_);
+    todos_.push(termination);
+}
+
+void TerminationHandler::AddTermination(pid_t termination) {
+    this->PutbackTermination(termination);
+}
+
 void TerminationHandler::Run(TaskStorageInterface *) const {
-    std::queue<pid_t> todos;
+    TerminationHandler *this_ = const_cast<TerminationHandler *>(this);
 
     while (running_) {
-        std::optional<pid_t> termination = NextTermination(&todos);
+        std::optional<pid_t> termination = this_->NextTermination();
         if (!termination.has_value()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
             continue;
         }
 
-        if (!TryTermination(*termination, running_tasks_, running_tasks_mu_, history_)) {
-            todos.push(*termination);
+        if (!this_->TryTermination(*termination)) {
+            this_->PutbackTermination(*termination);
         }
     }
 }
@@ -304,6 +322,10 @@ TaskBasicInfo TaskRegistry::RegisterNewTask(LocalTaskId const &task_id, pid_t pr
 
 TaskRegistry::QueryRunningTaskResult TaskRegistry::RunningTasks() const {
     return QueryRunningTaskResult(pimpl_->running_tasks, &pimpl_->mu);
+}
+
+void TaskRegistry::AddTermination(pid_t process_id) {
+    pimpl_->termination_handler->AddTermination(process_id);
 }
 
 } // namespace e8
