@@ -71,8 +71,20 @@ enum LaunchTaskError {
     // The machine doesn't have sufficient hardware capability to run the task.
     OUT_OF_CAPABILITY = 2;
 
-    // The task with the specified task_id is already running.
+    // The task launched with the particular LaunchConfig is already running.
     ALREADY_RUNNING = 3;
+}
+
+// The types of error which could occur while terminating a task.
+enum TerminateTaskError {
+    // Error free.
+    TTE_NONE = 0;
+
+    // Error complained by the machine's operating system.
+    TTE_OS_ERROR = 1;
+
+    // The task with the specific task_id isn't currently running.
+    TTE_NOT_RUNNING = 2;
 }
 
 // Basic and relatively static information about a launched task (it doesn't
