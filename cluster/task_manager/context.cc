@@ -20,9 +20,9 @@
 
 #include "cluster/task_manager/context.h"
 #include "cluster/task_manager/history.h"
-#include "cluster/task_manager/pid_slots.h"
+#include "cluster/task_manager/registry.h"
 #include "cluster/task_manager/startup.h"
-#include "third_party/uuid/uuid4.h"
+#include "common/time_util/time_util.h"
 
 namespace e8 {
 
@@ -33,12 +33,12 @@ CreateTaskManagerContext(std::string const &tools_binary_path, std::string const
                          std::string const &startup_config_path) {
     auto context = std::make_unique<TaskManagerContext>();
     context->history = std::make_unique<TaskHistoryStore>(task_history_log_path);
-    context->pid_slots = std::make_unique<ProcessIdSlots>();
     context->startup_configs = std::make_unique<StartupTaskConfigStore>(startup_config_path);
+    context->task_registry =
+        std::make_unique<TaskRegistry>(context->history.get(), context->startup_configs.get());
     context->tools_binary_path = tools_binary_path;
     context->build_binary_path = build_binary_path;
     context->task_stdlog_path = task_stdlog_path;
-    uuid4_seed(&context->uuid_state);
     return context;
 }
 

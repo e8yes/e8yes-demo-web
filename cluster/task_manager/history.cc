@@ -45,30 +45,15 @@ TaskHistoryStore::TaskHistoryStore(std::string const &persistence_path)
 
 TaskHistoryStore::~TaskHistoryStore() {}
 
-TaskBasicInfo TaskHistoryStore::Add(LaunchConfig const &launch_config,
-                                    std::string const &stdout_file_name,
-                                    std::string const &stderr_file_name,
-                                    std::string const &stdall_file_name) {
+void TaskHistoryStore::Add(TaskBasicInfo const &task) {
     std::lock_guard guard(*mu_);
 
-    uuid4_t uuid;
-    uuid4_gen(&uuid_state_, &uuid);
-    char uuid_string[UUID4_STR_BUFFER_SIZE];
-    uuid4_to_s(uuid, uuid_string, sizeof(uuid_string));
+    auto it = data_.mutable_history()->find(task.task_id());
+    assert(it == data_.mutable_history()->end());
 
-    TaskBasicInfo task_info;
-    task_info.set_task_id(uuid_string);
-    task_info.set_launch_timestamp_millis(CurrentTimestampMillis());
-    task_info.set_termination_timestamp_millis(-1);
-    task_info.set_stdout_file_name(stdout_file_name);
-    task_info.set_stderr_file_name(stderr_file_name);
-    task_info.set_stdall_file_name(stdall_file_name);
-    *task_info.mutable_launch_config() = launch_config;
-    (*data_.mutable_history())[task_info.task_id()] = task_info;
+    (*data_.mutable_history())[task.task_id()] = task;
 
     this->Persist();
-
-    return task_info;
 }
 
 bool TaskHistoryStore::MarkTermination(LocalTaskId const &task_id) {

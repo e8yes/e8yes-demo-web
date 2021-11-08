@@ -31,11 +31,10 @@
 #include "cluster/task_manager/context.h"
 #include "cluster/task_manager/crud.h"
 #include "cluster/task_manager/history.h"
-#include "cluster/task_manager/pid_slots.h"
+#include "cluster/task_manager/registry.h"
 #include "cluster/task_manager/startup.h"
 #include "common/time_util/time_util.h"
 #include "proto_cc/task.pb.h"
-#include "third_party/uuid/uuid4.h"
 
 namespace e8 {
 namespace {
@@ -84,20 +83,12 @@ void DeleteBinaryArgs(char **args, LaunchConfig const &launch_config) {
     delete[] args;
 }
 
-void StdOutputRedirectionFiles(std::string const &binary_name, TaskManagerContext *context,
-                               std::string *stdout_file_name, std::string *stderr_file_name,
-                               std::string *stdall_file_name) {
-    uuid4_t uuid;
-    uuid4_gen(&context->uuid_state, &uuid);
-    char uuid_string[UUID4_STR_BUFFER_SIZE];
-    uuid4_to_s(uuid, uuid_string, sizeof(uuid_string));
-
-    *stdout_file_name =
-        context->task_stdlog_path + "/" + binary_name + "." + uuid_string + ".stdout";
-    *stderr_file_name =
-        context->task_stdlog_path + "/" + binary_name + "." + uuid_string + ".stderr";
-    *stdall_file_name =
-        context->task_stdlog_path + "/" + binary_name + "." + uuid_string + ".stdall";
+void StdOutputRedirectionFiles(std::string const &binary_name, LocalTaskId const &task_id,
+                               TaskManagerContext *context, std::string *stdout_file_name,
+                               std::string *stderr_file_name, std::string *stdall_file_name) {
+    *stdout_file_name = context->task_stdlog_path + "/" + binary_name + "." + task_id + ".stdout";
+    *stderr_file_name = context->task_stdlog_path + "/" + binary_name + "." + task_id + ".stderr";
+    *stdall_file_name = context->task_stdlog_path + "/" + binary_name + "." + task_id + ".stdall";
 }
 
 void HandleChildProcess(std::string const &binary_path, char **args, int error_code_pipe_fd,
@@ -160,18 +151,42 @@ pid_t RunBinary(std::string const &binary_path, char **args, std::string const &
     return pid;
 }
 
-LaunchTaskResult Launch(LaunchConfig const &launch_config, TaskManagerContext *context) {
+} // namespace
+
+void LaunchStartupTasks(TaskManagerContext *context) {
+    google::protobuf::RepeatedPtrField<LaunchConfig> configs = context->startup_configs->List();
+
+    for (auto const &startup_config : configs) {
+        LaunchTask(startup_config, context);
+    }
+}
+
+LaunchTaskResult LaunchTask(LaunchConfig const &launch_config, TaskManagerContext *context) {
+    std::lock_guard guard(context->global_lock);
+
     LaunchTaskResult result;
 
+    if (context->task_registry->RunningTasks()
+            .FindByLaunchConfigId(launch_config.config_id())
+            .has_value()) {
+        result.error = LaunchTaskError::ALREADY_RUNNING;
+        result.os_return_code = 0;
+        return result;
+    }
+
+    LocalTaskId task_id = context->task_registry->AllocateTaskId();
+
+    // Gathers information about the task's binary.
     std::string binary_path = BinaryPath(launch_config, *context);
     char **args = BinaryArgs(launch_config);
 
     std::string stdout_file_name;
     std::string stderr_file_name;
     std::string stdall_file_name;
-    StdOutputRedirectionFiles(binary_path, context, &stdout_file_name, &stderr_file_name,
+    StdOutputRedirectionFiles(binary_path, task_id, context, &stdout_file_name, &stderr_file_name,
                               &stdall_file_name);
 
+    // Creates a new process to run the binary.
     int os_error_code;
     pid_t binary_pid = RunBinary(launch_config.binary_name(), args, stdout_file_name,
                                  stderr_file_name, stdall_file_name, &os_error_code);
@@ -183,38 +198,13 @@ LaunchTaskResult Launch(LaunchConfig const &launch_config, TaskManagerContext *c
         return result;
     }
 
+    // Registers the task.
+    result.task_info = context->task_registry->RegisterNewTask(
+        task_id, binary_pid, launch_config, stdout_file_name, stderr_file_name, stdall_file_name);
     result.error = LaunchTaskError::NONE;
     result.os_return_code = os_error_code;
-    result.task_info =
-        context->history->Add(launch_config, stdout_file_name, stderr_file_name, stdall_file_name);
-
-    std::optional<LocalTaskId> old_task_id =
-        context->pid_slots->UseSlot(binary_pid, result.task_info.task_id());
-    if (old_task_id.has_value()) {
-        context->history->MarkTermination(*old_task_id);
-    }
 
     return result;
-}
-
-} // namespace
-
-void LaunchStartupTasks(TaskManagerContext *context) {
-    std::lock_guard guard(*context->pid_slots);
-
-    for (auto const &startup_config : context->startup_configs->List()) {
-        Launch(startup_config, context);
-    }
-}
-
-LaunchTaskResult LaunchTask(LaunchConfig const &launch_config, TaskManagerContext *context) {
-    std::lock_guard guard(*context->pid_slots);
-
-    if (launch_config.startup()) {
-        context->startup_configs->Add(launch_config);
-    }
-
-    return Launch(launch_config, context);
 }
 
 } // namespace e8

@@ -19,12 +19,13 @@
 #define CLUSTER_TASK_MANAGER_CONTEXT_H
 
 #include <memory>
+#include <mutex>
 #include <string>
 
 #include "cluster/task_manager/history.h"
-#include "cluster/task_manager/pid_slots.h"
+#include "cluster/task_manager/registry.h"
 #include "cluster/task_manager/startup.h"
-#include "third_party/uuid/uuid4.h"
+#include "common/time_util/time_util.h"
 
 namespace e8 {
 
@@ -33,14 +34,14 @@ namespace e8 {
  */
 struct TaskManagerContext {
     std::unique_ptr<TaskHistoryStore> history;
-    std::unique_ptr<ProcessIdSlots> pid_slots;
     std::unique_ptr<StartupTaskConfigStore> startup_configs;
+    std::unique_ptr<TaskRegistry> task_registry;
 
     std::string tools_binary_path;
     std::string build_binary_path;
     std::string task_stdlog_path;
 
-    uuid4_state_t uuid_state;
+    std::mutex global_lock;
 };
 
 /**
@@ -51,7 +52,6 @@ struct TaskManagerContext {
  * @param task_stdlog_path File path that a launched task stores its standard outputs.
  * @param task_history_log_path File path for storing the task history.
  * @param startup_config_path File path for storing startup configurations.
- *
  * @return The context.
  */
 std::unique_ptr<TaskManagerContext>

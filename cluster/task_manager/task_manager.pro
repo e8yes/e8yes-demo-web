@@ -21,7 +21,7 @@ SOURCES += \
     context.cc \
     crud.cc \
     history.cc \
-    pid_slots.cc \
+    registry.cc \
     service.cc \
     startup.cc
 HEADERS += \
@@ -29,7 +29,7 @@ HEADERS += \
     context.h \
     crud.h \
     history.h \
-    pid_slots.h \
+    registry.h \
     service.h \
     startup.h
 

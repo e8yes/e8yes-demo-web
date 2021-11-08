@@ -44,18 +44,10 @@ class TaskHistoryStore {
     ~TaskHistoryStore();
 
     /**
-     * @brief Add Creates then appends a new task entry to the history log and returns the created
-     * entry.
-     *
-     * @param launch_config The configuration that was used to launch the task.
-     * @param stdout_file_name File to which the standard output is redirected.
-     * @param stderr_file_name File to which the standard error output is redirected.
-     * @param stdall_file_name File to which the combined standard output and error output is
-     * redirected.
-     * @return The basic information which describes the new task.
+     * @brief Add Appends a new task entry to the history log. If there is an existing entry with
+     * the same task ID, this function will fail.
      */
-    TaskBasicInfo Add(LaunchConfig const &launch_config, std::string const &stdout_file_name,
-                      std::string const &stderr_file_name, std::string const &stdall_file_name);
+    void Add(TaskBasicInfo const &task);
 
     /**
      * @brief MarkTermination Marks the termination of the specified task. It updates the
