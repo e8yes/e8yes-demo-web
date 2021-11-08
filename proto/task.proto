@@ -63,16 +63,16 @@ message LaunchConfig {
 // task.
 enum LaunchTaskError {
     // Error free.
-    NONE = 0;
+    LTE_NONE = 0;
 
     // Error complained by the machine's operating system.
-    OS_ERROR = 1;
+    LTE_OS_ERROR = 1;
 
     // The machine doesn't have sufficient hardware capability to run the task.
-    OUT_OF_CAPABILITY = 2;
+    LTE_OUT_OF_CAPABILITY = 2;
 
     // The task launched with the particular LaunchConfig is already running.
-    ALREADY_RUNNING = 3;
+    LTE_ALREADY_RUNNING = 3;
 }
 
 // The types of error which could occur while terminating a task.

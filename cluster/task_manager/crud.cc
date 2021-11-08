@@ -25,6 +25,7 @@
 #include <signal.h>
 #include <string>
 #include <unistd.h>
+#include <utility>
 #include <vector>
 
 #include "cluster/task_manager/common_types.h"
@@ -169,7 +170,7 @@ LaunchTaskResult LaunchTask(LaunchConfig const &launch_config, TaskManagerContex
     if (context->task_registry->RunningTasks()
             .FindByLaunchConfigId(launch_config.config_id())
             .has_value()) {
-        result.error = LaunchTaskError::ALREADY_RUNNING;
+        result.error = LaunchTaskError::LTE_ALREADY_RUNNING;
         result.os_return_code = 0;
         return result;
     }
@@ -193,7 +194,7 @@ LaunchTaskResult LaunchTask(LaunchConfig const &launch_config, TaskManagerContex
     DeleteBinaryArgs(args, launch_config);
 
     if (os_error_code != 0) {
-        result.error = LaunchTaskError::OS_ERROR;
+        result.error = LaunchTaskError::LTE_OS_ERROR;
         result.os_return_code = os_error_code;
         return result;
     }
@@ -201,9 +202,36 @@ LaunchTaskResult LaunchTask(LaunchConfig const &launch_config, TaskManagerContex
     // Registers the task.
     result.task_info = context->task_registry->RegisterNewTask(
         task_id, binary_pid, launch_config, stdout_file_name, stderr_file_name, stdall_file_name);
-    result.error = LaunchTaskError::NONE;
+    result.error = LaunchTaskError::LTE_NONE;
     result.os_return_code = os_error_code;
 
+    return result;
+}
+
+TerminateTaskResult TerminateTask(LocalTaskId const &task_id, TaskManagerContext *context) {
+    std::lock_guard guard(context->global_lock);
+
+    TerminateTaskResult result;
+
+    std::optional<std::pair<pid_t, TaskBasicInfo>> search_result =
+        context->task_registry->RunningTasks().FindByTaskId(task_id);
+    if (!search_result.has_value()) {
+        result.error = TerminateTaskError::TTE_NOT_RUNNING;
+        result.os_return_code = 0;
+        return result;
+    }
+
+    auto const &[task_pid, _] = *search_result;
+
+    int kill_result = kill(task_pid, SIGTERM);
+    if (kill_result == -1) {
+        result.error = TerminateTaskError::TTE_OS_ERROR;
+        result.os_return_code = errno;
+        return result;
+    }
+
+    result.error = TerminateTaskError::TTE_NONE;
+    result.os_return_code = 0;
     return result;
 }
 

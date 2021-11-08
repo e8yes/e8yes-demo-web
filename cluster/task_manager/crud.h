@@ -58,6 +58,26 @@ struct LaunchTaskResult {
  */
 LaunchTaskResult LaunchTask(LaunchConfig const &launch_config, TaskManagerContext *context);
 
+/**
+ * @brief The TerminateTaskResult struct The result of the function TerminateTask().
+ */
+struct TerminateTaskResult {
+    // Indicates the type of error occurred while terminating the task.
+    TerminateTaskError error;
+
+    // If the error is an OS_ERROR, this gives the error code returned by the operating system.
+    int os_return_code;
+};
+
+/**
+ * @brief TerminateTask Terminates a running task. This function does not block to wait for the
+ * task's termination.
+ *
+ * @param task_id ID of the task to be terminated.
+ * @param context Global context of the task manager module.
+ */
+TerminateTaskResult TerminateTask(LocalTaskId const &task_id, TaskManagerContext *context);
+
 } // namespace e8
 
 #endif // CLUSTER_TASK_MANAGER_CRUD_H
