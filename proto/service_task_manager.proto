@@ -40,13 +40,13 @@ message LaunchTaskResponse {
 
 
 message TerminateTaskRequest {
-    // ID of the task (locates at the LaunchConfig) to be terminated.
+    // ID of the task to be terminated.
     string task_id = 1;
 }
 
 message TerminateTaskResponse {
-    // Indicates if the task was successfully terminated.
-    bool successful = 1;
+    // Indicates the type of error encountered during the termination.
+    TerminateTaskError error = 1;
 
     // If this code is non-zero, the task failed by an operating system error,
     // and this code indicates the detail of the error. If this code is zero
