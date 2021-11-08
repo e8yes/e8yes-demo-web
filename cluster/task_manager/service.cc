@@ -43,4 +43,14 @@ grpc::Status TaskManagerServiceImpl::LaunchTask(grpc::ServerContext * /*context*
     return grpc::Status::OK;
 }
 
+grpc::Status TaskManagerServiceImpl::TerminateTask(grpc::ServerContext * /*context*/,
+                                                   TerminateTaskRequest const *request,
+                                                   TerminateTaskResponse *response) {
+    TerminateTaskResult result = e8::TerminateTask(request->task_id(), context_.get());
+    response->set_error(result.error);
+    response->set_os_return_code(result.os_return_code);
+
+    return grpc::Status::OK;
+}
+
 } // namespace e8

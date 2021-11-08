@@ -38,6 +38,9 @@ class TaskManagerServiceImpl : public TaskManagerService::Service {
     grpc::Status LaunchTask(grpc::ServerContext *context, LaunchTaskRequest const *request,
                             LaunchTaskResponse *response) override;
 
+    grpc::Status TerminateTask(grpc::ServerContext *context, TerminateTaskRequest const *request,
+                               TerminateTaskResponse *response) override;
+
   private:
     std::unique_ptr<TaskManagerContext> context_;
 };
