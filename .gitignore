@@ -23,6 +23,7 @@ build/*
 # Generated files
 proto_cc/**/*.h
 proto_cc/**/*.cc
+tools/proto_py/**/*.py
 
 # Exclude the boostrap script.
 !build/*.sh

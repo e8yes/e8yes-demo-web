@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p proto_cc
-
+mkdir -p tools/proto_py
 mkdir -p client/web_frontend/lib/src/proto_dart
 
 echo "Generating cc sources..."
@@ -12,13 +12,11 @@ protoc --cpp_out=./proto_cc \
        `find proto -name *.proto`
 
 echo "Generating py sources..."
-protoc --python_out=. \
-       --grpc_out=. \
+protoc --python_out=./tools/proto_py \
+       --grpc_out=./tools/proto_py \
        --plugin=protoc-gen-grpc=`which grpc_python_plugin` \
        --proto_path=proto \
-       proto/service_node_state.proto \
-       proto/node.proto \
-       proto/delta.proto
+       `find proto -name *.proto`
 
 export PATH=$PATH:$HOME/.pub-cache/bin
 
