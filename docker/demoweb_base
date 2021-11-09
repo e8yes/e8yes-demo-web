@@ -1,0 +1,54 @@
+FROM ubuntu:20.04
+
+WORKDIR /home
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update
+
+# Install required packages.
+RUN apt install -y build-essential \
+                   git \
+                   haveged \
+                   libcrypt-dev \
+                   libcrypto++-dev \
+                   libgrpc++-dev \
+                   libpqxx-dev \
+                   libprotobuf-dev \
+                   libsqlite3-dev \
+                   nginx \
+                   protobuf-compiler \
+                   protobuf-compiler-grpc \
+                   python3 \
+                   python3-numpy \
+                   python3-pandas \
+                   python3-pip \
+                   python3-psycopg2 \
+                   python3-requests \
+                   qt5-default
+
+# RUN pip3 install --upgrade tensorflow
+
+# Copy source code.
+WORKDIR /home
+RUN mkdir -p demoweb_src
+ADD . /home/demoweb_src
+
+# Upgrade system.
+RUN apt update && apt upgrade -y
+
+# Build project.
+WORKDIR /home
+RUN mkdir -p build
+# Generate proto sources.
+WORKDIR /home/demoweb_src
+RUN ./compile_proto.sh
+# Compile.
+WORKDIR /home/build
+RUN qmake ../demoweb_src/e8.pro
+RUN make -j 4
+
+# Copy out the binaries.
+WORKDIR /home
+RUN mkdir -p bin
+RUN find build -name *.so -exec cp -f {} ./bin \; && \
+    find build -name *.1 -exec cp -f {} ./bin \; && \
+    find build -name *main -exec cp -f {} ./bin \;
