@@ -1,9 +1,0 @@
-FROM demoweb_base_env:latest
-
-RUN apt install -y openvpn
-
-WORKDIR /home
-RUN cp ./demoweb_src/load_balancer/dyn_dns/watch_dog.py ./bin/
-
-WORKDIR /home/bin
-CMD ["python3", "watch_dog.py"]
