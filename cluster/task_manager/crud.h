@@ -48,9 +48,9 @@ struct LaunchTaskResult {
 /**
  * @brief LaunchTask Launches a new task. It creates a child process to house the new task, then
  * runs the binary specified by the launch configuration in it. It redirects all the standard
- * outputs of the new task to local files for keeping a record of the run. The function then
- * appends the task information to the history log. It also adds the configuration to the startup
- * list if it were requested to be a startup task.
+ * outputs of the new task to local files for keeping a record of the run. Then it registers the
+ * task to the task registry asynchronously. The binary is guaranteed to be running when this
+ * function ends, but may appear to be running, according to the registry, briefly after.
  *
  * @param launch_config Defines what and how a task should be launched.
  * @param context Global context of the task manager module.
