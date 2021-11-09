@@ -1,0 +1,8 @@
+Directory,Purpose
+~/demoweb_src,Source directory
+~/demoweb_src/tools,Tools directory
+~/bin,Build directory
+/host/home/cluster_conductor.pbtxt,Cluster conductor configuration text proto file
+/host/home/task_standard_output,Task standard output log directory
+/host/home/task_history.log,Task history log file (binary proto).
+/host/home/startup_list.log,Startup task configuration file (binary proto).
