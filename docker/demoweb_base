@@ -4,7 +4,7 @@ WORKDIR /home
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 
-# Install required packages.
+# Installs required packages.
 RUN apt install -y build-essential \
                    git \
                    haveged \
@@ -23,32 +23,39 @@ RUN apt install -y build-essential \
                    python3-pip \
                    python3-psycopg2 \
                    python3-requests \
-                   qt5-default
+                   qt5-default \
+                   wget \
+                   zip
 
-# RUN pip3 install --upgrade tensorflow
+RUN pip3 install --upgrade tensorflow
 
-# Copy source code.
+# Downloads the latest source code from the main branch.
 WORKDIR /home
-RUN mkdir -p demoweb_src
-ADD . /home/demoweb_src
+ADD https://api.github.com/repos/e8yes/e8yes-demo-web/commits?per_page=1 latest_commit
+RUN wget https://codeload.github.com/e8yes/e8yes-demo-web/zip/refs/heads/master
+RUN unzip master && rm master
+RUN mv e8yes-demo-web-master demoweb_src
 
-# Upgrade system.
+# Upgrades system.
 RUN apt update && apt upgrade -y
 
-# Build project.
+# Builds project.
 WORKDIR /home
 RUN mkdir -p build
-# Generate proto sources.
-WORKDIR /home/demoweb_src
-RUN ./compile_proto.sh
-# Compile.
+
+# 1. Generates proto sources.
+WORKDIR /home/demoweb_src/tools
+RUN ./lib/compile-proto.sh
+
+# 2. Compiles.
 WORKDIR /home/build
 RUN qmake ../demoweb_src/e8.pro
 RUN make -j 4
 
-# Copy out the binaries.
+# 3. Copies the binaries out and removes build files.
 WORKDIR /home
 RUN mkdir -p bin
 RUN find build -name *.so -exec cp -f {} ./bin \; && \
     find build -name *.1 -exec cp -f {} ./bin \; && \
     find build -name *main -exec cp -f {} ./bin \;
+RUN rm -rf build
