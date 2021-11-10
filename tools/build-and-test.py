@@ -3,7 +3,6 @@ import argparse
 import os
 import re
 import subprocess
-import sys
     
 def GenerateProtobufCode():
     subprocess.call(["lib/compile-proto.sh"])
