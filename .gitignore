@@ -24,11 +24,10 @@ build/*
 proto_cc/**/*.h
 proto_cc/**/*.cc
 tools/proto_py/**/*.py
+e8.pro.user
 
 # Exclude the boostrap script.
 !build/*.sh
-
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
