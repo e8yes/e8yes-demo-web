@@ -129,6 +129,19 @@ def BuildDockerImagesOnRpi():
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
+    
+    RunCommandOnRpi(
+        command="sudo docker push {0}:5000/demoweb_conductor"\
+            .format(target),
+        target=target,
+        ssh_user=ssh_user,
+        sshkey_path=sshkey_path)
+    RunCommandOnRpi(
+        command="sudo docker push {0}:5000/demoweb_performer"\
+            .format(target),
+        target=target,
+        ssh_user=ssh_user,
+        sshkey_path=sshkey_path)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
