@@ -27,7 +27,7 @@ RUN apt install -y build-essential \
                    wget \
                    zip
 
-RUN pip3 install --upgrade tensorflow
+# RUN pip3 install --upgrade tensorflow
 
 # Downloads the latest source code from the main branch.
 WORKDIR /home
