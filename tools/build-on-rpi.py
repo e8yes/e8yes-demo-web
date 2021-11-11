@@ -89,7 +89,8 @@ def BuildDockerImagesOnRpi():
         sshkey_path=sshkey_path)
 
     RunCommandOnRpi(
-        command="sudo docker build --tag={0}:5000/demoweb --file=demoweb .",
+        command="sudo docker build --tag={0}:5000/demoweb --file=demoweb ."\
+            .format(target),
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
