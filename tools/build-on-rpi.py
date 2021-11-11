@@ -83,63 +83,23 @@ def BuildDockerImagesOnRpi():
     target, ssh_user, sshkey_path = GetTarget()
 
     CopyFileToRpiHome(
-        file_path="../docker/demoweb_base",
-        target=target,
-        ssh_user=ssh_user,
-        sshkey_path=sshkey_path)
-    CopyFileToRpiHome(
-        file_path="../docker/demoweb_conductor",
-        target=target,
-        ssh_user=ssh_user,
-        sshkey_path=sshkey_path)
-    CopyFileToRpiHome(
-        file_path="../docker/demoweb_performer",
+        file_path="../docker/demoweb",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
 
     RunCommandOnRpi(
-        command="sudo docker build --tag=demoweb_base --file=demoweb_base .",
+        command="sudo docker build --tag={0}:5000/demoweb --file=demoweb .",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
     RunCommandOnRpi(
-        command="sudo docker build --tag={0}:5000/demoweb_conductor --file=demoweb_conductor ."\
-            .format(target),
+        command="rm ./demoweb",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
     RunCommandOnRpi(
-        command="sudo docker build --tag={0}:5000/demoweb_performer --file=demoweb_performer ."\
-            .format(target),
-        target=target,
-        ssh_user=ssh_user,
-        sshkey_path=sshkey_path)
-
-    RunCommandOnRpi(
-        command="rm ./demoweb_base",
-        target=target,
-        ssh_user=ssh_user,
-        sshkey_path=sshkey_path)
-    RunCommandOnRpi(
-        command="rm ./demoweb_conductor",
-        target=target,
-        ssh_user=ssh_user,
-        sshkey_path=sshkey_path)
-    RunCommandOnRpi(
-        command="rm ./demoweb_performer",
-        target=target,
-        ssh_user=ssh_user,
-        sshkey_path=sshkey_path)
-    
-    RunCommandOnRpi(
-        command="sudo docker push {0}:5000/demoweb_conductor"\
-            .format(target),
-        target=target,
-        ssh_user=ssh_user,
-        sshkey_path=sshkey_path)
-    RunCommandOnRpi(
-        command="sudo docker push {0}:5000/demoweb_performer"\
+        command="sudo docker push {0}:5000/demoweb"\
             .format(target),
         target=target,
         ssh_user=ssh_user,

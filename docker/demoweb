@@ -60,3 +60,19 @@ RUN find build -name *.so -exec cp -f {} ./bin \; && \
     find build -name *.1 -exec cp -f {} ./bin \; && \
     find build -name *main -exec cp -f {} ./bin \;
 RUN rm -rf build
+
+# Runs the task manager.
+WORKDIR /home
+
+EXPOSE 1025
+
+ENV LD_LIBRARY_PATH="./bin/"
+
+CMD ["./bin/task_manager_main", \
+     "--port=1025", \
+     "--tools_binary_path=./demoweb_src/tools", \
+     "--build_binary_path=./bin", \
+     "--task_stdlog_path=/host/home/task_standard_output/", \
+     "--task_history_log_path=/host/home/task_history.log", \
+     "--startup_config_path=/host/home/startup_list.log"]
+
