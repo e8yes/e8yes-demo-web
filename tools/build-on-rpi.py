@@ -1,3 +1,5 @@
+#!/bin/python3
+
 from lib.sshutil import CopyFileToRpiHome
 from lib.sshutil import RunCommandOnRpi
 from lib.sshutil import RunProgramOnRpi
