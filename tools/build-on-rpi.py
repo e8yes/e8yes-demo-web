@@ -1,38 +1,11 @@
 #!/bin/python3
 
+from lib.builder_rpi import GetBuilderRpi
+from lib.builder_rpi import SetBuilderRpi
 from lib.sshutil import CopyFileToRpiHome
 from lib.sshutil import RunCommandOnRpi
 from lib.sshutil import RunProgramOnRpi
 import argparse
-import os.path
-
-BUILDER_RPI_CONFIG_FILE = "./logs/builder_rpi.conf"
-
-def GetTarget() -> str:
-    f = open(BUILDER_RPI_CONFIG_FILE, "r")
-    fields = f.readlines()
-    f.close()
-
-    assert(len(fields) == 3)
-    return fields[0][:-1], \
-           fields[1][:-1], \
-           fields[2]
-
-def SetTarget(target: str, ssh_user: str, sshkey_path: str) -> bool:
-    if os.path.isfile(BUILDER_RPI_CONFIG_FILE):
-        previous_target, _, _ = GetTarget()
-        if target != previous_target:
-            return False
-    
-    f = open(BUILDER_RPI_CONFIG_FILE, "w")
-    f.truncate(0)
-    f.writelines([
-        target + "\n",
-        ssh_user + "\n",
-        sshkey_path])
-    f.close()
-
-    return True
 
 def SetUpDocker(target: str, ssh_user: str, sshkey_path: str):
     RunCommandOnRpi(
@@ -69,7 +42,7 @@ def SetUpDocker(target: str, ssh_user: str, sshkey_path: str):
         sshkey_path=sshkey_path)
 
 def InstallBuildSystemOnRpi():
-    target, ssh_user, sshkey_path = GetTarget()
+    target, ssh_user, sshkey_path = GetBuilderRpi()
 
     RunProgramOnRpi(
         program_file_path="./lib/install-rpi-build-tools.sh",
@@ -80,7 +53,7 @@ def InstallBuildSystemOnRpi():
     SetUpDocker(target, ssh_user, sshkey_path)
 
 def BuildDockerImagesOnRpi():
-    target, ssh_user, sshkey_path = GetTarget()
+    target, ssh_user, sshkey_path = GetBuilderRpi()
 
     CopyFileToRpiHome(
         file_path="../docker/demoweb",
@@ -133,9 +106,9 @@ if __name__ == "__main__":
             print("sshkey_path is required when target is used.")
             exit(-1)
 
-        if not SetTarget(args.target, args.ssh_user, args.sshkey_path):
+        if not SetBuilderRpi(args.target, args.ssh_user, args.sshkey_path):
             print("Can't set a different target. Target has already been set to {0}."\
-                .format(str(GetTarget())))
+                .format(str(GetBuilderRpi())))
             exit(-1)
 
     InstallBuildSystemOnRpi()
