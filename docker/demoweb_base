@@ -29,15 +29,16 @@ RUN apt install -y build-essential \
 
 # RUN pip3 install --upgrade tensorflow
 
+# Upgrades system.
+# 2021-11-11
+RUN apt update && apt upgrade -y
+
 # Downloads the latest source code from the main branch.
 WORKDIR /home
 ADD https://api.github.com/repos/e8yes/e8yes-demo-web/commits?per_page=1 latest_commit
 RUN wget https://codeload.github.com/e8yes/e8yes-demo-web/zip/refs/heads/master
 RUN unzip master && rm master
 RUN mv e8yes-demo-web-master demoweb_src
-
-# Upgrades system.
-RUN apt update && apt upgrade -y
 
 # Builds project.
 WORKDIR /home
