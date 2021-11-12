@@ -3,7 +3,7 @@
 sudo apt update
 sudo apt upgrade -y
 
-sudo apt install -y python3
+sudo apt install -y python3 python3-grpcio python3-protobuf
 
 if ! dpkg -s docker-ce-cli >/dev/null 2>&1
 then

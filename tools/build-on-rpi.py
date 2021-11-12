@@ -15,7 +15,7 @@ def SetUpDocker(target: str, ssh_user: str, sshkey_path: str):
         sshkey_path=sshkey_path)
     RunCommandOnRpi(
         command="sudo docker container rm --force "\
-                "`sudo docker container ls -q --filter name=registry`",
+                "$(sudo docker container ls -q --filter name=registry)",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
