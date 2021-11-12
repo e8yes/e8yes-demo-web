@@ -10,18 +10,25 @@ from service_resource_worker_pb2 import ApplyClusterMapRevisionResponse
 import argparse
 import grpc
 import os
+import random
 import subprocess
 import time
 import _thread
 
 SYSTEM_UPDATER_PORT = 1027
 SYSTEM_UPDATER_LOG = "./system_updater.log"
+STAGGERING_WAIT_MIN_SECS = 2
+STAGGERING_WAIT_MAX_SECS = 120
 
 def UpdateSystem(system_name: str):
+    wait_secs = random.randint(
+        STAGGERING_WAIT_MIN_SECS, STAGGERING_WAIT_MAX_SECS)
+    time.sleep(wait_secs)
+
     subprocess.call(["sudo", "docker", "pull", system_name])
     subprocess.call(["sudo", "apt", "update"])
     subprocess.call(["sudo", "apt", "upgrade", "-y"])
-    subprocess.call(["sudo", "shutdown", "--reboot", "+1"])
+    subprocess.call(["sudo", "shutdown", "--reboot", "now"])
 
 class SystemUpdaterService(ResourceWorkerServiceServicer):
     def __init__(self, system_name: str):

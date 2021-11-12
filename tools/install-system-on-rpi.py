@@ -98,7 +98,7 @@ def UploadSystemUpdaterCode(target: str, ssh_user: str, sshkey_path: str):
         sshkey_path=sshkey_path)
 
     UploadCode(
-        file="./lib/demoweb-system-updater.py",
+        file="../deploy/demoweb-system-updater.py",
         destination="~/demoweb-programs/demoweb-system-updater.py",
         target=target,
         ssh_user=ssh_user,
