@@ -12,8 +12,8 @@ protoc --cpp_out=../proto_cc \
        `find ../proto -name *.proto`
 
 echo "Generating Python protobuf sources..."
-protoc --python_out=./proto_py \
-       --grpc_out=./proto_py \
+protoc --python_out=./lib/proto_py \
+       --grpc_out=./lib/proto_py \
        --plugin=protoc-gen-grpc=`which grpc_python_plugin` \
        --proto_path=../proto \
        `find ../proto -name *.proto`

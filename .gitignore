@@ -23,7 +23,7 @@ build/*
 # Generated files
 proto_cc/**/*.h
 proto_cc/**/*.cc
-tools/proto_py/**/*.py
+tools/lib/proto_py/**/*.py
 tools/logs/**
 e8.pro.user
 
