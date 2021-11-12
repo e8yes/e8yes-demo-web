@@ -2,18 +2,26 @@
 
 from concurrent import futures
 from threading import Lock
-from proto_py.service_resource_worker_pb2_grpc import add_ResourceWorkerServiceServicer_to_server
-from proto_py.service_resource_worker_pb2_grpc import ResourceWorkerServiceServicer
-from proto_py.service_resource_worker_pb2 import ApplyClusterMapRevisionRequest
-from proto_py.service_resource_worker_pb2 import ApplyClusterMapRevisionResponse
+from service_resource_worker_pb2_grpc import add_ResourceWorkerServiceServicer_to_server
+from service_resource_worker_pb2_grpc import ResourceWorkerServiceServicer
+from service_resource_worker_pb2 import ApplyClusterMapRevisionRequest
+from service_resource_worker_pb2 import ApplyClusterMapRevisionResponse
 
 import argparse
 import grpc
-import subprocess
 import os
+import subprocess
+import time
+import _thread
 
 SYSTEM_UPDATER_PORT = 1027
-SYSTEM_UPDATER_LOG = "../demoweb-data/system_updater.log"
+SYSTEM_UPDATER_LOG = "./system_updater.log"
+
+def UpdateSystem(system_name: str):
+    subprocess.call(["sudo", "docker", "pull", system_name])
+    subprocess.call(["sudo", "apt", "update"])
+    subprocess.call(["sudo", "apt", "upgrade", "-y"])
+    subprocess.call(["sudo", "shutdown", "--reboot", "+1"])
 
 class SystemUpdaterService(ResourceWorkerServiceServicer):
     def __init__(self, system_name: str):
@@ -23,7 +31,7 @@ class SystemUpdaterService(ResourceWorkerServiceServicer):
     def ReadVersionEpoch(self) -> int:
         if not os.path.isfile(SYSTEM_UPDATER_LOG):
             f = open(SYSTEM_UPDATER_LOG, "w")
-            f.write(0)
+            f.write(str(0))
             f.close()
             return 0
 
@@ -35,7 +43,7 @@ class SystemUpdaterService(ResourceWorkerServiceServicer):
     
     def WriteVersionEpoch(self, version_epoch):
         f = open(SYSTEM_UPDATER_LOG, "w")
-        f.write(version_epoch)
+        f.write(str(version_epoch))
         f.close()
     
     def ApplyClusterMapRevision(self,
@@ -44,17 +52,16 @@ class SystemUpdaterService(ResourceWorkerServiceServicer):
         with self.mu:
             current_version_epoch = self.ReadVersionEpoch()
             if request.revision.from_version_epoch != current_version_epoch:
-                return ApplyClusterMapRevisionResponse(
+                yield ApplyClusterMapRevisionResponse(
                     successful=False,
                     require_from_version_epoch=current_version_epoch)
+                return None
             
-            subprocess.call(["sudo", "docker", "pull", self.system_name])
-            subprocess.call(["sudo", "apt", "update"])
-            subprocess.call(["sudo", "apt", "upgrade", "-y"])
-            subprocess.call(["sudo", "shutdown" "--reboot", "+1"])
+            _thread.start_new_thread(UpdateSystem, (self.system_name,))
 
             self.WriteVersionEpoch(version_epoch=request.revision.to_version_epoch)
-            return ApplyClusterMapRevisionResponse(successful=True)
+            yield ApplyClusterMapRevisionResponse(successful=True)
+            return None
         
 def Track(system_name: str):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
@@ -63,7 +70,9 @@ def Track(system_name: str):
         SystemUpdaterService(system_name), server)
 
     server.start()
-    server.wait_for_termination()
+
+    while True:
+        time.sleep(10)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

@@ -92,7 +92,7 @@ def UploadSystemUpdaterCode(target: str, ssh_user: str, sshkey_path: str):
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
     RunCommandOnRpi(
-        command="mkdir -p ~/demoweb-programs/proto_py",
+        command="mkdir -p ~/demoweb-programs",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
@@ -105,19 +105,43 @@ def UploadSystemUpdaterCode(target: str, ssh_user: str, sshkey_path: str):
         sshkey_path=sshkey_path)
     UploadCode(
         file="./lib/proto_py/__init__.py",
-        destination="~/demoweb-programs/proto_py",
+        destination="~/demoweb-programs",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
     UploadCode(
         file="./lib/proto_py/service_resource_worker_pb2_grpc.py",
-        destination="~/demoweb-programs/proto_py",
+        destination="~/demoweb-programs",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
     UploadCode(
         file="./lib/proto_py/service_resource_worker_pb2.py",
-        destination="~/demoweb-programs/proto_py",
+        destination="~/demoweb-programs",
+        target=target,
+        ssh_user=ssh_user,
+        sshkey_path=sshkey_path)
+    UploadCode(
+        file="./lib/proto_py/cluster_revision_pb2.py",
+        destination="~/demoweb-programs",
+        target=target,
+        ssh_user=ssh_user,
+        sshkey_path=sshkey_path)
+    UploadCode(
+        file="./lib/proto_py/cluster_pb2.py",
+        destination="~/demoweb-programs",
+        target=target,
+        ssh_user=ssh_user,
+        sshkey_path=sshkey_path)
+    UploadCode(
+        file="./lib/proto_py/bucket_pb2.py",
+        destination="~/demoweb-programs",
+        target=target,
+        ssh_user=ssh_user,
+        sshkey_path=sshkey_path)
+    UploadCode(
+        file="./lib/proto_py/machine_pb2.py",
+        destination="~/demoweb-programs",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
@@ -136,12 +160,13 @@ def InstallSystemUpdater(target: str, ssh_user: str, sshkey_path: str):
                 "[Service]\n"
                 "Type=simple\n"
                 "ExecStart='/home/{0}/demoweb-programs/demoweb-system-updater.py --system_name={1}'\n"
+                "WorkingDirectory=/home/{2}/demoweb-programs\n"
                 "\n"
                 "[Install]\n"
                 "WantedBy=multi-user.target"
                 "' | "
                 "sudo tee /etc/systemd/system/demoweb-system-updater.service"\
-                    .format(ssh_user, system_name),
+                    .format(ssh_user, system_name, ssh_user),
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)
