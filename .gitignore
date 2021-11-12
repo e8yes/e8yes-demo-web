@@ -24,6 +24,7 @@ build/*
 proto_cc/**/*.h
 proto_cc/**/*.cc
 tools/lib/proto_py/**/*.py
+!tools/lib/proto_py/__init__.py
 tools/logs/**
 e8.pro.user
 
