@@ -8,9 +8,11 @@ from lib.sshutil import RunProgramOnRpi
 import argparse
 
 def SetUpDocker(target: str, ssh_user: str, sshkey_path: str):
+    builder_rpi_address, _, _ = GetBuilderRpi()
+
     update_daemon_config_cmd = \
         "echo '{{ \"insecure-registries\":[\"{0}:5000\"] }}' | sudo tee /etc/docker/daemon.json"\
-            .format(target)
+            .format(builder_rpi_address)
     RunCommandOnRpi(
         command=update_daemon_config_cmd,
         target=target,
@@ -100,6 +102,12 @@ def UploadSystemUpdaterCode(target: str, ssh_user: str, sshkey_path: str):
     UploadCode(
         file="../deploy/demoweb-system-updater.py",
         destination="~/demoweb-programs/demoweb-system-updater.py",
+        target=target,
+        ssh_user=ssh_user,
+        sshkey_path=sshkey_path)
+    UploadCode(
+        file="../deploy/update-demoweb.sh",
+        destination="~/demoweb-programs/update-demoweb.sh",
         target=target,
         ssh_user=ssh_user,
         sshkey_path=sshkey_path)

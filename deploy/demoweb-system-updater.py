@@ -17,18 +17,13 @@ import _thread
 
 SYSTEM_UPDATER_PORT = 1027
 SYSTEM_UPDATER_LOG = "./system_updater.log"
-STAGGERING_WAIT_MIN_SECS = 2
-STAGGERING_WAIT_MAX_SECS = 120
+SYSTEM_ONLINE_MIN_SECS = 12*60*60
+SYSTEM_ONLINE_MAX_SECS = 24*60*60
 
 def UpdateSystem(system_name: str):
-    wait_secs = random.randint(
-        STAGGERING_WAIT_MIN_SECS, STAGGERING_WAIT_MAX_SECS)
-    time.sleep(wait_secs)
-
-    subprocess.call(["sudo", "docker", "pull", system_name])
+    subprocess.call(["sudo", "./update-demoweb.sh", system_name])
     subprocess.call(["sudo", "apt", "update"])
     subprocess.call(["sudo", "apt", "upgrade", "-y"])
-    subprocess.call(["sudo", "shutdown", "--reboot", "now"])
 
 class SystemUpdaterService(ResourceWorkerServiceServicer):
     def __init__(self, system_name: str):
@@ -78,8 +73,11 @@ def Track(system_name: str):
 
     server.start()
 
-    while True:
-        time.sleep(10)
+    online_duration = random.randint(
+        SYSTEM_ONLINE_MIN_SECS, SYSTEM_ONLINE_MAX_SECS)
+    time.sleep(online_duration)
+
+    subprocess.call(["sudo", "shutdown", "--reboot", "now"])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
