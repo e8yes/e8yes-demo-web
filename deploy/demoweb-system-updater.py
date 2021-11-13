@@ -19,6 +19,8 @@ SYSTEM_UPDATER_PORT = 1027
 SYSTEM_UPDATER_LOG = "./system_updater.log"
 SYSTEM_ONLINE_MIN_SECS = 12*60*60
 SYSTEM_ONLINE_MAX_SECS = 24*60*60
+REVISION_STAGGERING_MIN_CYCLES = 1
+REVISION_STAGGERING_MIN_CYCLES = 5
 
 def UpdateSystem(system_name: str):
     subprocess.call(["sudo", "./update-demoweb.sh", system_name])
@@ -60,8 +62,18 @@ class SystemUpdaterService(ResourceWorkerServiceServicer):
                 return None
             
             _thread.start_new_thread(UpdateSystem, (self.system_name,))
-
             self.WriteVersionEpoch(version_epoch=request.revision.to_version_epoch)
+
+            staggering_cycles = random.randint(
+                REVISION_STAGGERING_MIN_CYCLES, REVISION_STAGGERING_MIN_CYCLES)
+            for i in range(staggering_cycles):
+                time.sleep(request.status_update_interval_millis/1000)
+
+                yield ApplyClusterMapRevisionResponse(
+                    successful=False,
+                    num_objects_processed=i + 1,
+                    total_num_objects=staggering_cycles)
+
             yield ApplyClusterMapRevisionResponse(successful=True)
             return None
         
