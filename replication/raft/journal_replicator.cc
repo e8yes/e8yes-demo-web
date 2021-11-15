@@ -17,6 +17,7 @@
 
 #include <cassert>
 #include <chrono>
+#include <cstdint>
 #include <grpcpp/grpcpp.h>
 #include <iostream>
 #include <memory>
@@ -93,7 +94,7 @@ void ReplicationTask::Run(TaskStorageInterface *data) const {
         return;
     }
 
-    int overwrite_from;
+    RaftLogOffset overwrite_from;
     if (!args->current_replication_progress.has_value()) {
         // Don't know what the peer node has. Try overwriting from the end of the journal to
         // minimize request size because, apriori, each peer's journal is almost
@@ -104,7 +105,7 @@ void ReplicationTask::Run(TaskStorageInterface *data) const {
         overwrite_from = *args->current_replication_progress;
     }
 
-    for (; overwrite_from >= 0; --overwrite_from) {
+    for (; static_cast<int64_t>(overwrite_from) >= 0; --overwrite_from) {
         MergeLogEntriesRequest request;
         request.set_term(args->publisher_term);
         request.set_overwrite_from(overwrite_from);
@@ -146,8 +147,6 @@ void ReplicationTask::Run(TaskStorageInterface *data) const {
             break;
         }
     }
-
-    assert(overwrite_from >= 0);
 }
 
 bool ReplicationTask::DropResourceOnCompletion() const { return false; }

@@ -39,7 +39,7 @@ class RaftJournalReplicator {
      * @brief The Progress struct How far each node replicates.
      */
     struct Progress {
-        std::unordered_map<RaftMachineAddress, unsigned> replication_progresses;
+        std::unordered_map<RaftMachineAddress, RaftLogOffset> replication_progresses;
     };
 
     /**

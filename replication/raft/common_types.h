@@ -31,6 +31,9 @@ using RaftMachineAddress = std::string;
  */
 using RaftTerm = int64_t;
 
+// A logical offset for marking locations over the Raft journal.
+using RaftLogOffset = uint64_t;
+
 /**
  * @brief The RaftRole enum Defines the role status a node could have at some moment in time.
  */

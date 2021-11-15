@@ -61,7 +61,7 @@ RaftForeground::BoardcastCommand(CommandEntry const &command_entry) {
     log.set_term(term);
     *log.mutable_entry() = command_entry;
 
-    unsigned log_index = context_->journal->AppendLog(log);
+    RaftLogOffset log_index = context_->journal->AppendLog(log);
     context_->leader_schedule->WakeUp();
 
     return BoardcastResult(log_index, term);

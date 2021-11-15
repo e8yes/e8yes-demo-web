@@ -52,7 +52,7 @@ class RaftForeground {
 
         // The index that the command will appear as if it's ever committed. Do not use this value
         // when retry_node isn't std::nullopt.
-        unsigned log_index;
+        RaftLogOffset log_index;
 
         // The term when the command is appended to the log. Do not use this value when retry_node
         // isn't std::nullopt.

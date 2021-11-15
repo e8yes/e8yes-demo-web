@@ -130,14 +130,12 @@ void RaftCommitPusher::Push(RaftMachineAddress const &pusher, RaftTerm pusher_te
                             RaftJournalReplicator::Progress const &progress) {
     // The global commit progress is determined based on the minimum replication progress of the
     // most up-to-date quorum and bounded by the portion of logs ended with current term addition.
-    unsigned quorum_progress = QuorumReplicationRrogress(progress, peers_->QuorumSize());
-    unsigned global_commit_progress = journal_->EndWithTerm(pusher_term, quorum_progress);
-
-    auto task = std::make_shared<PushCommitTask>();
+    RaftLogOffset quorum_progress = QuorumReplicationRrogress(progress, peers_->QuorumSize());
+    RaftLogOffset global_commit_progress = journal_->EndWithTerm(pusher_term, quorum_progress);
 
     for (auto const &[peer_address, peer_stub] : *peers_) {
         // Determines what commit progress is guaranteed to be safe for each individual peer.
-        unsigned safe_commit_progress;
+        RaftLogOffset safe_commit_progress;
 
         auto replication_progress_it = progress.replication_progresses.find(peer_address);
         if (replication_progress_it == progress.replication_progresses.end()) {
@@ -150,6 +148,7 @@ void RaftCommitPusher::Push(RaftMachineAddress const &pusher, RaftTerm pusher_te
         // The local node is called directly to save bandwidth.
         bool use_rpc = peer_address != pusher;
 
+        auto task = std::make_shared<PushCommitTask>();
         auto args =
             std::make_unique<PushCommitArgs>(pusher, pusher_term, safe_commit_progress, journal_,
                                              peer_stub.get(), use_rpc, rpc_timeout_millis_);

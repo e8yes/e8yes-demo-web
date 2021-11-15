@@ -52,7 +52,7 @@ RaftJournal::RaftJournal(RaftPersister *persister, RaftCommitListener *commit_li
 
 RaftJournal::~RaftJournal() {}
 
-unsigned RaftJournal::AppendLog(LogEntry const &log_entry) {
+RaftLogOffset RaftJournal::AppendLog(LogEntry const &log_entry) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
     *persister_->LogEntriesRef()->Add() = log_entry;
@@ -77,12 +77,12 @@ LogSourceLiveness RaftJournal::Liveness() const {
     return liveness;
 }
 
-bool RaftJournal::Import(unsigned from,
+bool RaftJournal::Import(RaftLogOffset from,
                          google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
                          RaftTerm preceding_log_term) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
-    if (from > static_cast<unsigned>(persister_->LogEntriesRef()->size())) {
+    if (from > static_cast<RaftLogOffset>(persister_->LogEntriesRef()->size())) {
         // Replicating too far in the future, there are missing entries.
         return false;
     }
@@ -92,8 +92,8 @@ bool RaftJournal::Import(unsigned from,
         return false;
     }
 
-    for (unsigned i = 0; i < static_cast<unsigned>(foreign_log_entries.size()); i++) {
-        unsigned target_index = from + i;
+    for (RaftLogOffset i = 0; i < static_cast<RaftLogOffset>(foreign_log_entries.size()); i++) {
+        RaftLogOffset target_index = from + i;
 
         if (target_index < commit_progress_) {
             // It's disastrous to override committed logs with different entries.
@@ -101,7 +101,7 @@ bool RaftJournal::Import(unsigned from,
                    foreign_log_entries[i].term());
         }
 
-        if (target_index >= static_cast<unsigned>(persister_->LogEntriesRef()->size())) {
+        if (target_index >= static_cast<RaftLogOffset>(persister_->LogEntriesRef()->size())) {
             *persister_->LogEntriesRef()->Add() = foreign_log_entries[i];
             continue;
         }
@@ -121,17 +121,18 @@ bool RaftJournal::Import(unsigned from,
     return true;
 }
 
-bool RaftJournal::Export(unsigned start,
+bool RaftJournal::Export(RaftLogOffset start,
                          google::protobuf::RepeatedPtrField<LogEntry> *output_buffer,
                          RaftTerm *preceding_log_term) const {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
-    if (start > static_cast<unsigned>(persister_->LogEntriesRef()->size())) {
+    if (start > static_cast<RaftLogOffset>(persister_->LogEntriesRef()->size())) {
         *preceding_log_term = RaftTerm();
         return false;
     }
 
-    for (unsigned i = start; i < static_cast<unsigned>(persister_->LogEntriesRef()->size()); ++i) {
+    for (RaftLogOffset i = start;
+         i < static_cast<RaftLogOffset>(persister_->LogEntriesRef()->size()); ++i) {
         *output_buffer->Add() = (*persister_->LogEntriesRef())[i];
     }
 
@@ -144,14 +145,14 @@ bool RaftJournal::Export(unsigned start,
     return true;
 }
 
-unsigned RaftJournal::EndWithTerm(RaftTerm term, unsigned end) const {
+RaftLogOffset RaftJournal::EndWithTerm(RaftTerm term, RaftLogOffset end) const {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
-    if (end > static_cast<unsigned>(persister_->LogEntriesRef()->size())) {
+    if (end > static_cast<RaftLogOffset>(persister_->LogEntriesRef()->size())) {
         end = persister_->LogEntriesRef()->size();
     }
 
-    for (unsigned i = end; i > 0; --i) {
+    for (RaftLogOffset i = end; i > 0; --i) {
         if ((*persister_->LogEntriesRef())[i - 1].term() == term) {
             return i;
         }
@@ -180,7 +181,7 @@ bool RaftJournal::Stale(LogSourceLiveness const &foreign_liveness) {
     return true;
 }
 
-void RaftJournal::PushCommitProgress(unsigned safe_commit_progress) {
+void RaftJournal::PushCommitProgress(RaftLogOffset safe_commit_progress) {
     std::lock_guard<RaftPersister> const guard(*persister_);
 
     if (safe_commit_progress <= commit_progress_) {
@@ -189,7 +190,7 @@ void RaftJournal::PushCommitProgress(unsigned safe_commit_progress) {
     }
 
     // Can't commit beyond what is replicated to the local journal.
-    assert(safe_commit_progress <= static_cast<unsigned>(persister_->LogEntriesRef()->size()));
+    assert(safe_commit_progress <= static_cast<RaftLogOffset>(persister_->LogEntriesRef()->size()));
 
     // Pushes logs to the state machine.
     while (commit_progress_ < safe_commit_progress) {

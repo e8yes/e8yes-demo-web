@@ -74,7 +74,7 @@ class RaftJournal {
      *
      * @return The index at which the log entry has appended.
      */
-    unsigned AppendLog(LogEntry const &log_entry);
+    RaftLogOffset AppendLog(LogEntry const &log_entry);
 
     /**
      * @brief Import Overwrites and appends the local logs with foreign logs starting from the
@@ -92,7 +92,7 @@ class RaftJournal {
      * @return Returns if the merge is successful or not. An unsucessful merge does not change the
      * local journal.
      */
-    bool Import(unsigned from,
+    bool Import(RaftLogOffset from,
                 google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
                 RaftTerm preceding_log_term);
 
@@ -111,7 +111,7 @@ class RaftJournal {
      *
      * @return Whether the start index is valid, and consequently, if the function succeeds.
      */
-    bool Export(unsigned start, google::protobuf::RepeatedPtrField<LogEntry> *output_buffer,
+    bool Export(RaftLogOffset start, google::protobuf::RepeatedPtrField<LogEntry> *output_buffer,
                 RaftTerm *preceding_log_term) const;
 
     /**
@@ -121,7 +121,7 @@ class RaftJournal {
      *
      * @return The greatest boundary.
      */
-    unsigned EndWithTerm(RaftTerm term, unsigned end) const;
+    RaftLogOffset EndWithTerm(RaftTerm term, RaftLogOffset end) const;
 
     /**
      * @brief Liveness Returns the liveness states of the current journal. It could be used to
@@ -148,12 +148,12 @@ class RaftJournal {
      * [0, safe_commit_progress) has all been replicated by a quorum as well as here locally in the
      * journal.
      */
-    void PushCommitProgress(unsigned safe_commit_progress);
+    void PushCommitProgress(RaftLogOffset safe_commit_progress);
 
   private:
     RaftPersister *persister_;
     RaftCommitListener *commit_listener_;
-    unsigned commit_progress_;
+    RaftLogOffset commit_progress_;
 };
 
 } // namespace e8

@@ -95,7 +95,7 @@ bool AppendAndExportTest() {
     log2.mutable_entry()->set_run_event_id("ID2");
     log2.mutable_entry()->set_command("COMMAND2");
 
-    unsigned log_index = test_data->journal->AppendLog(log1);
+    e8::RaftLogOffset log_index = test_data->journal->AppendLog(log1);
     TEST_CONDITION(log_index == 0);
 
     log_index = test_data->journal->AppendLog(log2);
@@ -416,7 +416,7 @@ bool EndWithTermTest() {
     test_data->journal->AppendLog(log1);
     test_data->journal->AppendLog(log2);
 
-    unsigned bound = test_data->journal->EndWithTerm(/*term=*/2, /*end=*/2);
+    e8::RaftLogOffset bound = test_data->journal->EndWithTerm(/*term=*/2, /*end=*/2);
     TEST_CONDITION(bound == 2);
 
     bound = test_data->journal->EndWithTerm(/*term=*/2, /*end=*/3);
