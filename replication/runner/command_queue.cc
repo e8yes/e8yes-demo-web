@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <limits>
 #include <string>
 
 #include "proto_cc/command.pb.h"
@@ -28,6 +29,14 @@ namespace e8 {
 CommandRunnerInterface::CommandRunnerInterface() {}
 
 CommandRunnerInterface::~CommandRunnerInterface() {}
+
+RaftLogOffset CommandRunnerInterface::PreferredSnapshotFrequency() const {
+    return std::numeric_limits<RaftLogOffset>::max();
+}
+
+void CommandRunnerInterface::Save() const {}
+
+void CommandRunnerInterface::Restore() {}
 
 void CommandRunnerInterface::Reset() {}
 
@@ -47,5 +56,13 @@ void CommandQueueProcessor::Apply(CommandEntry const &entry) {
 
     fulfillments_->Fulfill(entry.run_event_id(), return_value, RunCommandError::RCE_NONE);
 }
+
+RaftLogOffset CommandQueueProcessor::PreferredSnapshotFrequency() const {
+    return runner_->PreferredSnapshotFrequency();
+}
+
+void CommandQueueProcessor::Save() const { runner_->Save(); }
+
+void CommandQueueProcessor::Restore() { runner_->Restore(); }
 
 } // namespace e8

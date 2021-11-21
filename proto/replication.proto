@@ -30,6 +30,10 @@ message ReplicationConfig {
     int32 fulfillment_timeout_millis = 2;
 }
 
+/*
+ * The following definitions are used for intergation testings.
+ */
+
 // Gets the value pointed to by the key from the kv store.
 message ReplicationKvStoreGetCommand {
     string key = 1;
@@ -62,4 +66,10 @@ message ReplicationKvStoreCommand {
 message ReplicationKvStoreReturnValue {
     bool has_key = 1;
     string value = 2;
+}
+
+// Stores the key-value pairs. A proto message is needed to make testing
+// snapshot and recovery (where serialization is needed) easier.
+message ReplicationKvStoreData {
+    map<string, string> kvs = 1;
 }

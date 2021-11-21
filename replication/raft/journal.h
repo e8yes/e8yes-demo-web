@@ -48,10 +48,10 @@ class RaftCommitListener {
     virtual void Apply(CommandEntry const &entry) = 0;
 
     /**
-     * @brief PreferredSnapshotFrequency Instructs the journal how often (in terms of "every N fully
-     * committed log entries) should it take a snapshot of the commit listener's current state.
-     * This value must be greater than 0. Note, the journal doesn't always follow this frequency,
-     * but only to take it as the minimum.
+     * @brief PreferredSnapshotFrequency Instructs the journal in how often (in terms of "every N
+     * fully committed log entries) should it take a snapshot of the commit listener's current
+     * state. This value must be greater than 0. Note, the journal doesn't always follow this
+     * frequency, but only to take it as the minimum.
      *
      * The default implementation returns a large enough value so that snapshot won't ever occur.
      */

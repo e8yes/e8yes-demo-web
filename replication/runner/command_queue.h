@@ -42,6 +42,32 @@ class CommandRunnerInterface {
     virtual std::string Run(std::string const &command) = 0;
 
     /**
+     * @brief PreferredSnapshotFrequency Instructs the CommandQueueProcessor in how often (in terms
+     * of "every N fully committed log entries) should it take a snapshot of the command runner's
+     * current state. This value must be greater than 0. Note, the CommandQueueProcessor doesn't
+     * always follow this frequency, but only to take it as the minimum.
+     *
+     * The default implementation returns a large enough value so that snapshot won't ever occur.
+     */
+    virtual RaftLogOffset PreferredSnapshotFrequency() const;
+
+    /**
+     * @brief Save Discards the previous snapshot file, if there is any, and creates a snapshot of
+     * the current states.
+     *
+     * The default implementation does nothing.
+     */
+    virtual void Save() const;
+
+    /**
+     * @brief Restore Restores the states from a snapshot file if there is one. Otherwise, leaves
+     * the states unchanged.
+     *
+     * The default implementation does nothing.
+     */
+    virtual void Restore();
+
+    /**
      * @brief Reset When the replication node gets shutdown in a integration testing situation, this
      * function gets called to undo all the applied commands.
      */
@@ -65,6 +91,12 @@ class CommandQueueProcessor : public RaftCommitListener {
     ~CommandQueueProcessor() override;
 
     void Apply(CommandEntry const &entry) override;
+
+    RaftLogOffset PreferredSnapshotFrequency() const override;
+
+    void Save() const override;
+
+    void Restore() override;
 
   private:
     FulfillmentPool *fulfillments_;
