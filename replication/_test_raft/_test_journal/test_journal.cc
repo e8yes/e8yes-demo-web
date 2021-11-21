@@ -19,6 +19,7 @@
 #include <cstdio>
 #include <google/protobuf/repeated_field.h>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <string>
 
@@ -48,10 +49,22 @@ TestData::~TestData() { std::remove(gRecoveryFile); }
 
 class NoOpCommitListener : public e8::RaftCommitListener {
   public:
-    NoOpCommitListener() {}
+    NoOpCommitListener(e8::RaftLogOffset preferred_snapshot_frequency)
+        : preferred_snapshot_frequency_(preferred_snapshot_frequency) {}
     ~NoOpCommitListener() override {}
 
     void Apply(e8::CommandEntry const & /*entry*/) override {}
+
+    e8::RaftLogOffset PreferredSnapshotFrequency() const override {
+        return preferred_snapshot_frequency_;
+    }
+
+    void Save() const override {}
+
+    void Restore() override {}
+
+  private:
+    e8::RaftLogOffset const preferred_snapshot_frequency_;
 };
 
 class CommandCommitChecker : public e8::RaftCommitListener {
@@ -60,6 +73,10 @@ class CommandCommitChecker : public e8::RaftCommitListener {
     ~CommandCommitChecker();
 
     void Apply(e8::CommandEntry const &entry) override;
+    e8::RaftLogOffset PreferredSnapshotFrequency() const override;
+    void Save() const override;
+    void Restore() override;
+
     unsigned ApplyCount() const;
 
   private:
@@ -77,12 +94,19 @@ void CommandCommitChecker::Apply(e8::CommandEntry const &entry) {
     assert(entry.SerializeAsString() == expected_commands_[index_++].SerializeAsString());
 }
 
+e8::RaftLogOffset CommandCommitChecker::PreferredSnapshotFrequency() const { return 1; }
+
+void CommandCommitChecker::Save() const {}
+
+void CommandCommitChecker::Restore() {}
+
 unsigned CommandCommitChecker::ApplyCount() const { return index_; }
 
 } // namespace
 
 bool AppendAndExportTest() {
-    auto no_op = std::make_unique<NoOpCommitListener>();
+    auto no_op = std::make_unique<NoOpCommitListener>(
+        /*preferred_snapshot_frequency=*/std::numeric_limits<e8::RaftLogOffset>::max());
     auto test_data = std::make_unique<TestData>(no_op.get());
 
     e8::LogEntry log1;
@@ -101,35 +125,40 @@ bool AppendAndExportTest() {
     log_index = test_data->journal->AppendLog(log2);
     TEST_CONDITION(log_index == 1);
 
+    e8::RaftLogOffset exported_snapshot_progress;
     google::protobuf::RepeatedPtrField<e8::LogEntry> exported_logs;
     e8::RaftTerm preceding_term;
-    bool exportable = test_data->journal->Export(/*start=*/0, &exported_logs, &preceding_term);
-
+    bool exportable = test_data->journal->Export(/*start=*/0, &exported_snapshot_progress,
+                                                 &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.size() == 2);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log1.SerializeAsString());
     TEST_CONDITION(exported_logs[1].SerializeAsString() == log2.SerializeAsString());
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/1, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/1, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 1);
     TEST_CONDITION(exported_logs.size() == 1);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log2.SerializeAsString());
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/2, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/2, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 2);
     TEST_CONDITION(exported_logs.empty());
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/3, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/3, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == false);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.empty());
 
@@ -137,7 +166,8 @@ bool AppendAndExportTest() {
 }
 
 bool ImportAndExportTest() {
-    auto no_op = std::make_unique<NoOpCommitListener>();
+    auto no_op = std::make_unique<NoOpCommitListener>(
+        /*preferred_snapshot_frequency=*/std::numeric_limits<e8::RaftLogOffset>::max());
     auto test_data = std::make_unique<TestData>(no_op.get());
 
     e8::LogEntry log1;
@@ -161,16 +191,17 @@ bool ImportAndExportTest() {
     *foreign_logs1.Add() = log1;
     *foreign_logs1.Add() = log2;
 
-    bool resolvable =
-        test_data->journal->Import(/*from=*/0, foreign_logs1, /*preceding_log_term=*/0);
-
+    bool resolvable = test_data->journal->Import(/*from=*/0, /*foreign_snapshot_progress=*/0,
+                                                 foreign_logs1, /*preceding_log_term=*/0);
     TEST_CONDITION(resolvable == true);
 
+    e8::RaftLogOffset exported_snapshot_progress;
     google::protobuf::RepeatedPtrField<e8::LogEntry> exported_logs;
     e8::RaftTerm preceding_term;
-    bool exportable = test_data->journal->Export(/*start=*/0, &exported_logs, &preceding_term);
-
+    bool exportable = test_data->journal->Export(/*start=*/0, &exported_snapshot_progress,
+                                                 &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.size() == 2);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log1.SerializeAsString());
@@ -183,14 +214,15 @@ bool ImportAndExportTest() {
     google::protobuf::RepeatedPtrField<e8::LogEntry> foreign_logs2;
     *foreign_logs2.Add() = log1;
 
-    resolvable = test_data->journal->Import(/*from=*/0, foreign_logs2, /*preceding_log_term=*/0);
-
+    resolvable = test_data->journal->Import(/*from=*/0, /*foreign_snapshot_progress=*/0,
+                                            foreign_logs2, /*preceding_log_term=*/0);
     TEST_CONDITION(resolvable == true);
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/0, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/0, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.size() == 2);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log1.SerializeAsString());
@@ -211,14 +243,15 @@ bool ImportAndExportTest() {
     *foreign_logs3.Add() = log2;
     *foreign_logs3.Add() = log3;
 
-    resolvable = test_data->journal->Import(/*from=*/0, foreign_logs3, /*preceding_log_term=*/0);
-
+    resolvable = test_data->journal->Import(/*from=*/0, /*foreign_snapshot_progress=*/0,
+                                            foreign_logs3, /*preceding_log_term=*/0);
     TEST_CONDITION(resolvable == true);
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/0, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/0, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.size() == 3);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log1.SerializeAsString());
@@ -239,15 +272,15 @@ bool ImportAndExportTest() {
 
     *foreign_logs4.Add() = log2_var;
 
-    resolvable =
-        test_data->journal->Import(/*from=*/1, foreign_logs4, /*preceding_log_term=*/log1.term());
-
+    resolvable = test_data->journal->Import(/*from=*/1, /*foreign_snapshot_progress=*/0,
+                                            foreign_logs4, /*preceding_log_term=*/log1.term());
     TEST_CONDITION(resolvable == true);
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/0, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/0, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.size() == 2);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log1.SerializeAsString());
@@ -266,14 +299,15 @@ bool ImportAndExportTest() {
 
     *foreign_logs5.Add() = log4;
 
-    resolvable = test_data->journal->Import(/*from=*/3, foreign_logs5, /*preceding_log_term=*/4);
-
+    resolvable = test_data->journal->Import(/*from=*/3, /*foreign_snapshot_progress=*/0,
+                                            foreign_logs5, /*preceding_log_term=*/4);
     TEST_CONDITION(resolvable == false);
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/0, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/0, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.size() == 2);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log1.SerializeAsString());
@@ -287,14 +321,15 @@ bool ImportAndExportTest() {
 
     *foreign_logs6.Add() = log3;
 
-    resolvable = test_data->journal->Import(/*from=*/2, foreign_logs6, /*preceding_log_term=*/2);
-
+    resolvable = test_data->journal->Import(/*from=*/2, /*foreign_snapshot_progress=*/0,
+                                            foreign_logs6, /*preceding_log_term=*/2);
     TEST_CONDITION(resolvable == false);
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/0, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/0, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.size() == 2);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log1.SerializeAsString());
@@ -306,14 +341,15 @@ bool ImportAndExportTest() {
     // 4, ID2_VAR, COMMAND2_VAR
     google::protobuf::RepeatedPtrField<e8::LogEntry> foreign_logs7;
 
-    resolvable = test_data->journal->Import(/*from=*/2, foreign_logs7, /*preceding_log_term=*/4);
-
+    resolvable = test_data->journal->Import(/*from=*/2, /*foreign_snapshot_progress=*/0,
+                                            foreign_logs7, /*preceding_log_term=*/4);
     TEST_CONDITION(resolvable == true);
 
     exported_logs.Clear();
-    exportable = test_data->journal->Export(/*start=*/0, &exported_logs, &preceding_term);
-
+    exportable = test_data->journal->Export(/*start=*/0, &exported_snapshot_progress,
+                                            &exported_logs, &preceding_term);
     TEST_CONDITION(exportable == true);
+    TEST_CONDITION(exported_snapshot_progress == 0);
     TEST_CONDITION(preceding_term == 0);
     TEST_CONDITION(exported_logs.size() == 2);
     TEST_CONDITION(exported_logs[0].SerializeAsString() == log1.SerializeAsString());
@@ -323,7 +359,8 @@ bool ImportAndExportTest() {
 }
 
 bool LivenessTest() {
-    auto no_op = std::make_unique<NoOpCommitListener>();
+    auto no_op = std::make_unique<NoOpCommitListener>(
+        /*preferred_snapshot_frequency=*/std::numeric_limits<e8::RaftLogOffset>::max());
     auto test_data = std::make_unique<TestData>(no_op.get());
 
     e8::LogSourceLiveness liveness = test_data->journal->Liveness();
@@ -347,7 +384,8 @@ bool LivenessTest() {
 }
 
 bool StalenessTest() {
-    auto no_op = std::make_unique<NoOpCommitListener>();
+    auto no_op = std::make_unique<NoOpCommitListener>(
+        /*preferred_snapshot_frequency=*/std::numeric_limits<e8::RaftLogOffset>::max());
     auto test_data = std::make_unique<TestData>(no_op.get());
 
     // Current journal state:
@@ -400,7 +438,8 @@ bool StalenessTest() {
 }
 
 bool EndWithTermTest() {
-    auto no_op = std::make_unique<NoOpCommitListener>();
+    auto no_op = std::make_unique<NoOpCommitListener>(
+        /*preferred_snapshot_frequency=*/std::numeric_limits<e8::RaftLogOffset>::max());
     auto test_data = std::make_unique<TestData>(no_op.get());
 
     e8::LogEntry log1;
@@ -452,9 +491,9 @@ bool PushCommitProgressTest() {
     test_data->journal->AppendLog(log1);
     test_data->journal->AppendLog(log2);
 
-    test_data->journal->PushCommitProgress(/*safe_commit_progress=*/1);
-    test_data->journal->PushCommitProgress(/*safe_commit_progress=*/0);
-    test_data->journal->PushCommitProgress(/*safe_commit_progress=*/2);
+    test_data->journal->PushCommitProgress(/*safe_commit_progress=*/1, /*full_commit_progress=*/0);
+    test_data->journal->PushCommitProgress(/*safe_commit_progress=*/0, /*full_commit_progress=*/0);
+    test_data->journal->PushCommitProgress(/*safe_commit_progress=*/2, /*full_commit_progress=*/0);
 
     TEST_CONDITION(commit_checker->ApplyCount() == 2);
 
@@ -462,7 +501,8 @@ bool PushCommitProgressTest() {
 }
 
 bool CrashRecoveryTest() {
-    auto no_op = std::make_unique<NoOpCommitListener>();
+    auto no_op = std::make_unique<NoOpCommitListener>(
+        /*preferred_snapshot_frequency=*/std::numeric_limits<e8::RaftLogOffset>::max());
     auto test_data = std::make_unique<TestData>(no_op.get());
 
     e8::LogEntry log1;

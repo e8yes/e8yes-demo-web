@@ -76,8 +76,9 @@ grpc::Status RaftServiceImpl::MergeLogEntries(grpc::ServerContext *,
     context_->role_at_term->UpgradeTerm(context_->me, request->term(),
                                         RoleAtTerm::ENCOUNTERED_HIGHER_TERM_MESSAGE);
 
-    bool resolvable = context_->journal->Import(
-        request->overwrite_from(), request->overwrite_with(), request->preceding_term());
+    bool resolvable =
+        context_->journal->Import(request->overwrite_from(), request->snapshot_progress(),
+                                  request->overwrite_with(), request->preceding_term());
     if (!resolvable) {
         // Fails to reconcile with the alien log source.
         response->set_successful(false);
@@ -108,7 +109,8 @@ grpc::Status RaftServiceImpl::PushCommitProgress(grpc::ServerContext *,
     context_->role_at_term->UpgradeTerm(context_->me, request->term(),
                                         RoleAtTerm::ENCOUNTERED_HIGHER_TERM_MESSAGE);
 
-    context_->journal->PushCommitProgress(request->safe_commit_progress());
+    context_->journal->PushCommitProgress(request->safe_commit_progress(),
+                                          request->full_commit_progress());
 
     return grpc::Status::OK;
 }

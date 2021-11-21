@@ -19,6 +19,7 @@
 #define RAFT_JOURNAL_H
 
 #include <google/protobuf/repeated_field.h>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -47,8 +48,36 @@ class RaftCommitListener {
     virtual void Apply(CommandEntry const &entry) = 0;
 
     /**
+     * @brief PreferredSnapshotFrequency Instructs the journal how often (in terms of "every N fully
+     * committed log entries) should it take a snapshot of the commit listener's current state.
+     * This value must be greater than 0. Note, the journal doesn't always follow this frequency,
+     * but only to take it as the minimum.
+     *
+     * The default implementation returns a large enough value so that snapshot won't ever occur.
+     */
+    virtual RaftLogOffset PreferredSnapshotFrequency() const;
+
+    /**
+     * @brief Save Discards the previous snapshot file, if there is any, and creates a snapshot of
+     * the current states.
+     *
+     * The default implementation does nothing.
+     */
+    virtual void Save() const;
+
+    /**
+     * @brief Restore Restores the states from a snapshot file if there is one. Otherwise, leaves
+     * the states unchanged.
+     *
+     * The default implementation does nothing.
+     */
+    virtual void Restore();
+
+    /**
      * @brief Reset When the Raft node got shutdown in a integration testing situation, this
      * function gets called to undo all the applied commands.
+     *
+     * The default implementation does nothing.
      */
     virtual void Reset();
 };
@@ -87,12 +116,13 @@ class RaftJournal {
      * foreign entries. After the local log content is modified, it persists the updated local logs.
      *
      * @param from The starting position of the local log source to overwrite.
+     * @param foreign_snapshot_progress The snapshot progress of the foreign log source.
      * @param foreign_log_entries Partial foreign log entries to overwrite from.
      *
      * @return Returns if the merge is successful or not. An unsucessful merge does not change the
      * local journal.
      */
-    bool Import(RaftLogOffset from,
+    bool Import(RaftLogOffset from, RaftLogOffset foreign_snapshot_progress,
                 google::protobuf::RepeatedPtrField<LogEntry> const &foreign_log_entries,
                 RaftTerm preceding_log_term);
 
@@ -104,14 +134,17 @@ class RaftJournal {
      * to the end of the journal. In that case, nothing will be copied. However, if it's beyond the
      * end of the journal, the function will return false and the output_buffer doesn't get
      * modified. The value of preceding_log_term shouldn't be used if the function doesn't succeed.
+     * @param snapshot_progress The journal's current snapshot progress. This is used to determine
+     * the logical index of the exported log entries.
      * @param output_buffer The buffer array to which the logs are copied.
      * @param preceding_log_term The log term of the entry just before the start index. This is used
      * by the importing end to test if the portion of logs is resolvable. If the start index is 0,
      * the preceding_log_term will be set to 0.
      *
-     * @return Whether the start index is valid, and consequently, if the function succeeds.
+     * @return Whether the start index is valid.
      */
-    bool Export(RaftLogOffset start, google::protobuf::RepeatedPtrField<LogEntry> *output_buffer,
+    bool Export(RaftLogOffset start, RaftLogOffset *snapshot_progress,
+                google::protobuf::RepeatedPtrField<LogEntry> *output_buffer,
                 RaftTerm *preceding_log_term) const;
 
     /**
@@ -147,10 +180,14 @@ class RaftJournal {
      * @param safe_commit_progress The highest commit progress where all logs within the range
      * [0, safe_commit_progress) has all been replicated by a quorum as well as here locally in the
      * journal.
+     * @param full_commit_progress
      */
-    void PushCommitProgress(RaftLogOffset safe_commit_progress);
+    void PushCommitProgress(RaftLogOffset safe_commit_progress, RaftLogOffset full_commit_progress);
 
   private:
+    RaftLogOffset ToLogical(RaftLogOffset physical) const;
+    RaftLogOffset ToPhysical(RaftLogOffset logical) const;
+
     RaftPersister *persister_;
     RaftCommitListener *commit_listener_;
     RaftLogOffset commit_progress_;

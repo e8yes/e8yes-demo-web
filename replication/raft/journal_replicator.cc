@@ -41,7 +41,7 @@ class ReplicationArgs : public TaskStorageInterface {
   public:
     ReplicationArgs(RaftMachineAddress from, RaftTerm publisher_term, RaftJournal const *journal,
                     RaftMachineAddress target_address, RaftService::Stub *target_stub,
-                    std::optional<unsigned> current_replication_progress,
+                    std::optional<RaftLogOffset> current_replication_progress,
                     TimeIntervalMillis rpc_timeout_millis);
     ~ReplicationArgs() override;
 
@@ -49,18 +49,18 @@ class ReplicationArgs : public TaskStorageInterface {
     RaftTerm const publisher_term;
     RaftJournal const *const journal;
     RaftService::Stub *const target_stub;
-    std::optional<unsigned> const current_replication_progress;
+    std::optional<RaftLogOffset> const current_replication_progress;
     TimeIntervalMillis const rpc_timeout_millis;
 
     // Return value.
     RaftMachineAddress target_address;
-    std::optional<unsigned> latest_replication_progress;
+    std::optional<RaftLogOffset> latest_replication_progress;
 };
 
 ReplicationArgs::ReplicationArgs(RaftMachineAddress from, RaftTerm publisher_term,
                                  RaftJournal const *journal, RaftMachineAddress target_address,
                                  RaftService::Stub *target_stub,
-                                 std::optional<unsigned> current_replication_progress,
+                                 std::optional<RaftLogOffset> current_replication_progress,
                                  TimeIntervalMillis rpc_timeout_millis)
     : from(from), publisher_term(publisher_term), journal(journal), target_stub(target_stub),
       current_replication_progress(current_replication_progress),
@@ -88,7 +88,8 @@ void ReplicationTask::Run(TaskStorageInterface *data) const {
     LogSourceLiveness liveness = args->journal->Liveness();
 
     if (args->current_replication_progress.has_value() &&
-        *args->current_replication_progress == liveness.log_progress()) {
+        *args->current_replication_progress ==
+            static_cast<RaftLogOffset>(liveness.log_progress())) {
         // The peer is up-to-date.
         args->latest_replication_progress = liveness.log_progress();
         return;
@@ -97,8 +98,7 @@ void ReplicationTask::Run(TaskStorageInterface *data) const {
     RaftLogOffset overwrite_from;
     if (!args->current_replication_progress.has_value()) {
         // Don't know what the peer node has. Try overwriting from the end of the journal to
-        // minimize request size because, apriori, each peer's journal is almost
-        // synchronized.
+        // minimize request size because, apriori, each peer's journal is almost synchronized.
         overwrite_from = liveness.log_progress();
     } else {
         // Starts from where we left off last time.
@@ -110,14 +110,16 @@ void ReplicationTask::Run(TaskStorageInterface *data) const {
         request.set_term(args->publisher_term);
         request.set_overwrite_from(overwrite_from);
 
+        RaftLogOffset snapshot_progress;
         RaftTerm preceding_term;
-        if (!args->journal->Export(overwrite_from, request.mutable_overwrite_with(),
-                                   &preceding_term)) {
+        if (!args->journal->Export(overwrite_from, &snapshot_progress,
+                                   request.mutable_overwrite_with(), &preceding_term)) {
             // The local journal was shortened by another leader. No point of trying if there is
             // other higher term leaders.
             args->latest_replication_progress = args->current_replication_progress;
             break;
         }
+        request.set_snapshot_progress(snapshot_progress);
         request.set_preceding_term(preceding_term);
 
         MergeLogEntriesResponse response;
@@ -169,7 +171,7 @@ RaftJournalReplicator::Progress RaftJournalReplicator::Replicate(RaftMachineAddr
             continue;
         }
 
-        std::optional<unsigned> peer_replication_progress;
+        std::optional<RaftLogOffset> peer_replication_progress;
         auto it = progress_.replication_progresses.find(peer_address);
         if (it != progress_.replication_progresses.end()) {
             peer_replication_progress = it->second;

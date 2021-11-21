@@ -19,6 +19,8 @@
 #include <cassert>
 #include <chrono>
 #include <grpcpp/grpcpp.h>
+#include <iostream>
+#include <limits>
 #include <memory>
 #include <vector>
 
@@ -38,14 +40,15 @@ namespace {
 class PushCommitArgs : public TaskStorageInterface {
   public:
     PushCommitArgs(RaftMachineAddress const &pusher, RaftTerm pusher_term,
-                   unsigned safe_commit_progress, RaftJournal *journal,
-                   RaftService::Stub *target_stub, bool use_rpc,
+                   RaftLogOffset safe_commit_progress, RaftLogOffset full_commit_progress,
+                   RaftJournal *journal, RaftService::Stub *target_stub, bool use_rpc,
                    TimeIntervalMillis rpc_timeout_millis);
     ~PushCommitArgs() override;
 
     RaftMachineAddress const pusher;
     RaftTerm const pusher_term;
-    unsigned const safe_commit_progress;
+    RaftLogOffset const safe_commit_progress;
+    RaftLogOffset const full_commit_progress;
     RaftJournal *journal;
     RaftService::Stub *const target_stub;
     bool const use_rpc;
@@ -53,12 +56,13 @@ class PushCommitArgs : public TaskStorageInterface {
 };
 
 PushCommitArgs::PushCommitArgs(RaftMachineAddress const &pusher, RaftTerm pusher_term,
-                               unsigned safe_commit_progress, RaftJournal *journal,
+                               RaftLogOffset safe_commit_progress,
+                               RaftLogOffset full_commit_progress, RaftJournal *journal,
                                RaftService::Stub *target_stub, bool use_rpc,
                                TimeIntervalMillis rpc_timeout_millis)
     : pusher(pusher), pusher_term(pusher_term), safe_commit_progress(safe_commit_progress),
-      journal(journal), target_stub(target_stub), use_rpc(use_rpc),
-      rpc_timeout_millis(rpc_timeout_millis) {}
+      full_commit_progress(full_commit_progress), journal(journal), target_stub(target_stub),
+      use_rpc(use_rpc), rpc_timeout_millis(rpc_timeout_millis) {}
 
 PushCommitArgs::~PushCommitArgs() {}
 
@@ -83,6 +87,7 @@ void PushCommitTask::Run(TaskStorageInterface *data) const {
         PushCommitProgressRequest request;
         request.set_term(args->pusher_term);
         request.set_safe_commit_progress(args->safe_commit_progress);
+        request.set_full_commit_progress(args->full_commit_progress);
 
         PushCommitProgressResponse response;
 
@@ -92,21 +97,21 @@ void PushCommitTask::Run(TaskStorageInterface *data) const {
 
         args->target_stub->PushCommitProgress(&context, request, &response);
     } else {
-        args->journal->PushCommitProgress(args->safe_commit_progress);
+        args->journal->PushCommitProgress(args->safe_commit_progress, args->full_commit_progress);
     }
 }
 
 bool PushCommitTask::DropResourceOnCompletion() const { return true; }
 
-unsigned QuorumReplicationRrogress(RaftJournalReplicator::Progress const &progress,
-                                   unsigned quorum_size) {
-    std::vector<unsigned> progresses(progress.replication_progresses.size());
+RaftLogOffset QuorumReplicationRrogress(RaftJournalReplicator::Progress const &progress,
+                                        unsigned quorum_size) {
+    std::vector<RaftLogOffset> progresses(progress.replication_progresses.size());
     unsigned i = 0;
     for (auto const &[_, p] : progress.replication_progresses) {
         progresses[i++] = p;
     }
 
-    std::sort(progresses.begin(), progresses.end(), std::greater<unsigned>());
+    std::sort(progresses.begin(), progresses.end(), std::greater<RaftLogOffset>());
 
     if (progresses.size() < quorum_size) {
         // We haven't known enough nodes' replication progress. We'll simply assume they made zero
@@ -115,6 +120,24 @@ unsigned QuorumReplicationRrogress(RaftJournalReplicator::Progress const &progre
     }
 
     return progresses[quorum_size - 1];
+}
+
+RaftLogOffset FullReplicationProgress(RaftJournalReplicator::Progress const &progress,
+                                      unsigned num_peers) {
+    assert(num_peers > 0);
+
+    if (progress.replication_progresses.size() < num_peers) {
+        return 0;
+    }
+
+    RaftLogOffset min = std::numeric_limits<RaftLogOffset>::max();
+    for (auto const &[_, p] : progress.replication_progresses) {
+        if (p < min) {
+            min = p;
+        }
+    }
+
+    return min;
 }
 
 } // namespace
@@ -133,6 +156,11 @@ void RaftCommitPusher::Push(RaftMachineAddress const &pusher, RaftTerm pusher_te
     RaftLogOffset quorum_progress = QuorumReplicationRrogress(progress, peers_->QuorumSize());
     RaftLogOffset global_commit_progress = journal_->EndWithTerm(pusher_term, quorum_progress);
 
+    RaftLogOffset full_replication_progress =
+        FullReplicationProgress(progress, peers_->PeerCount());
+    RaftLogOffset full_commit_progress =
+        std::min(full_replication_progress, global_commit_progress);
+
     for (auto const &[peer_address, peer_stub] : *peers_) {
         // Determines what commit progress is guaranteed to be safe for each individual peer.
         RaftLogOffset safe_commit_progress;
@@ -145,13 +173,17 @@ void RaftCommitPusher::Push(RaftMachineAddress const &pusher, RaftTerm pusher_te
                 std::min(global_commit_progress, replication_progress_it->second);
         }
 
+        std::cout << "full_commit_progress=" << full_commit_progress
+                  << ", safe_commit_progress=" << safe_commit_progress << std::endl;
+        assert(full_commit_progress <= safe_commit_progress);
+
         // The local node is called directly to save bandwidth.
         bool use_rpc = peer_address != pusher;
 
         auto task = std::make_shared<PushCommitTask>();
-        auto args =
-            std::make_unique<PushCommitArgs>(pusher, pusher_term, safe_commit_progress, journal_,
-                                             peer_stub.get(), use_rpc, rpc_timeout_millis_);
+        auto args = std::make_unique<PushCommitArgs>(pusher, pusher_term, safe_commit_progress,
+                                                     full_commit_progress, journal_,
+                                                     peer_stub.get(), use_rpc, rpc_timeout_millis_);
         thread_pool_.Schedule(task, std::move(args));
     }
 }
