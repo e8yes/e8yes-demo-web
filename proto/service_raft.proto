@@ -22,40 +22,61 @@ package e8;
 import "raft.proto";
 
 message GrantVoteRequest {
+    // Address of the node that wants to be elected as a new leader.
     string candidate_machine_address = 1;
+
+    // The term the candidate node is currently at.
     int64 candidate_term = 2;
+
+    // How up to date the candidate's journal is.
     LogSourceLiveness candidate_liveness = 3;
 }
 
 message GrantVoteResponse {
+    // Did the candidate node gets a vote for the node?
     bool vote_granted = 1;
 }
 
 
 message MergeLogEntriesRequest {
-    // The term of the foreign node.
+    // The term of the foreign (leader) node.
     int64 term = 1;
 
     // Starting index in the local log to overwrite from.
     int64 overwrite_from = 2;
 
-    // Foreign logs to overwrite with.
-    repeated LogEntry overwrite_with = 3;
+    // The snapshot progress of the foreign journal.
+    int64 snapshot_progress = 3;
+
+    // The foreign log entries (unsnapshotted) to overwrite with.
+    repeated LogEntry overwrite_with = 4;
 
     // For concatenability check. The term of the log just before the index
     // overwrite_from
-    int64 preceding_term = 4;
+    int64 preceding_term = 5;
 }
 
 message MergeLogEntriesResponse {
+    // Was the merge successful.
     bool successful = 1;
+
+    // This allows the leader to check if its term is outdated compared to the
+    // node.
     int64 current_term = 2;
 }
 
 
 message PushCommitProgressRequest {
+    // The current term of the pusher (leader).
     int64 term = 1;
+
+    // The commit progress determined by the leader that it is safe for the
+    // node.
     int64 safe_commit_progress = 2;
+
+    // The log progress that is fully propagated (therefore committed) among
+    // the peers.
+    int64 full_commit_progress = 3;
 }
 
 message PushCommitProgressResponse {
