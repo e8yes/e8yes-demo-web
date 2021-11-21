@@ -30,9 +30,10 @@
 namespace e8 {
 
 /**
- * @brief The RaftPersister class Manages the saving and recovery of the persistent states. It also
- * acts as a mutually exclusive device. The caller must use std::lock_guard on this object before
- * using any of the member functions.
+ * @brief The RaftPersister class Manages the saving and recovery of the persistent states (Sees the
+ * RaftPersistentStates proto message for what states it manages). It also acts as a mutually
+ * exclusive device. The caller must use std::lock_guard on this object before using any of the
+ * member functions.
  */
 class RaftPersister {
   public:
@@ -63,6 +64,26 @@ class RaftPersister {
      * @brief SetTermAndRole Updates the term and role states.
      */
     void SetTermAndRole(std::pair<RaftTerm, RaftRole> const &term_and_role);
+
+    /**
+     * @brief SnapshotProgress Reads the snapshot progress.
+     */
+    RaftLogOffset SnapshotProgress();
+
+    /**
+     * @brief SetSnapshotProgress Updates the snapshot progress.
+     */
+    void SetSnapshotProgress(RaftLogOffset snapshot_progress);
+
+    /**
+     * @brief SnapshotHighestLogTerm Reads the snapshot's highest log term.
+     */
+    RaftTerm SnapshotHighestLogTerm();
+
+    /**
+     * @brief SetSnapshotHighestLogTerm Updates the snapshot's highest log term.
+     */
+    void SetSnapshotHighestLogTerm(RaftTerm term);
 
     /**
      * @brief LogEntriesRef Gets a pointer reference to the log entries state.

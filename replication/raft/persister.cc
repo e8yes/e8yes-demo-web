@@ -52,6 +52,18 @@ void RaftPersister::SetTermAndRole(std::pair<RaftTerm, RaftRole> const &term_and
     states_.set_role(role);
 }
 
+RaftLogOffset RaftPersister::SnapshotProgress() { return states_.snapshot_progress(); }
+
+void RaftPersister::SetSnapshotProgress(RaftLogOffset snapshot_progress) {
+    states_.set_snapshot_progress(snapshot_progress);
+}
+
+RaftTerm RaftPersister::SnapshotHighestLogTerm() { return states_.snapshot_highest_log_term(); }
+
+void RaftPersister::SetSnapshotHighestLogTerm(RaftTerm term) {
+    states_.set_snapshot_highest_log_term(term);
+}
+
 google::protobuf::RepeatedPtrField<LogEntry> *RaftPersister::LogEntriesRef() {
     return states_.mutable_log_entries();
 }
