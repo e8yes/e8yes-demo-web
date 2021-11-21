@@ -15,6 +15,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <limits>
 #include <string>
 
 #include "common/unit_test_util/unit_test_util.h"
@@ -24,7 +25,9 @@
 #include "replication/runner/integration_test/local_cluster.h"
 
 bool BasicTest() {
-    e8::LocalReplicationCluster cluster(/*num_nodes=*/5);
+    e8::LocalReplicationCluster cluster(
+        /*num_nodes=*/5,
+        /*preferred_snapshot_frequency=*/std::numeric_limits<e8::RaftLogOffset>::max());
 
     e8::ReplicationClient client(cluster.ClientConfig());
 

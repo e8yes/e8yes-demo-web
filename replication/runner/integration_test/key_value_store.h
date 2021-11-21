@@ -21,6 +21,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "proto_cc/replication.pb.h"
+#include "replication/raft/common_types.h"
 #include "replication/runner/command_queue.h"
 
 namespace e8 {
@@ -30,15 +32,22 @@ namespace e8 {
  */
 class ReplicationKvStore : public CommandRunnerInterface {
   public:
-    ReplicationKvStore();
+    ReplicationKvStore(RaftLogOffset preferred_snapshot_frequency);
     ~ReplicationKvStore() override;
 
     std::string Run(std::string const &command) override;
 
+    RaftLogOffset PreferredSnapshotFrequency() const override;
+
+    void Save() const override;
+
+    void Restore() override;
+
     void Reset() override;
 
   private:
-    std::unordered_map<std::string, std::string> kvs_;
+    RaftLogOffset const preferred_snapshot_frequency_;
+    ReplicationKvStoreData data_;
 };
 
 } // namespace e8

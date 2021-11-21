@@ -66,7 +66,8 @@ std::unique_ptr<grpc::Server> StartReplicationServer(RaftMachineAddress const &a
 
 } // namespace
 
-LocalReplicationCluster::LocalReplicationCluster(unsigned num_nodes) {
+LocalReplicationCluster::LocalReplicationCluster(unsigned num_nodes,
+                                                 RaftLogOffset preferred_snapshot_frequency) {
     google::protobuf::RepeatedPtrField<RaftMachineAddress> raft_peers;
     google::protobuf::RepeatedPtrField<RaftMachineAddress> replication_peers;
 
@@ -80,7 +81,7 @@ LocalReplicationCluster::LocalReplicationCluster(unsigned num_nodes) {
 
     for (unsigned i = 0; i < num_nodes; ++i) {
         Node node;
-        node.kv_store_ = std::make_unique<ReplicationKvStore>();
+        node.kv_store_ = std::make_unique<ReplicationKvStore>(preferred_snapshot_frequency);
 
         node.config.mutable_raft_config()->set_me(raft_peers[i]);
         *node.config.mutable_raft_config()->mutable_peers() = raft_peers;

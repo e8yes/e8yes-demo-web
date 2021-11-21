@@ -39,7 +39,7 @@ class LocalReplicationCluster {
     /**
      * @brief LocalReplicationCluster Starts a cluster of specified number of nodes.
      */
-    LocalReplicationCluster(unsigned num_nodes);
+    LocalReplicationCluster(unsigned num_nodes, RaftLogOffset preferred_snapshot_frequency);
     ~LocalReplicationCluster();
 
     /**

@@ -16,16 +16,25 @@
  */
 
 #include <cassert>
+#include <cstdio>
+#include <fstream>
 #include <string>
 #include <unordered_map>
 
 #include "proto_cc/replication.pb.h"
+#include "replication/raft/common_types.h"
 #include "replication/runner/command_queue.h"
 #include "replication/runner/integration_test/key_value_store.h"
 
 namespace e8 {
+namespace {
 
-ReplicationKvStore::ReplicationKvStore() {}
+constexpr char const *kKvStoreSnapshotFile = "replication_kv_store.snapshot";
+
+} // namespace
+
+ReplicationKvStore::ReplicationKvStore(RaftLogOffset preferred_snapshot_frequency)
+    : preferred_snapshot_frequency_(preferred_snapshot_frequency) {}
 
 ReplicationKvStore::~ReplicationKvStore() {}
 
@@ -37,8 +46,8 @@ std::string ReplicationKvStore::Run(std::string const &command) {
 
     switch (kv_command.command_case()) {
     case ReplicationKvStoreCommand::CommandCase::kGet: {
-        auto it = kvs_.find(kv_command.get().key());
-        if (it == kvs_.end()) {
+        auto it = data_.kvs().find(kv_command.get().key());
+        if (it == data_.kvs().end()) {
             return_value.set_has_key(false);
         } else {
             return_value.set_has_key(true);
@@ -47,11 +56,11 @@ std::string ReplicationKvStore::Run(std::string const &command) {
         break;
     }
     case ReplicationKvStoreCommand::CommandCase::kPut: {
-        kvs_[kv_command.put().key()] = kv_command.put().value();
+        (*data_.mutable_kvs())[kv_command.put().key()] = kv_command.put().value();
         break;
     }
     case ReplicationKvStoreCommand::CommandCase::kPutAppend: {
-        kvs_[kv_command.put_append().key()] += kv_command.put_append().value();
+        (*data_.mutable_kvs())[kv_command.put_append().key()] += kv_command.put_append().value();
         break;
     }
     case ReplicationKvStoreCommand::CommandCase::COMMAND_NOT_SET: {
@@ -62,6 +71,34 @@ std::string ReplicationKvStore::Run(std::string const &command) {
     return return_value.SerializeAsString();
 }
 
-void ReplicationKvStore::Reset() { kvs_.clear(); }
+RaftLogOffset ReplicationKvStore::PreferredSnapshotFrequency() const {
+    return preferred_snapshot_frequency_;
+}
+
+void ReplicationKvStore::Save() const {
+    remove(kKvStoreSnapshotFile);
+
+    std::fstream f;
+    f.open(kKvStoreSnapshotFile, std::ios::out | std::ios::binary);
+    assert(f.is_open());
+
+    data_.SerializeToOstream(&f);
+
+    f.close();
+}
+
+void ReplicationKvStore::Restore() {
+    std::fstream f;
+    f.open(kKvStoreSnapshotFile, std::ios::in | std::ios::binary);
+    if (!f.is_open()) {
+        return;
+    }
+
+    data_.ParseFromIstream(&f);
+
+    f.close();
+}
+
+void ReplicationKvStore::Reset() { data_.mutable_kvs()->clear(); }
 
 } // namespace e8

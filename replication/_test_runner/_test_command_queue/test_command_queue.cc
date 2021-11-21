@@ -15,7 +15,9 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cassert>
 #include <cstdlib>
+#include <limits>
 #include <memory>
 #include <string>
 #include <utility>
@@ -36,6 +38,12 @@ class Adder : public e8::CommandRunnerInterface {
 
     std::string Run(std::string const &command) override;
 
+    e8::RaftLogOffset PreferredSnapshotFrequency() const override;
+
+    void Save() const override;
+
+    void Restore() override;
+
     long CurrentValue() const;
 
   private:
@@ -50,6 +58,14 @@ std::string Adder::Run(std::string const &command) {
     current_value_ += std::atol(command.c_str());
     return std::to_string(current_value_);
 }
+
+e8::RaftLogOffset Adder::PreferredSnapshotFrequency() const {
+    return std::numeric_limits<e8::RaftLogOffset>::max();
+}
+
+void Adder::Save() const { assert(false); }
+
+void Adder::Restore() { assert(false); }
 
 long Adder::CurrentValue() const { return current_value_; }
 
