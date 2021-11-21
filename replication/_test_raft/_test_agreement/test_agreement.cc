@@ -16,6 +16,7 @@
  */
 
 #include <iostream>
+#include <limits>
 #include <optional>
 #include <string>
 
@@ -28,11 +29,17 @@
 
 bool BasicAgreeTest() {
     e8::LocalRaftCluster cluster;
-    cluster.AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
-        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
-        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
-        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
-        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
+    cluster
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
         .Start(/*quorum_size=*/3, /*unavailability=*/1);
 
     e8::RaftRoleMonitor role_monitor(&cluster);
@@ -55,11 +62,17 @@ bool BasicAgreeTest() {
 
 bool FailAgreeTest() {
     e8::LocalRaftCluster cluster;
-    cluster.AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
-        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
-        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
-        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
-        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>())
+    cluster
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
+        .AddNode(std::make_shared<e8::RaftReplicationMonitor::Listener>(
+            std::numeric_limits<e8::RaftLogOffset>::max()))
         .Start(/*quorum_size=*/3, /*unavailability=*/1);
 
     e8::RaftRoleMonitor role_monitor(&cluster);

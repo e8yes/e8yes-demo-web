@@ -31,6 +31,12 @@ class TestCommitListener : public e8::RaftCommitListener {
     virtual ~TestCommitListener() override;
 
     void Apply(e8::CommandEntry const &entry) override;
+
+    e8::RaftLogOffset PreferredSnapshotFrequency() const override;
+
+    void Save() const override;
+
+    void Restore() override;
 };
 
 TestCommitListener::TestCommitListener() {}
@@ -38,6 +44,12 @@ TestCommitListener::TestCommitListener() {}
 TestCommitListener::~TestCommitListener() {}
 
 void TestCommitListener::Apply(e8::CommandEntry const & /*entry*/) {}
+
+e8::RaftLogOffset TestCommitListener::PreferredSnapshotFrequency() const { return 1; }
+
+void TestCommitListener::Save() const {}
+
+void TestCommitListener::Restore() {}
 
 bool CreateContextTest() {
     e8::RaftConfig config;

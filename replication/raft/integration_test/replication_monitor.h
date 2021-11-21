@@ -22,6 +22,7 @@
 #include <vector>
 
 #include "proto_cc/command.pb.h"
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/integration_test/local_cluster.h"
 #include "replication/raft/journal.h"
@@ -40,15 +41,25 @@ class RaftReplicationMonitor {
      */
     class Listener : public RaftCommitListener {
       public:
-        Listener();
+        Listener(RaftLogOffset preferred_snapshot_frequency);
         ~Listener() override;
 
         void Apply(CommandEntry const &entry) override;
 
+        RaftLogOffset PreferredSnapshotFrequency() const override;
+
+        void Save() const override;
+
+        void Restore() override;
+
         void Reset() override;
 
+      public:
         std::mutex mu;
-        std::vector<CommandEntry> commited_entries;
+        CommittedCommandEntriesData data;
+
+      private:
+        RaftLogOffset const preferred_snapshot_frequency_;
     };
 
     /**

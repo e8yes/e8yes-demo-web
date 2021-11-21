@@ -17,6 +17,8 @@
 
 #include <cassert>
 #include <chrono>
+#include <cstdio>
+#include <fstream>
 #include <mutex>
 #include <thread>
 #include <unordered_map>
@@ -24,6 +26,7 @@
 
 #include "common/time_util/time_util.h"
 #include "proto_cc/command.pb.h"
+#include "proto_cc/raft.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/raft/integration_test/local_cluster.h"
 #include "replication/raft/integration_test/replication_monitor.h"
@@ -32,6 +35,7 @@
 namespace e8 {
 namespace {
 
+constexpr char const *kCommittedEntriesSnapshotFile = "raft_committed_entries.snapshot";
 TimeIntervalMillis kInspectionInterval = 10;
 
 std::unordered_map<RaftMachineAddress, RaftReplicationMonitor::Listener *>
@@ -48,18 +52,47 @@ ClusterListeners(LocalRaftCluster const *cluster) {
 
 } // namespace
 
-RaftReplicationMonitor::Listener::Listener() {}
+RaftReplicationMonitor::Listener::Listener(RaftLogOffset preferred_snapshot_frequency)
+    : preferred_snapshot_frequency_(preferred_snapshot_frequency) {}
 
 RaftReplicationMonitor::Listener::~Listener() {}
 
 void RaftReplicationMonitor::Listener::Apply(CommandEntry const &entry) {
     std::lock_guard<std::mutex> guard(mu);
-    commited_entries.push_back(entry);
+    *data.mutable_committed_entries()->Add() = entry;
+}
+
+RaftLogOffset RaftReplicationMonitor::Listener::PreferredSnapshotFrequency() const {
+    return preferred_snapshot_frequency_;
+}
+
+void RaftReplicationMonitor::Listener::Save() const {
+    remove(kCommittedEntriesSnapshotFile);
+
+    std::fstream f;
+    f.open(kCommittedEntriesSnapshotFile, std::ios::out | std::ios::binary);
+    assert(f.is_open());
+
+    data.SerializeToOstream(&f);
+
+    f.close();
+}
+
+void RaftReplicationMonitor::Listener::Restore() {
+    std::fstream f;
+    f.open(kCommittedEntriesSnapshotFile, std::ios::in | std::ios::binary);
+    if (!f.is_open()) {
+        return;
+    }
+
+    data.ParseFromIstream(&f);
+
+    f.close();
 }
 
 void RaftReplicationMonitor::Listener::Reset() {
     std::lock_guard<std::mutex> guard(mu);
-    commited_entries.clear();
+    data.mutable_committed_entries()->Clear();
 }
 
 RaftReplicationMonitor::RaftReplicationMonitor(LocalRaftCluster const *cluster)
@@ -94,8 +127,9 @@ bool RaftReplicationMonitor::ReplicateCommand(RaftMachineAddress const &from,
 
         for (auto const &[node, listener] : commit_listeners) {
             std::lock_guard<std::mutex> guard(listener->mu);
-            if (listener->commited_entries.size() > result.log_index) {
-                assert(listener->commited_entries[result.log_index].SerializeAsString() ==
+            if (static_cast<RaftLogOffset>(listener->data.committed_entries_size()) >
+                result.log_index) {
+                assert(listener->data.committed_entries(result.log_index).SerializeAsString() ==
                        entry.SerializeAsString());
                 ++num_nodes_committed;
             }
