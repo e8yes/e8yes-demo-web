@@ -17,6 +17,8 @@ HEADERS += \
     bucket.pb.h \
     chat_message.grpc.pb.h \
     chat_message.pb.h \
+    cluster_conductor.grpc.pb.h \
+    cluster_conductor.pb.h \
     cluster.grpc.pb.h \
     cluster.pb.h \
     cluster_conductor_command.grpc.pb.h \
@@ -107,6 +109,8 @@ SOURCES += \
     bucket.pb.cc \
     chat_message.grpc.pb.cc \
     chat_message.pb.cc \
+    cluster_conductor.grpc.pb.cc \
+    cluster_conductor.pb.cc \
     cluster.grpc.pb.cc \
     cluster.pb.cc \
     cluster_conductor_command.grpc.pb.cc \
