@@ -67,6 +67,22 @@ message RaftPersistentStates {
     // The current raft role the node plays.
     int32 role = 3;
 
+    // The number of log entries of which were taken snapshot and discarded.
+    int64 snapshot_progress = 4;
+
+    // The highest term of the discarded log entries due to snapshotting.
+    int64 snapshot_highest_log_term = 5;
+
     // All the log entries the node currently holds.
-    repeated LogEntry log_entries = 4;
+    repeated LogEntry log_entries = 6;
+}
+
+/*
+ * The following definitions are used for intergation testings.
+ */
+
+// Stores all the committed commands. A proto message is needed to make testing
+// snapshot and recovery (where serialization is needed) easier.
+message CommittedCommandEntriesData {
+    repeated CommandEntry committed_entries = 1;
 }
