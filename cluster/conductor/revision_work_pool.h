@@ -99,7 +99,7 @@ MergeClusterMapRevisions(std::vector<ClusterMapRevision> const &revisions, unsig
  */
 class ClusterRevisionWorkPool {
   public:
-    ClusterRevisionWorkPool();
+    ClusterRevisionWorkPool(std::string const &snapshot_file);
     ~ClusterRevisionWorkPool();
 
     /**
@@ -169,6 +169,7 @@ class ClusterRevisionWorkPool {
     };
 
     std::unordered_map<ResourceServiceId, ResourceServiceClusterState> services_;
+    std::string const snapshot_file_;
 };
 
 } // namespace e8

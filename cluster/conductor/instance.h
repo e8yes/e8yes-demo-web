@@ -20,7 +20,7 @@
 
 #include <memory>
 
-#include "proto_cc/replication.pb.h"
+#include "proto_cc/cluster_conductor.pb.h"
 
 namespace e8 {
 
@@ -38,7 +38,7 @@ class ConductorInstance {
      * @brief ConductorInstance By the end of construction, all the background tasks are launched to
      * conduct the cluster.
      */
-    ConductorInstance(ReplicationConfig const &replication_config);
+    ConductorInstance(ClusterConductorConfig const &config);
     ~ConductorInstance();
 
   private:

@@ -28,6 +28,8 @@
 
 namespace {
 
+constexpr char const *kRevisionWorkPoolSnapshotFilePath = "conductor_revision.snapshot";
+
 e8::ClusterMapRevision::Action AddRootAction() {
     e8::Bucket root_bucket;
     root_bucket.mutable_uniform_bucket()->set_prime(13);
@@ -63,7 +65,7 @@ e8::ClusterMapRevision::Action AddChildAction(e8::ClusterTreeNodeLabel const &ch
 } // namespace
 
 bool PollResourceServiceTest() {
-    e8::ClusterRevisionWorkPool work_pool;
+    e8::ClusterRevisionWorkPool work_pool(kRevisionWorkPoolSnapshotFilePath);
 
     // Polls and checks if the work pool's initial state is empty.
     e8::ClusterRevisionCommand poll_resource_service_command;
@@ -103,7 +105,7 @@ bool PollResourceServiceTest() {
 }
 
 bool EnqueueRejectionTest() {
-    e8::ClusterRevisionWorkPool work_pool;
+    e8::ClusterRevisionWorkPool work_pool(kRevisionWorkPoolSnapshotFilePath);
 
     // The first revision must start from version 0.
     e8::ClusterMapRevision revision;
@@ -156,7 +158,7 @@ bool EnqueueRejectionTest() {
 }
 
 bool EnqueueAndPollTest() {
-    e8::ClusterRevisionWorkPool work_pool;
+    e8::ClusterRevisionWorkPool work_pool(kRevisionWorkPoolSnapshotFilePath);
 
     // Enqueue the root node and check that it's in the pending queue.
     e8::ClusterMapRevision revision;
@@ -206,7 +208,7 @@ bool EnqueueAndPollTest() {
 }
 
 bool EnqueueAndCreateWorkTest() {
-    e8::ClusterRevisionWorkPool work_pool;
+    e8::ClusterRevisionWorkPool work_pool(kRevisionWorkPoolSnapshotFilePath);
 
     // Creates work while the pending queue is empty.
     e8::ClusterRevisionCommand create_work_command;
@@ -278,7 +280,7 @@ bool EnqueueAndCreateWorkTest() {
 }
 
 bool EnqueueAndCreateWorkThenGetWorkTest() {
-    e8::ClusterRevisionWorkPool work_pool;
+    e8::ClusterRevisionWorkPool work_pool(kRevisionWorkPoolSnapshotFilePath);
 
     // Enqueues the add-root and add-child revisions.
     e8::ClusterMapRevision revision;
@@ -337,7 +339,7 @@ bool EnqueueAndCreateWorkThenGetWorkTest() {
 }
 
 bool EnqueueAndCreateWorkThenUpdateWorkTest() {
-    e8::ClusterRevisionWorkPool work_pool;
+    e8::ClusterRevisionWorkPool work_pool(kRevisionWorkPoolSnapshotFilePath);
 
     // Enqueues the root node and creates work off of it.
     e8::ClusterMapRevision revision;
@@ -406,7 +408,7 @@ bool EnqueueAndCreateWorkThenUpdateWorkTest() {
 }
 
 bool EnqueueAndCreateWorkThenFinishWorkTest() {
-    e8::ClusterRevisionWorkPool work_pool;
+    e8::ClusterRevisionWorkPool work_pool(kRevisionWorkPoolSnapshotFilePath);
 
     // Enqueues the root node and creates work off of it.
     e8::ClusterMapRevision revision;
@@ -456,7 +458,7 @@ bool EnqueueAndCreateWorkThenFinishWorkTest() {
 }
 
 bool ListHistoryTest() {
-    e8::ClusterRevisionWorkPool work_pool;
+    e8::ClusterRevisionWorkPool work_pool(kRevisionWorkPoolSnapshotFilePath);
 
     e8::ClusterRevisionCommand list_history_command;
     list_history_command.set_resource_service_id("test");

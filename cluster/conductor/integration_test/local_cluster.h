@@ -25,6 +25,7 @@
 #include "cluster/conductor/instance.h"
 #include "cluster/conductor/integration_test/mock_resource_service.h"
 #include "cluster/placement/common_types.h"
+#include "proto_cc/cluster_conductor.pb.h"
 #include "replication/raft/common_types.h"
 #include "replication/runner/client.h"
 #include "replication/runner/runner.h"
@@ -46,7 +47,7 @@ class LocalCluster {
         RaftMachineAddress address;
 
         // The configuration used to start the conductor instance.
-        ReplicationConfig config;
+        ClusterConductorConfig config;
 
         // The running conductor instance if not null.
         std::unique_ptr<ConductorInstance> conductor;

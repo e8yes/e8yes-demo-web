@@ -25,20 +25,20 @@
 
 #include "cluster/conductor/instance.h"
 #include "common/flags/parse_flags.h"
-#include "proto_cc/replication.pb.h"
+#include "proto_cc/cluster_conductor.pb.h"
 
 namespace {
 
-constexpr char const *kReplicationConfigFlag = "replication_config_path";
+constexpr char const *kClusterConductorConfigPath = "config_path";
 
-e8::ReplicationConfig LoadReplicationConfig(std::string const &file) {
+e8::ClusterConductorConfig LoadConductorConfig(std::string const &file) {
     std::ifstream config_file(file, std::ios::in);
     assert(config_file.is_open());
 
     std::string content((std::istreambuf_iterator<char>(config_file)),
                         (std::istreambuf_iterator<char>()));
 
-    e8::ReplicationConfig config;
+    e8::ClusterConductorConfig config;
     bool success = google::protobuf::TextFormat::ParseFromString(content, &config);
     assert(success);
 
@@ -50,11 +50,11 @@ e8::ReplicationConfig LoadReplicationConfig(std::string const &file) {
 int main(int argc, char *argv[]) {
     e8::Argv(argc, argv);
     std::string replication_config_path =
-        e8::ReadFlag(kReplicationConfigFlag, std::string(), e8::FromString<std::string>);
+        e8::ReadFlag(kClusterConductorConfigPath, std::string(), e8::FromString<std::string>);
     assert(!replication_config_path.empty());
 
-    e8::ReplicationConfig replication_config = LoadReplicationConfig(replication_config_path);
-    e8::ConductorInstance conductor_instance(replication_config);
+    e8::ClusterConductorConfig config = LoadConductorConfig(replication_config_path);
+    e8::ConductorInstance conductor_instance(config);
 
     // TODO: creates ways to gracefully terminate this program.
     while (true) {

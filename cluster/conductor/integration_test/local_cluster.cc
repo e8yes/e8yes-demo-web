@@ -16,6 +16,7 @@
  */
 
 #include <cassert>
+#include <cstdio>
 #include <google/protobuf/repeated_field.h>
 #include <grpcpp/grpcpp.h>
 #include <memory>
@@ -38,6 +39,7 @@ constexpr char const *kTestHost = "localhost";
 unsigned const kTestCondutorPortBeginRange = 12345;
 unsigned const kTestWorkerPortBeginRange = 22345;
 constexpr char const *kTestLogFilePrefix = "local_raft_log";
+constexpr char const *kTestRevisionSnapshotFilePrefix = "conductor_revision_snapshot";
 
 RaftMachineAddress GenerateConductorAddress(unsigned i) {
     return std::string(kTestHost) + ":" + std::to_string(kTestCondutorPortBeginRange + i);
@@ -47,8 +49,12 @@ ResourceWorkerAddress GenerateResourceWorkerAddress(unsigned i) {
     return std::string(kTestHost) + ":" + std::to_string(kTestWorkerPortBeginRange + i);
 }
 
-std::string LogPath(RaftMachineAddress const node_address) {
+std::string LogFilePath(RaftMachineAddress const node_address) {
     return std::string("./") + kTestLogFilePrefix + "." + node_address;
+}
+
+std::string RevisionSnapshotFilePath(RaftMachineAddress const node_address) {
+    return std::string("./") + kTestRevisionSnapshotFilePrefix + "." + node_address;
 }
 
 void StartConductors(unsigned num_conductors,
@@ -59,15 +65,26 @@ void StartConductors(unsigned num_conductors,
     }
 
     for (unsigned i = 0; i < num_conductors; ++i) {
+        // Removes leftover files from the previous run.
+        remove(RevisionSnapshotFilePath(conductor_addresses[i]).c_str());
+        remove(LogFilePath(conductor_addresses[i]).c_str());
+
+        // Creates the conductor while recording the configuration it uses.
         LocalCluster::ConductorNode node;
         node.address = conductor_addresses[i];
 
-        node.config.set_fulfillment_timeout_millis(100);
-        node.config.mutable_raft_config()->set_me(conductor_addresses[i]);
-        node.config.mutable_raft_config()->set_log_path(LogPath(conductor_addresses[i]));
-        node.config.mutable_raft_config()->set_quorum_size(num_conductors / 2 + 1);
-        node.config.mutable_raft_config()->set_unavailability(1.0f);
-        *node.config.mutable_raft_config()->mutable_peers() = conductor_addresses;
+        node.config.set_revision_work_pool_snapshot_file(
+            RevisionSnapshotFilePath(conductor_addresses[i]));
+        node.config.mutable_replication_config()->set_fulfillment_timeout_millis(100);
+        node.config.mutable_replication_config()->mutable_raft_config()->set_me(
+            conductor_addresses[i]);
+        node.config.mutable_replication_config()->mutable_raft_config()->set_log_path(
+            LogFilePath(conductor_addresses[i]));
+        node.config.mutable_replication_config()->mutable_raft_config()->set_quorum_size(
+            num_conductors / 2 + 1);
+        node.config.mutable_replication_config()->mutable_raft_config()->set_unavailability(1.0f);
+        *node.config.mutable_replication_config()->mutable_raft_config()->mutable_peers() =
+            conductor_addresses;
 
         node.conductor = std::make_unique<ConductorInstance>(node.config);
 
@@ -100,7 +117,12 @@ LocalCluster::LocalCluster(unsigned num_conductors, unsigned num_resource_worker
     StartResourceWorkers(num_resource_workers, &resource_workers_);
 }
 
-LocalCluster::~LocalCluster() {}
+LocalCluster::~LocalCluster() {
+    for (auto const &conductor : conductors_) {
+        remove(RevisionSnapshotFilePath(conductor.address).c_str());
+        remove(LogFilePath(conductor.address).c_str());
+    }
+}
 
 ReplicationClientConfig LocalCluster::GetConductorClientConfig() {
     ReplicationClientConfig config;

@@ -260,7 +260,8 @@ ListRevisionHistoryResult ClusterRevisionWorkPool::ResourceServiceClusterState::
     return result;
 }
 
-ClusterRevisionWorkPool::ClusterRevisionWorkPool() {}
+ClusterRevisionWorkPool::ClusterRevisionWorkPool(std::string const &snapshot_file)
+    : snapshot_file_(snapshot_file) {}
 
 ClusterRevisionWorkPool::~ClusterRevisionWorkPool() {}
 

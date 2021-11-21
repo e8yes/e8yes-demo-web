@@ -17,32 +17,36 @@
 
 #include <cassert>
 #include <memory>
+#include <string>
 
 #include "cluster/conductor/background.h"
 #include "cluster/conductor/conductor.h"
 #include "cluster/conductor/instance.h"
 #include "cluster/conductor/revision_work_pool.h"
 #include "common/thread/thread_pool.h"
+#include "proto_cc/cluster_conductor.pb.h"
 #include "proto_cc/cluster_conductor_command.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
-#include "proto_cc/replication.pb.h"
 #include "replication/runner/command_queue.h"
 #include "replication/runner/runner.h"
 
 namespace e8 {
 namespace {
 
-struct ConductorStores : public CommandRunnerInterface {
-    ConductorStores();
+class ConductorStores : public CommandRunnerInterface {
+  public:
+    ConductorStores(std::string const &revision_work_pool_snapshot_file);
     ~ConductorStores() override;
 
     std::string Run(std::string const &command) override;
 
-    std::unique_ptr<ClusterRevisionWorkPool> revision_work_pool;
+  private:
+    std::unique_ptr<ClusterRevisionWorkPool> revision_work_pool_;
 };
 
-ConductorStores::ConductorStores()
-    : revision_work_pool(std::make_unique<ClusterRevisionWorkPool>()) {}
+ConductorStores::ConductorStores(std::string const &revision_work_pool_snapshot_file)
+    : revision_work_pool_(
+          std::make_unique<ClusterRevisionWorkPool>(revision_work_pool_snapshot_file)) {}
 
 ConductorStores::~ConductorStores() {}
 
@@ -55,7 +59,7 @@ std::string ConductorStores::Run(std::string const &command) {
     switch (conductor_command.command_case()) {
     case ClusterConductorCommand::CommandCase::kRevision: {
         ClusterRevisionResult revision_result =
-            revision_work_pool->Run(conductor_command.revision());
+            revision_work_pool_->Run(conductor_command.revision());
         *result.mutable_revision_result() = revision_result;
         break;
     }
@@ -70,7 +74,7 @@ std::string ConductorStores::Run(std::string const &command) {
 } // namespace
 
 struct ConductorInstance::ConductorInstanceImpl {
-    ConductorInstanceImpl(ReplicationConfig const &replication_config);
+    ConductorInstanceImpl(ClusterConductorConfig const &config);
     ~ConductorInstanceImpl();
 
     std::unique_ptr<ConductorStores> stores_;
@@ -81,10 +85,10 @@ struct ConductorInstance::ConductorInstanceImpl {
 };
 
 ConductorInstance::ConductorInstanceImpl::ConductorInstanceImpl(
-    ReplicationConfig const &replication_config)
-    : stores_(std::make_unique<ConductorStores>()),
+    ClusterConductorConfig const &config)
+    : stores_(std::make_unique<ConductorStores>(config.revision_work_pool_snapshot_file())),
       conductor_replicator_(
-          std::make_unique<ReplicationInstance>(stores_.get(), replication_config)),
+          std::make_unique<ReplicationInstance>(stores_.get(), config.replication_config())),
       revision_conductor_(std::make_unique<ClusterRevisionConductor>(conductor_replicator_.get())),
       background_(std::make_shared<ClusterConductorBackground>(revision_conductor_.get())),
       background_thread_(std::make_unique<ThreadPool>(/*hardware_concurrency=*/1)) {
@@ -97,8 +101,8 @@ ConductorInstance::ConductorInstanceImpl::~ConductorInstanceImpl() {
     background_thread_->WaitForNextCompleted();
 }
 
-ConductorInstance::ConductorInstance(ReplicationConfig const &replication_config)
-    : pimpl_(std::make_unique<ConductorInstanceImpl>(replication_config)) {}
+ConductorInstance::ConductorInstance(ClusterConductorConfig const &config)
+    : pimpl_(std::make_unique<ConductorInstanceImpl>(config)) {}
 
 ConductorInstance::~ConductorInstance() {}
 
