@@ -1,18 +1,24 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     third_party \
-    proto_cc/proto_cc.pro \
-    common/common.pro \
-    replication/replication.pro \
-    cluster/cluster.pro \
-    distributor/distributor.pro \
-    postgres/postgres.pro \
-    keygen/keygenw.pro \
-    identity/identityw.pro \
+    proto_cc \
+    common \
+    common/commonb.pro \
+    replication \
+    replication/replicationb.pro \
+    cluster \
+    cluster/clusterb.pro \
+    distributor \
+    postgres \
+    postgres/postgresb.pro \
+    keygen \
+    identity \
     file_system/filesystemw.pro \
-    message_queue/message_queue.pro \
+    message_queue \
+    message_queue/message_queueb.pro \
     node_state/node_statew.pro \
-    # gomoku/gomoku.pro \
-    demoweb_service/demoweb.pro
+    # gomoku \
+    demoweb_service/demoweb.pro \
+    demoweb_service/demowebb.pro
 
 CONFIG += ordered
