@@ -38,6 +38,8 @@
 namespace e8 {
 namespace {
 
+TimeIntervalMillis kScanningInterval = 500;
+
 class RegistrationHandler : public TaskInterface {
   public:
     RegistrationHandler(std::unordered_map<pid_t, TaskBasicInfo> *running_tasks,
@@ -102,7 +104,7 @@ void RegistrationHandler::Run(TaskStorageInterface *) const {
     while (running_) {
         std::optional<std::pair<pid_t, TaskBasicInfo>> registration = this_->NextRegistration();
         if (!registration.has_value()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(kScanningInterval));
             continue;
         }
 
@@ -195,7 +197,7 @@ void TerminationHandler::Run(TaskStorageInterface *) const {
     while (running_) {
         std::optional<pid_t> termination = this_->NextTermination();
         if (!termination.has_value()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(kScanningInterval));
             continue;
         }
 
