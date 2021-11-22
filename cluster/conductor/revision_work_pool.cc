@@ -16,6 +16,8 @@
  */
 
 #include <cassert>
+#include <cstdio>
+#include <fstream>
 #include <map>
 #include <optional>
 #include <string>
@@ -29,6 +31,7 @@
 #include "proto_cc/cluster.pb.h"
 #include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
+#include "proto_cc/cluster_revision_work_pool.pb.h"
 
 namespace e8 {
 
@@ -260,8 +263,42 @@ ListRevisionHistoryResult ClusterRevisionWorkPool::ResourceServiceClusterState::
     return result;
 }
 
+ResourceServiceClusterStateData
+ClusterRevisionWorkPool::ResourceServiceClusterState::ToProto() const {
+    ResourceServiceClusterStateData proto;
+
+    for (auto const &revision : all_revisions_) {
+        *proto.add_all_revisions() = revision;
+    }
+    for (auto const &[revision_epoch, work] : work_pool_) {
+        (*proto.mutable_work_pool())[revision_epoch] = work;
+    }
+    if (pending_revision_.has_value()) {
+        *proto.mutable_pending_revision() = *pending_revision_;
+    }
+
+    return proto;
+}
+
+void ClusterRevisionWorkPool::ResourceServiceClusterState::FromProto(
+    ResourceServiceClusterStateData const &proto) {
+    all_revisions_.clear();
+    work_pool_.clear();
+    pending_revision_.reset();
+
+    for (auto const &revision : proto.all_revisions()) {
+        all_revisions_.push_back(revision);
+    }
+    for (auto const &[revision_epoch, work] : proto.work_pool()) {
+        work_pool_[revision_epoch] = work;
+    }
+    if (proto.has_pending_revision()) {
+        pending_revision_ = proto.pending_revision();
+    }
+}
+
 ClusterRevisionWorkPool::ClusterRevisionWorkPool(std::string const &snapshot_file)
-    : snapshot_file_(snapshot_file) {}
+    : snapshot_file_(snapshot_file), state_changed_(false) {}
 
 ClusterRevisionWorkPool::~ClusterRevisionWorkPool() {}
 
@@ -293,6 +330,7 @@ ClusterRevisionResult ClusterRevisionWorkPool::Run(ClusterRevisionCommand const 
     case ClusterRevisionCommand::CommandCase::kEnqueueRevision: {
         *result.mutable_enqueue_result() =
             service_states.EnqueuePendingRevision(command.enqueue_revision());
+        state_changed_ |= result.enqueue_result().successful();
         break;
     }
     case ClusterRevisionCommand::CommandCase::kPollRevision: {
@@ -301,6 +339,7 @@ ClusterRevisionResult ClusterRevisionWorkPool::Run(ClusterRevisionCommand const 
     }
     case ClusterRevisionCommand::CommandCase::kCreateWork: {
         *result.mutable_create_work_result() = service_states.CreateWork(command.create_work());
+        state_changed_ |= result.create_work_result().successful();
         break;
     }
     case ClusterRevisionCommand::CommandCase::kGetAllWork: {
@@ -309,10 +348,12 @@ ClusterRevisionResult ClusterRevisionWorkPool::Run(ClusterRevisionCommand const 
     }
     case ClusterRevisionCommand::CommandCase::kUpdateWork: {
         *result.mutable_update_work_result() = service_states.UpdateWork(command.update_work());
+        state_changed_ |= result.update_work_result().successful();
         break;
     }
     case ClusterRevisionCommand::CommandCase::kFinishWork: {
         *result.mutable_finish_work_result() = service_states.FinishWork(command.finish_work());
+        state_changed_ |= result.finish_work_result().successful();
         break;
     }
     case ClusterRevisionCommand::CommandCase::kListRevisionHistory: {
@@ -325,6 +366,43 @@ ClusterRevisionResult ClusterRevisionWorkPool::Run(ClusterRevisionCommand const 
     }
 
     return result;
+}
+
+void ClusterRevisionWorkPool::Save() {
+    if (!state_changed_) {
+        return;
+    }
+
+    ClusterRevisionWorkPoolData proto;
+    for (auto const &[service_id, service_state] : services_) {
+        (*proto.mutable_services())[service_id] = service_state.ToProto();
+    }
+
+    std::fstream f;
+    f.open(snapshot_file_, std::ios::out | std::ios::binary | std::ios::trunc);
+    assert(f.is_open());
+
+    proto.SerializeToOstream(&f);
+
+    f.close();
+}
+
+void ClusterRevisionWorkPool::Restore() {
+    ClusterRevisionWorkPoolData data;
+
+    std::fstream f;
+    f.open(snapshot_file_, std::ios::in | std::ios::binary);
+    assert(f.is_open());
+
+    data.ParseFromIstream(&f);
+
+    f.close();
+
+    for (auto const &[service_id, service_state_proto] : data.services()) {
+        ResourceServiceClusterState service_state;
+        service_state.FromProto(service_state_proto);
+        services_.insert(std::make_pair(service_id, service_state));
+    }
 }
 
 } // namespace e8

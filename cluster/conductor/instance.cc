@@ -40,6 +40,12 @@ class ConductorStores : public CommandRunnerInterface {
 
     std::string Run(std::string const &command) override;
 
+    RaftLogOffset PreferredSnapshotFrequency() const override;
+
+    void Save() const override;
+
+    void Restore() override;
+
   private:
     std::unique_ptr<ClusterRevisionWorkPool> revision_work_pool_;
 };
@@ -70,6 +76,15 @@ std::string ConductorStores::Run(std::string const &command) {
 
     return result.SerializeAsString();
 }
+
+RaftLogOffset ConductorStores::PreferredSnapshotFrequency() const {
+    // Takes a snapshot for every command run.
+    return 1;
+}
+
+void ConductorStores::Save() const { revision_work_pool_->Save(); }
+
+void ConductorStores::Restore() { revision_work_pool_->Restore(); }
 
 } // namespace
 

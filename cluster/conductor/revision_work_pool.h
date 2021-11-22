@@ -30,6 +30,7 @@
 #include "proto_cc/cluster.pb.h"
 #include "proto_cc/cluster_revision.pb.h"
 #include "proto_cc/cluster_revision_command.pb.h"
+#include "proto_cc/cluster_revision_work_pool.pb.h"
 
 namespace e8 {
 
@@ -109,6 +110,17 @@ class ClusterRevisionWorkPool {
      */
     ClusterRevisionResult Run(ClusterRevisionCommand const &command);
 
+    /**
+     * @brief Save Takes a snapshot of the current internal states.
+     */
+    void Save();
+
+    /**
+     * @brief Restore Restores the internal states from the last snapshot, if there is one.
+     * Otherwise, it clears the states.
+     */
+    void Restore();
+
   private:
     /**
      * @brief The ResourceServiceClusterState class Stores each resource service's cluster
@@ -162,14 +174,26 @@ class ClusterRevisionWorkPool {
          */
         ListRevisionHistoryResult ListHistory(ListRevisionHistoryCommand const &command);
 
+        /**
+         * @brief ToProto Exports the internal states to a serializable proto message.
+         */
+        ResourceServiceClusterStateData ToProto() const;
+
+        /**
+         * @brief FromProto Replaces the internal states with data in the proto message.
+         */
+        void FromProto(ResourceServiceClusterStateData const &proto);
+
       private:
         std::vector<ClusterMapRevision> all_revisions_;
         std::map<ClusterMapVersionEpoch, ClusterRevisionWork> work_pool_;
         std::optional<ClusterMapRevision> pending_revision_;
     };
 
-    std::unordered_map<ResourceServiceId, ResourceServiceClusterState> services_;
     std::string const snapshot_file_;
+
+    std::unordered_map<ResourceServiceId, ResourceServiceClusterState> services_;
+    bool state_changed_;
 };
 
 } // namespace e8

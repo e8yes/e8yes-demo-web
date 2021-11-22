@@ -27,6 +27,8 @@ HEADERS += \
     cluster_revision.pb.h \
     cluster_revision_command.grpc.pb.h \
     cluster_revision_command.pb.h \
+    cluster_revision_work_pool.grpc.pb.h \
+    cluster_revision_work_pool.pb.h \
     command.grpc.pb.h \
     command.pb.h \
     delta.grpc.pb.h \
@@ -119,6 +121,8 @@ SOURCES += \
     cluster_revision.pb.cc \
     cluster_revision_command.grpc.pb.cc \
     cluster_revision_command.pb.cc \
+    cluster_revision_work_pool.grpc.pb.cc \
+    cluster_revision_work_pool.pb.cc \
     command.grpc.pb.cc \
     command.pb.cc \
     delta.grpc.pb.cc \
