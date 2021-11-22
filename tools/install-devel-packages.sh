@@ -16,6 +16,8 @@ apt install -y \
     git \
     golang-go \
     go-dep \
+    libboost-log-dev \
+    libboost-thread-dev \
     libcrypto++-dev \
     libcrypt-dev \
     libgrpc++-dev \
