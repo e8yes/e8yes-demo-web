@@ -8,6 +8,8 @@ RUN apt update
 RUN apt install -y build-essential \
                    git \
                    haveged \
+                   libboost-log-dev \
+                   libboost-thread-dev \
                    libcrypt-dev \
                    libcrypto++-dev \
                    libgrpc++-dev \
@@ -56,9 +58,8 @@ RUN make -j 4
 # 3. Copies the binaries out and removes build files.
 WORKDIR /home
 RUN mkdir -p bin
-RUN find build -name *.so -exec cp -f {} ./bin \; && \
-    find build -name *.1 -exec cp -f {} ./bin \; && \
-    find build -name *main -exec cp -f {} ./bin \;
+RUN find build -name *.so* -exec mv {} ./bin \; && \
+    find build -name *main -exec mv {} ./bin \;
 RUN rm -rf build
 
 # Runs the task manager.
