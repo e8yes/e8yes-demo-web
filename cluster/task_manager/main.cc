@@ -15,11 +15,11 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <boost/log/trivial.hpp>
 #include <cassert>
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
-#include <iostream>
 #include <memory>
 #include <optional>
 #include <string>
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
     builder.RegisterService(task_manager_service.get());
 
     std::unique_ptr<grpc::Server> server = builder.BuildAndStart();
-    std::cout << "Server listening on " << server_address << std::endl;
+    BOOST_LOG_TRIVIAL(info) << "Server listening on " << server_address;
 
     server->Wait();
 
