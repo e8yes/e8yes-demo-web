@@ -392,7 +392,9 @@ void ClusterRevisionWorkPool::Restore() {
 
     std::fstream f;
     f.open(snapshot_file_, std::ios::in | std::ios::binary);
-    assert(f.is_open());
+    if (!f.is_open()) {
+        return;
+    }
 
     data.ParseFromIstream(&f);
 
