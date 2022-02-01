@@ -4,6 +4,7 @@ TEMPLATE = lib
 CONFIG += c++17
 
 QMAKE_CXXFLAGS += -std=c++17
+QMAKE_CXXFLAGS += -DBOOST_LOG_DYN_LINK
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -flto -march=native -g
 QMAKE_LFLAGS_RELEASE -= -Wl,-O1
@@ -137,6 +138,8 @@ unix:!macx: LIBS += -L$$OUT_PWD/../../message_queue/publisher/ -lpublisher
 INCLUDEPATH += $$PWD/../../message_queue/publisher
 DEPENDPATH += $$PWD/../../message_queue/publisher
 
+LIBS += -lboost_log
+LIBS += -lboost_thread
 LIBS += -lcrypt
 LIBS += -lcrypto++
 LIBS += -lpqxx

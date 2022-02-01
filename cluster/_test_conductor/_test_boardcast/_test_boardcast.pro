@@ -5,6 +5,7 @@ CONFIG -= qt
 CONFIG += c++17
 
 QMAKE_CXXFLAGS += -std=c++17
+QMAKE_CXXFLAGS += -DBOOST_LOG_DYN_LINK
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -flto -march=native -g
 QMAKE_LFLAGS_RELEASE -= -Wl,-O1
@@ -85,6 +86,9 @@ else:unix: LIBS += -L$$OUT_PWD/../../../third_party/uuid/ -luuid
 INCLUDEPATH += $$PWD/../../../third_party/uuid
 DEPENDPATH += $$PWD/../../../third_party/uuid
 
-LIBS += -lgrpc++ -lgrpc++_reflection
+LIBS += -lboost_log
+LIBS += -lboost_thread
+LIBS += -lgrpc++
+LIBS += -lgrpc++_reflection
 LIBS += -lprotobuf
 LIBS += -pthread

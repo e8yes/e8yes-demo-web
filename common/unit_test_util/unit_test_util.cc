@@ -15,8 +15,8 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <boost/log/trivial.hpp>
 #include <cstdlib>
-#include <iostream>
 
 #include "common/unit_test_util/unit_test_util.h"
 
@@ -27,29 +27,29 @@ static std::string gTestSuiteName = "NULL";
 static bool gHasFailures = false;
 
 void BeginTest(std::string const &test_name) {
-    std::cout << "\x1B[33m" << gTestSuiteName << ":" << test_name << " -> Running\033[0m"
-              << std::endl;
+    BOOST_LOG_TRIVIAL(info) << "\x1B[33m" << gTestSuiteName << ":" << test_name
+                            << " -> Running\033[0m";
 }
 
 void EndTest(std::string const &test_name, bool success) {
     if (success) {
-        std::cout << "\x1B[32m" << gTestSuiteName << ":" << test_name << " -> Pass"
-                  << "\033[0m" << std::endl;
+        BOOST_LOG_TRIVIAL(info) << "\x1B[32m" << gTestSuiteName << ":" << test_name << " -> Pass"
+                                << "\033[0m";
     } else {
-        std::cout << "\x1B[31m" << gTestSuiteName << ":" << test_name << " -> Failed"
-                  << "\033[0m" << std::endl;
+        BOOST_LOG_TRIVIAL(info) << "\x1B[31m" << gTestSuiteName << ":" << test_name << " -> Failed"
+                                << "\033[0m";
     }
 }
 
 } // namespace
 
 void BeginTestSuite(std::string const &test_suite_name) {
-    std::cout << "\x1B[34m"
-              << "============================================"
-              << "\033[0m" << std::endl;
-    std::cout << "\x1B[34m"
-              << "******** Start testing of " << test_suite_name << " *********"
-              << "\033[0m" << std::endl;
+    BOOST_LOG_TRIVIAL(info) << "\x1B[34m"
+                            << "============================================"
+                            << "\033[0m";
+    BOOST_LOG_TRIVIAL(info) << "\x1B[34m"
+                            << "******** Start testing of " << test_suite_name << " *********"
+                            << "\033[0m";
 
     gTestSuiteName = test_suite_name;
 }
@@ -66,19 +66,20 @@ void RunTest(std::string const &test_name, TestFn test_fn) {
 
 void EndTestSuite() {
     if (!gHasFailures) {
-        std::cout << "\x1B[34m"
-                  << "********* Finished testing of " << gTestSuiteName << " *********"
-                  << "\033[0m" << std::endl;
+        BOOST_LOG_TRIVIAL(info) << "\x1B[34m"
+                                << "********* Finished testing of " << gTestSuiteName
+                                << " *********"
+                                << "\033[0m";
     } else {
-        std::cout << "\x1B[31m"
-                  << "********* Failing " << gTestSuiteName << " *********"
-                  << "\033[0m" << std::endl;
+        BOOST_LOG_TRIVIAL(fatal) << "\x1B[31m"
+                                 << "********* Failing " << gTestSuiteName << " *********"
+                                 << "\033[0m";
         std::abort();
     }
 
-    std::cout << "\x1B[34m"
-              << "============================================"
-              << "\033[0m" << std::endl;
+    BOOST_LOG_TRIVIAL(info) << "\x1B[34m"
+                            << "============================================"
+                            << "\033[0m";
 }
 
 } // namespace e8

@@ -7,6 +7,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 QMAKE_CXXFLAGS += -std=c++17
+QMAKE_CXXFLAGS += -DBOOST_LOG_DYN_LINK
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -flto -march=native -g
 QMAKE_LFLAGS_RELEASE -= -Wl,-O1
@@ -84,4 +85,5 @@ DEPENDPATH += $$PWD/../../message_queue/publisher
 
 LIBS += -lpthread
 LIBS += -ldl
-LIBS += -lgrpc++ -lgrpc++_reflection
+LIBS += -lgrpc++
+LIBS += -lgrpc++_reflection

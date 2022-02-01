@@ -18,7 +18,7 @@
 #ifndef UNIT_TEST_UTIL_H
 #define UNIT_TEST_UTIL_H
 
-#include <iostream>
+#include <boost/log/trivial.hpp>
 #include <string>
 
 namespace e8 {
@@ -42,8 +42,8 @@ void EndTestSuite();
 
 #define TEST_CONDITION(__condition__)                                                              \
     if (!(__condition__)) {                                                                        \
-        std::cerr << "Failing condition in file=" << __FILE__ << " at line=" << __LINE__           \
-                  << std::endl;                                                                    \
+        BOOST_LOG_TRIVIAL(error) << "Failing condition in file=" << __FILE__                       \
+                                 << " at line=" << __LINE__;                                       \
         return false;                                                                              \
     }
 
